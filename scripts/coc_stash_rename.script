@@ -1,0 +1,49 @@
+
+--  каб не пачынаць зноу
+-- av661194
+
+local function stash_rename(sim,stash,id)
+local stash_name = stash:name()
+	if string.find(stash_name,"level_prefix") ~= nil then
+	local level = sim:level_name(game_graph():vertex(stash.m_game_vertex_id):level_id())
+	stash_name = string.gsub(stash_name,"level_prefix",level,1)
+	end
+
+local ini = ini_file("plugins\\stash_names.ltx")
+stash_name = ini:r_string_ex("stash_tbl", stash_name)
+	if stash_name == nil then
+	return
+	end
+local name = game.translate_string("st_" .. stash_name .. "_name")
+local descr = game.translate_string("st_" .. stash_name .. "_descr")
+
+stash_name = "%c[255,255,160,0]" .. name .. "\\n%c[default]" .. descr
+level.map_change_spot_hint(id, "treasure", stash_name)
+end
+
+
+local function on_game_load()
+	if has_alife_info("stashes_renamed") then
+		return
+	end
+
+	local alife = alife()
+	for i=1, 65534 do
+		local se_obj = alife:object(i)
+		if (se_obj) then
+			if (IsInvbox(nil,se_obj:clsid())) then
+				local id = se_obj.id
+				if level.map_has_object_spot(id,"treasure") ~= 0 then
+				stash_rename(alife,se_obj,id)
+				end
+			end
+		end
+	end
+
+db.actor:give_info_portion("stashes_renamed")
+end
+
+
+function on_game_start()
+RegisterScriptCallback("on_game_load",on_game_load)
+end

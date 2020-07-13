@@ -9,3 +9,4 @@ Using mods:
 1. Original Item Models and Icons (Panzermann11)
 2. Lor's models v2.5 (Grelka)
 3. Displaying units like in Clear Sky, squads on the pda map v2 (av661194, turoff82)
+4. Stashes from SOC and CS (av661194)
