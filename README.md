@@ -12,3 +12,4 @@ Using mods:
 4. Stashes from SOC and CS (av661194)
 5. CoP HUD for CoC (PapaliPapali)
 6. Fast Travel (Fanzanzza)
+7. Dynamic News Revamp (4.3) (Tronex)

@@ -1,0 +1,90 @@
+<w>
+	<background width="1024" height="768">
+
+	    <auto_static x="0" y="0" width="104" height="768" stretch="1">
+		    <texture>ui_news_trx_opt_left_widepanel</texture>
+	    </auto_static>
+		<auto_static x="102" y="0" width="820" height="768" stretch="1">
+	      <texture>ui_news_trx_opt_background</texture>
+	    </auto_static>
+	    <auto_static x="920" y="0" width="104" height="768" stretch="1">
+		    <texture>ui_news_trx_opt_right_widepanel</texture>
+	    </auto_static>
+
+  </background>
+
+	<main_dialog>
+		<dialog x="282" y="200" width="460" height="411" stretch="1">
+			<texture>ui_news_trx_opt_screen_4</texture>
+		</dialog>
+
+		<btn_accept x="143" y="382" width="86" height="24" stretch="1">
+            <text align="c" font="letterica18">ui_mm_apply</text>
+            <texture>ui_news_trx_opt_button</texture>
+		</btn_accept>
+
+		<btn_cancel x="231" y="382" width="86" height="24" stretch="1">
+            <text align="c" font="letterica18">kb_quit</text>
+            <texture>ui_news_trx_opt_button</texture>
+		</btn_cancel>
+
+		<btn_default x="341" y="38" width="104" height="28" stretch="1">
+            <text font="letterica18" align="c">ui_mm_default</text>
+            <texture>ui_news_trx_opt_button</texture>
+				<text_color>
+					<e r="200" g="200" b="200"/>
+				</text_color>
+		</btn_default>
+
+
+	<cap_news_opt x="160" y="35" width="308" height="40">
+        <text r="250" g="250" b="250" font="letterica18" align="l" vert_align="c">TRX Dynamic News</text>
+	</cap_news_opt>
+
+	</main_dialog>
+
+	<tab_size x="22" y="83" width="460" height="411"/>
+
+
+    <tab_gameplay>
+
+	<cap_check_axr x="100" y="3" width="108" height="24">
+        <text r="170" g="170" b="170" font="letterica16" align="l" vert_align="c"></text> <!-- check - gray -->
+	</cap_check_axr>
+
+	<check_axr x="355" y="5" width="35" stretch="1" height="29">
+        	<texture>ui_news_trx_opt_checkbox3</texture>
+	</check_axr>
+
+	<cap_list_axr x="175" y="3" width="108" height="24">
+        <text r="250" g="170" b="70" font="letterica16" align="r" vert_align="c"></text> <!-- list - yellow -->
+	</cap_list_axr>
+
+        <list_axr x="290" y="5" width="110" height="20">
+            <list_font r="170" g="170" b="170" font="letterica16"/>
+		    <text_color>
+	            <e r="170" g="170" b="170"/>
+	            <d r="70" g="70" b="70"/>
+		    </text_color>
+        </list_axr>
+
+	<cap_edit_axr x="100" y="3" width="108" height="24">
+        <text r="170" g="170" b="170" font="letterica16" align="l" vert_align="c"></text> <!-- edit box - gray -->
+	</cap_edit_axr>
+
+	<edit_axr x="365" y="5" width="40" height="20" align="l">
+		<text x="5" font="letterica16" vert_align="c" align="1"/>
+		<auto_static x="0" y="0" width="40" height="20" stretch="1">
+			<texture a="255" r="26" g="34" b="26">ui\ui_console</texture>
+		</auto_static>
+	</edit_axr>
+
+	<cap_text_axr x="160" y="9" width="108" height="24">
+        <text r="100" g="100" b="250" font="letterica16" align="c" vert_align="c"></text> <!-- text - blue -->
+	</cap_text_axr>
+		
+	<templ_item width="460" height="30"/>
+	<scroll_v x="-4" y="-2" width="426" height="291" right_ident="0" left_ident="0" top_indent="0" bottom_indent="0" vert_interval="0" always_show_scroll="1"/>
+
+    </tab_gameplay>
+</w>

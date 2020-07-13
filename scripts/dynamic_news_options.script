@@ -1,0 +1,120 @@
+local options_btn = 201
+
+local btn_tbl = {
+	["Page_Up"] = 201,
+	["Tab"] = 15,
+	["Caps_Lock"] = 58,
+	["Left_Control"] = 29,
+	["Left_Shift"] = 42,
+	["Left_Alt"] = 56,
+	["Left_Win"] = 219,
+	["Application"] = 221,
+
+	["Num1"] = 79,
+	["Num2"] = 80,
+	["Num3"] = 81,
+	["Num4"] = 75,
+	["Num5"] = 76,
+	["Num6"] = 77,
+	["Num7"] = 71,
+	["Num8"] = 72,
+	["Num9"] = 73,
+	["Num/"] = 181,
+	["Num*"] = 55,
+	["Num-"] = 74,
+	["Num+"] = 78,
+	["Num_Del"] = 83,
+	["NumEnter"] = 156
+}
+
+--option table
+local options = { 
+	["options_btn"] = {
+		typ = "list",
+		list = {"Tab", "Caps_Lock", "Left_Control", "Left_Shift", "Left_Alt", "Left_Win", "Num1", "Num2", "Num3", "Num4", "Num5", "Num6", "Num7", "Num8", "Num9", "Num/", "Num*", "Num-", "Num+", "Num_Del", "NumEnter","Page_Up",},
+		default = "Page_Up",
+		txt = game.translate_string("ui_st_dyn_news_btn_access"),
+		on_accept = function(handler,optMgr,ctrl)
+			options_btn = btn_tbl[ctrl:GetText()]
+			--[[local file = io.open(game.translate_string("ui_st_dyn_news_btn_call"), "w")
+				if io.type(file) == "file" then
+					file:write(ctrl:GetText(), "\n")
+					file:flush()
+					file:close()
+				end]]--
+		end,
+		num = 0.1
+	},
+	["message_duration"] 			= {typ = "edit", default = 10, txt = game.translate_string("ui_st_dyn_news_message_duration"), num = 0.2},
+	
+	["space_news_event"] 			= {typ = "text", default = game.translate_string("ui_st_dyn_news_space_news_event"), cap = "tab_gameplay:cap_text_axr", num = 1.01},
+	["death_stalker_news"] 			= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_death_stalker_news"), num = 1.02},
+	["death_mutant_news"] 			= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_death_mutant_news"), num = 1.03},
+	["generic_death_news"] 			= {typ = "check", default = false, txt = game.translate_string("ui_st_dyn_news_generic_death_news"), num = 1.04},
+	["death_report_news"] 			= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_death_report_news"), num = 1.05},
+	--["tips_news"] 				= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_tips_news"), num = 1.06},
+	["kill_wounded_news"] 			= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_kill_wounded_news"), num = 1.07},
+	["found_artifact_news"] 		= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_found_artifact_news"), num = 1.08},
+	["heli_call_news"] 				= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_heli_call_news"), num = 1.09},
+	["loot_news"] 					= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_loot_news"), num = 1.10},
+	["stash_news"] 					= {typ = "check", default = false, txt = game.translate_string("ui_st_dyn_news_stash_news"), num = 1.11},
+	
+	["space_news_reaction"] 		= {typ = "text", default = game.translate_string("ui_st_dyn_news_space_news_reaction"), cap = "tab_gameplay:cap_text_axr", num = 2.1},
+	["reaction_news"] 				= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_reaction_news"), num = 2.2},
+	
+	["space_news_special"] 			= {typ = "text", default = game.translate_string("ui_st_dyn_news_space_news_special"), cap = "tab_gameplay:cap_text_axr", num = 3.1},
+	["weather_news"] 				= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_weather_news"), num = 3.2},
+	["time_news"] 					= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_time_news"), num = 3.3},
+	["nearby_activity_news"] 		= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_nearby_activity_news"), num = 3.4},
+	["dumb_zombie_news"] 			= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_dumb_zombie_news"), num = 3.5},
+	["cycle_of_special_news"] 		= {typ = "edit", default = 240, txt = game.translate_string("ui_st_dyn_news_cycle_of_special_news"), num = 3.6},
+	
+	["space_news_task"] 			= {typ = "text", default = game.translate_string("ui_st_dyn_news_space_news_task"), cap = "tab_gameplay:cap_text_axr", num = 4.1},
+	["bounty_news"] 				= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_bounty_news"), num = 4.2},
+	["cycle_of_task_news"] 			= {typ = "edit", default = 300, txt = game.translate_string("ui_st_dyn_news_cycle_of_task_news"), num = 4.3},
+	
+	["space_news_random"] 			= {typ = "text", default = game.translate_string("ui_st_dyn_news_space_news_random"), cap = "tab_gameplay:cap_text_axr", num = 5.1},
+	["random_msg_news"] 			= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_random_msg_news"), num = 5.2},
+	["factions_report_news"] 		= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_factions_report_news"), num = 5.3},
+	["zone_activity_news"] 			= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_zone_activity_news"), num = 5.4},
+	["found_dead_news"] 			= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_found_dead_news"), num = 5.5},
+	["surge_news"]					= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_surge_news"), num = 5.6},
+	["cycle_of_random_news"] 		= {typ = "edit", default = 240, txt = game.translate_string("ui_st_dyn_news_cycle_of_random_news"), num = 5.7},
+	
+	["space_news_companion"] 		= {typ = "text", default = game.translate_string("ui_st_dyn_news_space_news_companion"), cap = "tab_gameplay:cap_text_axr", num = 6.1},
+	["companions_news"] 			= {typ = "check", default = true, txt = game.translate_string("ui_st_dyn_news_companions_news"), num = 6.2},
+	["cycle_of_companions_news"] 	= {typ = "edit", default = 240, txt = game.translate_string("ui_st_dyn_news_cycle_of_companions_news"), num = 6.3}
+}
+
+local function options_default_config()
+	options_btn = btn_tbl[axr_main.config:r_value("mm_dynamic_news_options","options_btn",0,"Page_Up")] or 201
+	local need_save
+	for k,v in pairs(options) do
+		local key = ((v.typ=="check" and "enable_") or "") .. k
+		if not axr_main.config:line_exist("mm_dynamic_news_options", key) and v.typ~="text" then
+			axr_main.config:w_value("mm_dynamic_news_options", key, v.default)
+			need_save = true
+		end
+	end
+	if (need_save) then
+		axr_main.config:save()
+	end
+	dynamic_news_manager.update_options()
+end
+
+local function main_menu_on_keyboard(dik,keyboard_action,main_menu,level_present)
+	if keyboard_action ~= ui_events.WINDOW_KEY_RELEASED then
+		return
+	end
+	if dik == options_btn then
+		ui_mm_opt_dynamic_news.start_ui(main_menu,level_present,options)
+	end
+end
+
+------------------
+-- on_game_start()
+------------------
+function on_game_start()
+	RegisterScriptCallback("on_game_load",options_default_config)
+	RegisterScriptCallback("main_menu_on_keyboard",main_menu_on_keyboard)
+end

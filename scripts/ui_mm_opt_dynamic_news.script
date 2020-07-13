@@ -1,0 +1,265 @@
+--=====================< created by av661194 >=====================
+
+local dlg_is_show
+
+function start_ui(main_menu,level_present,options)
+	if not dlg_is_show then
+		dlg_is_show = true
+		local ui = DynamicNewsOptionsDialog(main_menu,level_present,options)
+		main_menu:HideDialog()
+		main_menu:Show(false)
+		ui:ShowDialog(true)
+	end
+end
+
+--------------------------------------------------------------
+class "DynamicNewsOptionsDialog" (CUIScriptWnd)
+function DynamicNewsOptionsDialog:__init(main_menu,level_present,options) super()
+	self.owner = main_menu
+	self.level_present = level_present
+	self.options = options or {}
+
+	self:InitControls()
+	self:InitCallBacks()
+
+	self.edit_opt = {}
+
+	-- auto-generate UI elements for Gameplay Tab
+	local abc_opt, opts, elements = {}, {}, {}
+	local _st 
+	self.scroll_v:Clear()
+	
+	-- add UI elements to scroll view in specific order
+	for cap,t in pairs(self.options) do
+		_st = self.xml:InitStatic("tab_gameplay:templ_item", nil)
+		local ctrl	-- control
+
+		if (t.typ == "check") then
+			-- caption
+			ctrl = self.xml:InitStatic("tab_gameplay:cap_check_axr",_st)
+			-- set caption text
+			ctrl:TextControl():SetText(t.txt)
+			-- sort by name and type
+			opts[t.num] = ctrl:TextControl():GetText()
+			elements[ctrl:TextControl():GetText()] = _st
+			-- create control
+			ctrl = self.xml:InitCheck("tab_gameplay:check_axr",_st)
+			-- register for callbacks
+			self:Register(ctrl,"ck_"..cap)
+
+		elseif(t.typ == "list") then
+			ctrl = self.xml:InitStatic("tab_gameplay:cap_list_axr",_st)
+			ctrl:TextControl():SetText(t.txt) 
+			-- sort by name and type
+			opts[t.num] = ctrl:TextControl():GetText()
+			elements[ctrl:TextControl():GetText()] = _st
+			-- create control
+			ctrl = self.xml:InitComboBox("tab_gameplay:list_axr",_st)
+				for i,v in ipairs(t.list) do 
+					ctrl:AddItem(v,i-1)
+				end
+			self:Register(ctrl,"lst_"..cap)
+				if (t.on_list_item_select) then
+					local _wrapper = function(handler)
+					t.on_list_item_select(handler,ctrl)
+					end
+				self:AddCallback("lst_"..cap, ui_events.LIST_ITEM_SELECT,_wrapper,self)
+				end
+
+		elseif(t.typ == "edit") then
+		ctrl = self.xml:InitStatic("tab_gameplay:cap_edit_axr",_st)
+		ctrl:TextControl():SetText(t.txt) 
+			-- sort by name and type
+			opts[t.num] = ctrl:TextControl():GetText()
+			elements[ctrl:TextControl():GetText()] = _st
+				
+			-- create control
+			ctrl = self.xml:InitEditBox("tab_gameplay:edit_axr",_st)
+			-- register for callbacks
+			self:Register(ctrl,"edt_"..cap)
+			self.edit_opt[cap]=axr_main.config:r_value("mm_dynamic_news_options",cap,0,t.default)
+
+		elseif (t.typ == "text") then
+			ctrl = self.xml:InitStatic("tab_gameplay:cap_text_axr",_st)
+			ctrl:TextControl():SetText(t.default)
+			opts[t.num] = ctrl:TextControl():GetText()
+			elements[ctrl:TextControl():GetText()] = _st
+		end
+		self.options[cap].ctrl = ctrl
+	end
+	-- sort ui elements to display in alphabetical order
+	for k in pairs(opts) do
+		abc_opt[#abc_opt + 1] = k
+	end
+	table.sort(abc_opt)
+
+	for i=1,#abc_opt do
+		abc_opt[i] =  opts[abc_opt[i]]
+		-- add to UIScrollView
+		self.scroll_v:AddWindow(elements[abc_opt[i]],true) 
+		elements[abc_opt[i]]:SetAutoDelete(false)
+	end
+
+self:SetCurrentValues()
+end
+
+function DynamicNewsOptionsDialog:__finalize()
+end
+
+function DynamicNewsOptionsDialog:InitControls()
+	self:SetWndRect(Frect():set(0,0,1024,768))
+	self:SetAutoDelete(true)
+	self:Enable(true)
+
+	self.xml = CScriptXmlInit()
+	self.xml:ParseFile("ui_mm_opt_dynamic_news.xml")
+	self.xml:InitStatic("background", self)
+	self.dialog = self.xml:InitStatic("main_dialog:dialog", self)
+	self.xml:InitStatic("main_dialog:cap_news_opt", self.dialog)
+
+	self.opt_dialog = news_options_window()
+	self.opt_dialog:InitControls(0,0, self.xml, self)
+	self.opt_dialog:Show(true)
+	self.dialog:AttachChild(self.opt_dialog)
+	self.xml:InitWindow("tab_size", 0, self.opt_dialog)
+
+	local btn
+	btn = self.xml:Init3tButton("main_dialog:btn_accept", self.dialog)
+	self:Register(btn, "btn_accept")
+	btn = self.xml:Init3tButton("main_dialog:btn_cancel", self.dialog)
+	self:Register(btn, "btn_cancel")
+	btn = self.xml:Init3tButton("main_dialog:btn_default", self.dialog)
+	self:Register(btn, "btn_default")
+end
+
+
+
+function DynamicNewsOptionsDialog:InitCallBacks()
+	self:AddCallback("btn_accept",ui_events.BUTTON_CLICKED,	self.OnBtnAccept,self)
+	self:AddCallback("btn_cancel",ui_events.BUTTON_CLICKED,	self.OnBtnCancel,self)
+	self:AddCallback("btn_default",ui_events.BUTTON_CLICKED,self.SetDefValues,self)
+end
+
+function DynamicNewsOptionsDialog:SetDefValues()
+	for k,v in pairs(self.options) do
+		if (v.typ=="check") then
+		v.ctrl:SetCheck(v.default)
+		elseif (v.typ=="list") or (v.typ=="edit") then
+		v.ctrl:SetText(v.default)
+		end
+	end
+	self.edit_opt = self.edit_opt or {}
+	for k in pairs(self.edit_opt) do
+		local v = self.options[k]
+		local t = v.ctrl:GetText()
+		self.edit_opt[k] = t
+	end
+end
+
+function DynamicNewsOptionsDialog:OnBtnAccept()
+local optMgr = COptionsManager()
+	for k,v in pairs(self.options) do
+		if (v.typ=="check") then
+		axr_main.config:w_value("mm_dynamic_news_options","enable_"..k,v.ctrl:GetCheck())
+		elseif (v.typ=="edit") then
+			local value = math.floor(tonumber(v.ctrl:GetText()) or v.default)
+			value = (value >= 0 and value <= 999) and value or v.default
+			axr_main.config:w_value("mm_dynamic_news_options",k,value)
+
+		elseif (v.typ=="list") then
+		axr_main.config:w_value("mm_dynamic_news_options",k,v.ctrl:GetText() or v.default)
+		end
+		if (v.on_accept) then 
+			v.on_accept(self,optMgr,v.ctrl)
+		end
+	end
+	if db.actor and db.actor:alive() and self.level_present then
+		dynamic_news_manager.update_options()
+		--printf(">>> Tronex: changes accepted")
+	end
+	axr_main.config:save()
+	self:OnBtnCancel()
+end
+
+
+function DynamicNewsOptionsDialog:SetCurrentValues()
+	for k,v in pairs(self.options) do
+		if (v.typ=="check") then
+			v.ctrl:SetCheck(axr_main.config:r_value("mm_dynamic_news_options","enable_"..k,1,v.default))
+		elseif (v.typ=="edit") then
+			v.ctrl:SetText(axr_main.config:r_value("mm_dynamic_news_options",k,2,v.default))
+		elseif (v.typ=="list") then
+			v.ctrl:SetText(axr_main.config:r_value("mm_dynamic_news_options",k,0,v.default))
+		end
+	end 
+end
+
+function DynamicNewsOptionsDialog:OnBtnCancel()
+	self:TextChange()
+	self.owner:ShowDialog(true)
+	--if (self:IsShown()) then
+		self:HideDialog()
+		dlg_is_show = nil
+	--end
+	self.owner:Show(true)
+end
+
+function DynamicNewsOptionsDialog:OnKeyboard(dik, keyboard_action)
+	local res = CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
+	if res == false then
+		if keyboard_action == ui_events.WINDOW_KEY_PRESSED then
+			if dik_to_bind(dik) == key_bindings.kQUIT then
+				self:OnBtnCancel()
+			end
+		end
+	else
+		if keyboard_action == ui_events.WINDOW_KEY_PRESSED then
+			if dik == DIK_keys.DIK_TAB then
+				trx_text_input.lang_prm = not trx_text_input.lang_prm
+			end
+			for k,t in pairs(self.edit_opt) do
+			local ctrl = self.options[k].ctrl
+				if dik == DIK_keys.DIK_BACK then
+					self.edit_opt[k] = ctrl:GetText()
+				else
+					local txt = ctrl:GetText()
+					txt = t == "" and txt or string.sub(txt,string.len(t)+1,-1)
+					t = t .. trx_text_input.translate(txt)
+					ctrl:SetText(t)
+					self.edit_opt[k] = t
+				end
+			end
+		end
+	end
+	return res
+end
+
+function DynamicNewsOptionsDialog:TextChange()
+	self.edit_opt = self.edit_opt or {}
+	for k in pairs(self.edit_opt) do
+		local v = self.options[k]
+		local t = axr_main.config:r_value("mm_dynamic_news_options",k,0,v.default)
+		v.ctrl:SetText(t)
+		self.edit_opt[k] = t
+	end
+end
+
+function DynamicNewsOptionsDialog:Update()
+	CUIScriptWnd.Update(self)
+end
+
+-------------------------------Options window
+class "news_options_window" (CUIWindow)
+function news_options_window:__init() super()
+end
+
+function news_options_window:__finalize()
+end
+
+function news_options_window:InitControls(x, y, xml, handler)
+	self:SetWndPos(vector2():set(x,y))
+	self:SetWndSize(vector2():set(738,416))
+	self:SetAutoDelete(true)
+	self.scroll_v = xml:InitScrollView("tab_gameplay:scroll_v", self)
+	handler.scroll_v = self.scroll_v
+end

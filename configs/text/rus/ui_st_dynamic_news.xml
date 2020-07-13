@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="ui_st_dyn_news_death_stalker_news">
+		<text>Извещения о гибели сталкеров</text>
+	</string>
+	<string id="ui_st_dyn_news_death_mutant_news">
+		<text>Сообщения о гибели мутантов</text>
+	</string>
+	<string id="ui_st_dyn_news_generic_death_news">
+		<text>Отчёты о смерти сталкеров</text>
+	</string>
+	<string id="ui_st_dyn_news_death_report_news">
+		<text>Некрологи</text>
+	</string>
+	<string id="ui_st_dyn_news_tips_news">
+		<text>Подсказки</text>
+	</string>
+	<string id="ui_st_dyn_news_kill_wounded_news">
+		<text>О раненых и заложниках</text>
+	</string>
+	<string id="ui_st_dyn_news_found_artifact_news">
+		<text>О находке артефактов</text>
+	</string>
+	<string id="ui_st_dyn_news_heli_call_news">
+		<text>Запросы авиоподдержки</text>
+	</string>
+	<string id="ui_st_dyn_news_loot_news">
+		<text>Отчёты о мародерстве</text>
+	</string>
+	<string id="ui_st_dyn_news_stash_news">
+		<text>О разорении тайников</text>
+	</string>
+	
+	<string id="ui_st_dyn_news_reaction_news">
+		<text>Комментарии к событиям</text>
+	</string>
+	
+	<string id="ui_st_dyn_news_weather_news">
+		<text>Впечатления о погоде</text>
+	</string>
+	<string id="ui_st_dyn_news_time_news">
+		<text>Вести о времени суток</text>
+	</string>
+	<string id="ui_st_dyn_news_nearby_activity_news">
+		<text>О подозрительной активности</text>
+	</string>
+	<string id="ui_st_dyn_news_dumb_zombie_news">
+		<text>Сообщения от зомби</text>
+	</string>
+	
+	<string id="ui_st_dyn_news_bounty_news">
+		<text>О заданиях и торговле</text>
+	</string>
+	
+	<string id="ui_st_dyn_news_random_msg_news">
+		<text>Случайные сообщения</text>
+	</string>
+	<string id="ui_st_dyn_news_factions_report_news">
+		<text>Сообщения от группировок</text>
+	</string>
+	<string id="ui_st_dyn_news_zone_activity_news">
+		<text>О событиях в Зоне</text>
+	</string>
+	<string id="ui_st_dyn_news_found_dead_news">
+		<text>Сообщения о находке погибших</text>
+	</string>
+	<string id="ui_st_dyn_news_surge_news">
+		<text>О надвигающихся выбросах</text>
+	</string>
+	
+	<string id="ui_st_dyn_news_companions_news">
+		<text>Сообщения от напарников</text>
+	</string>
+	
+	
+	<string id="ui_st_dyn_news_cycle_of_companions_news">
+		<text>Время между сообщениями (в сек)</text>
+	</string>
+	<string id="ui_st_dyn_news_cycle_of_task_news">
+		<text>Перерыв между новостями (в сек)</text>
+	</string>
+	<string id="ui_st_dyn_news_cycle_of_random_news">
+		<text>Интервал между новостями (в сек)</text>
+	</string>
+	<string id="ui_st_dyn_news_cycle_of_special_news">
+		<text>Промежуток между новостями (в сек)</text>
+	</string>
+	
+	<string id="ui_st_dyn_news_message_duration">
+		<text>Время показа сообщений на экране (в сек)</text>
+	</string>
+	
+	<string id="ui_st_dyn_news_space_news_event">
+		<text>--( Сообщения )--</text>
+	</string>
+	<string id="ui_st_dyn_news_space_news_reaction">
+		<text>--( Реакция на события )--</text>
+	</string>
+	<string id="ui_st_dyn_news_space_news_special">
+		<text>--( Специальные новости )--</text>
+	</string>
+	<string id="ui_st_dyn_news_space_news_task">
+		<text>--( Задания )--</text>
+	</string>
+	<string id="ui_st_dyn_news_space_news_random">
+		<text>--( Случайные новости )--</text>
+	</string>
+	<string id="ui_st_dyn_news_space_news_companion">
+		<text>--( Напарники )--</text>
+	</string>
+	
+	<string id="ui_st_dyn_news_btn_access">
+		<text>Кнопка доступа в меню настроек</text>
+	</string>
+	<string id="ui_st_dyn_news_btn_call">
+		<text>Кнопка меню TRX новостей.txt</text>
+	</string>
+</string_table>

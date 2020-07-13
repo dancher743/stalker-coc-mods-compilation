@@ -1,0 +1,27 @@
+--=====================< created by av661194 >=====================
+
+-- text input with Cyrillic support.
+-- the entered text is switched to Cyrillic / Latin alphabet by pressing the "TAB" key.
+-- You can enter the letters "E" and "e" by pressing "+" and "=", respectively.
+-- The quotes "and" are entered by pressing "/" and "\".
+
+local tbl, valid_tbl = {}, {}
+
+local function get_str(symbol)
+	return  lang_prm and (valid_tbl[symbol] or "") or tbl[symbol] or ""
+end
+
+function translate(str)
+	local input_str = game.translate_string("st_trx_input_symbols")
+	local output_str = game.translate_string("st_trx_output_symbols")
+		for n = 1, #output_str do
+			local input = string.sub(input_str, n, n)
+			local output = string.sub(output_str, n, n)
+			tbl[input] = output
+			valid_tbl[output] = output
+		end
+		tbl[""] = ""
+		valid_tbl[""] = ""
+		translate = get_str
+	return  get_str(str)
+end

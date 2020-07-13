@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="ui_st_dyn_news_death_stalker_news">
+		<text>Show stalkers reporting on death of stalkers</text>
+	</string>
+	<string id="ui_st_dyn_news_death_mutant_news">
+		<text>Show stalkers reporting on death of mutants</text>
+	</string>
+	<string id="ui_st_dyn_news_generic_death_news">
+		<text>Show death reports (old)</text>
+	</string>
+	<string id="ui_st_dyn_news_death_report_news">
+		<text>Show death reports (obituaries)</text>
+	</string>
+	<string id="ui_st_dyn_news_tips_news">
+		<text>Show tips news</text>
+	</string>
+	<string id="ui_st_dyn_news_kill_wounded_news">
+		<text>Show wounded stalkers / hostages threating</text>
+	</string>
+	<string id="ui_st_dyn_news_found_artifact_news">
+		<text>Show stalkers announcing artifacts discoveries</text>
+	</string>
+	<string id="ui_st_dyn_news_heli_call_news">
+		<text>Show requests for helicopters</text>
+	</string>
+	<string id="ui_st_dyn_news_loot_news">
+		<text>Show looting reports</text>
+	</string>
+	<string id="ui_st_dyn_news_stash_news">
+		<text>Show responses of angry stash owners</text>
+	</string>
+	
+	<string id="ui_st_dyn_news_reaction_news">
+		<text>Show reactions about all sort of things</text>
+	</string>
+	
+	<string id="ui_st_dyn_news_weather_news">
+		<text>Show weather news</text>
+	</string>
+	<string id="ui_st_dyn_news_time_news">
+		<text>Show time news</text>
+	</string>
+	<string id="ui_st_dyn_news_nearby_activity_news">
+		<text>Show nearby activities reports</text>
+	</string>
+	<string id="ui_st_dyn_news_dumb_zombie_news">
+		<text>Show zombies communication attempts</text>
+	</string>
+	
+	<string id="ui_st_dyn_news_bounty_news">
+		<text>Show bounties gossip</text>
+	</string>
+	
+	<string id="ui_st_dyn_news_random_msg_news">
+		<text>Show random messages</text>
+	</string>
+	<string id="ui_st_dyn_news_factions_report_news">
+		<text>Show faction news</text>
+	</string>
+	<string id="ui_st_dyn_news_zone_activity_news">
+		<text>Show faction reports across the zone</text>
+	</string>
+	<string id="ui_st_dyn_news_found_dead_news">
+		<text>Show corpse findings reports</text>
+	</string>
+	<string id="ui_st_dyn_news_surge_news">
+		<text>Show expected surge reports</text>
+	</string>
+	
+	<string id="ui_st_dyn_news_companions_news">
+		<text>Show companions news</text>
+	</string>
+	
+	
+	<string id="ui_st_dyn_news_cycle_of_companions_news">
+		<text>Time cycle of companions chitchat (in seconds)</text>
+	</string>
+	<string id="ui_st_dyn_news_cycle_of_task_news">
+		<text>Time cycle of task news (in seconds)</text>
+	</string>
+	<string id="ui_st_dyn_news_cycle_of_random_news">
+		<text>Time cycle of random news (in seconds)</text>
+	</string>
+	<string id="ui_st_dyn_news_cycle_of_special_news">
+		<text>Time cycle of special news (in seconds)</text>
+	</string>
+	
+	<string id="ui_st_dyn_news_message_duration">
+		<text>Duration of messages on your HUD (in seconds)</text>
+	</string>
+	
+	<string id="ui_st_dyn_news_space_news_event">
+		<text>--( Reports )--</text>
+	</string>
+	<string id="ui_st_dyn_news_space_news_reaction">
+		<text>--( Reactions )--</text>
+	</string>
+	<string id="ui_st_dyn_news_space_news_special">
+		<text>--( Special News )--</text>
+	</string>
+	<string id="ui_st_dyn_news_space_news_task">
+		<text>--( Task News )--</text>
+	</string>
+	<string id="ui_st_dyn_news_space_news_random">
+		<text>--( Random News )--</text>
+	</string>
+	<string id="ui_st_dyn_news_space_news_companion">
+		<text>--( Companions Chitchat )--</text>
+	</string>
+	
+	<string id="ui_st_dyn_news_btn_access">
+		<text>Button for accessing the settings menu</text>
+	</string>
+	<string id="ui_st_dyn_news_btn_call">
+		<text>Button to call up the news settings.txt menu</text>
+	</string>
+</string_table>
