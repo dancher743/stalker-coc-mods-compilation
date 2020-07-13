@@ -13,3 +13,4 @@ Using mods:
 5. CoP HUD for CoC (PapaliPapali)
 6. Fast Travel (Fanzanzza)
 7. Dynamic News Revamp (4.3) (Tronex)
+8. S.W.T.C Call of Chernobyl Advanced (exDeMODER)
