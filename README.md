@@ -7,3 +7,4 @@ Install: Place all files to empty "gamedata" folder.
 
 Using mods:
 1. Original Item Models and Icons (Panzermann11)
+2. Lor's models v2.5 (Grelka)
