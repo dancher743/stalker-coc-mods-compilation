@@ -11,3 +11,4 @@ Using mods:
 3. Displaying units like in Clear Sky, squads on the pda map v2 (av661194, turoff82)
 4. Stashes from SOC and CS (av661194)
 5. CoP HUD for CoC (PapaliPapali)
+6. Fast Travel (Fanzanzza)
