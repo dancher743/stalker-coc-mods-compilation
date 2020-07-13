@@ -1,2 +1,6 @@
-# stalker-coc-dancher-compilation
+# stalker-coc-mods-compilation
 My mods compilation for S.T.A.L.K.E.R.: Call of Chernobyl
+
+CoC version: 1.4.22 (ENG/RUS)
+
+Install: Place all files to empty "gamedata" folder.
