@@ -14,3 +14,4 @@ Using mods:
 6. Fast Travel (Fanzanzza)
 7. Dynamic News Revamp (4.3) (Tronex)
 8. S.W.T.C Call of Chernobyl Advanced (exDeMODER)
+9. PDA lag fix for 1.4.22 (Sanctuary)
