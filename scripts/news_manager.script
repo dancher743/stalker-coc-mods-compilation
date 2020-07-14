@@ -217,6 +217,27 @@ function send_treasure(param)
 	xr_sound.set_sound_play(db.actor:id(), "pda_tips")
 end
 
+function send_treasure_0(box_game_vertex_id)
+	local title = game.translate_string("st_found_new_treasure")
+	local level_name = ""
+	
+	local level_id = alife():level_name(game_graph():vertex(box_game_vertex_id):level_id())
+	
+	if level_id ~= nil then
+		level_name = "("..game.translate_string(level_id)..")"
+	end
+	
+	local news_caption = title.." "..level_name
+	
+	if db.actor:is_talking() then
+		db.actor:give_talk_message2(news_caption, "", "ui_inGame2_Polucheni_koordinaty_taynika", "iconed_answer_item")
+	else
+		db.actor:give_game_news(news_caption, "", "ui_inGame2_Polucheni_koordinaty_taynika", 0, 3000)
+	end
+	
+	xr_sound.set_sound_play(db.actor:id(), "pda_tips")
+end
+
 function get_inv_name(section)
 	return system_ini():r_string_ex(section,"inv_name")
 end
