@@ -19,3 +19,4 @@ Using mods:
 11. Full Simulation A-Life (Aktuarus)
 12. Voice Fixes 1.0.3 (SashaRed)
 13. More Fast Travel Locations v15 (Yarmoshuk)
+14. Informative Messages of Stashes (Dancher)
