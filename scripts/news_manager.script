@@ -220,7 +220,7 @@ end
 function send_treasure_with_level(stash_name, stash_game_vertex_id)
 	local level_id = alife():level_name(game_graph():vertex(stash_game_vertex_id):level_id())
 	local level_name = "("..game.translate_string(level_id)..")"
-	stash_name = get_stash_translated_name(stash_name)
+	stash_name = get_stash_translated_name(stash_name, level_id)
 		
 	local news_caption = game.translate_string("st_found_new_treasure")
 	local news_text = stash_name.." "..level_name
@@ -234,7 +234,7 @@ function send_treasure_with_level(stash_name, stash_game_vertex_id)
 	xr_sound.set_sound_play(db.actor:id(), "pda_tips")
 end
 
-function get_stash_translated_name(stash_name)
+function get_stash_translated_name(stash_name, level_id)
 	if string.find(stash_name,"level_prefix") ~= nil then
 		stash_name = string.gsub(stash_name,"level_prefix",level_id,1)
 	end
