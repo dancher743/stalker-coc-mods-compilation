@@ -17,3 +17,4 @@ Using mods:
 9. PDA lag fix for 1.4.22 (Sanctuary)
 10. Quest Items Remove v1.1 (zon3r)
 11. Full Simulation A-Life (Aktuarus)
+12. Voice Fixes 1.0.3 (SashaRed)
