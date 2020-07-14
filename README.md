@@ -16,3 +16,4 @@ Using mods:
 8. S.W.T.C Call of Chernobyl Advanced (exDeMODER)
 9. PDA lag fix for 1.4.22 (Sanctuary)
 10. Quest Items Remove v1.1 (zon3r)
+11. Full Simulation A-Life (Aktuarus)
