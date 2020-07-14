@@ -218,10 +218,23 @@ function send_treasure(param)
 end
 
 function send_treasure_with_level(stash_name, stash_game_vertex_id)
-	local title = game.translate_string("st_found_new_treasure")..":"
 	local level_id = alife():level_name(game_graph():vertex(stash_game_vertex_id):level_id())
 	local level_name = "("..game.translate_string(level_id)..")"
+	stash_name = get_stash_translated_name(stash_name)
+		
+	local news_caption = game.translate_string("st_found_new_treasure")
+	local news_text = stash_name.." "..level_name
 	
+	if db.actor:is_talking() then
+		db.actor:give_talk_message2(news_caption, news_text, "ui_inGame2_Polucheni_koordinaty_taynika", "iconed_answer_item")
+	else
+		db.actor:give_game_news(news_caption, news_text, "ui_inGame2_Polucheni_koordinaty_taynika", 0, 3000)
+	end
+	
+	xr_sound.set_sound_play(db.actor:id(), "pda_tips")
+end
+
+function get_stash_translated_name(stash_name)
 	if string.find(stash_name,"level_prefix") ~= nil then
 		stash_name = string.gsub(stash_name,"level_prefix",level_id,1)
 	end
@@ -234,16 +247,8 @@ function send_treasure_with_level(stash_name, stash_game_vertex_id)
 	else
 		stash_name = game.translate_string("st_" ..stash_name.. "_name")
 	end
-		
-	local news_caption = title.."\\n"..stash_name.." "..level_name
 	
-	if db.actor:is_talking() then
-		db.actor:give_talk_message2(news_caption, "", "ui_inGame2_Polucheni_koordinaty_taynika", "iconed_answer_item")
-	else
-		db.actor:give_game_news(news_caption, "", "ui_inGame2_Polucheni_koordinaty_taynika", 0, 3000)
-	end
-	
-	xr_sound.set_sound_play(db.actor:id(), "pda_tips")
+	return stash_name
 end
 
 function get_inv_name(section)
