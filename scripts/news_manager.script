@@ -217,17 +217,25 @@ function send_treasure(param)
 	xr_sound.set_sound_play(db.actor:id(), "pda_tips")
 end
 
-function send_treasure_0(box_game_vertex_id)
-	local title = game.translate_string("st_found_new_treasure")
-	local level_name = ""
+function send_treasure_with_level(stash_name, stash_game_vertex_id)
+	local title = game.translate_string("st_found_new_treasure")..":"
+	local level_id = alife():level_name(game_graph():vertex(stash_game_vertex_id):level_id())
+	local level_name = "("..game.translate_string(level_id)..")"
 	
-	local level_id = alife():level_name(game_graph():vertex(box_game_vertex_id):level_id())
-	
-	if level_id ~= nil then
-		level_name = "("..game.translate_string(level_id)..")"
+	if string.find(stash_name,"level_prefix") ~= nil then
+		stash_name = string.gsub(stash_name,"level_prefix",level_id,1)
 	end
 	
-	local news_caption = title.." "..level_name
+	local ini = ini_file("plugins\\stash_names.ltx")
+	stash_name = ini:r_string_ex("stash_tbl", stash_name)
+	
+	if stash_name == nil then
+		stash_name = game.translate_string("st_ui_pda_secret")
+	else
+		stash_name = game.translate_string("st_" ..stash_name.. "_name")
+	end
+		
+	local news_caption = title.."\\n"..stash_name.." "..level_name
 	
 	if db.actor:is_talking() then
 		db.actor:give_talk_message2(news_caption, "", "ui_inGame2_Polucheni_koordinaty_taynika", "iconed_answer_item")

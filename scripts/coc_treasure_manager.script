@@ -276,7 +276,7 @@ function create_random_stash(no_spot,hint,bonus_items)
 --------------------------------------------------Тайники из ЧН
 
 			level.map_add_object_spot_ser(id, "treasure", hint or "")
-			news_manager.send_treasure_0(se_box.m_game_vertex_id)
+			news_manager.send_treasure_with_level(se_box:name(), se_box.m_game_vertex_id)
 		end
 		caches[id] = table.concat(spawned_item,",")
 	else
