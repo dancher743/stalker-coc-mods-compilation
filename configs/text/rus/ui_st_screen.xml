@@ -295,7 +295,7 @@
 		<text>Получены координаты тайника:</text>
 	</string>
 	<string id="st_press_any_key">
-		<text>Периметр  пересечён ...</text>
+		<text>Нажмите любую клавишу для перехода к игре</text>
 	</string>
 	<string id="tips_rad_switcher_press">
 		<text>Отключить Выжигатель Мозгов ($$ACTION_USE$$)</text>
