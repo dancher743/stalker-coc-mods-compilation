@@ -19,3 +19,4 @@ Using mods:
 11. Voice Fixes 1.0.3 (SashaRed)
 12. More Fast Travel Locations v15 (Yarmoshuk)
 13. Informative Messages of Stashes (Dancher)
+14. Vanilla Hands Return (for CoC 1.4) (FudgeBomb)
