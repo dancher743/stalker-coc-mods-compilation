@@ -20,3 +20,4 @@ Using mods:
 12. More Fast Travel Locations v15 (Yarmoshuk)
 13. Informative Messages of Stashes (Dancher)
 14. Vanilla Hands Return (for CoC 1.4) (FudgeBomb)
+15. Lor's models v2.5 (Grelka)
