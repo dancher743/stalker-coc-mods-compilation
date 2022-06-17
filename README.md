@@ -22,3 +22,4 @@ Using mods:
 14. Vanilla Hands Return (for CoC 1.4) (FudgeBomb)
 15. Lor's models v2.5 (Grelka)
 16. LootMoney Vanilla CoC 1.4.22/1.5R6 (tsěsarĭ, RenanMsV)
+17. Added sun's FX from Anomaly Mod (Anomaly Developers)
