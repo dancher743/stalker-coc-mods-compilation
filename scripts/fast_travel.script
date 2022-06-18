@@ -144,15 +144,18 @@ local function check_visit(id,level_name)
 			xr_statistic.actor_statistic.smart_terrain_visited[se_obj:name()] = true
 		end
 		if (level.map_has_object_spot(id, "fast_travel") == 0) then
+			local discovered_message = game.translate_string("discovered_message");
 			if (longnames) then
-				level.map_add_object_spot(id, "fast_travel", game.translate_string(level_name)..". "..game.translate_string(se_obj:name()))
+				local longname = game.translate_string(level_name)..". "..game.translate_string(se_obj:name())
+				level.map_add_object_spot(id, "fast_travel", longname)
 				if (markermessage) then
-					SetHudMsg(game.translate_string(level_name).." "..game.translate_string(se_obj:name()).." Discovered", 4)
+					SetHudMsg(strformat(discovered_message, longname), 4)
 				end
 			else
-				level.map_add_object_spot(id, "fast_travel", game.translate_string(se_obj:name()))
+				local name = game.translate_string(se_obj:name())
+				level.map_add_object_spot(id, "fast_travel", name)
 				if (markermessage) then
-					SetHudMsg(game.translate_string(se_obj:name()).." Discovered", 4)
+					SetHudMsg(strformat(discovered_message, name), 4)
 				end
 			end
 		end

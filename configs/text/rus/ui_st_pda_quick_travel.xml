@@ -356,4 +356,9 @@
 	<string id="zat_b101">
 		<text>Смертельный лагерь</text>
 	</string>
+	
+	<!-- Messages -->
+	<string id="discovered_message">
+		<text>Исследовано: %s</text>
+	</string>
 </string_table>
