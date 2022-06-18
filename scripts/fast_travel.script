@@ -129,6 +129,11 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 	end
 end
 
+local function play_discovered_sound()
+	local sound = sound_object([[interface\spot_discovered]])
+	sound:play(db.actor,0,sound_object.s2d)
+end
+
 -- Used for Visit_Only mode, catches the player near the marker and updates things.
 local function check_visit(id,level_name)
 	if (enabled ~= 1) then
@@ -150,12 +155,14 @@ local function check_visit(id,level_name)
 				level.map_add_object_spot(id, "fast_travel", longname)
 				if (markermessage) then
 					SetHudMsg(strformat(discovered_message, longname), 4)
+					play_discovered_sound()
 				end
 			else
 				local name = game.translate_string(se_obj:name())
 				level.map_add_object_spot(id, "fast_travel", name)
 				if (markermessage) then
 					SetHudMsg(strformat(discovered_message, name), 4)
+					play_discovered_sound()
 				end
 			end
 		end
