@@ -21,3 +21,4 @@ Using mods:
 13. Vanilla Hands Return (for CoC 1.4) (FudgeBomb)
 14. Lor's models v2.5 (Grelka)
 15. LootMoney Vanilla CoC 1.4.22/1.5R6 (tsěsarĭ, RenanMsV)
+16. Living Zone by Skelja (1.4.22) (Skelja)
