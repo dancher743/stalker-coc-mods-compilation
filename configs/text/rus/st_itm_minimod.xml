@@ -67,6 +67,6 @@
 		<text> тайник</text>
 	</string>
 	<string id="st_itm_stash_of_character">
-		<text>. Его тайник</text>
+		<text>%s. Его тайник</text>
 	</string>
 </string_table>
