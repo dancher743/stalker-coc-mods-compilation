@@ -1334,24 +1334,21 @@ sim_avail = false
 ;sim smarties
 [bar_zastava_dogs_lair]:default_lair
 sim_avail 	= {+faction_base_defense_active} false, true
-territory	= 1
+territory	= 0
 
 [bar_zastava_dogs_lair_2]:default_lair
 sim_avail 	= {+faction_base_defense_active} false, true
-territory	= 1
+territory	= 0
 
 [bar_dolg_bunker]:default_base
 sim_avail 	= true
 surge 		= 1
 dolg		= 1
-army		= 1
 
 [bar_dolg_general]:default_base
 sim_avail 	= true
 surge 		= 1
 dolg		= 1
-army		= 1
-killer		= 5
 
 [bar_visitors]:default_base
 sim_avail 	= true
@@ -1360,22 +1357,18 @@ stalker		= 5
 csky		= 1 
 ecolog		= 1 
 dolg		= 1
-army		= 5
-killer		= 5
 
 ;unique smarties, sim after guards die
 [bar_zastava]:default_base
 sim_avail = {+bar_zastava_minigunner_dead +bar_zastava_duty_guard1_dead +bar_zastava_duty_guard2_dead +bar_zastava_duty_guard3_dead +bar_zastava_duty_guard4_dead +bar_zastava_duty_guard5_dead +bar_zastava_duty_guard6_dead +bar_zastava_duty_guard7_dead +bar_zastava_duty_guard8_dead +bar_zastava_duty_guard9_dead} true, false
 surge = 1
 dolg = 1
-army		= 1
 lair = 1
 
 [bar_zastava_2]:default_base
 sim_avail = {+bar_zastava_2_minigunner_dead +bar_zastava_2_duty2_guard1_dead +bar_zastava_2_duty2_guard2_dead +bar_zastava_2_duty2_guard3_dead +bar_zastava_2_duty2_guard4_dead +bar_zastava_2_duty2_guard5_dead} true, false
 surge = 1
 dolg = 1
-army		= 1
 lair = 1
 
 ;---------	BAR UNIQUE SQUADS	--------
