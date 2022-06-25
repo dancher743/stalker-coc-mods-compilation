@@ -22,3 +22,4 @@ Using mods:
 14. LootMoney Vanilla CoC 1.4.22/1.5R6 (tsěsarĭ, RenanMsV)
 15. Living Zone by Skelja (1.4.22) (Skelja)
 16. All AtmosFear 3 cycles for CoC (CrommCruac)
+17. S.W.T.C Call of Chernobyl - Advanced + FIX 1.1 (exDeMODER)
