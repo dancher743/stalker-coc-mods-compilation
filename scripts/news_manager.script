@@ -231,7 +231,7 @@ function send_treasure_with_level(stash_name, stash_game_vertex_id)
 		db.actor:give_game_news(news_caption, news_text, "ui_inGame2_Polucheni_koordinaty_taynika", 0, 3000)
 	end
 	
-	xr_sound.set_sound_play(db.actor:id(), "pda_tips")
+	xr_sound.set_sound_play(db.actor:id(), "pda_news")
 end
 
 function get_stash_translated_name(stash_name, level_id)
