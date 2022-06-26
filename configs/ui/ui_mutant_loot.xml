@@ -1,0 +1,35 @@
+<w>
+
+
+	<loot>
+		<file_item>
+			<main width="490" height="18"/>
+			<fn width="145" height="18"/>
+			<fd width="50" height="18"/>
+		</file_item>
+		<form x="360" y="110" width="305" height="460" stretch="1">
+			<texture>ui_loot_window</texture>
+			<image  x="6" y="6" width="295" height="150" stretch="1">
+			</image>
+			<icon  x="149" y="220" width="128" height="128" stretch="1">
+			</icon>
+			<caption  x="200" y="185" width="245" height="30">
+				<text font="letterica18" align="c"/>
+			</caption>
+			<list_frame x="6" y="285" width="295" height="145">
+				<texture>ui_inGame2_servers_list_frame</texture>
+			</list_frame>
+			<list x="9" y="285" width="290" height="143" item_height="18" can_select="1">
+				<font font="letterica16"/>
+			</list>
+			<btn_ok x="159" y="430" width="80" height="26">
+				<texture>ui_button_main01</texture>
+				<text font="letterica18">ui_st_take_all</text>
+			</btn_ok>
+			<btn_quit x="59" y="430" width="80" height="26">
+				<texture>ui_button_main01</texture>
+				<text font="letterica18">kb_quit</text>
+			</btn_quit>
+		</form>
+	</loot>
+</w>
