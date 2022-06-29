@@ -23,3 +23,4 @@ Using mods:
 15. All AtmosFear 3 cycles for CoC (CrommCruac)
 16. S.W.T.C Call of Chernobyl - Advanced + FIX 1.1 (exDeMODER)
 17. UI mutant looting CoC 1.4.22 (av661194, Nik71rus)
+18. Full Simulation A-Life (Aktuarus)
