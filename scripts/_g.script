@@ -26,7 +26,7 @@ USE_INI_MEMOIZE = true
 
 -- Improves performance if true, by disabling update methods for squads and smart terrains on levels not linked in configs\ai_tweaks\simulation_objects.ltx
 -- But this means simulation will only be active on actor level and linked levels everything else will remain in an idle state
-DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = false
+DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = true
 
 -------------------------------------------------------------------------------------------------
 -- Use marshal library for saving persistent data (like xr_logic pstor)
