@@ -23,3 +23,4 @@ Using mods:
 15. S.W.T.C Call of Chernobyl - Advanced + FIX 1.1 (exDeMODER)
 16. UI mutant looting CoC 1.4.22 (av661194, Nik71rus)
 17. Full Simulation A-Life (Aktuarus)
+18. TRX: Global Weather (2.2) (Tronex)
