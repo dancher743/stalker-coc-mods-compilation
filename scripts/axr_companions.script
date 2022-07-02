@@ -1,0 +1,881 @@
+--[[	axr_companions
+
+by Alundaio
+-]]
+
+-- SEE configs\ai_tweaks\axr_companions
+allow_only_friends_as_companions = true
+allow_simulation_squads_as_companions = false
+max_actor_squad_size = 0 -- used only for non task companions
+
+-- Companion tables. All companions are added to companion_squads table by their squad id. Only non-task companions are tracked by non_task_companions table.
+companion_squads = {}
+non_task_companions = {}
+------------------------------------------
+local _current_move_mode = 1
+local _current_combat_mode = 1
+local _current_stealth_mode = true
+local _particle_valid = nil
+local _particle_invalid = nil
+------------------------------------------
+-- Localized Functions
+------------------------------------------
+local function on_fighting_actor(npc)
+	if not (IsStalker(npc)) then
+		return 
+	end
+	--alun_utils.debug_write(strformat("axr_companions.on_fighting_actor"))
+				
+	for id,squad in pairs(companion_squads) do 
+		xr_combat_ignore.safe_zone_npcs[id] = nil
+		if (squad and squad.commander_id) then
+			for k in squad:squad_members() do
+				local member = db.storage[k.id] and db.storage[k.id].object
+				if (member and member:alive()) then
+					member:set_relation(game_object.enemy,npc)
+					npc:set_relation(game_object.enemy,member)
+				end
+			end
+		end
+	end
+end
+
+local function squad_on_npc_death(squad,se_npc)
+	--alun_utils.debug_write(strformat("axr_companions.squad_on_npc_death"))
+	non_task_companions[se_npc.id] = nil
+	if (squad:npc_count() == 0) then 
+		companion_squads[squad.id] = nil
+	end
+end
+
+local function squad_on_register(squad)
+	if (companion_squads[squad.id] ~= nil) then 
+		companion_squads[squad.id] = squad
+		squad.scripted_target = "actor"
+	end
+	
+	-- backward save compatiblity. remove later
+	for k in squad:squad_members() do 
+		if (k.id and k.object and utils.se_obj_load_var(k.id,k.object:name(),"companion")) then
+			companion_squads[squad.id] = squad
+			squad.scripted_target = "actor"
+			break
+		end
+	end
+end
+local function squad_on_unregister(squad)
+	companion_squads[squad.id] = nil
+end
+
+local function squad_on_update(squad)
+	--alun_utils.debug_write(strformat("axr_companions.squad_on_update - heli_enemy_flag"))
+	if (companion_squads[squad.id]) then
+		squad.scripted_target = "actor"
+		for k in squad:squad_members() do
+			if (db.storage[k.id]) then
+				db.storage[k.id].heli_enemy_flag = utils.load_var(db.actor,"heli_enemy_flag")
+			end
+		end
+	end
+end
+
+local function on_level_changing()
+	local sim = alife()
+	local se_actor = sim:actor()
+	
+	local gg = game_graph()
+	local gvid = se_actor.m_game_vertex_id
+	local vert = gg:vertex(gvid)
+	local lvid = vert:level_vertex_id()
+	local pos = vert:level_point()
+	
+	for id,v in pairs(companion_squads) do 
+		local squad = sim:object(id)
+		if (squad and squad.commander_id) then 
+			if (companion_squad_can_teleport(squad)) then
+				TeleportSquad(squad,pos,lvid,gvid)
+			end
+		end
+	end
+end
+
+local function actor_on_item_drop(item)
+	if (ActorMenu.get_menu_mode() == 4) then 
+		local m_data = alife_storage_manager.get_state()
+		if not (m_data.companion_borrow_item) then
+			m_data.companion_borrow_item = {}
+		end
+		m_data.companion_borrow_item[item:id()] = true
+	end
+end
+
+local function save_state(m_data)
+	m_data.non_task_companions = non_task_companions
+	m_data.companion_squads = {}
+	for id,squad in pairs(companion_squads) do 
+		if (squad and squad.commander_id) then
+			m_data.companion_squads[id] = false
+		end
+	end
+end
+
+local function load_state(m_data) 
+	non_task_companions = m_data.non_task_companions or non_task_companions
+	m_data.non_task_companions = nil
+	if (m_data.companion_squads) then
+		companion_squads = m_data.companion_squads or companion_squads
+		for id,bool in pairs(m_data.companion_squads) do 
+			companion_squads[id] = false
+		end
+	end 
+	m_data.companion_squads = nil
+end
+
+-- backward save compatiblity, remove me later!
+local function on_game_load()
+	local c_idx = 1
+	local cid = alun_utils.load_var(db.actor,"companion_1")
+	while (cid ~= nil) do 
+		local se_obj = alife_object(cid)
+		if (se_obj) then 
+			non_task_companions[se_obj.id] = true
+			local squad = se_obj.group_id and se_obj.group_id ~= 65535 and alife_object(se_obj.group_id)
+			if (squad) then
+				companion_squads[squad.id] = squad
+			end
+		end
+		alun_utils.save_var(db.actor,"companion_"..c_idx,nil)
+		c_idx = c_idx + 1
+		cid = alun_utils.load_var(db.actor,"companion_"..c_idx)
+	end
+end 
+
+---------------------------------
+-- Register Callbacks
+---------------------------------
+function on_game_start()
+	local ini = ini_file("ai_tweaks\\axr_companions.ltx")
+	Enabled = ini:r_bool_ex("main","enable",false)
+	if not (Enabled) then return end
+	
+	local function actor_on_first_update()
+		activate_hud()
+	end
+	
+	RegisterScriptCallback("npc_on_fighting_actor",on_fighting_actor)
+	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
+	RegisterScriptCallback("squad_on_update",squad_on_update)
+	RegisterScriptCallback("squad_on_npc_death",squad_on_npc_death)
+	RegisterScriptCallback("squad_on_register",squad_on_register)
+	RegisterScriptCallback("squad_on_unregister",squad_on_unregister)
+	RegisterScriptCallback("on_level_changing",on_level_changing)
+	RegisterScriptCallback("actor_on_item_drop",actor_on_item_drop)
+	RegisterScriptCallback("save_state",save_state)
+	RegisterScriptCallback("load_state",load_state)
+	RegisterScriptCallback("on_game_load",on_game_load)
+
+	allow_only_friends_as_companions = ini:r_bool_ex("main","allow_only_friends_as_companions",false)
+	allow_simulation_squads_as_companions = ini:r_bool_ex("main","allow_simulation_squads_as_companions",false)
+	max_actor_squad_size = ini:r_float_ex("main","max_actor_squad_size") or 2
+end
+
+function companion_squad_can_teleport(squad)
+	local id = squad:commander_id()
+	local sim = alife()
+	local se_obj = sim:object(id)
+	if (se_obj) then
+		if (utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_cannot_teleport")) then 
+			return false 
+		end
+	end 
+	
+	if (id) and (sim:has_info(id,"npcx_beh_patrol_mode") or sim:has_info(id,"npcx_beh_wait")) then
+		return false
+	end
+	return true
+end 
+
+-- doesn't include task companions
+function get_companion_count()
+	local count = 0
+	for id,v in pairs(non_task_companions) do
+		count = count + 1
+	end
+	return count
+end
+
+-- includes task companions too
+function list_actor_squad_by_id()
+	local t = {}
+	for id,squad in spairs(companion_squads, function(t,a,b) return a < b end) do 
+		if (squad and squad.commander_id) then
+			if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
+				for k in squad:squad_members() do
+					--printf("member %s",k.id)
+					table.insert(t,k.id)
+				end
+			end
+		end
+	end
+	return t
+end 
+
+function setup_companion_logic(npc,st,loaded,cannot_dismiss)
+	npc:give_info_portion("npcx_is_companion")
+	
+	if (cannot_dismiss or utils.se_obj_load_var(npc:id(),npc:name(),"companion_cannot_dismiss")) then
+		npc:give_info_portion("npcx_beh_cannot_dismiss")
+	end
+		
+	local ltx_name = "scripts\\beh_companion.ltx"
+	local ltx = ini_file(ltx_name)
+	if not (ltx) then 
+		log("ERROR: do not have access to scripts\\beh_companion.ltx! Make sure you installed properly!")
+		return
+	end
+	
+	local id = npc:id()
+	local sim = alife()
+	local se_npc = sim:object(id)
+	local unreg_id = se_npc and se_npc.m_smart_terrain_id
+	if (unreg_id and unreg_id ~= 65535) then
+		local unreg = sim:object(unreg_id)
+		if (unreg) then
+			unreg:unregister_npc(se_npc)
+		end
+	end
+	
+	xr_logic.configure_schemes(npc, ltx, ltx_name, modules.stype_stalker, loaded and st.loaded_section_logic or "logic", "")
+	
+	local section = loaded and st.loaded_active_section or xr_logic.determine_section_to_activate(npc, ltx, "logic", db.actor)
+	xr_logic.activate_by_section(npc, ltx, section, "", loaded)
+	--printf("setup complete")
+end 
+
+function add_to_actor_squad(npc)
+	local id = npc:id()
+	non_task_companions[id] = true
+	utils.se_obj_save_var(id,npc:name(),"companion",true)
+	npc:inactualize_patrol_path()
+	setup_companion_logic(npc,db.storage[id],false)
+end
+
+function remove_from_actor_squad(npc)
+	local squad = get_object_squad(npc)
+	if (squad) then 
+		squad.scripted_target = nil
+		companion_squads[squad.id] = nil
+	end
+	
+	non_task_companions[npc:id()] = nil
+	npc:disable_info_portion("npcx_is_companion")
+	npc:disable_info_portion("npcx_beh_cannot_dismiss")
+	axr_logic.restore_scheme_and_logic(npc)
+	
+	local se_obj = alife_object(npc:id())
+	if not (se_obj) then 
+		return
+	end
+	
+	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion",nil)
+	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss",nil)
+	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_teleport",nil)
+end
+
+function remove_all_from_actor_squad()
+	for id,squad in pairs(companion_squads) do
+		if (squad) then
+			for k in squad:squad_members() do 
+				local se_obj = k.object or alife():object(k.id)
+				if (se_obj) then 
+					squad.scripted_target = nil
+					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion",nil)
+					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss",nil)
+					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_teleport",nil)		
+						
+					local member = db.storage[se_obj.id] and db.storage[se_obj.id].object or level.object_by_id(se_obj.id)
+					if (member) then 
+						member:disable_info_portion("npcx_is_companion")
+						member:disable_info_portion("npcx_beh_cannot_dismiss")
+						axr_logic.restore_scheme_and_logic(member)
+					end
+				end
+			end
+		end
+		companion_squads[id] = nil
+	end
+
+	for id,b in pairs(non_task_companions) do
+		non_task_companions[id] = nil
+	end
+end
+
+function set_companion_allow_teleport(npc)
+	local se_obj = alife_object(npc:id())
+	if not (se_obj) then 
+		return 
+	end
+	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_teleport",nil)
+end 
+
+function set_companion_disable_teleport(npc)
+	local se_obj = alife_object(npc:id())
+	if not (se_obj) then 
+		return 
+	end
+	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_teleport",true)
+end 
+
+function set_companion_to_wait_state(npc)	
+	npc:give_info_portion("npcx_beh_wait")
+	utils.save_var(npc,"fight_from_point",npc:level_vertex_id())
+end
+
+function set_companion_to_follow_state(npc)
+	npc:disable_info_portion("npcx_beh_wait")
+	npc:disable_info_portion("npcx_beh_hide_in_cover")
+	npc:disable_info_portion("npcx_beh_patrol_mode")
+	utils.save_var(npc,"fight_from_point",nil)
+end
+
+function set_companion_to_attack_state(npc)
+	npc:disable_info_portion("npcx_beh_ignore_combat")
+	npc:disable_info_portion("npcx_beh_ignore_actor_enemies")
+end
+
+function set_companion_to_ignore_combat_state(npc)
+	npc:give_info_portion("npcx_beh_ignore_combat")
+	npc:give_info_portion("npcx_beh_ignore_actor_enemies")
+end
+
+function set_companion_to_attack_only_actor_combat_enemy_state(npc)
+	npc:give_info_portion("npcx_beh_ignore_combat")
+	npc:disable_info_portion("npcx_beh_ignore_actor_enemies")
+end
+
+function set_companion_to_stealth_substate(npc)
+	npc:give_info_portion("npcx_beh_substate_stealth")
+end
+
+function set_companion_to_default_substate(npc)
+	npc:disable_info_portion("npcx_beh_substate_stealth")
+	npc:disable_info_portion("npcx_beh_substate_relax")
+end
+
+function switch_companion_distance(npc)
+	if ( npc:has_info("npcx_beh_distance_far") ) then
+		npc:disable_info_portion("npcx_beh_distance_far")
+	else
+		npc:give_info_portion("npcx_beh_distance_far")
+	end
+end
+
+function switch_companion_patrol_mode(npc)
+	if ( npc:has_info("npcx_beh_patrol_mode") ) then
+		npc:disable_info_portion("npcx_beh_patrol_mode")
+	else
+		npc:give_info_portion("npcx_beh_patrol_mode")
+	end
+end
+
+function switch_companion_gather_items(npc)
+	if ( npc:has_info("npcx_beh_gather_items") ) then
+		SetHudMsg(game.translate_string("st_disable_looting"),8)
+		npc:disable_info_portion("npcx_beh_gather_items")
+	else
+		SetHudMsg(game.translate_string("st_enable_looting"),8)
+		npc:give_info_portion("npcx_beh_gather_items")
+	end
+end
+
+function switch_companion_loot_corpses(npc)
+	if ( npc:has_info("npcx_beh_loot_corpses") ) then
+		npc:disable_info_portion("npcx_beh_loot_corpses")
+	else
+		npc:give_info_portion("npcx_beh_loot_corpses")
+	end
+end
+
+function companion_remove_waypoints(npc)
+	npc:disable_info_portion("npcx_beh_patrol_mode")
+	local i = 1
+	local p = utils.se_obj_load_var(npc:id(),npc:name(),"pathpoint"..i)--utils.load_var(npc,"pathpoint"..tostring(i))
+	while p do 
+		utils.se_obj_save_var(npc:id(),npc:name(),"pathpoint"..i,nil)--utils.save_var(npc,"pathpoint"..tostring(i),nil)
+		i = i + 1
+		p = utils.se_obj_load_var(npc:id(),npc:name(),"pathpoint"..i)--utils.load_var(npc,"pathpoint"..tostring(i))
+	end
+end
+
+function companion_add_waypoints(npc,pos)
+	local i = 1
+	local p = utils.se_obj_load_var(npc:id(),npc:name(),"pathpoint"..i)--utils.load_var(npc,"pathpoint"..tostring(i))
+	while p do 
+		i = i + 1
+		p = utils.se_obj_load_var(npc:id(),npc:name(),"pathpoint"..i)--utils.load_var(npc,"pathpoint"..tostring(i))
+	end
+	local pos = db.actor:position()
+	local s = "5000,patrol | pos:"..pos.x..","..pos.y..","..pos.z
+	utils.se_obj_save_var(npc:id(),npc:name(),"pathpoint"..i,s)--utils.save_var(npc,"pathpoint"..tostring(i),s)
+end
+
+function cycle_companions_combat_mode(force_mode)
+	local t = {"set_companion_to_attack_state","set_companion_to_ignore_combat_state","set_companion_to_attack_only_actor_combat_enemy_state"}
+	if (_current_combat_mode+1 > #t) then 
+		_current_combat_mode = 1
+	else 
+		_current_combat_mode = _current_combat_mode + 1
+	end
+	
+	_current_combat_mode = force_mode or _current_combat_mode
+	
+	SetHudMsg(game.translate_string("st_"..t[_current_combat_mode]),8)
+	
+	local f = this[t[_current_combat_mode]]
+	if (f) then 
+		for id,squad in pairs(companion_squads) do 
+			if (squad and squad.commander_id) then
+				if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
+					for k in squad:squad_members() do
+						local member = db.storage[k.id] and db.storage[k.id].object
+						if (member and member:alive()) then
+							f(member)
+						end
+					end
+				end
+			end
+		end
+	end
+end 
+
+function cycle_companions_move_mode(force_mode)
+	local t = {"set_companion_to_wait_state","set_companion_to_follow_state"}
+	
+	if (_current_move_mode+1 > #t) then 
+		_current_move_mode = 1
+	else 
+		_current_move_mode = _current_move_mode + 1
+	end
+	
+	_current_move_mode = force_mode or _current_move_mode
+	
+	SetHudMsg(game.translate_string("st_"..t[_current_move_mode]),8)
+	
+	local f = this[t[_current_move_mode]]
+	if (f) then 
+		for id,squad in pairs(companion_squads) do 
+			if (squad and squad.commander_id) then
+				if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
+					for k in squad:squad_members() do
+						st = db.storage[k.id]
+						if (k.id == squad:commander_id()) then 
+							if (st and st.beh) then 
+								st.beh.rally_lvid = nil
+							end
+						end
+						local member = st and st.object
+						if (member and member:alive()) then
+							f(member)
+						end
+					end
+				end
+			end
+		end
+	end
+end 
+
+function cycle_companions_stealth_mode()
+	for id,squad in pairs(axr_companions.companion_squads) do 
+		if (squad and squad.commander_id) then
+			for k in squad:squad_members() do
+				if not (xrs_kill_wounded.hostage_list[k.id]) then
+					st = db.storage[k.id]
+					local member = st and st.object
+					if (member and member:alive()) then
+						if (_current_stealth_mode) then 
+							member:give_info_portion("npcx_beh_substate_stealth")
+							SetHudMsg(game.translate_string("st_companion_state_stealth_disabled"),8)
+						else 
+							member:disable_info_portion("npcx_beh_substate_stealth")
+							SetHudMsg(game.translate_string("st_companion_state_stealth_enabled"),8)
+						end 
+					end
+				end
+			end
+		end
+	end
+	
+	_current_stealth_mode = not _current_stealth_mode
+end
+
+function get_test_member()
+	for _,squad in pairs(companion_squads) do 
+		if (squad.online) then
+			local id = squad:commander_id()
+			local npc = db.storage[id] and db.storage[id].object 
+			if (npc) then 
+				return npc 
+			end
+		end
+	end
+end
+
+function move_to_point(p)
+	if (p==1) then 
+		SetHudMsg(game.translate_string("st_hold_then_release"),8)
+		_particle_valid = particles_object("_samples_particles_\\flash_light")
+		_particle_invalid = particles_object("_samples_particles_\\flash_light_red")
+	elseif (p==2) then
+		if (_particle_valid) then
+			local r = level.get_target_dist and level.get_target_dist()
+			if (r) then
+				local pos = vector():set(device().cam_pos)
+				pos:add(device().cam_dir:mul(r))
+				
+				local lvid = level.vertex_id(pos)
+				local npc = lvid and lvid < 4294967295 and get_test_member()
+				if (npc and npc:accessible(pos)) then 
+					if (_particle_invalid:playing()) then 
+						_particle_invalid:stop()
+					end
+					_particle_valid:play_at_pos(vector():set(pos.x,pos.y-0.5,pos.z))
+				else 
+					if (_particle_valid:playing()) then
+						_particle_valid:stop()
+					end
+					_particle_invalid:play_at_pos(vector():set(pos.x,pos.y-0.5,pos.z))
+				end
+			end
+		end	
+	else
+		if (_particle_valid:playing()) then
+			_particle_valid:stop()
+		end
+		_particle_valid = nil
+		
+		if (_particle_invalid:playing()) then 
+			_particle_invalid:stop()
+		end 
+		_particle_invalid = nil
+		
+		local r = level.get_target_dist and level.get_target_dist()
+		if (r) then
+			local pos = vector():set(device().cam_pos)
+			pos:add(device().cam_dir:mul(r))
+		
+			local lvid = level.vertex_id(pos)
+				
+			_current_move_mode = 1
+			SetHudMsg(game.translate_string("st_move_to_point"),8)
+			for id,squad in pairs(companion_squads) do 
+				if (squad and squad.commander_id) then
+					if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
+						for k in squad:squad_members() do
+							st = db.storage[k.id]
+							local member = st and st.object
+							if (member and member:alive()) then
+								set_companion_to_follow_state(member)
+								if (lvid and lvid >= 4294967295) then
+									lvid = nil
+								end
+								utils.save_var(member,"fight_from_point",lvid)
+							end
+							if (k.id == squad:commander_id()) then
+								if (st and st.beh) then
+									if (lvid) then 
+										if (lvid >= 4294967295) then
+											lvid = nil
+										end
+										if not (member:accessible(lvid)) then
+											lvid = member:accessible_nearest(level.vertex_position(lvid),vector())
+										end
+									end
+									st.beh.rally_lvid = lvid
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+function set_companion_squad_move_mode(mode,npc,squad)
+	local t = {"set_companion_to_wait_state","set_companion_to_follow_state"}
+	local f = this[t[mode]]
+	if (f) then
+		squad = squad or get_object_squad(npc)
+		if (squad and squad.commander_id) then
+			if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
+				for k in squad:squad_members() do
+					st = db.storage[k.id]
+					if (k.id == squad:commander_id()) then 
+						if (st and st.beh) then 
+							st.beh.rally_lvid = nil
+						end
+					end
+					local member = st and st.object
+					if (member and member:alive()) then
+						f(member)
+					end
+				end
+			end
+		end
+	end
+end
+
+function set_companion_squad_combat_mode(mode,npc,squad)
+	local t = {"set_companion_to_attack_state","set_companion_to_ignore_combat_state","set_companion_to_attack_only_actor_combat_enemy_state"}
+	local f = this[t[mode]]
+	if (f) then 
+		squad = squad or get_object_squad(npc)
+		if (squad and squad.commander_id) then
+			if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
+				for k in squad:squad_members() do
+					local member = db.storage[k.id] and db.storage[k.id].object
+					if (member and member:alive()) then
+						f(member)
+					end
+				end
+			end
+		end
+	end
+end
+
+function set_companion_squad_stealth_mode(mode,npc,squad)
+	squad = squad or get_object_squad(npc)
+	if (squad and squad.commander_id) then
+		if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
+			for k in squad:squad_members() do
+				local member = db.storage[k.id] and db.storage[k.id].object
+				if (member and member:alive()) then
+					if (mode == 1) then
+						member:give_info_portion("npcx_beh_substate_stealth")
+					else 
+						member:disable_info_portion("npcx_beh_substate_stealth")
+					end
+				end
+			end
+		end
+	end
+end
+
+function set_companion_squad_distance_mode(mode,npc,squad)
+	squad = squad or get_object_squad(npc)
+	if (squad and squad.commander_id) then
+		if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
+			for k in squad:squad_members() do
+				local member = db.storage[k.id] and db.storage[k.id].object
+				if (member and member:alive()) then
+					if (mode == 1) then
+						member:give_info_portion("npcx_beh_distance_far")
+					else 
+						member:disable_info_portion("npcx_beh_distance_far")
+					end
+				end
+			end
+		end
+	end
+end
+
+function set_companion_squad_gather_mode(mode,npc,squad)
+	squad = squad or get_object_squad(npc)
+	if (squad and squad.commander_id) then
+		if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
+			for k in squad:squad_members() do
+				local member = db.storage[k.id] and db.storage[k.id].object
+				if (member and member:alive()) then
+					if (mode == 1) then
+						member:give_info_portion("npcx_beh_gather_items")
+					else 
+						member:disable_info_portion("npcx_beh_gather_items")
+					end
+				end
+			end
+		end
+	end
+end
+
+function set_companion_squad_loot_mode(mode,npc,squad)
+	squad = squad or get_object_squad(npc)
+	if (squad and squad.commander_id) then
+		if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
+			for k in squad:squad_members() do
+				local member = db.storage[k.id] and db.storage[k.id].object
+				if (member and member:alive()) then
+					if (mode == 1) then
+						member:give_info_portion("npcx_beh_loot_corpses")
+					else 
+						member:disable_info_portion("npcx_beh_loot_corpses")
+					end
+				end
+			end
+		end
+	end
+end
+
+--------------------------------------------------
+-- Companions List (from Anomaly 1.5.1.2)
+--------------------------------------------------
+HUD = nil
+function activate_hud()
+	RegisterScriptCallback("actor_on_net_destroy",actor_on_net_destroy)
+	RegisterScriptCallback("on_console_execute",on_console_execute)
+	RegisterScriptCallback("GUI_on_show",update_hud)
+	RegisterScriptCallback("GUI_on_hide",update_hud)
+	
+	if HUD == nil then
+		HUD = UICompanionList()
+		get_hud():AddDialogToRender(HUD)
+	end
+end
+
+function deactivate_hud()
+	if HUD ~= nil then
+		get_hud():RemoveDialogToRender(HUD)
+		HUD = nil
+	end
+	
+	UnregisterScriptCallback("actor_on_net_destroy",actor_on_net_destroy)
+	UnregisterScriptCallback("on_console_execute",on_console_execute)
+	UnregisterScriptCallback("GUI_on_show",update_hud)
+	UnregisterScriptCallback("GUI_on_hide",update_hud)
+end
+
+function update_hud()
+	if HUD ~= nil then
+		HUD:Update(true)
+	end
+end
+
+function actor_on_net_destroy()
+	if HUD ~= nil then
+		get_hud():RemoveDialogToRender(HUD)
+		HUD = nil
+	end
+end
+
+function on_console_execute(name)
+	if name == "hud_draw" and HUD then
+		HUD:Update(true)
+	end
+end
+
+---------------------------------------
+class "UICompanionList" (CUIScriptWnd)
+
+function UICompanionList:__init() super()
+	self.companion_info = {}
+	self._tmr 			= time_global()
+	self.update_rate	= 1000 --[ms]
+	self.clr_list = {
+		["def"]     = GetARGB(255,255,255,255),
+		["stalker"] = GetARGB(255,255,255,100),
+		["bandit"]  = GetARGB(255,120,201,79),
+		["ecolog"]  = GetARGB(255,255,128,100),
+		["csky"]    = GetARGB(255,100,200,255),
+		["dolg"]    = GetARGB(255,255,100,100),
+		["freedom"] = GetARGB(255,100,255,100),
+		["killer"]  = GetARGB(255,100,100,255),
+		["army"]    = GetARGB(255,100,128,255),
+		["monolith"]= GetARGB(255,120,201,79),
+	}
+
+	self:InitControls()
+end
+
+function UICompanionList:__finalize()
+end
+
+function UICompanionList:InitControls()
+	local xml = utils_xml.get_hud_xml()
+
+	self.dialog = xml:InitStatic("companion_list", self)
+	--utils_xml.correct_ratio(self.dialog, true)
+	
+	self.companion_info = {}
+	for i=1,8 do
+		self.companion_info[i]                   = {}
+		self.companion_info[i].base              = xml:InitStatic("companion_list:slot", self.dialog)
+		self.companion_info[i].background        = xml:InitStatic("companion_list:slot:background", self.companion_info[i].base)
+		self.companion_info[i].icon        		 = xml:InitStatic("companion_list:slot:icon", self.companion_info[i].base)
+		self.companion_info[i].danger_indicator  = xml:InitStatic("companion_list:slot:danger_indicator", self.companion_info[i].base)
+		self.companion_info[i].team_role_shadow  = xml:InitStatic("companion_list:slot:team_role", self.companion_info[i].base)
+		self.companion_info[i].team_role         = xml:InitStatic("companion_list:slot:team_role", self.companion_info[i].base)
+		self.companion_info[i].distance          = xml:InitTextWnd("companion_list:slot:distance", self.companion_info[i].base)
+		self.companion_info[i].prog_health       = xml:InitProgressBar("companion_list:slot:health", self.companion_info[i].base)
+		
+		for _,ele in pairs(self.companion_info[i]) do
+			utils_xml.correct_ratio(ele)
+		end
+		
+		local h = self.companion_info[i].background:GetHeight()
+		self.companion_info[i].distance:SetFont(GetFontSmall())
+		self.companion_info[i].base:SetWndPos( vector2():set( 0 , (8-i)*(h+10) ) )
+		
+		local pos = self.companion_info[i].team_role:GetWndPos()
+		self.companion_info[i].team_role_shadow:SetWndPos( vector2():set( pos.x + 1 , pos.y + 2 ) )
+		self.companion_info[i].team_role_shadow:SetTextureColor( GetARGB(255, 0, 0, 0) )
+	end
+end
+
+function UICompanionList:Update(force)
+	CUIScriptWnd.Update(self)
+	
+	local tg = time_global()
+	if force then
+		self._tmr = tg - 1
+	end
+	if self._tmr >= tg then
+		return
+	end
+	self._tmr = tg + self.update_rate
+	
+	
+	local to_show = main_hud_shown()
+	local clist = list_actor_squad_by_id()
+	for i=1,8 do
+		local se_obj = clist[i] and alife_object(clist[i])
+		if to_show and (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive()) then
+			local st = db.storage[se_obj.id]
+			local npc = st and st.object
+			local ele = self.companion_info[i]
+			
+			-- Icon
+			local icon_name = npc and npc:character_icon() or se_obj:character_icon()
+			icon_name = icon_name and icon_name ~= "" and icon_name or "ui\\anomaly\\ui_noise"
+			ele.icon:InitTexture(icon_name)
+			
+			-- Distance
+			ele.distance:SetText(string.format("%.2f M", se_obj.position:distance_to(db.actor:position())))
+
+			-- Leader and relation status
+			local squad = se_obj.group_id and se_obj.group_id ~= 65535 and alife_object(se_obj.group_id)
+			if (squad and squad:commander_id() == se_obj.id) then
+				ele.team_role:InitTexture("ui_minimap_squad_leader")
+				ele.team_role_shadow:InitTexture("ui_minimap_squad_leader")
+			else
+				ele.team_role:InitTexture("ui_minimap_point")
+				ele.team_role_shadow:InitTexture("ui_minimap_point")
+			end
+			
+			local community = npc and npc:character_community()
+			local clr = community and self.clr_list[community] or self.clr_list["def"]
+			ele.team_role:SetTextureColor(clr)
+			
+			-- Health
+			if (npc) then 
+				local health = clamp( round_idp(npc.health,1),0,1)
+				ele.prog_health:SetProgressPos( health )
+			end
+			
+			-- Danger state
+			ele.danger_indicator:Show(npc and npc:best_enemy() and true or false)
+			
+			self.companion_info[i].base:Show(true)
+		else 
+			self.companion_info[i].base:Show(false)
+		end
+	end
+end
