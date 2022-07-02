@@ -24,3 +24,4 @@ Using mods:
 16. UI mutant looting CoC 1.4.22 (av661194, Nik71rus)
 17. Full Simulation A-Life (Aktuarus)
 18. Companions can Sprint (Sanctuary/Revo Lucas)
+19. Companions List HUD from Anomaly 1.5.1.2 (Anomaly Developers)
