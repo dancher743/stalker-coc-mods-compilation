@@ -1,4 +1,5 @@
 <w>
+<!--     From Anomaly 1.5.1.2     -->
     <file name="ui\anomaly\ui_actor_hint_wnd">
 		<texture id="ui_inGame2_companion_hud_slot" x="0" y="829" width="90" height="67" />
 		<texture id="ui_inGame2_companion_health_bar" x="0" y="820" width="80" height="5" />
