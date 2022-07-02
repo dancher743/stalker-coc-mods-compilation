@@ -1705,3 +1705,17 @@ end
 function ini_file_ex:r_float_ex(s,k)
 	return self.ini:section_exist(s) and self.ini:line_exist(s,k) and tonumber(self.ini:r_string(s,k)) or nil
 end
+
+-------------------------------------------------------------------------------------------------------
+-- 											MATHEMATICAL
+--										from Anomaly 1.5.1.2
+-------------------------------------------------------------------------------------------------------
+
+function round_idp(num, idp)
+  local mult = 10^(idp or 0)
+  return math.floor(num * mult + 0.5) / mult
+end
+
+function clamp(val, min, max)
+	return (val < min and min) or (val > max and max) or val
+end

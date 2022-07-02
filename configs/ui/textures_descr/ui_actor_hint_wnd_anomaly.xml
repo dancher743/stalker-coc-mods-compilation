@@ -1,0 +1,7 @@
+<w>
+    <file name="ui\ui_actor_hint_wnd_anomaly">
+		<texture id="ui_inGame2_companion_hud_slot" x="0" y="829" width="90" height="67" />
+		<texture id="ui_inGame2_companion_health_bar" x="0" y="820" width="80" height="5" />
+		<texture id="ui_inGame2_companion_danger_indicator" x="91" y="834" width="80" height="57" />
+	</file>
+</w>
