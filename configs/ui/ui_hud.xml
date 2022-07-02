@@ -1,15 +1,5 @@
 <w>
-	<indicators x="160" y="726" width="480" height="40" stretch="1"> 
-		<static x="0" y="0" width="40" height="40" stretch="1"/>
-		<flashing x="0" y="0" width="40" height="40" stretch="1" light_anim="ui_slow_blinking_alpha"/>
-	</indicators>
-	
-	<belt x="900" y="734" width="155" height="25" stretch="1">
-		<slot x="0" y="0" width="25" height="25" stretch="1">
-			<texture>ui_hud_icon_artefact</texture>
-		</slot>
-    </belt>
-	
+<!--     From Anomaly 1.5.1.2     -->
 	<companion_list x="949" y="47" width="90" height="606" stretch="1">
 		<slot x="0" y="0" width="90" height="67" stretch="1">
 			<background x="0" y="0" width="90" height="67" stretch="1">
