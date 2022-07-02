@@ -833,7 +833,7 @@ function UICompanionList:Update(force)
 	self._tmr = tg + self.update_rate
 	
 	
-	local to_show = get_console_cmd(1,"hud_draw")
+	local to_show = main_hud_shown()
 	local clist = list_actor_squad_by_id()
 	for i=1,8 do
 		local se_obj = clist[i] and alife_object(clist[i])

@@ -1735,3 +1735,13 @@ function get_console_cmd(typ, name)
 	end
 	return get_console():get_token(name)
 end
+
+function main_hud_shown()
+	if get_console_cmd(1,"hud_draw") 
+	and (not axr_main.weapon_is_zoomed) 
+	and (not db.actor:is_talking()) 
+	then
+		return true
+	end
+	return false
+end
