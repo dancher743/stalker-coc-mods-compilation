@@ -1707,8 +1707,7 @@ function ini_file_ex:r_float_ex(s,k)
 end
 
 -------------------------------------------------------------------------------------------------------
--- 											MATHEMATICAL
---										from Anomaly 1.5.1.2
+-- 											From Anomaly 1.5.1.2	
 -------------------------------------------------------------------------------------------------------
 
 function round_idp(num, idp)
@@ -1718,4 +1717,21 @@ end
 
 function clamp(val, min, max)
 	return (val < min and min) or (val > max and max) or val
+end
+
+function get_console_cmd(typ, name)
+	if (type(name) ~= "string") then
+		callstack()
+		printe("!ERROR exec_console_cmd | missing command")
+		return
+	end
+	
+	if typ == 0 then
+		return get_console():get_string(name)
+	elseif typ == 1 then
+		return get_console():get_bool(name)
+	elseif typ == 2 then
+		return get_console():get_float(name)
+	end
+	return get_console():get_token(name)
 end
