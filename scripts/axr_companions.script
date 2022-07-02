@@ -148,6 +148,10 @@ local function on_game_load()
 		c_idx = c_idx + 1
 		cid = alun_utils.load_var(db.actor,"companion_"..c_idx)
 	end
+end
+
+local function opt_menu_on_init(menu)
+	menu.gameplay_options["companions_hud"] = {default=true, debug_only=false, typ="check"}
 end 
 
 ---------------------------------
@@ -162,6 +166,7 @@ function on_game_start()
 		activate_hud()
 	end
 	
+	RegisterScriptCallback("opt_menu_on_init",opt_menu_on_init)
 	RegisterScriptCallback("npc_on_fighting_actor",on_fighting_actor)
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
 	RegisterScriptCallback("squad_on_update",squad_on_update)
@@ -832,12 +837,12 @@ function UICompanionList:Update(force)
 	end
 	self._tmr = tg + self.update_rate
 	
-	
-	local to_show = main_hud_shown()
+	local companions_hud = axr_main.config:r_bool_ex("mm_options","enable_companions_hud",true)
+	local to_show = main_hud_shown() 
 	local clist = list_actor_squad_by_id()
 	for i=1,8 do
 		local se_obj = clist[i] and alife_object(clist[i])
-		if to_show and (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive()) then
+		if companions_hud and to_show and (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive()) then
 			local st = db.storage[se_obj.id]
 			local npc = st and st.object
 			local ele = self.companion_info[i]
