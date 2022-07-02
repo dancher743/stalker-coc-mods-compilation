@@ -768,7 +768,7 @@ class "UICompanionList" (CUIScriptWnd)
 function UICompanionList:__init() super()
 	self.companion_info = {}
 	self._tmr 			= time_global()
-	self.update_rate	= 2000 --[ms]
+	self.update_rate	= 1000 --[ms]
 	self.clr_list = {
 		["def"]     = GetARGB(255,255,255,255),
 		["stalker"] = GetARGB(255,255,255,100),
