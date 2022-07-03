@@ -25,3 +25,4 @@ Using mods:
 17. Full Simulation A-Life (Aktuarus)
 18. Companions can Sprint (Sanctuary/Revo Lucas)
 19. Companions List HUD from Anomaly 1.5.1.2 (Anomaly Developers)
+20. Faster Tooltips (vkronizer)	
