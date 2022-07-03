@@ -189,25 +189,25 @@
 		</properties>
 	</upgrade_info>
 
-	<cell_item_text x="-1" y="-1" width="17" height="11" stretch="1">
+	<cell_item_text x="1" y="1" width="23" height="16" stretch="1">
 		<texture a="200">ui_item_count_back</texture>
-		<text x="0" y="0" width="17" height="11" font="arial_14" color="ui_2" align="c" vert_align="c"/>
+		<text x="0" y="0" width="29" height="16" font="letterica16" color="ui_2" align="c" vert_align="c"/>
 	</cell_item_text>
 
-	<cell_item_mark x="-1" y="-1" width="9" height="11" stretch="1">
+	<cell_item_mark x="1" y="1" width="12" height="15" stretch="1">
 		<texture a="130">ui_icons_newPDA_perssign_h</texture>
 	</cell_item_mark>
 
-	<cell_item_upgrade x="0" y="0" width="10" height="12" stretch="1">
+	<cell_item_upgrade x="1" y="1" width="13" height="16" stretch="1">
 		<texture a="180">ui_upgrade_arrow2</texture>
 	</cell_item_upgrade>
 
-    <condition_progess_bar x="-1" y="0" width="20" height="3" horz="1" min="0" max="1" pos="1" stretch="1">
-	    <background x="0" y="0" width="22" height="3" stretch="1">
-            <texture r="62" g="74" b="74">ui_inGame2_inventory_item_status_bar</texture>
+    <condition_progess_bar x="1" y="1" width="30" height="5" horz="1" min="0" max="1" pos="1">
+	    <background x="0" y="0" width="30" height="5">
+            <texture r="62" g="74" b="74">ui_inGame2_inventory_item_status_bar_16</texture>
 	    </background>
-        <progress stretch="1">
-            <texture r="142" g="149" b="149">ui_inGame2_inventory_item_status_bar</texture>
+        <progress>
+            <texture r="142" g="149" b="149">ui_inGame2_inventory_item_status_bar_16</texture>
         </progress>
 		<min_color r="196" g="18" b="18"/>
 		<middle_color r="255" g="255" b="118"/>
