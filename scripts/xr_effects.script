@@ -178,7 +178,7 @@ function on_init_bounty_hunt(actor,npc,p)
 		local se_obj = sim:object(target_id)
 		if (se_obj) then
 			local news_caption = game.translate_string(task_manager.task_ini:r_string_ex(p[1], "title")) or "error"
-			local news_text = game.translate_string("st_mm_faction_cap_character_name") .. " " .. se_obj:character_name() .. "\\n " .. game.translate_string("st_mm_faction_cap_faction") .. " " .. se_obj:community()
+			local news_text = game.translate_string("st_mm_faction_cap_character_name") .. " " .. se_obj:character_name() .. "\\n " .. game.translate_string("st_mm_faction_cap_faction") .. ": " .. game.translate_string(se_obj:community())
 			db.actor:give_talk_message2(news_caption, news_text, se_obj:character_icon(), "iconed_answer_item")
 		end
 		return true
