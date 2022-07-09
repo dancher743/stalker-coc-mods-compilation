@@ -26,3 +26,4 @@ Using mods:
 18. Companions can Sprint (Sanctuary/Revo Lucas)
 19. Companions List HUD from Anomaly 1.5.1.2 (Anomaly Developers)
 20. A few 1.5 small fixes for 1.4.22 (nb79)
+21. Fix emission and psy storm CoC 1.4.22 (av661194)
