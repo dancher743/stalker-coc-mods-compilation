@@ -29,3 +29,4 @@ Using mods:
 21. Fix emission and psy storm CoC 1.4.22 (av661194)
 22. Fix buggy guard in the Rookie Village (av661194)
 23. Return sounds of the death (av661194)
+24. Ignite or Extinguish Campfires [1.4.22] (Alundaio)
