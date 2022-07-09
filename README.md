@@ -30,3 +30,4 @@ Using mods:
 22. Fix buggy guard in the Rookie Village (av661194)
 23. Return sounds of the death (av661194)
 24. Ignite or Extinguish Campfires [1.4.22] (Alundaio)
+25. Jobs guide [Update4.2][1.4.22] (SadBlackFox)
