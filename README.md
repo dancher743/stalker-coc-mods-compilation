@@ -32,3 +32,4 @@ Using mods:
 24. Ignite or Extinguish Campfires [1.4.22] (Alundaio)
 25. Jobs guide [Update4.2][1.4.22] (SadBlackFox)
 26. Changes of Chernobyl (selectively) (Xynta2137)
+27. Friendly Factions Mod v1.1 (Slightly Friendly pack) (LostToTheZone)
