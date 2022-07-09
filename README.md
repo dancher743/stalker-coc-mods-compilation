@@ -31,4 +31,4 @@ Using mods:
 23. Return sounds of the death (av661194)
 24. Ignite or Extinguish Campfires [1.4.22] (Alundaio)
 25. Jobs guide [Update4.2][1.4.22] (SadBlackFox)
-26. Changes of Chernobyl (Xynta2137)
+26. Changes of Chernobyl (selectively) (Xynta2137)
