@@ -57,4 +57,7 @@
 	<string id="st_jg_19">
 		<text>Size way(Include the start and end level): </text>
 	</string>
+	<string id="st_travel_guide">
+        <text>You can't travel as a guide</text>
+    </string>
 </string_table>

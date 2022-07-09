@@ -202,3 +202,9 @@ end
 function get_phrase3()
 	return string.format(game.translate_string('st_jg_18'), curr_guid['neustoika'])
 end
+
+--///////////////////////////////// Вспомогательные функции
+
+function is_started()
+	return db.actor:has_info('guider_start')
+end
