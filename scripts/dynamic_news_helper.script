@@ -194,6 +194,7 @@ local all_points = {
 		[20] = { 429.9237, 20.2642, -182.6681}, --Preobrazhensky bridge
 		[21] = { 77.0241, 39.0102, -478.4914}, --the southern plateau
 		[22] = { -135.3534, 24.5687, -412.9718} --the workshop substation
+	}
 }
 
 local profiles_faction = {
