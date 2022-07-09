@@ -28,3 +28,4 @@ Using mods:
 20. A few 1.5 small fixes for 1.4.22 (nb79)
 21. Fix emission and psy storm CoC 1.4.22 (av661194)
 22. Fix buggy guard in the Rookie Village (av661194)
+23. Return sounds of the death (av661194)
