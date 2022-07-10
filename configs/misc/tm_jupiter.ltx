@@ -27,7 +27,7 @@ task_complete_descr = jup_b6_scientist_tech_task_finish
 on_init = %=setup_companion_task(ecolog_companion_task_2:jup_b41) =setup_task_target_anomaly -ecolog_companion_task_2_started -ecolog_companion_task_2_force_started%
 precondition = {!squad_exist(ecolog_companion_task_1) !squad_exist(ecolog_companion_task_2)} true, false
 repeat_timeout = 86400
-on_complete = %=complete_task_inc_goodwill(200:ecolog:csky) =remove_special_task_squad(ecolog_companion_task_2) =reward_stash(true) =reset_task_target_anomaly =reward_random_item(af_fire:af_eye:af_fireball:af_blood:af_cristall:detector_elite)%
+on_complete = %=complete_task_inc_goodwill(50:ecolog:csky) =remove_special_task_squad(ecolog_companion_task_2) =reward_stash(true) =reset_task_target_anomaly =reward_random_item(af_fire:af_eye:af_fireball:af_blood:af_cristall:detector_scientific)%
 on_fail = %=fail_task_dec_goodwill(25:ecolog:csky) =remove_special_task_squad(ecolog_companion_task_2) =reset_task_target_anomaly%
 on_cancel = %=remove_special_task_squad(ecolog_companion_task_2) =reset_task_target_anomaly%
 condlist_0 = {!squad_exist(ecolog_companion_task_2)} fail
@@ -52,8 +52,8 @@ status_functor = actor_has_fetch_item
 target_functor = general_fetch_task
 task_complete_descr = jup_b6_scientist_tech_task_2_fetch_finish
 ; precondition = true
-repeat_timeout = 86400
-on_complete = %=complete_task_inc_goodwill(100:ecolog:csky) =reward_stash(true) =remove_fetch_item(jup_b6_scientist_tech_task_2_fetch) =inc_task_stage(jup_b6_scientist_tech_task_2) =reward_random_item(ecolog_outfit_orange:ecolog_outfit_green:detector_elite)%
+repeat_timeout = 604800
+on_complete = %=complete_task_inc_goodwill(50:ecolog:csky) =reward_stash(true) =remove_fetch_item(jup_b6_scientist_tech_task_2_fetch) =inc_task_stage(jup_b6_scientist_tech_task_2) =reward_random_item(scientific_outfit:ecolog_outfit_orange:ecolog_outfit_green:detector_scientific)%
 on_fail = %=fail_task_dec_goodwill(25:ecolog:csky)%
 
 ;--------------------------------------------------------------------------------------------------
@@ -74,7 +74,7 @@ stage_complete = 1
 on_init = %=find_smart_under_faction_control(jup_b220_trapper_task_1_id:monster)%
 precondition = {=all_avail_smart_stayed_squad_count_ge_by_faction(1:nil:false:monster)} true, false
 repeat_timeout = 86400
-on_complete = %=inc_task_stage(jup_b220_trapper_task_1) =complete_task_inc_goodwill(50:stalker) =reward_random_money(1000:3500) =reward_stash(true) =pstor_reset(jup_b220_trapper_task_1_id) =pstor_reset(jup_b220_trapper_task_1_target_id)%
+on_complete = %=inc_task_stage(jup_b220_trapper_task_1) =complete_task_inc_goodwill(50:stalker) =reward_random_money(3000:5500) =reward_stash(true) =pstor_reset(jup_b220_trapper_task_1_id) =pstor_reset(jup_b220_trapper_task_1_target_id)%
 on_fail = %=pstor_reset(jup_b220_trapper_task_1_id) =pstor_reset(jup_b220_trapper_task_1_target_id)%
 on_cancel = %=pstor_reset(jup_b220_trapper_task_1_id) =pstor_reset(jup_b220_trapper_task_1_target_id)%
 
@@ -94,8 +94,8 @@ repeat_timeout = 86400
 status_functor = bounty_task
 target_functor = general_bounty_task
 stage_complete = 1
-on_init = %=on_init_bounty_hunt(jup_b220_trapper_task_2:bandit:killer:army)%
-on_complete = %=reward_random_money(4500:7000) =reward_stash(true) =inc_task_stage(jup_b220_trapper_task_2) =complete_task_inc_goodwill(150:stalker)%
+on_job_descr = %=on_init_bounty_hunt(jup_b220_trapper_task_2:bandit:killer:army)%
+on_complete = %=reward_random_money(5000:7500) =reward_stash(true) =inc_task_stage(jup_b220_trapper_task_2) =complete_task_inc_goodwill(50:stalker)%
 
 
 ;--------------------------------------------------------------------------------------------------
@@ -118,7 +118,7 @@ target_functor = general_fetch_task
 task_complete_descr = jup_b220_trapper_task_3_fetch_finish
 ; precondition = {=random_chance(60)} true, false
 repeat_timeout = 86400
-on_complete = %=complete_task_inc_goodwill(100:stalker) =reward_stash(true) =reward_item_cost_mult_and_remove(jup_b220_trapper_task_3_fetch:1.7) =inc_task_stage(jup_b220_trapper_task_3)%
+on_complete = %=complete_task_inc_goodwill(50:stalker) =reward_stash(true) =reward_item_cost_mult_and_remove(jup_b220_trapper_task_3_fetch:2.5) =inc_task_stage(jup_b220_trapper_task_3)%
 on_fail = %=fail_task_dec_goodwill(25:stalker)%
 
 
@@ -142,7 +142,7 @@ repeat_timeout = 86400
 status_functor = actor_has_fetch_item
 target_functor = general_fetch_task
 task_complete_descr = jup_b220_trapper_task_4_fetch_finish
-on_complete = %=complete_task_inc_goodwill(100:stalker) =reward_random_money(2500:4500) =reward_stash(true) =remove_fetch_item(jup_b220_trapper_task_4_fetch) =inc_task_stage(jup_b220_trapper_task_4)%
+on_complete = %=complete_task_inc_goodwill(50:stalker) =reward_random_money(5000:7000) =reward_stash(true) =remove_fetch_item(jup_b220_trapper_task_4_fetch) =inc_task_stage(jup_b220_trapper_task_4)%
 
 
 ;--------------------------------------------------------------------------------------------------
@@ -163,7 +163,7 @@ stage_complete = 1
 status_functor = actor_has_fetch_item
 target_functor = general_fetch_task
 task_complete_descr = jup_b217_stalker_tech_task_1_fetch_finish
-on_complete = %+jup_b217_stalker_tech_upgrade_tier_1 =complete_task_inc_goodwill(250:dolg) =reward_money(1000) =remove_fetch_item(jup_b217_stalker_tech_task_1_fetch) =inc_task_stage(jup_b217_stalker_tech_task_1)%
+on_complete = %+jup_b217_stalker_tech_upgrade_tier_1 =complete_task_inc_goodwill(50:dolg) =reward_money(1000) =remove_fetch_item(jup_b217_stalker_tech_task_1_fetch) =inc_task_stage(jup_b217_stalker_tech_task_1)%
 precondition = {-jup_b217_stalker_tech_upgrade_tier_1} true, false
 
 
@@ -185,7 +185,7 @@ stage_complete = 1
 status_functor = actor_has_fetch_item
 target_functor = general_fetch_task
 task_complete_descr = jup_b217_stalker_tech_task_2_fetch_finish
-on_complete = %+jup_b217_stalker_tech_upgrade_tier_2 =complete_task_inc_goodwill(250:dolg) =reward_money(1000) =remove_fetch_item(jup_b217_stalker_tech_task_2_fetch) =inc_task_stage(jup_b217_stalker_tech_task_2)%
+on_complete = %+jup_b217_stalker_tech_upgrade_tier_2 =complete_task_inc_goodwill(50:dolg) =reward_money(1000) =remove_fetch_item(jup_b217_stalker_tech_task_2_fetch) =inc_task_stage(jup_b217_stalker_tech_task_2)%
 precondition = {+jup_b217_stalker_tech_upgrade_tier_1 -jup_b217_stalker_tech_upgrade_tier_2} true, false
 
 
@@ -207,5 +207,5 @@ stage_complete = 1
 status_functor = actor_has_fetch_item
 target_functor = general_fetch_task
 task_complete_descr = jup_b217_stalker_tech_task_3_fetch_finish
-on_complete = %+jup_b217_stalker_tech_upgrade_tier_3 =complete_task_inc_goodwill(250:dolg) =reward_money(1000) =remove_fetch_item(jup_b217_stalker_tech_task_3_fetch) =inc_task_stage(jup_b217_stalker_tech_task_3)%
+on_complete = %+jup_b217_stalker_tech_upgrade_tier_3 =complete_task_inc_goodwill(50:dolg) =reward_money(1000) =remove_fetch_item(jup_b217_stalker_tech_task_3_fetch) =inc_task_stage(jup_b217_stalker_tech_task_3)%
 precondition = {+jup_b217_stalker_tech_upgrade_tier_2 -jup_b217_stalker_tech_upgrade_tier_3} true, false
