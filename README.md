@@ -32,5 +32,4 @@ Using mods:
 24. Ignite or Extinguish Campfires [1.4.22] (Alundaio)
 25. Jobs guide [Update4.2][1.4.22] (SadBlackFox)
 26. Changes of Chernobyl (selectively) (Xynta2137)
-27. High rank and high/low reputation pay off [1.4.16] (PaterBrown87)
-28. Sound Restoration 3.2 (Balathruin)
+27. Sound Restoration 3.2 (Balathruin)
