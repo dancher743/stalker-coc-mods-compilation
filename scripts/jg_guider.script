@@ -7,6 +7,9 @@ local guid = {}
 local curr_guid = {}
 debug = false
 
+local beep_1 = sound_object([[device\pda\pda_beep_1]])
+local beep_2 = sound_object([[device\pda\pda_beep_2]])
+
 function load_state()
 	guid = jg_utils.l_v("guid", {})
 	curr_guid = jg_utils.l_v("curr_guid", {})
@@ -79,7 +82,10 @@ function prepare_follower()
 	guid.timer			= 2*(size + math.random(0, size))
 	guid.zarplata		= 2*(math.ceil(size * math.random(stdzarplata * 0.5, stdzarplata * 1.5)))
 	guid.neustoika		= math.ceil(math.random(guid.zarplata * 0.5, guid.zarplata * 1.5))
-	news_manager.send_tip(db.actor, string.format(game.translate_string('st_jg_14'), game.translate_string(level_name), dynamic_news_helper.GetPointDescription(npc), npc:character_name()), nil, nil, 15000)
+	
+	local news_text = string.format(game.translate_string('st_jg_14'), game.translate_string(level_name), dynamic_news_helper.GetPointDescription(npc))
+	send_tip(npc, news_text, beep_1)
+	
 	return
 	-- Запускаем таймер следующего вызова этой функции
 	jg_timers.g_start_timer('guid_msg',0,math.random(6),0,'jg_guider','prepare_follower')
@@ -104,7 +110,10 @@ end
 
 function fail_time()
 	local npc = level.object_by_id(get_comm_id(curr_guid['squad_id']))
-	news_manager.send_tip(db.actor, string.format(game.translate_string('st_jg_15'), curr_guid['neustoika'], npc and npc:character_name() or ''))
+	if npc then
+		local news_text = string.format(game.translate_string('st_jg_15'), curr_guid['neustoika'])
+		send_tip(npc, news_text, beep_2)
+	end
 	fail()
 end
 
@@ -207,4 +216,11 @@ end
 
 function is_started()
 	return db.actor:has_info('guider_start')
+end
+
+function send_tip(npc, news_text, news_sound)
+	local news_caption = strformat("%s, %s", npc:character_name(), game.translate_string(npc:character_community()))
+	local news_icon = npc:character_icon()
+	db.actor:give_game_news(news_caption, news_text, news_icon, 0, 15000)
+	news_sound:play(db.actor,0,sound_object.s2d)
 end

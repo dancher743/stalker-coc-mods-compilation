@@ -553,44 +553,6 @@ local tips_icons = {
 	default		="ui_iconsTotal_grouping"
 }
 
-function send_tip(msg, header, timeout, showtime, sender, sound,icon_by)
-	if not (msg and db.actor) then 
-		return false
-	end
-	
-	msg = "%c[default]" .. game.translate_string(msg)
-	header = header or game.translate_string("st_tip")
-	timeout = timeout or 0 
-	showtime = showtime or 7
-	sender = sender or "default"
-
-	if sound =="news" then
-		player = sound_object([[device\pda\pda_tip]])
-	elseif sound == "danger" then
-		player = sound_object([[device\pda\pda_alarm]])
-	elseif sound == nil then
-		player = sound_object([[device\pda\pda_tip]])
-	end
-  
-	player:play(db.actor,timeout,sound_object.s2d)
-  
-	if icon_by=="gr" then
-		ui_sender = tips_icons[sender]
-	elseif  icon_by=="npc" then
-		ui_sender = sender
-	elseif icon_by==nil then
-		ui_sender = tips_icons[sender]
-	end
-  
-	if not (ui_sender) then
-		return false 
-	end
-
-	db.actor:give_game_news(header, msg, ui_sender, timeout*1000, showtime*1000)
-
-	return true
-end
-
 function GetTimeString(TimeDiffHrs,AccuracyTier) -- convert the difference between current and event time into a proper string - INPUT: time difference (hours), Accuracy Tier (1 to 6) - OUTPUT: string
 	-- Preparing variables
 	if TimeDiffHrs <= 1 then return false end
