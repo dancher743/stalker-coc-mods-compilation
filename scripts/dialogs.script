@@ -1,3 +1,1551 @@
+-- ============================================================
+--
+-- Script Functions for Task Dialogs  (dialogs.script)
+--	CoC 1.4.22 - DoctorX Questlines 1.24
+--
+--	Modified by: DoctorX, av661194
+--	Last revised: February 16, 2017
+--
+-- ============================================================
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- last_task_id global var
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Global var to store last available task id
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 10, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Global var to store last available task id:
+last_task_id = nil
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_dont_has_npc_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Determines whether or not the player already has a task from the current NPC
+--
+--	Usage:
+--		drx_sl_dont_has_npc_task( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: bool):
+--		Returns true if the player does not have a task from the NPC, false otherwise
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Determine if actor has npc task:
+function drx_sl_dont_has_npc_task( a, b )
+
+	local npc = who_is_npc(a, b)
+	local se_obj = npc and alife( ):object( npc:id( ) )
+	local giver_id = se_obj and (se_obj.group_id ~= 65535 and se_obj.group_id or se_obj.id)
+	if not ( giver_id ) then
+		return false
+	end
+	if ( alun_utils.load_var( db.actor, ("drx_sl_task_giver_" .. giver_id), 0 ) > 0 ) then
+		return false
+	end
+
+	return true
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_actor_not_same_faction function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Determines whether or not the player is the same faction as the current NPC
+--
+--	Usage:
+--		drx_sl_actor_not_same_faction( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: bool):
+--		Returns true if the player is not the same faction as the NPC, false otherwise
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Determine if actor is same faction as npc:
+function drx_sl_actor_not_same_faction( a, b )
+
+	-- Get npc faction:
+	local npc = who_is_npc( a, b )
+	local npc_faction = character_community( npc )
+	local start, finish = string.find( npc_faction, "actor_" )
+	if ( finish ) then
+		npc_faction = string.sub( npc_faction, (finish + 1) )
+	end
+
+	-- Special check for Sidorovich:
+	if ( npc_faction == "monster" ) then
+		npc_faction = "stalker"
+	end
+
+	-- Get player faction:
+	local actor_faction = character_community( db.actor )
+	local start, finish = string.find( actor_faction, "actor_" )
+	if ( finish ) then
+		actor_faction = string.sub( actor_faction, (finish + 1) )
+	end
+
+	-- Check if factions are same:
+	if ( actor_faction == npc_faction ) then
+		return false
+	else
+		return true
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_actor_has_finished_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Determines whether or not the player has a storyline task that is finished
+--
+--	Usage:
+--		drx_sl_actor_has_finished_task( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: bool):
+--		Returns true if the player has a storyline task that is finished, false otherwise
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Determine if actor has completed current storyline task:
+function drx_sl_actor_has_finished_task( a, b )
+
+	local npc = who_is_npc( a, b )
+
+	local task = axr_task_manager and axr_task_manager.drx_sl_get_finished_task( npc )
+	if ( task == nil ) then
+		return false
+	end
+
+	return true
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_actor_has_finished_cf_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Determines whether or not the player has a change factions task that is finished
+--
+--	Usage:
+--		drx_sl_actor_has_finished_cf_task( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: bool):
+--		Returns true if the player has a storyline task that is finished, false otherwise
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Determine if actor has completed change factions task:
+function drx_sl_actor_has_finished_cf_task( a, b )
+
+	local npc = who_is_npc( a, b )
+
+	local task = axr_task_manager and axr_task_manager.drx_sl_get_finished_cf_task( npc )
+	if ( task == nil ) then
+		return false
+	end
+
+	return true
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_is_endgame function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Determines whether or not the player is at the the end of the questline
+--
+--	Usage:
+--		drx_sl_is_endgame( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: bool):
+--		Returns true if the player is at the end of the game, false otherwise
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Determine if end game task has been reached or should be given:
+function drx_sl_is_endgame( a, b )
+
+	if ( (alun_utils.load_var( db.actor, "drx_sl_current_task_number", 1 ) >= alun_utils.load_var( db.actor, "drx_sl_total_task_number", 1 )) and (has_alife_info( "bar_deactivate_radar_done" )) ) then
+		return true
+	end
+
+	return false
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_is_not_endgame function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Determines whether or not the player is at the the end of the questline
+--
+--	Usage:
+--		drx_sl_is_not_endgame( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: bool):
+--		Returns false if the player is at the end of the game, true otherwise
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Determine if end game task has been reached or should be given:
+function drx_sl_is_not_endgame( a, b )
+	return not drx_sl_is_endgame( )
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_text_honcho_has_storyline_task_to_give function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Initiates storyline task
+--
+--	Usage:
+--		drx_sl_text_honcho_has_storyline_task_to_give( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: string):
+--
+--
+--	Notes:
+--		-
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Initiate storyline task:
+function drx_sl_text_honcho_has_storyline_task_to_give( a, b )
+
+	local npc = who_is_npc( a, b )
+	local task_section = axr_task_manager and axr_task_manager.drx_sl_generate_random_sl_task( npc )
+	last_task_id = task_section
+	return game.translate_string( task_section and axr_task_manager.get_task_job_description( task_section ) or "st_no_available_task" )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_text_mechanic_has_ordered_task_to_give function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Initiates mechanic task
+--
+--	Usage:
+--		drx_sl_text_mechanic_has_ordered_task_to_give( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: string):
+--
+--
+--	Notes:
+--		-
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Initiate mechanic task:
+function drx_sl_text_mechanic_has_ordered_task_to_give( a, b )
+
+	local npc = who_is_npc( a, b )
+	local task_section = axr_task_manager and axr_task_manager.drx_sl_get_mechanic_task( npc )
+	last_task_id = task_section
+	return game.translate_string( task_section and axr_task_manager.get_task_job_description( task_section ) or "st_no_available_task" )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_text_npc_has_change_factions_task_to_give function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Initiates a change factions task
+--
+--	Usage:
+--		drx_sl_text_npc_has_change_factions_task_to_give( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: string):
+--
+--
+--	Notes:
+--		-
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Initiate a change factions task:
+function drx_sl_text_npc_has_change_factions_task_to_give( a, b )
+
+	local npc = who_is_npc( a, b )
+	local task_section = axr_task_manager and axr_task_manager.drx_sl_generate_change_factions_task( npc )
+	last_task_id = task_section
+	return game.translate_string( task_section and axr_task_manager.get_task_job_description( task_section ) or "st_no_available_task" )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_text_fetch_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Text for storyline fetch task
+--
+--	Usage:
+--		drx_sl_text_fetch_task( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: string):
+--
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Fetch storyline task text:
+function drx_sl_text_fetch_task( a, b )
+
+	axr_task_manager.trigger_fetch_func( last_task_id )
+
+	local text = game.translate_string( last_task_id and axr_task_manager.get_fetch_task_description( last_task_id ) or "st_about_fetch_task_default" )
+
+	return string.format( text, _FETCH_TEXT or "" ) or ""
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_text_task_finish function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Text for end of storyline task
+--
+--	Usage:
+--		drx_sl_text_task_finish( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: string):
+--
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- End of storyline task text:
+function drx_sl_text_task_finish( a, b )
+
+	local npc = who_is_npc( a, b )
+
+	local task_section = axr_task_manager and axr_task_manager.drx_sl_get_finished_task( npc )
+	return game.translate_string( task_section and axr_task_manager.get_task_complete_text( task_section ) or ("st_default_task_finished_" .. math.random( 1, 3 )) )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_text_cf_task_finish function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Text for end of change factions task
+--
+--	Usage:
+--		drx_sl_text_cf_task_finish( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: string):
+--
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- End of change factions task text:
+function drx_sl_text_cf_task_finish( a, b )
+
+	local npc = who_is_npc( a, b )
+
+	local task_section = axr_task_manager and axr_task_manager.drx_sl_get_finished_cf_task( npc )
+	return game.translate_string( task_section and axr_task_manager.get_task_complete_text( task_section ) or ("st_default_task_finished_" .. math.random( 1, 3 )) )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_text_end_game function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Text for end of game task
+--
+--	Usage:
+--		drx_sl_text_end_game( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: string):
+--
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- End of game text:
+function drx_sl_text_end_game( a, b )
+
+	local npc = who_is_npc( a, b )
+
+	local text_list = {}
+	local i = 1
+	while ( true ) do
+		local text_id = (alun_utils.load_var( db.actor, "drx_sl_start_task", "" ) .. "_endgame_" .. i)
+		local end_game_text = game.translate_string( text_id )
+		if ( end_game_text and end_game_text ~= "" and end_game_text ~= ("_endgame_" .. i) and end_game_text ~= text_id ) then
+			table.insert( text_list, end_game_text )
+		else
+			break
+		end
+		i = (i + 1)
+	end
+
+	if ( #text_list < 1 ) then
+		return game.translate_string( "drx_sl_default_endgame" )
+	end
+
+	return text_list[math.random( 1, #text_list )]
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_set_finished_task_complete function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Sets the current storyline task to complete
+--
+--	Usage:
+--		drx_sl_set_finished_task_complete( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Set current storyline task to complete:
+function drx_sl_set_finished_task_complete( a, b )
+
+	-- Set current task to complete:
+	local npc = who_is_npc( a, b )
+	axr_task_manager.drx_sl_set_finished_task_complete( npc )
+
+	-- Give actor meet next honcho task:
+	xr_effects.drx_sl_meet_random_honcho( )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_set_finished_task_complete_endgame function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Sets the current storyline task to complete and sends actor on end game task
+--
+--	Usage:
+--		drx_sl_set_finished_task_complete_endgame( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Set current storyline task to complete:
+function drx_sl_set_finished_task_complete_endgame( a, b )
+
+	-- Set current task to complete:
+	local npc = who_is_npc( a, b )
+	axr_task_manager.drx_sl_set_finished_task_complete( npc )
+
+	-- Give actor end game task:
+	xr_effects.drx_sl_find_wish_granter( )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_set_finished_cf_task_complete function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Sets the current change faction task to complete
+--
+--	Usage:
+--		drx_sl_set_finished_cf_task_complete( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Set current change faction task to complete:
+function drx_sl_set_finished_cf_task_complete( a, b )
+
+	-- Set current task to complete:
+	local npc = who_is_npc( a, b )
+	axr_task_manager.drx_sl_set_finished_cf_task_complete( npc )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- npc_has_ordered_task_to_give function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Determines whether or not a npc has an available task
+--
+--	Usage:
+--		npc_has_ordered_task_to_give( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: bool):
+--		Returns true if the npc has an available task, false otherwise
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 10, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Determine whether or not a npc has an available task:
+function npc_has_ordered_task_to_give( a, b )
+
+	local npc = who_is_npc( a, b )
+	return last_task_id ~= nil or false
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- text_npc_has_ordered_task_to_give function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Text to display when a npc has a task to give
+--
+--	Usage:
+--		text_npc_has_ordered_task_to_give( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: string):
+--		Returns the identifier of the string to display
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 10, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Text to display when a npc has a task to give:
+function text_npc_has_ordered_task_to_give( a, b )
+
+	local npc = who_is_npc( a, b )
+	local task_section = axr_task_manager and axr_task_manager.get_first_available_task( npc )
+	last_task_id = task_section
+	return game.translate_string( task_section and axr_task_manager.get_task_job_description( task_section ) or "st_no_available_task" )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- text_sim_npc_has_ordered_task_to_give function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Text to display when a npc has a simulation task to give
+--
+--	Usage:
+--		text_sim_npc_has_ordered_task_to_give( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: string):
+--		Returns the identifier of the string to display
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 10, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Text to display when a npc has a simulation task to give:
+function text_sim_npc_has_ordered_task_to_give( a, b )
+
+	local npc = who_is_npc( a, b )
+	local task_section = axr_task_manager and axr_task_manager.get_first_available_task( npc, nil, true )
+	last_task_id = task_section
+	return game.translate_string( task_section and axr_task_manager.get_task_job_description( task_section ) or "st_no_available_task" )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- text_task_finish function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Text to display when a task is finished
+--
+--	Usage:
+--		text_task_finish( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: string):
+--		Returns the identifier of the string to display
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 15, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Text to display when a task is finished:
+function text_task_finish( a, b )
+
+	local npc = who_is_npc( a, b )
+	local task_section = axr_task_manager and axr_task_manager.get_first_finished_task( npc )
+	return game.translate_string( task_section and axr_task_manager.get_task_complete_text( task_section ) or "st_default_task_finished_" .. math.random( 1, 3 ) )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- text_sim_task_finish function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Text to display when a simulation task is finished
+--
+--	Usage:
+--		text_sim_task_finish( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: string):
+--		Returns the identifier of the string to display
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 15, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Text to display when a simulation task is finished:
+function text_sim_task_finish( a, b )
+
+	local npc = who_is_npc( a, b )
+	local task_section = axr_task_manager and axr_task_manager.get_first_finished_task( npc, true )
+	return game.translate_string( task_section and axr_task_manager.get_task_complete_text( task_section ) or "st_default_task_finished_" .. math.random( 1, 3 ) )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- task_is_fetch_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Determines whether or not a task is a fetch task
+--
+--	Usage:
+--		task_is_fetch_task( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: bool):
+--		Returns true if the task is a fetch task, false otherwise
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 10, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Determine whether or not the task is a fetch task:
+function task_is_fetch_task( a, b )
+
+	local npc = who_is_npc( a, b )
+	local task_id = last_task_id  --axr_task_manager.get_first_available_task(npc)
+	if not ( task_id ) then
+		return false
+	end
+	return axr_task_manager.get_fetch_task_description( task_id ) ~= nil
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- not_task_is_fetch_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Determines whether or not a task is a fetch task
+--
+--	Usage:
+--		not_task_is_fetch_task( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: bool):
+--		Returns false if the task is a fetch task, true otherwise
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 10, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Determine whether or not the task is a fetch task:
+function not_task_is_fetch_task( a, b )
+
+	return not task_is_fetch_task( a, b )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- npc_clear_skipped_tasks function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Clears skipped tasks
+--
+--	Usage:
+--		npc_clear_skipped_tasks( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 10, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Clear skipped tasks:
+function npc_clear_skipped_tasks( a, b )
+
+	if ( axr_task_manager ) then
+		axr_task_manager.clear_skipped_tasks( )
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- condition_actor_has_pda function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Determines if the actor has a PDA
+--
+--	Usage:
+--		condition_actor_has_pda( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: bool):
+--		Returns true if the actor has a PDA, false otherwise
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Determine if the actor has a PDA:
+function condition_actor_has_pda( a, b )
+
+	return db.actor:object( "itm_pda_common") or db.actor:object( "itm_pda_uncommon" ) or db.actor:object( "itm_pda_rare" ) or false
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- actor_has_finished_ordered_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Determines whether or not the actor has a finished task
+--
+--	Usage:
+--		actor_has_finished_ordered_task( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: bool):
+--		Returns true if the actor has a finished task, false otherwise
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 15, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Check if actor has finished task:
+function actor_has_finished_ordered_task( a, b )
+
+	local npc = who_is_npc( a, b )
+	local tsk = axr_task_manager and axr_task_manager.get_first_finished_task( npc )
+	if ( tsk == nil ) then
+		return false
+	end
+	return true
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- actor_has_not_finished_ordered_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Determines whether or not the actor has a finished task
+--
+--	Usage:
+--		actor_has_not_finished_ordered_task( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: bool):
+--		Returns false if the actor has a finished task, true otherwise
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 15, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Check if actor has finished task:
+function actor_has_not_finished_ordered_task( a, b )
+
+	return not actor_has_finished_ordered_task( a, b )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- actor_sim_has_finished_ordered_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Determines whether or not the actor has a finished simultaion task
+--
+--	Usage:
+--		actor_sim_has_finished_ordered_task( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: bool):
+--		Returns true if the actor has a finished task, false otherwise
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 15, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Check if actor has finished task:
+function actor_sim_has_finished_ordered_task( a, b )
+
+	local npc = who_is_npc( a, b )
+	return axr_task_manager and axr_task_manager.get_first_finished_task( npc, true ) ~= nil or false
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- actor_sim_has_not_finished_ordered_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Determines whether or not the actor has a finished simulation task
+--
+--	Usage:
+--		actor_sim_has_not_finished_ordered_task( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: bool):
+--		Returns false if the actor has a finished task, true otherwise
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 15, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Check if actor has finished task:
+function actor_sim_has_not_finished_ordered_task( a, b )
+
+	return not actor_sim_has_finished_ordered_task( a, b )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- npc_sim_set_finished_task_complete function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Sets the current simulation task to complete
+--
+--	Usage:
+--		npc_sim_set_finished_task_complete( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Set current simulation task to complete:
+function npc_sim_set_finished_task_complete( a, b )
+
+	local npc = who_is_npc( a, b )
+	axr_task_manager.set_finished_task_complete( npc, true )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_give_sl_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Gives the player the specified storyline task
+--
+--	Usage:
+--		drx_sl_give_sl_task( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		None, gives the player the specified task
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Give player storyline task:
+function drx_sl_give_sl_task( a, b )
+
+	disable_info( ("drx_sl_meet_honcho_" .. alun_utils.load_var( db.actor, "drx_sl_current_honcho", "" )) )
+	local npc = who_is_npc( a, b )
+	local task_section = axr_task_manager and axr_task_manager.drx_sl_generate_random_sl_task( npc, nil, true )
+	while last_task_id and task_section ~= nil and task_section ~= last_task_id do
+		task_section = axr_task_manager.drx_sl_generate_random_sl_task( npc, true, true )
+	end
+
+	if ( last_task_id ) then
+		printf( ("DRX SL storyline task started: " .. last_task_id) )
+		local se_obj = npc and alife( ):object( npc:id( ) )
+		local giver_id = se_obj and (se_obj.group_id ~= 65535 and se_obj.group_id or se_obj.id)
+		alun_utils.save_var( db.actor, "drx_sl_current_task", last_task_id )
+		task_manager.get_task_manager( ):give_task( last_task_id, giver_id )
+
+		-- Register current task giver:
+		if ( (not string.find( "meet_task", last_task_id )) and (not string.find( "find_wish_granter", last_task_id )) ) then
+			local giver_task_count = (alun_utils.load_var( db.actor, ("drx_sl_task_giver_" .. giver_id), 0 ) + 1)
+			alun_utils.save_var( db.actor, ("drx_sl_task_giver_" .. giver_id), giver_task_count )
+			printf( ("DRX SL: drx_sl_task_giver_" .. giver_id .. " registered (" .. giver_task_count .. " outstanding)") )
+		end
+
+		last_task_id = nil
+
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_give_cf_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Gives the player the specified change factions task
+--
+--	Usage:
+--		drx_sl_give_cf_task( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		None, gives the player the specified task
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Give player change factions task:
+function drx_sl_give_cf_task( a, b )
+
+	local npc = who_is_npc( a, b )
+	local task_section = axr_task_manager and axr_task_manager.drx_sl_generate_change_factions_task( npc, nil, true )
+	while last_task_id and task_section ~= nil and task_section ~= last_task_id do
+		task_section = axr_task_manager.drx_sl_generate_change_factions_task( npc, true, true )
+	end
+
+	if ( last_task_id ) then
+		printf( ("DRX SL change factions task started: " .. last_task_id) )
+		local se_obj = npc and alife( ):object( npc:id( ) )
+		local giver_id = se_obj and (se_obj.group_id ~= 65535 and se_obj.group_id or se_obj.id)
+		task_manager.get_task_manager( ):give_task( last_task_id, giver_id )
+
+		-- Register current task giver:
+		local giver_task_count = (alun_utils.load_var( db.actor, ("drx_sl_task_giver_" .. giver_id), 0 ) + 1)
+		alun_utils.save_var( db.actor, ("drx_sl_task_giver_" .. giver_id), giver_task_count )
+		printf( ("DRX SL: drx_sl_task_giver_" .. giver_id .. " registered (" .. giver_task_count .. " outstanding)") )
+
+		last_task_id = nil
+
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_give_mechanic_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Gives the player a mechanic task
+--
+--	Usage:
+--		drx_sl_give_mechanic_task( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Give the player the current dynamic task:
+function drx_sl_give_mechanic_task( a, b )
+
+	local npc = who_is_npc( a, b )
+	local task_section = axr_task_manager and axr_task_manager.drx_sl_get_mechanic_task( npc, nil, true )
+	while last_task_id and task_section ~= nil and task_section ~= last_task_id do
+		task_section = axr_task_manager.drx_sl_get_mechanic_task( npc, true, true )
+	end
+
+	if ( last_task_id ) then
+		printf( ("DRX SL mechanic task started: " .. last_task_id) )
+		local se_obj = npc and alife( ):object( npc:id( ) )
+		local giver_id = se_obj and (se_obj.group_id ~= 65535 and se_obj.group_id or se_obj.id)
+		task_manager.get_task_manager( ):give_task( last_task_id, giver_id )
+		local giver_task_count = (alun_utils.load_var( db.actor, ("drx_sl_task_giver_" .. giver_id), 0 ) + 1)
+		alun_utils.save_var( db.actor, ("drx_sl_task_giver_" .. giver_id), giver_task_count )
+		printf( ("DRX SL: drx_sl_task_giver_" .. giver_id .. " registered (" .. giver_task_count .. " outstanding)") )
+		last_task_id = nil
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- npc_give_last_task_id function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Gives the player the current dynamic task
+--
+--	Usage:
+--		npc_give_last_task_id( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Give the player the current dynamic task:
+function npc_give_last_task_id( a, b )
+
+	local npc = who_is_npc( a, b )
+	local task_section = axr_task_manager and axr_task_manager.get_first_available_task( npc, nil, true )
+	while last_task_id and task_section ~= nil and task_section ~= last_task_id do
+		task_section = axr_task_manager.get_first_available_task( npc, true, true )
+	end
+
+	if ( last_task_id ) then
+		printf( ("DRX SL dynamic task started: " .. last_task_id) )
+		local se_obj = npc and alife( ):object( npc:id( ) )
+		local giver_id = se_obj and (se_obj.group_id ~= 65535 and se_obj.group_id or se_obj.id)
+		task_manager.get_task_manager( ):give_task( last_task_id, giver_id )
+		local giver_task_count = (alun_utils.load_var( db.actor, ("drx_sl_task_giver_" .. giver_id), 0 ) + 1)
+		alun_utils.save_var( db.actor, ("drx_sl_task_giver_" .. giver_id), giver_task_count )
+		printf( ("DRX SL: drx_sl_task_giver_" .. giver_id .. " registered (" .. giver_task_count .. " outstanding)") )
+		last_task_id = nil
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- npc_sim_give_last_task_id function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Gives the player the current simulation task
+--
+--	Usage:
+--		npc_sim_give_last_task_id( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Give the player the current simulation task:
+function npc_sim_give_last_task_id( a, b )
+
+	local npc = who_is_npc( a, b )
+	local task_section = axr_task_manager and axr_task_manager.get_first_available_task( npc, nil, true )
+	while last_task_id and task_section ~= nil and task_section ~= last_task_id do
+		task_section = axr_task_manager.get_first_available_task( npc, true, true )
+	end
+
+	if ( last_task_id ) then
+
+		-- Give player task:
+		printf( ("DRX SL simulation task started: " .. last_task_id) )
+		local se_obj = npc and alife( ):object( npc:id( ) )
+		local giver_id = se_obj and (se_obj.group_id ~= 65535 and se_obj.group_id or se_obj.id)
+		task_manager.get_task_manager( ):give_task( last_task_id, giver_id )
+		last_task_id = nil
+
+		-- Register task giver:
+		local giver_task_count = (alun_utils.load_var( db.actor, ("drx_sl_task_giver_" .. giver_id), 0 ) + 1)
+		alun_utils.save_var( db.actor, ("drx_sl_task_giver_" .. giver_id), giver_task_count )
+		printf( ("DRX SL: drx_sl_task_giver_" .. giver_id .. " registered (" .. giver_task_count .. " outstanding)") )
+
+		-- Register hostage task giver:
+		if ( alun_utils.load_var( db.actor, "drx_sl_hostage_giver_needed", false ) ) then
+			alun_utils.save_var( db.actor, ("drx_sl_hostage_giver_" .. giver_id), true )
+			alun_utils.save_var( db.actor, "drx_sl_hostage_giver_needed", false )
+			printf( ("DRX SL: drx_sl_hostage_giver_" .. giver_id .. " registered") )
+		end
+
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- npc_give_first_available_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Gives the player the first available dynamic task
+--
+--	Usage:
+--		npc_give_first_available_task( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Give the player the first available dynamic task:
+function npc_give_first_available_task( a, b )
+
+	if ( axr_task_manager ) then
+		local npc = who_is_npc( a, b )
+		local task_id = axr_task_manager.npc_give_first_available_ordered_task( npc )
+		if ( not task_id ) then
+			return
+		end
+		printf( ("DRX SL dynamic task started: " .. task_id) )
+		local se_obj = npc and alife( ):object( npc:id( ) )
+		local giver_id = se_obj and (se_obj.group_id ~= 65535 and se_obj.group_id or se_obj.id)
+		local giver_task_count = (alun_utils.load_var( db.actor, ("drx_sl_task_giver_" .. giver_id), 0 ) + 1)
+		alun_utils.save_var( db.actor, ("drx_sl_task_giver_" .. giver_id), giver_task_count )
+		printf( ("DRX SL: drx_sl_task_giver_" .. giver_id .. " registered (" .. giver_task_count .. " outstanding)") )
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- npc_sim_give_first_available_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Gives the player the first available simulation task
+--
+--	Usage:
+--		npc_sim_give_first_available_task( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Give the player the first available simulation task:
+function npc_sim_give_first_available_task( a, b )
+
+	if ( axr_task_manager ) then
+		local npc = who_is_npc( a, b )
+		local task_id = axr_task_manager.npc_give_first_available_ordered_task( npc, true )
+		if ( not task_id ) then
+			return
+		end
+		printf( ("DRX SL simulation task started: " .. task_id) )
+		local se_obj = npc and alife( ):object( npc:id( ) )
+		local giver_id = se_obj and (se_obj.group_id ~= 65535 and se_obj.group_id or se_obj.id)
+		local giver_task_count = (alun_utils.load_var( db.actor, ("drx_sl_task_giver_" .. giver_id), 0 ) + 1)
+		alun_utils.save_var( db.actor, ("drx_sl_task_giver_" .. giver_id), giver_task_count )
+		printf( ("DRX SL: drx_sl_task_giver_" .. giver_id .. " registered (" .. giver_task_count .. " outstanding)") )
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
 -- npcs and trade and repair
 function npc_is_trader(a,b)
     local npc = who_is_npc(a, b)
@@ -7,7 +1555,7 @@ function npc_is_trader(a,b)
 		npc:start_trade(db.actor)
 	end
 end
- 
+
 function npc_is_tech(a,b)
     local npc = who_is_npc(a,b)
 	local hud = get_hud()
@@ -20,19 +1568,19 @@ end
 function rescue_hostage(a,b)
 	local npc = who_is_npc(a,b)
 	local squad = get_object_squad(npc)
-	if (squad) then 
+	if (squad) then
 		for k in squad:squad_members() do
 			utils.se_obj_save_var(k.id,k.object:name(),"companion_cannot_teleport",nil)
 			xrs_kill_wounded.hostage_list[k.id] = nil
 		end
-	else 
+	else
 		local se_npc = alife_object(npc:id())
 		if (se_npc) then
 			utils.se_obj_save_var(se_npc.id,se_npc:name(),"companion_cannot_teleport",nil)
 			xrs_kill_wounded.hostage_list[se_npc.id] = nil
 		end
 	end
-end 
+end
 
 -- Dynamic Ordered Task dialog
 -- AVAILABLE TASKS
@@ -48,11 +1596,11 @@ function sim_generate_available_tasks(a,b)
 	--printf("sim_generate_available_tasks %s",axr_task_manager.available_tasks[npc:id()] and #axr_task_manager.available_tasks[npc:id()])
 end
 
-function text_npc_has_task(a,b) 
+function text_npc_has_task(a,b)
 	local npc = who_is_npc(a, b)
-	local task_id = axr_task_manager.available_tasks[npc:id()] and axr_task_manager.available_tasks[npc:id()][1] 
+	local task_id = axr_task_manager.available_tasks[npc:id()] and axr_task_manager.available_tasks[npc:id()][1]
 	--printf("text_npc_has_task %s",task_id)
-
+	
 	local on_job_descr = task_id and task_manager.task_ini:r_string_ex(task_id,"on_job_descr")
 	if (on_job_descr) then 
 		local cond = xr_logic.parse_condlist(db.actor,"task_manager","condlist",on_job_descr)
@@ -60,20 +1608,17 @@ function text_npc_has_task(a,b)
 			xr_logic.pick_section_from_condlist(db.actor,db.actor,cond)
 		end
 	end
-	
-	-- fetch
-	-- TODO: Refactor for on_job_descr?
-	
+
 	local fetch = task_id and task_manager.task_ini:r_string_ex(task_id,"fetch_descr")
 	if (fetch) then
 		axr_task_manager.trigger_fetch_func(task_id)
 		return strformat(game.translate_string(fetch),_FETCH_TEXT or "")
-	end	 
-	 
+	end
+
 	return game.translate_string(task_id and task_manager.task_ini:r_string_ex(task_id,"job_descr") or "st_no_available_task")
 end
 
-function npc_has_task(a,b) 
+function npc_has_task(a,b)
 	local npc = who_is_npc(a, b)
 	--printf("npc_has_task %s",axr_task_manager.available_tasks[npc:id()] and axr_task_manager.available_tasks[npc:id()][1] ~= nil)
 	return axr_task_manager.available_tasks[npc:id()] and axr_task_manager.available_tasks[npc:id()][1] ~= nil
@@ -81,7 +1626,7 @@ end
 
 function npc_give_task(a,b)
 	local npc = who_is_npc(a, b)
-	local task_id = axr_task_manager.available_tasks[npc:id()] and axr_task_manager.available_tasks[npc:id()][1] 
+	local task_id = axr_task_manager.available_tasks[npc:id()] and axr_task_manager.available_tasks[npc:id()][1]
 	if (task_id) then
         task_manager.get_task_manager():give_task(task_id,npc:id())
 	end
@@ -99,68 +1644,96 @@ end
 -- FINISHED TASK TURN-IN DIALOG
 function actor_has_finished_task(a,b)
 	local npc = who_is_npc(a, b)
-	
+
 	axr_task_manager.generate_finished_tasks(npc,nil)
-	
+
 	--printf("actor_has_finished_task %s",axr_task_manager.finished_tasks[npc:id()] and axr_task_manager.finished_tasks[npc:id()][1] ~= nil)
 	return axr_task_manager.finished_tasks[npc:id()] and axr_task_manager.finished_tasks[npc:id()][1] ~= nil
 end
 
 function sim_actor_has_finished_task(a,b)
 	local npc = who_is_npc(a, b)
-	
+
 	axr_task_manager.generate_finished_tasks(npc,true)
-	
+
 	--printf("sim_actor_has_finished_task %s",axr_task_manager.finished_tasks[npc:id()] and axr_task_manager.finished_tasks[npc:id()][1] ~= nil)
 	return axr_task_manager.finished_tasks[npc:id()] and axr_task_manager.finished_tasks[npc:id()][1] ~= nil
 end
 
-function text_npc_task_finish(a,b) 
-	local npc = who_is_npc(a, b)
-	local task_id = axr_task_manager.finished_tasks[npc:id()] and axr_task_manager.finished_tasks[npc:id()][1] 
-	--printf("text_npc_task_finish %s",task_id)
-	return game.translate_string(task_id and task_manager.task_ini:r_string_ex(task_id,"task_complete_descr") or "st_default_task_finished_"..math.random(1,3))
-end
-
-function text_npc_task_finish(a,b) 
-	local npc = who_is_npc(a, b)
-	local task_id = axr_task_manager.finished_tasks[npc:id()] and axr_task_manager.finished_tasks[npc:id()][1] 
-	--printf("text_npc_task_finish %s",task_id)
-	return game.translate_string(task_id and task_manager.task_ini:r_string_ex(task_id,"task_complete_descr") or "st_default_task_finished_"..math.random(1,3))
-end
-
-function npc_set_finished_task_complete(a,b)
+function text_npc_task_finish(a,b)
 	local npc = who_is_npc(a, b)
 	local task_id = axr_task_manager.finished_tasks[npc:id()] and axr_task_manager.finished_tasks[npc:id()][1]
-	if (task_id) then 
-		task_manager.get_task_manager():set_task_completed(task_id)
-	end
+	--printf("text_npc_task_finish %s",task_id)
+	return game.translate_string(task_id and task_manager.task_ini:r_string_ex(task_id,"task_complete_descr") or "st_default_task_finished_"..math.random(1,3))
 end
 
--- CANCEL TASKS 
+function text_npc_task_finish(a,b)
+	local npc = who_is_npc(a, b)
+	local task_id = axr_task_manager.finished_tasks[npc:id()] and axr_task_manager.finished_tasks[npc:id()][1]
+	--printf("text_npc_task_finish %s",task_id)
+	return game.translate_string(task_id and task_manager.task_ini:r_string_ex(task_id,"task_complete_descr") or "st_default_task_finished_"..math.random(1,3))
+end
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- npc_set_finished_task_complete function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Sets the current dynamic task to complete
+--
+--	Usage:
+--		npc_set_finished_task_complete( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Set current dynamic task to complete:
+function npc_set_finished_task_complete( a, b )
+
+	local npc = who_is_npc( a, b )
+	axr_task_manager.set_finished_task_complete( npc )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- CANCEL TASKS
 
 function actor_has_ongoing_task(a,b)
 	local npc = who_is_npc(a, b)
 	axr_task_manager.generate_ongoing_tasks(npc,nil)
 	return axr_task_manager.ongoing_tasks[npc:id()] and axr_task_manager.ongoing_tasks[npc:id()][1] ~= nil
-end 
+end
 
 function sim_actor_has_ongoing_task(a,b)
 	local npc = who_is_npc(a, b)
 	axr_task_manager.generate_ongoing_tasks(npc,true)
 	return axr_task_manager.ongoing_tasks[npc:id()] and axr_task_manager.ongoing_tasks[npc:id()][1] ~= nil
-end 
+end
 
-function text_npc_has_cancel_task(a,b) 
+function text_npc_has_cancel_task(a,b)
 	local npc = who_is_npc(a, b)
-	local task_id = axr_task_manager.ongoing_tasks[npc:id()] and axr_task_manager.ongoing_tasks[npc:id()][1] 
+	local task_id = axr_task_manager.ongoing_tasks[npc:id()] and axr_task_manager.ongoing_tasks[npc:id()][1]
 	--printf("text_npc_has_cancel_task %s",task_id)
-	
+
 	local text = task_id and game.translate_string(task_manager.task_ini:r_string_ex(task_id, "title"))
-	if not (text) then 
+	if not (text) then
 		return game.translate_string("st_task_none_active")
-	end 
-	
+	end
+
 	local fetch = task_id and task_manager.task_ini:r_string_ex(task_id,"fetch_descr")
 	if (fetch) then
         local sec = utils.load_var(db.actor,task_id.."_fetch")
@@ -169,12 +1742,12 @@ function text_npc_has_cancel_task(a,b)
         end
 		local name = game.translate_string(system_ini():r_string_ex(sec,"inv_name") or "")
 		return strformat(text,name or "")
-	end	 
-	
+	end
+
 	return text
 end
 
-function npc_has_cancel_task(a,b) 
+function npc_has_cancel_task(a,b)
 	local npc = who_is_npc(a, b)
 	--printf("npc_has_cancel_task %s",axr_task_manager.ongoing_tasks[npc:id()] and axr_task_manager.ongoing_tasks[npc:id()][1] ~= nil)
 	return axr_task_manager.ongoing_tasks[npc:id()] and axr_task_manager.ongoing_tasks[npc:id()][1] ~= nil
@@ -220,13 +1793,40 @@ end
 
 -- Dynamic Broker dialog
 
-function condition_actor_has_valuable_item(a,b)
 
-	local story_done = has_alife_info("story_mode_disabled") or has_alife_info("warlab_deactivate_generators_done") or false
-	
-	local items = { 
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- condition_actor_has_valuable_item function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Determines whether or not the player has an item that can be brokered
+--
+--	Usage:
+--		condition_actor_has_valuable_item( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: bool):
+--		Returns true if the player has a valuable item, false otherwise
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.9
+--	Last modified October 30, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Determine if actor has valuable item:
+function condition_actor_has_valuable_item( a, b )
+
+-- 	local story_done = has_alife_info( "story_mode_disabled" ) or has_alife_info( "warlab_deactivate_generators_done" ) or false
+	local story_done = has_alife_info( "warlab_deactivate_generators_done" )
+
+	local items = {
 		["itm_pda_common"] = true,
-		["itm_pda_uncommon"] = true, 
+		["itm_pda_uncommon"] = true,
 		["itm_pda_rare"] = true,
 		["main_story_1_quest_case"] = story_done,
 		["main_story_2_lab_x18_documents"] = story_done,
@@ -236,21 +1836,52 @@ function condition_actor_has_valuable_item(a,b)
 		["main_story_6_jup_ug_documents"] = story_done,
 		["main_story_7_mon_con_documents"] = story_done
 	}
-	
-	for k,v in pairs(items) do 
-		if (v == true and db.actor:object(k)) then
-			return true 
+
+	for k,v in pairs( items ) do
+		if ( v == true and db.actor:object( k ) ) then
+			return true
 		end
 	end
-	
+
 	return false
+
 end
 
-function text_actor_has_valuable_item(a,b)
-	local npc = who_is_npc(a, b)
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-	local story_done = has_alife_info("story_mode_disabled") or has_alife_info("warlab_deactivate_generators_done") or false
-	
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- text_actor_has_valuable_item function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Text for if the player has an item that can be brokered
+--
+--	Usage:
+--		text_actor_has_valuable_item( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: string):
+--		Returns the text
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.9
+--	Last modified October 30, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Text for if the player has an item that can be brokered:
+function text_actor_has_valuable_item( a, b )
+
+	local npc = who_is_npc( a, b )
+
+-- 	local story_done = has_alife_info( "story_mode_disabled" ) or has_alife_info( "warlab_deactivate_generators_done" ) or false
+	local story_done = has_alife_info( "warlab_deactivate_generators_done" )
+
 	local valuable = {
 		["main_story_1_quest_case"] = story_done,
 		["main_story_2_lab_x18_documents"] = story_done,
@@ -260,34 +1891,66 @@ function text_actor_has_valuable_item(a,b)
 		["main_story_6_jup_ug_documents"] = story_done,
 		["main_story_7_mon_con_documents"] = story_done
 	}
-	
-	for k,v in pairs(valuable) do 
-		if (v == true and db.actor:object(k)) then 
-			return game.translate_string("st_broker_query_valuable")
+
+	for k,v in pairs( valuable ) do
+		if ( v == true and db.actor:object( k ) ) then
+			return game.translate_string( "st_broker_query_valuable" )
 		end
 	end
 
 	local count = 0
-	local function itr(actor,itm)
-		local sec = itm:section()
-		if (sec == "itm_pda_common" or sec == "itm_pda_uncommon" or sec == "itm_pda_rare") then
-			count = count + 1
+	local function itr( actor, itm )
+		local sec = itm:section( )
+		if ( sec == "itm_pda_common" or sec == "itm_pda_uncommon" or sec == "itm_pda_rare" ) then
+			count = (count + 1)
 		end
 	end
 
-	db.actor:iterate_inventory(itr,db.actor)
+	db.actor:iterate_inventory( itr, db.actor )
 
-	if (count == 1) then
-		return game.translate_string("st_broker_query_pda")
+	if ( count == 1 ) then
+		return game.translate_string( "st_broker_query_pda" )
 	end
 
-	return strformat(game.translate_string("st_broker_query_pdas"),count) or game.translate_string("st_broker_query_pda")
+	return strformat( game.translate_string( "st_broker_query_pdas" ), count ) or game.translate_string( "st_broker_query_pda" )
+
 end
 
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- text_trade_npc_pda function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Text for trading PDA
+--
+--	Usage:
+--		text_trade_npc_pda( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX, av661194
+--	for DoctorX Questlines 1.24
+--	Last modified February 16, 2017
+-- ------------------------------------------------------------------------------------------------
+
+-- Text for trading PDA:
 function text_trade_npc_pda(a,b)
     local npc = who_is_npc(a, b)
 
-	local story_done = has_alife_info("story_mode_disabled") or has_alife_info("warlab_deactivate_generators_done") or false
+-- 	local story_done = has_alife_info("story_mode_disabled") or has_alife_info("warlab_deactivate_generators_done") or false
+	local story_done = has_alife_info( "warlab_deactivate_generators_done" )
+
+
 	local valuable = {
 		["main_story_1_quest_case"] = story_done,
 		["main_story_2_lab_x18_documents"] = story_done,
@@ -297,10 +1960,10 @@ function text_trade_npc_pda(a,b)
 		["main_story_6_jup_ug_documents"] = story_done,
 		["main_story_7_mon_con_documents"] = story_done
 	}
-	
-	for k,v in pairs(valuable) do 
+
+	for k,v in pairs(valuable) do
 		local item = v == true and db.actor:object(k)
-		if (item) then 
+		if (item) then
 			db.actor:transfer_item(item,npc)
 			news_manager.relocate_item(db.actor, "out", item:section())
 			relocate_money(npc, random_choice(10000,15000,20000,25000) , "in")
@@ -308,7 +1971,7 @@ function text_trade_npc_pda(a,b)
 			return strformat(game.translate_string("st_broker_trade_valuable"),name)
 		end
 	end
-	
+
     local tbl = { common = 0, uncommon = 0, rare = 0}
     local function itr(actor,itm)
         local chk, pda_t = itm:section():match("(itm_pda_)([%l]+)")
@@ -334,7 +1997,7 @@ function text_trade_npc_pda(a,b)
             news_manager.relocate_item(db.actor, "out", "itm_pda_"..j, count)
 
             for i=1, count do
-                total_value = total_value + (mul * math.random(250,500))
+                total_value = total_value + (mul * math.random(450,900))
 
                 if (math.random(1,100) <= mul2) then
                     pda_bonus_coords = pda_bonus_coords + 1
@@ -350,7 +2013,7 @@ function text_trade_npc_pda(a,b)
                         first_line = true
                         npc_text = game.translate_string("st_broker_npc_about_pda_"..j.."_"..math.random(1,20))
                     else
-                        npc_text = npc_text .. "\n [...] " .. game.translate_string("st_broker_npc_about_pda_"..j.."_"..math.random(1,20))
+                        npc_text = (npc_text .. " " .. game.translate_string("st_drx_questlines_and_this_one") .. " " .. game.translate_string( ("st_broker_npc_about_pda_" .. j .. "_" .. math.random( 1, 20 )) ))
                     end
                 end
             end
@@ -361,7 +2024,14 @@ function text_trade_npc_pda(a,b)
         total_value = total_value + math.floor(total_value / 20)
     end
 
+	-- Round off value:
+	total_value = math.ceil( (total_value / 50) )
+	total_value = (total_value * 50)
+
     relocate_money(npc, total_value, "in")
+
+	-- Add ending text:
+	npc_text = (npc_text .. " " .. game.translate_string( "st_drx_broker_finish_" .. math.random( 1, 3 ) ))
 
     if (pda_bonus_coords > 0 and coc_treasure_manager) then
         npc_text = npc_text .. "\n\n " .. game.translate_string("st_broker_npc_about_pda_bonus_coords")
@@ -373,6 +2043,9 @@ function text_trade_npc_pda(a,b)
 
     return npc_text
 end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
 
 -- Dynamic Surrender dialog
 function victim_is_bounty(a,b)

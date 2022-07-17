@@ -1,5 +1,380 @@
 <?xml version="1.0" encoding="windows-1251" ?>
+
+<!--===========================================================
+<
+< DIALOG MANAGER
+<	CoC 1.4.21 - DoctorX Questlines 1.20
+<
+<	Modified by: DoctorX
+<	Last revised: December 21, 2016
+<
+<===========================================================-->
+
+
 <game_dialogs>
+
+
+	<!-- /////////////////////////////////////////////////////////////////////////////////////////////
+	<!--
+	<!-- STORYLINE START GAME DIALOGS
+	<!--
+	<!--	Modified by DoctorX
+	<!--	for DoctorX Questlines 1.6
+	<!--	October 14, 2016
+	<!--
+	<!-- ----------------------------------------------------------------------------------------- -->
+
+	<!-- Sidorovich (Loner) Start Game -->
+	<dialog id="drx_sl_esc_m_trader_game_start_dialog_1">
+		<has_info>drx_sl_start_game_esc_m_trader</has_info>
+		<phrase_list>
+			<phrase id="0">  <!-- Actor -->
+				<text>drx_sl_esc_m_trader_game_start_dialog_1_0</text>
+				<next>1</next>
+			</phrase>
+		    <phrase id="1">  <!-- NPC -->
+                <text>drx_sl_esc_m_trader_game_start_dialog_1_1</text>
+                <disable_info>drx_sl_start_game_esc_m_trader</disable_info>
+            </phrase>
+		</phrase_list>
+	</dialog>
+
+	<!-- Petrenko (Duty) Start Game -->
+	<dialog id="drx_sl_bar_dolg_general_petrenko_stalker_game_start_dialog_1">
+		<has_info>drx_sl_start_game_bar_dolg_general_petrenko_stalker</has_info>
+		<phrase_list>
+			<phrase id="0">  <!-- Actor -->
+				<text>drx_sl_bar_dolg_general_petrenko_stalker_game_start_dialog_1_0</text>
+				<next>1</next>
+			</phrase>
+		    <phrase id="1">  <!-- NPC -->
+                <text>drx_sl_bar_dolg_general_petrenko_stalker_game_start_dialog_1_1</text>
+                <disable_info>drx_sl_start_game_bar_dolg_general_petrenko_stalker</disable_info>
+            </phrase>
+		</phrase_list>
+	</dialog>
+
+	<!-- Lukash (Freedom) Start Game -->
+	<dialog id="drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_game_start_dialog_1">
+		<has_info>drx_sl_start_game_mil_smart_terrain_7_7_freedom_leader_stalker</has_info>
+		<phrase_list>
+			<phrase id="0">  <!-- Actor -->
+				<text>drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_game_start_dialog_1_0</text>
+				<next>1</next>
+			</phrase>
+		    <phrase id="1">  <!-- NPC -->
+                <text>drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_game_start_dialog_1_1</text>
+                <disable_info>drx_sl_start_game_mil_smart_terrain_7_7_freedom_leader_stalker</disable_info>
+            </phrase>
+		</phrase_list>
+	</dialog>
+
+	<!-- Cold (Clear Sky) Start Game -->
+	<dialog id="drx_sl_mar_smart_terrain_base_stalker_leader_marsh_game_start_dialog_1">
+		<has_info>drx_sl_start_game_mar_smart_terrain_base_stalker_leader_marsh</has_info>
+		<phrase_list>
+			<phrase id="0">  <!-- Actor -->
+				<text>drx_sl_mar_smart_terrain_base_stalker_leader_marsh_game_start_dialog_1_0</text>
+				<next>1</next>
+			</phrase>
+		    <phrase id="1">  <!-- NPC -->
+                <text>drx_sl_mar_smart_terrain_base_stalker_leader_marsh_game_start_dialog_1_1</text>
+                <disable_info>drx_sl_start_game_mar_smart_terrain_base_stalker_leader_marsh</disable_info>
+            </phrase>
+		</phrase_list>
+	</dialog>
+
+	<!-- Sakharov (Ecologist) Start Game -->
+	<dialog id="drx_sl_yan_stalker_sakharov_game_start_dialog_1">
+		<has_info>drx_sl_start_game_yan_stalker_sakharov</has_info>
+		<phrase_list>
+			<phrase id="0">  <!-- Actor -->
+				<text>drx_sl_yan_stalker_sakharov_game_start_dialog_1_0</text>
+				<next>1</next>
+			</phrase>
+		    <phrase id="1">  <!-- NPC -->
+                <text>drx_sl_yan_stalker_sakharov_game_start_dialog_1_1</text>
+                <disable_info>drx_sl_start_game_yan_stalker_sakharov</disable_info>
+            </phrase>
+		</phrase_list>
+	</dialog>
+
+	<!-- Dushman (Mercenary) Start Game -->
+	<dialog id="drx_sl_cit_killers_merc_trader_stalker_game_start_dialog_1">
+		<has_info>drx_sl_start_game_cit_killers_merc_trader_stalker</has_info>
+		<phrase_list>
+			<phrase id="0">  <!-- Actor -->
+				<text>drx_sl_cit_killers_merc_trader_stalker_game_start_dialog_1_0</text>
+				<next>1</next>
+			</phrase>
+		    <phrase id="1">  <!-- NPC -->
+                <text>drx_sl_cit_killers_merc_trader_stalker_game_start_dialog_1_1</text>
+                <disable_info>drx_sl_start_game_cit_killers_merc_trader_stalker</disable_info>
+            </phrase>
+		</phrase_list>
+	</dialog>
+
+	<!-- Kuznetsov (Military) Start Game -->
+	<dialog id="drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_game_start_dialog_1">
+		<has_info>drx_sl_start_game_agr_smart_terrain_1_6_near_2_military_colonel_kovalski</has_info>
+		<phrase_list>
+			<phrase id="0">  <!-- Actor -->
+				<text>drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_game_start_dialog_1_0</text>
+				<next>1</next>
+			</phrase>
+		    <phrase id="1">  <!-- NPC -->
+                <text>drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_game_start_dialog_1_1</text>
+                <disable_info>drx_sl_start_game_agr_smart_terrain_1_6_near_2_military_colonel_kovalski</disable_info>
+            </phrase>
+		</phrase_list>
+	</dialog>
+
+	<!-- Sultan (Bandit) Start Game -->
+	<dialog id="drx_sl_zat_b7_bandit_boss_sultan_game_start_dialog_1">
+		<has_info>drx_sl_start_game_zat_b7_bandit_boss_sultan</has_info>
+		<phrase_list>
+			<phrase id="0">  <!-- Actor -->
+				<text>drx_sl_zat_b7_bandit_boss_sultan_game_start_dialog_1_0</text>
+				<next>1</next>
+			</phrase>
+		    <phrase id="1">  <!-- NPC -->
+                <text>drx_sl_zat_b7_bandit_boss_sultan_game_start_dialog_1_1</text>
+                <disable_info>drx_sl_start_game_zat_b7_bandit_boss_sultan</disable_info>
+            </phrase>
+		</phrase_list>
+	</dialog>
+
+	<!-- Rabbit (Monolith) Start Game -->
+	<dialog id="drx_sl_pri_monolith_monolith_trader_stalker_game_start_dialog_1">
+		<has_info>drx_sl_start_game_pri_monolith_monolith_trader_stalker</has_info>
+		<phrase_list>
+			<phrase id="0">  <!-- Actor -->
+				<text>drx_sl_pri_monolith_monolith_trader_stalker_game_start_dialog_1_0</text>
+				<next>1</next>
+			</phrase>
+		    <phrase id="1">  <!-- NPC -->
+                <text>drx_sl_pri_monolith_monolith_trader_stalker_game_start_dialog_1_1</text>
+                <disable_info>drx_sl_start_game_pri_monolith_monolith_trader_stalker</disable_info>
+            </phrase>
+		</phrase_list>
+	</dialog>
+
+	<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ -->
+
+
+	<!-- /////////////////////////////////////////////////////////////////////////////////////////////
+	<!--
+	<!-- STORYLINE MEET HONCHO TASK DIALOGS
+	<!--
+	<!--	Modified by DoctorX
+	<!--	for DoctorX Questlines 1.7
+	<!--	October 26, 2016
+	<!--
+	<!-- ----------------------------------------------------------------------------------------- -->
+
+	<!-- --------------------------------------- -->
+	<!-- Storyline General Dialogs -->
+
+	<!-- Storyline Task Comleted Dialog -->
+	<dialog id="drx_sl_task_completed_dialog">
+		<precondition>dialogs.drx_sl_actor_has_finished_task</precondition>
+        <init_func>dialog_manager.drx_sl_task_completed_dialog</init_func>
+    </dialog>
+
+	<!-- --------------------------------------- -->
+	<!-- Storyline Meet Loner Dialogs -->
+
+	<!-- Meet Sidorovich and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_esc_m_trader_meet_dialog">
+		<has_info>drx_sl_meet_honcho_esc_m_trader</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- Meet Xenotech and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_esc_smart_terrain_5_7_loner_mechanic_stalker_meet_dialog">
+		<has_info>drx_sl_meet_honcho_esc_smart_terrain_5_7_loner_mechanic_stalker</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- Meet Beard and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_zat_a2_stalker_barmen_meet_dialog">
+		<has_info>drx_sl_meet_honcho_zat_a2_stalker_barmen</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- Meet Noah and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_zat_b18_noah_meet_dialog">
+		<has_info>drx_sl_meet_honcho_zat_b18_noah</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- --------------------------------------- -->
+	<!-- Storyline Meet Duty Dialogs -->
+
+	<!-- Meet Petrenko and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_bar_dolg_general_petrenko_stalker_meet_dialog">
+		<has_info>drx_sl_meet_honcho_bar_dolg_general_petrenko_stalker</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- Meet Mangun and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_bar_visitors_stalker_mechanic_meet_dialog">
+		<has_info>drx_sl_meet_honcho_bar_visitors_stalker_mechanic</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- --------------------------------------- -->
+	<!-- Storyline Meet Freedom Dialogs -->
+
+	<!-- Meet Lukash and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_meet_dialog">
+		<has_info>drx_sl_meet_honcho_mil_smart_terrain_7_7_freedom_leader_stalker</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- Meet Loki and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_jup_a6_freedom_leader_meet_dialog">
+		<has_info>drx_sl_meet_honcho_jup_a6_freedom_leader</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- --------------------------------------- -->
+	<!-- Storyline Meet Clear Sky Dialogs -->
+
+	<!-- Meet Cold and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_mar_smart_terrain_base_stalker_leader_marsh_meet_dialog">
+		<has_info>drx_sl_meet_honcho_mar_smart_terrain_base_stalker_leader_marsh</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- Meet Librarian and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_mar_base_stalker_barmen_meet_dialog">
+		<has_info>drx_sl_meet_honcho_mar_base_stalker_barmen</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- --------------------------------------- -->
+	<!-- Storyline Meet Ecologist Dialogs -->
+
+	<!-- Meet Sakharov and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_yan_stalker_sakharov_meet_dialog">
+		<has_info>drx_sl_meet_honcho_yan_stalker_sakharov</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- Meet Tukarev and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_jup_b6_scientist_tech_meet_dialog">
+		<has_info>drx_sl_meet_honcho_jup_b6_scientist_tech</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- --------------------------------------- -->
+	<!-- Storyline Meet Mercenary Dialogs -->
+
+	<!-- Meet Dushman and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_cit_killers_merc_trader_stalker_meet_dialog">
+		<has_info>drx_sl_meet_honcho_cit_killers_merc_trader_stalker</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- Meet Hog and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_cit_killers_merc_mechanic_stalker_meet_dialog">
+		<has_info>drx_sl_meet_honcho_cit_killers_merc_mechanic_stalker</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- --------------------------------------- -->
+	<!-- Storyline Meet Military Dialogs -->
+
+	<!-- Meet Kuznetsov and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_meet_dialog">
+		<has_info>drx_sl_meet_honcho_agr_smart_terrain_1_6_near_2_military_colonel_kovalski</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- Meet Kirilov and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_agr_smart_terrain_1_6_army_mechanic_stalker_meet_dialog">
+		<has_info>drx_sl_meet_honcho_agr_smart_terrain_1_6_army_mechanic_stalker</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- --------------------------------------- -->
+	<!-- Storyline Meet Bandit Dialogs -->
+
+	<!-- Meet Sultan and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_zat_b7_bandit_boss_sultan_meet_dialog">
+		<has_info>drx_sl_meet_honcho_zat_b7_bandit_boss_sultan</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- Meet Olivius and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_val_smart_terrain_7_4_bandit_trader_stalker_meet_dialog">
+		<has_info>drx_sl_meet_honcho_val_smart_terrain_7_4_bandit_trader_stalker</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- --------------------------------------- -->
+	<!-- Storyline Meet Monolith Dialogs -->
+
+	<!-- Meet Rabbit and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_pri_monolith_monolith_trader_stalker_meet_dialog">
+		<has_info>drx_sl_meet_honcho_pri_monolith_monolith_trader_stalker</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- Meet Cleric and Get Storyline Task Dialog -->
+	<dialog id="drx_sl_pri_monolith_monolith_mechanic_stalker_meet_dialog">
+		<has_info>drx_sl_meet_honcho_pri_monolith_monolith_mechanic_stalker</has_info>
+        <init_func>dialog_manager.drx_sl_init_honcho_meet_dialog</init_func>
+    </dialog>
+
+	<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ -->
+
+
+	<!-- /////////////////////////////////////////////////////////////////////////////////////////////
+	<!--
+	<!-- CHANGE FACTION DIALOGS
+	<!--
+	<!--	Modified by DoctorX
+	<!--	for DoctorX Questlines 1.6
+	<!--	October 06, 2016
+	<!--
+	<!-- ----------------------------------------------------------------------------------------- -->
+
+	<!-- Change Faction Dialog -->
+	<dialog id="drx_sl_change_faction_dialog">
+		<dont_has_info>drx_sl_on_cf_task</dont_has_info>
+		<precondition>dialogs.drx_sl_actor_not_same_faction</precondition>
+        <init_func>dialog_manager.drx_sl_init_change_faction_dialog</init_func>
+	</dialog>
+
+	<!-- Change Factions Task Comleted Dialog -->
+	<dialog id="drx_sl_cf_task_completed_dialog">
+		<precondition>dialogs.drx_sl_actor_has_finished_cf_task</precondition>
+        <init_func>dialog_manager.drx_sl_cf_task_completed_dialog</init_func>
+    </dialog>
+
+	<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ -->
+
+
+	<!-- /////////////////////////////////////////////////////////////////////////////////////////////
+	<!--
+	<!-- MECHANIC TASK DIALOG
+	<!--
+	<!--	Modified by DoctorX
+	<!--	for DoctorX Questlines 1.6
+	<!--	October 06, 2016
+	<!--
+	<!-- ----------------------------------------------------------------------------------------- -->
+
+	<dialog id="drx_sl_mechanic_task_dialog">
+		<precondition>dialogs_axr_companion.is_not_actor_companion</precondition>
+        <init_func>dialog_manager.drx_sl_init_mechanic_task_dialog</init_func>
+    </dialog>
+
+	<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ -->
+
+
     <dialog id="dm_traveler_dialog">
 		<precondition>dialogs_axr_companion.is_not_actor_companion</precondition>
         <precondition>travel_manager.uni_traveler_precond</precondition>
@@ -61,23 +436,83 @@
 	<dialog id="dm_ashot_and_yar_dialog">
 		<precondition>dialogs_jupiter.is_message_receiver</precondition>
         <init_func>dialog_manager.dm_init_dynamic_ashot_and_yar_dialog</init_func>
-    </dialog>	
+    </dialog>
+
+
+	<!-- /////////////////////////////////////////////////////////////////////////////////////////////
+	<!--
+	<!-- DYNAMIC TASK DIALOG
+	<!--
+	<!--	Modified by DoctorX
+	<!--	for DoctorX Questlines 1.6
+	<!--	October 06, 2016
+	<!--
+	<!-- ----------------------------------------------------------------------------------------- -->
+
 	<dialog id="dm_ordered_task_dialog">
+		<precondition>dialogs.drx_sl_dont_has_npc_task</precondition>
 		<precondition>dialogs_axr_companion.is_not_actor_companion</precondition>
         <init_func>dialog_manager.dm_init_dynamic_task_dialog</init_func>
-    </dialog>	
+    </dialog>
+
+	<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ -->
+
+
+	<!-- /////////////////////////////////////////////////////////////////////////////////////////////
+	<!--
+	<!-- SIMULATION TASK DIALOG
+	<!--
+	<!--	Modified by DoctorX
+	<!--	for DoctorX Questlines 1.6
+	<!--	October 06, 2016
+	<!--
+	<!-- ----------------------------------------------------------------------------------------- -->
+
 	<dialog id="dm_sim_ordered_task_dialog">
+		<precondition>dialogs.drx_sl_dont_has_npc_task</precondition>
 		<precondition>dialogs_axr_companion.is_not_actor_companion</precondition>
         <init_func>dialog_manager.dm_init_sim_dynamic_task_dialog</init_func>
     </dialog>
+
+	<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ -->
+
+
+	<!-- /////////////////////////////////////////////////////////////////////////////////////////////
+	<!--
+	<!-- DYNAMIC TASK FINISHED DIALOG
+	<!--
+	<!--	Modified by DoctorX
+	<!--	for DoctorX Questlines 1.6
+	<!--	October 15, 2016
+	<!--
+	<!-- ----------------------------------------------------------------------------------------- -->
+
 	<dialog id="dm_ordered_task_completed_dialog">
-		<precondition>dialogs.actor_has_finished_task</precondition>
+		<precondition>dialogs.actor_has_finished_ordered_task</precondition>
         <init_func>dialog_manager.dm_init_dynamic_task_completed_dialog</init_func>
-    </dialog>	
+    </dialog>
+
+	<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ -->
+
+
+	<!-- /////////////////////////////////////////////////////////////////////////////////////////////
+	<!--
+	<!-- SIMULATION TASK FINISHED DIALOG
+	<!--
+	<!--	Modified by DoctorX
+	<!--	for DoctorX Questlines 1.6
+	<!--	October 15, 2016
+	<!--
+	<!-- ----------------------------------------------------------------------------------------- -->
+
 	<dialog id="dm_sim_ordered_task_completed_dialog">
-		<precondition>dialogs.sim_actor_has_finished_task</precondition>
+		<precondition>dialogs.actor_sim_has_finished_ordered_task</precondition>
         <init_func>dialog_manager.dm_init_sim_dynamic_task_completed_dialog</init_func>
     </dialog>
+
+	<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ -->
+
+
 	<dialog id="dm_ordered_task_cancel_dialog">
         <precondition>dialogs.actor_has_ongoing_task</precondition>
         <init_func>dialog_manager.dm_init_dynamic_task_cancel_dialog</init_func>
@@ -86,10 +521,26 @@
         <precondition>dialogs.sim_actor_has_ongoing_task</precondition>
         <init_func>dialog_manager.dm_init_sim_dynamic_task_cancel_dialog</init_func>
     </dialog>
-	
+
+
+	<!-- /////////////////////////////////////////////////////////////////////////////////////////////
+	<!--
+	<!-- TRADER PDA DIALOG
+	<!--
+	<!--	Modified by DoctorX
+	<!--	for DoctorX Questlines 1.9
+	<!--	October 30, 2016
+	<!--
+	<!-- ----------------------------------------------------------------------------------------- -->
+
 	<dialog id="dm_broker_dialog">
+		<precondition>dialogs.condition_actor_has_valuable_item</precondition>
         <init_func>dialog_manager.dm_init_dynamic_broker_dialog</init_func>
     </dialog>
+
+	<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ -->
+
+
 	<dialog id="dm_tech_repair">
 		<precondition>inventory_upgrades.has_repair_info</precondition>
         <init_func>dialog_manager.dm_init_dynamic_repair_dialog</init_func>
@@ -125,7 +576,7 @@
     <dialog id="dm_companion_leave">
 		<precondition>dialogs_axr_companion.can_dismiss_companion</precondition>
         <precondition>dialogs_axr_companion.is_actor_companion</precondition>
-        <precondition>jg_guider.is_not_guider_companion</precondition>
+		<precondition>jg_guider.is_not_guider_companion</precondition>
         <phrase_list>
             <phrase id="0">
                 <text>axr_phrase_actor_give_command_leave</text>

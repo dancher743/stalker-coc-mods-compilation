@@ -1,3 +1,3002 @@
+-- ============================================================
+--
+-- Main Functions for Tasks  (xr_effects.script)
+--	CoC 1.4.22 - DoctorX Questlines 1.25
+--
+--	Modified by: DoctorX, av661194
+--	Last revised: April 27, 2017
+--
+-- ============================================================
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_meet_random_honcho function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Finds a random friendly honcho and creates task to meet
+--
+--	Usage:
+--		drx_sl_meet_random_honcho( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		none, creates task for player to meet next honcho
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 14, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Give actor meet honcho task:
+function drx_sl_meet_random_honcho( actor, npc, p )
+
+	-- List of honchos and their surrounding factions:
+	local drx_sl_honchos_table = {
+
+		-- Loner honchos:
+		{"esc_m_trader", "stalker"},  -- Cordon - Sidorovich (Loner Trader)
+		{"esc_smart_terrain_5_7_loner_mechanic_stalker", "stalker"},  -- Cordon - Xenotech (Loner Mechanic)
+		{"zat_a2_stalker_barmen", "stalker"},  -- Zaton - Beard (Loner Trader)
+		{"zat_b18_noah", "stalker"},  -- Zaton - Noah (Loner Honcho)
+
+		-- Duty honchos:
+		{"bar_dolg_general_petrenko_stalker", "dolg"},  -- Rostok - Petrenko (Duty Trader)
+		{"bar_visitors_stalker_mechanic", "dolg"},  -- Rostok - Mangun (Duty Mechanic)
+
+		-- Freedom honchos:
+		{"mil_smart_terrain_7_7_freedom_leader_stalker", "freedom"},  -- Military Warehouses - Lukash (Freedom Honcho)
+		{"jup_a6_freedom_leader", "freedom", "stalker"},  -- Jupiter - Loki (Freedom Honcho)
+
+		-- Clear Sky honchos:
+		{"mar_smart_terrain_base_stalker_leader_marsh", "csky"},  -- Great Swamp - Cold (Clear Sky Honcho)
+		{"mar_base_stalker_barmen", "csky"},  -- Great Swamp - Librarian (Clear Sky Trader)
+
+		-- Ecologist honchos:
+		{"yan_stalker_sakharov", "ecolog"},  -- Yantar - Sakharov (Ecologist Trader)
+		{"jup_b6_scientist_tech", "ecolog", "stalker"},  -- Jupiter - Tukarev (Ecologist Mechanic)
+
+		-- Mercenary honchos:
+		{"cit_killers_merc_trader_stalker", "killer"},  -- Dead City - Dushman (Mercenary Trader)
+		{"cit_killers_merc_mechanic_stalker", "killer"},  -- Dead City - Hog (Mercenary Mechanic)
+
+		-- Military honchos:
+		{"agr_smart_terrain_1_6_near_2_military_colonel_kovalski", "army"},  -- Agoroprom - Kuznetsov (Military Honcho)
+		{"agr_smart_terrain_1_6_army_mechanic_stalker", "army"},  -- Agoroprom - Kirilov (Military Mechanic)
+
+		-- Bandit honchos:
+		{"zat_b7_bandit_boss_sultan", "bandit"},  -- Dark Valley - Sultan (Bandit Honcho)
+		{"val_smart_terrain_7_4_bandit_trader_stalker", "bandit"},  -- Dark Valley - Olivius (Bandit Trader)
+
+		-- Monolith honchos:
+		{"pri_monolith_monolith_trader_stalker", "monolith"},  -- Pripyat - Rabbit (Monolith Trader)
+		{"pri_monolith_monolith_mechanic_stalker", "monolith"},  -- Pripyat - Cleric (Monolith Mechanic)
+
+	}
+
+	-- Create list of valid honchos:
+	local honcho_list = {}
+
+	-- Examine each honcho:
+	for i = 1, #drx_sl_honchos_table do
+
+		-- Get the current honcho id:
+		local honcho = drx_sl_honchos_table[i][1]
+
+		-- Check if honcho is alive and is not current task giver:
+		if ( ((xr_conditions.is_alive( nil, nil, {honcho} )) or (honcho == "esc_m_trader")) and (honcho ~= alun_utils.load_var( db.actor, "drx_sl_current_honcho", "" )) ) then
+
+			-- Check if the honcho surrounding factions are not enemy of player:
+			local is_enemy = false
+			for j = 2, #drx_sl_honchos_table[i] do
+				if ( relation_registry.community_relation( drx_sl_honchos_table[i][j], alife( ):actor( ):community( ) ) <= -1000 ) then
+					is_enemy = true
+				end
+			end
+
+			-- Add the current honcho to the list of valid honchos:
+			if ( is_enemy == false ) then
+				table.insert( honcho_list, honcho )
+			end
+
+		end
+
+	end
+
+	-- Pick next honcho:
+	local next_honcho = alun_utils.load_var( db.actor, "drx_sl_current_honcho", "" )
+	if ( #honcho_list > 0 ) then
+		next_honcho = honcho_list[math.random( #honcho_list )]
+	end
+	alun_utils.save_var( db.actor, "drx_sl_current_honcho", next_honcho )
+
+	-- Increment current task number:
+	alun_utils.save_var( db.actor, "drx_sl_current_task_number", (alun_utils.load_var( db.actor, "drx_sl_current_task_number", 1 ) + 1) )
+	printf( ("DRX SL task count: " .. alun_utils.load_var( db.actor, "drx_sl_current_task_number", 1 )) )
+
+	-- Build list of available meet current honcho tasks:
+	task_ltx_file = ini_file("misc\\task_manager.ltx")
+	local honcho_task_list = {}
+	local honcho_task_id = ""
+	local i = 1
+	while ( true ) do
+		honcho_task_id = ("drx_sl_" .. next_honcho .. "_meet_task_" .. i)
+		if ( task_ltx_file:section_exist( honcho_task_id ) ) then
+			table.insert( honcho_task_list, honcho_task_id )
+			i = (i + 1)
+		else
+			break
+		end
+	end
+
+	-- Give player meet next honcho task:
+	if ( #honcho_task_list > 0 ) then
+		honcho_task_id = honcho_task_list[math.random( #honcho_task_list )]
+		alun_utils.save_var( db.actor, "drx_sl_current_task", honcho_task_id )
+		printf( ("DRX SL current storyline task: " .. honcho_task_id) )
+		give_info( ("drx_sl_meet_honcho_" .. next_honcho) )  -- (\configs\gameplay\info_portions.xml)
+		task_manager.get_task_manager( ):give_task( honcho_task_id )
+	else
+		printf( ("DRX SL no meet honcho tasks available for " .. next_honcho .. " !!") )
+		return
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_change_factions function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Changes an actor to the specified faction
+--
+--	Usage:
+--		drx_sl_change_factions( faction )
+--
+--	Parameters:
+--		faction (type: string)
+--			- Faction for the actor to join (stalker, dolg, freedom, csky, ecolog, killer, army, bandit, or monolith)
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX, av661194
+--	for DoctorX Questlines 1.25
+--	Last modified April 27, 2017
+-- ------------------------------------------------------------------------------------------------
+
+-- Change actor faction:
+function drx_sl_change_factions( actor, npc, p )
+
+	if ( p and p[1] ~= nil and p[1] ~= ("actor_" .. character_community( db.actor )) ) then
+
+		-- Set actor faction:
+		db.actor:set_character_community( ("actor_" .. p[1]), 0, 0 )
+		local communities = alun_utils.get_communities_list( )
+		for i, community in pairs( communities ) do
+			relation_registry.set_community_goodwill( community, db.actor:id( ), 0 )
+		end
+		printf( ("DRX SL: Actor faction changed to " .. p[1]) )
+
+		-- Set companion faction:
+		for id, squad in pairs( axr_companions.companion_squads ) do
+			if ( squad and squad.commander_id ) then
+				for k in squad:squad_members( ) do
+					local member = db.storage[k.id] and db.storage[k.id].object
+					if ( member and member:alive( ) ) then
+						member:set_character_community( p[1], 0, 0 )
+						for i, community in pairs( communities ) do
+							member:set_community_goodwill( community, 0 )
+						end
+						printf( ("DRX SL: Companion faction changed to " .. p[1]) )
+					end
+				end
+			end
+		end
+
+		-- Send dynamic news alert:
+		news_manager.send_tip( db.actor, (game.translate_string( "st_drx_questlines_joined" ) .. " " .. game.translate_string( p[1] ) .. " " .. game.translate_string( "st_drx_questlines_faction" )), nil, "completionist", nil, nil )
+
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_money_task_payment function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Takes payment from actor for a money task
+--
+--	Usage:
+--		drx_sl_money_task_payment( task_id_var )
+--
+--	Parameters:
+--		task_id_var (type: string)
+--			- Var used for money task payment amount
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 17, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Take money task payment:
+function drx_sl_money_task_payment( actor, npc, p )
+
+	if ( p and p[1] ~= nil ) then
+		local money =  tonumber( alun_utils.load_var( db.actor, p[1], 0 ) )
+		db.actor:give_money( -(money) )
+-- 		game_stats.money_quest_update( -(money) )
+		news_manager.relocate_money( db.actor, "out", money )
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_find_wish_granter function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Gives task to find the Wish Granter
+--
+--	Usage:
+--		drx_sl_meet_random_honcho( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Give actor find Wish Granter task:
+function drx_sl_find_wish_granter( actor, npc, p )
+
+	local wish_granter_task = "drx_sl_find_wish_granter_task"
+	alun_utils.save_var( db.actor, "drx_sl_current_task", wish_granter_task )
+	printf( ("DRX SL current storyline task: " .. wish_granter_task) )
+	give_info( "drx_sl_on_find_wish_granter" )  -- (\configs\gameplay\info_portions.xml)
+	task_manager.get_task_manager( ):give_task( wish_granter_task )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_setup_assault_local function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Initiates an assault task against a random enemy faction on the current map
+--
+--	Usage:
+--		drx_sl_setup_assault_local( p[1]:p[2] )
+--
+--	Parameters:
+--		p[1] (type: string)
+--			Task ID
+--		p[2] (type: string)
+--			Faction of task giver ("stalker", "dolg", "freedom", "csky", "ecolog", "killer", "army", "bandit", or "monolith")
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 24, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Initiate local assault task:
+function drx_sl_setup_assault_local( actor, npc, p )
+
+	-- Ensure a task id was supplied:
+	if not ( p[1] ) then
+		return
+	end
+
+	-- List of all factions:
+	local factions_list = {
+		"stalker",
+		"dolg",
+		"freedom",
+		"csky",
+		"ecolog",
+		"killer",
+		"army",
+		"bandit",
+		"monolith"
+	}
+
+	-- Build list of mutual enemy factions:
+	local enemy_faction_list = {}
+	for i = 1, #factions_list do
+		if ( (game_relations.is_factions_enemies( factions_list[i], p[2] )) and (relation_registry.community_relation( factions_list[i], alife( ):actor( ):community( ) ) <= -1000) ) then
+			table.insert( enemy_faction_list, factions_list[i] )
+		end
+	end
+
+	-- If no mutual enemies found then build list of NPC enemies:
+	if ( #enemy_faction_list < 1 ) then
+		for j = 1, #factions_list do
+			if ( game_relations.is_factions_enemies( factions_list[j], p[2] ) ) then
+				table.insert( enemy_faction_list, factions_list[j] )
+			end
+		end
+	end
+
+	-- Ensure an enemy faction was found:
+	if ( #enemy_faction_list < 1 ) then
+		printf( "DRX SL Error: drx_sl_setup_assault_local failed, no enemy factions found !!!" )
+		return
+	end
+
+	-- Search each smart on current level to see if controlled by target factions:
+	local target_id
+	local target_list = {}
+	for name,smart in pairs( SIMBOARD.smarts_by_names ) do
+		if ( (smart.online) and (smart.sim_avail == nil or xr_logic.pick_section_from_condlist( actor, smart, smart.sim_avail ) == "true") ) then
+			local smrt = SIMBOARD.smarts[smart.id]
+			if ( smrt ) then
+				for k, squad in pairs( smrt.squads ) do
+					if ( squad and squad.current_target_id and squad.current_target_id == smart.id and not squad:get_script_target( ) ) then
+						for h = 1, #enemy_faction_list do
+
+							-- If a valid target was located then add it to the target list:
+							if ( squad.player_id == enemy_faction_list[h] ) then
+								table.insert( target_list, smart.id )
+							end
+
+						end
+					end
+				end
+			end
+		end
+	end
+
+	-- Ensure a valid target was found:
+	if ( #target_list < 1 ) then
+		printf( "DRX SL: drx_sl_setup_assault_local failed, no valid targets located !!!" )
+		return
+	end
+
+	-- Save the current task target:
+	alun_utils.save_var( db.actor, p[1], target_list[math.random( #target_list )] )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_setup_assault_remote function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Initiates an assault task against a random enemy faction anywhere
+--
+--	Usage:
+--		drx_sl_setup_assault_remote( p[1]:p[2] )
+--
+--	Parameters:
+--		p[1] (type: string)
+--			Task ID
+--		p[2] (type: string)
+--			Faction of task giver ("stalker", "dolg", "freedom", "csky", "ecolog", "killer", "army", "bandit", or "monolith")
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 24, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Initiate remote assault task:
+function drx_sl_setup_assault_remote( actor, npc, p )
+
+	-- Ensure a task id was supplied:
+	if not ( p[1] ) then
+		return
+	end
+
+	-- List of all factions:
+	local factions_list = {
+		"stalker",
+		"dolg",
+		"freedom",
+		"csky",
+		"ecolog",
+		"killer",
+		"army",
+		"bandit",
+		"monolith"
+	}
+
+	-- Build list of mutual enemy factions:
+	local enemy_faction_list = {}
+	for i = 1, #factions_list do
+		if ( (game_relations.is_factions_enemies( factions_list[i], p[2] )) and (relation_registry.community_relation( factions_list[i], alife( ):actor( ):community( ) ) <= -1000) ) then
+			table.insert( enemy_faction_list, factions_list[i] )
+		end
+	end
+
+	-- If no mutual enemies found then build list of NPC enemies:
+	if ( #enemy_faction_list < 1 ) then
+		for j = 1, #factions_list do
+			if ( game_relations.is_factions_enemies( factions_list[j], p[2] ) ) then
+				table.insert( enemy_faction_list, factions_list[j] )
+			end
+		end
+	end
+
+	-- Ensure an enemy faction was found:
+	if ( #enemy_faction_list < 1 ) then
+		printf( "DRX SL Error: drx_sl_setup_assault_remote failed, no enemy factions found !!!" )
+		return
+	end
+
+	-- Search each smart on all levels to see if controlled by target factions:
+	local sim = alife( )
+	local gg = game_graph( )
+	local actor_level = sim:level_name( gg:vertex( sim:actor( ).m_game_vertex_id ):level_id( ) )
+	local target_id
+	local target_list = {}
+	for name,smart in pairs( SIMBOARD.smarts_by_names ) do
+		if ( smart.sim_avail == nil or xr_logic.pick_section_from_condlist( actor, smart, smart.sim_avail ) == "true" ) then
+			local smrt = SIMBOARD.smarts[smart.id]
+			if ( smrt ) then
+				local smart_level = alife( ):level_name( game_graph( ):vertex( smart.m_game_vertex_id ):level_id( ) )
+				if ( smart.online or DEACTIVATE_SIM_ON_NON_LINKED_LEVELS ~= true or string.find( simulation_objects.config:r_value( actor_level, "target_maps", 0, "" ),smart_level ) ) then
+					for k, squad in pairs( smrt.squads ) do
+						if ( squad and squad.current_target_id and squad.current_target_id == smart.id and not squad:get_script_target( ) ) then
+							for h = 1, #enemy_faction_list do
+
+								-- If a valid target was located then add it to the target list:
+								if ( squad.player_id == enemy_faction_list[h] ) then
+									table.insert( target_list, smart.id )
+								end
+
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+
+	-- Ensure a valid target was found:
+	if ( #target_list < 1 ) then
+		printf( "DRX SL: drx_sl_setup_assault_remote failed, no valid targets located !!!" )
+		return
+	end
+
+	-- Save the current task target:
+	alun_utils.save_var( db.actor, p[1], target_list[math.random( #target_list )] )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_setup_assault_mutant function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Initiates an assault task against a mutant lair on the current map
+--
+--	Usage:
+--		drx_sl_setup_assault_mutant( p[1] )
+--
+--	Parameters:
+--		p[1] (type: string)
+--			Task ID
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Initiate mutant assault task:
+function drx_sl_setup_assault_mutant( actor, npc, p )
+
+	-- Ensure a task id was supplied:
+	if not ( p[1] ) then
+		return
+	end
+
+	-- Search each smart on current level to see if controlled by mutants:
+	local target_id
+	local target_list = {}
+	for name,smart in pairs( SIMBOARD.smarts_by_names ) do
+		if ( (smart.online) and (smart.sim_avail == nil or xr_logic.pick_section_from_condlist( actor, smart, smart.sim_avail ) == "true") ) then
+			local smrt = SIMBOARD.smarts[smart.id]
+			if ( smrt ) then
+				for k,squad in pairs( smrt.squads ) do
+					if ( squad and squad.current_target_id and squad.current_target_id == smart.id and not squad:get_script_target( ) ) then
+
+						-- If a valid target was located then add it to the target list:
+						if ( is_squad_monster[squad.player_id] ) then
+							table.insert( target_list, smart.id )
+						end
+
+					end
+				end
+			end
+		end
+	end
+
+	-- Ensure a valid target was found:
+	if ( #target_list < 1 ) then
+		printf( "DRX SL: drx_sl_setup_assault_mutant failed, no valid targets located !!!" )
+		return
+	end
+
+	-- Save the current task target:
+	alun_utils.save_var( db.actor, p[1], target_list[math.random( #target_list )] )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_quest_stash_bonus function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Picks a random bonus item for a quest stash
+--
+--	Usage:
+--		drx_sl_quest_stash_bonus( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+--	Notes:
+--		-
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Pick quest stash bonus:
+function drx_sl_quest_stash_bonus( actor, npc, p )
+
+	-- List of reward items:
+	local reward_items = {
+		"wpn_fort",						-- [28]    600
+		"ammo_11.43x23_fmj",		-- [29]    600
+		"wpn_hpsa",						-- [30]    650
+		"ammo_5.45x39_fmj",		-- [31]    650
+		"medkit_army",					-- [32]    650
+		"wpn_pb",							-- [33]    700
+		"ammo_5.56x45_ss190",	-- [34]    700
+		"ammo_9x39_ap",				-- [35]    700
+		"wpn_beretta",					-- [36]    750
+		"medkit_scientic",				-- [37]    800
+		"wpn_colt1911",				-- [38]    900
+		"ammo_11.43x23_hydro",	-- [39]   1000
+		"detector_advanced",			-- [40]   1000
+		"drug_anabiotic",				-- [41]   1000
+		"ammo_5.45x39_ap",			-- [42]   1100
+		"ammo_5.56x45_ap",			-- [43]   1150
+		"wpn_sig220",					-- [44]   1200
+		"wpn_toz34",						-- [45]   1200
+		"wpn_walther",					-- [46]   1200
+		"wpn_desert_eagle",			-- [47]   1800
+		"ammo_gauss",					-- [48]   2000
+		"ammo_og-7b",					-- [49]   2000
+		"ammo_pkm_100",			-- [50]   2000
+		"detector_elite",					-- [51]   2000
+		"itm_gunsmith_toolkit",		-- [52]   2200
+		"wpn_wincheaster1300",	-- [53]   2400
+		"helm_hardhat",					-- [54]   2500
+		"wpn_ak74u",					-- [55]   3000
+		"wpn_mp5",						-- [56]   3600
+		"wpn_ak74",						-- [57]   4000
+		"wpn_l85",						-- [58]   5000
+		"wpn_spas12",					-- [59]   5300
+		"helm_respirator",				-- [60]   5500
+		"svoboda_light_outfit",		-- [61]   5500
+		"wpn_abakan",					-- [62]   6000
+		"wpn_lr300",						-- [63]   6000
+		"af_blood",						-- [64]   7000
+		"af_cristall",						-- [65]   7000
+		"af_electra_sparkler",			-- [66]   7000
+		"banditmerc_outfit",			-- [67]   7500
+		"helm_m40",						-- [68]   7500
+		"af_cristall_flower",			-- [69]   8000
+		"wpn_sig550",					-- [70]   8000
+		"stalker_outfit",					-- [71]   8500
+		"af_electra_flash",				-- [72]   9000
+		"af_fireball",						-- [73]   9000
+		"af_medusa",					-- [74]   9000
+		"af_mincer_meat",				-- [75]   9000
+		"wpn_protecta",					-- [76]   9000
+		"wpn_val",							-- [77]   9000
+		"wpn_g36",						-- [78]  10000
+		"wpn_groza",						-- [79]  10000
+		"dolg_outfit",						-- [80]  10500
+		"ecolog_guard_outfit",		-- [81]  10500
+		"af_dummy_battery",			-- [82]  11000
+		"af_dummy_glassbeads",	-- [83]  11000
+		"af_electra_moonlight",		-- [84]  11000
+		"af_night_star",					-- [85]  11000
+		"af_soul",							-- [86]  11000
+		"wpn_vintorez",					-- [87]  12000
+		"cs_heavy_outfit",				-- [88]  12500
+		"helm_tactic",					-- [89]  12500
+		"svoboda_heavy_outfit",		-- [90]  12500
+		"detector_scientific",			-- [91]  12500
+		"af_vyvert",						-- [92]  13000
+	}
+
+	-- Pick random bonus item:
+	return reward_items[math.random( 1, #reward_items )]
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_create_quest_stash_1 function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Spawns a quest item in a random available stash location
+--
+--	Usage:
+--		drx_sl_create_quest_stash_1( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+--	Notes:
+--		-
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 20, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Create quest stash:
+function drx_sl_create_quest_stash_1( actor, npc, p )
+
+	-- Create the stash:
+	local stash_id = coc_treasure_manager.drx_create_random_stash( nil, nil, {"drx_sl_quest_item_1", drx_sl_quest_stash_bonus( actor, npc, p )} )
+	if ( not stash_id ) then
+		printf( "DRX SL error: Unable to create quest stash 1 !!" )
+	end
+
+	-- Save the stash id:
+	alun_utils.save_var( db.actor, "drx_sl_quest_stash_1_id", stash_id )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_create_quest_stash_2 function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Spawns a quest item in a random available stash location
+--
+--	Usage:
+--		drx_sl_create_quest_stash_2( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+--	Notes:
+--		-
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 20, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Create quest stash:
+function drx_sl_create_quest_stash_2( actor, npc, p )
+
+	-- Create the stash:
+	local stash_id = coc_treasure_manager.drx_create_random_stash( nil, nil, {"drx_sl_quest_item_2", drx_sl_quest_stash_bonus( actor, npc, p )} )
+	if ( not stash_id ) then
+		printf( "DRX SL error: Unable to create quest stash 2 !!" )
+	end
+
+	-- Save the stash id:
+	alun_utils.save_var( db.actor, "drx_sl_quest_stash_2_id", stash_id )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_create_quest_stash_3 function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Spawns a quest item in a random available stash location
+--
+--	Usage:
+--		drx_sl_create_quest_stash_3( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+--	Notes:
+--		-
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 20, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Create quest stash:
+function drx_sl_create_quest_stash_3( actor, npc, p )
+
+	-- Create the stash:
+	local stash_id = coc_treasure_manager.drx_create_random_stash( nil, nil, {"drx_sl_quest_item_3", drx_sl_quest_stash_bonus( actor, npc, p )} )
+	if ( not stash_id ) then
+		printf( "DRX SL error: Unable to create quest stash 3 !!" )
+	end
+
+	-- Save the stash id:
+	alun_utils.save_var( db.actor, "drx_sl_quest_stash_3_id", stash_id )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_setup_bounty_hunt function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Finds a valid target for a bounty hunt
+--
+--	Usage:
+--		drx_sl_setup_bounty_hunt( p[1]:p[2] )
+--
+--	Parameters:
+--		p[1] (type: string)
+--			- Task ID
+--		p[2] (type: string)
+--			- Faction of NPC giving task ("stalker", "dolg", "freedom", "csky", "ecolog", "killer", "army", "bandit", or "monolith")
+--
+--	Return value (type: none):
+--		none, stores current target in bounty id storage
+--
+--	Notes:
+--		- This function will attempt to find a random mutual enemy of both the actor and task giver
+--		- If no mutual enemies are found, an enemy of the task giver will be chosen
+--		- If the task giver has no enemies, an enemy of the actor will be chosen
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Initiate bounty hunt:
+function drx_sl_setup_bounty_hunt( actor, npc, p )
+
+	-- List of all factions:
+	local factions_list = {
+		"stalker",
+		"dolg",
+		"freedom",
+		"csky",
+		"ecolog",
+		"killer",
+		"army",
+		"bandit",
+		"monolith"
+	}
+
+	-- Reset bounty id storage:
+	axr_task_manager.bounties_by_id[p[1]] = nil
+
+	-- Build list of mutual enemy factions:
+	local enemy_faction_list = {}
+	for i = 1, #factions_list do
+		if ( (game_relations.is_factions_enemies( factions_list[i], p[2] )) and (relation_registry.community_relation( factions_list[i], alife( ):actor( ):community( ) ) <= -1000) ) then
+			table.insert( enemy_faction_list, factions_list[i] )
+		end
+	end
+
+	-- If no mutual enemies found then build list of NPC enemies:
+	if ( #enemy_faction_list < 1 ) then
+		for j = 1, #factions_list do
+			if ( game_relations.is_factions_enemies( factions_list[j], p[2] ) ) then
+				table.insert( enemy_faction_list, factions_list[j] )
+			end
+		end
+	end
+
+	-- If no NPC enemies found then build list of actor enemies:
+	if ( #enemy_faction_list < 1 ) then
+		for m = 1, #factions_list do
+			if ( relation_registry.community_relation( factions_list[m], alife( ):actor( ):community( ) ) <= -1000 ) then
+				table.insert( enemy_faction_list, factions_list[m] )
+			end
+		end
+	end
+
+	-- Ensure an enemy faction was found:
+	if ( #enemy_faction_list < 1 ) then
+		printf( "DRX SL Error: drx_sl_setup_bounty_hunt failed, no enemy factions found !!!" )
+		return
+	end
+
+	-- Analyze all NPCs for valid target:
+	local sfind = string.find
+	local se_obj
+	local sim = alife( )
+	local valid_targets = {}
+	for k = 1, 65534 do
+
+		-- Analyze current sim stalker:
+		se_obj = sim:object( k )
+		if ( (se_obj and IsStalker( nil, se_obj:clsid( ) ) and se_obj:alive( ) and sfind( se_obj:section_name( ), "sim_default" ) and get_object_story_id( k ) == nil) and (se_obj.group_id == nil or se_obj.group_id == 65535 or get_object_story_id( se_obj.group_id ) == nil) ) then
+
+			-- If sim stalker is enemy faction then add to list of valid targets:
+			local current_sim_faction = alife_character_community( se_obj )
+			for l = 1, #enemy_faction_list do
+				if ( current_sim_faction == enemy_faction_list[l] ) then
+					table.insert( valid_targets, k )
+					break
+				end
+			end
+
+		end
+
+	end
+
+	-- Ensure a valid target was found:
+	if ( #valid_targets < 1 ) then
+		printf( "DRX SL Error: drx_sl_setup_bounty_hunt failed, no targets !!!" )
+		return
+	end
+
+	-- Pick random target from list:
+	local target_id = valid_targets[math.random( #valid_targets )]
+	if not( target_id ) then
+		printf( "DRX SL Error: drx_sl_setup_bounty_hunt failed, target ID invalid !!!" )
+		return
+	end
+
+	-- Add current target to bounty id storage:
+	axr_task_manager.bounties_by_id[p[1]] = target_id
+	printf( "drx_sl_setup_bounty_hunt target: %s", target_id )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_reward function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Gives actor a specified reward
+--
+--	Usage:
+--		drx_sl_reward( p[1]:p[2]:{p[3]}:... )
+--
+--	Parameters:
+--		p[1] (type: int)
+--			- Quantity of the reward to give
+--		p[2] (type: string)
+--			- Reward to give
+--		{p[3]} ... (type: string)
+--			- Additional options for reward item
+--
+--	Return value (type: none):
+--		none, allocates reward to actor
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Give actor reward:
+function drx_sl_reward( actor, npc, p )
+
+	-- Select reward item:
+	local reward_item = p[math.random( 2, #p )]
+
+	-- Give actor item reward:
+	dialogs.relocate_item_section( db.actor, reward_item, "in", tonumber( p[1] ) )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_reward_random function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Gives actor a random reward of money or item within a specified value
+--
+--	Usage:
+--		drx_sl_reward_random( p[1]:p[2] )
+--
+--	Parameters:
+--		p[1] (type: int)
+--			- Minimum value of the reward
+--		p[2] (type: int)
+--			- Maximum value of the reward
+--
+--	Return value (type: none):
+--		none, allocates reward to actor
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Give actor random reward:
+function drx_sl_reward_random( actor, npc, p )
+
+	-- Determine if reward should be money or item:
+	if ( math.random( 100 ) < 50 ) then
+
+		-- Give actor money reward:
+		drx_sl_reward_random_money( actor, npc, {p[1], p[2]} )
+
+	else
+
+		-- Give actor item reward:
+		drx_sl_reward_random_item( actor, npc, {p[1], p[2]} )
+
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_reward_random_money function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Gives actor a random reward of money within a specified value
+--
+--	Usage:
+--		drx_sl_reward_random_money( p[1]:p[2] )
+--
+--	Parameters:
+--		p[1] (type: int)
+--			- Minimum value of the reward
+--		p[2] (type: int)
+--			- Maximum value of the reward
+--
+--	Return value (type: none):
+--		none, allocates reward to actor
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Give actor random money reward:
+function drx_sl_reward_random_money( actor, npc, p )
+
+	-- Give actor money reward:
+	local money = math.random( math.ceil( (tonumber( p[1] ) / 50) ), math.ceil( (tonumber( p[2] ) / 50) ) )
+	money = (money * 50)
+	dialogs.relocate_money( db.actor, money, "in" )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_reward_random_item function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Gives actor a random item reward within a specified value
+--
+--	Usage:
+--		drx_sl_reward_random_item( p[1]:p[2] )
+--
+--	Parameters:
+--		p[1] (type: int)
+--			- Minimum value of the reward
+--		p[2] (type: int)
+--			- Maximum value of the reward
+--
+--	Return value (type: none):
+--		none, allocates reward to actor
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Give actor random reward:
+function drx_sl_reward_random_item( actor, npc, p )
+
+	-- List of reward items:
+	local reward_items = {
+
+		-- --------------------------------------------
+		-- Tier 1  (1 - 49):
+
+		"vodka",							-- [1]     40
+		"energy_drink",					-- [2]     50
+		"bandage",						-- [3]     80
+
+		-- --------------------------------------------
+		-- Tier 2  (50 - 99):
+
+		"ammo_12x70_buck",		-- [4]    120
+		"bread",							-- [5]    150
+
+		"wpn_bm16",						-- [6]    200
+		"ammo_9x18_fmj",			-- [7]    200
+		"drug_booster",					-- [8]    200
+		"drug_coagulant",				-- [9]    200
+		"kolbasa",							-- [10]    200
+
+		-- --------------------------------------------
+		-- Tier 3  (100 - 249):
+
+		"ammo_9x19_fmj",			-- [11]    250
+		"ammo_12x76_zhekan",	-- [12]    250
+		"antirad",							-- [13]    250
+		"conserva",						-- [14]    250
+
+		"ammo_9x18_pmm",			-- [15]    300
+		"drug_antidot",					-- [16]    300
+		"drug_radioprotector",		-- [17]    300
+		"medkit",							-- [18]    300
+		"ammo_9x19_pbp",			-- [19]    350
+		"ammo_m209",					-- [20]    350
+		"itm_sleepbag",					-- [21]    350
+
+		"wpn_pm",						-- [22]    400
+		"ammo_7.62x54_7h1",		-- [23]    400
+		"detector_simple",				-- [24]    500
+		"itm_backpack",				-- [25]    500
+		"ammo_9x39_pab9",			-- [26]    550
+		"drug_psy_blockade",		-- [27]    550
+
+		-- --------------------------------------------
+		-- Tier 4  (250 - 499):
+
+		"wpn_fort",						-- [28]    600
+		"ammo_11.43x23_fmj",		-- [29]    600
+		"wpn_hpsa",						-- [30]    650
+		"ammo_5.45x39_fmj",		-- [31]    650
+		"medkit_army",					-- [32]    650
+
+		"wpn_pb",							-- [33]    700
+		"ammo_5.56x45_ss190",	-- [34]    700
+		"ammo_9x39_ap",				-- [35]    700
+		"wpn_beretta",					-- [36]    750
+
+		"medkit_scientic",				-- [37]    800
+
+		"wpn_colt1911",				-- [38]    900
+
+		"ammo_11.43x23_hydro",	-- [39]   1000
+		"detector_advanced",			-- [40]   1000
+		"drug_anabiotic",				-- [41]   1000
+		"ammo_5.45x39_ap",			-- [42]   1100
+		"ammo_5.56x45_ap",			-- [43]   1150
+
+		-- --------------------------------------------
+		-- Tier 5  (500 - 999):
+
+		"wpn_sig220",					-- [44]   1200
+		"wpn_toz34",						-- [45]   1200
+		"wpn_walther",					-- [46]   1200
+		"wpn_desert_eagle",			-- [47]   1800
+
+		"ammo_gauss",					-- [48]   2000
+		"ammo_og-7b",					-- [49]   2000
+		"ammo_pkm_100",			-- [50]   2000
+		"detector_elite",					-- [51]   2000
+
+		-- --------------------------------------------
+		-- Tier 6  (1000 - 1999):
+
+		"itm_gunsmith_toolkit",		-- [52]   2200
+		"wpn_wincheaster1300",	-- [53]   2400
+		"helm_hardhat",					-- [54]   2500
+
+		"wpn_ak74u",					-- [55]   3000
+		"wpn_mp5",						-- [56]   3600
+
+		"wpn_ak74",						-- [57]   4000
+
+		-- --------------------------------------------
+		-- Tier 7  (2000 - 2999):
+
+		"wpn_l85",						-- [58]   5000
+		"wpn_spas12",					-- [59]   5300
+		"helm_respirator",				-- [60]   5500
+		"svoboda_light_outfit",		-- [61]   5500
+
+		"wpn_abakan",					-- [62]   6000
+		"wpn_lr300",						-- [63]   6000
+
+		-- --------------------------------------------
+		-- Tier 8  (3000 - 3999):
+
+		"af_blood",						-- [64]   7000
+		"af_cristall",						-- [65]   7000
+		"af_electra_sparkler",			-- [66]   7000
+		"banditmerc_outfit",			-- [67]   7500
+		"helm_m40",						-- [68]   7500
+
+		"af_cristall_flower",			-- [69]   8000
+		"wpn_sig550",					-- [70]   8000
+		"stalker_outfit",					-- [71]   8500
+
+		-- --------------------------------------------
+		-- Tier 9  (4000 - 4999):
+
+		"af_electra_flash",				-- [72]   9000
+		"af_fireball",						-- [73]   9000
+		"af_medusa",					-- [74]   9000
+		"af_mincer_meat",				-- [75]   9000
+		"wpn_protecta",					-- [76]   9000
+		"wpn_val",							-- [77]   9000
+
+		-- --------------------------------------------
+		-- Tier 10  (5000 - 5999):
+
+		"wpn_g36",						-- [78]  10000
+		"wpn_groza",						-- [79]  10000
+
+		"dolg_outfit",						-- [80]  10500
+		"ecolog_guard_outfit",		-- [81]  10500
+
+		"af_dummy_battery",			-- [82]  11000
+		"af_dummy_glassbeads",	-- [83]  11000
+		"af_electra_moonlight",		-- [84]  11000
+		"af_night_star",					-- [85]  11000
+		"af_soul",							-- [86]  11000
+
+		-- --------------------------------------------
+		-- Tier 11  (6000 - 6999):
+
+		"wpn_vintorez",					-- [87]  12000
+		"cs_heavy_outfit",				-- [88]  12500
+		"helm_tactic",					-- [89]  12500
+		"svoboda_heavy_outfit",		-- [90]  12500
+		"detector_scientific",			-- [91]  12500
+
+		"af_vyvert",						-- [92]  13000
+
+		-- --------------------------------------------
+		-- Tier 12  (7000 - 7999):
+
+		"wpn_fn2000",					-- [93]  14000
+
+		"helm_battle",					-- [94]  15500
+		"specops_outfit",				-- [95]  15500
+
+		"wpn_svd",						-- [96]  16000
+
+		-- --------------------------------------------
+		-- Tier 13  (8000 - 8999):
+
+		"af_dummy_dummy",			-- [97]  17000
+		"af_eye",							-- [98]  17000
+		"af_fuzz_kolobok",				-- [99]  17000
+		"af_gravi",							-- [100]  17000
+		"wpn_svu",						-- [101]  17000
+		"dolg_heavy_outfit",			-- [102]  17500
+		"helm_protective",				-- [103]  17500
+
+		-- --------------------------------------------
+		-- Tier 14  (9000 - 9999):
+
+		"af_baloon",						-- [104]  19000
+
+		"wpn_pkm",						-- [105]  20000
+		"wpn_rg-6",						-- [106]  20000
+		"military_outfit",					-- [107]  20500
+
+		-- --------------------------------------------
+		-- Tier 15  (10000 - 11999):
+
+		"af_fire",							-- [108]  23000
+		"af_glass",						-- [109]  23000
+		"af_ice",							-- [110]  23000
+		"af_gold_fish",					-- [111]  25000
+
+		-- --------------------------------------------
+		-- Tier 16  (12000 - 14999):
+
+		"scientific_outfit",				-- [112]  25500
+
+		"wpn_rpg7",						-- [113]  26000
+
+		-- --------------------------------------------
+		-- Tier 17  (15000 - 24999):
+
+		"ecolog_outfit_green",		-- [114]  40500
+
+		-- --------------------------------------------
+		-- Tier 18  (25000 - 49999):
+
+		"exo_outfit",						-- [115]  50500
+
+		-- --------------------------------------------
+		-- Tier 19  (50000+):
+
+		"af_compass"					-- [116] 100000
+
+	}
+
+	-- Find tier bottom for minimum reward:
+	local min_reward_value = tonumber( p[1] )
+	local min_reward_no = 1
+
+	-- Tier 2 floor:
+	if ( min_reward_value >= 50 ) then
+		min_reward_no = 4
+	end
+
+	-- Tier 3 floor:
+	if ( min_reward_value >= 100 ) then
+		min_reward_no = 11
+	end
+
+	-- Tier 4 floor:
+	if ( min_reward_value >= 250 ) then
+		min_reward_no = 28
+	end
+
+	-- Tier 5 floor:
+	if ( min_reward_value >= 500 ) then
+		min_reward_no = 44
+	end
+
+	-- Tier 6 floor:
+	if ( min_reward_value >= 1000 ) then
+		min_reward_no = 52
+	end
+
+	-- Tier 7 floor:
+	if ( min_reward_value >= 2000 ) then
+		min_reward_no = 58
+	end
+
+	-- Tier 8 floor:
+	if ( min_reward_value >= 3000 ) then
+		min_reward_no = 64
+	end
+
+	-- Tier 9 floor:
+	if ( min_reward_value >= 4000 ) then
+		min_reward_no = 72
+	end
+
+	-- Tier 10 floor:
+	if ( min_reward_value >= 5000 ) then
+		min_reward_no = 78
+	end
+
+	-- Tier 11 floor:
+	if ( min_reward_value >= 6000 ) then
+		min_reward_no = 87
+	end
+
+	-- Tier 12 floor:
+	if ( min_reward_value >= 7000 ) then
+		min_reward_no = 93
+	end
+
+	-- Tier 13 floor:
+	if ( min_reward_value >= 8000 ) then
+		min_reward_no = 97
+	end
+
+	-- Tier 14 floor:
+	if ( min_reward_value >= 9000 ) then
+		min_reward_no = 104
+	end
+
+	-- Tier 15 floor:
+	if ( min_reward_value >= 10000 ) then
+		min_reward_no = 108
+	end
+
+	-- Tier 16 floor:
+	if ( min_reward_value >= 12000 ) then
+		min_reward_no = 112
+	end
+
+	-- Tier 17 floor:
+	if ( min_reward_value >= 15000 ) then
+		min_reward_no = 114
+	end
+
+	-- Tier 18 floor:
+	if ( min_reward_value >= 25000 ) then
+		min_reward_no = 115
+	end
+
+	-- Tier 19 floor:
+	if ( min_reward_value >= 50000 ) then
+		min_reward_no = 116
+	end
+
+	-- Find tier top for maximum reward:
+	local max_reward_value = tonumber( p[2] )
+	local max_reward_no = 116
+
+	-- Tier 18 ceiling:
+	if ( max_reward_value < 50000 ) then
+		max_reward_no = 115
+	end
+
+	-- Tier 17 ceiling:
+	if ( max_reward_value < 25000 ) then
+		max_reward_no = 114
+	end
+
+	-- Tier 16 ceiling:
+	if ( max_reward_value < 15000 ) then
+		max_reward_no = 113
+	end
+
+	-- Tier 15 ceiling:
+	if ( max_reward_value < 12000 ) then
+		max_reward_no = 111
+	end
+
+	-- Tier 14 ceiling:
+	if ( max_reward_value < 10000 ) then
+		max_reward_no = 107
+	end
+
+	-- Tier 13 ceiling:
+	if ( max_reward_value < 9000 ) then
+		max_reward_no = 103
+	end
+
+	-- Tier 12 ceiling:
+	if ( max_reward_value < 8000 ) then
+		max_reward_no = 96
+	end
+
+	-- Tier 11 ceiling:
+	if ( max_reward_value < 7000 ) then
+		max_reward_no = 92
+	end
+
+	-- Tier 10 ceiling:
+	if ( max_reward_value < 6000 ) then
+		max_reward_no = 86
+	end
+
+	-- Tier 9 ceiling:
+	if ( max_reward_value < 5000 ) then
+		max_reward_no = 77
+	end
+
+	-- Tier 8 ceiling:
+	if ( max_reward_value < 4000 ) then
+		max_reward_no = 71
+	end
+
+	-- Tier 7 ceiling:
+	if ( max_reward_value < 3000 ) then
+		max_reward_no = 63
+	end
+
+	-- Tier 6 ceiling:
+	if ( max_reward_value < 2000 ) then
+		max_reward_no = 57
+	end
+
+	-- Tier 5 ceiling:
+	if ( max_reward_value < 1000 ) then
+		max_reward_no = 51
+	end
+
+	-- Tier 4 ceiling:
+	if ( max_reward_value < 500 ) then
+		max_reward_no = 43
+	end
+
+	-- Tier 3 ceiling:
+	if ( max_reward_value < 250 ) then
+		max_reward_no = 27
+	end
+
+	-- Tier 2 ceiling:
+	if ( max_reward_value < 100 ) then
+		max_reward_no = 10
+	end
+
+	-- Tier 1 ceiling:
+	if ( max_reward_value < 50 ) then
+		max_reward_no = 3
+	end
+
+	-- Give actor item reward:
+	dialogs.relocate_item_section( db.actor, reward_items[math.random( min_reward_no, max_reward_no )], "in" )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_reward_random_rifle function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Gives actor a random reward of a rifle within a specified value
+--
+--	Usage:
+--		drx_sl_reward_random_rifle( p[1]:p[2] )
+--
+--	Parameters:
+--		p[1] (type: int)
+--			- Minimum value of the reward
+--		p[2] (type: int)
+--			- Maximum value of the reward
+--
+--	Return value (type: none):
+--		none, allocates reward to actor
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Give actor random rifle reward:
+function drx_sl_reward_random_rifle( actor, npc, p )
+
+	-- List of reward items:
+	local reward_items = {
+
+		-- --------------------------------------------
+		-- Tier 1  (1 - 99):
+
+		"wpn_bm16",						-- [1]    200
+
+		-- --------------------------------------------
+		-- Tier 2  (100 - 999):
+
+		"wpn_toz34",						-- [2]   1200
+
+		-- --------------------------------------------
+		-- Tier 3  (1000 - 1999):
+
+		"wpn_wincheaster1300",	-- [3]   2400
+		"wpn_ak74u",					-- [4]   3000
+		"wpn_mp5",						-- [5]   3600
+		"wpn_ak74",						-- [6]   4000
+
+		-- --------------------------------------------
+		-- Tier 4  (2000 - 2999):
+
+		"wpn_l85",						-- [7]   5000
+		"wpn_spas12",					-- [8]   5300
+		"wpn_abakan",					-- [9]   6000
+		"wpn_lr300",						-- [10]   6000
+
+		-- --------------------------------------------
+		-- Tier 5  (3000 - 3999):
+
+		"wpn_sig550",					-- [11]   8000
+
+		-- --------------------------------------------
+		-- Tier 6  (4000 - 4999):
+
+		"wpn_protecta",					-- [12]   9000
+		"wpn_val",							-- [13]   9000
+
+		-- --------------------------------------------
+		-- Tier 7  (5000 - 5999):
+
+		"wpn_g36",						-- [14]  10000
+		"wpn_groza",						-- [15]  10000
+
+		-- --------------------------------------------
+		-- Tier 8  (6000 - 6999):
+
+		"wpn_vintorez",					-- [16]  12000
+
+		-- --------------------------------------------
+		-- Tier 9  (7000 - 7999):
+
+		"wpn_fn2000",					-- [17]  14000
+		"wpn_svd",						-- [18]  16000
+
+		-- --------------------------------------------
+		-- Tier 10  (8000 - 8999):
+
+		"wpn_svu",						-- [19]  17000
+
+		-- --------------------------------------------
+		-- Tier 11  (9000 - 9999):
+
+		"wpn_pkm",						-- [20]  20000
+		"wpn_rg-6",						-- [21]  20000
+
+		-- --------------------------------------------
+		-- Tier 12  (10000+):
+
+		"wpn_rpg7"						-- [22]  26000
+
+	}
+
+	-- Find tier bottom for minimum reward:
+	local min_reward_value = tonumber( p[1] )
+	local min_reward_no = 1
+
+	-- Tier 2 floor:
+	if ( min_reward_value >= 100 ) then
+		min_reward_no = 2
+	end
+
+	-- Tier 3 floor:
+	if ( min_reward_value >= 1000 ) then
+		min_reward_no = 3
+	end
+
+	-- Tier 4 floor:
+	if ( min_reward_value >= 2000 ) then
+		min_reward_no = 7
+	end
+
+	-- Tier 5 floor:
+	if ( min_reward_value >= 3000 ) then
+		min_reward_no = 11
+	end
+
+	-- Tier 6 floor:
+	if ( min_reward_value >= 4000 ) then
+		min_reward_no = 12
+	end
+
+	-- Tier 7 floor:
+	if ( min_reward_value >= 5000 ) then
+		min_reward_no = 14
+	end
+
+	-- Tier 8 floor:
+	if ( min_reward_value >= 6000 ) then
+		min_reward_no = 16
+	end
+
+	-- Tier 9 floor:
+	if ( min_reward_value >= 7000 ) then
+		min_reward_no = 17
+	end
+
+	-- Tier 10 floor:
+	if ( min_reward_value >= 8000 ) then
+		min_reward_no = 19
+	end
+
+	-- Tier 11 floor:
+	if ( min_reward_value >= 9000 ) then
+		min_reward_no = 20
+	end
+
+	-- Tier 12 floor:
+	if ( min_reward_value >= 10000 ) then
+		min_reward_no = 22
+	end
+
+	-- Find tier top for maximum reward:
+	local max_reward_value = tonumber( p[2] )
+	local max_reward_no = 22
+
+	-- Tier 11 ceiling:
+	if ( max_reward_value < 10000 ) then
+		max_reward_no = 21
+	end
+
+	-- Tier 10 ceiling:
+	if ( max_reward_value < 9000 ) then
+		max_reward_no = 19
+	end
+
+	-- Tier 9 ceiling:
+	if ( max_reward_value < 8000 ) then
+		max_reward_no = 18
+	end
+
+	-- Tier 8 ceiling:
+	if ( max_reward_value < 7000 ) then
+		max_reward_no = 16
+	end
+
+	-- Tier 7 ceiling:
+	if ( max_reward_value < 6000 ) then
+		max_reward_no = 15
+	end
+
+	-- Tier 6 ceiling:
+	if ( max_reward_value < 5000 ) then
+		max_reward_no = 13
+	end
+
+	-- Tier 5 ceiling:
+	if ( max_reward_value < 4000 ) then
+		max_reward_no = 11
+	end
+
+	-- Tier 4 ceiling:
+	if ( max_reward_value < 3000 ) then
+		max_reward_no = 10
+	end
+
+	-- Tier 3 ceiling:
+	if ( max_reward_value < 2000 ) then
+		max_reward_no = 6
+	end
+
+	-- Tier 2 ceiling:
+	if ( max_reward_value < 1000 ) then
+		max_reward_no = 2
+	end
+
+	-- Tier 1 ceiling:
+	if ( max_reward_value < 100 ) then
+		max_reward_no = 1
+	end
+
+	-- Give actor rifle reward:
+	dialogs.relocate_item_section( db.actor, reward_items[math.random( min_reward_no, max_reward_no )], "in" )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_reward_random_artefact function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Gives actor a random reward of an artefact within a specified value
+--
+--	Usage:
+--		drx_sl_reward_random_artefact( p[1]:p[2] )
+--
+--	Parameters:
+--		p[1] (type: int)
+--			- Minimum value of the reward
+--		p[2] (type: int)
+--			- Maximum value of the reward
+--
+--	Return value (type: none):
+--		none, allocates reward to actor
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Give actor random artefact reward:
+function drx_sl_reward_random_artefact( actor, npc, p )
+
+	-- List of reward items:
+	local reward_items = {
+
+		-- --------------------------------------------
+		-- Tier 1  (1 - 3999):
+
+		"af_blood",						-- [1]   7000
+		"af_cristall",						-- [2]   7000
+		"af_electra_sparkler",			-- [3]   7000
+		"af_cristall_flower",			-- [4]   8000
+
+		-- --------------------------------------------
+		-- Tier 2  (4000 - 4999):
+
+		"af_electra_flash",				-- [5]   9000
+		"af_fireball",						-- [6]   9000
+		"af_medusa",					-- [7]   9000
+		"af_mincer_meat",				-- [8]   9000
+
+		-- --------------------------------------------
+		-- Tier 3  (5000 - 5999):
+
+		"af_dummy_battery",			-- [9]  11000
+		"af_dummy_glassbeads",	-- [10]  11000
+		"af_electra_moonlight",		-- [11]  11000
+		"af_night_star",					-- [12]  11000
+		"af_soul",							-- [13]  11000
+
+		-- --------------------------------------------
+		-- Tier 4  (6000 - 6999):
+
+		"af_vyvert",						-- [14]  13000
+
+		-- --------------------------------------------
+		-- Tier 5  (7000 - 8999):
+
+		"af_dummy_dummy",			-- [15]  17000
+		"af_eye",							-- [16]  17000
+		"af_fuzz_kolobok",				-- [17]  17000
+		"af_gravi",							-- [18]  17000
+
+		-- --------------------------------------------
+		-- Tier 6  (9000 - 9999):
+
+		"af_baloon",						-- [19]  19000
+
+		-- --------------------------------------------
+		-- Tier 7  (10000 - 24999):
+
+		"af_fire",							-- [20]  23000
+		"af_glass",						-- [21]  23000
+		"af_ice",							-- [22]  23000
+		"af_gold_fish",					-- [23]  25000
+
+		-- --------------------------------------------
+		-- Tier 8  (25000+):
+
+		"af_compass"					-- [24] 100000
+	}
+
+	-- Find tier bottom for minimum reward:
+	local min_reward_value = tonumber( p[1] )
+	local min_reward_no = 1
+
+	-- Tier 2 floor:
+	if ( min_reward_value >= 4000 ) then
+		min_reward_no = 5
+	end
+
+	-- Tier 3 floor:
+	if ( min_reward_value >= 5000 ) then
+		min_reward_no = 9
+	end
+
+	-- Tier 4 floor:
+	if ( min_reward_value >= 6000 ) then
+		min_reward_no = 14
+	end
+
+	-- Tier 5 floor:
+	if ( min_reward_value >= 7000 ) then
+		min_reward_no = 15
+	end
+
+	-- Tier 6 floor:
+	if ( min_reward_value >= 9000 ) then
+		min_reward_no = 19
+	end
+
+	-- Tier 7 floor:
+	if ( min_reward_value >= 10000 ) then
+		min_reward_no = 20
+	end
+
+	-- Tier 8 floor:
+	if ( min_reward_value >= 25000 ) then
+		min_reward_no = 24
+	end
+
+	-- Find tier top for maximum reward:
+	local max_reward_value = tonumber( p[2] )
+	local max_reward_no = 24
+
+	-- Tier 7 ceiling:
+	if ( max_reward_value < 25000 ) then
+		max_reward_no = 23
+	end
+
+	-- Tier 6 ceiling:
+	if ( max_reward_value < 10000 ) then
+		max_reward_no = 19
+	end
+
+	-- Tier 5 ceiling:
+	if ( max_reward_value < 9000 ) then
+		max_reward_no = 18
+	end
+
+	-- Tier 4 ceiling:
+	if ( max_reward_value < 7000 ) then
+		max_reward_no = 14
+	end
+
+	-- Tier 3 ceiling:
+	if ( max_reward_value < 6000 ) then
+		max_reward_no = 13
+	end
+
+	-- Tier 2 ceiling:
+	if ( max_reward_value < 5000 ) then
+		max_reward_no = 8
+	end
+
+	-- Tier 1 ceiling:
+	if ( max_reward_value < 4000 ) then
+		max_reward_no = 4
+	end
+
+	-- Give actor artefact reward:
+	dialogs.relocate_item_section( db.actor, reward_items[math.random( min_reward_no, max_reward_no )], "in" )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_reward_stash function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Randomly gives actor stash location and possibly repair toolkits
+--
+--	Usage:
+--		drx_sl_reward_stash( p[1] )
+--
+--	Parameters:
+--		p[1] (type: string)
+--			- Whether or not to award a stash location ("true" = give stash, "false" = no stash)
+--
+--	Return value (type: none):
+--		none, randomly creates stash and marks coordinates on player pda map
+--
+--	Notes:
+--		- If p[1] is "true", there is a 75% chance a stash will be awarded
+--		- If a stash is awarded, there is a 75% chance it will contain a toolkit
+--		- If a stash is rewarded, there is a 33% chance of it containing a tier 1 toolkit, 33% chance of tier 2 toolkit, 33% chance of tier 3 toolkit
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Give actor stash location:
+function drx_sl_reward_stash( actor, npc, p )
+
+	-- List of bonus items:
+	local bonus_items = {
+		"itm_sleepbag",					--    350
+		"wpn_pm",						--    400
+		"detector_simple",				--    500
+		"itm_backpack",				--    500
+		"wpn_fort",						--    600
+		"wpn_hpsa",						--    650
+		"wpn_pb",							--    700
+		"wpn_beretta",					--    750
+		"wpn_colt1911",				--    900
+		"detector_advanced",			--   1000
+		"wpn_sig220",					--   1200
+		"wpn_toz34",						--   1200
+		"wpn_walther",					--   1200
+		"wpn_desert_eagle",			--   1800
+		"detector_elite",					--   2000
+		"itm_gunsmith_toolkit",		--   2200
+		"wpn_wincheaster1300",	--   2400
+		"helm_hardhat",					--   2500
+		"wpn_ak74u",					--   3000
+		"wpn_mp5",						--   3600
+		"wpn_ak74",						--   4000
+		"wpn_l85",						--   5000
+		"wpn_spas12",					--   5300
+		"helm_respirator",				--   5500
+		"svoboda_light_outfit",		--   5500
+		"wpn_abakan",					--   6000
+		"wpn_lr300",						--   6000
+		"af_blood",						--   7000
+		"af_cristall",						--   7000
+		"af_electra_sparkler",			--   7000
+		"banditmerc_outfit",			--   7500
+		"helm_m40",						--   7500
+		"af_cristall_flower",			--   8000
+		"wpn_sig550",					--   8000
+		"stalker_outfit",					--   8500
+		"af_electra_flash",				--   9000
+		"af_fireball",						--   9000
+		"af_medusa",					--   9000
+		"af_mincer_meat",				--   9000
+	}
+
+	-- Check if stash should be awarded:
+	if ( (p) and (p[1] ~= "false") and (math.random( 100 ) <= 75) ) then
+
+		-- Select bonus item:
+		local bonus = {bonus_items[math.random( #bonus_items )]}
+
+		-- Randomly add toolkit to stash:
+		if ( math.random( 100 ) < 75 ) then
+			local rnd = math.random( 100 )
+			if ( rnd < 33 ) then
+				table.insert( bonus, "itm_repairkit_tier_1" )
+			elseif ( rnd > 66 ) then
+				table.insert( bonus, "itm_repairkit_tier_2" )
+			else
+				table.insert( bonus, "itm_repairkit_tier_3" )
+			end
+		end
+
+		-- Create the stash:
+		coc_treasure_manager.create_random_stash( nil, nil, bonus )
+
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_fetch_reward function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Removes fetch task items and gives actor specified reward
+--
+--	Usage:
+--		drx_sl_fetch_reward( p[1]:p[2] )
+--
+--	Parameters:
+--		p[1] (type: string)
+--			- Var name given to fetch task items
+--		p[2] (type: int)
+--			- Quantity of the reward to give
+--		p[3] (type: string)
+--			- Reward to give
+--		{p[4]} ... (type: string)
+--			- Additional options for reward item
+--
+--	Return value (type: none):
+--		none, removes fetch items and gives actor reward
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+--	Remove fetch items and give reward:
+function drx_sl_fetch_reward( actor, npc, p )
+
+	-- Get fetch items:
+	local sec = alun_utils.load_var( db.actor, p[1] )
+	if not ( sec ) then
+		return
+	end
+	local item = db.actor:object( sec )
+	if not ( item ) then
+		return
+	end
+
+	-- Get fetch item count:
+	local count = alun_utils.load_var( db.actor, (p[1] .. "_count") )
+	if not ( count ) then
+		count = 1
+	end
+
+	-- Select reward item:
+	local reward_item = p[math.random( 3, #p )]
+
+	-- Give actor item reward:
+	dialogs.relocate_item_section( db.actor, reward_item, "in", tonumber( p[2] ) )
+
+	-- Remove fetch task items:
+	remove_item( actor, npc, {sec, count} )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_fetch_reward_money function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Removes fetch task items and gives actor money reward based on item value
+--
+--	Usage:
+--		drx_sl_fetch_reward_money( p[1]:p[2] )
+--
+--	Parameters:
+--		p[1] (type: string)
+--			- Var name given to fetch task items
+--		p[2] (type: float)
+--			- Multiplier for cost of items to apply to reward value (optional; default = 1.0)
+--
+--	Return value (type: none):
+--		none, removes fetch items and gives actor reward
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+--	Remove fetch items and give money reward:
+function drx_sl_fetch_reward_money( actor, npc, p )
+
+	-- Get fetch items:
+	local sec = alun_utils.load_var( db.actor, p[1] )
+	if not ( sec ) then
+		return
+	end
+	local item = db.actor:object( sec )
+	if not ( item ) then
+		return
+	end
+
+	-- Get fetch item count:
+	local count = alun_utils.load_var( db.actor, (p[1] .. "_count") )
+	if not ( count ) then
+		count = 1
+	end
+
+	-- Determine reward limits:
+	local reward_base = math.floor( (item:cost( ) * (tonumber( p[2] ) or 1)) )
+	local reward_delta = math.floor( (reward_base * 0.1) )
+
+	-- Give actor money reward:
+	drx_sl_reward_random_money( actor, npc, {((reward_base - reward_delta) * count), ((reward_base + reward_delta) * count)} )
+
+	-- Remove fetch task items:
+	remove_item( actor, npc, {sec, count} )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_fetch_reward_random function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Removes fetch task items and gives actor random reward based on item value
+--
+--	Usage:
+--		drx_sl_fetch_reward_random( p[1]:p[2] )
+--
+--	Parameters:
+--		p[1] (type: string)
+--			- Var name given to fetch task items
+--		p[2] (type: float)
+--			- Multiplier for cost of items to apply to reward value (optional; default = 1.0)
+--
+--	Return value (type: none):
+--		none, removes fetch items and gives actor reward
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+--	Remove fetch items and give random reward:
+function drx_sl_fetch_reward_random( actor, npc, p )
+
+	-- Get fetch items:
+	local sec = alun_utils.load_var( db.actor, p[1] )
+	if not ( sec ) then
+		return
+	end
+	local item = db.actor:object( sec )
+	if not ( item ) then
+		return
+	end
+
+	-- Get fetch item count:
+	local count = alun_utils.load_var( db.actor, (p[1] .. "_count") )
+	if not ( count ) then
+		count = 1
+	end
+
+	-- Determine reward limits:
+	local reward_base = math.floor( (item:cost( ) * (tonumber( p[2] ) or 1)) )
+	local reward_delta = math.floor( (reward_base * 0.1) )
+
+	-- Give actor random reward:
+	drx_sl_reward_random( actor, npc, {((reward_base - reward_delta) * count), ((reward_base + reward_delta) * count)} )
+
+	-- Remove fetch task items:
+	remove_item( actor, npc, {sec, count} )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_fetch_reward_item function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Removes fetch task items and gives actor random item reward based on item value
+--
+--	Usage:
+--		drx_sl_fetch_reward_item( p[1]:p[2] )
+--
+--	Parameters:
+--		p[1] (type: string)
+--			- Var name given to fetch task items
+--		p[2] (type: float)
+--			- Multiplier for cost of items to apply to reward value (optional; default = 1.0)
+--
+--	Return value (type: none):
+--		none, removes fetch items and gives actor reward
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+--	Remove fetch items and give random reward:
+function drx_sl_fetch_reward_item( actor, npc, p )
+
+	-- Get fetch items:
+	local sec = alun_utils.load_var( db.actor, p[1] )
+	if not ( sec ) then
+		return
+	end
+	local item = db.actor:object( sec )
+	if not ( item ) then
+		return
+	end
+
+	-- Get fetch item count:
+	local count = alun_utils.load_var( db.actor, (p[1] .. "_count") )
+	if not ( count ) then
+		count = 1
+	end
+
+	-- Determine reward limits:
+	local reward_base = math.floor( (item:cost( ) * (tonumber( p[2] ) or 1)) )
+	local reward_delta = math.floor( (reward_base * 0.1) )
+
+	-- Give actor random reward:
+	drx_sl_reward_random_item( actor, npc, {((reward_base - reward_delta) * count), ((reward_base + reward_delta) * count)} )
+
+	-- Remove fetch task items:
+	remove_item( actor, npc, {sec, count} )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_fetch_reward_rifle function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Removes fetch task items and gives actor random rifle based on item value
+--
+--	Usage:
+--		drx_sl_fetch_reward_rifle( p[1]:p[2] )
+--
+--	Parameters:
+--		p[1] (type: string)
+--			- Var name given to fetch task items
+--		p[2] (type: float)
+--			- Multiplier for cost of items to apply to reward value (optional; default = 1.0)
+--
+--	Return value (type: none):
+--		none, removes fetch items and gives actor reward
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+--	Remove fetch items and give random rifle:
+function drx_sl_fetch_reward_rifle( actor, npc, p )
+
+	-- Get fetch items:
+	local sec = alun_utils.load_var( db.actor, p[1] )
+	if not ( sec ) then
+		return
+	end
+	local item = db.actor:object( sec )
+	if not ( item ) then
+		return
+	end
+
+	-- Get fetch item count:
+	local count = alun_utils.load_var( db.actor, (p[1] .. "_count") )
+	if not ( count ) then
+		count = 1
+	end
+
+	-- Determine reward limits:
+	local reward_base = math.floor( (item:cost( ) * (tonumber( p[2] ) or 1)) )
+	local reward_delta = math.floor( (reward_base * 0.1) )
+
+	-- Give actor random rifle:
+	drx_sl_reward_random_rifle( actor, npc, {((reward_base - reward_delta) * count), ((reward_base + reward_delta) * count)} )
+
+	-- Remove fetch task items:
+	remove_item( actor, npc, {sec, count} )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_fetch_reward_artefact function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Removes fetch task items and gives actor random artefact based on item value
+--
+--	Usage:
+--		drx_sl_fetch_reward_artefact( p[1]:p[2] )
+--
+--	Parameters:
+--		p[1] (type: string)
+--			- Var name given to fetch task items
+--		p[2] (type: float)
+--			- Multiplier for cost of items to apply to reward value (optional; default = 1.0)
+--
+--	Return value (type: none):
+--		none, removes fetch items and gives actor reward
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+--	Remove fetch items and give random artefact:
+function drx_sl_fetch_reward_artefact( actor, npc, p )
+
+	-- Get fetch items:
+	local sec = alun_utils.load_var( db.actor, p[1] )
+	if not ( sec ) then
+		return
+	end
+	local item = db.actor:object( sec )
+	if not ( item ) then
+		return
+	end
+
+	-- Get fetch item count:
+	local count = alun_utils.load_var( db.actor, (p[1] .. "_count") )
+	if not ( count ) then
+		count = 1
+	end
+
+	-- Determine reward limits:
+	local reward_base = math.floor( (item:cost( ) * (tonumber( p[2] ) or 1)) )
+	local reward_delta = math.floor( (reward_base * 0.1) )
+
+	-- Give actor random artefact:
+	drx_sl_reward_random_artefact( actor, npc, {((reward_base - reward_delta) * count), ((reward_base + reward_delta) * count)} )
+
+	-- Remove fetch task items:
+	remove_item( actor, npc, {sec, count} )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_setup_sim_hostage_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Initiates a simultation hostage task
+--
+--	Usage:
+--		drx_sl_setup_sim_hostage_task( p[1]:p[2]:p[3]:p[4] )
+--
+--	Parameters:
+--		p[1] (type: string)
+--			- Hostage squad section
+--		p[2] (type: )
+--			- Smart
+--		p[3] (type: string)
+--			- Variable name; will use smart_id in a pstor variable instead
+--		p[4] (type: bool)
+--			- Disable level transition for the squad
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.25
+--	Last modified April 22, 2017
+-- ------------------------------------------------------------------------------------------------
+
+--	Initiate hostage task:
+function drx_sl_setup_sim_hostage_task( actor, npc, p )
+
+	local id = p[3] and p[3] ~= "nil" and alun_utils.load_var( db.actor,p[3] )
+	local smart = id and alife( ):object( id ) or p[2] and p[2] ~= "nil" and SIMBOARD.smarts_by_names[p[2]]
+	if not ( smart ) then
+		return
+	end
+
+	if not ( system_ini( ):section_exist( p[1] ) ) then
+		printf( "DRX SL Error - drx_sl_setup_hostage_task failed: Trying to setup companion squad with a non-existent section !!" )
+		return
+	end
+
+	local sim = alife( )
+	local squad = sim:create( p[1], smart.position, smart.m_level_vertex_id, smart.m_game_vertex_id )
+	squad:create_npc( smart )
+	squad:set_squad_relation( )
+
+	axr_companions.companion_squads[squad.id] = squad
+
+	for k in squad:squad_members( ) do
+		local se_obj = k.object or k.id and sim:object( k.id )
+		if ( se_obj ) then
+			SIMBOARD:setup_squad_and_group( se_obj )
+			utils.se_obj_save_var( se_obj.id,se_obj:name( ), "companion", true )
+			utils.se_obj_save_var( se_obj.id,se_obj:name( ), "companion_cannot_dismiss", true )
+			utils.se_obj_save_var( se_obj.id,se_obj:name( ), "companion_cannot_teleport", p[4] == "true" )
+			xrs_kill_wounded.hostage_list[se_obj.id] = smart.id
+		end
+	end
+
+	alun_utils.save_var( db.actor, "drx_sl_hostage_giver_needed", true )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_setup_fetch_mutant_meat function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Initiates a fetch mutant meat task
+--
+--	Usage:
+--		drx_sl_setup_fetch_mutant_meat( p[1]:p[2] )
+--
+--	Parameters:
+--		p[1] (type: int)
+--			- Minimum number of items to collect (optional; default = 1)
+--		p[2] (type: int)
+--			- Maximum number of items to collect (optional; default = p[1])
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+--	Initiate fetch mutant meat task:
+function drx_sl_setup_fetch_mutant_meat( actor, npc, p )
+
+	-- List of possible fetch items:
+	local item_list = {
+		"mutant_part_boar_chop",
+		"mutant_part_dog_meat",
+		"mutant_part_flesh_meat",
+		"mutant_part_psevdodog_meat",
+		"mutant_part_tushkano_meat"
+	}
+
+	-- Pick a random item from the list:
+	local fetch_item = item_list[math.random( #item_list )]
+	local min_count = (p[2] and tonumber( p[2] ) or 1)
+	local max_count = (p[3] and tonumber( p[3] ) or min_count)
+
+	-- Save chosen fetch item:
+	dialogs._FETCH_TEXT = game.translate_string( system_ini( ):r_string_ex( fetch_item, "inv_name" ) or "" )
+	alun_utils.save_var( db.actor, p[1], fetch_item )
+	alun_utils.save_var( db.actor, (p[1] .. "_count"), math.random( min_count, max_count ) )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_setup_fetch_mutant_parts function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Initiates a fetch mutant parts task
+--
+--	Usage:
+--		drx_sl_setup_fetch_mutant_parts( p[1]:p[2] )
+--
+--	Parameters:
+--		p[1] (type: int)
+--			- Minimum number of items to collect (optional; default = 1)
+--		p[2] (type: int)
+--			- Maximum number of items to collect (optional; default = p[1])
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+--	Initiate fetch mutant parts task:
+function drx_sl_setup_fetch_mutant_parts( actor, npc, p )
+
+	-- List of possible fetch items:
+	local item_list = {
+		"mutant_part_krovosos_jaw",
+		"mutant_part_controller_glass",
+		"mutant_part_controller_hand",
+		"mutant_part_burer_hand",
+		"mutant_part_pseudogigant_eye",
+		"mutant_part_pseudogigant_hand",
+		"mutant_part_chimera_claw",
+		"mutant_part_chimera_kogot"
+	}
+
+	-- Pick a random item from the list:
+	local fetch_item = item_list[math.random( #item_list )]
+	local min_count = (p[2] and tonumber( p[2] ) or 1)
+	local max_count = (p[3] and tonumber( p[3] ) or min_count)
+
+	-- Save chosen fetch item:
+	dialogs._FETCH_TEXT = game.translate_string( system_ini( ):r_string_ex( fetch_item, "inv_name" ) or "" )
+	alun_utils.save_var( db.actor, p[1], fetch_item )
+	alun_utils.save_var( db.actor, (p[1] .. "_count"), math.random( min_count, max_count ) )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_setup_fetch_artefact function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Initiates a fetch artefact task
+--
+--	Usage:
+--		drx_sl_setup_fetch_artefact( p[1]:p[2] )
+--
+--	Parameters:
+--		p[1] (type: int)
+--			- Minimum number of items to collect (optional; default = 1)
+--		p[2] (type: int)
+--			- Maximum number of items to collect (optional; default = p[1])
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+--	Initiate fetch artefact task:
+function drx_sl_setup_fetch_artefact( actor, npc, p )
+
+	-- List of possible fetch items:
+	local item_list = {
+		"af_cristall",
+		"af_fireball",
+		"af_dummy_glassbeads",
+		"af_eye",
+		"af_fire",
+		"af_medusa",
+		"af_cristall_flower",
+		"af_night_star",
+		"af_vyvert",
+		"af_gravi",
+		"af_gold_fish",
+		"af_blood",
+		"af_mincer_meat",
+		"af_soul",
+		"af_fuzz_kolobok",
+		"af_baloon",
+		"af_glass",
+		"af_electra_sparkler",
+		"af_electra_flash",
+		"af_electra_moonlight",
+		"af_dummy_battery",
+		"af_dummy_dummy",
+		"af_ice"
+	}
+
+	-- Pick a random item from the list:
+	local fetch_item = item_list[math.random( #item_list )]
+	local min_count = (p[2] and tonumber( p[2] ) or 1)
+	local max_count = (p[3] and tonumber( p[3] ) or min_count)
+
+	-- Save chosen fetch item:
+	dialogs._FETCH_TEXT = game.translate_string( system_ini( ):r_string_ex( fetch_item, "inv_name" ) or "" )
+	alun_utils.save_var( db.actor, p[1], fetch_item )
+	alun_utils.save_var( db.actor, (p[1] .. "_count"), math.random( min_count, max_count ) )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_setup_fetch_weapon function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Initiates a fetch weapon task
+--
+--	Usage:
+--		drx_sl_setup_fetch_weapon( p[1]:p[2] )
+--
+--	Parameters:
+--		p[1] (type: string)
+--			- Var name for fetch item
+--		p[2] (type: int)
+--			- Minimum number of items to collect (optional; default = 1)
+--		p[3] (type: int)
+--			- Maximum number of items to collect (optional; default = p[1])
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+--	Initiate fetch weapon task:
+function drx_sl_setup_fetch_weapon( actor, npc, p )
+
+	-- Determine min and max counts:
+	local min_count = (p[2] and tonumber( p[2] ) or 1)
+	local max_count = (p[3] and tonumber( p[3] ) or min_count)
+
+	-- List of possible fetch items:
+	local item_list = {
+		"wpn_bm16",
+		"wpn_toz34",
+		"wpn_wincheaster1300",
+		"wpn_spas12",
+		"wpn_protecta",
+		"wpn_ak74u",
+		"wpn_mp5",
+		"wpn_ak74",
+	}
+
+	-- If only fetching 1 item then expand the list:
+	if ( (min_count == 1) and (max_count == 1) ) then
+		table.insert( item_list, "wpn_abakan" )
+		table.insert( item_list, "wpn_l85" )
+		table.insert( item_list, "wpn_lr300" )
+		table.insert( item_list, "wpn_sig550" )
+		table.insert( item_list, "wpn_groza" )
+		table.insert( item_list, "wpn_val" )
+		table.insert( item_list, "wpn_vintorez" )
+		table.insert( item_list, "wpn_svu" )
+		table.insert( item_list, "wpn_svd" )
+		table.insert( item_list, "wpn_rg-6" )
+		table.insert( item_list, "wpn_rpg7" )
+		table.insert( item_list, "wpn_g36" )
+		table.insert( item_list, "wpn_fn2000" )
+		table.insert( item_list, "wpn_pkm" )
+	end
+
+	-- Pick a random item from the list:
+	local fetch_item = item_list[math.random( #item_list )]
+
+	-- Save chosen fetch item:
+	dialogs._FETCH_TEXT = game.translate_string( system_ini( ):r_string_ex( fetch_item, "inv_name" ) or "" )
+	alun_utils.save_var( db.actor, p[1], fetch_item )
+	alun_utils.save_var( db.actor, (p[1] .. "_count"), math.random( min_count, max_count ) )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_setup_fetch_supplies function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Initiates a fetch supplies task
+--
+--	Usage:
+--		drx_sl_setup_fetch_supplies( p[1]:p[2] )
+--
+--	Parameters:
+--		p[1] (type: int)
+--			- Minimum number of items to collect (optional; default = 1)
+--		p[2] (type: int)
+--			- Maximum number of items to collect (optional; default = p[1])
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+--	Initiate fetch supplies task:
+function drx_sl_setup_fetch_supplies( actor, npc, p )
+
+	-- List of possible fetch items:
+	local item_list = {
+		"bandage",
+		"antirad",
+		"medkit",
+		"medkit_army",
+		"medkit_scientic",
+
+		"drug_booster",
+		"drug_coagulant",
+		"drug_psy_blockade",
+		"drug_antidot",
+		"drug_radioprotector",
+		"drug_anabiotic",
+
+		"bread",
+		"kolbasa",
+		"conserva",
+		"vodka",
+		"energy_drink"
+	}
+
+	-- Pick a random item from the list:
+	local fetch_item = item_list[math.random( #item_list )]
+	local min_count = (p[2] and tonumber( p[2] ) or 1)
+	local max_count = (p[3] and tonumber( p[3] ) or min_count)
+
+	-- Save chosen fetch item:
+	dialogs._FETCH_TEXT = game.translate_string( system_ini( ):r_string_ex( fetch_item, "inv_name" ) or "" )
+	alun_utils.save_var( db.actor, p[1], fetch_item )
+	alun_utils.save_var( db.actor, (p[1] .. "_count"), math.random( min_count, max_count ) )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_reset_stored_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Removes a stored NPC task
+--
+--	Usage:
+--		drx_sl_reset_stored_task( [p1] )
+--
+--	Parameters:
+--		p[1] (type: string)
+--			- Task ID of finished task given by the task giver to unregister
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Reset stored task for current NPC:
+function drx_sl_reset_stored_task( actor, npc, p )
+
+	-- Get task giver id:
+	if ( (#p < 1) or (not p[1]) ) then
+		return
+	end
+	local tm = task_manager.get_task_manager( )
+	local task_info = tm.task_info
+	local giver_id = task_info[p[1]].task_giver_id
+
+	-- Reset stored task:
+	if ( giver_id ) then
+		alun_utils.save_var( db.actor, ("drx_sl_npc_stored_task_" .. giver_id), nil )
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_unregister_task_giver function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Unregisters a task giver as current
+--
+--	Usage:
+--		drx_sl_unregister_task_giver( [p1] )
+--
+--	Parameters:
+--		p[1] (type: string)
+--			- Task ID given by the task giver to unregister
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Unregister current task giver:
+function drx_sl_unregister_task_giver( actor, npc, p )
+
+	-- Validate input parameters:
+	if ( (#p < 1) or (not p[1]) ) then
+		return
+	end
+
+	printf( ("DRX SL task ended: " .. p[1]) )
+
+	-- Get task giver id:
+	local tm = task_manager.get_task_manager( )
+	local task_info = tm.task_info
+	local giver_id = task_info[p[1]].task_giver_id
+
+	-- Unregister task giver:
+	if ( giver_id and not string.find( "meet_task", p[1] ) ) then
+		local giver_task_count = (alun_utils.load_var( db.actor, ("drx_sl_task_giver_" .. giver_id), 0 ) - 1)
+		if ( giver_task_count < 0 ) then
+			giver_task_count = 0
+		end
+		alun_utils.save_var( db.actor, ("drx_sl_task_giver_" .. giver_id), giver_task_count )
+		printf( ("DRX SL: drx_sl_task_giver_" .. giver_id .. " unregistered (" .. giver_task_count .. " outstanding)") )
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_unregister_hostage_giver function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Unregisters a hostage task giver as current
+--
+--	Usage:
+--		drx_sl_unregister_hostage_giver( [p1] )
+--
+--	Parameters:
+--		p[1] (type: string)
+--			- Task ID given by the task giver to unregister
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Unregister current hostage task giver:
+function drx_sl_unregister_hostage_giver( actor, npc, p )
+
+	-- Validate input parameters:
+	if ( (#p < 1) or (not p[1]) ) then
+		return
+	end
+
+	-- Get task giver id:
+	local tm = task_manager.get_task_manager( )
+	local task_info = tm.task_info
+	local giver_id = task_info[p[1]].task_giver_id
+
+	-- Unregister task giver:
+	alun_utils.save_var( db.actor, ("drx_sl_hostage_giver_" .. giver_id), false )
+	printf( ("DRX SL: drx_sl_hostage_giver_" .. giver_id .. " unregistered") )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_decrease_sl_tasks_count function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Decreases the number of completed storyline tasks
+--
+--	Usage:
+--		drx_sl_decrease_sl_tasks_count( )
+--
+--	Parameters:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 13, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Decrease number of completed storyline tasks:
+function drx_sl_decrease_sl_tasks_count( actor, npc, p )
+
+	-- Get the current task count:
+	local task_count = alun_utils.load_var( db.actor, "drx_sl_current_task_number", 1 )
+
+	-- Decrement the current task count:
+	task_count = (task_count - 1)
+	if ( task_count < 1 ) then
+		task_count = 1
+	end
+
+	-- Save the current task count:
+	alun_utils.save_var( db.actor, "drx_sl_current_task_number", task_count )
+	printf( "DRX SL: player failed last storyline task, decrementing drx_sl_current_task_number" )
+	printf( ("DRX SL task count: " .. task_count) )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
 -- ----------------------------------------------------------------------------------------------------
 -- Общие функции
 -- ----------------------------------------------------------------------------------------------------
@@ -9,15 +3008,15 @@ local DIALOG_LAST_ID = nil
 -- param 1 - var name
 -- param 2+ - faction a.k.a. squad behavior/player_id
 function find_smart_under_faction_control(actor,npc,p)
-	if not (p[1]) then 
-		return 
-	end 
-	
+	if not (p[1]) then
+		return
+	end
+
 	local target_id
-	for name,smart in pairs(SIMBOARD.smarts_by_names) do 
-		if (smart.online) and (smart.sim_avail == nil or xr_logic.pick_section_from_condlist(actor, smart, smart.sim_avail) == "true") then 
+	for name,smart in pairs(SIMBOARD.smarts_by_names) do
+		if (smart.online) and (smart.sim_avail == nil or xr_logic.pick_section_from_condlist(actor, smart, smart.sim_avail) == "true") then
 			local smrt = SIMBOARD.smarts[smart.id]
-			if (smrt) then 
+			if (smrt) then
 				for k,squad in pairs(smrt.squads) do
 					if (squad and squad.stay_time and squad.current_target_id and squad.current_target_id == smart.id and not squad:get_script_target()) then
 						for i=2,#p do
@@ -35,19 +3034,19 @@ end
 
 -- same as above but checks all levels
 function find_smart_under_faction_control_ex(actor,npc,p)
-	if not (p[1]) then 
-		return 
-	end 
-	
+	if not (p[1]) then
+		return
+	end
+
 	local sim = alife()
 	local gg = game_graph()
 	local actor_level = sim:level_name(gg:vertex(sim:actor().m_game_vertex_id):level_id())
-		
+
 	local target_id
-	for name,smart in pairs(SIMBOARD.smarts_by_names) do 
-		if (smart.sim_avail == nil or xr_logic.pick_section_from_condlist(actor, smart, smart.sim_avail) == "true") then 
+	for name,smart in pairs(SIMBOARD.smarts_by_names) do
+		if (smart.sim_avail == nil or xr_logic.pick_section_from_condlist(actor, smart, smart.sim_avail) == "true") then
 			local smrt = SIMBOARD.smarts[smart.id]
-			if (smrt) then 
+			if (smrt) then
 				local smart_level = alife():level_name(game_graph():vertex(smart.m_game_vertex_id):level_id())
 				if (smart.online or DEACTIVATE_SIM_ON_NON_LINKED_LEVELS ~= true or string.find(simulation_objects.config:r_value(actor_level,"target_maps",0,""),smart_level)) then
 					for k,squad in pairs(smrt.squads) do
@@ -69,32 +3068,32 @@ end
 -- remove a companion squad by story id
 function remove_task_companion(actor,npc,p)
 	local squad = p[1] and get_story_squad(p[1])
-	if not (squad) then 
-		return 
-	end 
-	
+	if not (squad) then
+		return
+	end
+
 	squad.scripted_target = nil
 	squad.current_action = nil
 	axr_companions.companion_squads[squad.id] = nil
-	
+
 	for k in squad:squad_members() do
 		local npc = k.id and (db.storage[k.id] and db.storage[k.id].object or level.object_by_id(k.id))
 		if (npc) then
 			axr_logic.restore_scheme_and_logic(npc)
 			npc:disable_info_portion("npcx_is_companion")
 			npc:disable_info_portion("npcx_beh_cannot_dismiss")
-			
+
 			utils.se_obj_save_var(k.id,k.object:name(),"companion",nil)
 			utils.se_obj_save_var(k.id,k.object:name(),"companion_cannot_dismiss",nil)
 			utils.se_obj_save_var(k.id,k.object:name(),"companion_cannot_teleport",nil)
 		end
 	end
-end 
+end
 
 function add_task_companion(actor,npc,p)
 	local squad = p[1] and get_story_squad(p[1])
-	if not (squad) then 
-		return 
+	if not (squad) then
+		return
 	end
 	axr_companions.companion_squads[squad.id] = squad
 	for k in squad:squad_members() do
@@ -114,7 +3113,7 @@ function inc_task_stage(actor,npc,p)
 		--printf("inc_task_stage=%s stage=%s",p[1],tsk.stage)
 		tsk.stage = tsk.stage + 1
 	end
-end 
+end
 
 function dec_task_stage(actor,npc,p)
 	local tsk = p[1] and task_manager.get_task_manager().task_info[p[1]]
@@ -125,53 +3124,53 @@ end
 
 function set_smart_faction(actor,npc,p)
 	local smart = p and p[1] and SIMBOARD.smarts_by_names[p[1]]
-	if not (smart) then 
-		return false 
+	if not (smart) then
+		return false
 	end
 	smart.faction = p[2]
-end 
+end
 
 --param 1 task_id
 --param 2+ factions that can be targetted; can be list
 function on_init_bounty_hunt(actor,npc,p)
-	axr_task_manager.bounties_by_id[p[1]] = nil 
-	
+	axr_task_manager.bounties_by_id[p[1]] = nil
+
 	local valid_targets = {}
 	local sim = alife()
 	local comm
 	local sfind = string.find
-	
+
 	local faction_lookup = {}
-	for i=2,#p do 
+	for i=2,#p do
 		faction_lookup[p[i]] = true
-	end 
-	
-	for i=1,65534 do 
+	end
+
+	for i=1,65534 do
 		local se_obj = sim:object(i)
 		-- find random sim stalker
 		if (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and sfind(se_obj:section_name(),"sim_default") and get_object_story_id(i) == nil) and (se_obj.group_id == nil or se_obj.group_id == 65535 or get_object_story_id(se_obj.group_id) == nil) then
 			comm = alife_character_community(se_obj)
-			if (faction_lookup[comm] == true) then 
+			if (faction_lookup[comm] == true) then
 				table.insert(valid_targets,i)
 			end
 		end
 	end
-	
+
 	local size = #valid_targets
 	if (size <= 0) then
 		printf("on_init_bounty_hunt failed, no targets")
-		return 
+		return
 	end
-	
+
 	local target_id = valid_targets[math.random(size)]
 	if not(target_id) then
-		return 
+		return
 	end
-	
+
 	axr_task_manager.bounties_by_id[p[1]] = target_id
-	
+
 	--printf("on_init_bounty_hunt %s",target_id)
-	
+
 	--utils.save_var(db.actor,p[1],target_id)
 	
 	local function postpone_for_next_frame(target_id)
@@ -184,11 +3183,11 @@ function on_init_bounty_hunt(actor,npc,p)
 		return true
 	end
 	CreateTimeEvent(0,"on_init_bounty_hunt",0,postpone_for_next_frame,target_id)
-end 
+end
 
 function fail_task_dec_goodwill(actor,npc,p)
 	local amt = tonumber(p[1]) or 50
-	for i=2,#p do 
+	for i=2,#p do
 		inc_faction_goodwill_to_actor(db.actor, nil, {p[i], -(amt)})
 	end
 end
@@ -197,7 +3196,7 @@ end
 -- param2+ - community
 function complete_task_inc_goodwill(actor,npc,p)
 	local amt = tonumber(p[1]) or 50
-	for i=2,#p do 
+	for i=2,#p do
 		inc_faction_goodwill_to_actor(db.actor, nil, {p[i], amt})
 	end
 end
@@ -219,19 +3218,19 @@ end
 
 function reward_item_cost_mult_and_remove(actor,npc,p)
 	local sec = utils.load_var(db.actor,p[1])
-	if not (sec) then 
-		return 
-	end 
+	if not (sec) then
+		return
+	end
 	local item = db.actor:object(sec)
-	if not (item) then 
-		return 
-	end 
+	if not (item) then
+		return
+	end
 	dialogs.relocate_money(db.actor, math.floor((tonumber(p[2]) or 1)*item:cost()) ,"in")
 	remove_item(actor, npc, {sec,p[3]})
-end 
+end
 
 function reward_random_item(actor,npc,p)
-	if (#p > 0) then 
+	if (#p > 0) then
 		local section = p[math.random(#p)]
 		if (system_ini():section_exist(section)) then
 			alife():create(section,vector(),0,0,0)
@@ -246,14 +3245,14 @@ end
 function remove_special_task_squad(actor,npc,p)
 	level.add_pp_effector("black.ppe", 1313, false)
 	remove_squad(actor,npc,p)
-end 
+end
 
 function reset_task_target_anomaly(actor,npc,p)
 	utils.save_var(db.actor,"task_target_anomaly",nil)
-end 
+end
 
 -- Spawn a squad that will become actor companion for special tasks
--- param 1 - squad section 
+-- param 1 - squad section
 -- param 2 - smart
 -- param 3 - variable name. Will use smart_id in a pstor variable instead
 -- param 4 - disable level transition for the squad
@@ -261,18 +3260,18 @@ end
 function setup_companion_task(actor,npc,p)
 	local id = p[3] and p[3] ~= "nil" and utils.load_var(db.actor,p[3])
 	local smart = id and alife_object(id) or p[2] and p[2] ~= "nil" and SIMBOARD.smarts_by_names[p[2]]
-	if not (smart) then 
-		return 
-	end 
-	
-	if not (system_ini():section_exist(p[1])) then 
+	if not (smart) then
+		return
+	end
+
+	if not (system_ini():section_exist(p[1])) then
 		printf("setup_companion_task: Trying to setup companion squad with a non-existent section!")
 		return
-	end 
-	
+	end
+
 	local sim = alife()
 	local squad = sim:create(p[1],smart.position,smart.m_level_vertex_id,smart.m_game_vertex_id)
-	
+
 	squad:create_npc(smart)
 	squad:set_squad_relation()
 
@@ -284,7 +3283,7 @@ function setup_companion_task(actor,npc,p)
 			utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion",true)
 			utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss",true)
 			utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_teleport",p[4] == "true")
-			if (p[5] == "true") then 
+			if (p[5] == "true") then
 				xrs_kill_wounded.hostage_list[se_obj.id] = smart.id
 			end
 		end
@@ -297,14 +3296,14 @@ end
 -- setup for special escort to anomaly task
 function setup_task_target_anomaly(actor,npc,p)
 	local targets = {}
-	for k,v in pairs(db.anomaly_by_name) do 
+	for k,v in pairs(db.anomaly_by_name) do
 		table.insert(targets,k)
 	end
-	
-	if (#targets <= 0) then 
-		return 
-	end 
-	
+
+	if (#targets <= 0) then
+		return
+	end
+
 	local target_name = targets[math.random(#targets)]
 	utils.save_var(db.actor,"task_target_anomaly",target_name)
 end
@@ -313,7 +3312,7 @@ end
 -- param2 - count
 -- param3+ - sections
 function setup_generic_fetch_task(actor,npc,p)
-	if (p[1] and p[2] and p[3]) then 
+	if (p[1] and p[2] and p[3]) then
 		local sec = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 		DIALOG_LAST_ID = inventory_upgrades.victim_id
 		if (sec and system_ini():section_exist(sec)) then
@@ -323,7 +3322,7 @@ function setup_generic_fetch_task(actor,npc,p)
 			if (sec and system_ini():section_exist(sec)) then
 				utils.save_var(db.actor,p[1],sec)
 				local count = tonumber(p[2]) or 1
-				if (count > 1) then 
+				if (count > 1) then
 					utils.save_var(db.actor,p[1].."_count",count)
 				end
 				dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(sec,"inv_name") or "")
@@ -338,10 +3337,10 @@ end
 function setup_rare_mutant_fetch_task(actor,npc,p)
 	local part = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
-	if (part and system_ini():section_exist(part)) then 
+	if (part and system_ini():section_exist(part)) then
 		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(part,"inv_name") or "")
 	else
-		local parts = { 
+		local parts = {
 		"mutant_part_controller_glass",
 		"mutant_part_controller_hand",
 		"mutant_part_burer_hand",
@@ -354,13 +3353,13 @@ function setup_rare_mutant_fetch_task(actor,npc,p)
 		utils.save_var(db.actor,p[1],part)
 		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(part,"inv_name") or "")
 	end
-end 
+end
 
 -- param1 - variable name
 function setup_artefact_fetch_task(actor,npc,p)
 	local artefact = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
-	if (artefact and system_ini():section_exist(artefact)) then 
+	if (artefact and system_ini():section_exist(artefact)) then
 		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(artefact,"inv_name") or "")
 	else
 		local arts = {
@@ -388,17 +3387,17 @@ function setup_artefact_fetch_task(actor,npc,p)
 		"af_dummy_dummy",
 		"af_ice"
 		}
-	
+
 		artefact = arts[math.random(#arts)]
 		utils.save_var(db.actor,p[1],artefact)
 		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(artefact,"inv_name") or "")
 	end
-end 
+end
 
 function setup_weapon_fetch_task(actor,npc,p)
 	local wpn = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
-	if (wpn and system_ini():section_exist(wpn)) then 
+	if (wpn and system_ini():section_exist(wpn)) then
 		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(wpn,"inv_name") or "")
 	else
 		local itm = {
@@ -429,15 +3428,15 @@ function setup_weapon_fetch_task(actor,npc,p)
 		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(wpn,"inv_name") or "")
 		utils.save_var(db.actor,p[1],wpn)
 	end
-end 
+end
 
--- param 1 - var name 
--- param 2 - min count 
+-- param 1 - var name
+-- param 2 - min count
 -- param 3 - max count
 function setup_supplies_fetch_task(actor,npc,p)
 	local itm = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
-	if (itm and system_ini():section_exist(itm)) then 
+	if (itm and system_ini():section_exist(itm)) then
 		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(itm,"inv_name") or "")
 	else
 		local itms = {
@@ -465,7 +3464,7 @@ function setup_supplies_fetch_task(actor,npc,p)
 		utils.save_var(db.actor,p[1],itm)
 		utils.save_var(db.actor,p[1].."_count",math.random(p[2] and tonumber(p[2]) or 1,p[3] and tonumber(p[3]) or 1))
 	end
-end 
+end
 
 function remove_fetch_item(actor,npc,p)
 	local section = utils.load_var(db.actor,p[1])
@@ -478,12 +3477,12 @@ end
 function force_talk(actor,npc,p)
 	local allow_break = p[1] and p[1] == "true" or false
 	db.actor:run_talk_dialog(npc, allow_break)
-end 
+end
 
 function unlock_smart(actor,npc,p)
 	local id = p[1] and p[1] ~= "nil" and utils.load_var(db.actor,p[1])
 	local smart = id and alife_object(id)
-	if (smart) then 
+	if (smart) then
 		smart.locked = nil
 	end
 end
@@ -918,11 +3917,11 @@ end
 
 function teleport_actor(actor, npc, p)
 	local point = patrol(p[1])
-	if not (point) then 
+	if not (point) then
 		printf("xr_effects.teleport_actor no patrol path %s exists!",p[1])
-		return 
-	end 
-	
+		return
+	end
+
 	local dir
 	if p[2] ~= nil then
 		local look = patrol(p[2])
@@ -1026,10 +4025,10 @@ function teleport_squad_lvid(actor,npc,p)
 end
 
 function teleport_npc(actor, npc, p)
-	if not (p[1]) then 
-		return 
-	end 
-	
+	if not (p[1]) then
+		return
+	end
+
 	local position = patrol(p[1]):point(tonumber(p[2]) or 0)
 	--reset_animation(npc)
 
@@ -1062,13 +4061,13 @@ function teleport_squad(actor, npc, p)
 	if not (squad) then
 		printf("There is no squad with story id [%s]", p[1])
 	end
-	
+
 	local path = patrol(p[2])
 	if not (path) then
 		printf("Wrong parameters in 'teleport_squad' function!!!")
-		return 
+		return
 	end
-	
+
 	local idx = p[3] or 0
 	TeleportSquad(squad,path:point(idx),path:level_vertex_id(idx),path:game_vertex_id(idx))
 	--squad:set_squad_position(path:point(idx))
@@ -1140,8 +4139,8 @@ function give_item(actor, npc, p)
 		npc_id = npc:id()
 	end
 	local se_npc = alife_object(npc_id)
-	if not (se_npc) then 
-		return 
+	if not (se_npc) then
+		return
 	end
 	local pos, lv_id, gv_id, npc_id = se_npc.position, se_npc.m_level_vertex_id, se_npc.m_game_vertex_id, se_npc.id
 	alife():create(p[1], pos, lv_id, gv_id, npc_id)
@@ -1454,12 +4453,12 @@ function make_enemy(actor, npc, p)
 	hitted_npc:hit(h)
 	--]]
 	local npc1 = get_story_object(p[1])
-	if not (npc1) then 
-		return 
-	end 
+	if not (npc1) then
+		return
+	end
 	local npc2 = get_story_object(p[2])
-	if not (npc2) then 
-		return 
+	if not (npc2) then
+		return
 	end
 	npc1:set_relation(game_object.enemy,npc2)
 	npc2:set_relation(game_object.enemy,npc1)
@@ -1990,12 +4989,12 @@ function destroy_object(actor, obj, p)
 		sobj = alife_object(obj:id())
 	elseif (p[1] == "story" and p[2] ~= nil) then
 		local id = get_story_object_id(p[2])
-		if not (id) then 
+		if not (id) then
 			printf("destroy_object %s story id doesn't exist!",p[2])
 		end
 		sobj = id and alife_object(id)
 	end
-	
+
 	if not (sobj) then
 		return
 	end
@@ -2069,9 +5068,9 @@ function play_sound(actor, obj, p)
 	local point
 	if (p[3]) then
 		local smart = SIMBOARD.smarts_by_names[p[3]]
-		if (smart) then 
+		if (smart) then
 			point = smart.id
-		else 
+		else
 			point = p[3]
 		end
 	end
@@ -2170,7 +5169,7 @@ function create_squad(actor, obj, p)
 
 	printf("Create squad %s BEFORE",squad_id)
 	local squad = board:create_squad(smart, squad_id)
-	if not (squad) then 
+	if not (squad) then
 		return
 	end
 	printf("Create squad %s AFTER",squad_id)
@@ -2232,13 +5231,13 @@ function create_squad_member(actor, obj, p)
 		game_vertex_id	= commander.m_game_vertex_id
 	end
 	local new_member_id = squad:add_squad_member(squad_member_sect, position,  level_vertex_id, game_vertex_id)
-	
+
 	local se_obj = new_member_id and alife_object(new_member_id)
-	if (se_obj) then 
+	if (se_obj) then
 		squad_smart:register_npc(se_obj)
 		board:setup_squad_and_group(se_obj)
 	end
-	
+
 	--squad_smart:refresh()
 	squad:update()
 end
@@ -2346,7 +5345,7 @@ function flush_smart_terrain(actor,obj,p)
 	end
 
 	local board = SIMBOARD
-	
+
 	local function unregister(squad)
 		squad.assigned_target_id = nil
 		squad.current_target_id = nil
@@ -2365,7 +5364,7 @@ function flush_smart_terrain(actor,obj,p)
 			end
 		end
 	end
-	
+
 	local smart = board.smarts_by_names[smart_name]
 	local smart_id = smart.id
 	for k,v in pairs(board.smarts[smart_id].squads) do
@@ -2376,7 +5375,7 @@ function flush_smart_terrain(actor,obj,p)
 				unregister(v)
 			end
 		end
-	end	
+	end
 end
 
 
@@ -2391,7 +5390,7 @@ end
 --'-----------------------------------------------------------------------------------
 --' Quest support
 --'-----------------------------------------------------------------------------------
--- TODO: add param 2 for story_id which can be used to get the npc's squad id or object id for task_giver_id 
+-- TODO: add param 2 for story_id which can be used to get the npc's squad id or object id for task_giver_id
 function give_task(actor, obj, p)
 	if p[1] == nil then
 		printf("No parameter in give_task function.")
@@ -2409,13 +5408,13 @@ function set_active_task(actor, npc, p)
 end
 
 function set_task_completed(actor,npc,p)
-	if (p[1]) then 
+	if (p[1]) then
 		task_manager.get_task_manager():set_task_completed(p[1])
 	end
 end
 
 function set_task_failed(actor,npc,p)
-	if (p[1]) then 
+	if (p[1]) then
 		task_manager.get_task_manager():set_task_failed(p[1])
 	end
 end
@@ -2708,7 +5707,7 @@ end
 
 function pstor_set(actor,npc,p)
 	p[2] = tonumber(p[2])
-	if (p[1] and p[2]) then 
+	if (p[1] and p[2]) then
 		utils.save_var(db.actor,p[1],p[2])
 	end
 end
@@ -2717,7 +5716,7 @@ function pstor_reset(actor,npc,p)
 	if (p[1]) then
 		utils.save_var(db.actor,p[1],nil)
 	end
-end 
+end
 
 function stop_sr_cutscene(actor,npc,p)
 	local obj = db.storage[npc:id()]
@@ -2985,8 +5984,8 @@ end
 function remove_item(actor, npc, p)
 	local sec = p[1]
 	if not (sec) then
-		printf("Wrong parameters in function 'remove_item'!!!") 
-		return 
+		printf("Wrong parameters in function 'remove_item'!!!")
+		return
 	end
 	local amt = p[2] and tonumber(p[2]) or 1
 	local removed = 0
@@ -4175,25 +7174,43 @@ function sr_teleport(actor,npc,p)
 end
 
 function make_a_wish(actor,npc,p)
+
+
+	-- ///////////////////////////////////////////////////////////////////////////////////////////////
+	--
+	-- End Find Wish Granter Storyline Task
+	--
+	--	Added by DoctorX
+	--	for DoctorX Questlines 1.6
+	--	October 13, 2016
+	--
+	-- -----------------------------------------------------------------------------------------------
+
+	-- Remove on find wish granter infoportion:
+	disable_info( "drx_sl_on_find_wish_granter" )
+
+	-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
 	local action_list = {}
-	
+
 	action_list[1] = function()
 		error(game.translate_string("st_wish_granted"),2)
 		return
 	end
-	
+
 	action_list[2] = function()
 		give_info("actor_made_wish")
 		give_info("actor_made_wish_for_control")
 		return
 	end
-	
+
 	action_list[3] = function()
 		local sim = alife()
 		local squad
 		for i=1,65534 do
 			squad = sim:object(i)
-			if (squad and squad:clsid() == clsid.online_offline_group_s) then 
+			if (squad and squad:clsid() == clsid.online_offline_group_s) then
 				SIMBOARD:assign_squad_to_smart(squad, nil)
 				squad:remove_squad()
 			end
@@ -4201,8 +7218,8 @@ function make_a_wish(actor,npc,p)
 		give_info("actor_made_wish_for_peace")
 		give_info("actor_made_wish")
 		return
-	end 
-	
+	end
+
 	action_list[4] = function()
 		local sim = alife()
 		local sysini = system_ini()
@@ -4211,7 +7228,7 @@ function make_a_wish(actor,npc,p)
 			if (valid_ids[k]) then
 				local list = ui_debug_main.get_spawn_table(v)
 				if (list) then
-					for kk,vv in pairs(list) do 
+					for kk,vv in pairs(list) do
 						if (sysini:section_exist(vv)) then
 							sim:create(vv,vector(),0,0,0)
 						end
@@ -4224,22 +7241,22 @@ function make_a_wish(actor,npc,p)
 			local function itr(npc,itm)
 				if (itm:section() == "itm_actor_backpack" or itm:section() == "itm_backpack") then
 					local se_itm = alife_object(itm:id())
-					if (se_itm) then 
+					if (se_itm) then
 						alife():release(se_itm,true)
 					end
 					return
-				end 
+				end
 			end
 			db.actor:iterate_inventory(itr,db.actor)
 		end
-		
+
 		CreateTimeEvent(0,"remove_backpack",1,remove_backpack,0)
-		
+
 		give_info("actor_made_wish_for_riches")
 		give_info("actor_made_wish")
-		return 
+		return
 	end
-	
+
 	action_list[5] = function()
 		local se_actor = alife():actor()
 		local data = stpk_utils.get_actor_data(se_actor)
@@ -4247,13 +7264,13 @@ function make_a_wish(actor,npc,p)
 			data.specific_character = "actor_zombied"
 			stpk_utils.set_actor_data(data,se_actor)
 		end
-		
+
 		db.actor:set_character_community("actor_zombied", 0, 0)
 		give_info("actor_made_wish_immortal")
 		give_info("actor_made_wish")
-		
+
 --		local spawn_path = patrol("spawn_player_stalker")
---		if (spawn_path) then 
+--		if (spawn_path) then
 --			local pos = spawn_path:point(0)
 --			local lvid = spawn_path:level_vertex_id(0)
 --			local gvid = spawn_path:game_vertex_id(0)
@@ -4268,9 +7285,9 @@ function make_a_wish(actor,npc,p)
 		inc_faction_goodwill_to_actor(db.actor, nil, {"monolith", 5000})
 		inc_faction_goodwill_to_actor(db.actor, nil, {"zombied", 5000})
 		ChangeLevel(vector():set(266.99, 0.00, -131.07), 310937, 181, vector():set(0,0,0))
-		return 
+		return
 	end
-	
+
 	-- Hide and disable the immortality wish if actor is in Zombified or Monolith factions.
 	if (character_community(db.actor) == "actor_zombied" or character_community(db.actor) == "actor_monolith") then
 		action_list[5] = nil
@@ -4278,7 +7295,7 @@ function make_a_wish(actor,npc,p)
 	else
 		ui_dyn_msg_box.multi_choice(action_list,"st_wish_1","st_wish_2","st_wish_3","st_wish_4","st_wish_5","st_wish_99")
 	end
-	
+
 end
 
 function clear_logic(actor,npc,p)
@@ -4295,7 +7312,7 @@ function set_new_scheme_and_logic(actor,npc,p)
 	local st = db.storage[npc:id()]
 	st.ini_filename = ini_filename
 	st.ini = ini_file(ini_filename)
-	if not (st.ini) then 
+	if not (st.ini) then
 		printf("Error: set_new_scheme_and_logic: can't find ini %s",ini_filename)
 		return
 	end
@@ -4371,7 +7388,7 @@ end
 
 function switch_offline(actor,npc,p)
 	local se_obj = npc and alife_object(npc:id())
-	if (se_obj and se_obj:can_switch_offline()) then 
+	if (se_obj and se_obj:can_switch_offline()) then
 		se_obj:switch_offline()
 	end
 end
@@ -4445,10 +7462,10 @@ end
 
 --X16 machine switch off
 function yan_gluk (actor, npc)
-		
+
 	local sound_obj_l		= xr_sound.get_safe_sound_object( [[affects\psy_blackout_l]] )
     local sound_obj_r		= xr_sound.get_safe_sound_object( [[affects\psy_blackout_r]] )
-        
+
 	sound_obj_l:play_no_feedback(db.actor, sound_object.s2d, 0, vector():set(-1, 0, 1), 1.0)
 	sound_obj_r:play_no_feedback(db.actor, sound_object.s2d, 0, vector():set( 1, 0, 1), 1.0)
 	level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false, "")
@@ -4525,7 +7542,7 @@ function play_snd_from_obj(actor, npc, p)
 		local obj     = level_object_by_sid(p[1])
         if obj ~= nil then
            printf("can't find object with story id %s", tostring(p[1]))
-        
+
 --		snd_obj:play_at_pos(obj, obj:position(), sound_object.s3d)
 		snd_obj:play_no_feedback(obj, sound_object.s3d, 0, obj:position(), 1.0)
 		end
@@ -4541,15 +7558,15 @@ function play_snd(actor, npc, p)
 end
 
 function erase_pstor_ctime(actor,npc,p)
-	if not (p[1]) then 
-		return 
-	end 
-	
+	if not (p[1]) then
+		return
+	end
+
 	utils.save_ctime(db.actor,p[1],nil)
 end
 
 -- Shows progress bar health for last hit enemy with db.storage[id].show_health = true
--- param 1: Story ID 
+-- param 1: Story ID
 -- param 2: true or false; default is true. True will set db.storage[id].show_health = true while false will remove custom static from screen
 function show_health(actor,npc,p)
 	if (p[2] == "false") then
@@ -4557,11 +7574,11 @@ function show_health(actor,npc,p)
 	else
 		local id = get_story_object_id(p[1])
 		local st = id and db.storage[id]
-		if (st) then 
+		if (st) then
 			st.show_health = true
-		end		
+		end
 	end
-end 
+end
 
 
 function disable_monolith_zones(actor,npc,p)
@@ -4569,13 +7586,13 @@ function disable_monolith_zones(actor,npc,p)
 		["zone_monolith"] = true
 	}
 	local sim = alife()
-	for i=1,65534 do 
+	for i=1,65534 do
 		local se_obj = sim:object(i)
-		if (se_obj and remove_sections[se_obj:section_name()]) then 
+		if (se_obj and remove_sections[se_obj:section_name()]) then
 			sim:release(se_obj,true)
-		end	
+		end
 	end
-end 
+end
 
 function disable_generator_zones(actor,npc,p)
 	local remove_sections = {
@@ -4585,11 +7602,11 @@ function disable_generator_zones(actor,npc,p)
 		["generator_dust_static"] = true
 	}
 	local sim = alife()
-	for i=1,65534 do 
+	for i=1,65534 do
 		local se_obj = sim:object(i)
-		if (se_obj and remove_sections[se_obj:section_name()]) then 
+		if (se_obj and remove_sections[se_obj:section_name()]) then
 			sim:release(se_obj,true)
-		end	
+		end
 	end
 end
 
@@ -4598,7 +7615,7 @@ function bar_arena_hit(actor, npc)
 	local h = hit()
 	h.power = 0.01
 	h.direction = npc:direction()
-	h.draftsman = db.actor 
+	h.draftsman = db.actor
 	h.impulse = 1
 	h.type = hit.wound
 	npc:hit(h)
@@ -4662,14 +7679,14 @@ function bar_arena_check_lose(actor, npc)
 	if db.actor:has_info("bar_arena_100_p") then
 		if db.actor:has_info("bar_arena_fight_30") then
 			db.actor:give_info_portion("bar_arena_actor_lose")
-			news_manager.send_tip(actor, "bar_arena_fight_timeout", nil, "arena")			
+			news_manager.send_tip(actor, "bar_arena_fight_timeout", nil, "arena")
 		end
 		return
 	end
 	if db.actor:has_info("bar_arena_50_p") then
 		if db.actor:has_info("bar_arena_fight_90") then
 			db.actor:give_info_portion("bar_arena_actor_lose")
-			news_manager.send_tip(actor, "bar_arena_fight_timeout", nil, "arena")			
+			news_manager.send_tip(actor, "bar_arena_fight_timeout", nil, "arena")
 		end
 		return
 	end
@@ -4700,7 +7717,7 @@ function bar_arena_teleport (actor, npc)
 	if (hud) then
 		hud:HideActorMenu()
 	end
-	
+
 	local box = get_story_object("bar_arena_inventory_box")
 	if (box) then
 		local function transfer_object_item(item)
@@ -4709,9 +7726,9 @@ function bar_arena_teleport (actor, npc)
 		db.actor:inventory_for_each(transfer_object_item)
 	end
 
-	local spawn_items = {}	
+	local spawn_items = {}
 
-	if	has_alife_info("bar_arena_fight_1") then 
+	if	has_alife_info("bar_arena_fight_1") then
 		table.insert(spawn_items, "wpn_pm")
 		table.insert(spawn_items, "ammo_9x18_pmm")
 		table.insert(spawn_items, "ammo_9x18_pmm")
@@ -4719,20 +7736,20 @@ function bar_arena_teleport (actor, npc)
 	elseif	has_alife_info("bar_arena_fight_2") then
 		table.insert(spawn_items, "wpn_mp5")
 		table.insert(spawn_items, "ammo_9x19_pbp")
-		--table.insert(spawn_items, "wpn_knife")		
+		--table.insert(spawn_items, "wpn_knife")
 	elseif	has_alife_info("bar_arena_fight_3") then
 		table.insert(spawn_items, "wpn_bm16")
 		table.insert(spawn_items, "ammo_12x70_buck")
 		table.insert(spawn_items, "ammo_12x70_buck")
 		--table.insert(spawn_items, "wpn_knife")
-	elseif	has_alife_info("bar_arena_fight_4") then			
+	elseif	has_alife_info("bar_arena_fight_4") then
 		table.insert(spawn_items, "wpn_ak74")
 		table.insert(spawn_items, "ammo_5.45x39_ap")
 		table.insert(spawn_items, "ammo_5.45x39_ap")
 		--table.insert(spawn_items, "wpn_knife")
 		table.insert(spawn_items, "bandage")
 		table.insert(spawn_items, "bandage")
-	elseif	has_alife_info("bar_arena_fight_5") then	
+	elseif	has_alife_info("bar_arena_fight_5") then
 		table.insert(spawn_items, "wpn_abakan")
 		table.insert(spawn_items, "ammo_5.45x39_ap")
 		table.insert(spawn_items, "ammo_5.45x39_ap")
@@ -4765,17 +7782,17 @@ function bar_arena_teleport (actor, npc)
 		table.insert(spawn_items, "ammo_5.56x45_ap")
 		--table.insert(spawn_items, "wpn_knife")
 	end
-	
+
 	local k,v = 0,0
-	
+
 	for k,v in pairs(spawn_items) do
-		alife():create(v,	
+		alife():create(v,
 						db.actor:position(),
-						db.actor:level_vertex_id(),	
-						db.actor:game_vertex_id(), 
+						db.actor:level_vertex_id(),
+						db.actor:game_vertex_id(),
 						db.actor:id())
-	end	
-	
+	end
+
 end
 
 function bar_arena_weapon_slot (actor,npc,p)
@@ -4787,7 +7804,7 @@ function bar_arena_teleport_2 (actor, npc)
 	if (hud) then
 		hud:HideActorMenu()
 	end
-	
+
 	-- remove items from actor given to him by arena
 	local box = get_story_object("bar_arena_inventory_box_2")
 	if (box) then
@@ -4796,16 +7813,16 @@ function bar_arena_teleport_2 (actor, npc)
 		end
 		db.actor:inventory_for_each(transfer_object_item)
 	end
-	
+
 	-- purge all marked items
 	xr_zones.purge_arena_items("bar_arena")
-	
-	level.add_pp_effector ("blink.ppe", 234, false)				
+
+	level.add_pp_effector ("blink.ppe", 234, false)
 
 	db.actor:set_actor_position(patrol("t_walk_2"):point(0))
 	local dir = patrol("t_look_2"):point(0):sub(patrol("t_walk_2"):point(0))
 	db.actor:set_actor_direction(-dir:getH())
-	
+
 	-- give actor back his items that were taken
 	local box = get_story_object("bar_arena_inventory_box")
 	if (box) then
@@ -4835,10 +7852,10 @@ end
 
 function force_always_online(actor,npc,p)
 	local squad = p[1] and get_story_squad(p[1])
-	if not (squad) then 
-		return 
+	if not (squad) then
+		return
 	end
-	
+
 	alife():set_switch_offline(squad.id,false)
 	alife():set_switch_online(squad.id,true)
 end

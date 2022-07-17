@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="windows-1251" ?>
+
+<!--===========================================================
+<
+< ui_st_screen.xml
+<	CoC 1.4.21 - DoctorX Questlines 1.20
+<
+<	Modified by: DoctorX
+<	Last revised: December 21, 2016
+<
+<===========================================================-->
+
+
 <string_table>
 	<string id="st_ignite_fire">
 		<text>Ignite ($$ACTION_USE$$)</text>
@@ -292,7 +304,7 @@
 		<text>Stash found</text>
 	</string>
 	<string id="st_found_new_treasure">
-		<text>Stash coordinates received:</text>
+		<text>Stash coordinates received</text>
 	</string>
 	<string id="st_press_any_key">
 		<text>Press any key to play</text>
@@ -300,6 +312,28 @@
 	<string id="tips_rad_switcher_press">
 		<text>Turn off the Brain Scorcher ($$ACTION_USE$$)</text>
 	</string>
+
+
+	<!-- /////////////////////////////////////////////////////////////////////////////////////////////
+	<!--
+	<!-- STORYLINE TIP TEXT  STRINGS
+	<!--
+	<!--	Created by DoctorX
+	<!--	for DoctorX Questlines 1.6
+	<!--	October 07, 2016
+	<!--
+	<!-- ----------------------------------------------------------------------------------------- -->
+
+	<!-- ----------------------------------------------------------------------------------------- -->
+	<!-- Activate BrainScorcher Switch Tip -->
+
+	<string id="drx_sl_tips_rad_switcher_press">
+		<text>Activate the Brain Scorcher ($$ACTION_USE$$)</text>
+	</string>
+
+	<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ -->
+
+
 	<string id="st_make_a_wish">
 		<text>Make a wish ($$ACTION_USE$$)</text>
 	</string>
@@ -399,7 +433,7 @@
 	<string id="st_death_count">
 		<text>You've died %s times.</text>
 	</string>
-	
+
 	<string id="st_screen_kick">
 		<text>Kick</text>
 	</string>
@@ -409,7 +443,7 @@
 	<string id="st_nobody_left_to_replace">
 		<text>There is nobody left to replace.</text>
 	</string>
-	
+
 	<string id="st_nothing_useful">
 		<text>Nothing useful</text>
 	</string>

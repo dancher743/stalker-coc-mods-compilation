@@ -1,3 +1,90 @@
+;==============================================================
+;
+; QUEST ITEMS
+;	CoC 1.4.22 - DoctorX Questlines 1.22
+;
+;	Modified by: DoctorX
+;	Last revised: December 24, 2016
+;
+;==============================================================
+
+
+;//////////////////////////////////////////////////////////////////////////////////////////////////
+;
+; STORYLINE QUEST ITEMS
+;
+;	Modified by DoctorX
+;	for DoctorX Questlines 1.6
+;	October 06, 2016
+;
+;--------------------------------------------------------------------------------------------------
+
+;------------------------------------------------
+; DRX Storyline Quest Item Documents-
+
+[drx_sl_quest_item_1]:device_pda
+
+$spawn = "quest_items\drx_sl_quest_item_1"
+visual = dynamics\equipments\quest\notes_writing_book_2.ogf
+story_id = drx_sl_quest_item_1
+; quest_item = true
+
+inv_weight = 0.05
+inv_grid_width = 2
+inv_grid_height = 1
+inv_grid_x = 5
+inv_grid_y = 6
+
+inv_name = drx_sl_quest_item_1_name
+inv_name_short = drx_sl_quest_item_1_name
+description = drx_sl_quest_item_1_desc
+
+can_trade = false
+cost = 0
+
+;------------------------------------------------
+; DRX Storyline Quest Item Locked Case-
+
+[drx_sl_quest_item_2]:device_pda
+
+$spawn = "quest_items\drx_sl_quest_item_2"
+visual = dynamics\equipments\quest\safe_container.ogf
+story_id = drx_sl_quest_item_2
+; quest_item = false
+
+inv_weight = 12.0
+inv_grid_width = 2
+inv_grid_height = 2
+inv_grid_x = 4
+inv_grid_y = 11
+
+inv_name = drx_sl_quest_item_2_name
+inv_name_short = drx_sl_quest_item_2_name
+description = drx_sl_quest_item_2_desc
+
+can_trade = false
+; cost = 100
+
+;------------------------------------------------
+; DRX Storyline Quest Item PDA-
+
+[drx_sl_quest_item_3]:device_pda
+
+$spawn = "quest_items\drx_sl_quest_item_3"
+visual = dynamics\devices\dev_pda\dev_pda.ogf
+story_id = drx_sl_quest_item_3
+; quest_item = true
+
+inv_name = drx_sl_quest_item_3_name
+inv_name_short = drx_sl_quest_item_3_name
+description = drx_sl_quest_item_3_name
+
+can_trade = false
+cost = 0
+
+; \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
 ;*************************************************************************
 ;**					Marsh
 ;*************************************************************************

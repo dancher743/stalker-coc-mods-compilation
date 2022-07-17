@@ -1,128 +1,455 @@
+;==============================================================
+;
+; TASKS PROVIDED ON BAR (ROSTOK) MAP
+;	CoC 1.4.14 - DoctorX Questlines 1.9
+;
+;	Main Faction: DUTY
+;	Strings file: st_quests_bar.xml  (text for task titles and descriptions)
+;	Modified by: DoctorX
+;	Last revised: October 29, 2016
+;
+;==============================================================
+
+
+;//////////////////////////////////////////////////////////////////////////////////////////////////
+;
+; STORYLINE TASKS
+;
+;	Modified by DoctorX
+;	for DoctorX Questlines 1.9
+;	October 29, 2016
+;
 ;--------------------------------------------------------------------------------------------------
-; DEFEND TERRITORY FOR DUTY TASK-
+
+;------------------------------------------------
+; Petrenko (Duty Trader) Default Storyline Task (no task, just send to next honcho)-
+
+[drx_sl_bar_dolg_general_petrenko_stalker_default_task]
+
+icon = ui_inGame2_Mesta_evakuatsii
+storyline = true
+prior = 193
+
+title = drx_sl_bar_dolg_general_petrenko_stalker_default_task_name
+descr = drx_sl_bar_dolg_general_petrenko_stalker_default_task_text
+job_descr = drx_sl_bar_dolg_general_petrenko_stalker_default_task_about
+task_complete_descr = drx_sl_bar_dolg_general_petrenko_stalker_default_task_finish
+
+condlist_0 = {-drx_sl_dummy_info} complete
+condlist_1 = {!task_giver_alive(drx_sl_bar_dolg_general_petrenko_stalker_default_task)} fail
+condlist_2 = {=drx_sl_is_enemy(dolg)} fail
+
+on_complete = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_bar_dolg_general_petrenko_stalker_default_task)%
+on_fail = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_bar_dolg_general_petrenko_stalker_default_task)%
+
+;------------------------------------------------
+; Petrenko (Duty Trader) Raid Enemy Camp Storyline Task-
+
+[drx_sl_bar_dolg_general_petrenko_stalker_task_1]
+
+icon = ui_inGame2_PD_Lider
+storyline = true
+prior = 165
+repeat_timeout = 0
+precondition = {=random_chance(100) =drx_sl_validate_assault_remote_task(1:nil:false:dolg) !squad_exist(drx_sl_raid_companion_squad_dolg_2)} true, false
+
+title = drx_sl_bar_dolg_general_petrenko_stalker_task_1_name
+descr = drx_sl_bar_dolg_general_petrenko_stalker_task_1_text
+job_descr = drx_sl_bar_dolg_general_petrenko_stalker_task_1_about
+task_complete_descr = drx_sl_bar_dolg_general_petrenko_stalker_task_1_finish
+
+stage_complete = 1
+target_functor = general_under_faction_control
+status_functor = drx_sl_assault_task_status
+status_functor_params = dolg
+condlist_0 = {!squad_exist(drx_sl_raid_companion_squad_dolg_2)} fail
+condlist_1 = {!task_giver_alive(drx_sl_bar_dolg_general_petrenko_stalker_task_1)} fail
+condlist_2 = {=drx_sl_is_enemy(dolg)} fail
+
+on_init = %=setup_companion_task(drx_sl_raid_companion_squad_dolg_2:bar_dolg_general) =drx_sl_setup_assault_remote(drx_sl_bar_dolg_general_petrenko_stalker_task_1_id:dolg)%
+on_complete = %=drx_sl_reward_random(5000:7000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:dolg) =inc_task_stage(drx_sl_bar_dolg_general_petrenko_stalker_task_1) =pstor_reset(drx_sl_bar_dolg_general_petrenko_stalker_task_1_id) =pstor_reset(drx_sl_bar_dolg_general_petrenko_stalker_task_1_target_id) =remove_special_task_squad(drx_sl_raid_companion_squad_dolg_2) =drx_sl_unregister_task_giver(drx_sl_bar_dolg_general_petrenko_stalker_task_1)%
+on_fail = %=fail_task_dec_goodwill(25:dolg) =drx_sl_meet_random_honcho() =pstor_reset(drx_sl_bar_dolg_general_petrenko_stalker_task_1_id) =pstor_reset(drx_sl_bar_dolg_general_petrenko_stalker_task_1_target_id) =remove_special_task_squad(drx_sl_raid_companion_squad_dolg_2) =drx_sl_decrease_sl_tasks_count() =drx_sl_unregister_task_giver(drx_sl_bar_dolg_general_petrenko_stalker_task_1)%
+
+;------------------------------------------------
+; Petrenko (Duty Trader) Locate Brain Scorcher Equipment Storyline Task-
+
+[drx_sl_bar_dolg_general_petrenko_stalker_task_2]
+
+icon = ui_inGame2_Osobiy_zakaz
+storyline = true
+prior = 129
+repeat_timeout = 0
+precondition = {=random_chance(100) -drx_sl_quest_item_task_2_started} true, false
+
+title = drx_sl_bar_dolg_general_petrenko_stalker_task_2_name
+descr = drx_sl_bar_dolg_general_petrenko_stalker_task_2_text
+job_descr = drx_sl_bar_dolg_general_petrenko_stalker_task_2_about
+task_complete_descr = drx_sl_bar_dolg_general_petrenko_stalker_task_2_finish
+
+stage_complete = 1
+target_functor = drx_sl_quest_item_task_2_target
+status_functor = drx_sl_quest_item_task_2_status
+condlist_0 = {!task_giver_alive(drx_sl_bar_dolg_general_petrenko_stalker_task_2)} fail
+condlist_1 = {=drx_sl_is_enemy(dolg)} fail
+
+on_init = %=drx_sl_create_quest_stash_2() +drx_sl_quest_item_task_2_started%
+on_complete = %=drx_sl_reward_random(2500:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:dolg) =remove_item(drx_sl_quest_item_2) =inc_task_stage(drx_sl_bar_dolg_general_petrenko_stalker_task_2) =pstor_reset(drx_sl_quest_stash_2_id) -drx_sl_quest_item_task_2_started =drx_sl_unregister_task_giver(drx_sl_bar_dolg_general_petrenko_stalker_task_2)%
+on_fail = %=fail_task_dec_goodwill(25:dolg) =drx_sl_meet_random_honcho() =pstor_reset(drx_sl_quest_stash_2_id) -drx_sl_quest_item_task_2_started =drx_sl_decrease_sl_tasks_count =drx_sl_unregister_task_giver(drx_sl_bar_dolg_general_petrenko_stalker_task_2)%
+
+;------------------------------------------------
+; Petrenko (Duty Trader) Most Wanted Storyline Task-
+
+[drx_sl_bar_dolg_general_petrenko_stalker_task_3]
+
+icon = ui_inGame2_Odin_vistrel
+storyline = true
+prior = 135
+repeat_timeout = 0
+precondition = {=random_chance(100)} true, false
+
+title = drx_sl_bar_dolg_general_petrenko_stalker_task_3_name
+descr = drx_sl_bar_dolg_general_petrenko_stalker_task_3_text
+job_descr = drx_sl_bar_dolg_general_petrenko_stalker_task_3_about
+task_complete_descr = drx_sl_bar_dolg_general_petrenko_stalker_task_3_finish
+
+stage_complete = 1
+target_functor = general_bounty_task
+status_functor = bounty_task
+condlist_0 = {!task_giver_alive(drx_sl_bar_dolg_general_petrenko_stalker_task_3)} fail
+condlist_1 = {=drx_sl_is_enemy(dolg)} fail
+
+on_init = %=drx_sl_setup_bounty_hunt(drx_sl_bar_dolg_general_petrenko_stalker_task_3:dolg)%
+on_complete = %=drx_sl_reward_random(3000:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:dolg) =inc_task_stage(drx_sl_bar_dolg_general_petrenko_stalker_task_3) =drx_sl_unregister_task_giver(drx_sl_bar_dolg_general_petrenko_stalker_task_3)%
+on_fail = %=fail_task_dec_goodwill(25:dolg) =drx_sl_meet_random_honcho() =drx_sl_decrease_sl_tasks_count =drx_sl_unregister_task_giver(drx_sl_bar_dolg_general_petrenko_stalker_task_3)%
+
+;------------------------------------------------
+; Petrenko (Duty Trader) Search Lab X-19 (Radar) Storyline Task-
+
+[drx_sl_bar_dolg_general_petrenko_stalker_task_4]
+
+icon = ui_inGame2_Laboratoriya_X8
+storyline = true
+prior = 165
+repeat_timeout = 0
+precondition = {=random_chance(100) -main_4_search_labx10_task_done} true, false
+
+title = drx_sl_bar_dolg_general_petrenko_stalker_task_4_name
+descr = drx_sl_bar_dolg_general_petrenko_stalker_task_4_text
+job_descr = drx_sl_bar_dolg_general_petrenko_stalker_task_4_about
+task_complete_descr = drx_sl_bar_dolg_general_petrenko_stalker_task_4_finish
+
+stage_complete = 1
+target = {!actor_has_item(main_story_4_lab_x10_documents)} rad_space_restrictor_to_bunker, {=actor_has_item(main_story_4_lab_x10_documents)} bar_dolg_general_petrenko_stalker
+status_functor = drx_sl_retrieve_item_task_status
+status_functor_params = main_story_4_lab_x10_documents
+condlist_0 = {!task_giver_alive(drx_sl_bar_dolg_general_petrenko_stalker_task_4)} fail
+condlist_1 = {=drx_sl_is_enemy(dolg)} fail
+
+on_complete = %+main_4_search_labx10_task_done =drx_sl_reward_random(6500:9500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:dolg) =inc_task_stage(drx_sl_bar_dolg_general_petrenko_stalker_task_4) =remove_item(main_story_4_lab_x10_documents) =drx_sl_unregister_task_giver(drx_sl_bar_dolg_general_petrenko_stalker_task_4)%
+on_fail = %=fail_task_dec_goodwill(25:dolg) =drx_sl_meet_random_honcho() =drx_sl_decrease_sl_tasks_count =drx_sl_unregister_task_giver(drx_sl_bar_dolg_general_petrenko_stalker_task_4)%
+
+;------------------------------------------------
+; Mangun (Duty Mechanic) Default Storyline Task (no task, just send to next honcho)-
+
+[drx_sl_bar_visitors_stalker_mechanic_default_task]
+
+icon = ui_inGame2_Mesta_evakuatsii
+storyline = true
+prior = 193
+
+title = drx_sl_bar_visitors_stalker_mechanic_default_task_name
+descr = drx_sl_bar_visitors_stalker_mechanic_default_task_text
+job_descr = drx_sl_bar_visitors_stalker_mechanic_default_task_about
+task_complete_descr = drx_sl_bar_visitors_stalker_mechanic_default_task_finish
+
+condlist_0 = {-drx_sl_dummy_info} complete
+condlist_1 = {!task_giver_alive(drx_sl_bar_visitors_stalker_mechanic_default_task)} fail
+condlist_2 = {=drx_sl_is_enemy(dolg)} fail
+
+on_complete = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_bar_visitors_stalker_mechanic_default_task)%
+on_fail = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_bar_visitors_stalker_mechanic_default_task)%
+
+;------------------------------------------------
+; Mangun (Duty Mechanic) Find Replacement Weapon Storyline Task-
+
+[drx_sl_bar_visitors_stalker_mechanic_task_1]
+
+icon = ui_inGame2_Neizvestnoe_oruzhie
+storyline = true
+prior = 118
+repeat_timeout = 0
+precondition = {=random_chance(100)} true, false
+
+title = drx_sl_bar_visitors_stalker_mechanic_task_1_name
+title_functor = general_fetch_task
+descr = drx_sl_bar_visitors_stalker_mechanic_task_1_text
+descr_functor = general_fetch_task
+job_descr = drx_sl_bar_visitors_stalker_mechanic_task_1_about
+fetch_descr = drx_sl_bar_visitors_stalker_mechanic_task_1_fetch_about
+task_complete_descr = drx_sl_bar_visitors_stalker_mechanic_task_1_fetch_finish
+
+stage_complete = 1
+target_functor = general_fetch_task
+status_functor = actor_has_fetch_item
+condlist_0 = {!task_giver_alive(drx_sl_bar_visitors_stalker_mechanic_task_1)} fail
+condlist_1 = {=drx_sl_is_enemy(dolg)} fail
+
+fetch_func = %=drx_sl_setup_fetch_weapon(drx_sl_bar_visitors_stalker_mechanic_task_1_fetch:1:1)%
+on_complete = %=drx_sl_fetch_reward_item(drx_sl_bar_visitors_stalker_mechanic_task_1_fetch:0.6) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:dolg) =inc_task_stage(drx_sl_bar_visitors_stalker_mechanic_task_1) =pstor_reset(drx_sl_bar_visitors_stalker_mechanic_task_1_fetch) =drx_sl_unregister_task_giver(drx_sl_bar_visitors_stalker_mechanic_task_1)%
+on_fail = %=fail_task_dec_goodwill(25:dolg) =drx_sl_meet_random_honcho() =pstor_reset(drx_sl_bar_visitors_stalker_mechanic_task_1_fetch) =drx_sl_decrease_sl_tasks_count() =drx_sl_unregister_task_giver(drx_sl_bar_visitors_stalker_mechanic_task_1)%
+
+;------------------------------------------------
+; Mangun (Duty Mechanic) Clear Out Mutants Storyline Task-
+
+[drx_sl_bar_visitors_stalker_mechanic_task_2]
+
+icon = ui_inGame2_Nochnaya_ohota
+storyline = true
+prior = 142
+repeat_timeout = 0
+precondition = {=random_chance(100) =drx_sl_validate_assault_mutant_task(1:nil:false)} true, false
+
+title = drx_sl_bar_visitors_stalker_mechanic_task_2_name
+descr = drx_sl_bar_visitors_stalker_mechanic_task_2_text
+job_descr = drx_sl_bar_visitors_stalker_mechanic_task_2_about
+task_complete_descr = drx_sl_bar_visitors_stalker_mechanic_task_2_finish
+
+stage_complete = 1
+target_functor = general_under_faction_control
+status_functor = drx_sl_assault_mutant_task_status
+condlist_0 = {!task_giver_alive(drx_sl_bar_visitors_stalker_mechanic_task_2)} fail
+condlist_1 = {=drx_sl_is_enemy(dolg)} fail
+
+on_init = %=drx_sl_setup_assault_mutant(drx_sl_bar_visitors_stalker_mechanic_task_2_id)%
+on_complete = %=drx_sl_reward_random_rifle(1500:3000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:dolg) =inc_task_stage(drx_sl_bar_visitors_stalker_mechanic_task_2) =pstor_reset(drx_sl_bar_visitors_stalker_mechanic_task_2_id) =pstor_reset(drx_sl_bar_visitors_stalker_mechanic_task_2_target_id) =drx_sl_unregister_task_giver(drx_sl_bar_visitors_stalker_mechanic_task_2)%
+on_fail = %=fail_task_dec_goodwill(25:dolg) =drx_sl_meet_random_honcho() =pstor_reset(drx_sl_bar_visitors_stalker_mechanic_task_2_id) =pstor_reset(drx_sl_bar_visitors_stalker_mechanic_task_2_target_id) =drx_sl_decrease_sl_tasks_count =drx_sl_unregister_task_giver(drx_sl_bar_visitors_stalker_mechanic_task_2)%
+
+; \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+;//////////////////////////////////////////////////////////////////////////////////////////////////
+;
+; CHANGE FACTIONS TASKS
+;
+;	Modified by DoctorX
+;	for DoctorX Questlines 1.6
+;	October 06, 2016
+;
+;--------------------------------------------------------------------------------------------------
+
+; ------------------------------------------------
+; Petrenko (Duty Trader) Payoff Change Factions Task-
+[drx_sl_bar_dolg_general_petrenko_stalker_cf_task_1]
+
+icon = ui_inGame2_Sdelka
+storyline = true
+prior = 197
+repeat_timeout = 0
+precondition = {=random_chance(100)} true, false
+
+title = drx_sl_bar_dolg_general_petrenko_stalker_cf_task_1_name
+descr = drx_sl_bar_dolg_general_petrenko_stalker_cf_task_1_text
+job_descr = drx_sl_bar_dolg_general_petrenko_stalker_cf_task_1_about
+task_complete_descr = drx_sl_bar_dolg_general_petrenko_stalker_cf_task_1_finish
+
+stage_complete = 1
+target_functor = drx_sl_money_task_target
+status_functor = drx_sl_money_task_status
+condlist_0 = {!task_giver_alive(drx_sl_bar_dolg_general_petrenko_stalker_cf_task_1)} fail
+condlist_1 = {=drx_sl_is_enemy(dolg)} fail
+
+on_init = %=pstor_set(drx_sl_bar_dolg_general_petrenko_stalker_cf_task_1_fetch:12000) +drx_sl_on_cf_task%
+on_complete = %=drx_sl_money_task_payment(drx_sl_bar_dolg_general_petrenko_stalker_cf_task_1_fetch) =drx_sl_change_factions(dolg) =inc_task_stage(drx_sl_bar_dolg_general_petrenko_stalker_cf_task_1) =pstor_reset(drx_sl_bar_dolg_general_petrenko_stalker_cf_task_1_fetch) =drx_sl_unregister_task_giver(drx_sl_bar_dolg_general_petrenko_stalker_cf_task_1) -drx_sl_on_cf_task%
+on_fail = %=pstor_reset(drx_sl_bar_dolg_general_petrenko_stalker_cf_task_1_fetch) =drx_sl_unregister_task_giver(drx_sl_bar_dolg_general_petrenko_stalker_cf_task_1) -drx_sl_on_cf_task%
+
+; \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+;//////////////////////////////////////////////////////////////////////////////////////////////////
+;
+; DYNAMIC TASKS
+;
+;	Modified by DoctorX
+;	for DoctorX Questlines 1.6
+;	October 06, 2016
+;
+;--------------------------------------------------------------------------------------------------
+
+;------------------------------------------------
+; Petrenko (Duty Trader) Defend Rostok Task-
 
 [bar_dolg_general_petrenko_stalker_task_1]
-icon = ui_inGame2_Odin_vistrel
-prior = 2
+
+icon = ui_inGame2_Issledovanie_anomaliy
 storyline = false
+prior = 85
+repeat_timeout = 259200
+precondition = {=random_chance(100) =drx_sl_is_enemy(killer) =drx_sl_is_enemy(bandit) =all_avail_smart_stayed_squad_count_ge_by_faction_ex(1:nil:false:killer:bandit)} true, false
+
 title = bar_dolg_general_petrenko_stalker_task_1_name
 descr = bar_dolg_general_petrenko_stalker_task_1_text
 job_descr = bar_dolg_general_petrenko_stalker_task_1_about
 task_complete_descr = bar_dolg_general_petrenko_stalker_task_1_finish
-repeat_timeout = 86400
+
+stage_complete = 1
 target_functor = general_under_faction_control
 status_functor = check_smart_under_faction_control_staged
-status_functor_params = killer,bandit
-stage_complete = 1
-on_init = %=find_smart_under_faction_control_ex(bar_dolg_general_petrenko_stalker_task_1_id:killer:bandit)%
-precondition = {=all_avail_smart_stayed_squad_count_ge_by_faction_ex(1:nil:false:killer:bandit)} true, false
-on_complete = %=complete_task_inc_goodwill(50:dolg) =reward_random_money(7500:9000) =reward_stash(true) =inc_task_stage(bar_dolg_general_petrenko_stalker_task_1) =pstor_reset(bar_dolg_general_petrenko_stalker_task_1_id) =pstor_reset(bar_dolg_general_petrenko_stalker_task_1_target_id)%
-on_fail = %=pstor_reset(bar_dolg_general_petrenko_stalker_task_1_id) =pstor_reset(bar_dolg_general_petrenko_stalker_task_1_target_id)%
-on_cancel = %=pstor_reset(bar_dolg_general_petrenko_stalker_task_1_id) =pstor_reset(bar_dolg_general_petrenko_stalker_task_1_target_id)%
+status_functor_params = killer, bandit
+condlist_0 = {!task_giver_alive(bar_dolg_general_petrenko_stalker_task_1)} fail
+condlist_1 = {=drx_sl_is_enemy(dolg)} fail
 
-;--------------------------------------------------------------------------------------------------
-; CAPTURE TERRITORY FOR DUTY TASK-
+on_init = %=find_smart_under_faction_control_ex(bar_dolg_general_petrenko_stalker_task_1_id:killer:bandit)%
+on_complete = %=drx_sl_reward_random(7500:9000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:dolg) =inc_task_stage(bar_dolg_general_petrenko_stalker_task_1) =pstor_reset(bar_dolg_general_petrenko_stalker_task_1_id) =pstor_reset(bar_dolg_general_petrenko_stalker_task_1_target_id) =drx_sl_unregister_task_giver(bar_dolg_general_petrenko_stalker_task_1) =drx_sl_reset_stored_task(bar_dolg_general_petrenko_stalker_task_1)%
+on_fail = %=fail_task_dec_goodwill(25:dolg) =pstor_reset(bar_dolg_general_petrenko_stalker_task_1_id) =pstor_reset(bar_dolg_general_petrenko_stalker_task_1_target_id) =drx_sl_unregister_task_giver(bar_dolg_general_petrenko_stalker_task_1) =drx_sl_reset_stored_task(bar_dolg_general_petrenko_stalker_task_1)%
+
+;------------------------------------------------
+; Petrenko (Duty Trader) Capture Territory Task-
 
 [bar_dolg_general_petrenko_stalker_task_2]
-icon = ui_inGame2_Odin_vistrel
-prior = 2
+
+icon = ui_inGame2_Karti_mestnosti
 storyline = false
+prior = 65
+repeat_timeout = 259200
+precondition = {=random_chance(100) =drx_sl_is_enemy(freedom) =all_avail_smart_stayed_squad_count_ge_by_faction_ex(1:nil:false:freedom)} true, false
+
 title = bar_dolg_general_petrenko_stalker_task_2_name
 descr = bar_dolg_general_petrenko_stalker_task_2_text
 job_descr = bar_dolg_general_petrenko_stalker_task_2_about
 task_complete_descr = bar_dolg_general_petrenko_stalker_task_2_finish
-repeat_timeout = 86400
+
+stage_complete = 1
 target_functor = general_under_faction_control
 status_functor = check_smart_under_faction_control_staged
 status_functor_params = freedom
-stage_complete = 1
-on_init = %=find_smart_under_faction_control(bar_dolg_general_petrenko_stalker_task_2_id:freedom)%
-precondition = {=all_avail_smart_stayed_squad_count_ge_by_faction(1:nil:false:freedom)} true, false
-on_complete = %=complete_task_inc_goodwill(50:dolg) =reward_random_money(7500:9000) =reward_stash(true) =inc_task_stage(bar_dolg_general_petrenko_stalker_task_2) =pstor_reset(bar_dolg_general_petrenko_stalker_task_2_id) =pstor_reset(bar_dolg_general_petrenko_stalker_task_2_target_id)%
-on_fail = %=pstor_reset(bar_dolg_general_petrenko_stalker_task_2_id) =pstor_reset(bar_dolg_general_petrenko_stalker_task_2_target_id)%
-on_cancel = %=pstor_reset(bar_dolg_general_petrenko_stalker_task_2_id) =pstor_reset(bar_dolg_general_petrenko_stalker_task_2_target_id)%
+condlist_0 = {!task_giver_alive(bar_dolg_general_petrenko_stalker_task_2)} fail
+condlist_1 = {=drx_sl_is_enemy(dolg)} fail
 
-;--------------------------------------------------------------------------------------------------
-; ASSASSINATION FOR DUTY TASK-
+on_init = %=find_smart_under_faction_control_ex(bar_dolg_general_petrenko_stalker_task_2_id:freedom)%
+on_complete = %=drx_sl_reward_random(7500:9000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:dolg) =inc_task_stage(bar_dolg_general_petrenko_stalker_task_2) =pstor_reset(bar_dolg_general_petrenko_stalker_task_2_id) =pstor_reset(bar_dolg_general_petrenko_stalker_task_2_target_id) =drx_sl_unregister_task_giver(bar_dolg_general_petrenko_stalker_task_2) =drx_sl_reset_stored_task(bar_dolg_general_petrenko_stalker_task_2)%
+on_fail = %=fail_task_dec_goodwill(25:dolg) =pstor_reset(bar_dolg_general_petrenko_stalker_task_2_id) =pstor_reset(bar_dolg_general_petrenko_stalker_task_2_target_id) =drx_sl_unregister_task_giver(bar_dolg_general_petrenko_stalker_task_2) =drx_sl_reset_stored_task(bar_dolg_general_petrenko_stalker_task_2)%
+
+;------------------------------------------------
+; Petrenko (Duty Trader) Assassination Task-
 
 [bar_dolg_general_petrenko_stalker_task_3]
+
 icon = ui_inGame2_Odin_vistrel
-prior = 35
 storyline = false
+prior = 45
+repeat_timeout = 259200
+precondition = {=random_chance(100)} true, false
+
 title = bar_dolg_general_petrenko_stalker_task_3_name
 descr = bar_dolg_general_petrenko_stalker_task_3_text
 job_descr = bar_dolg_general_petrenko_stalker_task_3_about
 task_complete_descr = bar_dolg_general_petrenko_stalker_task_3_finish
-precondition = true
-repeat_timeout = 86400
-status_functor = bounty_task
-target_functor = general_bounty_task
+
 stage_complete = 1
-on_job_descr = %=on_init_bounty_hunt(bar_dolg_general_petrenko_stalker_task_3:freedom:bandit)%
-on_complete = %=reward_random_money(5000:7000) =reward_stash(true) =inc_task_stage(bar_dolg_general_petrenko_stalker_task_3) =complete_task_inc_goodwill(50:dolg)%
+target_functor = general_bounty_task
+status_functor = bounty_task
+condlist_0 = {!task_giver_alive(bar_dolg_general_petrenko_stalker_task_3)} fail
+condlist_1 = {=drx_sl_is_enemy(dolg)} fail
+
+on_init = %=on_init_bounty_hunt(bar_dolg_general_petrenko_stalker_task_3:freedom:bandit)%
+on_complete = %=drx_sl_reward_random(3500:7000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:dolg) =inc_task_stage(bar_dolg_general_petrenko_stalker_task_3) =drx_sl_unregister_task_giver(bar_dolg_general_petrenko_stalker_task_3) =drx_sl_reset_stored_task(bar_dolg_general_petrenko_stalker_task_3)%
+on_fail = %=fail_task_dec_goodwill(25:dolg) =drx_sl_unregister_task_giver(bar_dolg_general_petrenko_stalker_task_3) =drx_sl_reset_stored_task(bar_dolg_general_petrenko_stalker_task_3)%
+
+; \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 
+;//////////////////////////////////////////////////////////////////////////////////////////////////
+;
+; MECHANIC TASKS
+;
+;	Modified by DoctorX
+;	for DoctorX Questlines 1.6
+;	October 06, 2016
+;
 ;--------------------------------------------------------------------------------------------------
-; FIND LEVEL 1 TOOLKIT FOR MANGUN TASK-
+
+;------------------------------------------------
+; Mangun (Duty Mechanic) Find Level 1 Toolkit Task-
 
 [bar_visitors_stalker_mechanic_task_1]
+
 icon = ui_inGame2_Instrumenti
-prior = 10
 storyline = false
+prior = 15
+precondition = {-bar_visitors_stalker_mechanic_upgrade_tier_1} true, false
+
 title = bar_visitors_stalker_mechanic_task_1_name
 title_functor = general_fetch_task
 descr = bar_visitors_stalker_mechanic_task_1_text
 descr_functor = general_fetch_task
 job_descr = bar_visitors_stalker_mechanic_task_1_about
 fetch_descr = bar_visitors_stalker_mechanic_task_1_fetch_about
-fetch_func = %=setup_generic_fetch_task(bar_visitors_stalker_mechanic_task_1_fetch:1:itm_repairkit_tier_1)%
-stage_complete = 1
-status_functor = actor_has_fetch_item
-target_functor = general_fetch_task
 task_complete_descr = bar_visitors_stalker_mechanic_task_1_fetch_finish
-on_complete = %+bar_visitors_stalker_mechanic_upgrade_tier_1 =complete_task_inc_goodwill(50:dolg) =remove_fetch_item(bar_visitors_stalker_mechanic_task_1_fetch) =inc_task_stage(bar_visitors_stalker_mechanic_task_1)%
-precondition = {-bar_visitors_stalker_mechanic_upgrade_tier_1} true, false
 
+stage_complete = 1
+target_functor = general_fetch_task
+status_functor = actor_has_fetch_item
+condlist_0 = {!task_giver_alive(bar_visitors_stalker_mechanic_task_1)} fail
+condlist_1 = {=drx_sl_is_enemy(dolg)} fail
 
-;--------------------------------------------------------------------------------------------------
-; FIND LEVEL 2 TOOLKIT FOR MANGUN TASK-
+fetch_func = %=setup_generic_fetch_task(bar_visitors_stalker_mechanic_task_1_fetch:1:itm_repairkit_tier_1)%
+on_complete = %=complete_task_inc_goodwill(50:dolg) =remove_fetch_item(bar_visitors_stalker_mechanic_task_1_fetch) =inc_task_stage(bar_visitors_stalker_mechanic_task_1) +bar_visitors_stalker_mechanic_upgrade_tier_1 =drx_sl_unregister_task_giver(bar_visitors_stalker_mechanic_task_1)%
+on_fail = %=fail_task_dec_goodwill(25:dolg) =drx_sl_unregister_task_giver(bar_visitors_stalker_mechanic_task_1)%
+
+;------------------------------------------------
+; Mangun (Duty Mechanic) Find Level 2 Toolkit Task-
 
 [bar_visitors_stalker_mechanic_task_2]
+
 icon = ui_inGame2_Instrumenti
-prior = 10
 storyline = false
+prior = 16
+precondition = {+bar_visitors_stalker_mechanic_upgrade_tier_1 -bar_visitors_stalker_mechanic_upgrade_tier_2} true, false
+
 title = bar_visitors_stalker_mechanic_task_2_name
 title_functor = general_fetch_task
 descr = bar_visitors_stalker_mechanic_task_2_text
 descr_functor = general_fetch_task
 job_descr = bar_visitors_stalker_mechanic_task_2_about
 fetch_descr = bar_visitors_stalker_mechanic_task_2_fetch_about
-fetch_func = %=setup_generic_fetch_task(bar_visitors_stalker_mechanic_task_2_fetch:1:itm_repairkit_tier_2)%
-stage_complete = 1
-status_functor = actor_has_fetch_item
-target_functor = general_fetch_task
 task_complete_descr = bar_visitors_stalker_mechanic_task_2_fetch_finish
-on_complete = %+bar_visitors_stalker_mechanic_upgrade_tier_2 =complete_task_inc_goodwill(50:dolg) =remove_fetch_item(bar_visitors_stalker_mechanic_task_2_fetch) =inc_task_stage(bar_visitors_stalker_mechanic_task_2)%
-precondition = {+bar_visitors_stalker_mechanic_upgrade_tier_1 -bar_visitors_stalker_mechanic_upgrade_tier_2} true, false
 
+stage_complete = 1
+target_functor = general_fetch_task
+status_functor = actor_has_fetch_item
+condlist_0 = {!task_giver_alive(bar_visitors_stalker_mechanic_task_2)} fail
+condlist_1 = {=drx_sl_is_enemy(dolg)} fail
 
-;--------------------------------------------------------------------------------------------------
-; FIND LEVEL 3 TOOLKIT FOR MANGUN TASK-
+fetch_func = %=setup_generic_fetch_task(bar_visitors_stalker_mechanic_task_2_fetch:1:itm_repairkit_tier_2)%
+on_complete = %=complete_task_inc_goodwill(50:dolg) =remove_fetch_item(bar_visitors_stalker_mechanic_task_2_fetch) =inc_task_stage(bar_visitors_stalker_mechanic_task_2) +bar_visitors_stalker_mechanic_upgrade_tier_2 =drx_sl_unregister_task_giver(bar_visitors_stalker_mechanic_task_2)%
+on_fail = %=fail_task_dec_goodwill(25:dolg) =drx_sl_unregister_task_giver(bar_visitors_stalker_mechanic_task_2)%
+
+;------------------------------------------------
+; Mangun (Duty Mechanic) Find Level 3 Toolkit Task-
 
 [bar_visitors_stalker_mechanic_task_3]
+
 icon = ui_inGame2_Instrumenti
-prior = 10
 storyline = false
+prior = 17
+precondition = {+bar_visitors_stalker_mechanic_upgrade_tier_2 -bar_visitors_stalker_mechanic_upgrade_tier_3} true, false
+
 title = bar_visitors_stalker_mechanic_task_3_name
 title_functor = general_fetch_task
 descr = bar_visitors_stalker_mechanic_task_3_text
 descr_functor = general_fetch_task
 job_descr = bar_visitors_stalker_mechanic_task_3_about
 fetch_descr = bar_visitors_stalker_mechanic_task_3_fetch_about
-fetch_func = %=setup_generic_fetch_task(bar_visitors_stalker_mechanic_task_3_fetch:1:itm_repairkit_tier_3)%
-stage_complete = 1
-status_functor = actor_has_fetch_item
-target_functor = general_fetch_task
 task_complete_descr = bar_visitors_stalker_mechanic_task_3_fetch_finish
-on_complete = %+bar_visitors_stalker_mechanic_upgrade_tier_3 =complete_task_inc_goodwill(50:dolg) =remove_fetch_item(bar_visitors_stalker_mechanic_task_3_fetch) =inc_task_stage(bar_visitors_stalker_mechanic_task_3)%
-precondition = {+bar_visitors_stalker_mechanic_upgrade_tier_2 -bar_visitors_stalker_mechanic_upgrade_tier_3} true, false
+
+stage_complete = 1
+target_functor = general_fetch_task
+status_functor = actor_has_fetch_item
+condlist_0 = {!task_giver_alive(bar_visitors_stalker_mechanic_task_3)} fail
+condlist_1 = {=drx_sl_is_enemy(dolg)} fail
+
+fetch_func = %=setup_generic_fetch_task(bar_visitors_stalker_mechanic_task_3_fetch:1:itm_repairkit_tier_3)%
+on_complete = %=complete_task_inc_goodwill(50:dolg) =remove_fetch_item(bar_visitors_stalker_mechanic_task_3_fetch) =inc_task_stage(bar_visitors_stalker_mechanic_task_3) +bar_visitors_stalker_mechanic_upgrade_tier_3 =drx_sl_unregister_task_giver(bar_visitors_stalker_mechanic_task_3)%
+on_fail = %=fail_task_dec_goodwill(25:dolg) =drx_sl_unregister_task_giver(bar_visitors_stalker_mechanic_task_3)%
+
+; \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\

@@ -1,3 +1,14 @@
+-- ============================================================
+--
+-- Task Manager Extender  (axr_task_manager.script)
+--	CoC 1.4.16 - DoctorX Questlines 1.15
+--
+--	Modified by: DoctorX
+--	Last revised: November 12, 2016
+--
+-- ============================================================
+
+
 ---------------------------
 -- task manager extender
 -- by Alundaio
@@ -6,7 +17,7 @@
 --actor_tagged_squad_by_id = {}
 bounties_by_id = {}
 available_tasks = {}
-ongoing_tasks = {} 
+ongoing_tasks = {}
 finished_tasks = {}
 hostages_by_id = {}
 -----------------------------------------------------------------------------
@@ -15,13 +26,13 @@ hostages_by_id = {}
 
 local function npc_on_death_callback(npc,who)
 	local id = npc:id()
-	
-	for task_id,npc_id in pairs(bounties_by_id) do 
-		if (npc_id == id) then 
+
+	for task_id,npc_id in pairs(bounties_by_id) do
+		if (npc_id == id) then
 			if (db.storage[id] and db.storage[id].tagged_by_actor == true) or (who and (who:id() == 0 or who:has_info("npcx_is_companion"))) then
 				local tm = task_manager.get_task_manager()
 				local tsk = tm.task_info[task_id]
-				if (tsk and tsk.stage == 0) then 
+				if (tsk and tsk.stage == 0) then
 					tsk.stage = 1
 					-- refund goodwill
 					local comm = npc:character_community()
@@ -29,27 +40,27 @@ local function npc_on_death_callback(npc,who)
 						game_relations.change_factions_community_num(comm,0,1000)
 					end					
 				end
-			else 
+			else
 				local tm = task_manager.get_task_manager()
 				local tsk = tm.task_info[task_id]
-				if (tsk and tsk.stage == 0) then 
+				if (tsk and tsk.stage == 0) then
 					--tsk.stage = 3
 					tsk.stage = 1 -- complete task anyway instead of failing
-				end			
+				end
 			end
 			return
 		end
-	end 
-end 
+	end
+end
 
 local function npc_on_hit_callback(npc,amount,local_direction,who,bone_index)
 	local id = who and who:id()
-	if not (id) then 
-		return 
+	if not (id) then
+		return
 	end
 	if (id == 0 or IsStalker(who) and who:has_info("npcx_is_companion")) then
 		local npc_id = npc:id()
-		if (db.storage[npc_id]) then 
+		if (db.storage[npc_id]) then
 			db.storage[npc_id].tagged_by_actor = true
 		end
 	end
@@ -60,31 +71,53 @@ local function squad_on_npc_death(squad,se_npc,killer)
 	local task_info = task_manager.get_task_manager().task_info
 	for k,v in pairs(task_info) do
 		if (v.task_giver_id and v.task_giver_id == se_npc.id) then
-			if (squad:npc_count() > 0 and string.find(k,"simulation_task_")) then 
+			if (squad:npc_count() > 0 and string.find(k,"simulation_task_")) then
 				task_info[k].task_giver_id = squad:commander_id()
-			else 
+			else
 				task_info[k].task_giver_id = nil
 			end
 			return
-		end 
+		end
 	end
 end
 
 local function save_state(m_data)
 	m_data.bounties_by_id = bounties_by_id
 	m_data.hostages_by_id = hostages_by_id
-end 
+end
 
 local function load_state(m_data)
-	if (m_data.bounties_by_id) then 
+	if (m_data.bounties_by_id) then
 		bounties_by_id = m_data.bounties_by_id
 		m_data.bounties_by_id = nil
 	end
-	if (m_data.hostages_by_id) then 
+	if (m_data.hostages_by_id) then
 		hostages_by_id = m_data.hostages_by_id
-		m_data.hostages_by_id = nil 
+		m_data.hostages_by_id = nil
 	end
 end
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- skipped_tasks global array
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- List of skipped tasks
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 10, 2016
+-- ------------------------------------------------------------------------------------------------
+
+local skipped_tasks = {}
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
 -----------------------------------------------------------------------------
 --								ON GAME START
 -----------------------------------------------------------------------------
@@ -100,44 +133,902 @@ end
 ------------------------------------------------------------------------------
 --								PUBLIC
 ------------------------------------------------------------------------------
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_generate_random_sl_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Returns the task ID of a random available storyline task for the current honcho
+--
+--	Usage:
+--		drx_sl_generate_random_sl_task( npc, skip, is_sim )
+--
+--	Parameters:
+--
+--
+--	Return value (type: string):
+--		Returns the task id of a valid storyline task
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 10, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Generate valid random task id for current honcho:
+function drx_sl_generate_random_sl_task( npc, skip, is_sim )
+
+	local tm = task_manager.get_task_manager( )
+	local task_info = tm.task_info
+
+	-- Get task section:
+	local sec
+	local st = db.storage[npc:id( )]
+	if ( st and st.ini and st.section_logic ) then
+		sec = st.ini:r_string_ex( st.section_logic, "task_section" )
+		if ( sec ) then
+			sec = ("drx_sl_" .. sec .. "_task_")
+		end
+	end
+	if not ( sec ) then
+		sec = npc:section( ) ~= "m_trader" and ("drx_sl_" .. npc:section( ) .. "_task_") or ("drx_sl_" .. npc:name( ) .. "_task_")
+	end
+
+	-- Build list of valid tasks:
+	local honcho_task_list = {}
+	local task_id = (sec .. "1")
+	local count = 1
+	while ( task_manager.task_ini:section_exist( task_id ) ) do
+		if ( skipped_tasks[task_id] ~= true and task_info[task_id] == nil and xr_conditions.has_completed_task_prerequisites( nil, nil, {task_id} ) ) then
+			if ( skip ) then
+				skipped_tasks[task_id] = true
+				return
+			else
+				table.insert( honcho_task_list, task_id )
+			end
+		end
+		count = (count + 1)
+		task_id = (sec .. tostring( count ))
+	end
+
+	-- Pick random task from list of valid tasks:
+	if ( #honcho_task_list > 0 ) then
+		math.randomseed( device( ):time_global( ) )
+		return honcho_task_list[math.random( #honcho_task_list )]
+	else
+		return ("drx_sl_" .. alun_utils.load_var( db.actor, "drx_sl_current_honcho", "" ) .. "_default_task")
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_generate_change_factions_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Returns the task ID of a random available change factions task for the current npc
+--
+--	Usage:
+--		drx_sl_generate_change_factions_task( npc, skip, is_sim )
+--
+--	Parameters:
+--
+--
+--	Return value (type: string):
+--		Returns the task id of a valid change factions task
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	October 10, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Generate valid change factions task id for current npc:
+function drx_sl_generate_change_factions_task( npc, skip, is_sim )
+
+	local tm = task_manager.get_task_manager( )
+	local task_info = tm.task_info
+
+	-- Get task section:
+	local sec
+	local st = db.storage[npc:id( )]
+	if ( st and st.ini and st.section_logic ) then
+		sec = st.ini:r_string_ex( st.section_logic, "task_section" )
+		if ( sec ) then
+			sec = ("drx_sl_" .. sec .. "_cf_task_")
+		end
+	end
+	if not ( sec ) then
+		sec = npc:section( ) ~= "m_trader" and ("drx_sl_" .. npc:section( ) .. "_cf_task_") or ("drx_sl_" .. npc:name( ) .. "_cf_task_")
+	end
+
+	-- Build list of valid tasks:
+	local task_list = {}
+	local task_id = (sec .. "1")
+	local count = 1
+	while ( task_manager.task_ini:section_exist( task_id ) ) do
+		if ( skipped_tasks[task_id] ~= true and task_info[task_id] == nil and xr_conditions.has_completed_task_prerequisites( nil, nil, {task_id} ) ) then
+			if ( skip ) then
+				skipped_tasks[task_id] = true
+				return
+			else
+				table.insert( task_list, task_id )
+			end
+		end
+		count = (count + 1)
+		task_id = (sec .. tostring( count ))
+	end
+
+	-- Pick random task from list of valid tasks:
+	if ( #task_list > 0 ) then
+		math.randomseed( device( ):time_global( ) )
+		return task_list[math.random( #task_list )]
+	else
+		return ""
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- get_first_available_task  function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Returns the task ID of a random available dynamic task for the current NPC
+--
+--	Usage:
+--		get_first_available_task( npc, skip, is_sim )
+--
+--	Parameters:
+--
+--
+--	Return value (type: string):
+--		Returns the task id of a valid dynamic task
+--
+--	Notes:
+--		- Tasks must be named <section>_task_<number>
+--		- m_trader (ie. Sidorovich) use npc:name( ) instead
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 14, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Generate valid random task id for current NPC:
+function get_first_available_task( npc, skip, is_sim )
+
+	local tm = task_manager.get_task_manager( )
+	local task_info = tm.task_info
+
+	-- Get current stored task for current npc:
+	local npc_stored_task = alun_utils.load_var( db.actor, ("drx_sl_npc_stored_task_" .. npc:id( )), nil )
+	local time_last_checked = utils.load_ctime( db.actor, ("drx_sl_npc_stored_task_time_" .. npc:id( )) )
+
+	-- Check stored task has not timed out (<3hrs):
+	if ( time_last_checked and game.get_game_time( ):diffSec( time_last_checked ) < 10800 ) then
+
+		-- Check if stored task is still valid:
+		if ( not npc_stored_task ) then
+			return
+		elseif ( task_info[npc_stored_task] == nil and xr_conditions.has_completed_task_prerequisites( nil, nil, {npc_stored_task} ) ) then
+			return npc_stored_task
+		else
+			return
+		end
+
+	end
+
+	-- Decide if current npc should have task to give (75% chance):
+	math.randomseed( device( ):time_global( ) )
+	if ( math.random( 100 ) > 75 ) then
+		alun_utils.save_var( db.actor, ("drx_sl_npc_stored_task_" .. npc:id( )), nil )
+		utils.save_ctime( db.actor, ("drx_sl_npc_stored_task_time_" .. npc:id( )), game.get_game_time( ) )
+		return
+	end
+
+	-- If no valid stored task then generate new task:
+	local sec
+	local st = db.storage[npc:id( )]
+	if ( st and st.ini and st.section_logic ) then
+		sec = st.ini:r_string_ex( st.section_logic, "task_section" )
+		if ( sec ) then
+			sec = (sec .. "_task_")
+		end
+	end
+	if not ( sec ) then
+		sec = (is_sim and "simulation_task_" or npc:section( ) ~= "m_trader" and (npc:section( ) .. "_task_") or (npc:name( ) .. "_task_"))
+	end
+
+	-- Build list of valid tasks:
+	local npc_task_list = {}
+	local task_id = (sec .. "1")
+	local count = 1
+	while ( task_manager.task_ini:section_exist( task_id ) ) do
+		if ( skipped_tasks[task_id] ~= true and task_info[task_id] == nil and xr_conditions.has_completed_task_prerequisites( nil, nil, {task_id} ) ) then
+			if ( skip ) then
+				skipped_tasks[task_id] = true
+				return
+			else
+				if ( is_sim ) then
+					local p = alun_utils.parse_list( task_manager.task_ini, task_id, "sim_communities", true )
+					if ( p[character_community( npc )] == true ) then
+						table.insert( npc_task_list, task_id )
+					end
+				else
+					table.insert( npc_task_list, task_id )
+				end
+			end
+		end
+		count = (count + 1)
+		task_id = (sec .. tostring( count ))
+	end
+
+	-- Pick random task from list of valid tasks:
+	local new_task
+	if ( #npc_task_list > 0 ) then
+		math.randomseed( device( ):time_global( ) )
+		new_task = npc_task_list[math.random( #npc_task_list )]
+	end
+
+	-- Store current available task for current npc:
+	alun_utils.save_var( db.actor, ("drx_sl_npc_stored_task_" .. npc:id( )), new_task )
+	utils.save_ctime( db.actor, ("drx_sl_npc_stored_task_time_" .. npc:id( )), game.get_game_time( ) )
+	return new_task
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_get_mechanic_task  function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Returns the task ID of a random available mechanic task for the current NPC
+--
+--	Usage:
+--		drx_sl_get_mechanic_task( npc, skip, is_sim )
+--
+--	Parameters:
+--
+--
+--	Return value (type: string):
+--		Returns the task id of a valid mechanic task
+--
+--	Notes:
+--		- Tasks must be named <section>_task_<number>
+--		- m_trader (ie. Sidorovich) use npc:name( ) instead
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 10, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Generate valid mechanic task id for current NPC:
+function drx_sl_get_mechanic_task( npc, skip, is_sim )
+
+	local tm = task_manager.get_task_manager( )
+	local task_info = tm.task_info
+
+	-- Get section:
+	local sec
+	local st = db.storage[npc:id( )]
+	if ( st and st.ini and st.section_logic ) then
+		sec = st.ini:r_string_ex( st.section_logic, "task_section" )
+		if ( sec ) then
+			sec = (sec .. "_task_")
+		end
+	end
+	if not ( sec ) then
+		sec = (is_sim and "simulation_task_" or npc:section( ) ~= "m_trader" and (npc:section( ) .. "_task_") or (npc:name( ) .. "_task_"))
+	end
+
+	-- Build list of valid tasks:
+	local npc_task_list = {}
+	local task_id = (sec .. "1")
+	local count = 1
+	while ( task_manager.task_ini:section_exist( task_id ) ) do
+		if ( skipped_tasks[task_id] ~= true and task_info[task_id] == nil and xr_conditions.has_completed_task_prerequisites( nil, nil, {task_id} ) ) then
+			if ( skip ) then
+				skipped_tasks[task_id] = true
+				return
+			else
+				if ( is_sim ) then
+					local p = alun_utils.parse_list( task_manager.task_ini, task_id, "sim_communities", true )
+					if ( p[character_community( npc )] == true ) then
+						table.insert( npc_task_list, task_id )
+					end
+				else
+					table.insert( npc_task_list, task_id )
+				end
+			end
+		end
+		count = (count + 1)
+		task_id = (sec .. tostring( count ))
+	end
+
+	-- Pick random task from list of valid tasks:
+	local new_task
+	if ( #npc_task_list > 0 ) then
+		math.randomseed( device( ):time_global( ) )
+		new_task = npc_task_list[math.random( #npc_task_list )]
+	end
+
+	-- Return task ID:
+	return new_task
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_get_finished_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Determines whether or not the player has a storyline task that is finished
+--
+--	Usage:
+--		drx_sl_actor_has_finished_task( npc )
+--
+--	Parameters:
+--
+--
+--	Return value (type: bool):
+--		Returns true if the player has a storyline task that is finished, false otherwise
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 10, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Determine if actor has completed current storyline task:
+function drx_sl_get_finished_task( npc, is_sim )
+
+	local tm = task_manager.get_task_manager( )
+	local task_info = tm.task_info
+
+	local sec
+	local st = db.storage[npc:id( )]
+
+	-- Check if player is on end game task:
+	local endgame_task = alun_utils.load_var( db.actor, "drx_sl_endgame_task", "" )
+	if ( endgame_task ~= "" ) then
+		if ( db.actor:get_task( endgame_task, true ) ~= nil and task_info[endgame_task] and task_info[endgame_task].stage ~= nil and task_info[endgame_task].stage == (task_manager.task_ini:r_float_ex( endgame_task, "stage_complete" ) or 254) ) then
+			if ( task_info[endgame_task].status ~= "fail" and task_info[endgame_task].status ~= "completed" ) then
+				return endgame_task
+			end
+		end
+	end
+
+	if ( st and st.ini and st.section_logic ) then
+		sec = st.ini:r_string_ex( st.section_logic, "task_section" )
+		if ( sec ) then
+			sec = (sec .. "_task_")
+		end
+	end
+	if not ( sec ) then
+		sec = npc:section() ~= "m_trader" and ("drx_sl_" .. npc:section( ) .. "_task_") or ("drx_sl_" .. npc:name( ) .. "_task_")
+	end
+
+	local task_id = (sec .. "1")
+
+	local count = 1
+	while ( task_manager.task_ini:section_exist( task_id ) ) do
+
+		if ( db.actor:get_task( task_id, true ) ~= nil and task_info[task_id] and task_info[task_id].stage ~= nil and task_info[task_id].stage == (task_manager.task_ini:r_float_ex( task_id, "stage_complete" ) or 254) ) then
+			if ( task_info[task_id].status ~= "fail" and task_info[task_id].status ~= "completed" ) then
+				return task_id
+			end
+		end
+
+		count = (count + 1)
+		task_id = (sec .. tostring( count ))
+
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_get_finished_cf_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Determines whether or not the player has a change factions task that is finished
+--
+--	Usage:
+--		drx_sl_actor_has_finished_cf_task( npc )
+--
+--	Parameters:
+--
+--
+--	Return value (type: bool):
+--		Returns true if the player has a change factions task that is finished, false otherwise
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 10, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Determine if actor has completed change factions task:
+function drx_sl_get_finished_cf_task( npc, is_sim )
+
+	local tm = task_manager.get_task_manager( )
+	local task_info = tm.task_info
+
+	local sec
+	local st = db.storage[npc:id( )]
+
+	if ( st and st.ini and st.section_logic ) then
+		sec = st.ini:r_string_ex( st.section_logic, "task_section" )
+		if ( sec ) then
+			sec = (sec .. "_cf_task_")
+		end
+	end
+	if not ( sec ) then
+		sec = npc:section() ~= "m_trader" and ("drx_sl_" .. npc:section( ) .. "_cf_task_") or ("drx_sl_" .. npc:name( ) .. "_cf_task_")
+	end
+
+	local task_id = (sec .. "1")
+
+	local count = 1
+	while ( task_manager.task_ini:section_exist( task_id ) ) do
+
+		if ( db.actor:get_task( task_id, true ) ~= nil and task_info[task_id] and task_info[task_id].stage ~= nil and task_info[task_id].stage == (task_manager.task_ini:r_float_ex( task_id, "stage_complete" ) or 254) ) then
+			if ( task_info[task_id].status ~= "fail" and task_info[task_id].status ~= "completed" ) then
+				return task_id
+			end
+		end
+
+		count = (count + 1)
+		task_id = (sec .. tostring( count ))
+
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_set_finished_task_complete function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Sets the current storyline task to complete
+--
+--	Usage:
+--		drx_sl_set_finished_task_complete( )
+--
+--	Parameter list:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 10, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Set current storyline task to complete:
+function drx_sl_set_finished_task_complete( npc, is_sim )
+
+	local task_id = drx_sl_get_finished_task( npc, is_sim )
+
+	if not ( task_id ) then
+		printf( "WARNING: axr_task_manager.drx_sl_set_finished_task_complete: no task %s", task_id )
+		return
+	end
+
+	task_manager.get_task_manager():set_task_completed(task_id)
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_set_finished_cf_task_complete function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Sets the current change faction task to complete
+--
+--	Usage:
+--		drx_sl_set_finished_cf_task_complete( )
+--
+--	Parameter list:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Created by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 10, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Set current change faction task to complete:
+function drx_sl_set_finished_cf_task_complete( npc, is_sim )
+
+	local task_id = drx_sl_get_finished_cf_task( npc, is_sim )
+
+	if not ( task_id ) then
+		printf( "WARNING: axr_task_manager.drx_sl_set_finished_cf_task_complete: no task %s", task_id )
+		return
+	end
+
+	task_manager.get_task_manager( ):set_task_completed( task_id )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- get_first_finished_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Gets the first finished task id
+--
+--	Usage:
+--		get_first_finished_task( )
+--
+--	Parameter list:
+--		none
+--
+--	Return value (type: string):
+--		Task id of the first finished task
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Get first finished task:
+function get_first_finished_task( npc, is_sim )
+
+	local tm = task_manager.get_task_manager( )
+	local task_info = tm.task_info
+
+	local sec
+	local st = db.storage[npc:id( )]
+	if ( st and st.ini and st.section_logic ) then
+		sec = st.ini:r_string_ex( st.section_logic, "task_section" )
+		if ( sec ) then
+			sec = (sec .. "_task_")
+		end
+	end
+
+	if not ( sec ) then
+		sec = is_sim and "simulation_task_" or npc:section( ) ~= "m_trader" and (npc:section( ) .. "_task_") or (npc:name( ) .. "_task_")
+	end
+
+	local task_id = (sec .. "1")
+
+	local count = 1
+	while ( task_manager.task_ini:section_exist( task_id ) ) do
+
+		if ( db.actor:get_task( task_id, true ) ~= nil and task_info[task_id] and task_info[task_id].stage ~= nil and task_info[task_id].stage == (task_manager.task_ini:r_float_ex( task_id, "stage_complete" ) or 254) ) then
+
+			if ( task_info[task_id].status ~= "fail" and task_info[task_id].status ~= "completed" ) then
+				if ( is_sim and task_info[task_id].task_giver_id ) then
+					if ( npc:id() == task_info[task_id].task_giver_id ) then
+						return task_id
+					end
+					local se_obj = alife( ):object( npc:id( ) )
+					if ( se_obj and se_obj.group_id ~= 65535 and se_obj.group_id == task_info[task_id].task_giver_id ) then
+						return task_id
+					end
+				else
+					return task_id
+				end
+			end
+
+		end
+		count = (count + 1)
+		task_id = (sec .. tostring( count ))
+
+	end
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- set_finished_task_complete function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Sets the current task to complete
+--
+--	Usage:
+--		set_finished_task_complete( )
+--
+--	Parameter list:
+--		none
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Set current task to complete:
+function set_finished_task_complete( npc, is_sim )
+
+	local task_id = get_first_finished_task( npc, is_sim )
+	if not ( task_id ) then
+		printf( "WARNING: axr_task_manager.set_finished_task_complete: no task %s", task_id )
+		return
+	end
+	task_manager.get_task_manager( ):set_task_completed( task_id )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- npc_give_first_available_ordered_task function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Gives the player the current task
+--
+--	Usage:
+--		npc_give_first_available_ordered_task( npc, is_sim )
+--
+--	Parameters:
+--		npc (type: int)
+--			- Id of the task giver
+--		is_sim
+--			-
+--
+--	Return value (type: string):
+--		Returns the task id of the task and gives the player the task
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 10, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Give the player the current task:
+function npc_give_first_available_ordered_task( npc, is_sim )
+
+	local new_task = get_first_available_task( npc, nil, is_sim )
+
+	if ( not new_task ) then
+		return
+	end
+
+	local se_obj = npc and alife( ):object( npc:id( ) )
+	local giver_id = se_obj and (se_obj.group_id ~= 65535 and se_obj.group_id or se_obj.id)
+	task_manager.get_task_manager( ):give_task( new_task, giver_id )
+	return new_task
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- get_task_job_description function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Gets the job description for a task
+--
+--	Usage:
+--		get_task_job_description( )
+--
+--	Parameters:
+--
+--	Return value (type: string):
+--		Returns the description of the fetch task
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 10, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Get the job description of the task:
+function get_task_job_description( task )
+
+	return task_manager.task_ini:r_string_ex( task, "job_descr" )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- get_fetch_task_description function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Gets the description for a fetch task
+--
+--	Usage:
+--		get_fetch_task_description( )
+--
+--	Parameters:
+--
+--	Return value (type: string):
+--		Returns the description of the fetch task
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 10, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Get the description of the fetch task:
+function get_fetch_task_description( task )
+
+	return task_manager.task_ini:r_string_ex( task, "fetch_descr" )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- get_task_complete_text function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Gets the text for a completed task
+--
+--	Usage:
+--		get_task_complete_text( )
+--
+--	Parameters:
+--
+--	Return value (type: string):
+--		Returns the task completed text
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 11, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Get the text for a completed task:
+function get_task_complete_text( task )
+
+	return task_manager.task_ini:r_string_ex( task, "task_complete_descr" )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- clear_skipped_tasks function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Clears skipped task list
+--
+--	Usage:
+--		clear_skipped_tasks( )
+--
+--	Parameters:
+--
+--	Return value (type: none):
+--		none
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 10, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Clear skipped task list:
+function clear_skipped_tasks( )
+
+	empty_table( skipped_tasks )
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
 -- automated ordered tasks
 -- tasks must be named <section>_task_<number>
 -- m_trader (ie. Sidorovich) use npc:name() instead
 function generate_available_tasks(npc,is_sim)
 	local id = npc:id()
-	if not (available_tasks[id]) then 
+	if not (available_tasks[id]) then
 		available_tasks[id] = {}
 	else
 		empty_table(available_tasks[id])
 	end
-	
+
     local tm = task_manager.get_task_manager()
     local task_info = tm.task_info
-   
+
     local sec
     local st = db.storage[npc:id()]
-	
+
 	-- Randomly not offer any quests at all for sim npcs
-	if (is_sim and st.dyn_quest_rand == nil) then 
-		if ( (math.random(1,100)/100) < 0.3) then 
+	if (is_sim and st.dyn_quest_rand == nil) then
+		if ( (math.random(1,100)/100) < 0.3) then
 			st.dyn_quest_rand = "nil"
 			return
 		end
 	end
-	
+
     if (st and st.ini and st.section_logic) then
         sec = st.ini:r_string_ex(st.section_logic,"task_section")
         if (sec) then
             sec = sec .. "_task_"
         end
     end
-   
+
     if not (sec) then
         sec = is_sim and "simulation_task_" or npc:section() ~= "m_trader" and npc:section().."_task_" or npc:name().."_task_"
     end
-   
+
     local task_id = sec.."1"
-   
+
 	local t
     local count = 1
     while (task_manager.task_ini:section_exist(task_id)) do
@@ -146,10 +1037,10 @@ function generate_available_tasks(npc,is_sim)
 			if (is_sim) then
 				local p = alun_utils.parse_list(task_manager.task_ini,task_id,"sim_communities",true)
 				if (p[character_community(npc)] == true) then
-					if not (t) then 
-						t = {} 
+					if not (t) then
+						t = {}
 					end
-					
+
 					if (st.dyn_quest_rand == task_id) then
 						table.insert(available_tasks[id],task_id)
 						return
@@ -164,7 +1055,7 @@ function generate_available_tasks(npc,is_sim)
         count = count + 1
         task_id = sec..tostring(count)
     end
-	
+
 	-- randomize available tasks from sim npcs and only offer 1 job; remembing this job until NPC go offline
 	if (t and #t > 0) then
 		st.dyn_quest_rand = t[math.random(#t)]
@@ -174,15 +1065,15 @@ end
 
 function generate_ongoing_tasks(npc,is_sim)
 	local id = npc:id()
-	if not (ongoing_tasks[id]) then 
+	if not (ongoing_tasks[id]) then
 		ongoing_tasks[id] = {}
 	else
 		empty_table(ongoing_tasks[id])
 	end
-	
+
     local tm = task_manager.get_task_manager()
     local task_info = tm.task_info
-   
+
     local sec
     local st = db.storage[npc:id()]
     if (st and st.ini and st.section_logic) then
@@ -191,13 +1082,13 @@ function generate_ongoing_tasks(npc,is_sim)
             sec = sec .. "_task_"
         end
     end
-   
+
     if not (sec) then
         sec = is_sim and "simulation_task_" or npc:section() ~= "m_trader" and npc:section().."_task_" or npc:name().."_task_"
     end
-   
+
     local task_id = sec.."1"
-   
+
     local count = 1
     while (task_manager.task_ini:section_exist(task_id)) do
 		local task_can_be_cancelled = task_manager.task_ini:r_bool_ex(task_id,"can_cancel",true)
@@ -223,42 +1114,42 @@ end
 
 function generate_finished_tasks(npc,is_sim)
 	local id = npc:id()
-	if not (finished_tasks[id]) then 
+	if not (finished_tasks[id]) then
 		finished_tasks[id] = {}
 	else
 		empty_table(finished_tasks[id])
 	end
-	
+
 	local tm = task_manager.get_task_manager()
 	local task_info = tm.task_info
-	
+
 	local sec
 	local st = db.storage[npc:id()]
-	if (st and st.ini and st.section_logic) then 
+	if (st and st.ini and st.section_logic) then
 		sec = st.ini:r_string_ex(st.section_logic,"task_section")
-		if (sec) then 
+		if (sec) then
 			sec = sec .. "_task_"
 		end
 		--printf("sec = %s")
-	end 
-	
+	end
+
 	if not (sec) then
 		sec = is_sim and "simulation_task_" or npc:section() ~= "m_trader" and npc:section().."_task_" or npc:name().."_task_"
-	end 
+	end
 
 	local task_id = sec.."1"
-	
+
 	local count = 1
 	while (task_manager.task_ini:section_exist(task_id)) do
 		if (db.actor:get_task(task_id, true) ~= nil and task_info[task_id] and task_info[task_id].stage ~= nil and task_info[task_id].stage == (task_manager.task_ini:r_float_ex(task_id,"stage_complete") or 255)) then
 			if (task_info[task_id].status ~= "fail" and task_info[task_id].status ~= "completed") then
-				if (is_sim) then 
-					if (task_info[task_id].task_giver_id) then 
-						if (npc:id() == task_info[task_id].task_giver_id) then 
+				if (is_sim) then
+					if (task_info[task_id].task_giver_id) then
+						if (npc:id() == task_info[task_id].task_giver_id) then
 							table.insert(finished_tasks[id],task_id)
-						end 
+						end
 					end
-				else 
+				else
 					table.insert(finished_tasks[id],task_id)
 				end
 			end
@@ -271,32 +1162,32 @@ end
 function trigger_fetch_func(task_id)
 	--printf("triiger_fetch_func %s",task_id)
 	local fetch_func = xr_logic.parse_condlist(db.actor, "task_manager", "condlist", task_manager.task_ini:r_string_ex(task_id,"fetch_func") or "")
-	if (fetch_func) then 
+	if (fetch_func) then
 		xr_logic.pick_section_from_condlist(db.actor,db.actor,fetch_func)
 	end
-end 
+end
 
 function is_task_on_complete_stage(tsk)
 	local tm = task_manager.get_task_manager()
 	local task_info = tm.task_info
-	if not (task_info[task_id]) then 
-		return false 
-	end 
+	if not (task_info[task_id]) then
+		return false
+	end
 	return task_info[task_id].stage ~= nil and task_info[task_id].stage == (task_manager.task_ini:r_float_ex(tsk,"stage_complete") or 255)
 end
 
 function is_task_giver_valid(tsk)
 	local id = tsk.task_giver_id
-	local se_obj = id and alife_object(id)
-	if not (se_obj) then 
+	local se_obj = id and alife():object(id)
+	if not (se_obj) then
 		--printf("is_task_giver_valid se_obj nil id=%s   %s",id,tsk.id)
-		return false 
-	end 
-	
-	if (se_obj:clsid() == clsid.online_offline_group_s or se_obj:clsid() == clsid.script_trader) then 
-		return true 
+		return false
 	end
-	
+
+	if (se_obj:clsid() == clsid.online_offline_group_s or se_obj:clsid() == clsid.script_trader) then
+		return true
+	end
+
 	if not (IsStalker(nil,se_obj:clsid()) and se_obj:alive()) then
 		printf("is_task_giver_valid giver not alive %s",tsk.id)
 		return false

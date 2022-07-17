@@ -33,3 +33,4 @@ Using mods:
 25. Jobs guide [Update4.2][1.4.22] (SadBlackFox)
 26. Changes of Chernobyl (selectively) (Xynta2137)
 27. Sound Restoration 3.2 (Balathruin)
+28. DoctorX Questlines 1.25 [CoC 1.4.22] (DoctorX)
