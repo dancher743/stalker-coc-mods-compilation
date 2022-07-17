@@ -327,4 +327,7 @@
 	<string id="ui_st_repairable_equipment">
 		<text>Требует ремонта</text>
 	</string>
+	<string id="st_disassemble">
+		<text>Разобрать</text>
+	</string>
 </string_table>
