@@ -13,7 +13,7 @@
         <text>factions have formed an alliance.</text>
     </string>
     <string id="st_drx_relations_deteriorating">
-        <text>relations are deteriorating.</text>
+        <text> relations are deteriorating.</text>
     </string>
     <string id="st_drx_relations_cease_fire">
         <text>factions have declared a cease-fire.</text>
@@ -21,14 +21,14 @@
 
 <!-- DoctorX Questlines -->
 
-    <string id="st_drx_questlines_and_this_one">
+    <string id="st_drx_questlines_And_this_one">
         <text>And this one...</text>
     </string>
     <string id="st_drx_questlines_joined">
         <text>You have joined the</text>
     </string>
     <string id="st_drx_questlines_faction">
-        <text>faction.</text>
+        <text> faction.</text>
     </string>
 
 </string_table>
