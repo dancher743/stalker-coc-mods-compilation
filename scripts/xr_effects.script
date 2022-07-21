@@ -946,6 +946,12 @@ function drx_sl_setup_bounty_hunt( actor, npc, p )
 	axr_task_manager.bounties_by_id[p[1]] = target_id
 	printf( "drx_sl_setup_bounty_hunt target: %s", target_id )
 
+	local se_obj = sim:object(target_id)
+	if (se_obj) then
+		local news_caption = game.translate_string("st_target") .. ":"
+		local news_text = game.translate_string("st_mm_faction_cap_character_name") .. " " .. se_obj:character_name() .. "\\n " .. game.translate_string("st_mm_faction_cap_faction") .. " " .. game.translate_string(se_obj:community())
+		db.actor:give_talk_message2(news_caption, news_text, se_obj:character_icon(), "iconed_answer_item")
+	end
 end
 
 -- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -3172,17 +3178,6 @@ function on_init_bounty_hunt(actor,npc,p)
 	--printf("on_init_bounty_hunt %s",target_id)
 
 	--utils.save_var(db.actor,p[1],target_id)
-	
-	local function postpone_for_next_frame(target_id)
-		local se_obj = sim:object(target_id)
-		if (se_obj) then
-			local news_caption = game.translate_string(task_manager.task_ini:r_string_ex(p[1], "title")) or "error"
-			local news_text = game.translate_string("st_mm_faction_cap_character_name") .. " " .. se_obj:character_name() .. "\\n " .. game.translate_string("st_mm_faction_cap_faction") .. ": " .. game.translate_string(se_obj:community())
-			db.actor:give_talk_message2(news_caption, news_text, se_obj:character_icon(), "iconed_answer_item")
-		end
-		return true
-	end
-	CreateTimeEvent(0,"on_init_bounty_hunt",0,postpone_for_next_frame,target_id)
 end
 
 function fail_task_dec_goodwill(actor,npc,p)

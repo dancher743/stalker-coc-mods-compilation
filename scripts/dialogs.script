@@ -1600,14 +1600,6 @@ function text_npc_has_task(a,b)
 	local npc = who_is_npc(a, b)
 	local task_id = axr_task_manager.available_tasks[npc:id()] and axr_task_manager.available_tasks[npc:id()][1]
 	--printf("text_npc_has_task %s",task_id)
-	
-	local on_job_descr = task_id and task_manager.task_ini:r_string_ex(task_id,"on_job_descr")
-	if (on_job_descr) then 
-		local cond = xr_logic.parse_condlist(db.actor,"task_manager","condlist",on_job_descr)
-		if (cond) then 
-			xr_logic.pick_section_from_condlist(db.actor,db.actor,cond)
-		end
-	end
 
 	local fetch = task_id and task_manager.task_ini:r_string_ex(task_id,"fetch_descr")
 	if (fetch) then
