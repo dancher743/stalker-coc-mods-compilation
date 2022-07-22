@@ -30,5 +30,10 @@
     <string id="st_drx_questlines_faction">
         <text>.</text>
     </string>
+	
+<!-- TRX: Dynamic Relations (1.1) Option -->
+	<string id="ui_mm_dynamic_relations">
+        <text>Динамические отношения</text>
+    </string>
 
 </string_table>

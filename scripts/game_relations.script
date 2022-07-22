@@ -212,6 +212,10 @@ end
 
 -- NPC killed callback - raises or lowers faction relations when an NPC is killed:
 local function drx_df_npc_on_death_callback( npc, who )
+	-- Return if Dynamic Relations option is off
+	if ( not axr_main.config:r_value("mm_options","enable_dynamic_relations", 1, true) ) then
+		return
+	end
 
 	-- Base value for relation change:
 	local max_value = 200
@@ -390,6 +394,10 @@ end
 
 -- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
+-- From TRX: Dynamic Relations (1.1) mod
+local function opt_menu_on_init(menu)
+	menu.gameplay_options["dynamic_relations"] = { default = true,	 debug_only = true,	 typ = "check" }
+end
 
 -- ////////////////////////////////////////////////////////////////////////////////////////////////
 --
@@ -420,6 +428,7 @@ function on_game_start( )
 
 	RegisterScriptCallback( "npc_on_death_callback", drx_df_npc_on_death_callback )
 	RegisterScriptCallback( "on_game_load", drx_df_on_game_load_callback )
+	RegisterScriptCallback("opt_menu_on_init",opt_menu_on_init)
 
 end
 
