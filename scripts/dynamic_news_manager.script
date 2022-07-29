@@ -2018,8 +2018,15 @@ function DynamicNewsManager:GossipEmissionEnd(what) -- stalkers reacting about t
 		return false
 	end
 	
+	local what_translated
+	if (what == "emission") then
+		what_translated = game.translate_string("st_dyn_news_surge_type_emission")
+	elseif (what == "storm") then
+		what_translated = game.translate_string("st_dyn_news_surge_type_psi")
+	end
+	
 	local Se = strformat("%s, %s",sender:character_name(),dynamic_news_helper.GetCommunityDescription(sender,6))
-	local msg = self:ReadTextKeyList( tbl[math.random(#tbl)] , { ["what"]=what } )
+	local msg = self:ReadTextKeyList( tbl[math.random(#tbl)] , { ["what"]=what_translated } )
 	
 	dynamic_news_helper.send_tip(msg,Se,math.random(10,15),msg_duration,sender:character_icon(),"beep_1","npc") -- no need for push to channel
 	self.surge_type	= "" -- reset

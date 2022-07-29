@@ -1,0 +1,156 @@
+--------------------------------------------------
+--** Вычисление кратчайшего пути
+--** Autor - SadBlackFox
+--------------------------------------------------
+local ignore_tbl	= {}
+local point_tbl		= {}
+local ret_way		= {}
+local cycle_id		= 0
+local tbl_way = { 
+	l01_escape			= {"k00_marsh",		"k01_darkscape",	"l02_garbage"},
+	k00_marsh			= {"l01_escape",	'l03_agroprom'},
+	k01_darkscape		= {"l01_escape",	"l04_darkvalley"},
+	l02_garbage			= {"l01_escape",	"l03_agroprom",		"l04_darkvalley",		"l05_bar",'l06_rostok'},
+	l03_agroprom		= {"l02_garbage",	'l08_yantar',		'k00_marsh'},
+	l04_darkvalley		= {"l02_garbage",	"k01_darkscape",	'k02_trucks_cemetery'},
+	l05_bar				= {"l02_garbage",	"l06_rostok",		"l07_military",			'k02_trucks_cemetery'},
+	l06_rostok			= {"l08_yantar",	"l05_bar",			'l02_garbage'},
+	l08_yantar			= {"l06_rostok",	"l09_deadcity",		'l03_agroprom'},
+	l09_deadcity		= {"l08_yantar",	'l07_military',		'l10_limansk'},
+	k02_trucks_cemetery	= {'l04_darkvalley','l05_bar',			'l07_military'},
+	l07_military		= {"l05_bar",		"l10_radar",		'k02_trucks_cemetery',	'l10_red_forest',		'l09_deadcity'},
+	l10_radar			= {"l07_military",	"l11_pripyat",		'l10_red_forest'},
+	l10_red_forest		= {'l07_military',	'l10_limansk',		'l10_radar',			'jupiter'},
+	l10_limansk			= {'l09_deadcity',	'l10_red_forest'},
+	jupiter				= {'l10_red_forest','l11_pripyat',		'zaton'},
+	l11_pripyat			= {"l10_radar",		'jupiter',			'pripyat'},
+	pripyat				= {'l11_pripyat'},
+	zaton				= {'jupiter'}
+--[[
+	l01_escape				= {"k00_marsh",		"k01_darkscape",	"l02_garbage"},
+	k00_marsh				= {"l01_escape",	'l03_agroprom'},
+	k01_darkscape			= {"l01_escape",	"l04_darkvalley"},
+	l02_garbage				= {"l01_escape",	"l03_agroprom",		"l04_darkvalley",		"l05_bar",'l06_rostok'},
+	l03_agroprom			= {"l02_garbage",	'l08_yantar',		'k00_marsh'},
+	l04_darkvalley			= {"l02_garbage",	"k01_darkscape",	'k02_trucks_cemetery',	'l04u_labx18'},
+	l05_bar					= {"l02_garbage",	"l06_rostok",		"l07_military",			'k02_trucks_cemetery'},
+	l06_rostok				= {"l08_yantar",	"l05_bar",			'l02_garbage'},
+	l08_yantar				= {"l06_rostok",	"l09_deadcity",		'l03_agroprom',			'l08u_brainlab'},
+	l09_deadcity			= {"l08_yantar",	'l07_military',		'l10_limansk'},
+	k02_trucks_cemetery		= {'l04_darkvalley','l05_bar',			'l07_military'},
+	l07_military			= {"l05_bar",		"l10_radar",		'k02_trucks_cemetery',	'l10_red_forest',		'l09_deadcity'},
+	l10_radar				= {"l07_military",	"l11_pripyat",		'l10_red_forest',		'l10u_bunker'},
+	l10_red_forest			= {'l07_military',	'l10_limansk',		'l10_radar',			'jupiter'},
+	l10_limansk				= {'l09_deadcity',	'l10_red_forest',	'l11_hospital'},
+	jupiter					= {'l10_red_forest','l11_pripyat',		'zaton',				'jupiter_underground'},
+	l11_pripyat				= {"l10_radar",		'jupiter',			'pripyat',				'l12_stancia'},
+	pripyat					= {'l11_pripyat',	'labx8',			'jupiter_underground'},
+	zaton					= {'jupiter',		'l12_stancia'},
+	l03u_agr_underground 	= {'l03_agroprom'},
+	jupiter_underground	 	= {'jupiter',		'pripyat'},
+	l11_hospital			= {'l10_limansk',	'l12_stancia_2'},
+	labx8					= {'pripyat'},
+	l04u_labx18				= {"l04_darkvalley"},
+	l08u_brainlab			= {"l08_yantar"},
+	l13u_warlab				= {'l13_generators'},
+	l10u_bunker				= {"l10_radar"},
+	l12u_control_monolith 	= {'l12u_sarcofag',	'l12_stancia_2'},
+	l12_stancia				= {'zaton',			'l11_pripyat',		'l12_stancia_2',		'l12u_sarcofag'},
+	l12_stancia_2			= {'l12_stancia',	'l11_hospital',		'l12u_control_monolith','l13_generators'},
+	l12u_sarcofag			= {'l12_stancia',	'l12u_control_monolith'},
+	l13_generators			= {'l12_stancia_2',	'l13u_warlab'}
+]]
+}
+
+function check_tbl(check, tbl)
+	for i=1,#tbl do
+	if tbl[i] == check then return true end
+	end
+	return false
+end
+
+function check_ignore_tbl(curr_level, tbl)
+	local ignore = ignore_tbl[curr_level]
+	if ignore == nil then return false end
+	local c = #tbl
+	for k, v in pairs(ignore) do
+		if (#v == c) and (v[k] == tbl[k]) then return true end
+	end
+	return false
+end
+
+function get_back_level(tbl)
+	local step_back = #tbl - 1
+	return (step_back > 0) and tbl[step_back] or nil
+end
+
+function get_rnd_level(start_point)
+	local rnd = math.random(table.size(tbl_way))
+	local a = 0
+	for i, name in pairs(tbl_way) do
+		a = a + 1
+		if a == rnd then
+			if not (i == start_point) then
+				return i
+			end
+			return get_rnd_level(start_point)
+		end
+	end
+end
+
+-- Найти дорогу(подсчитать кол-во локаций на пути)
+-- Собирает все возможные пути из A в Б
+function collector_ways(start, finish, curr_level)
+	cycle_id = cycle_id + 1
+	if cycle_id == 5000 then
+		log('! Зависание цикла, выполнен = '..cycle_id..' раз!')	
+		return --abort('Зависание цикла, выполнен = '..cycle_id..' раз!')
+	end
+	if curr_level == nil then curr_level = start end
+	point_tbl[#point_tbl + 1] = curr_level
+	for i, name in pairs(tbl_way[curr_level]) do
+		for k, v in pairs(tbl_way[curr_level]) do
+			if v == finish then
+				if not check_ignore_tbl(finish, point_tbl) and not check_tbl(finish, point_tbl) then
+					curr_level = finish
+					point_tbl[#point_tbl + 1] = curr_level
+					local back_level = get_back_level(point_tbl)
+					ret_way[#ret_way + 1] = table.values(point_tbl)
+					point_tbl[#point_tbl] = nil
+					if not ignore_tbl[curr_level] then ignore_tbl[curr_level] = {} end
+					ignore_tbl[curr_level][#ignore_tbl[curr_level] + 1] = table.values(point_tbl)
+					point_tbl[#point_tbl] = nil
+					return collector_ways(start, finish, back_level)
+				end
+			end
+		end
+		if not check_ignore_tbl(name, point_tbl) and not check_tbl(name, point_tbl) then return collector_ways(start, finish, name) end
+	end
+	local back_level = get_back_level(point_tbl)
+	if back_level == nil and curr_level == level.name() then ignore_tbl, point_tbl, cycle_id = {}, {}, 0 return --[[log('@ РЕКУРСИЯ ЗАВЕРШЕНА!')]] end
+	point_tbl[#point_tbl] = nil
+	if not ignore_tbl[curr_level] then ignore_tbl[curr_level] = {} end
+	ignore_tbl[curr_level][#ignore_tbl[curr_level] + 1] = table.values(point_tbl)
+	point_tbl[#point_tbl] = nil
+	return collector_ways(start, finish, back_level)
+end
+
+function go_poisk()
+	local start_point = level.name()
+	if not level_weathers.valid_levels[start_point] then --[[log("! Мы в подземке: "..start_point)]] return end
+	local finish_point = get_rnd_level(start_point)
+	if start_point == finish_point then
+		return finish_point, 1
+	end
+	collector_ways(start_point, finish_point)
+	local path_len, temp
+	for k, v in pairs(ret_way) do
+		local length = #v
+		if path_len == nil or length < path_len then
+			path_len = length
+			temp = v
+		end
+	end
+	ret_way, cycle_id = {}, 0
+	return finish_point, path_len or 1 -- конечная точка, мин. кол-во локаций(включая стартовую и конечную!)
+end

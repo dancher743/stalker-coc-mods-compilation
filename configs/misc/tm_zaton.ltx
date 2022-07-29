@@ -1,0 +1,366 @@
+;==============================================================
+;
+; TASKS PROVIDED ON ZATON MAP
+;	CoC 1.4.07 - DoctorX Questlines 1.6
+;
+;	Main Faction: NONE
+;	Strings file: st_quests_zaton.xml
+;	Modified by: DoctorX
+;	Last revised: October 06, 2016
+;
+;==============================================================
+
+
+;//////////////////////////////////////////////////////////////////////////////////////////////////
+;
+; STORYLINE TASKS
+;
+;	Modified by DoctorX
+;	for DoctorX Questlines 1.6
+;	October 06, 2016
+;
+;--------------------------------------------------------------------------------------------------
+
+;------------------------------------------------
+; Beard (Loner Trader) Default Storyline Task (no task, just send to next honcho)-
+
+[drx_sl_zat_a2_stalker_barmen_default_task]
+
+icon = ui_inGame2_Mesta_evakuatsii
+storyline = true
+prior = 193
+
+title = drx_sl_zat_a2_stalker_barmen_default_task_name
+descr = drx_sl_zat_a2_stalker_barmen_default_task_text
+job_descr = drx_sl_zat_a2_stalker_barmen_default_task_about
+task_complete_descr = drx_sl_zat_a2_stalker_barmen_default_task_finish
+
+condlist_0 = {-drx_sl_dummy_info} complete
+condlist_1 = {!task_giver_alive(drx_sl_zat_a2_stalker_barmen_default_task)} fail
+condlist_2 = {=drx_sl_is_enemy(stalker)} fail
+
+on_complete = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_zat_a2_stalker_barmen_default_task)%
+on_fail = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_zat_a2_stalker_barmen_default_task)%
+
+;------------------------------------------------
+; Beard (Loner Trader) Retrieve PDA Storyline Task-
+
+[drx_sl_zat_a2_stalker_barmen_task_1]
+
+icon = ui_inGame2_PD_Torgovets_informatsiey
+storyline = true
+prior = 129
+repeat_timeout = 0
+precondition = {=random_chance(100) -drx_sl_quest_item_task_3_started} true, false
+
+title = drx_sl_zat_a2_stalker_barmen_task_1_name
+descr = drx_sl_zat_a2_stalker_barmen_task_1_text
+job_descr = drx_sl_zat_a2_stalker_barmen_task_1_about
+task_complete_descr = drx_sl_zat_a2_stalker_barmen_task_1_finish
+
+stage_complete = 1
+target_functor = drx_sl_quest_item_task_3_target
+status_functor = drx_sl_quest_item_task_3_status
+condlist_0 = {!task_giver_alive(drx_sl_zat_a2_stalker_barmen_task_1)} fail
+condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+
+on_init = %=drx_sl_create_quest_stash_3() +drx_sl_quest_item_task_3_started%
+on_complete = %=drx_sl_reward_random(1500:3000) =drx_sl_reward(1:vodka) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =remove_item(drx_sl_quest_item_3) =inc_task_stage(drx_sl_zat_a2_stalker_barmen_task_1) =pstor_reset(drx_sl_quest_stash_3_id) -drx_sl_quest_item_task_3_started =drx_sl_unregister_task_giver(drx_sl_zat_a2_stalker_barmen_task_1)%
+on_fail = %=fail_task_dec_goodwill(25:stalker) =drx_sl_meet_random_honcho() =pstor_reset(drx_sl_quest_stash_3_id) -drx_sl_quest_item_task_3_started =drx_sl_decrease_sl_tasks_count() =drx_sl_unregister_task_giver(drx_sl_zat_a2_stalker_barmen_task_1)%
+
+;------------------------------------------------
+; Beard (Loner Trader) Search and Rescue Storyline Task-
+
+[drx_sl_zat_a2_stalker_barmen_task_2]
+
+icon = ui_inGame2_Zalozhnik
+storyline = true
+prior = 185
+repeat_timeout = 0
+precondition = {=random_chance(100) =drx_sl_is_enemy(monolith) -hostage_companion_task_1_started -hostage_companion_task_1_hostage_rescued =all_avail_smart_stayed_squad_count_ge_by_faction_ex(1:nil:false:monolith) !squad_exist(hostage_companion_task_1)} true, false
+
+title = drx_sl_zat_a2_stalker_barmen_task_2_name
+descr = drx_sl_zat_a2_stalker_barmen_task_2_text
+job_descr = drx_sl_zat_a2_stalker_barmen_task_2_about
+task_complete_descr = drx_sl_zat_a2_stalker_barmen_task_2_finish
+
+stage_complete = 1
+target_functor = simulation_task_target
+status_functor = hostage_task
+status_functor_params = hostage_companion_task_1
+condlist_0 = {!squad_exist(hostage_companion_task_1)} fail
+condlist_1 = {!task_giver_alive(drx_sl_zat_a2_stalker_barmen_task_2)} fail
+condlist_2 = {=drx_sl_is_enemy(stalker)} fail
+
+on_init = %=find_smart_under_faction_control_ex(drx_sl_zat_a2_stalker_barmen_task_2_id:monolith) =setup_companion_task(hostage_companion_task_1_stalker:nil:drx_sl_zat_a2_stalker_barmen_task_2_id:true) +hostage_companion_task_1_started%
+on_complete = %=drx_sl_reward_random(2000:4500) =drx_sl_reward(1:vodka) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =remove_special_task_squad(hostage_companion_task_1) =pstor_reset(drx_sl_zat_a2_stalker_barmen_task_2_id) =pstor_reset(drx_sl_zat_a2_stalker_barmen_task_2_target_id) -hostage_companion_task_1_hostage_rescued -hostage_companion_task_1_started =inc_task_stage(drx_sl_zat_a2_stalker_barmen_task_2) =unlock_smart(drx_sl_zat_a2_stalker_barmen_task_2_id) =drx_sl_unregister_task_giver(drx_sl_zat_a2_stalker_barmen_task_2)%
+on_fail = %=unlock_smart(drx_sl_zat_a2_stalker_barmen_task_2_id) =fail_task_dec_goodwill(25:stalker) =drx_sl_meet_random_honcho() =pstor_reset(drx_sl_zat_a2_stalker_barmen_task_2_id) =pstor_reset(drx_sl_zat_a2_stalker_barmen_task_2_target_id) -hostage_companion_task_1_hostage_rescued -hostage_companion_task_1_started =drx_sl_decrease_sl_tasks_count =drx_sl_unregister_task_giver(drx_sl_zat_a2_stalker_barmen_task_2)%
+
+;------------------------------------------------
+; Noah (Loner Honcho) Default Storyline Task (no task, just send to next honcho)-
+
+[drx_sl_zat_b18_noah_default_task]
+
+icon = ui_inGame2_Mesta_evakuatsii
+storyline = true
+prior = 193
+
+title = drx_sl_zat_b18_noah_default_task_name
+descr = drx_sl_zat_b18_noah_default_task_text
+job_descr = drx_sl_zat_b18_noah_default_task_about
+task_complete_descr = drx_sl_zat_b18_noah_default_task_finish
+
+condlist_0 = {-drx_sl_dummy_info} complete
+condlist_1 = {!task_giver_alive(drx_sl_zat_b18_noah_default_task)} fail
+condlist_2 = {=drx_sl_is_enemy(stalker)} fail
+
+on_complete = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_zat_b18_noah_default_task)%
+on_fail = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_zat_b18_noah_default_task)%
+
+;------------------------------------------------
+; Noah (Loner Honcho) Dog Food Storyline Task-
+
+[drx_sl_zat_b18_noah_task_1]
+
+icon = ui_inGame2_Pripasi
+storyline = true
+prior = 122
+repeat_timeout = 0
+precondition = {=random_chance(100)} true, false
+
+title = drx_sl_zat_b18_noah_task_1_name
+title_functor = general_fetch_task
+descr = drx_sl_zat_b18_noah_task_1_text
+descr_functor = general_fetch_task
+job_descr = drx_sl_zat_b18_noah_task_1_about
+fetch_descr = drx_sl_zat_b18_noah_task_1_fetch_about
+task_complete_descr = drx_sl_zat_b18_noah_task_1_fetch_finish
+
+stage_complete = 1
+target_functor = general_fetch_task
+status_functor = actor_has_fetch_item
+condlist_0 = {!task_giver_alive(drx_sl_zat_b18_noah_task_1)} fail
+condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+
+fetch_func = %=drx_sl_setup_fetch_mutant_meat(drx_sl_zat_b18_noah_task_1_fetch:4:6)%
+on_complete = %=drx_sl_fetch_reward_item(drx_sl_zat_b18_noah_task_1_fetch:6.0) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(drx_sl_zat_b18_noah_task_1) =pstor_reset(drx_sl_zat_b18_noah_task_1_fetch) =drx_sl_unregister_task_giver(drx_sl_zat_b18_noah_task_1)%
+on_fail = %=fail_task_dec_goodwill(25:stalker) =drx_sl_meet_random_honcho() =pstor_reset(drx_sl_zat_b18_noah_task_1_fetch) =drx_sl_decrease_sl_tasks_count() =drx_sl_unregister_task_giver(drx_sl_zat_b18_noah_task_1)%
+
+;------------------------------------------------
+; Noah (Loner Honcho) Exterminate Mutant Infestation Storyline Task-
+
+[drx_sl_zat_b18_noah_task_2]
+
+icon = ui_inGame2_Nochnaya_ohota
+storyline = true
+prior = 142
+repeat_timeout = 0
+precondition = {=random_chance(100) =drx_sl_validate_assault_mutant_task(1:nil:false)} true, false
+
+title = drx_sl_zat_b18_noah_task_2_name
+descr = drx_sl_zat_b18_noah_task_2_text
+job_descr = drx_sl_zat_b18_noah_task_2_about
+task_complete_descr = drx_sl_zat_b18_noah_task_2_finish
+
+stage_complete = 1
+target_functor = general_under_faction_control
+status_functor = drx_sl_assault_mutant_task_status
+condlist_0 = {!task_giver_alive(drx_sl_zat_b18_noah_task_2)} fail
+condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+
+on_init = %=drx_sl_setup_assault_mutant(drx_sl_zat_b18_noah_task_2_id)%
+on_complete = %=drx_sl_reward_random(1500:3000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(drx_sl_zat_b18_noah_task_2) =pstor_reset(drx_sl_zat_b18_noah_task_2_id) =pstor_reset(drx_sl_zat_b18_noah_task_2_target_id) =drx_sl_unregister_task_giver(drx_sl_zat_b18_noah_task_2)%
+on_fail = %=fail_task_dec_goodwill(25:stalker) =drx_sl_meet_random_honcho() =pstor_reset(drx_sl_zat_b18_noah_task_2_id) =pstor_reset(drx_sl_zat_b18_noah_task_2_target_id) =drx_sl_decrease_sl_tasks_count() =drx_sl_unregister_task_giver(drx_sl_zat_b18_noah_task_2)%
+
+; \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+;//////////////////////////////////////////////////////////////////////////////////////////////////
+;
+; DYNAMIC TASKS
+;
+;	Modified by DoctorX
+;	for DoctorX Questlines 1.6
+;	October 06, 2016
+;
+;--------------------------------------------------------------------------------------------------
+
+;------------------------------------------------
+; Beard (Loner Trader) Clear Mutants from Skadovsk Task-
+
+[zat_a2_stalker_barmen_task_1]
+
+icon = ui_inGame2_Nochnaya_ohota
+storyline = false
+prior = 55
+repeat_timeout = 259200
+precondition = {=random_chance(100) =drx_sl_validate_assault_mutant_task(1:nil:false)} true, false
+
+title = zat_a2_stalker_barmen_task_1_name
+descr = zat_a2_stalker_barmen_task_1_text
+job_descr = zat_a2_stalker_barmen_task_1_about
+task_complete_descr = zat_a2_stalker_barmen_task_1_finish
+
+stage_complete = 1
+target_functor = general_under_faction_control
+status_functor = drx_sl_assault_mutant_task_status
+condlist_0 = {!task_giver_alive(zat_a2_stalker_barmen_task_1)} fail
+condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+
+on_init = %=drx_sl_setup_assault_mutant(zat_a2_stalker_barmen_task_1_id)%
+on_complete = %=drx_sl_reward_random(2000:4500) =drx_sl_reward(1:vodka) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(zat_a2_stalker_barmen_task_1) =pstor_reset(zat_a2_stalker_barmen_task_1_id) =pstor_reset(zat_a2_stalker_barmen_task_1_target_id) =drx_sl_unregister_task_giver(zat_a2_stalker_barmen_task_1) =drx_sl_reset_stored_task(zat_a2_stalker_barmen_task_1)%
+on_fail = %=fail_task_dec_goodwill(25:stalker) =pstor_reset(zat_a2_stalker_barmen_task_1_id) =pstor_reset(zat_a2_stalker_barmen_task_1_target_id) =drx_sl_unregister_task_giver(zat_a2_stalker_barmen_task_1) =drx_sl_reset_stored_task(zat_a2_stalker_barmen_task_1)%
+
+;------------------------------------------------
+; Beard (Loner Trader) Find Artefact Task-
+
+[zat_a2_stalker_barmen_task_2]
+
+icon = ui_inGame2_Kontrakt_s_uchenimi
+storyline = false
+prior = 25
+repeat_timeout = 259200
+precondition = {=random_chance(100)} true, false
+
+title = zat_a2_stalker_barmen_task_2_name
+title_functor = general_fetch_task
+descr = zat_a2_stalker_barmen_task_2_text
+descr_functor = general_fetch_task
+job_descr = zat_a2_stalker_barmen_task_2_about
+fetch_descr = zat_a2_stalker_barmen_task_2_fetch_about
+task_complete_descr = zat_a2_stalker_barmen_task_2_fetch_finish
+
+stage_complete = 1
+target_functor = general_fetch_task
+status_functor = actor_has_fetch_item
+condlist_0 = {!task_giver_alive(zat_a2_stalker_barmen_task_2)} fail
+condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+
+fetch_func = %=drx_sl_setup_fetch_artefact(zat_a2_stalker_barmen_task_2_fetch:1:1)%
+on_complete = %=drx_sl_fetch_reward_money(zat_a2_stalker_barmen_task_2_fetch:0.8) =drx_sl_reward(1:vodka) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(zat_a2_stalker_barmen_task_2) =pstor_reset(zat_a2_stalker_barmen_task_2_fetch) =drx_sl_unregister_task_giver(zat_a2_stalker_barmen_task_2) =drx_sl_reset_stored_task(zat_a2_stalker_barmen_task_2)%
+on_fail = %=fail_task_dec_goodwill(25:stalker) =pstor_reset(zat_a2_stalker_barmen_task_2_fetch) =drx_sl_unregister_task_giver(zat_a2_stalker_barmen_task_2) =drx_sl_reset_stored_task(zat_a2_stalker_barmen_task_2)%
+
+;------------------------------------------------
+; Beard (Loner Trader) Diplomat Task-
+
+[zat_a2_stalker_barmen_task_3]
+
+icon = ui_inGame2_Razgovor_s_glazu_na_glaz
+storyline = false
+prior = 45
+repeat_timeout = 259200
+precondition = {=random_chance(100) =drx_sl_is_enemy(army)} true, false
+
+title = zat_a2_stalker_barmen_task_3_name
+descr = zat_a2_stalker_barmen_task_3_text
+job_descr = zat_a2_stalker_barmen_task_3_about
+task_complete_descr = zat_a2_stalker_barmen_task_3_finish
+
+stage_complete = 1
+target_functor = general_bounty_task
+status_functor = bounty_task
+condlist_0 = {!task_giver_alive(zat_a2_stalker_barmen_task_3)} fail
+condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+
+on_init = %=on_init_bounty_hunt(zat_a2_stalker_barmen_task_3:army)%
+on_complete = %=drx_sl_reward(1:af_baloon) =drx_sl_reward(1:vodka) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(zat_a2_stalker_barmen_task_3) =drx_sl_unregister_task_giver(zat_a2_stalker_barmen_task_3) =drx_sl_reset_stored_task(zat_a2_stalker_barmen_task_3)%
+on_fail = %=fail_task_dec_goodwill(25:stalker) =drx_sl_unregister_task_giver(zat_a2_stalker_barmen_task_3) =drx_sl_reset_stored_task(zat_a2_stalker_barmen_task_3)%
+
+; \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+;//////////////////////////////////////////////////////////////////////////////////////////////////
+;
+; MECHANIC TASKS
+;
+;	Modified by DoctorX
+;	for DoctorX Questlines 1.6
+;	October 06, 2016
+;
+;--------------------------------------------------------------------------------------------------
+
+;------------------------------------------------
+; Cardan (Loner Mechanic) Find Level 1 Toolkit Task-
+
+[zat_a2_stalker_mechanic_task_1]
+
+icon = ui_inGame2_Instrumenti
+storyline = false
+prior = 15
+precondition = {-zat_a2_stalker_mechanic_upgrade_tier_1} true, false
+
+title = zat_a2_stalker_mechanic_task_1_name
+title_functor = general_fetch_task
+descr = zat_a2_stalker_mechanic_task_1_text
+descr_functor = general_fetch_task
+job_descr = zat_a2_stalker_mechanic_task_1_about
+fetch_descr = zat_a2_stalker_mechanic_task_1_fetch_about
+task_complete_descr = zat_a2_stalker_mechanic_task_1_fetch_finish
+
+stage_complete = 1
+target_functor = general_fetch_task
+status_functor = actor_has_fetch_item
+condlist_0 = {!task_giver_alive(zat_a2_stalker_mechanic_task_1)} fail
+condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+
+fetch_func = %=setup_generic_fetch_task(zat_a2_stalker_mechanic_task_1_fetch:1:itm_repairkit_tier_1)%
+on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:stalker) =remove_fetch_item(zat_a2_stalker_mechanic_task_1_fetch) =inc_task_stage(zat_a2_stalker_mechanic_task_1) +zat_a2_stalker_mechanic_upgrade_tier_1 =drx_sl_unregister_task_giver(zat_a2_stalker_mechanic_task_1)%
+on_fail = %=fail_task_dec_goodwill(25:stalker) =drx_sl_unregister_task_giver(zat_a2_stalker_mechanic_task_1)%
+
+;------------------------------------------------
+; Cardan (Loner Mechanic) Find Level 2 Toolkit Task-
+
+[zat_a2_stalker_mechanic_task_2]
+
+icon = ui_inGame2_Instrumenti
+storyline = false
+prior = 16
+precondition = {+zat_a2_stalker_mechanic_upgrade_tier_1 -zat_a2_stalker_mechanic_upgrade_tier_2} true, false
+
+title = zat_a2_stalker_mechanic_task_2_name
+title_functor = general_fetch_task
+descr = zat_a2_stalker_mechanic_task_2_text
+descr_functor = general_fetch_task
+job_descr = zat_a2_stalker_mechanic_task_2_about
+fetch_descr = zat_a2_stalker_mechanic_task_2_fetch_about
+task_complete_descr = zat_a2_stalker_mechanic_task_2_fetch_finish
+
+stage_complete = 1
+target_functor = general_fetch_task
+status_functor = actor_has_fetch_item
+condlist_0 = {!task_giver_alive(zat_a2_stalker_mechanic_task_2)} fail
+condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+
+fetch_func = %=setup_generic_fetch_task(zat_a2_stalker_mechanic_task_2_fetch:1:itm_repairkit_tier_2)%
+on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:stalker) =remove_fetch_item(zat_a2_stalker_mechanic_task_2_fetch) =inc_task_stage(zat_a2_stalker_mechanic_task_2) +zat_a2_stalker_mechanic_upgrade_tier_2 =drx_sl_unregister_task_giver(zat_a2_stalker_mechanic_task_2)%
+on_fail = %=fail_task_dec_goodwill(25:stalker) =drx_sl_unregister_task_giver(zat_a2_stalker_mechanic_task_2)%
+
+;------------------------------------------------
+; Cardan (Loner Mechanic) Find Level 3 Toolkit Task-
+
+[zat_a2_stalker_mechanic_task_3]
+
+icon = ui_inGame2_Instrumenti
+storyline = false
+prior = 17
+precondition = {+zat_a2_stalker_mechanic_upgrade_tier_2 -zat_a2_stalker_mechanic_upgrade_tier_3} true, false
+
+title = zat_a2_stalker_mechanic_task_3_name
+title_functor = general_fetch_task
+descr = zat_a2_stalker_mechanic_task_3_text
+descr_functor = general_fetch_task
+job_descr = zat_a2_stalker_mechanic_task_3_about
+fetch_descr = zat_a2_stalker_mechanic_task_3_fetch_about
+task_complete_descr = zat_a2_stalker_mechanic_task_3_fetch_finish
+
+stage_complete = 1
+target_functor = general_fetch_task
+status_functor = actor_has_fetch_item
+condlist_0 = {!task_giver_alive(zat_a2_stalker_mechanic_task_3)} fail
+condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+
+fetch_func = %=setup_generic_fetch_task(zat_a2_stalker_mechanic_task_3_fetch:1:itm_repairkit_tier_3)%
+on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:stalker) =remove_fetch_item(zat_a2_stalker_mechanic_task_3_fetch) =inc_task_stage(zat_a2_stalker_mechanic_task_3) +zat_a2_stalker_mechanic_upgrade_tier_3 =drx_sl_unregister_task_giver(zat_a2_stalker_mechanic_task_3)%
+on_fail = %=fail_task_dec_goodwill(25:stalker) =drx_sl_unregister_task_giver(zat_a2_stalker_mechanic_task_3)%
+
+; \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\

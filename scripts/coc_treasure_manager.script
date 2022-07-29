@@ -1,3 +1,14 @@
+-- ============================================================
+--
+-- coc_treasure_manager.script
+--	CoC 1.4.19 - DoctorX Questlines 1.19
+--
+--	Modified by: DoctorX
+--	Last revised: December 11, 2016
+--
+-- ============================================================
+
+
 --[[
 ------------------------------------------------------------------------------------------------------------------
 -- Treasure randomizer
@@ -283,6 +294,241 @@ function create_random_stash(no_spot,hint,bonus_items)
 		caches[id] = false
 	end
 end
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_create_random_stash function
+--
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Creates a random stash
+--
+--	Usage:
+--		drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery )
+--
+--	Parameters:
+--		no_spot
+--			-
+--		hint
+--			-
+--		bonus_items
+--			-
+--		bonus_lottery
+--			-
+--
+--	Return value (type: ):
+--		ID of the stash
+--
+-- ------------------------------------------------------------------------------------------------
+--	Modified by DoctorX
+--	for DoctorX Questlines 1.6
+--	Last modified October 20, 2016
+-- ------------------------------------------------------------------------------------------------
+
+-- Create random stash:
+function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery )
+
+	last_secret = nil
+
+	if ( caches_count <= 0 ) then
+		return
+	end
+
+	last_secret = true
+
+	local sim = alife( )
+
+	-- Create a temporary table to use math.random:
+	local t = {}
+	for id, v in pairs( caches ) do
+
+		-- False means box is available:
+		if ( v == false ) then
+			if ( bonus_items ) then
+
+				-- This feature only works with inventory boxes:
+				local se_box = id and sim:object( id )
+				if ( se_box and se_box:clsid( ) == clsid.inventory_box_s ) then
+					table.insert( t, id )
+				end
+
+			else
+				table.insert(t,id)
+
+			end
+
+		end
+
+	end
+
+	local index = #t > 0 and math.random( #t )
+	if not ( index ) then
+		return
+	end
+
+	local id = t[index]
+	local se_box = id and sim:object( id )
+	if not ( se_box ) then
+		caches[id] = nil
+		caches_count = (caches_count - 1)
+		return
+	end
+
+	if ( se_box:clsid( ) ~= clsid.inventory_box_s ) then
+		if ( se_box:spawn_ini( ) and se_box:spawn_ini( ):section_exist( "drop_box" ) ) then
+
+			-- Create map spot:
+			if ( no_spot ~= true and level.map_has_object_spot( id, "treasure" ) == 0 ) then
+				level.map_add_object_spot_ser( id, "treasure", hint or "" )
+				news_manager.send_treasure_with_level(se_box:name(), se_box.m_game_vertex_id)
+			end
+
+			-- Switch cache true, indicating it has treasure:
+			caches[id] = true
+
+			-- This is handled by xr_box.script:
+			return
+
+		else  -- invalid object
+			caches[id] = nil
+			caches_count = caches_count - 1
+			return
+
+		end
+	end
+
+	-- Switch cache true, indicating it has treasure:
+	caches[id] = true
+
+	-- Create map spot:
+	if ( no_spot ~= true and level.map_has_object_spot( id, "treasure" ) == 0 ) then
+		level.map_add_object_spot_ser( id, "treasure", hint or "" )
+		news_manager.send_treasure_with_level(se_box:name(), se_box.m_game_vertex_id)
+	end
+
+	math.random()
+	math.random()
+	math.random()
+
+	local max_roll = math.random( 1, 6 )
+
+	-- Setup possible loot table:
+	local loot = {}
+
+	-- Common:
+	loot[1] = {"bandage", "conserva", "kolbasa", "bread", "energy_drink", "vodka", "ammo_9x18_pmm"}
+	loot[2] = {"bandage", "conserva", "kolbasa", "bread", "energy_drink", "vodka", "drug_booster", "drug_coagulant", "drug_anabiotic", "ammo_9x18_pmm"}
+	loot[3] = {"bandage", "conserva", "kolbasa", "bread", "energy_drink", "vodka", "drug_psy_blockade", "drug_radioprotector", "ammo_9x18_pmm"}
+
+	-- Fairly common:
+	loot[4] = {"itm_sleepbag", "bandage", "conserva", "kolbasa", "bread", "energy_drink", "vodka", "drug_booster", "drug_coagulant", "drug_anabiotic", "grenade_f1", "detector_simple", "itm_pda_common", "wpn_pm", "wpn_pb", "wpn_fort", "wpn_hpsa", "ammo_9x18_fmj", "ammo_9x18_pmm", "ammo_12x70_buck"}
+	loot[5] = {"itm_sleepbag", "bandage", "conserva", "kolbasa", "bread", "energy_drink", "vodka", "drug_booster", "drug_coagulant", "drug_anabiotic", "grenade_rgd5", "itm_backpack", "itm_pda_common", "wpn_pm", "wpn_pb", "wpn_fort", "wpn_hpsa", "ammo_9x18_fmj", "ammo_9x18_pmm", "ammo_12x70_buck", "ammo_9x19_pbp"}
+	loot[6] = {"itm_sleepbag", "bandage", "conserva", "kolbasa", "bread", "energy_drink", "vodka", "drug_booster", "drug_coagulant", "drug_anabiotic", "detector_advanced", "itm_gunsmith_toolkit", "itm_sleepbag", "itm_pda_common", "wpn_pm", "wpn_pb", "wpn_fort", "ammo_9x18_fmj", "ammo_9x18_pmm", "ammo_12x70_buck", "ammo_9x19_pbp"}
+
+	-- Uncommon:
+	loot[7] = {"itm_pda_uncommon", "wpn_pm", "wpn_pb", "detector_elite", "ammo_9x18_fmj", "ammo_9x18_pmm", "ammo_9x19_pbp", "ammo_9x19_fmj", "ammo_og-7b", "af_fireball", "grenade_rgd5", "grenade_f1", "wpn_fort", "wpn_hpsa", "wpn_wincheaster1300", "wpn_toz34", "wpn_desert_eagle", "wpn_beretta", "wpn_walther", "wpn_sig220", "wpn_colt1911", "itm_gunsmith_toolkit", "itm_repairkit_tier_1"}
+	loot[8] = {"itm_pda_uncommon", "wpn_fort", "wpn_hpsa", "wpn_usp", "medkit_army", "ammo_12x70_buck", "ammo_12x76_zhekan", "ammo_9x39_pab9", "ammo_pkm_100", "ammo_m209", "af_fire", "af_gravi", "ammo_11.43x23_fmj", "ammo_11.43x23_hydro", "ammo_5.45x39_ap", "ammo_5.45x39_fmj", "ammo_9x39_ap", "ammo_5.56x45_ss190", "ammo_5.56x45_ap", "ammo_7.62x54_7h1", "ammo_9x18_fmj", "ammo_9x18_pmm", "ammo_9x19_pbp", "ammo_9x19_fmj", "ammo_og-7b", "wpn_wincheaster1300", "wpn_toz34", "wpn_desert_eagle", "wpn_beretta", "wpn_walther", "wpn_sig220", "wpn_colt1911", "itm_gunsmith_toolkit", "itm_repairkit_tier_1"}
+	loot[9] = {"itm_pda_uncommon", "wpn_wincheaster1300", "wpn_toz34", "wpn_desert_eagle", "wpn_beretta", "wpn_walther", "wpn_sig220", "wpn_colt1911", "detector_scientific", "wpn_addon_grenade_launcher", "wpn_addon_grenade_launcher_m203", "ammo_11.43x23_fmj", "ammo_11.43x23_hydro", "ammo_5.45x39_ap", "ammo_5.45x39_fmj", "ammo_9x39_ap", "ammo_5.56x45_ss190", "ammo_5.56x45_ap", "ammo_7.62x54_7h1", "ammo_9x18_fmj", "ammo_9x18_pmm", "ammo_9x19_pbp", "ammo_9x19_fmj", "ammo_og-7b", "itm_gunsmith_toolkit", "itm_repairkit_tier_1"}
+
+	-- Rare:
+	loot[10] = {"wpn_bm16", "af_blood", "af_glass", "af_gold_fish", "novice_outfit", "itm_pda_rare", "ammo_9x18_pmm", "ammo_5.56x45_ap", "itm_repairkit_tier_2", "itm_outfit_toolkit_tier_1"}
+	loot[11] = {"wpn_sig550", "wpn_protecta", "stalker_outfit", "helm_respirator", "helm_hardhat", "helm_protective", "itm_pda_rare", "ammo_11.43x23_hydro", "ammo_9x18_pmm", "ammo_5.56x45_ap", "itm_repairkit_tier_2", "itm_outfit_toolkit_tier_1"}
+	loot[12] = {"wpn_spas12", "wpn_ak74u", "wpn_mp5", "wpn_ak74", "wpn_abakan", "wpn_l85", "wpn_lr300", "wpn_groza", "wpn_val", "wpn_vintorez", "helm_tactic", "helm_battle", "itm_pda_rare", "ammo_11.43x23_hydro", "ammo_5.56x45_ap", "itm_repairkit_tier_2", "itm_outfit_toolkit_tier_1"}
+
+	-- Extremely rare:
+	loot[13] = {"wpn_svu", "wpn_svd", "wpn_g36", "wpn_fn2000", "helm_m40", "wpn_pkm", "stalker_outfit", "svoboda_novice_outfit", "ecolog_guard_outfit", "banditmerc_outfit", "dolg_novice_outfit", "cs_novice_outfit", "ecolog_outfit_green", "svoboda_light_outfit", "wpn_sig550_luckygun", "af_compass", "itm_pda_rare", "itm_repairkit_tier_3"}
+	loot[14] = {"wpn_rg-6", "wpn_rpg7", "specops_outfit", "military_outfit", "scientific_outfit", "svoboda_heavy_outfit", "cs_heavy_outfit", "dolg_outfit", "itm_pda_rare", "itm_repairkit_tier_3"}
+	loot[15] = {"ammo_gauss", "exo_outfit", "dolg_heavy_outfit", "itm_pda_rare", "wpn_rg-6", "wpn_rpg7", "specops_outfit", "military_outfit", "scientific_outfit", "svoboda_heavy_outfit", "cs_heavy_outfit", "dolg_outfit", "itm_repairkit_tier_3"}
+
+	local spawned_item = bonus_items or {}
+	local max_weight = ( max_roll * math.random( 1, 100 ) / 25 )
+	local lottery = 0
+
+	repeat
+
+		lottery = math.random( 0, 6 )
+		if ( lottery == 6 ) then
+			lottery = (lottery + math.random( 0, 3 ))
+		end
+
+		bonus_lottery = bonus_lottery or 0
+
+		if ( has_alife_info( "achieved_rag_and_bone" ) ) then
+			bonus_lottery = (bonus_lottery + math.random( 0, 2 ))
+		end
+
+		rnd = math.random( (max_roll + lottery) )
+		rnd = (rnd + bonus_lottery)
+		if ( rnd > 15 ) then
+			rnd = 15
+		end
+
+		max_weight = (max_weight - (rnd + 1))
+
+		table.insert( spawned_item, loot[rnd][math.random( #loot[rnd] )] )
+
+		if ( (max_roll - 1) >= 1 ) then
+			max_roll = (max_roll - 1)
+		else
+			max_roll = 1
+		end
+
+	until ( max_weight <= 0 )
+
+	local sec, se_obj, data, ammos, ct, ammo_type, ammo_section
+	local ini = system_ini( )
+
+	for i = 1, #spawned_item do
+
+		sec = spawned_item[i]
+		if ( sec ~= "" and ini:section_exist( sec ) ) then
+			se_obj = sim:create( sec, se_box.position, 0, 0, id )
+			if ( IsWeapon( nil, se_obj:clsid( ) ) ) then
+				data = stpk_utils.get_weapon_data( se_obj )
+				if ( data ) then
+
+					-- Create random addon flag for weapon:
+					flag = 0
+					if ( ini:r_float_ex( sec, "scope_status" ) ) then
+						flag = (flag + 1)
+					end
+					if ( ini:r_float_ex( sec, "grenade_launcher_status" ) ) then
+						flag = (flag + 2)
+					end
+					if ( ini:r_float_ex( sec, "silencer_status" ) ) then
+						flag = (flag + 4)
+					end
+					flag = math.random( 0, flag )
+
+					-- Create random ammo type:
+					ammos = alun_utils.parse_list( ini, sec, "ammo_class" )
+					ct = ammos and #ammos
+					ammo_type = ammos and ct and math.random( 0, (ct - 1) ) or 0
+					ammo_section = ammo_type and ammos[(ammo_type + 1)]
+
+					data.addon_flags = flag
+					data.ammo_type = ammo_type
+					data.condition = ((math.random( 70 ) + 30) / 100)
+					stpk_utils.set_weapon_data( data, se_obj )
+
+				end
+			end
+
+		else
+			printf( "drx_coc_treasure_manager.script: invalid section %s", sec )
+
+		end
+
+	end
+
+	return id
+
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
 
 function try_spawn_treasure(box)
 	local id = box:id()

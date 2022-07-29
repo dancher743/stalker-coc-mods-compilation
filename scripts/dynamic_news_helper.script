@@ -5,196 +5,196 @@
 
 
 --=================================================< Tables >=================================================
-local all_points = {
+all_points = {
 	["jupiter"] = {
-		{ -349.75, 3.9878, 407.8909}, --the Ash Heap anomaly
-		{ -161.104, 3.594, 390.616}, --the tower
-		{ 73.6377, 4.6632, 324.0991}, --the substation
-		{ 228.0958, -4.8275, 404.7565}, --the Plavni anomaly
-		{ 356.3688, 33.4261, 335.5996}, --the cement factory
-		{ -341.2063, -3.9061, 235.3816}, --Kopachi
-		{ -51.0059, 3.4884, 199.2509}, --Yanov
-		{ 276.5087, -29.4639, 163.2693}, --the quarry
-		{ -196.3071, -3.748, 72.5475}, --the mobile lab
-		{ -360.9959, 11.2529, -6.6707}, --the Volkhov complex
-		{ 55.7362, 10.5284, -18.2494}, --the anomalous grove
-		{ -108.4109, -0.3887, -145.4128}, --the parking lot
-		{ 43.5119, 23.9638, -190.6825}, --the checkpoint
-		{ 213.3307, 0.5969, -70.0109}, --the Bitumen anomaly
-		{ 399.7508, 4.505, -103.8042}, --the eastern tunnel
-		{ -412.9768, -0.0092, -343.6718}, --the storage containers
-		{ -65.5894, 23.7972, -322.6659}, --the ventilation complex
-		{ -128.901, 26.8013, -470.7353}, --the helipad
-		{ 234.1494, 15.171, -316.6919}, --the Concrete Bath anomaly
-		{ 277.403, 27.6236, -231.8324} --the Jupiter factory
+		[1] = { -349.75, 3.9878, 407.8909}, --the Ash Heap anomaly
+		[2] = { -161.104, 3.594, 390.616}, --the tower
+		[3] = { 73.6377, 4.6632, 324.0991}, --the substation
+		[4] = { 228.0958, -4.8275, 404.7565}, --the Plavni anomaly
+		[5] = { 356.3688, 33.4261, 335.5996}, --the cement factory
+		[6] = { -341.2063, -3.9061, 235.3816}, --Kopachi
+		[7] = { -51.0059, 3.4884, 199.2509}, --Yanov
+		[8] = { 276.5087, -29.4639, 163.2693}, --the quarry
+		[9] = { -196.3071, -3.748, 72.5475}, --the mobile lab
+		[10] = { -360.9959, 11.2529, -6.6707}, --the Volkhov complex
+		[11] = { 55.7362, 10.5284, -18.2494}, --the anomalous grove
+		[12] = { -108.4109, -0.3887, -145.4128}, --the parking lot
+		[13] = { 43.5119, 23.9638, -190.6825}, --the checkpoint
+		[14] = { 213.3307, 0.5969, -70.0109}, --the Bitumen anomaly
+		[15] = { 399.7508, 4.505, -103.8042}, --the eastern tunnel
+		[16] = { -412.9768, -0.0092, -343.6718}, --the storage containers
+		[17] = { -65.5894, 23.7972, -322.6659}, --the ventilation complex
+		[18] = { -128.901, 26.8013, -470.7353}, --the helipad
+		[19] = { 234.1494, 15.171, -316.6919}, --the Concrete Bath anomaly
+		[20] = { 277.403, 27.6236, -231.8324} --the Jupiter factory
 		},
 	["jupiter_underground"] = {
-		{ 0, 0, 0} --the tunnels
+		[1] = { 0, 0, 0} --the tunnels
 		},
 	["k00_marsh"] = {
-		{ -161.21,0.39,-299.14}, --the Clear Sky base
-		{ 37.51, 5.32, -228.54}, --the fishery
-		{ -6.08,11.19,19.42}, --the pump station
-		{ -254.83, 2.19, -110.17}, --the anomaly cluster
-		{ 165.38, 12.61, 535.36}, --the road to Agroprom
-		{ 417.38, 5.32, 236.78}, --the machine yard
-		{ 280.52, 5.5, 61.02}, --the burnt house
-		{ 486.19, 4.36, -175.46}, --the southern checkpoint
-		{ 285.02, 1.8, -160.7} --the old church
+		[1] = { -161.21,0.39,-299.14}, --the Clear Sky base
+		[2] = { 37.51, 5.32, -228.54}, --the fishery
+		[3] = { -6.08,11.19,19.42}, --the pump station
+		[4] = { -254.83, 2.19, -110.17}, --the anomaly cluster
+		[5] = { 165.38, 12.61, 535.36}, --the road to Agroprom
+		[6] = { 417.38, 5.32, 236.78}, --the machine yard
+		[7] = { 280.52, 5.5, 61.02}, --the burnt house
+		[8] = { 486.19, 4.36, -175.46}, --the southern checkpoint
+		[9] = { 285.02, 1.8, -160.7} --the old church
 		},
 	["k01_darkscape"] = {
-		{ -587.87, -0.1, -411.62}, --the road to Cordon
-		{ 427.23, -0.12, -362.48}, --the gas station
-		{ 255.27, 1.14, -189.09}, --the sawmill
-		{ 400.78, -1.3, 285.05}, --the bridge
-		{ -405.64, 2.82, 623.14} --the road to Dark Valley
+		[1] = { -587.87, -0.1, -411.62}, --the road to Cordon
+		[2] = { 427.23, -0.12, -362.48}, --the gas station
+		[3] = { 255.27, 1.14, -189.09}, --the sawmill
+		[4] = { 400.78, -1.3, 285.05}, --the bridge
+		[5] = { -405.64, 2.82, 623.14} --the road to Dark Valley
 		},
 	["k02_trucks_cemetery"] = {
-		{ -216.822, 6.515, 139.917}, --the way to Rostok
-		{ 85.541, 4.834, 62.382}, --the helicopters
-		{ 87.56, 6.566, 203.66}, --the fire trucks
-		{ -39.466, 10.116, 340.233}, --the radioactive hills
-		{ 219.7, 7.659, 304.56}, --the north eastern checkpoint
-		{ -10.543, 24.334, -88.519}, --the hill in the woods
-		{ -139.04, 1.867, -37.843}, --the valley
-		{ -91.354, 6.6, -299.094}, --the containers
-		{ 50.707, 13.272, -371.74} --the southern parking lot
+		[1] = { -216.822, 6.515, 139.917}, --the way to Rostok
+		[2] = { 85.541, 4.834, 62.382}, --the helicopters
+		[3] = { 87.56, 6.566, 203.66}, --the fire trucks
+		[4] = { -39.466, 10.116, 340.233}, --the radioactive hills
+		[5] = { 219.7, 7.659, 304.56}, --the north eastern checkpoint
+		[6] = { -10.543, 24.334, -88.519}, --the hill in the woods
+		[7] = { -139.04, 1.867, -37.843}, --the valley
+		[8] = { -91.354, 6.6, -299.094}, --the containers
+		[9] = { 50.707, 13.272, -371.74} --the southern parking lot
 		},
 	["l01_escape"] = {
-		{ -156.24, -28.86, -344.82}, --the southern checkpoint
-		{ -190.0, -18.32, -147.271}, --the rookie village
-		{ -215.8, -7.9, -39.57}, --the trash pit
-		{ 86.19, -6.59, -16.25}, --the car park
-		{ 58.5, 3.05, 135.78}, --the railway embankment
-		{ 18.44, 2.03, 277.14}, --the farm
-		{ 104.92, 2.94, 510.45}, --the anomaly in the woods
-		{ 319.45, 13.92, 219.38}, --the train tunnel
-		{ 17.83, 17.45, 661.86} --the northern checkpoint
+		[1] = { -156.24, -28.86, -344.82}, --the southern checkpoint
+		[2] = { -190.0, -18.32, -147.271}, --the rookie village
+		[3] = { -215.8, -7.9, -39.57}, --the trash pit
+		[4] = { 86.19, -6.59, -16.25}, --the car park
+		[5] = { 58.5, 3.05, 135.78}, --the railway embankment
+		[6] = { 18.44, 2.03, 277.14}, --the farm
+		[7] = { 104.92, 2.94, 510.45}, --the anomaly in the woods
+		[8] = { 319.45, 13.92, 219.38}, --the train tunnel
+		[9] = { 17.83, 17.45, 661.86} --the northern checkpoint
 		},
 	["l02_garbage"] = {
-		{ 37.24, 2.14, 225.37}, --the Rostok checkpoint
-		{ -213.44, 0.43, 105.17}, --the Synapse anomaly
-		{ -112.15, 2.02, 10.16}, --the Depot
-		{ -77.65, -0.95, -211.41}, --the vehicle graveyard
-		{ 94.49, 1.75, -143.77}, --the swamp
-		{ 94.77, -1.31, -257.22}, --the anomaly by the road
-		{ 36.25, 2.13, -303.03} --the road to Cordon
+		[1] = { 37.24, 2.14, 225.37}, --the Rostok checkpoint
+		[2] = { -213.44, 0.43, 105.17}, --the Synapse anomaly
+		[3] = { -112.15, 2.02, 10.16}, --the Depot
+		[4] = { -77.65, -0.95, -211.41}, --the vehicle graveyard
+		[5] = { 94.49, 1.75, -143.77}, --the swamp
+		[6] = { 94.77, -1.31, -257.22}, --the anomaly by the road
+		[7] = { 36.25, 2.13, -303.03} --the road to Cordon
 		},
 	["l03_agroprom"] = {
-		{ 160.72, 9.81, 96.51}, --the anomaly on the hill
-		{ 26.26, 1.46, -6.7}, --the northern complex
-		{ 12.68, 0.13, -256.75}, --the anomaly to the south
-		{ -126.75, 1.45, -183.51}, --the southern complex
-		{ -194.71, 1.23, -41.46}, --the Bedrock Claws anomaly
-		{ -214.78, 3.58, 58.75} --the swamps
+		[1] = { 160.72, 9.81, 96.51}, --the anomaly on the hill
+		[2] = { 26.26, 1.46, -6.7}, --the northern complex
+		[3] = { 12.68, 0.13, -256.75}, --the anomaly to the south
+		[4] = { -126.75, 1.45, -183.51}, --the southern complex
+		[5] = { -194.71, 1.23, -41.46}, --the Bedrock Claws anomaly
+		[6] = { -214.78, 3.58, 58.75} --the swamps
 		},
 	["l04_darkvalley"] = {
-		{ -112.69, 2.3, -485.54}, --the abandoned farm
-		{ 91.62, 3.32, -481.87}, --the Glowing Pit anomaly
-		{ 134.25, 2.23, -309.97}, --the moving fireball
-		{ 7.68, 1.45, -102.67}, --the factory
-		{ 112.59, 1.7, -66.32}, --the gas station
-		{ 30.21, 1.66, 14.56}, --the bandit base
-		{ -146.82, 2.39, -196.14} --the exit to the Garbage
+		[1] = { -112.69, 2.3, -485.54}, --the abandoned farm
+		[2] = { 91.62, 3.32, -481.87}, --the Glowing Pit anomaly
+		[3] = { 134.25, 2.23, -309.97}, --the moving fireball
+		[4] = { 7.68, 1.45, -102.67}, --the factory
+		[5] = { 112.59, 1.7, -66.32}, --the gas station
+		[6] = { 30.21, 1.66, 14.56}, --the bandit base
+		[7] = { -146.82, 2.39, -196.14} --the exit to the Garbage
 		},
 	["l05_bar"] = {
-		{ 89.2, 1.65, 139.18}, --the western checkpoint
-		{ 130.31, 1.8, 47.0}, --the entrance to the bar
-		{ 205.14, 1.61, 96.77}, --the Duty base
-		{ 37.67, -1.41, 301.72} --the road to the Army Warehouses
+		[1] = { 89.2, 1.65, 139.18}, --the western checkpoint
+		[2] = { 130.31, 1.8, 47.0}, --the entrance to the bar
+		[3] = { 205.14, 1.61, 96.77}, --the Duty base
+		[4] = { 37.67, -1.41, 301.72} --the road to the Army Warehouses
 		},
 	["l06_rostok"] = {
-		{ -83.34, -14.13, -218.59}, --the road to Yantar
-		{ -158.44, -4.35, -87.61}, --the burning tunnel
-		{ -236.53, 1.65, 53.01}, --the construction site
-		{ -30.32, 1.66, 144.36}, --the parking lot
-		{ 31.64, 1.04, 139.91} --the road to Rostok
+		[1] = { -83.34, -14.13, -218.59}, --the road to Yantar
+		[2] = { -158.44, -4.35, -87.61}, --the burning tunnel
+		[3] = { -236.53, 1.65, 53.01}, --the construction site
+		[4] = { -30.32, 1.66, 144.36}, --the parking lot
+		[5] = { 31.64, 1.04, 139.91} --the road to Rostok
 		},
 	["l07_military"] = {
-		{ -304.69, -20.42, 49.06}, --the old farmstead
-		{ -182.28, -7.18, 20.62}, --the anomaly on the southern hill
-		{ -7.5, -4.53, 33.44}, --the Freedom base
-		{ 54.76, -9.58, 125.94}, --the old shack
-		{ -289.24, -21.03, 237.12}, --the abandoned village
-		{ -15.75, -1.53, 438.12}, --the road to Dead City
-		{ -198.25, -2.75, 419.77} --the road to Radar
+		[1] = { -304.69, -20.42, 49.06}, --the old farmstead
+		[2] = { -182.28, -7.18, 20.62}, --the anomaly on the southern hill
+		[3] = { -7.5, -4.53, 33.44}, --the Freedom base
+		[4] = { 54.76, -9.58, 125.94}, --the old shack
+		[5] = { -289.24, -21.03, 237.12}, --the abandoned village
+		[6] = { -15.75, -1.53, 438.12}, --the road to Dead City
+		[7] = { -198.25, -2.75, 419.77} --the road to Radar
 		},
 	["l08_yantar"] = {
-		{ -16.3, -10.83, -243.71}, --the anomaly behind the plant
-		{ 31.51, -10.08, -272.61}, --the mobile lab
-		{ -169.33, 4.7, -157.45}, --the plant
-		{ 102.32, 1.6, -39.23}, --the entrance to the plant
-		{ -21.81, 2.15, 3.46} --the road to Dead City
+		[1] = { -16.3, -10.83, -243.71}, --the anomaly behind the plant
+		[2] = { 31.51, -10.08, -272.61}, --the mobile lab
+		[3] = { -169.33, 4.7, -157.45}, --the plant
+		[4] = { 102.32, 1.6, -39.23}, --the entrance to the plant
+		[5] = { -21.81, 2.15, 3.46} --the road to Dead City
 		},
 	["l09_deadcity"] = {
-		{ 154.53, -1.47, -24.22}, --the tunnel to the Army Warehouses
-		{ -9.47, 1.92, -201.1}, --the road to Yantar
-		{ -39.93, 3.39, 31.96}, --the mercenary base
-		{ -59.58, 2.74, 96.5} --the road to Limansk
+		[1] = { 154.53, -1.47, -24.22}, --the tunnel to the Army Warehouses
+		[2] = { -9.47, 1.92, -201.1}, --the road to Yantar
+		[3] = { -39.93, 3.39, 31.96}, --the mercenary base
+		[4] = { -59.58, 2.74, 96.5} --the road to Limansk
 		},
 	["l10_limansk"] = {
-		{ -46.64, -3.35, -239.41}, --the road to Dead City
-		{ 4.1, 1.65, -359.17} --the tunnel to Red Forest
+		[1] = { -46.64, -3.35, -239.41}, --the road to Dead City
+		[2] = { 4.1, 1.65, -359.17} --the tunnel to Red Forest
 		},
 	["l10_radar"] = {
-		{ 12.27, 1.36, -64.97}, --the antennas
-		{ 384.88, -32.47, 140.24} --the road to Pripyat
+		[1] = { 12.27, 1.36, -64.97}, --the antennas
+		[2] = { 384.88, -32.47, 140.24} --the road to Pripyat
 		},
 	["l10_red_forest"] = {
-		{ -119.31, 1.78, -270.63}, --the bridge
-		{ -2.74, -1.55, -231.93}, --the Superconductor anomaly
-		{ 208.88, -4.89, -107.13}, --the tunnel camp
-		{ 124.43, 1.79, -271.92}, --the road to Radar
-		{ -85.2, 3.93, -56.17}, --the open field
-		{ -56.6, 2.05, -31.23} --the road to Jupiter
+		[1] = { -119.31, 1.78, -270.63}, --the bridge
+		[2] = { -2.74, -1.55, -231.93}, --the Superconductor anomaly
+		[3] = { 208.88, -4.89, -107.13}, --the tunnel camp
+		[4] = { 124.43, 1.79, -271.92}, --the road to Radar
+		[5] = { -85.2, 3.93, -56.17}, --the open field
+		[6] = { -56.6, 2.05, -31.23} --the road to Jupiter
 		},
 	["l11_pripyat"] = {
-		{ 4.03, -0.04, -256.47}, --the road to Radar
-		{ 6.42, 1.65, 159.31} --the Monolith base
+		[1] = { 4.03, -0.04, -256.47}, --the road to Radar
+		[2] = { 6.42, 1.65, 159.31} --the Monolith base
 		},
 	["labx8"] = {
-		{ 0, 0, 0} --the lab
+		[1] = { 0, 0, 0} --the lab
 		},
 	["pripyat"] = {
-		{ 81.8565, -16.6709, -1054.051}, --the Prometheus theater
-		{ 293.7553, 0.6782, 231.0446}, --the river port
-		{ 11.1927, 4.4952, 277.1345}, --the old KBO
-		{ 56.3268, 1.6092, 127.6943}, --the school
-		{ 222.1708, -0.2035, 32.2432}, --the hospital
-		{ -59.2026, 8.6021, 94.3039}, --KBO Jubilee
-		{ 154.753, -0.0955, -185.3917}, --the laundromat
-		{ -109.6032, 4.1258, -105.4647}, --the playground
-		{ 46.9189, 16.5275, -139.9859}, --the dormitory
-		{ -198.7285, -0.1768, -199.4987}, --the grocery store
-		{ -101.6807, 0.5108, -257.1676}, --the department store
-		{ -181.141, 0.5491, -347.6817}, --the book store
-		{ -177.9315, -0.5841, -30.081}, --the Volcano anomaly
-		{ 154.266, 0.0355, 216.7533} --the Vine anomaly
+		[1] = { 81.8565, -16.6709, -1054.051}, --the Prometheus theater
+		[2] = { 293.7553, 0.6782, 231.0446}, --the river port
+		[3] = { 11.1927, 4.4952, 277.1345}, --the old KBO
+		[4] = { 56.3268, 1.6092, 127.6943}, --the school
+		[5] = { 222.1708, -0.2035, 32.2432}, --the hospital
+		[6] = { -59.2026, 8.6021, 94.3039}, --KBO Jubilee
+		[7] = { 154.753, -0.0955, -185.3917}, --the laundromat
+		[8] = { -109.6032, 4.1258, -105.4647}, --the playground
+		[9] = { 46.9189, 16.5275, -139.9859}, --the dormitory
+		[10] = { -198.7285, -0.1768, -199.4987}, --the grocery store
+		[11] = { -101.6807, 0.5108, -257.1676}, --the department store
+		[12] = { -181.141, 0.5491, -347.6817}, --the book store
+		[13] = { -177.9315, -0.5841, -30.081}, --the Volcano anomaly
+		[14] = { 154.266, 0.0355, 216.7533} --the Vine anomaly
 		},
 	["zaton"] = {
-		{ -33.0228, 0.4555, -200.7156}, --the Claw anomaly
-		{ -355.6813, 40.0176, -325.4126}, --the Iron Forest anomaly
-		{ -349.0496, 18.3864, 345.0177}, --the sawmill
-		{ -400.3414, 6.4376, -9.3092}, --the antenna complex
-		{ 321.9968, 33.2427, -403.7212}, --the waste processing plant
-		{ 0.5964, 20.9242, -332.0877}, --the Circus anomaly
-		{ 420.0504, 36.2633, -17.5632}, --the ranger station
-		{ 132.5715, -7.3392, 185.0458}, --Skadovsk
-		{ -48.5605, 24.1285, 303.5849}, --the burnt village
-		{ 421.4176, -4.357, 413.4552}, --the Boiler anomaly
-		{ -355.5159, 7.6103, 250.3168}, --the swamp
-		{ -173.2566, 7.7176, 99.8053}, --Izumrudnoye
-		{ 11.8022, -5.1532, 35.2991}, --Shevchenko
-		{ 394.4182, -5.8341, 228.9845}, --the dredge station
-		{ 212.8967, 6.8029, 14.0857}, --the dock cranes
-		{ -283.9678, 21.0929, -136.5675}, --the Oakpine anomaly
-		{ -103.5785, -5.4548, -220.5178}, --the refuelling station
-		{ 152.5881, -6.8237, -139.0262}, --the old barge
-		{ 323.3748, -5.2372, -219.5806}, --the Scar anomaly
-		{ 429.9237, 20.2642, -182.6681}, --Preobrazhensky bridge
-		{ 77.0241, 39.0102, -478.4914}, --the southern plateau
-		{ -135.3534, 24.5687, -412.9718} --the workshop substation
-		}
+		[1] = { -33.0228, 0.4555, -200.7156}, --the Claw anomaly
+		[2] = { -355.6813, 40.0176, -325.4126}, --the Iron Forest anomaly
+		[3] = { -349.0496, 18.3864, 345.0177}, --the sawmill
+		[4] = { -400.3414, 6.4376, -9.3092}, --the antenna complex
+		[5] = { 321.9968, 33.2427, -403.7212}, --the waste processing plant
+		[6] = { 0.5964, 20.9242, -332.0877}, --the Circus anomaly
+		[7] = { 420.0504, 36.2633, -17.5632}, --the ranger station
+		[8] = { 132.5715, -7.3392, 185.0458}, --Skadovsk
+		[9] = { -48.5605, 24.1285, 303.5849}, --the burnt village
+		[10] = { 421.4176, -4.357, 413.4552}, --the Boiler anomaly
+		[11] = { -355.5159, 7.6103, 250.3168}, --the swamp
+		[12] = { -173.2566, 7.7176, 99.8053}, --Izumrudnoye
+		[13] = { 11.8022, -5.1532, 35.2991}, --Shevchenko
+		[14] = { 394.4182, -5.8341, 228.9845}, --the dredge station
+		[15] = { 212.8967, 6.8029, 14.0857}, --the dock cranes
+		[16] = { -283.9678, 21.0929, -136.5675}, --the Oakpine anomaly
+		[17] = { -103.5785, -5.4548, -220.5178}, --the refuelling station
+		[18] = { 152.5881, -6.8237, -139.0262}, --the old barge
+		[19] = { 323.3748, -5.2372, -219.5806}, --the Scar anomaly
+		[20] = { 429.9237, 20.2642, -182.6681}, --Preobrazhensky bridge
+		[21] = { 77.0241, 39.0102, -478.4914}, --the southern plateau
+		[22] = { -135.3534, 24.5687, -412.9718} --the workshop substation
+	}
 }
 
 local profiles_faction = {
@@ -538,6 +538,21 @@ function GetPointDescription(obj)
 	return strformat("%s %s %s",m_s,game.translate_string("st_dyn_news_close"),m_str)
 end
 
+local tips_icons = {
+	dolg     	= "ui_icon_news_news_dolg",
+	freedom  	= "ui_icon_news_news_svoboda",
+	army     	= "ui_icon_news_news_voen_stalk",
+	stalker  	= "ui_iconsTotal_grouping",
+	csky  		= "ui_iconsTotal_grouping",
+    killer   	= "ui_icon_news_news_naim",
+    bandit   	= "ui_icon_news_news_bandos",
+	deth	 	= "ui_icon_news_deth",
+	all		 	= "ui_icon_news_all",
+	signal		="ui_inGame2_Istoriya_dolga",
+	surge 		= "ui_inGame2_Vibros",
+	default		="ui_iconsTotal_grouping"
+}
+
 function GetTimeString(TimeDiffHrs,AccuracyTier) -- convert the difference between current and event time into a proper string - INPUT: time difference (hours), Accuracy Tier (1 to 6) - OUTPUT: string
 	-- Preparing variables
 	if TimeDiffHrs <= 1 then return false end
@@ -822,7 +837,7 @@ function GetMonsterDescription(obj,index) -- Get monster description, return tra
 		[clsid.snork_s] 				= "snork",
 		[clsid.tushkano_s] 				= "tushkano",
 		[clsid.zombie_s] 				= "zombie"
-		}
+	}
 	if clsid.karlik_s 	 then m_class[clsid.karlik_s] 	 = "karlik" 	end --> CoC 1.5
 	if clsid.psysucker_s then m_class[clsid.psysucker_s] = "psysucker" 	end --> A-Life Revamp
 	if clsid.lurker_s 	 then m_class[clsid.lurker_s] 	 = "lurker" 	end --> A-Life Revamp
@@ -849,7 +864,7 @@ function GetWeaponClass(obj)
 	elseif (IsShotgun(nil,cls)) then 
 		return 5
 	elseif (cls == clsid.wpn_knife_s) then 
-		return 6
+		return 1 --6
 	elseif (IsLauncher(nil,cls)) then
 		return 7
 	elseif (cls == clsid.wpn_grenade_f1 or cls == clsid.wpn_grenade_rgd5) then 

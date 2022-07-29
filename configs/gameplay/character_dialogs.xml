@@ -1,0 +1,34 @@
+<!--===========================================================
+<
+< NPC DIALOGS
+<	CoC 1.4.07 - DoctorX Questlines 1.6
+<
+<	Modified by: DoctorX
+<	Last revised: October 06, 2016
+<
+<===========================================================-->
+
+
+<!-- //////////////////////////////////////////////////////////////////////////////////////////////
+<!--
+<!-- NPC DIALOGS
+<!--
+<!--	Modified by DoctorX
+<!--	for DoctorX Questlines 1.6
+<!--	October 06, 2016
+<!--
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<start_dialog>hello_dialog</start_dialog>
+<actor_dialog>dm_sim_ordered_task_completed_dialog</actor_dialog>
+<actor_dialog>dm_sim_ordered_task_dialog</actor_dialog>
+<actor_dialog>friendly_companion_dialog</actor_dialog>
+<actor_dialog>friendly_companion_dialog_hostage_version</actor_dialog>
+<actor_dialog>dm_is_actor_companion_dialog</actor_dialog>
+<actor_dialog>dm_companion_patrol</actor_dialog>
+<actor_dialog>dm_companion_leave</actor_dialog>
+<actor_dialog>dm_universal_dialog</actor_dialog>
+<actor_dialog>actor_break_dialog</actor_dialog>
+<actor_dialog>guid_dlg</actor_dialog>
+
+<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ -->

@@ -192,10 +192,10 @@
                 <level_map spot="treasure_spot" pointer="quest_pointer"/>
                 <mini_map  spot="treasure_spot_mini"/>
         </treasure>
-        <treasure_spot width="10" height="10" alignment="c" stretch="1">
+        <treasure_spot width="15" height="15" alignment="c" stretch="1">
                 <texture>ui_inGame2_PDA_icon_secret</texture>
         </treasure_spot>
-        <treasure_spot_mini width="8" height="8" alignment="c" stretch="1">
+        <treasure_spot_mini width="10" height="10" alignment="c" stretch="1">
                 <texture>ui_inGame2_PDA_icon_secret</texture>
         </treasure_spot_mini>
 

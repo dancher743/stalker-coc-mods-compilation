@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+    <string id="st_jg_1">
+        <text>Насчёт работы проводником.</text>
+    </string>
+    <string id="st_jg_2">
+        <text>Что такое?</text>
+    </string>
+    <string id="st_jg_3">
+        <text>Я видел твоё сообщение. Тебе нужен проводник?</text>
+    </string>
+    <string id="st_jg_4">
+        <text>Я согласен. Выдвигаемся.</text>
+    </string>
+    <string id="st_jg_5">
+        <text>Отлично, пошли!</text>
+    </string>
+    <string id="st_jg_6">
+        <text>Не мужик, у тебя не хватит денег, чтобы заплатить мне неустойку.</text>
+    </string>
+    <string id="st_jg_7">
+        <text>Напомни, куда нам идти?</text>
+    </string>
+    <string id="st_jg_8">
+        <text>Мы на месте.</text>
+    </string>
+    <string id="st_jg_9">
+        <text>Наконец-то! Спасибо сталкер, отличная работа. Вот твои деньги.</text>
+    </string>
+    <string id="st_jg_10">
+        <text>Я отказываюсь от задания.</text>
+    </string>
+    <string id="st_jg_11">
+        <text>Ты уверен?</text>
+    </string>
+    <string id="st_jg_12">
+        <text>Да.</text>
+    </string>
+    <string id="st_jg_13">
+        <text>Забудь.</text>
+    </string>
+    <string id="st_jg_14">
+        <text>Ищу опытного сталкера, который проведёт на локацию %s. Я сейчас %s.</text>
+    </string>
+    <string id="st_jg_15">
+        <text>Мы опоздали! Мы же договаривались! Плати неустойку в %s рублей.</text>
+    </string>
+    <string id="st_jg_16">
+        <text>Да, мне нужно смотаться в одно место. Деньгами не обижу.\nЧерез %s часов я должен быть %s, заплачу %s рублей\nУчти, если не успеем, я возьму с тебя %s как неустойку.</text>
+    </string>
+    <string id="st_jg_17">
+        <text>Мне нужно быть</text>
+    </string>
+    <string id="st_jg_18">
+        <text>Мы же договаривались! Плати неустойку в %s рублей.</text>
+    </string>
+    <string id="st_jg_19">
+        <text>Длина пути (включая стартовый и конечный уровень): </text>
+    </string>
+	<string id="st_travel_guide">
+        <text>Нельзя путешествовать в роли проводника</text>
+    </string>
+</string_table>

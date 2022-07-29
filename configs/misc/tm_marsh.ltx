@@ -1,0 +1,627 @@
+;==============================================================
+;
+; TASKS PROVIDED ON MARSH (GREAT SWAMP) MAP
+;	CoC 1.4.14 - DoctorX Questlines 1.9
+;
+;	Main Faction: CLEAR SKY
+;	Strings file: st_quests_marsh.xml
+;	Modified by: DoctorX
+;	Last revised: October 29, 2016
+;
+;==============================================================
+
+
+;//////////////////////////////////////////////////////////////////////////////////////////////////
+;
+; STORYLINE TASKS
+;
+;	Modified by DoctorX
+;	for DoctorX Questlines 1.9
+;	October 29, 2016
+;
+;--------------------------------------------------------------------------------------------------
+
+;------------------------------------------------
+; Cold (Clear Sky Honcho) Default Storyline Task (no task, just send to next honcho)-
+
+[drx_sl_mar_smart_terrain_base_stalker_leader_marsh_default_task]
+
+icon = ui_inGame2_Mesta_evakuatsii
+storyline = true
+prior = 193
+
+title = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_default_task_name
+descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_default_task_text
+job_descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_default_task_about
+task_complete_descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_default_task_finish
+
+condlist_0 = {-drx_sl_dummy_info} complete
+condlist_1 = {!task_giver_alive(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_default_task)} fail
+condlist_2 = {=drx_sl_is_enemy(csky)} fail
+
+on_complete = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_default_task)%
+on_fail = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_default_task)%
+
+;------------------------------------------------
+; Cold (Clear Sky Honcho) Covert Agent Storyline Task-
+
+[drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_1]
+
+icon = ui_inGame2_Poslednie_razrabotki
+storyline = true
+prior = 129
+repeat_timeout = 0
+precondition = {=random_chance(100) -drx_sl_quest_item_task_1_started} true, false
+
+title = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_1_name
+descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_1_text
+job_descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_1_about
+task_complete_descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_1_finish
+
+stage_complete = 1
+target_functor = drx_sl_quest_item_task_1_target
+status_functor = drx_sl_quest_item_task_1_status
+condlist_0 = {!task_giver_alive(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_1)} fail
+condlist_1 = {=drx_sl_is_enemy(csky)} fail
+
+on_init = %=drx_sl_create_quest_stash_1() +drx_sl_quest_item_task_1_started%
+on_complete = %=drx_sl_reward_random(2500:3500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =remove_item(drx_sl_quest_item_1) =inc_task_stage(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_1) =pstor_reset(drx_sl_quest_stash_1_id) -drx_sl_quest_item_task_1_started =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_1)%
+on_fail = %=fail_task_dec_goodwill(25:csky) =drx_sl_meet_random_honcho() =pstor_reset(drx_sl_quest_stash_1_id) -drx_sl_quest_item_task_1_started =drx_sl_decrease_sl_tasks_count() =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_1)%
+
+;------------------------------------------------
+; Cold (Clear Sky Honcho) Protect Clear Sky Base Storyline Task-
+
+[drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2]
+
+icon = ui_inGame2_Issledovanie_anomaliy
+storyline = true
+prior = 175
+repeat_timeout = 0
+precondition = {=random_chance(100) =drx_sl_validate_assault_local_task(1:nil:false:csky)} true, false
+
+title = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2_name
+descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2_text
+job_descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2_about
+task_complete_descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2_finish
+
+stage_complete = 1
+target_functor = general_under_faction_control
+status_functor = drx_sl_assault_task_status
+status_functor_params = csky
+condlist_0 = {!task_giver_alive(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2)} fail
+condlist_1 = {=drx_sl_is_enemy(csky)} fail
+
+on_init = %=drx_sl_setup_assault_local(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2_id:csky)%
+on_complete = %=drx_sl_reward_random(4000:6000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =inc_task_stage(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2) =pstor_reset(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2_id) =pstor_reset(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2_target_id) =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2)%
+on_fail = %=fail_task_dec_goodwill(25:csky) =drx_sl_meet_random_honcho() =pstor_reset(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2_id) =pstor_reset(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2_target_id) =drx_sl_decrease_sl_tasks_count =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2)%
+
+;------------------------------------------------
+; Cold (Clear Sky Honcho) Find Artefact Storyline Task-
+
+[drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3]
+
+icon = ui_inGame2_Kontrakt_s_uchenimi
+storyline = true
+prior = 115
+repeat_timeout = 0
+precondition = {=random_chance(100)} true, false
+
+title = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3_name
+title_functor = general_fetch_task
+descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3_text
+descr_functor = general_fetch_task
+job_descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3_about
+fetch_descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3_fetch_about
+task_complete_descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3_fetch_finish
+
+stage_complete = 1
+target_functor = general_fetch_task
+status_functor = actor_has_fetch_item
+condlist_0 = {!task_giver_alive(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3)} fail
+condlist_1 = {=drx_sl_is_enemy(csky)} fail
+
+fetch_func = %=drx_sl_setup_fetch_artefact(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3_fetch:1:1)%
+on_complete = %=drx_sl_fetch_reward_random(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3_fetch:0.7) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =inc_task_stage(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3) =pstor_reset(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3_fetch) =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3)%
+on_fail = %=fail_task_dec_goodwill(25:csky) =drx_sl_meet_random_honcho() =pstor_reset(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3_fetch) =drx_sl_decrease_sl_tasks_count =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3)%
+
+;------------------------------------------------
+; Cold (Clear Sky Honcho) Search Agroprom Underground Storyline Task-
+
+[drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_4]
+
+icon = ui_inGame2_Laboratoriya_X8
+storyline = true
+prior = 165
+repeat_timeout = 0
+precondition = {=random_chance(100) -main_1_search_agr_ug_task_done} true, false
+
+title = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_4_name
+descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_4_text
+job_descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_4_about
+task_complete_descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_4_finish
+
+stage_complete = 1
+target = {!actor_has_item(main_story_1_quest_case)} agr_space_restrictor_to_agr_ug_1, {=actor_has_item(main_story_1_quest_case)} mar_smart_terrain_base_stalker_leader_marsh
+status_functor = drx_sl_retrieve_item_task_status
+status_functor_params = main_story_1_quest_case
+condlist_0 = {!task_giver_alive(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_4)} fail
+condlist_1 = {=drx_sl_is_enemy(csky)} fail
+
+on_complete = %+main_1_search_agr_ug_task_done =drx_sl_reward_random(6000:8000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =inc_task_stage(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_4) =remove_item(main_story_1_quest_case) =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_4)%
+on_fail = %=fail_task_dec_goodwill(25:csky) =drx_sl_meet_random_honcho() =drx_sl_decrease_sl_tasks_count =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_4)%
+
+;------------------------------------------------
+; Librarian (Clear Sky Barman) Default Storyline Task (no task, just send to next honcho)-
+
+[drx_sl_mar_base_stalker_barmen_default_task]
+
+icon = ui_inGame2_Mesta_evakuatsii
+storyline = true
+prior = 193
+
+title = drx_sl_mar_base_stalker_barmen_default_task_name
+descr = drx_sl_mar_base_stalker_barmen_default_task_text
+job_descr = drx_sl_mar_base_stalker_barmen_default_task_about
+task_complete_descr = drx_sl_mar_base_stalker_barmen_default_task_finish
+
+condlist_0 = {-drx_sl_dummy_info} complete
+condlist_1 = {!task_giver_alive(drx_sl_mar_base_stalker_barmen_default_task)} fail
+condlist_2 = {=drx_sl_is_enemy(csky)} fail
+
+on_complete = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_mar_base_stalker_barmen_default_task)%
+on_fail = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_mar_base_stalker_barmen_default_task)%
+
+;------------------------------------------------
+; Librarian (Clear Sky Barman) Clear Out Mutant Lair Storyline Task-
+
+[drx_sl_mar_base_stalker_barmen_task_1]
+
+icon = ui_inGame2_Nochnaya_ohota
+storyline = true
+prior = 142
+repeat_timeout = 0
+precondition = {=random_chance(100) =drx_sl_validate_assault_mutant_task(1:nil:false)} true, false
+
+title = drx_sl_mar_base_stalker_barmen_task_1_name
+descr = drx_sl_mar_base_stalker_barmen_task_1_text
+job_descr = drx_sl_mar_base_stalker_barmen_task_1_about
+task_complete_descr = drx_sl_mar_base_stalker_barmen_task_1_finish
+
+stage_complete = 1
+target_functor = general_under_faction_control
+status_functor = drx_sl_assault_mutant_task_status
+condlist_0 = {!task_giver_alive(drx_sl_mar_base_stalker_barmen_task_1)} fail
+condlist_1 = {=drx_sl_is_enemy(csky)} fail
+
+on_init = %=drx_sl_setup_assault_mutant(drx_sl_mar_base_stalker_barmen_task_1_id)%
+on_complete = %=drx_sl_reward_random(1500:3000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =inc_task_stage(drx_sl_mar_base_stalker_barmen_task_1) =pstor_reset(drx_sl_mar_base_stalker_barmen_task_1_id) =pstor_reset(drx_sl_mar_base_stalker_barmen_task_1_target_id) =drx_sl_unregister_task_giver(drx_sl_mar_base_stalker_barmen_task_1)%
+on_fail = %=fail_task_dec_goodwill(25:csky) =drx_sl_meet_random_honcho() =pstor_reset(drx_sl_mar_base_stalker_barmen_task_1_id) =pstor_reset(drx_sl_mar_base_stalker_barmen_task_1_target_id) =drx_sl_decrease_sl_tasks_count() =drx_sl_unregister_task_giver(drx_sl_mar_base_stalker_barmen_task_1)%
+
+;------------------------------------------------
+; Librarian (Clear Sky Barman) Procure Supplies Storyline Task-
+
+[drx_sl_mar_base_stalker_barmen_task_2]
+
+icon = ui_inGame2_D_Sisshik
+storyline = true
+prior = 112
+repeat_timeout = 0
+precondition = {=random_chance(100)} true, false
+
+title = drx_sl_mar_base_stalker_barmen_task_2_name
+title_functor = general_fetch_task
+descr = drx_sl_mar_base_stalker_barmen_task_2_text
+descr_functor = general_fetch_task
+job_descr = drx_sl_mar_base_stalker_barmen_task_2_about
+fetch_descr = drx_sl_mar_base_stalker_barmen_task_2_fetch_about
+task_complete_descr = drx_sl_mar_base_stalker_barmen_task_2_finish
+
+stage_complete = 1
+target_functor = general_fetch_task
+status_functor = actor_has_fetch_item
+condlist_0 = {!task_giver_alive(drx_sl_mar_base_stalker_barmen_task_2)} fail
+condlist_1 = {=drx_sl_is_enemy(csky)} fail
+
+fetch_func = %=drx_sl_setup_fetch_supplies(drx_sl_mar_base_stalker_barmen_task_2_fetch:12:16)%
+on_complete = %=drx_sl_fetch_reward_random(drx_sl_mar_base_stalker_barmen_task_2_fetch:1.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =inc_task_stage(drx_sl_mar_base_stalker_barmen_task_2) =pstor_reset(drx_sl_mar_base_stalker_barmen_task_2_fetch) =drx_sl_unregister_task_giver(drx_sl_mar_base_stalker_barmen_task_2)%
+on_fail = %=fail_task_dec_goodwill(25:csky) =drx_sl_meet_random_honcho() =pstor_reset(drx_sl_mar_base_stalker_barmen_task_2_fetch) =drx_sl_decrease_sl_tasks_count() =drx_sl_unregister_task_giver(drx_sl_mar_base_stalker_barmen_task_2)%
+
+; \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+;//////////////////////////////////////////////////////////////////////////////////////////////////
+;
+; CHANGE FACTIONS TASKS
+;
+;	Modified by DoctorX
+;	for DoctorX Questlines 1.6
+;	October 14, 2016
+;
+;--------------------------------------------------------------------------------------------------
+
+; ------------------------------------------------
+; Cold (Clear Sky Honcho) Payoff Change Factions Task-
+[drx_sl_mar_smart_terrain_base_stalker_leader_marsh_cf_task_1]
+
+icon = ui_inGame2_Sdelka
+storyline = true
+prior = 197
+repeat_timeout = 0
+precondition = {=random_chance(100)} true, false
+
+title = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_cf_task_1_name
+descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_cf_task_1_text
+job_descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_cf_task_1_about
+task_complete_descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_cf_task_1_finish
+
+stage_complete = 1
+target_functor = drx_sl_money_task_target
+status_functor = drx_sl_money_task_status
+condlist_0 = {!task_giver_alive(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_cf_task_1)} fail
+condlist_1 = {=drx_sl_is_enemy(csky)} fail
+
+on_init = %=pstor_set(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_cf_task_1_fetch:15000) +drx_sl_on_cf_task%
+on_complete = %=drx_sl_money_task_payment(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_cf_task_1_fetch) =drx_sl_change_factions(csky) =inc_task_stage(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_cf_task_1) =pstor_reset(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_cf_task_1_fetch) =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_cf_task_1) -drx_sl_on_cf_task%
+on_fail = %=pstor_reset(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_cf_task_1_fetch) =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_cf_task_1) -drx_sl_on_cf_task%
+
+; \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+;//////////////////////////////////////////////////////////////////////////////////////////////////
+;
+; DYNAMIC TASKS
+;
+;	Modified by DoctorX
+;	for DoctorX Questlines 1.6
+;	October 06, 2016
+;
+;--------------------------------------------------------------------------------------------------
+
+;------------------------------------------------
+; Spore (Clear Sky Trader) Deliver PDA Task-
+
+[mar_base_owl_stalker_trader_task_1]
+
+icon = ui_inGame2_PD_Torgovets_informatsiey
+storyline = false
+prior = 38
+precondition = {=random_chance(100) -mar_base_owl_stalker_trader_task_1_complete !drx_sl_is_enemy(stalker)} true, false
+
+title = mar_base_owl_stalker_trader_task_1_name
+descr = mar_base_owl_stalker_trader_task_1_text
+job_descr = mar_base_owl_stalker_trader_task_1_about
+
+target_functor = mar_base_owl_stalker_trader_task_target_1
+condlist_0 = {=drx_sl_is_enemy(stalker)} fail
+
+on_init = %=give_actor(mar_base_owl_stalker_trader_task_1_pda)%
+on_complete = %+mar_base_owl_stalker_trader_task_1_complete =drx_sl_unregister_task_giver(mar_base_owl_stalker_trader_task_1) =drx_sl_reset_stored_task(mar_base_owl_stalker_trader_task_1)%
+on_fail = %=drx_sl_unregister_task_giver(mar_base_owl_stalker_trader_task_1) =drx_sl_reset_stored_task(mar_base_owl_stalker_trader_task_1)%
+
+;------------------------------------------------
+; Spore (Clear Sky Trader) Destroy Helicopter Task-
+
+[mar_base_owl_stalker_trader_task_2]
+
+icon = ui_inGame2_Skat_1
+storyline = false
+prior = 70
+; precondition = {+mar_base_owl_stalker_trader_task_1_complete -mar_base_owl_stalker_trader_discount_1} true, false
+precondition = {=random_chance(100) -mar_base_owl_stalker_trader_discount_1} true, false
+
+title = mar_base_owl_stalker_trader_task_2_name
+descr = mar_base_owl_stalker_trader_task_2_text
+job_descr = mar_base_owl_stalker_trader_task_2_about
+
+target_functor = mar_base_owl_stalker_trader_task_target_2
+condlist_0 = {=drx_sl_is_enemy(csky)} fail
+
+on_complete = %+mar_base_owl_stalker_trader_discount_1 =drx_sl_unregister_task_giver(mar_base_owl_stalker_trader_task_2) =drx_sl_reset_stored_task(mar_base_owl_stalker_trader_task_2)%
+on_fail = %=drx_sl_unregister_task_giver(mar_base_owl_stalker_trader_task_2) =drx_sl_reset_stored_task(mar_base_owl_stalker_trader_task_2)%
+
+;------------------------------------------------
+; Spore (Clear Sky Trader) Escort Great Swamp Scientists Task-
+
+[mar_base_owl_stalker_trader_task_3]
+
+icon = ui_inGame2_Anomalnaya_aktivnost
+storyline = false
+prior = 92
+repeat_timeout = 259200
+precondition = {=random_chance(100) !squad_exist(ecolog_companion_task_1) !is_factions_enemies(ecolog:csky) !drx_sl_is_enemy(ecolog)} true, false
+
+title = mar_base_owl_stalker_trader_task_3_name
+descr = mar_base_owl_stalker_trader_task_3_text
+job_descr = mar_base_owl_stalker_trader_task_3_about
+task_complete_descr = mar_base_owl_stalker_trader_task_3_finish
+
+target_functor = mar_base_owl_stalker_trader_task_target_3
+condlist_0 = {!squad_exist(ecolog_companion_task_1)} fail
+condlist_1 = {!task_giver_alive(mar_base_owl_stalker_trader_task_3)} fail
+condlist_2 = {=drx_sl_is_enemy(csky)} fail
+condlist_3 = {=drx_sl_is_enemy(ecolog)} fail
+
+on_init = %=setup_companion_task(ecolog_companion_task_1:mar_smart_terrain_base) =setup_task_target_anomaly -ecolog_companion_task_1_started -ecolog_companion_task_1_force_started%
+on_complete = %=drx_sl_reward_random_artefact(3000:5000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:ecolog:csky) =remove_special_task_squad(ecolog_companion_task_1) =drx_sl_unregister_task_giver(mar_base_owl_stalker_trader_task_3) =drx_sl_reset_stored_task(mar_base_owl_stalker_trader_task_3)%
+on_fail = %=fail_task_dec_goodwill(25:ecolog:csky) =remove_special_task_squad(ecolog_companion_task_1) =drx_sl_unregister_task_giver(mar_base_owl_stalker_trader_task_3) =drx_sl_reset_stored_task(mar_base_owl_stalker_trader_task_3)%
+
+;------------------------------------------------
+; Librarian (Clear Sky Barman) Mutant Hunt Task-
+
+[mar_base_stalker_barmen_task_1]
+
+icon = ui_inGame2_PD_Ohotnik_na_mutantov
+storyline = false
+prior = 58
+repeat_timeout = 259200
+precondition = {=random_chance(100) =drx_sl_validate_assault_mutant_task(1:nil:false) !squad_exist(drx_sl_raid_companion_squad_csky_1)} true, false
+
+title = mar_base_stalker_barmen_task_1_name
+descr = mar_base_stalker_barmen_task_1_text
+job_descr = mar_base_stalker_barmen_task_1_about
+task_complete_descr = mar_base_stalker_barmen_task_1_finish
+
+stage_complete = 1
+target_functor = general_under_faction_control
+status_functor = drx_sl_assault_mutant_task_status
+condlist_0 = {!squad_exist(drx_sl_raid_companion_squad_csky_1)} fail
+condlist_1 = {!task_giver_alive(mar_base_stalker_barmen_task_1)} fail
+condlist_2 = {=drx_sl_is_enemy(csky)} fail
+
+on_init = %=setup_companion_task(drx_sl_raid_companion_squad_csky_1:mar_smart_terrain_base) =drx_sl_setup_assault_mutant(mar_base_stalker_barmen_task_1_id)%
+on_complete = %=drx_sl_reward_random(1000:2000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =inc_task_stage(mar_base_stalker_barmen_task_1) =pstor_reset(mar_base_stalker_barmen_task_1_id) =pstor_reset(mar_base_stalker_barmen_task_1_target_id) =remove_special_task_squad(drx_sl_raid_companion_squad_csky_1) =drx_sl_unregister_task_giver(mar_base_stalker_barmen_task_1) =drx_sl_reset_stored_task(mar_base_stalker_barmen_task_1)%
+on_fail = %=fail_task_dec_goodwill(25:csky) =pstor_reset(mar_base_stalker_barmen_task_1_id) =pstor_reset(mar_base_stalker_barmen_task_1_target_id) =remove_special_task_squad(drx_sl_raid_companion_squad_csky_1) =drx_sl_unregister_task_giver(mar_base_stalker_barmen_task_1) =drx_sl_reset_stored_task(mar_base_stalker_barmen_task_1)%
+
+;------------------------------------------------
+; Librarian (Clear Sky Barman) Raid Bandit Camp Task-
+
+[mar_base_stalker_barmen_task_2]
+
+icon = ui_inGame2_PD_Lider
+storyline = false
+prior = 85
+repeat_timeout = 259200
+precondition = {=random_chance(100) =drx_sl_is_enemy(bandit) =all_avail_smart_stayed_squad_count_ge_by_faction(1:nil:false:bandit) !squad_exist(drx_sl_raid_companion_squad_csky_2)} true, false
+
+title = mar_base_stalker_barmen_task_2_name
+descr = mar_base_stalker_barmen_task_2_text
+job_descr = mar_base_stalker_barmen_task_2_about
+task_complete_descr = mar_base_stalker_barmen_task_2_finish
+
+stage_complete = 1
+target_functor = general_under_faction_control
+status_functor = check_smart_under_faction_control_staged
+status_functor_params = bandit
+condlist_0 = {!squad_exist(drx_sl_raid_companion_squad_csky_2)} fail
+condlist_1 = {!task_giver_alive(mar_base_stalker_barmen_task_2)} fail
+condlist_2 = {=drx_sl_is_enemy(csky)} fail
+
+on_init = %=setup_companion_task(drx_sl_raid_companion_squad_csky_2:mar_smart_terrain_base) =find_smart_under_faction_control(mar_base_stalker_barmen_task_2_id:bandit)%
+on_complete = %=drx_sl_reward_random(1500:4000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =inc_task_stage(mar_base_stalker_barmen_task_2) =pstor_reset(mar_base_stalker_barmen_task_2_id) =pstor_reset(mar_base_stalker_barmen_task_2_target_id) =remove_special_task_squad(drx_sl_raid_companion_squad_csky_2) =drx_sl_unregister_task_giver(mar_base_stalker_barmen_task_2) =drx_sl_reset_stored_task(mar_base_stalker_barmen_task_2)%
+on_fail = %=fail_task_dec_goodwill(25:csky) =pstor_reset(mar_base_stalker_barmen_task_2_id) =pstor_reset(mar_base_stalker_barmen_task_2_target_id) =remove_special_task_squad(drx_sl_raid_companion_squad_csky_2) =drx_sl_unregister_task_giver(mar_base_stalker_barmen_task_2) =drx_sl_reset_stored_task(mar_base_stalker_barmen_task_2)%
+
+;------------------------------------------------
+; Librarian (Clear Sky Barman) Find Mutant Meat Task-
+
+[mar_base_stalker_barmen_task_3]
+
+icon = ui_inGame2_Pripasi
+storyline = false
+prior = 30
+repeat_timeout = 259200
+precondition = {=random_chance(100)} true, false
+
+title = mar_base_stalker_barmen_task_3_name
+title_functor = general_fetch_task
+descr = mar_base_stalker_barmen_task_3_text
+descr_functor = general_fetch_task
+job_descr = mar_base_stalker_barmen_task_3_about
+fetch_descr = mar_base_stalker_barmen_task_3_fetch_about
+task_complete_descr = mar_base_stalker_barmen_task_3_fetch_finish
+
+stage_complete = 1
+target_functor = general_fetch_task
+status_functor = actor_has_fetch_item
+condlist_0 = {!task_giver_alive(mar_base_stalker_barmen_task_3)} fail
+condlist_1 = {=drx_sl_is_enemy(csky)} fail
+
+fetch_func = %=drx_sl_setup_fetch_mutant_meat(mar_base_stalker_barmen_task_3_fetch:9:12)%
+on_complete = %=drx_sl_fetch_reward_random(mar_base_stalker_barmen_task_3_fetch:6.0) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =inc_task_stage(mar_base_stalker_barmen_task_3) =pstor_reset(mar_base_stalker_barmen_task_3_fetch) =drx_sl_unregister_task_giver(mar_base_stalker_barmen_task_3) =drx_sl_reset_stored_task(mar_base_stalker_barmen_task_3)%
+on_fail = %=fail_task_dec_goodwill(25:csky) =pstor_reset(mar_base_stalker_barmen_task_3_fetch) =drx_sl_unregister_task_giver(mar_base_stalker_barmen_task_3) =drx_sl_reset_stored_task(mar_base_stalker_barmen_task_3)%
+
+; \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+;//////////////////////////////////////////////////////////////////////////////////////////////////
+;
+; MECHANIC TASKS
+;
+;	Modified by DoctorX
+;	for DoctorX Questlines 1.6
+;	October 06, 2016
+;
+;--------------------------------------------------------------------------------------------------
+
+;------------------------------------------------
+; Novikov  (Clear Sky Mechanic) Find Level 1 Toolkit Task-
+
+[mar_base_stalker_tech_task_1]
+
+icon = ui_inGame2_Instrumenti
+storyline = false
+prior = 15
+precondition = {-mar_base_stalker_tech_upgrade_tier_1} true, false
+
+title = mar_base_stalker_tech_task_1_name
+title_functor = general_fetch_task
+descr = mar_base_stalker_tech_task_1_text
+descr_functor = general_fetch_task
+job_descr = mar_base_stalker_tech_task_1_about
+fetch_descr = mar_base_stalker_tech_task_1_fetch_about
+task_complete_descr = mar_base_stalker_tech_task_1_fetch_finish
+
+stage_complete = 1
+target_functor = general_fetch_task
+status_functor = actor_has_fetch_item
+condlist_0 = {!task_giver_alive(mar_base_stalker_tech_task_1)} fail
+condlist_1 = {=drx_sl_is_enemy(csky)} fail
+
+fetch_func = %=setup_generic_fetch_task(mar_base_stalker_tech_task_1_fetch:1:itm_repairkit_tier_1)%
+on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:csky) =remove_fetch_item(mar_base_stalker_tech_task_1_fetch) =inc_task_stage(mar_base_stalker_tech_task_1) +mar_base_stalker_tech_upgrade_tier_1 =drx_sl_unregister_task_giver(mar_base_stalker_tech_task_1)%
+on_fail = %=fail_task_dec_goodwill(25:csky) =drx_sl_unregister_task_giver(mar_base_stalker_tech_task_1)%
+
+;------------------------------------------------
+; Novikov  (Clear Sky Mechanic) Find Level 2 Toolkit Task-
+
+[mar_base_stalker_tech_task_2]
+
+icon = ui_inGame2_Instrumenti
+storyline = false
+prior = 16
+precondition = {+mar_base_stalker_tech_upgrade_tier_1 -mar_base_stalker_tech_upgrade_tier_2} true, false
+
+title = mar_base_stalker_tech_task_2_name
+title_functor = general_fetch_task
+descr = mar_base_stalker_tech_task_2_text
+descr_functor = general_fetch_task
+job_descr = mar_base_stalker_tech_task_2_about
+fetch_descr = mar_base_stalker_tech_task_2_fetch_about
+task_complete_descr = mar_base_stalker_tech_task_2_fetch_finish
+
+stage_complete = 1
+target_functor = general_fetch_task
+status_functor = actor_has_fetch_item
+condlist_0 = {!task_giver_alive(mar_base_stalker_tech_task_2)} fail
+condlist_1 = {=drx_sl_is_enemy(csky)} fail
+
+fetch_func = %=setup_generic_fetch_task(mar_base_stalker_tech_task_2_fetch:1:itm_repairkit_tier_2)%
+on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:csky) =remove_fetch_item(mar_base_stalker_tech_task_2_fetch) =inc_task_stage(mar_base_stalker_tech_task_2) +mar_base_stalker_tech_upgrade_tier_2 =drx_sl_unregister_task_giver(mar_base_stalker_tech_task_2)%
+on_fail = %=fail_task_dec_goodwill(25:csky) =drx_sl_unregister_task_giver(mar_base_stalker_tech_task_2)%
+
+;------------------------------------------------
+; Novikov  (Clear Sky Mechanic) Find Level 3 Toolkit Task-
+
+[mar_base_stalker_tech_task_3]
+
+icon = ui_inGame2_Instrumenti
+storyline = false
+prior = 17
+precondition = {+mar_base_stalker_tech_upgrade_tier_2 -mar_base_stalker_tech_upgrade_tier_3} true, false
+
+title = mar_base_stalker_tech_task_3_name
+title_functor = general_fetch_task
+descr = mar_base_stalker_tech_task_3_text
+descr_functor = general_fetch_task
+job_descr = mar_base_stalker_tech_task_3_about
+fetch_descr = mar_base_stalker_tech_task_3_fetch_about
+task_complete_descr = mar_base_stalker_tech_task_3_fetch_finish
+
+stage_complete = 1
+target_functor = general_fetch_task
+status_functor = actor_has_fetch_item
+condlist_0 = {!task_giver_alive(mar_base_stalker_tech_task_3)} fail
+condlist_1 = {=drx_sl_is_enemy(csky)} fail
+
+fetch_func = %=setup_generic_fetch_task(mar_base_stalker_tech_task_3_fetch:1:itm_repairkit_tier_3)%
+on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:csky) =remove_fetch_item(mar_base_stalker_tech_task_3_fetch) =inc_task_stage(mar_base_stalker_tech_task_3) +mar_base_stalker_tech_upgrade_tier_3 =drx_sl_unregister_task_giver(mar_base_stalker_tech_task_3)%
+on_fail = %=fail_task_dec_goodwill(25:csky) =drx_sl_unregister_task_giver(mar_base_stalker_tech_task_3)%
+
+; \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+;--------------------------------------------------------------------------------------------------
+; FIND DOCTOR TASK-
+
+[mar_find_doctor_task]
+icon = ui_iconsNpc_doctor
+prior = 109
+storyline = true
+title = mar_doctor_task
+target = nil
+descr = mar_doctor_task_0
+condlist_0 = {+mar_doctor_found} complete
+
+;--------------------------------------------------------------------------------------------------
+; DOCTOR PRIPYAT TASK-
+
+[cit_doctor_task]
+icon = ui_iconsNpc_strelok
+prior = 102
+storyline = true
+title = cit_doctor_task
+target = {+cit_jail_doctor_pryp_task -pri_actor_in_hotel} pri_hotel_zone, {+pri_actor_in_hotel -pri_actor_in_hiding_place} pri_decoder_room_door, {+pri_actor_in_hiding_place} pri_decoder_room_door
+descr = {+cit_jail_doctor_pryp_task -pri_actor_in_hotel} cit_doctor_task_1, {+pri_actor_in_hotel -pri_actor_in_hiding_place} cit_doctor_task_2, {+pri_actor_in_hiding_place -pri_monolith_decoder_got} cit_doctor_task_3
+condlist_0 = {+pri_monolith_decoder_got} complete
+
+;--------------------------------------------------------------------------------------------------
+; DOCTOR LAB TASKS-
+
+[main_1_search_agr_ug]
+icon = ui_inGame2_Laboratoriya_X8
+prior = 108
+storyline = true
+title = st_main_1_search_agr_ug_name
+descr = st_main_1_search_agr_ug_text
+target = agr_space_restrictor_to_agr_ug_1
+condlist_0 = {=actor_has_item(main_story_1_quest_case)} complete
+on_complete = %+main_1_search_agr_ug_task_done%, {+main_1_search_agr_ug_task_done +main_2_search_labx18_task_done +main_3_search_labx16_task_done +main_4_search_labx10_task_done +main_5_search_labx8_task_done +main_6_search_jup_ug_task_done +main_7_search_mon_con_task_done} %+warlab_password_info =give_task(sar_warlab) =give_task(sar_monolith_destroy)%
+
+[main_2_search_labx18]
+icon = ui_inGame2_Laboratoriya_X8
+prior = 107
+storyline = true
+title = st_main_2_search_labx18_name
+descr = st_main_2_search_labx18_text
+target = val_space_restrictor_to_labx18
+condlist_0 = {=actor_has_item(main_story_2_lab_x18_documents)} complete
+on_complete = %+main_2_search_labx18_task_done%, {+main_1_search_agr_ug_task_done +main_2_search_labx18_task_done +main_3_search_labx16_task_done +main_4_search_labx10_task_done +main_5_search_labx8_task_done +main_6_search_jup_ug_task_done +main_7_search_mon_con_task_done} %+warlab_password_info =give_task(sar_warlab) =give_task(sar_monolith_destroy)%
+
+[main_3_search_labx16]
+icon = ui_inGame2_Laboratoriya_X8
+prior = 106
+storyline = true
+title = st_main_3_search_labx16_name
+descr = st_main_3_search_labx16_text
+target = yan_space_restrictor_to_x16
+condlist_0 = {=actor_has_item(main_story_3_lab_x16_documents)} complete
+on_complete = %+main_3_search_labx16_task_done%, {+main_1_search_agr_ug_task_done +main_2_search_labx18_task_done +main_3_search_labx16_task_done +main_4_search_labx10_task_done +main_5_search_labx8_task_done +main_6_search_jup_ug_task_done +main_7_search_mon_con_task_done +pri_monolith_decoder_got +pri_documents_warlab_task} %+warlab_password_info =give_task(sar_warlab) =give_task(sar_monolith_destroy)%
+
+[main_4_search_labx10]
+icon = ui_inGame2_Laboratoriya_X8
+prior = 105
+storyline = true
+title = st_main_4_search_labx10_name
+descr = st_main_4_search_labx10_text
+target = rad_space_restrictor_to_bunker
+condlist_0 = {=actor_has_item(main_story_4_lab_x10_documents)} complete
+on_complete = %+main_4_search_labx10_task_done%, {+main_1_search_agr_ug_task_done +main_2_search_labx18_task_done +main_3_search_labx16_task_done +main_4_search_labx10_task_done +main_5_search_labx8_task_done +main_6_search_jup_ug_task_done +main_7_search_mon_con_task_done +pri_monolith_decoder_got +pri_documents_warlab_task} %+warlab_password_info =give_task(sar_warlab) =give_task(sar_monolith_destroy)%
+
+[main_5_search_labx8]
+icon = ui_inGame2_Laboratoriya_X8
+prior = 104
+storyline = true
+title = st_main_5_search_labx8_name
+descr = st_main_5_search_labx8_text
+target = pri_space_restrictor_to_labx8
+condlist_0 = {=actor_has_item(main_story_5_lab_x8_documents)} complete
+on_complete = %+main_5_search_labx8_task_done%, {+main_1_search_agr_ug_task_done +main_2_search_labx18_task_done +main_3_search_labx16_task_done +main_4_search_labx10_task_done +main_5_search_labx8_task_done +main_6_search_jup_ug_task_done +main_7_search_mon_con_task_done +pri_monolith_decoder_got +pri_documents_warlab_task} %+warlab_password_info =give_task(sar_warlab) =give_task(sar_monolith_destroy)%
+
+[main_6_search_jup_ug]
+icon = ui_inGame2_Laboratoriya_X8
+prior = 103
+storyline = true
+title = st_main_6_search_jup_ug_name
+descr = st_main_6_search_jup_ug_text
+target = jupiter_space_restrictor_to_jupiter_ug
+condlist_0 = {=actor_has_item(main_story_6_jup_ug_documents)} complete
+on_complete = %+main_6_search_jup_ug_task_done%, {+main_1_search_agr_ug_task_done +main_2_search_labx18_task_done +main_3_search_labx16_task_done +main_4_search_labx10_task_done +main_5_search_labx8_task_done +main_6_search_jup_ug_task_done +main_7_search_mon_con_task_done +pri_monolith_decoder_got +pri_documents_warlab_task} %+warlab_password_info =give_task(sar_warlab) =give_task(sar_monolith_destroy)%
+
+[main_7_search_mon_con]
+icon = ui_inGame2_Laboratoriya_X8
+prior = 101
+storyline = true
+title = st_main_7_search_mon_con_name
+descr = st_main_7_search_mon_con_text
+target = aes2_space_restrictor_to_secret_lab
+condlist_0 = {=actor_has_item(main_story_7_mon_con_documents)} complete
+on_complete = %+main_7_search_mon_con_task_done%, {+main_1_search_agr_ug_task_done +main_2_search_labx18_task_done +main_3_search_labx16_task_done +main_4_search_labx10_task_done +main_5_search_labx8_task_done +main_6_search_jup_ug_task_done +main_7_search_mon_con_task_done +pri_monolith_decoder_got +pri_documents_warlab_task} %+warlab_password_info =give_task(sar_warlab) =give_task(sar_monolith_destroy)%
