@@ -568,4 +568,8 @@
 	<string id="st_wish_granted">
 		<text>WISH GRANTED!</text>
 	</string>
+	
+	<string id="ui_st_helicopter">
+		<text>Helicopter</text>
+	</string>
 </string_table>
