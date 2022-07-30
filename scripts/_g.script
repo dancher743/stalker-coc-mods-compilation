@@ -1737,9 +1737,11 @@ function get_console_cmd(typ, name)
 end
 
 function main_hud_shown()
+	local actor = db.actor
 	if get_console_cmd(1,"hud_draw") 
 	and (not axr_main.weapon_is_zoomed) 
-	and (not db.actor:is_talking()) 
+	and (not actor:is_talking())
+	and (actor:alive())
 	then
 		return true
 	end
