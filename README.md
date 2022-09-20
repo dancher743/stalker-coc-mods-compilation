@@ -35,3 +35,4 @@ Using mods:
 27. Sound Restoration 3.2 (Balathruin)
 28. DoctorX Questlines 1.25 [CoC 1.4.22] (DoctorX)
 29. DoctorX Dynamic Faction Relations 1.8 [1.4.22] (DoctorX)
+30. Original Sound Effects for Call of Chernobyl (selectively) (Panzermann11)
