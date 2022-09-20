@@ -1532,7 +1532,10 @@ function DynamicNewsManager:ReportNextEmission() --  news about expected surge's
 			c = dynamic_news_helper.GetTimeString(math.floor(surge_start/3600), AccuracyTier)
 			if (a and b and c and d and SurgeType) then
 				local msg_mid = self:ReadTextKeyList( b , {["what"]=SurgeType , ["when"]=c} )
-				msg = self:ReadTextKeyList( "$start $mid. $end." , {["start"]=a , ["mid"]=msg_mid , ["end"]=d} )
+				if d ~= "" then
+					d = d .. "."
+				end
+				msg = self:ReadTextKeyList( "$start $mid. $end" , {["start"]=a , ["mid"]=msg_mid , ["end"]=d} )
 			end
 		end
 	end

@@ -13,7 +13,7 @@ if (jit == nil) then
 end
 
 GAME_VERSION = "1.4.22"
-MOD_VERSION = "Dancher's CoC Compilation 1.1"
+MOD_VERSION = "Dancher's CoC Compilation 1.1.1"
 
 if string.find(command_line(), "-dbg") then
 	DEV_DEBUG = true
@@ -1737,9 +1737,11 @@ function get_console_cmd(typ, name)
 end
 
 function main_hud_shown()
+	local actor = db.actor
 	if get_console_cmd(1,"hud_draw") 
 	and (not axr_main.weapon_is_zoomed) 
-	and (not db.actor:is_talking()) 
+	and (not actor:is_talking())
+	and (actor:alive())
 	then
 		return true
 	end
