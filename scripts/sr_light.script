@@ -1,6 +1,7 @@
 local light_zones = {}
 
 local indoor_levels = {
+	labx8				 	= true,
 	jupiter_underground 	= true,
 
 	-- Call of Chernobyl
@@ -80,19 +81,25 @@ function check_light(stalker)
 				torch:enable_attachable_item(false)
 			end
 			local sim = alife()
-			sim:release(sim:object(torch:id()),true)
+			local se_torch = sim:object(torch:id())
+			if se_torch then
+				sim:release(se_torch,true)
+			end
 		end
 		return
 	end
 
 	-- Stalker in danger mode; release torch
-	if (st.danger_flag) then
+	if (stalker:character_community() ~= "zombied" and st.danger_flag) then
 		if (torch) then
 			if (torch:attachable_item_enabled()) then
 				torch:enable_attachable_item(false)
 			end
 			local sim = alife()
-			sim:release(sim:object(torch:id()),true)
+			local se_torch = sim:object(torch:id())
+			if se_torch then
+				sim:release(se_torch,true)
+			end
 		end
 		return
 	end
@@ -105,19 +112,25 @@ function check_light(stalker)
 				torch:enable_attachable_item(false)
 			end
 			local sim = alife()
-			sim:release(sim:object(torch:id()),true)
+			local se_torch = sim:object(torch:id())
+			if se_torch then
+				sim:release(se_torch,true)
+			end
 		end
 		return
 	end
 
 	-- Stalker has enemy and is not underground; release torch
-	if (stalker:best_enemy() and not indoor_levels[level.name()]) then
+	if (stalker:character_community() ~= "zombied" and stalker:best_enemy() and not indoor_levels[level.name()]) then
 		if (torch) then
 			if (torch:attachable_item_enabled()) then
 				torch:enable_attachable_item(false)
 			end
 			local sim = alife()
-			sim:release(sim:object(torch:id()),true)
+			local se_torch = sim:object(torch:id())
+			if se_torch then
+				sim:release(se_torch,true)
+			end
 		end
 		return
 	end
@@ -133,7 +146,7 @@ function check_light(stalker)
 
 	if not forced then
 		local htime = level.get_time_hours()
-		if htime <= 4 or htime >= 20 then
+		if htime <= 5 or htime >= 20 then
 			light = true
 		end
 
@@ -151,7 +164,7 @@ function check_light(stalker)
 			end
 		else
 			local sim = alife()
-			sim:create("device_torch", vector(), 0, 0, stalker:id())
+			sim:create("device_torch", vector():set(0,0,0), 0, 0, stalker:id())
 		end
 	else
 		if (torch) then
@@ -159,7 +172,10 @@ function check_light(stalker)
 				torch:enable_attachable_item(false)
 			end
 			local sim = alife()
-			sim:release(sim:object(torch:id()),true)
+			local se_torch = sim:object(torch:id())
+			if se_torch then
+				sim:release(se_torch,true)
+			end
 		end
 	end
 end
