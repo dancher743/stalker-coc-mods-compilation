@@ -9,6 +9,16 @@ path = mar_space_restrictor_to_escape_1_drop                ;Waypoint to telepor
 reject_path = mar_level_changer_to_escape_1_reject_way      ;Waypoint to teleport actor if No chosen
 autosave = true
 
+;;;;;;;;;;;;;;;;;;задаём время перехода (мин и макс.);;;;;;;;;;;;;;;;;;;;;;;;;;
+;	Только целые числа! Часы (от 0 до 23) и минуты (от 1 до 59).
+hours_min = 1
+hours_max = 2
+minutes_min = 1
+minutes_max = 59
+;;;;;;;;;;;;;;;;;;;;;;;И так для каждого перехода;;;;;; av661194 ;;;;;;;;;;;;;;;
+
+
+
 [mar_space_restrictor_to_escape_2]
 enable = true
 spot = level_changer_right
@@ -35,6 +45,10 @@ text = mar_teleport_from_base_to_north_descr
 hint = mar_teleport_from_base_to_north_descr
 path = mar_smart_terrain_5_12_teleport_walk
 reject_path = mar_smart_terrain_base_teleport_walk
+hours_min = 0
+hours_max = 0
+minutes_min = 20
+minutes_max = 40
 
 [mar_teleport_from_base_to_west]
 enable = true
@@ -43,6 +57,10 @@ text = mar_teleport_from_base_to_north_descr
 hint = mar_teleport_from_base_to_north_descr
 path = mar_actor_teleport_tutorial_walk
 reject_path = mar_smart_terrain_base_intro_walk
+hours_min = 0
+hours_max = 0
+minutes_min = 20
+minutes_max = 40
 
 [mar_teleport_to_base]
 enable = true
@@ -51,6 +69,10 @@ text = st_teleport2_descr
 hint = mar_teleport_to_base_desc
 path = mar_smart_terrain_base_teleport_walk
 reject_path = mar_smart_terrain_5_12_teleport_walk
+hours_min = 0
+hours_max = 0
+minutes_min = 20
+minutes_max = 40
 
 
 ;ESCAPE
@@ -82,7 +104,10 @@ hint = esc_space_restrictor_to_garbage_descr
 path = esc_space_restrictor_to_garbage_drop
 reject_path = esc_level_changer_1_reject_way
 autosave = true
-
+hours_min = 1
+hours_max = 1
+minutes_min = -30
+minutes_max = 20
 
 [esc_space_restrictor_to_garbage_2]
 enable = true
@@ -92,6 +117,10 @@ hint = esc_space_restrictor_to_garbage_descr
 path = esc_space_restrictor_to_garbage_2_drop
 reject_path = esc_level_changer_2_reject_way
 autosave = true
+hours_min = 2
+hours_max = 3
+minutes_min = 1
+minutes_max = 30
 
 [esc_space_restrictor_to_darkscape_1]
 enable = true
@@ -101,6 +130,10 @@ hint = esc_space_restrictor_to_darkscape_descr
 path = esc_space_restrictor_to_darkscape_drop
 reject_path = esc_level_changer_to_darkvalley_1_reject_way
 autosave = true
+hours_min = 1
+hours_max = 1
+minutes_min = -30
+minutes_max = 20
 
 ;DARKSCAPE
 [ds_space_restrictor_to_escape]
@@ -111,6 +144,10 @@ hint = ds_space_restrictor_to_escape_descr
 path = ds_space_restrictor_to_escape_drop
 reject_path = ds_level_changer_to_escape_1_reject_way
 autosave = true
+hours_min = 1
+hours_max = 1
+minutes_min = -30
+minutes_max = 20
 
 [ds_space_restrictor_to_darkvalley]
 enable = true
@@ -166,6 +203,10 @@ hint = space_restrictor_to_agr_ug_desc
 path = agr_space_restrictor_to_agr_ug_1_drop
 reject_path = agr_level_changer_to_underground_1_reject_way
 autosave = true
+hours_min = 0
+hours_max = 0
+minutes_min = 4
+minutes_max = 7
 
 [agr_space_restrictor_to_agr_ug_2]
 enable = true
@@ -175,6 +216,10 @@ hint = space_restrictor_to_agr_ug_desc
 path = agr_space_restrictor_to_agr_ug_2_drop
 reject_path = agr_level_changer_to_underground_2_reject_way
 autosave = true
+hours_min = 0
+hours_max = 0
+minutes_min = 4
+minutes_max = 7
 
 [agr_space_restrictor_to_agr_ug_3]
 enable = true
@@ -184,6 +229,10 @@ hint = space_restrictor_to_agr_ug_desc
 path = agr_space_restrictor_to_agr_ug_3_drop
 reject_path = agr_level_changer_to_underground_3_reject_way
 autosave = true
+hours_min = 0
+hours_max = 0
+minutes_min = 4
+minutes_max = 7
 
 [agr_space_restrictor_to_agr_ug_4]
 enable = true
@@ -193,6 +242,10 @@ hint = space_restrictor_to_agr_ug_desc
 path = agr_space_restrictor_to_agr_ug_4_drop
 reject_path = agr_level_changer_to_underground_4_reject_way
 autosave = true
+hours_min = 0
+hours_max = 0
+minutes_min = 4
+minutes_max = 7
 
 [agr_space_restrictor_to_agr_ug_5]
 enable = true
@@ -202,6 +255,10 @@ hint = space_restrictor_to_agr_ug_desc
 path = agr_space_restrictor_to_agr_ug_5_drop
 reject_path = agr_level_changer_to_underground_5_reject_way
 autosave = true
+hours_min = 0
+hours_max = 0
+minutes_min = 4
+minutes_max = 7
 
 [agr_space_restrictor_to_agr_ug_6]
 enable = true
@@ -211,6 +268,10 @@ hint = space_restrictor_to_agr_ug_desc
 path = agr_space_restrictor_to_agr_ug_6_drop
 reject_path = agr_level_changer_to_underground_6_reject_way
 autosave = true
+hours_min = 0
+hours_max = 0
+minutes_min = 4
+minutes_max = 7
 
 
 ;GARBAGE
@@ -267,6 +328,10 @@ hint = ds_space_restrictor_to_escape_descr
 path = gar_space_restrictor_to_escape_1_drop
 reject_path = gar_level_changer_to_escape_1_reject_way
 autosave = true
+hours_min = 1
+hours_max = 1
+minutes_min = -30
+minutes_max = 20
 
 [gar_space_restrictor_to_escape_2]
 enable = true
@@ -276,6 +341,10 @@ hint = ds_space_restrictor_to_escape_descr
 path = gar_space_restrictor_to_escape_2_drop
 reject_path = gar_level_changer_to_escape_2_reject_way
 autosave = true
+hours_min = 2
+hours_max = 3
+minutes_min = 1
+minutes_max = 30
 
 [gar_space_restrictor_to_rostok_1]
 enable = true
@@ -323,6 +392,10 @@ hint = space_restrictor_to_labx18_desc
 path = val_space_restrictor_to_labx18_drop
 reject_path = val_level_changer_to_labx18_reject_way
 autosave = true
+hours_min = 0
+hours_max = 0
+minutes_min = 4
+minutes_max = 7
 
 [val_space_restrictor_to_tc]
 enable = true
@@ -360,6 +433,10 @@ hint = space_restrictor_to_rostok_desc
 path = bar_space_restrictor_to_rostok_01_drop
 reject_path = bar_way_if_reject_to_ros
 autosave = true
+hours_min = 0
+hours_max = 0
+minutes_min = 5
+minutes_max = 6
 
 [bar_space_restrictor_to_tc]
 enable = true
@@ -379,6 +456,10 @@ hint = space_restrictor_to_bar_desc
 path = ros_space_restrictor_to_bar_1_drop
 reject_path = ros_way_if_reject_to_bar
 autosave = true
+hours_min = 0
+hours_max = 0
+minutes_min = 5
+minutes_max = 6
 
 [ros_space_restrictor_to_garbage_1]
 enable = true
@@ -435,6 +516,10 @@ hint = space_restrictor_to_labx16_desc
 path = yan_space_restrictor_to_x16_drop
 reject_path = yan_way_if_reject_to_x16
 autosave = true
+hours_min = 0
+hours_max = 0
+minutes_min = 4
+minutes_max = 7
 
 
 ;MILITARY
@@ -539,6 +624,10 @@ hint = space_restrictor_to_limansk_desc
 path = red_space_restrictor_to_limansk_drop
 reject_path = red_level_changer_to_limansk_reject_way
 autosave = true
+hours_min = 1
+hours_max = 1
+minutes_min = 1
+minutes_max = 59
 
 [red_space_restrictor_to_radar_1]
 enable = true
@@ -585,6 +674,10 @@ hint = space_restrictor_to_labx10_desc
 path = rad_space_restrictor_to_bunker_drop
 reject_path = rad_way_if_reject_to_und
 autosave = true
+hours_min = 0
+hours_max = 0
+minutes_min = 4
+minutes_max = 7
 
 ;LIMANSK
 [lim_space_restrictor_to_dead_city]
@@ -604,6 +697,10 @@ hint = mil_space_restrictor_to_red_1_descr
 path = lim_space_restrictor_to_red_forest_drop
 reject_path = lim_level_changer_to_red_forest_reject_way
 autosave = true
+hours_min = 1
+hours_max = 1
+minutes_min = 1
+minutes_max = 59
 
 [lim_space_restrictor_to_hospital]
 enable = true
@@ -613,6 +710,10 @@ hint = space_restrictor_to_hospital
 path = lim_space_restrictor_to_hospital_drop
 reject_path = lim_level_changer_to_hospital_reject_way
 autosave = true
+hours_min = 2
+hours_max = 3
+minutes_min = 1
+minutes_max = 59
 
 
 ;HOSPITAL
@@ -624,6 +725,10 @@ hint = space_restrictor_to_limansk_desc
 path = katacomb_space_restrictor_to_limansk_drop
 reject_path = katacomb_level_changer_to_limansk_reject_way
 autosave = true
+hours_min = 2
+hours_max = 3
+minutes_min = 1
+minutes_max = 59
 
 [katacomb_space_restrictor_to_aes_1]
 enable = true
@@ -633,6 +738,11 @@ hint = gen_space_restrictor_to_aes2_descr
 path = katacomb_space_restrictor_to_aes_1_drop
 reject_path = katacomb_level_changer_to_aes_1_reject_way
 autosave = true
+hours_min = 2
+hours_max = 3
+minutes_min = 1
+minutes_max = 59
+
 
 
 ;PRIPYAT
@@ -653,6 +763,10 @@ hint = gen_space_restrictor_to_aes2_descr
 path = pri_space_restrictor_to_stancia_drop
 reject_path = pri_path_if_reject
 autosave = true
+hours_min = 2
+hours_max = 3
+minutes_min = 1
+minutes_max = 59
 
 [pri_space_restrictor_to_cop_pripyat]
 enable = true
@@ -680,6 +794,10 @@ hint = space_restrictor_to_jupiter_ug_desc
 path = pri_a15_actor_spawn
 reject_path = pri_a15_traveller_actor
 autosave = true
+hours_min = 0
+hours_max = 0
+minutes_min = 4
+minutes_max = 7
 
 [pri_space_restrictor_to_labx8]
 enable = true
@@ -689,6 +807,10 @@ hint = space_restrictor_to_labx8_desc
 path = pri_b306_actor_lc_walk
 reject_path = pri_path_if_reject_to_labx8
 autosave = true
+hours_min = 0
+hours_max = 0
+minutes_min = 4
+minutes_max = 7
 
 ;STANCIA1
 [aes_space_restrictor_to_pripyat]
@@ -699,6 +821,10 @@ hint = space_restrictor_to_pripyat_desc
 path = aes_space_restrictor_to_pripyat_drop
 reject_path = from_aes_to_pripjat_way_if_reject
 autosave = true
+hours_min = 2
+hours_max = 3
+minutes_min = 1
+minutes_max = 59
 
 [aes_space_restrictor_to_zaton]
 enable = true
@@ -708,6 +834,10 @@ hint = space_restrictor_to_zaton_desc
 path = aes_space_restrictor_to_red_forest_drop
 reject_path = aes_level_changer_to_red_forest_reject_way
 autosave = true
+hours_min = 2
+hours_max = 3
+minutes_min = 1
+minutes_max = 59
 
 [aes_space_restrictor_to_aes2]
 enable = true
@@ -717,6 +847,10 @@ hint = gen_space_restrictor_to_aes2_descr
 path = aes_space_restrictor_to_aes2_drop
 reject_path = aes_to_aes2_if_reject_way
 autosave = true
+hours_min = 0
+hours_max = 0
+minutes_min = 4
+minutes_max = 7
 
 [aes_space_restrictor_to_sarcofag]
 enable = true
@@ -726,6 +860,10 @@ hint = space_restrictor_to_sarcophagus_desc
 path = aes_space_restrictor_to_sarcofag_drop
 reject_path = st1_way_if_reject_to_sar
 autosave = true
+hours_min = 0
+hours_max = 0
+minutes_min = 4
+minutes_max = 7
 
 ;STANCIA 2
 [aes2_space_restrictor_to_gen]
@@ -745,6 +883,10 @@ hint = gen_space_restrictor_to_aes2_descr
 path = aes2_space_restrictor_to_aes1_drop
 reject_path = from_aes2_to_aes_way_if_reject
 autosave = true
+hours_min = 0
+hours_max = 0
+minutes_min = 4
+minutes_max = 7
 
 [aes2_space_restrictor_to_hospital]
 enable = true
@@ -754,6 +896,10 @@ hint = space_restrictor_to_hospital
 path = aes2_space_restrictor_to_hospital_drop
 reject_path = aes2_to_hospital_way_if_reject
 autosave = true
+hours_min = 2
+hours_max = 3
+minutes_min = 1
+minutes_max = 59
 
 [aes2_space_restrictor_to_secret_lab]
 enable = true
@@ -763,6 +909,10 @@ hint = space_restrictor_to_secret_lab_desc
 path = aes2_space_restrictor_to_secret_lab_drop
 reject_path = st2_way_if_reject_to_con
 autosave = true
+hours_min = 0
+hours_max = 0
+minutes_min = 4
+minutes_max = 7
 
 ;GENERATORS
 [gen_space_restrictor_to_aes2]
@@ -782,6 +932,10 @@ hint = space_restrictor_to_warlab_desc
 path = gen_space_restrictor_to_warlab_drop
 reject_path = gen_way_if_reject_to_warlab
 autosave = true
+hours_min = 0
+hours_max = 0
+minutes_min = 4
+minutes_max = 7
 
 ;ZATON
 [zaton_space_restrictor_to_jupiter]
@@ -801,6 +955,10 @@ hint = gen_space_restrictor_to_aes2_descr
 path = zaton_space_restrictor_to_stancia_1_drop
 reject_path = zaton_way_if_reject_to_stancia
 autosave = true
+hours_min = 2
+hours_max = 3
+minutes_min = 1
+minutes_max = 59
 
 ;JUPITER
 [jup_space_restrictor_to_zaton]
@@ -838,7 +996,10 @@ hint = space_restrictor_to_jupiter_ug_desc
 path = jupiter_space_restrictor_to_jupiter_ug_drop
 reject_path = jup_way_if_reject_to_jupiter_ug
 autosave = true
-
+hours_min = 0
+hours_max = 0
+minutes_min = 4
+minutes_max = 7
 
 ;JUPITER UNDERGROUND
 [jupiter_ug_space_restrictor_to_jupiter]
@@ -849,6 +1010,10 @@ hint = space_restrictor_to_jupiter_desc
 path = jupiter_ug_space_restrictor_to_jupiter_drop
 reject_path = jup_ug_way_if_reject_to_jupiter
 autosave = true
+hours_min = 0
+hours_max = 0
+minutes_min = 4
+minutes_max = 7
 
 
 ;COP PRIPYAT
@@ -906,3 +1071,5 @@ hint = space_restrictor_to_military_desc
 path = tc_space_restrictor_to_military_drop
 reject_path = tc_way_if_reject_to_military_3
 autosave = true
+
+
