@@ -1,0 +1,8 @@
+---
+---	Extensions for utils.script
+--- By Dancher
+---
+
+function has_use_condition(section)
+	return system_ini():r_bool_ex(section,"use_condition",false)
+end

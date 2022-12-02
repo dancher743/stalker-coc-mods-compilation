@@ -1,0 +1,7 @@
+function have_item(sect, needed)
+	if not needed then
+		needed = 1
+	end
+	local avail = utils_item.get_amount(db.actor, sect, 1)
+	return (avail >= needed)
+end

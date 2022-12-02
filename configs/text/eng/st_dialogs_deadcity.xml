@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<string_table>
+
+	<!-- From Anomaly 1.5.1.2 -->
+	<string id="talk_to_aslan_on_main_base_merk_0">
+		<text>Tell me about yourself.</text>
+	</string>
+	<string id="talk_to_aslan_on_main_base_merk_1"> <!-- Fixed -->
+		<text>What's there to tell? I'm the local bartender - but who can tell amidst this crap, yeah? We've been stuck here for days, barely maintaining ourselves. I took part in the defense of the president's palace back then, migrated to Switzerland. Then I came to the Zone. I enjoyed visiting the Bar with friends, drinking and reminiscing of older days... During one of such visits I was offered a place in the the Syndicate. It was barely upholding at the time, so Dushman and I are sort of pioneers in this. So what? The roundabouts are fitting, there are people who've been in Afghanistan and Georgia. But people from the Baltic aren't too eager to come, never mind the first world countries.</text>
+	</string>
+
+
+	<string id="talk_to_aslan_about_lottery_0">
+		<text>Heard that you're interested in faction patches.</text>
+	</string>
+	<string id="talk_to_aslan_about_lottery_1">
+		<text>How can I put this? Personally, no, I'm not "interested" in them - however, with morale being rather low lately, it's an optimal method for our guys to earn some spoils of war. Plus, the high-ups want them. Here's how it works: you bring me patches from stalkers, you get some gear or nothing at all - sometimes the tray's gotta be empty, eh? For twenty-five patches of any faction, apart from those of Ecologists and the Monolith, you have a chance to get a subpar artefact, or not get jack shit. With fifty patches, you'll have a chance to get a decent artefact and some rather solid gear, but there's also a chance that you won't get anything. And for twenty-five Monolith or Ecologist patches, you will get a pretty good artefact with the same chance as for fifty patches of any other faction. Fifty Monolith or Ecologist patches will guarantee you an outstanding item and good equipment dedicated only to the most experienced of stalkers, no chance of losing. You might ask, "why so generous?"... Because many people prefer to keep the patches for themselves as combat trophies.</text>
+	</string>
+	<string id="talk_to_aslan_about_lottery_2">
+		<text>What about you? What are you doing with them all?</text>
+	</string>
+	<string id="talk_to_aslan_about_lottery_3">
+		<text>Not really your business. Just get me the patches, and hope for something good. That's how the lottery works, end of story.</text>
+	</string>
+
+	<string id="lottery_ds_aslan_mlr_0">
+		<text>I have some patches.</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_1">
+		<text>Excellent, which ones?</text>
+	</string>
+		<string id="lottery_ds_aslan_mlr_2">
+			<text>Clear Sky, twenty-five patches.</text>
+		</string>
+		<string id="lottery_ds_aslan_mlr_3">
+			<text>Freedom, twenty-five patches.</text>
+		</string>
+		<string id="lottery_ds_aslan_mlr_4">
+			<text>Loners, twenty-five patches.</text>
+		</string>
+		<string id="lottery_ds_aslan_mlr_5">
+			<text>Ecologists', twenty-five patches.</text>
+		</string>
+		<string id="lottery_ds_aslan_mlr_6">
+			<text>Bandits, twenty-five patches.</text>
+		</string>
+		<string id="lottery_ds_aslan_mlr_7">
+			<text>Duty, twenty-five patches.</text>
+		</string>
+		<string id="lottery_ds_aslan_mlr_8">
+			<text>Monolith, twenty-five patches.</text>
+		</string>
+		<string id="lottery_ds_aslan_mlr_9">
+			<text>Military, twenty-five patches.</text>
+		</string>
+		<string id="lottery_ds_aslan_mlr_11">
+			<text>Clear Sky, fifty patches.</text>
+		</string>
+		<string id="lottery_ds_aslan_mlr_12">
+			<text>Freedom, fifty patches.</text>
+		</string>
+		<string id="lottery_ds_aslan_mlr_13">
+			<text>Loners, fifty patches.</text>
+		</string>
+		<string id="lottery_ds_aslan_mlr_14">
+			<text>Ecologists'. Even got fifty.</text>
+		</string>
+		<string id="lottery_ds_aslan_mlr_15">
+			<text>Bandits, fifty patches.</text>
+		</string>
+		<string id="lottery_ds_aslan_mlr_16">
+			<text>Duty, fifty patches.</text>
+		</string>
+		<string id="lottery_ds_aslan_mlr_17">
+			<text>Monolith, fifty patches.</text>
+		</string>
+		<string id="lottery_ds_aslan_mlr_18">
+			<text>Military, fifty patches.</text>
+		</string>
+	<string id="lottery_ds_aslan_mlr_10">
+		<text>Changed my mind.</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_19">
+		<text>Here, take your artefact.</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_20">
+		<text>Here.</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_21">
+		<text>Here, take it.</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_22">
+		<text>Here's your artefact.</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_23">
+		<text>Someone got lucky tonight.</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_24">
+		<text>You get a nice present.</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_25">
+		<text>Here's a solid artefact.</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_26">
+		<text>You're a lucky man! Here's something for the radiation.</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_27">
+		<text>A beautiful artefact. Here you go.</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_28">
+		<text>Two artefacts! You're lucky.</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_29">
+		<text>And here's the jackpot!</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_30">
+		<text>You're lucky.</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_31">
+		<text>An excellent kit for an artefact hunter!</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_34">
+		<text>A rare and wonderful artefact.</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_35">
+		<text>Damn, you're lucky!</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_36">
+		<text>Jackpot!</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_37">
+		<text>Alas, you didn't get anything.</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_38">
+		<text>Whoops! You pulled the short straw! Better luck next time.</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_39">
+		<text>Better luck next time.</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_40">
+		<text>Excellent equipment for an excellent marksman.</text>
+	</string>
+	<string id="lottery_ds_aslan_mlr_41">
+		<text>Ideal for long-range attacks.</text>
+	</string>
+	<!------>
+
+</string_table>
