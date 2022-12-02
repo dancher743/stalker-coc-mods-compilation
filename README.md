@@ -38,3 +38,4 @@ Using mods:
 30. Original Sound Effects for Call of Chernobyl (selectively) (Panzermann11)
 31. Level changers for CoC 1 4 22 (av661194)
 32. Zombie Headlamp ON 1.5r7 (jeredy_hothead)
+33. Rank-based weapon condition drops | 1.4.22 (Wafel)

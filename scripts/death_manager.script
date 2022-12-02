@@ -4,6 +4,61 @@ local always_keep_item = {}
 local item_by_story_id
 local death_ini = ini_file("misc\\death_generic.ltx")
 
+--Wafel start
+function Wafel_func_drop()  
+	local drop_config={
+		["zero"]={0,0,0,0},
+		["novice"]={45,60,2,6}, --wpn_cond_min,wpn_cond_max,ammo_multiple_min, ammo_multiple_max
+		["trainee"]={60,70,3,7},
+		["experienced"]={70,80,4,8},
+		["professional"]={80,90,5,9},
+		["veteran"]={80,90,6,10},
+		["expert"]={85,90,7,11},
+		["master"]={90,95,8,12},
+		["legend"]={95,100,9,13},    
+	}	
+	
+	local aliases={'zero','novice','trainee','experienced','professional','veteran','expert','master','legend'}
+	
+	return function (rank,mode)
+		math.randomseed( os.time() )
+		local result
+		local  function find_pos(where,what)
+			local pos=1
+			for k,v in pairs(where) do
+			  if (string.find(v,''..what)~=nil) then
+				pos=k
+				break
+			  end
+			end			
+			return pos
+		end
+		local temp_pos=find_pos(aliases,''..rank)		
+		if(temp_pos>1 and math.random(1,100)<math.floor(64/temp_pos))then	
+			temp_pos=math.random(temp_pos-2,temp_pos+2)
+			if		(temp_pos<2) then temp_pos=2
+			elseif	(temp_pos>9) then temp_pos=9 end			
+		end
+		local temp_rank=aliases[temp_pos]
+		
+		
+		if(mode == "wpn") then 
+			local temp_min_cond=drop_config[temp_rank][1]
+			local temp_max_cond=drop_config[temp_rank][2]			
+			result=math.random(temp_min_cond,temp_max_cond)
+			--printf("Wafel checks: myfunc: ret wpn cond: "..result)
+			return result/100      
+		elseif(mode=="ammo") then
+			local temp_min_ammo=drop_config[temp_rank][3]
+			local temp_max_ammo=drop_config[temp_rank][4]
+			result=math.random(temp_min_ammo,temp_max_ammo)
+			--printf("Wafel checks: myfunc: ret ammo multiple: "..result)
+			return result		
+		end		    
+	end
+end
+--Wafel end
+
 function init_drop_settings()
 	-- Create a list by community of the percent chance to spawn an item
 	local community_list = { "stalker", "dolg", "freedom", "bandit", "army", "zombied", "ecolog", "killer", "monolith", "csky" }
@@ -215,8 +270,13 @@ function keep_item(npc, item)
 	alife():release(se_item, true)
 end
 
-function set_weapon_drop_condition(npc,itm)
-	local condition  = (math.random(40)+30)/100
+function set_weapon_drop_condition(npc,itm)	
+	--Wafel start			 	
+	local rank = ranks.get_obj_rank_name(npc)	
+	local rank_dep_drop_W=Wafel_func_drop()  
+	local condition  = rank_dep_drop_W(rank,'wpn')	
+	--Wafel end	
+	--local condition  = (math.random(40)+5)/100--commented by Wafel
 	--printf("condition [%s]", tostring(condition))
 	itm:set_condition(condition)
 	
