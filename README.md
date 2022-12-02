@@ -40,3 +40,4 @@ Using mods:
 32. Zombie Headlamp ON 1.5r7 (jeredy_hothead)
 33. Rank-based weapon condition drops | 1.4.22 (Wafel)
 34. Faction Uniform Patches Lottery from Anomaly 1.5.1.2/MLR addon (Anomaly Developers, MLR team)
+35. DoctorX Dynamic Anomalies 2.1 [CoC 1.5 / 1.4.22] (DoctorX)
