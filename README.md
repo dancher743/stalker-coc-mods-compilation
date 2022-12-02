@@ -39,4 +39,4 @@ Using mods:
 31. Level changers for CoC 1 4 22 (av661194)
 32. Zombie Headlamp ON 1.5r7 (jeredy_hothead)
 33. Rank-based weapon condition drops | 1.4.22 (Wafel)
-34. Faction Uniform Patches Lottery from Anomaly 1.5.1.2 (Anomaly Developers, MLR team)
+34. Faction Uniform Patches Lottery from Anomaly 1.5.1.2/MLR addon (Anomaly Developers, MLR team)
