@@ -4795,4 +4795,32 @@
             </phrase>
         </phrase_list>
     </dialog>
+	
+	<!-- From Mutantum v 2.2 -->
+	<dialog id="zat_a2_stalker_mechanic_sell_gauss_ammo">
+        <phrase_list>
+            <phrase id="0">
+                <text>Кардан, мне нужны аккумуляторы к гаусске.</text>					
+                <next>1</next>
+            </phrase>
+           <phrase id="1">
+                <text>Артефакт "Вспышка" при себе?</text>
+                <next>2</next>
+                <next>3</next>				
+            </phrase>
+            <phrase id="2">		
+                <text>Держи.</text>
+                <precondition>dialogs_mlr.has_af_electra_flash</precondition>					
+                <action>dialogs_mlr.give_af_electra_flash</action>				
+                <next>4</next>					
+            </phrase>
+            <phrase id="3">
+                <text>Нет.</text>
+            </phrase>
+            <phrase id="4">
+                <text>Вот, возьми:</text>
+                <action>dialogs_mlr.take_gauss_ammo</action>				
+            </phrase>			
+        </phrase_list>
+    </dialog>
 </game_dialogs>
