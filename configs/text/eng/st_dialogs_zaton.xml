@@ -101,10 +101,10 @@
 	</string>
 	
 	<string id="zat_a2_stalker_mechanic_sell_gauss_ammo_0">
-		<text>Cardan, I need a batteries for a Gauss rifle.</text>
+		<text>I need a batteries for a Gauss rifle.</text>
 	</string>
 	<string id="zat_a2_stalker_mechanic_sell_gauss_ammo_1">
-		<text>Do you have a "Flash" artefact?</text>
+		<text>Do you have a "Flash" artefact? For this I will give 12 batteries.</text>
 	</string>
 	<string id="zat_a2_stalker_mechanic_sell_gauss_ammo_2">
 		<text>Take it.</text>
