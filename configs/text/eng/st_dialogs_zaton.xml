@@ -100,4 +100,20 @@
 		<text>I've got a third one, if you need more.</text>
 	</string>
 	
+	<string id="zat_a2_stalker_mechanic_sell_gauss_ammo_0">
+		<text>Cardan, I need a batteries for a Gauss rifle.</text>
+	</string>
+	<string id="zat_a2_stalker_mechanic_sell_gauss_ammo_1">
+		<text>Do you have a "Flash" artefact?</text>
+	</string>
+	<string id="zat_a2_stalker_mechanic_sell_gauss_ammo_2">
+		<text>Take it.</text>
+	</string>
+	<string id="zat_a2_stalker_mechanic_sell_gauss_ammo_3">
+		<text>No.</text>
+	</string>
+	<string id="zat_a2_stalker_mechanic_sell_gauss_ammo_4">
+		<text>Here you are:</text>
+	</string>
+	
 </string_table>

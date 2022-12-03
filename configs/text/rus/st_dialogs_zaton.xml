@@ -98,5 +98,21 @@
 	<string id="zat_b3_stalker_tech_drink_3_0">
 		<text>Есть третья бутылка... Если надо ещё.</text>
 	</string>
+	
+	<string id="zat_a2_stalker_mechanic_sell_gauss_ammo_0">
+		<text>Кардан, мне нужны аккумуляторы к гаусске.</text>
+	</string>
+	<string id="zat_a2_stalker_mechanic_sell_gauss_ammo_1">
+		<text>Артефакт "Вспышка" при себе?</text>
+	</string>
+	<string id="zat_a2_stalker_mechanic_sell_gauss_ammo_2">
+		<text>Держи.</text>
+	</string>
+	<string id="zat_a2_stalker_mechanic_sell_gauss_ammo_3">
+		<text>Нет.</text>
+	</string>
+	<string id="zat_a2_stalker_mechanic_sell_gauss_ammo_4">
+		<text>Вот, возьми:</text>
+	</string>
 
 </string_table>

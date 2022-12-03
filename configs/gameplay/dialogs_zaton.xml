@@ -4800,25 +4800,25 @@
 	<dialog id="zat_a2_stalker_mechanic_sell_gauss_ammo">
         <phrase_list>
             <phrase id="0">
-                <text>Кардан, мне нужны аккумуляторы к гаусске.</text>					
+                <text>zat_a2_stalker_mechanic_sell_gauss_ammo_0</text>					
                 <next>1</next>
             </phrase>
            <phrase id="1">
-                <text>Артефакт "Вспышка" при себе?</text>
+                <text>zat_a2_stalker_mechanic_sell_gauss_ammo_1</text>
                 <next>2</next>
                 <next>3</next>				
             </phrase>
             <phrase id="2">		
-                <text>Держи.</text>
+                <text>zat_a2_stalker_mechanic_sell_gauss_ammo_2</text>
                 <precondition>dialogs_mlr.has_af_electra_flash</precondition>					
                 <action>dialogs_mlr.give_af_electra_flash</action>				
                 <next>4</next>					
             </phrase>
             <phrase id="3">
-                <text>Нет.</text>
+                <text>zat_a2_stalker_mechanic_sell_gauss_ammo_3</text>
             </phrase>
             <phrase id="4">
-                <text>Вот, возьми:</text>
+                <text>zat_a2_stalker_mechanic_sell_gauss_ammo_4</text>
                 <action>dialogs_mlr.take_gauss_ammo</action>				
             </phrase>			
         </phrase_list>
