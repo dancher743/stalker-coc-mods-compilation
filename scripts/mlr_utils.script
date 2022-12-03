@@ -5,3 +5,17 @@ function have_item(sect, needed)
 	local avail = utils_item.get_amount(db.actor, sect, 1)
 	return (avail >= needed)
 end
+
+function act_h_s(sect, needed) -- actor_have_section -- Имеет ли актор опред. кол-во секций
+	if not needed then
+		needed = 1
+	end
+	local count = 0
+	local function itr(actor, item) 
+		if item:section() == sect then 
+			count = count + 1 
+		end 
+	end
+	db.actor:iterate_inventory(itr, db.actor)
+	return count >= needed 
+end
