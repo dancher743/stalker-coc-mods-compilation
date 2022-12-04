@@ -47,6 +47,15 @@ function Wafel_func_drop()
 			local temp_max_cond=drop_config[temp_rank][2]			
 			result=math.random(temp_min_cond,temp_max_cond)
 			--printf("Wafel checks: myfunc: ret wpn cond: "..result)
+			
+			-- An additional 20% chance to reduce weapon's condition on 20%.
+			-- Added by Dancher.
+			local reduce_chance = math.random(100)
+			if (reduce_chance <= 20) then
+				result = result * (1 - 0.2)
+			end
+			--
+			
 			return result/100      
 		elseif(mode=="ammo") then
 			local temp_min_ammo=drop_config[temp_rank][3]
