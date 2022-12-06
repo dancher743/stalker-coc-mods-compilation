@@ -69,9 +69,14 @@ function check_light(stalker)
 	if (st.srlight_timer and tg < st.srlight_timer) then
 		return
 	end
-	st.srlight_timer = tg + 2000 + math.random(100)
+	
+	local random_value = math.random(100)
+	
+	st.srlight_timer = tg + 2000 + random_value
 
     local torch = stalker:object("device_torch")
+	local should_zombie_ignore_torch = 50 >= random_value
+	local ignore_torch_flag = st.ignore_torch_flag
 
 	-- Stalker dead or sleep animstate; release torch
 	local anm = state_mgr.get_state(stalker)
@@ -90,8 +95,12 @@ function check_light(stalker)
 	end
 
 	-- Stalker in danger mode; release torch
-	if (stalker:character_community() ~= "zombied" and st.danger_flag) then
-		if (torch) then
+	if (st.danger_flag) then
+		if(not ignore_torch_flag and stalker:character_community() == "zombied" and should_zombie_ignore_torch) then
+			st.ignore_torch_flag = true
+		end
+	
+		if (torch and not ignore_torch_flag) then
 			if (torch:attachable_item_enabled()) then
 				torch:enable_attachable_item(false)
 			end
@@ -121,8 +130,12 @@ function check_light(stalker)
 	end
 
 	-- Stalker has enemy and is not underground; release torch
-	if (stalker:character_community() ~= "zombied" and stalker:best_enemy() and not indoor_levels[level.name()]) then
-		if (torch) then
+	if (stalker:best_enemy() and not indoor_levels[level.name()]) then
+		if(not ignore_torch_flag and stalker:character_community() == "zombied" and should_zombie_ignore_torch) then
+			st.ignore_torch_flag = true
+		end
+		
+		if (torch and not st.ignore_torch_flag) then
 			if (torch:attachable_item_enabled()) then
 				torch:enable_attachable_item(false)
 			end
@@ -166,6 +179,7 @@ function check_light(stalker)
 			local sim = alife()
 			sim:create("device_torch", vector():set(0,0,0), 0, 0, stalker:id())
 		end
+		st.ignore_torch_flag = false
 	else
 		if (torch) then
 			if (torch:attachable_item_enabled()) then
