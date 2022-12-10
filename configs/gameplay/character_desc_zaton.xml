@@ -834,6 +834,7 @@
 #include "gameplay\character_criticals_4.xml"
 
 		<start_dialog>zat_b3_stalker_tech_start</start_dialog>
+		<actor_dialog>zat_a2_stalker_mechanic_sell_gauss_ammo</actor_dialog>
 		<actor_dialog>dm_ordered_task_completed_dialog</actor_dialog>
 		<actor_dialog>drx_sl_mechanic_task_dialog</actor_dialog>
 		<actor_dialog>dm_tech_repair</actor_dialog>

@@ -1,11 +1,17 @@
 # stalker-coc-mods-compilation
-My mods compilation for S.T.A.L.K.E.R.: Call of Chernobyl
+My mods compilation for S.T.A.L.K.E.R.: Call of Chernobyl 1.4.22 (ENG/RUS)
 
-CoC version: 1.4.22 (ENG/RUS)
+Install
+---
+Place all files to an empty "gamedata" folder.
 
-Install: Place all files to empty "gamedata" folder.
+Settings
+---
+* To access Dynamic News settings: load your game, then open the main menu and press Page-Up button.
+* To make the sky less bright type `r2_tonemap off` command in the console.
 
-Using mods:
+Mods
+---
 1. Original Item Models and Icons (Panzermann11)
 2. Displaying units like in Clear Sky, squads on the pda map v2 (av661194, turoff82)
 3. Stashes from SOC and CS (av661194)
@@ -35,3 +41,11 @@ Using mods:
 27. Sound Restoration 3.2 (Balathruin)
 28. DoctorX Questlines 1.25 [CoC 1.4.22] (DoctorX)
 29. DoctorX Dynamic Faction Relations 1.8 [1.4.22] (DoctorX)
+30. Original Sound Effects for Call of Chernobyl (selectively) (Panzermann11)
+31. Level changers for CoC 1 4 22 (av661194)
+32. Zombie Headlamp ON 1.5r7 (jeredy_hothead)
+33. Rank-based weapon condition drops | 1.4.22 (Wafel)
+34. Faction Uniform Patches Lottery from Anomaly 1.5.1.2/MLR addon (Anomaly Developers, MLR team)
+35. DoctorX Dynamic Anomalies 2.1 [CoC 1.5 / 1.4.22] (DoctorX)
+36. NPC's vision thru vegetation fix (EmSobac)
+37. Added gauss ammo exchange dialog from Mutantum v 2.2 (sunxshilo)

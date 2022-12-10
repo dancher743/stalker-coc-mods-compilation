@@ -53,6 +53,8 @@
 		<actor_dialog>drx_sl_task_completed_dialog</actor_dialog>
 		<actor_dialog>dm_ordered_task_completed_dialog</actor_dialog>
 		<actor_dialog>drx_sl_cit_killers_merc_trader_stalker_meet_dialog</actor_dialog>
+		<actor_dialog>talk_to_aslan_about_lottery</actor_dialog>
+		<actor_dialog>lottery_ds_aslan_mlr</actor_dialog>
 		<actor_dialog>dm_broker_dialog</actor_dialog>
 		<actor_dialog>dm_ordered_task_dialog</actor_dialog>
 		<actor_dialog>drx_sl_change_faction_dialog</actor_dialog>
