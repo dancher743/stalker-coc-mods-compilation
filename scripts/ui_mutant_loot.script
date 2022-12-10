@@ -256,9 +256,9 @@ function loot_ui:OnKeyboard(dik, keyboard_action)
 	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
 	if (keyboard_action == ui_events.WINDOW_KEY_PRESSED) then
 	local bind = dik_to_bind(dik)
-		if bind == key_bindings.kQUIT then
+		if bind == key_bindings.kQUIT or dik == DIK_keys.DIK_Q then
 			self:HideDialog()
-		elseif bind == key_bindings.kUSE then
+		elseif bind == key_bindings.kUSE or dik == DIK_keys.DIK_E then
 			self:OnButton_ok()
 		end
 	end
