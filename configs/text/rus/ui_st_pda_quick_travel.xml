@@ -20,7 +20,7 @@
 		<text>Полные названия мест</text>
 	</string>
 	<string id="ui_mm_visited_message">
-		<text>Выдавать сообщения о переходе</text>
+		<text>Выдавать сообщ. о переходе</text>
 	</string>
 	<string id="ui_mm_no_time_travel">
 		<text>Мгновенные переходы</text>
