@@ -100,7 +100,7 @@ function check_light(stalker)
 			st.ignore_torch_flag = true
 		end
 	
-		if (torch and not ignore_torch_flag) then
+		if (torch and not st.ignore_torch_flag) then
 			if (torch:attachable_item_enabled()) then
 				torch:enable_attachable_item(false)
 			end

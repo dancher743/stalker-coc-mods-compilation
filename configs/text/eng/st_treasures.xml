@@ -1505,7 +1505,7 @@
 		<text>Safe at Freedom's base</text>
 	</string>
 	<string id="st_val_q5_n_descr">
-		<text>In the three-story building at Freedom's base there's a safe that holds something valuable for loot-seekers.</text>
+		<text>In the three-story building at former Freedom's base there's a safe that holds something valuable for loot-seekers.</text>
 	</string>
 	<string id="st_val_q6_n_name">
 		<text>Crate on top of tower</text>
@@ -1571,7 +1571,7 @@
 		<text>Switchboard</text>
 	</string>
 	<string id="st_agr_q6_n_descr">
-		<text>My stash - uhh, sorry, your stash - is inside the switchboard in Duty's base.</text>
+		<text>My stash - uhh, sorry, your stash - is inside the switchboard in former Duty's base.</text>
 	</string>
 	<string id="st_agr_q7_n_name">
 		<text>Tree log near tree</text>
