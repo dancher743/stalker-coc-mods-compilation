@@ -7,6 +7,8 @@ function activate_hud()
 	RegisterScriptCallback("actor_item_to_belt",actor_item_to_belt)
 	RegisterScriptCallback("actor_item_to_ruck",actor_item_to_ruck)
 	RegisterScriptCallback("actor_on_item_drop",actor_on_item_drop)
+	RegisterScriptCallback("actor_on_weapon_zoom_in",actor_on_weapon_zoom_in)
+	RegisterScriptCallback("actor_on_weapon_zoom_out",actor_on_weapon_zoom_out)
 	RegisterScriptCallback("actor_on_net_destroy",actor_on_net_destroy)
 	open_hud()
 	db.actor:inventory_for_each(
@@ -25,6 +27,8 @@ function deactivate_hud()
 	UnregisterScriptCallback("actor_item_to_belt",actor_item_to_belt)
 	UnregisterScriptCallback("actor_item_to_ruck", actor_item_to_ruck)
 	UnregisterScriptCallback("actor_on_item_drop",actor_on_item_drop)
+	UnregisterScriptCallback("actor_on_weapon_zoom_in",actor_on_weapon_zoom_in)
+	UnregisterScriptCallback("actor_on_weapon_zoom_out",actor_on_weapon_zoom_out)
 	UnregisterScriptCallback("actor_on_net_destroy",actor_on_net_destroy)
 end
 
@@ -79,6 +83,14 @@ function actor_item_to_belt(item)
 	end
 end
 
+function actor_on_weapon_zoom_in(item)
+	HUD:update_hud(item, true)
+end 
+
+function actor_on_weapon_zoom_out(item)
+	HUD:update_hud(item, false)
+end
+
 class "slot_hud" (CUIScriptWnd)
 function slot_hud:__init() super()
 	self.slot = {}
@@ -99,7 +111,7 @@ function slot_hud:InitControls()
 	end
 end
 
-function slot_hud:update_hud(item)
+function slot_hud:update_hud(item, is_weapon_zoomed)
 	local cnt = 0
 	for id, sec in pairs(belted_arts) do
 		cnt = cnt + 1
@@ -113,5 +125,5 @@ function slot_hud:update_hud(item)
 	for i=cnt+1,5 do
 		self.slot[i]:Show(false)
 	end
-	self.static_back:Show(table.size(belted_arts) > 0)
+	self.static_back:Show(table.size(belted_arts) > 0 and (is_weapon_zoomed == nil or is_weapon_zoomed == false))
 end
