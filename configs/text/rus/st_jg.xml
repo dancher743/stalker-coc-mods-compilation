@@ -57,7 +57,7 @@
     <string id="st_jg_19">
         <text>Длина пути (включая стартовый и конечный уровень): </text>
     </string>
-	<string id="st_travel_guide">
+	<string id="st_travel_guider">
         <text>Нельзя путешествовать в роли проводника</text>
     </string>
 </string_table>

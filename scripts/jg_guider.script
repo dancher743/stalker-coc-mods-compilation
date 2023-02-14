@@ -214,10 +214,6 @@ end
 
 --///////////////////////////////// Вспомогательные функции
 
-function is_started()
-	return db.actor:has_info('guider_start')
-end
-
 function send_tip(npc, news_text, news_sound)
 	local news_caption = strformat("%s, %s", npc:character_name(), game.translate_string(npc:character_community()))
 	local news_icon = npc:character_icon()

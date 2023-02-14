@@ -16,6 +16,9 @@
 	<string id="ui_mm_storm_travel">
 		<text>Переход во время выброса</text>
 	</string>
+	<string id="ui_mm_guider_travel">
+		<text>Переход в роли проводника</text>
+	</string>
 	<string id="ui_mm_long_names">
 		<text>Полные названия мест</text>
 	</string>

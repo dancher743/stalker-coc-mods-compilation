@@ -16,6 +16,9 @@
 	<string id="ui_mm_storm_travel">
 		<text>Fast travel in emissions</text>
 	</string>
+	<string id="ui_mm_guider_travel">
+		<text>Fast travel as guide</text>
+	</string>
 	<string id="ui_mm_long_names">
 		<text>Fast travel use long names</text>
 	</string>
