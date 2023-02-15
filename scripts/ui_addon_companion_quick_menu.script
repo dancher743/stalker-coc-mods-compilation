@@ -1,0 +1,162 @@
+function on_game_start()
+	RegisterScriptCallback("on_key_press",on_key_press)
+end
+
+local addonMenu=nil
+function on_key_press(key)
+	if(key == DIK_keys["MOUSE_3"] ) then --mouse wheel btn
+		if not(addonMenu) then
+			local i,v = next(axr_companions.companion_squads,nil) 
+			if not(v) or db.actor:is_talking() or not db.actor:alive() then 
+				return
+			end
+			addonMenu = addonCompanionsContextMenu(v)
+			addonMenu:ShowDialog(true)
+			show_all_ui(true)
+		else
+			addonMenu:CloseTheMenu()
+		end
+
+	end
+end
+
+
+class "addonCompanionsContextMenu" (CUIScriptWnd)
+function addonCompanionsContextMenu:__init(companionSquad) super()
+printf("6")
+	self.companionSquad =  companionSquad
+	self:InitControls()
+	self:InitCallBacks()
+	
+	self:SetTextByCondition("btn_move_wait",         				     "npcx_beh_wait",             game.translate_string("st_addon_companion_quick_menu_followMe"),   game.translate_string("st_addon_companion_quick_menu_waitHere"))
+	self:SetTextByCondition("btn_stealth_stopStealth",				     "npcx_beh_substate_stealth", game.translate_string("st_addon_companion_quick_menu_stopStealth"),game.translate_string("st_addon_companion_quick_menu_stealth"))
+	self:SetTextByCondition("btn_far_close",						     "npcx_beh_distance_far",  game.translate_string("st_addon_companion_quick_menu_stayClose"),game.translate_string("st_addon_companion_quick_menu_stayFar"))
+	self:SetTextByCondition("btn_aggressive_ignoreCombatButHelpActor",   "npcx_beh_ignore_combat", game.translate_string("st_addon_companion_quick_menu_fireAtWill"),game.translate_string("st_addon_companion_quick_menu_ignoreCombatButHelpMe"))
+	self:SetTextByCondition("btn_ignoreCombat_ignoreCombatButHelpActor", "npcx_beh_ignore_actor_enemies", game.translate_string("st_addon_companion_quick_menu_ignoreCombatButHelpMe"),game.translate_string("st_addon_companion_quick_menu_ignoreCombat"))
+	self:SetTextByCondition("btn_lootCorpses_ignoreCorpses",             "npcx_beh_loot_corpses", game.translate_string("st_addon_companion_quick_menu_doNotLootCorpses"),game.translate_string("st_addon_companion_quick_menu_lootCorpses"))
+
+end
+ 
+function addonCompanionsContextMenu:__finalize()
+end
+ 
+function addonCompanionsContextMenu:InitControls()
+	self:SetWndRect				(Frect():set(0,0,1024,768))
+	local xml = CScriptXmlInit()
+	xml:ParseFile("ui_addon_companions_context_menu.xml")
+	
+	self:RegisterButton("move_wait",xml)
+	self:RegisterButton("stealth_stopStealth",xml)
+	self:RegisterButton("far_close",xml)
+	self:RegisterButton("aggressive_ignoreCombatButHelpActor",xml)
+	self:RegisterButton("ignoreCombat_ignoreCombatButHelpActor",xml)
+	self:RegisterButton("lootCorpses_ignoreCorpses",xml)
+end
+ 
+function addonCompanionsContextMenu:InitCallBacks()
+	self:AddCallback("btn_move_wait_select", ui_events.BUTTON_CLICKED, self["Onbtn_move_wait"], self)
+	self:AddCallback("btn_stealth_stopStealth_select", ui_events.BUTTON_CLICKED, self["Onbtn_stealth_stopStealth"], self)
+	self:AddCallback("btn_far_close_select", ui_events.BUTTON_CLICKED, self["Onbtn_far_close"], self)
+	self:AddCallback("btn_combat_select", ui_events.BUTTON_CLICKED, self["Onbtn_combat"], self)
+	self:AddCallback("btn_aggressive_ignoreCombatButHelpActor_select", ui_events.BUTTON_CLICKED, self["Onbtn_aggressive_ignoreCombatButHelpActor"], self)
+	self:AddCallback("btn_ignoreCombat_ignoreCombatButHelpActor_select", ui_events.BUTTON_CLICKED, self["Onbtn_ignoreCombat_ignoreCombatButHelpActor"], self)
+	self:AddCallback("btn_lootCorpses_ignoreCorpses_select", ui_events.BUTTON_CLICKED, self["Onbtn_lootCorpses_ignoreCorpses"], self)
+end
+
+function addonCompanionsContextMenu:Update()
+	CUIScriptWnd.Update(self)
+
+end 
+
+
+
+
+
+function addonCompanionsContextMenu:Onbtn_move_wait()
+	self:ExecuteScriptByCondition("npcx_beh_wait",
+								axr_companions.set_companion_to_follow_state, 
+								axr_companions.set_companion_to_wait_state)
+
+	addonMenu:CloseTheMenu()
+end 
+
+function addonCompanionsContextMenu:Onbtn_stealth_stopStealth()
+	self:ExecuteScriptByCondition("npcx_beh_substate_stealth",
+								axr_companions.set_companion_to_default_substate, 
+								axr_companions.set_companion_to_stealth_substate)
+
+	addonMenu:CloseTheMenu()
+end 
+
+function addonCompanionsContextMenu:Onbtn_far_close()
+	self:ExecuteScriptByCondition("npcx_beh_distance_far",
+								axr_companions.switch_companion_distance, 
+								axr_companions.switch_companion_distance)
+
+	addonMenu:CloseTheMenu()
+end 
+
+function addonCompanionsContextMenu:Onbtn_aggressive_ignoreCombatButHelpActor()
+	self:ExecuteScriptByCondition("npcx_beh_ignore_combat",
+								axr_companions.set_companion_to_attack_state, 
+								axr_companions.set_companion_to_attack_only_actor_combat_enemy_state)
+
+	addonMenu:CloseTheMenu()
+end 
+
+function addonCompanionsContextMenu:Onbtn_ignoreCombat_ignoreCombatButHelpActor()
+	self:ExecuteScriptByCondition("npcx_beh_ignore_actor_enemies",
+								axr_companions.set_companion_to_attack_only_actor_combat_enemy_state, 
+								axr_companions.set_companion_to_ignore_combat_state)
+
+	addonMenu:CloseTheMenu()
+end 
+
+function addonCompanionsContextMenu:Onbtn_lootCorpses_ignoreCorpses()
+	self:ExecuteScriptByCondition("npcx_beh_loot_corpses",
+								axr_companions.switch_companion_loot_corpses, 
+								axr_companions.switch_companion_loot_corpses)
+
+	addonMenu:CloseTheMenu()
+end 
+
+
+function addonCompanionsContextMenu:DoesSquadHaveInfo(info)
+	if(alife():has_info(self.companionSquad:commander_id(),info)) then
+		return true
+	end
+		return false
+end
+
+function addonCompanionsContextMenu:SetTextByCondition(but_name, info , true_text, false_text)
+	if(self:DoesSquadHaveInfo(info)) then
+		self[but_name]:TextControl():SetText(true_text)
+	else
+		self[but_name]:TextControl():SetText(false_text)
+	end
+end
+
+function addonCompanionsContextMenu:ExecuteScriptByCondition(info , true_script, false_script)
+	local targetScript
+	if(self:DoesSquadHaveInfo(info)) then
+		targetScript=true_script
+	else
+		targetScript=false_script
+	end
+	
+	for _,squad in pairs(axr_companions.companion_squads) do
+		alun_utils.execute_script_on_squad(squad,targetScript)
+	end
+		
+end
+
+function addonCompanionsContextMenu:CloseTheMenu()
+			self:HideDialog()
+			self:Show(false)
+			addonMenu=nil
+end
+
+function addonCompanionsContextMenu:RegisterButton(but_name,xml)
+	self["btn_"..but_name] =xml:Init3tButton(but_name, self)
+	self:Register(self["btn_"..but_name],"btn_"..but_name.."_select")
+end
