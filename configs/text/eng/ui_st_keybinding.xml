@@ -81,6 +81,9 @@
 	<string id="kb_grp_weapons">
 		<text>Weapons</text>
 	</string>
+	<string id="kb_grp_companions">
+		<text>Companions</text>
+	</string>
 	<string id="kb_inventory">
 		<text>Inventory</text>
 	</string>
@@ -239,6 +242,9 @@
 	</string>
 	<string id="kb_cam_zoom_out">
 		<text>camera zoom out</text>
+	</string>
+	<string id="kb_companions_wheel">
+		<text>Companions command wheel</text>
 	</string>
 	<string id="kb_custom1">
 		<text>Companion toggle combat</text>

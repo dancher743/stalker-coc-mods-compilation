@@ -81,6 +81,9 @@
 	<string id="kb_grp_weapons">
 		<text>Оружие</text>
 	</string>
+	<string id="kb_grp_companions">
+		<text>Напарники</text>
+	</string>
 	<string id="kb_inventory">
 		<text>Рюкзак</text>
 	</string>
@@ -239,6 +242,9 @@
 	</string>
 	<string id="kb_cam_zoom_out">
 		<text>Отдалить камеру</text>
+	</string>
+	<string id="kb_companions_wheel">
+		<text>Колесо команд напарников</text>
 	</string>
 	<string id="kb_custom1">
 		<text>Отправить напарников в бой</text>
