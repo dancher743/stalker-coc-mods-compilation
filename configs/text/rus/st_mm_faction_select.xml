@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+
+	<!-- Description - Factions -->
+	<string id="st_faction_stalker">
+		<text>Одиночка</text>
+	</string>
+	<string id="st_faction_stalker_desc">
+		<text>%c[0,150,150,150]Одиночки, или свободные сталкеры, не связаны ни с одной из группировок, действующих в Зоне.\n \nНесмотря на то, что небольшие группы часто подвергаются преследованиям со стороны мутантов и других сталкеров, им удалось создать сильные торговые посты по всей Зоне.</text>
+	</string>
+	<string id="st_faction_bandit">
+		<text>Бандит</text>
+	</string>
+	<string id="st_faction_bandit_desc">
+		<text>%c[0,150,150,150]Бандиты - члены преступного мира, которые прибыли в Зону по разным причинам; зарабатывать деньги, продавая артефакты, прятаться от закона или даже торговать оружием.</text>
+	</string>
+	<string id="st_faction_dolg">
+		<text>Duty</text>
+	</string>
+	<string id="st_faction_dolg_desc">
+		<text>%c[0,150,150,150]Долг является военизированной группировкой, которая вступает в противоречие со всеми, кто стремится эксплуатировать Зону и, как считает Долг, распространяет свою коррупцию. \n \nОни долго находились в жестоком конфликте со свободой из-за своих конфликтующих идеалов.</text>
+	</string>
+	<string id="st_faction_freedom">
+		<text>Свобода</text>
+	</string>
+	<string id="st_faction_freedom_desc">
+		<text>%c[0,150,150,150]Свобода - это анархисты и смельчаки, которые заявляют, что борются за свободный доступ в Зону и, следовательно, находятся в постоянном конфликте с долгом.</text>
+	</string>
+	<string id="st_faction_army">
+		<text>Военные</text>
+	</string>
+	<string id="st_faction_army_desc">
+		<text>%c[0,150,150,150]Украинское правительство через свое министерство внутренних дел поддерживает периметр Зоны внутренними войсками из Службы государственной безопасности.</text>
+	</string>
+	<string id="st_faction_ecolog">
+		<text>Экологи</text>
+	</string>
+	<string id="st_faction_ecolog_desc">
+		<text>%c[0,150,150,150]Экологи - это финансируемый правительством орган, исследующий Зону, чтобы правильно использовать ее потенциал на благо человечества.</text>
+	</string>
+	<string id="st_faction_killer">
+		<text>Наёмники</text>
+	</string>
+	<string id="st_faction_killer_desc">
+		<text>%c[0,150,150,150]Наемники - опытные бойцы из всех слоев общества, которые предлагают свои услуги в качестве наемных солдат, неизвестно, кто их клиенты или почему у них есть интересы в Зоне.</text>
+	</string>
+	<string id="st_faction_monolith">
+		<text>Монолит</text>
+	</string>
+	<string id="st_faction_monolith_desc">
+		<text>%c[0,150,150,150]Монолит - фанатичный религиозный культ, враждебный всем, кроме их собственного.\n \nНесмотря на разрушение С-Сознания, они с тех пор вновь стали возрождающейся силой, захватив многие из своих бывших территорий.</text>
+	</string>
+	<string id="st_faction_csky">
+		<text>Чистое небо</text>
+	</string>
+	<string id="st_faction_csky_desc">
+		<text>%c[0,150,150,150]Чистое Небо - независимая научная и военная организация, сосредоточенная на исследовании и понимании Зоны.\n \nСтолкнувшись с почти полным крахом после неудачного и дорогостоящего штурма Чернобыльской АЭС, немногие из оставшихся в живых выжили, чтобы восстановить фракцию до прежнего уровня.</text>
+	</string>
+	<string id="st_faction_zombied">
+		<text>Зомбированный</text>
+	</string>
+	<string id="st_faction_zombied_desc">
+		<text>%c[0,150,150,150]Мачи-и-и-и!\n \nЗомбированные сталкеры - это бессмысленная шелуха их прежних сущностей, уменьшенная до их самых основных животных-подобных инстинктов, и они будут атаковать почти все, что подходит слишком близко.</text>
+	</string>
+	
+	<!-- Hint -->
+	<string id="st_mm_box_faction_desc">
+		<text>
+			%c[0,150,150,150]%s чутье.
+		</text>
+	</string>
+	<string id="st_mm_box_icon_desc">
+		<text>
+			%c[0,150,150,150]Портрет вашего персонажа.
+		</text>
+	</string>
+	<string id="st_mm_list_map_desc">
+		<text>
+			%c[0,150,150,150]Выберите начальное местоположение вашей новой игры.
+		</text>
+	</string>
+	<string id="st_mm_ck_reset_desc">
+		<text>
+			%c[0,150,150,150]Сбросить инвентарь.
+		</text>
+	</string>
+	<string id="st_mm_list_economy_desc">
+		<text>
+			%c[0,150,150,150]Сложность Прогрессии оказывает большое влияние на экономику Зоны и ее различные аспекты, что влияет на прогресс игрока в его игре.:
+			\n%c[200,50,50,200]• %c[0,150,150,150]Цены на предметы и ремонтные услуги.
+			\n%c[200,50,50,200]• %c[0,150,150,150]размер наград.
+			\n%c[200,50,50,200]• %c[0,150,150,150]Редкость и состояние лута.
+		</text>
+	</string>
+	<string id="st_mm_list_difficulty_desc">
+		<text>
+			%c[0,150,150,150]Сложность игрового процесса влияет на точность оружия в целом. Это относится как к игроку, так и к другим сталкерам.
+		</text>
+	</string>
+	<string id="st_mm_ck_story_desc">
+		<text>
+			%c[0,150,150,150]Режим Истории запускает игру с сюжетом «Тайны зоны» и с целью отключить Выжигатель Мозгов и Излучатель на Янтаре.\n 
+			\nЭлементы из предыдущих сюжетных линий заимствованы и воссозданы, так что это не для игроков, которые считают, что необходима строгая непрерывность истории.\n
+			\nДоступно только фракциям Одиночка, Долг, Свобода, Эколог, Наемник и Чистое Небо.\n
+			\n \n%c[200,200,50,50]• %c[0,150,150,150]Не совместим с режимом Азазель.
+		</text>
+	</string>
+	<string id="st_mm_ck_hardcore_desc">
+		<text>
+			%c[0,150,150,150]Режим Ironman - это функция, которая удаляет ваши игровые сейфы после смерти.\n
+			\n
+Вы можете сделать столько спасбросков, сколько пожелаете, но смерть приведет к удалению всех спасбросков, сделанных этим персонажем..
+		</text>
+	</string>
+	<string id="st_mm_ck_hardcore_aim_desc">
+		<text>
+			%c[0,150,150,150]Hardcore AI Aim - это функция, которая максимизирует предсказуемость цели AI, затрудняя игроку уклонение от ударов во время движения.
+		</text>
+	</string>
+	<string id="st_mm_ck_survival_desc">
+		<text>
+			%c[0,150,150,150]Режим выживания - это функция, которая заменяет всех спавнов зомби.\n
+			\nЭти полчища проберутся к вам - будьте готовы! Посмотри, как долго ты сможешь выжить!
+		</text>
+	</string>
+	<string id="st_mm_ck_azazel_mode_desc">
+		<text>
+			%c[0,150,150,150]В режиме Азазель смерть не конец.\n
+			\nПодобно демону Азазелю, у тебя будет новое тело, когда ты умрешь; принимая форму другого случайного сталкера, который действительно существует в Зоне.\n
+			\nЕсли у вас есть компаньоны, вы станете одним из них. Эта функция очень хорошо дополняет режим Ironman и / или Survival.\n
+			\n \n%c[200,200,50,50]• %c[0,150,150,150]Не совместим с режимом истории.
+		</text>
+	</string>
+	<string id="st_mm_ck_campfire_desc">
+		<text>
+			%c[0,150,150,150]В режиме сохранения лагерного костра вы не сможете сохранить свой прогресс, если только вы не стоите возле костра.
+			\n \n%c[200,50,200,50]• %c[0,150,150,150]Все жесткие режимы сохранения совместимы друг с другом.
+		</text>
+	</string>
+	<string id="st_mm_ck_conditions_desc">
+		<text>
+			%c[0,150,150,150]Режим агонии не позволит вам сохранить ваш прогресс, если вы:
+			\n%c[200,200,200,50]• %c[0,150,150,150]Ранены
+			\n%c[200,200,200,50]• %c[0,150,150,150]Истекаете кровью
+			\n%c[200,200,200,50]• %c[0,150,150,150]Облучены
+			\n%c[200,200,200,50]• %c[0,150,150,150]В сражении с врагами
+			\n%c[200,200,200,50]• %c[0,150,150,150]В условиях выброса или пси-шторма
+			\n \n%c[200,50,200,50]• %c[0,150,150,150]Все жесткие режимы сохранения совместимы друг с другом.
+		</text>
+	</string>
+	<string id="st_mm_list_hardcore_lives_desc">
+		<text>
+			%c[0,150,150,150]Дополнительная функция для режима Ironman, которая позволяет вам установить, сколько жизней у вас будет в начале вашей новой игры.
+			\nКаждый раз, когда ты умрешь, ты потеряешь жизнь.
+			\nКак только у вас кончится жизнь, все сохранения в игре связанные с этим персонажем будут удалены.\n
+			\n%c[200,200,50,50]• %c[0,150,150,150]Режим Ironman должен быть активным.
+		</text>
+	</string>
+	<string id="st_mm_list_hardcore_regen_desc">
+		<text>
+			%c[0,150,150,150]
+Дополнительная функция для режима Ironman, которая позволяет вам установить, сколько дней потребуется, чтобы предоставить дополнительную жизнь.
+			\n%c[200,200,50,50]• %c[0,150,150,150]Сон не поможет.
+			\n%c[200,200,50,50]• %c[0,150,150,150]
+Режим Ironman должен быть активным.
+		</text>
+	</string>
+	<string id="st_mm_list_timer_desc">
+		<text>
+			%c[0,150,150,150]В режиме таймера вы можете сохранять свою игру каждый конкретный промежуток времени. 
+			\nПосле сохранения игры вы не сможете сделать еще одно сохранение, пока не истечет таймер.
+			\n \n%c[200,50,200,50]• %c[0,150,150,150]Все жесткие режимы сохранения совместимы друг с другом.
+		</text>
+	</string>
+	
+	<!-- Static Text -->
+	<string id="st_mm_new_game_character">
+		<text>Персонаж</text>
+	</string>
+	<string id="st_mm_new_game_faction">
+		<text>Выберите фракцию</text>
+	</string>
+	<string id="st_mm_new_game_icon">
+		<text>Выберите портрет</text>
+	</string>
+	<string id="st_mm_new_game_options">
+		<text>Опции</text>
+	</string>
+	<string id="st_mm_new_game_inventory">
+		<text>Инвентарь</text>
+	</string>
+	<string id="st_mm_new_game_loadout">
+		<text>Снаряжение</text>
+	</string>
+	<string id="st_mm_new_game_name">
+		<text>Имя:</text>
+	</string>
+	<string id="st_mm_new_game_money">
+		<text>Деньги:</text>
+	</string>
+	<string id="st_mm_new_game_points_left">
+		<text>Осталось очков:</text>
+	</string>
+	<string id="st_mm_new_game_points_used">
+		<text>Использовано очки:</text>
+	</string>
+	
+
+	<!-- Description elements -->
+	<string id="st_mm_new_game_relations">
+		<text>Отношения</text>
+	</string>
+	<string id="st_mm_new_game_description">
+		<text>Краткая история</text>
+	</string>
+	<string id="st_mm_new_game_points">
+		<text>Очки</text>
+	</string>
+	<string id="st_mm_new_game_essential">
+		<text>Основной</text>
+	</string>
+	
+	<!-- Hint -->
+	<string id="st_mm_itm_desc_unknown">
+		<text>Нет доступной информации</text>
+	</string>
+	
+	<!-- Options -->
+	<string id="st_cap_check_campfire">
+		<text>Сохранения у костров</text>
+	</string>
+	<string id="st_cap_check_conditions">
+		<text>Режим агонии</text>
+	</string>
+	<string id="st_cap_list_timer">
+		<text>Таймер</text>
+	</string>
+	<string id="st_cap_list_hardcore_lives">
+		<text>Ironman жизни</text>
+	</string>
+	<string id="st_cap_list_hardcore_regen">
+		<text>Life granter</text>
+	</string>
+	<string id="st_cap_list_economy">
+		<text>Сложность жкономики</text>
+	</string>
+	<string id="st_cap_list_difficulty">
+		<text>Сложность геймплея</text>
+	</string>
+	<string id="st_econ_1">
+		<text>Быстрая</text>
+	</string>
+	<string id="st_econ_2">
+		<text>Умеренная</text>
+	</string>
+	<string id="st_econ_3">
+		<text>Медленная</text>
+	</string>
+	<string id="st_econ_4">
+		<text>Очень медленная</text>
+	</string>
+	
+	<string id="st_off">
+		<text>выкл.</text>
+	</string>
+	<string id="st_new_game_min">
+		<text>мин.</text>
+	</string>
+	<string id="st_new_game_mins">
+		<text>мин.</text>
+	</string>
+	<string id="st_new_game_hour">
+		<text>час</text>
+	</string>
+	<string id="st_new_game_hours">
+		<text>часов</text>
+	</string>
+	<string id="st_new_game_day">
+		<text>день</text>
+	</string>
+	<string id="st_new_game_days">
+		<text>дней</text>
+	</string>
+	<string id="st_new_game_life">
+		<text>жизнь</text>
+	</string>
+	<string id="st_new_game_lives">
+		<text>жизни</text>
+	</string>
+	
+	<!-- Buttons -->
+	<string id="st_mm_btn_new_game_faction">
+		<text>Фракция</text>
+	</string>
+	<string id="st_mm_btn_new_game_icon">
+		<text>Портрет</text>
+	</string>
+	<string id="st_mm_btn_new_game_back">
+		<text>Назад</text>
+	</string>
+	<string id="st_mm_btn_new_game_submit">
+		<text>Начать</text>
+	</string>
+	<string id="st_mm_btn_new_game_rand">
+		<text>Случайно</text>
+	</string>
+	
+</string_table>
