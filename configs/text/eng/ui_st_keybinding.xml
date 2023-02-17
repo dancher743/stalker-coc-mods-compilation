@@ -84,6 +84,9 @@
 	<string id="kb_grp_companions">
 		<text>Companions</text>
 	</string>
+	<string id="kb_grp_pda">
+		<text>PDA</text>
+	</string>
 	<string id="kb_inventory">
 		<text>Inventory</text>
 	</string>
@@ -272,5 +275,8 @@
 	</string>
 	<string id="kb_custom9">
 		<text>PDA Statistics</text>
+	</string>
+	<string id="kb_custom10">
+		<text>PDA Messages</text>
 	</string>
 </string_table>
