@@ -24,7 +24,7 @@ end
 
 class "addonCompanionsContextMenu" (CUIScriptWnd)
 function addonCompanionsContextMenu:__init(companionSquad) super()
---printf("6")
+printf("6")
 	self.companionSquad =  companionSquad
 	self:InitControls()
 	self:InitCallBacks()
