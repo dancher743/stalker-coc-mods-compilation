@@ -599,7 +599,7 @@
 	<dialog id="neutral_companion_dialog">
 		<precondition>dialogs_axr_companion.is_non_story</precondition>
 		<precondition>dialogs_axr_companion.is_not_actor_companion</precondition>
-		<precondition>dialogs_axr_companion.is_actor_can_ask_neutral</precondition>
+		<precondition>dialogs_axr_companion.is_actor_can_ask_neutral_to_join</precondition>
 		<precondition>dialogs_axr_companion.is_room_in_actor_squad</precondition>
 		<precondition>dialogs_axr_companion.is_not_hostage_task_giver</precondition>
         <phrase_list>

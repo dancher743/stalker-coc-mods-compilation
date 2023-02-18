@@ -255,7 +255,7 @@ function is_module_enabled(actor,npc)
 	return 	axr_companions and axr_companions.Enabled or false
 end
 
-function is_actor_can_ask_neutral(actor,npc)
+function is_actor_can_ask_neutral_to_join(actor,npc)
 	local npc = dialogs.who_is_npc(actor,npc)
 
 	local squad = get_object_squad(npc)
