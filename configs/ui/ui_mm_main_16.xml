@@ -9,6 +9,9 @@
 	    <auto_static x="967" y="5" width="52" height="64" stretch="1">
 			<texture>ui\teamEPIC_logo</texture>
 		</auto_static>
+		<auto_static x="15" y="666" width="55" height="64" stretch="1">
+			<texture>ui\moty2015</texture>
+		</auto_static>
     </background>
 
 	<shniaga_wnd x="590" y="419" width="392" height="280">
