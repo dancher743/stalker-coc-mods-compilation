@@ -1192,11 +1192,17 @@
 	<string id="axr_phrase_actor_give_command_loot_corpses_stop">
 		<text>Игнорируй трупы.</text>
 	</string>
-	<string id="axr_phrase_friend_companion_ask_join">
+	<string id="axr_phrase_neutral_companion_ask_join">
 		<text>Слушай, как насчет действовать в команде? Вдвоем-то тут всяко безопаснее.</text>
 	</string>
-	<string id="axr_phrase_friend_companion_answer_join">
+	<string id="axr_phrase_neutral_companion_answer_join">
 		<text>Звучит неплохо, пошли.</text>
+	</string>
+	<string id="axr_phrase_friend_companion_ask_join">
+		<text>Дружище, давай действовать в команде?</text>
+	</string>
+	<string id="axr_phrase_friend_companion_answer_join">
+		<text>Без проблем! Пошли.</text>
 	</string>
 	<string id="axr_phrase_friend_companion_ask_join_hostage">
 		<text>Может, поможешь спасти твоего друга?</text>

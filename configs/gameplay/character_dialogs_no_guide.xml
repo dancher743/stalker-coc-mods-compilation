@@ -1,4 +1,5 @@
 <start_dialog>hello_dialog</start_dialog>
+<actor_dialog>neutral_companion_dialog</actor_dialog>
 <actor_dialog>friendly_companion_dialog</actor_dialog>
 <actor_dialog>friendly_companion_dialog_hostage_version</actor_dialog>
 <actor_dialog>dm_is_actor_companion_dialog</actor_dialog>
