@@ -265,7 +265,8 @@ function is_actor_can_ask_neutral_to_join(actor,npc)
 
 	if not (axr_companions.allow_simulation_squads_as_companions) or
 		not (axr_companions.allow_neutrals_as_companions) or
-		npc:relation(db.actor) ~= game_object.neutral
+		npc:relation(db.actor) ~= game_object.neutral or
+		npc:character_community() ~= actor_community()
 	then
 		return false
 	end

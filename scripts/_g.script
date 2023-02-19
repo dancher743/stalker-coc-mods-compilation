@@ -1061,6 +1061,14 @@ function alife_character_community (obj)
 	return "monster"
 end
 
+function actor_community()
+	local community = db.actor:character_community()
+	if (string.find(community, "actor_")) then
+		community = community:sub(7) -- remove 'actor_' prefix
+	end
+	return community
+end
+
 -- получить геймобжект по стори_айди.
 function level_object_by_sid( sid )
 	local sim = alife()
