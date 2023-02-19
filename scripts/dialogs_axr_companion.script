@@ -255,6 +255,24 @@ function is_module_enabled(actor,npc)
 	return 	axr_companions and axr_companions.Enabled or false
 end
 
+function is_actor_can_ask_neutral_to_join(actor,npc)
+	local npc = dialogs.who_is_npc(actor,npc)
+
+	local squad = get_object_squad(npc)
+	if not (squad) then
+		return false
+	end
+
+	if not (axr_companions.allow_simulation_squads_as_companions) or
+		not (axr_companions.allow_neutrals_as_companions) or
+		npc:relation(db.actor) ~= game_object.neutral
+	then
+		return false
+	end
+
+	return actor:character_rank() > npc:character_rank()
+end
+
 function is_actor_friend(actor,npc)
 	local npc = dialogs.who_is_npc(actor,npc)
 
@@ -267,8 +285,8 @@ function is_actor_friend(actor,npc)
 		return false
 	end
 
-	if not (axr_companions.allow_only_friends_as_companions) then
-		return true
+	if not (axr_companions.allow_friends_as_companions) then
+		return false
 	end
 
 	return npc:relation(db.actor) == game_object.friend

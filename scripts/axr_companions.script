@@ -4,7 +4,8 @@ by Alundaio
 -]]
 
 -- SEE configs\ai_tweaks\axr_companions
-allow_only_friends_as_companions = true
+allow_neutrals_as_companions = true
+allow_friends_as_companions = true
 allow_simulation_squads_as_companions = false
 max_actor_squad_size = 0 -- used only for non task companions
 
@@ -179,7 +180,8 @@ function on_game_start()
 	RegisterScriptCallback("load_state",load_state)
 	RegisterScriptCallback("on_game_load",on_game_load)
 
-	allow_only_friends_as_companions = ini:r_bool_ex("main","allow_only_friends_as_companions",false)
+	allow_neutrals_as_companions = ini:r_bool_ex("main","allow_neutrals_as_companions",false)
+	allow_friends_as_companions = ini:r_bool_ex("main","allow_friends_as_companions",false)
 	allow_simulation_squads_as_companions = ini:r_bool_ex("main","allow_simulation_squads_as_companions",false)
 	max_actor_squad_size = ini:r_float_ex("main","max_actor_squad_size") or 2
 end
