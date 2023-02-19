@@ -1198,10 +1198,10 @@
 		<text>Ignore the dead.</text>
 	</string>
 	<string id="axr_phrase_neutral_companion_ask_join">
-		<text>Hey, how about explore as a team? We could help each other through the zone.</text>
+		<text>Hey, how about explore as a team?</text>
 	</string>
 	<string id="axr_phrase_neutral_companion_answer_join">
-		<text>Sounds like a great idea. Lead the way.</text>
+		<text>We could help each other through the zone. Sounds like a great idea. Lead the way.</text>
 	</string>
 	<string id="axr_phrase_friend_companion_ask_join">
 		<text>Hey friend, let's explore as a team.</text>
