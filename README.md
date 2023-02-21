@@ -49,3 +49,4 @@ Mods
 35. DoctorX Dynamic Anomalies 2.1 [CoC 1.5 / 1.4.22] (DoctorX)
 36. NPC's vision thru vegetation fix (EmSobac)
 37. Added gauss ammo exchange dialog from Mutantum v 2.2 (sunxshilo)
+38. Companions Quick Menu 1.1 [UPDATE August 8] [CoC 1.5 r4] (Debrovski)
