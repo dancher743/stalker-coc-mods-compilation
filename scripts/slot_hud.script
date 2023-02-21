@@ -84,17 +84,19 @@ function actor_item_to_belt(item)
 end
 
 function actor_on_weapon_zoom_in(item)
-	HUD:update_hud(item, true)
+	HUD:show_hud(false)
 end 
 
 function actor_on_weapon_zoom_out(item)
-	HUD:update_hud(item, false)
+	HUD:show_hud(true)
 end
 
 class "slot_hud" (CUIScriptWnd)
 function slot_hud:__init() super()
 	self.slot = {}
 	self.ini = system_ini()
+	self.tmr = time_global()
+	self.shown = false
 	self:InitControls()
 end
 
@@ -111,7 +113,7 @@ function slot_hud:InitControls()
 	end
 end
 
-function slot_hud:update_hud(item, is_weapon_zoomed)
+function slot_hud:update_hud(item)
 	local cnt = 0
 	for id, sec in pairs(belted_arts) do
 		cnt = cnt + 1
@@ -125,5 +127,37 @@ function slot_hud:update_hud(item, is_weapon_zoomed)
 	for i=cnt+1,5 do
 		self.slot[i]:Show(false)
 	end
-	self.static_back:Show(table.size(belted_arts) > 0 and (is_weapon_zoomed == nil or is_weapon_zoomed == false))
+	self:show_hud(table.size(belted_arts) > 0)
+end
+
+function slot_hud:show_hud(value)
+	if(self.shown == value) then
+		return
+	end
+	self.static_back:Show(value)
+	self.shown = value
+end
+
+--
+-- from CoC 1.5b r6
+--
+function slot_hud:Update()
+	local tg = time_global()
+	
+	if self.tmr >= tg then
+		return
+	else
+		self.tmr = tg + 2000
+	end
+	
+	CUIScriptWnd.Update(self)
+	
+	self:show_hud(not db.actor:is_talking())
+	
+	if (axr_main.config:r_value("mm_options","enable_slot_hud",1,true)) == false then
+		if table.size(belted_arts) > 0 then
+			self:clear(0)
+--			deactivate_hud()
+		end
+	end
 end
