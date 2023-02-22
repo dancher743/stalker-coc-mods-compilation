@@ -3,12 +3,13 @@ My mods compilation for S.T.A.L.K.E.R.: Call of Chernobyl 1.4.22 (ENG/RUS)
 
 Install
 ---
-Place all files to an empty "gamedata" folder.
+Place all files to an empty `gamedata` folder.
 
 Settings
 ---
-* To access Dynamic News settings: load your game, then open the main menu and press Page-Up button.
-* To make the sky less bright type `r2_tonemap off` command in the console.
+* To access Dynamic News settings: load your game, then open the main menu and press Page-Up button
+* To ignite/extinguish a campfire holster your weapon first
+* To make the sky less bright type `r2_tonemap off` command in the console
 
 Mods
 ---
