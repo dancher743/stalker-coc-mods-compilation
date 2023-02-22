@@ -1,0 +1,25 @@
+--
+--	Cooking manager
+--	Allows actor to cook some items
+--	by Dancher
+--	Special thanks to Team Epic
+--
+
+function can_cook(item)
+	return "cook"
+end
+
+function cook(item)
+	local sim = alife()
+	local actor = db.actor
+	
+	-- create "cooked" item
+	local section = "mutant_part_boar_chop" --item:section()
+	sim:create(section,actor:position(),actor:level_vertex_id(),actor:game_vertex_id(),actor:id())
+	
+	-- release row item
+	local se_obj = sim:object(item:id())
+	if (se_obj) then 
+		sim:release(se_obj)
+	end
+end
