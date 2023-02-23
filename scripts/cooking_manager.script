@@ -5,8 +5,15 @@
 --	Special thanks to Team Epic
 --
 
-function can_cook(item)
-	return "cook"
+function can_cook_near_campfire(item)
+	local result = nil
+	local campfire = bind_campfire.get_nearest_campfire(db.actor, 4)
+	
+	if campfire ~= nil and campfire:is_on() then
+		result = game.translate_string("st_try_to_cook")
+	end
+
+	return result
 end
 
 function cook(item)
