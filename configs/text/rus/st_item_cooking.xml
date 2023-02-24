@@ -1,35 +1,16 @@
 <?xml version="1.0" encoding="windows-1251" ?>
-<string_table>
-	<string id="st_charcoal">
-		<text>Древесный уголь</text>
-	</string>
-	<string id="st_charcoal_descr">
-		<text>Мешок древесноугольных брикетов. Используется с дровяной печью.</text>
-	</string>
-	<string id="st_wood_stove">
-		<text>Дровяная печь</text>
-	</string>
-	<string id="st_wood_stove_descr">
-		<text>Портативная походная печь-«буржуйка», лёгкая и простая в использовании. Всё, что нужно, чтобы приготовить на ней пищу - это только топливо.</text>
-	</string>
-	<string id="st_matches">
-		<text>Спички</text>
-	</string>
-	<string id="st_matches_descr">
-		<text>Коробок спичек.</text>
-	</string>
-	
+<string_table>	
 	<string id="st_meat_tushkano">
-		<text>Мясо грызуна (приготовленное)</text>
+		<text>Мясо тушкана (приготовленное)</text>
 	</string>
 	<string id="st_meat_tushkano_descr">
-		<text>Приготовленное мясо грызуна.</text>
+		<text>Приготовленное мясо тушкана.</text>
 	</string>
 	<string id="st_meat_dog">
-		<text>Мясо собаки (приготовленное)</text>
+		<text>Мясо слепой собаки (приготовленное)</text>
 	</string>
 	<string id="st_meat_dog_descr">
-		<text>Приготовленное мясо собаки.</text>
+		<text>Приготовленное мясо слепой собаки.</text>
 	</string>
 	<string id="st_meat_pseudodog">
 		<text>Мясо псевдособаки (приготовленное)</text>
@@ -56,15 +37,12 @@
 		<text>Приготовленное мясо кровососа.</text>
 	</string>
 	<string id="st_meat_chimera">
-		<text>Мясо химеры (приготовленное)</text>
+		<text>Мясо Химеры (приготовленное)</text>
 	</string>
 	<string id="st_meat_chimera_descr">
-		<text>Приготовленное мясо химеры.</text>
+		<text>Приготовленное мясо Химеры.</text>
 	</string>
 	<string id="st_try_to_cook">
 		<text>готовить</text>
-	</string>
-	<string id="st_add_cooking_fuel">
-		<text>добавить топливо</text>
 	</string>
 </string_table>
