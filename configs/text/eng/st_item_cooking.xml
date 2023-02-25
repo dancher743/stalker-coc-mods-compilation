@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>	
 	<string id="st_meat_tushkano">
-		<text>Rodent meat (cooked)</text>
+		<text>Rat skewers</text>
 	</string>
 	<string id="st_meat_tushkano_descr">
-		<text>Cooked meat from a rodent.</text>
+		<text>Two small skewered tushkanos, grilled and seasoned with salt and chili pepper. The cheapest hot meal available in the Zone.</text>
 	</string>
 	<string id="st_meat_dog">
-		<text>Dog meat (cooked)</text>
+		<text>Dog chops</text>
 	</string>
 	<string id="st_meat_dog_descr">
-		<text>Cooked meat from a dog.</text>
+		<text>A small hot meal of grilled dog chops mixed with garlic, peppers and mushrooms. A cheap alternative to the more popular boar beef.</text>
 	</string>
 	<string id="st_meat_pseudodog">
-		<text>Pseudodog meat (cooked)</text>
+		<text>Pseudodog chops</text>
 	</string>
 	<string id="st_meat_pseudodog_descr">
-		<text>Cooked meat from a pseudodog.</text>
+		<text>Portion of grilled pseudodog meat chops. Good nutrition value due to thick muscles of the animal.</text>
 	</string>
 	<string id="st_meat_flesh">
-		<text>Flesh meat (cooked)</text>
+		<text>Fat bacon</text>
 	</string>
 	<string id="st_meat_flesh_descr">
-		<text>Cooked meat from a flesh.</text>
+		<text>Slices of fat and greasy bacon made from mutated pigs commonly known as fleshes.</text>
 	</string>
 	<string id="st_meat_boar">
-		<text>Boar chop (cooked)</text>
+		<text>Boar chops</text>
 	</string>
 	<string id="st_meat_boar_descr">
-		<text>Cooked loin chops from a boar.</text>
+		<text>A small portion of boar meat, grilled and seasoned with salt and mixed with peppers. The most popular warm meal among stalkers.</text>
 	</string>
 	<string id="st_meat_bloodsucker">
-		<text>Bloodsucker meat (cooked)</text>
+		<text>Bloodsucker goulash</text>
 	</string>
 	<string id="st_meat_bloodsucker_descr">
-		<text>Cooked meat from a bloodsucker.</text>
+		<text>A small hot meal made from bloodsucker meat spiced with chilies and mixed with mushrooms.</text>
 	</string>
 	<string id="st_meat_chimera">
-		<text>Chimera meat (cooked)</text>
+		<text>The Masculine Meal</text>
 	</string>
 	<string id="st_meat_chimera_descr">
-		<text>Cooked meat from a chimera.</text>
+		<text>A portion of grilled chimera meat, served with mushrooms and spices. An expensive meal, eaten most commonly by veteran Stalkers to celebrate accomplishment of difficult missions.</text>
 	</string>
 	<string id="st_try_to_cook">
 		<text>cook</text>
