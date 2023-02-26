@@ -1,0 +1,44 @@
+--
+--	Cooking manager
+--	Allows actor to cook some items
+--	by Dancher
+--	Special thanks to Team Epic
+--
+
+local cooking_sound = sound_object([[interface\inv_cooking]])
+
+function can_cook_near_campfire(item)
+	local result = nil
+	local campfire = bind_campfire.get_nearest_campfire(db.actor, 4)
+	
+	if campfire ~= nil and campfire:is_on() then
+		result = game.translate_string("st_try_to_cook")
+	end
+
+	return result
+end
+
+function cook(item)
+	local sim = alife()
+	local actor = db.actor
+	
+	-- create "cooked" item
+	local cooked_section = system_ini():r_string_ex(item:section(),"cooked_section")
+	if cooked_section == nil then
+		return
+	end
+	sim:create(cooked_section,actor:position(),actor:level_vertex_id(),actor:game_vertex_id(),actor:id())
+	
+	-- release row item
+	local se_obj = sim:object(item:id())
+	if (se_obj) then 
+		sim:release(se_obj)
+	end
+	
+	-- play cooking sound
+	if cooking_sound:playing() then
+		cooking_sound:stop()
+	end
+	
+	cooking_sound:play(db.actor,0,sound_object.s2d)
+end

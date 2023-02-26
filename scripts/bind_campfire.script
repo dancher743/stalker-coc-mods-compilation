@@ -25,18 +25,37 @@ end
 
 -- called from game_tutorials.xml
 function use_campfire(actor,zone,p)
-	local pos = db.actor:position()
+	if actor == nil then
+		actor = db.actor
+	end
+
+	local campfire = get_nearest_campfire(actor)
+	
+	if campfire ~= nil then
+		if (campfire:is_on()) then 
+			campfire:turn_off()
+		else 
+			campfire:turn_on()
+		end
+	end
+end
+
+function get_nearest_campfire(npc, range)
+	local pos = npc:position()
+	
+	if range == nil then
+		range = 2
+	end
+	
 	for id,binder in pairs(campfires_all) do 
 		if (binder and binder.campfire) then
-			if (pos:distance_to_sqr(binder.object:position()) <= 2) then
-				if (binder.campfire:is_on()) then 
-					binder.campfire:turn_off()
-				else 
-					binder.campfire:turn_on()
-				end
+			if (pos:distance_to_sqr(binder.object:position()) <= range) then
+				return binder.campfire
 			end
 		end 
-	end 
+	end
+
+	return nil
 end
 
 function on_game_start()

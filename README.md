@@ -51,3 +51,4 @@ Mods
 36. NPC's vision thru vegetation fix (EmSobac)
 37. Gauss ammo exchange dialog from Mutantum v 2.2 (sunxshilo)
 38. Companions Quick Menu 1.1 [UPDATE August 8] [CoC 1.5 r4] (Debrovski)
+39. Cooking the mutants parts (Team Epic, Anomaly Developers, Dancher)
