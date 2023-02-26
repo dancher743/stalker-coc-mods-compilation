@@ -5,6 +5,8 @@
 --	Special thanks to Team Epic
 --
 
+local cooking_sound = sound_object([[interface\inv_cooking]])
+
 function can_cook_near_campfire(item)
 	local result = nil
 	local campfire = bind_campfire.get_nearest_campfire(db.actor, 4)
@@ -32,4 +34,11 @@ function cook(item)
 	if (se_obj) then 
 		sim:release(se_obj)
 	end
+	
+	-- play cooking sound
+	if cooking_sound:playing() then
+		cooking_sound:stop()
+	end
+	
+	cooking_sound:play(db.actor,0,sound_object.s2d)
 end
