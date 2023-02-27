@@ -1,6 +1,7 @@
 --//  Shows belted artifacts on primary hud
 
 local HUD,belted_arts,weapon_zoom_in
+local update_rate = 1000 --[ms]
 
 function activate_hud()
 	belted_arts = {}
@@ -149,7 +150,7 @@ function slot_hud:Update()
 	if self.tmr >= tg then
 		return
 	else
-		self.tmr = tg + 2000
+		self.tmr = tg + update_rate
 	end
 	
 	CUIScriptWnd.Update(self)
