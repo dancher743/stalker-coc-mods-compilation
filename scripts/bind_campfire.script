@@ -5,6 +5,9 @@
 
 campfires_all = {}
 
+-- Matches sound from NLC 7: Build 3.0
+local matches_sound = sound_object([[nlc\matches_1_short]])
+
 -- For use with Marshal save state system
 local function save_state(m_data)
 	--alun_utils.debug_write("bind_campfire:save_state")
@@ -36,6 +39,10 @@ function use_campfire(actor,zone,p)
 			campfire:turn_off()
 		else 
 			campfire:turn_on()
+			if matches_sound:playing() then
+				matches_sound:stop()
+			end
+			matches_sound:play(db.actor,0,sound_object.s2d)
 		end
 	end
 end
