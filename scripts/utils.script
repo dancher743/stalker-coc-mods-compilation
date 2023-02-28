@@ -18,6 +18,13 @@ function round(num, idp)
   return math.floor(num * mult + 0.5) / mult
 end
 
+-- Linearly interpolates between a and b by t.
+-- The parameter t is clamped to the range [0, 1].
+-- Added by Dancher
+function lerp(a, b, t)
+	return a + (b-a) * clamp(t, 0, 1)
+end
+
 -- Переводит переменную любого типа (включая nil) в строку. Используется для отладочного вывода информации.
 function to_str(what)
 	if what == nil then
