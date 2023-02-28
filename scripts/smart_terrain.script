@@ -69,6 +69,7 @@ function se_smart_terrain:__init(section) super(section)
 	self.npc_info  = {}
 	self.arriving_npc  = {}
 	self.__campfire_check_time = game.get_game_time()
+	self.campfire_duration_time = nil
 	--if (USE_MARSHAL) then 
 	--	RegisterScriptCallback("save_state",self)
 	--end
@@ -1260,9 +1261,22 @@ function se_smart_terrain:update()
 			end
 		end
 		
-		if (self.__campfire_check_time == nil or game.get_game_time():diffSec(self.__campfire_check_time) > 12000) then
+		if self.campfire_duration_time == nil then
+			local game_time = 12000
+			
+			if xr_conditions.is_rain() then
+				game_time = utils.lerp(6000, 600, level.rain_factor())
+			end
+			
+			self.campfire_duration_time = game_time
+		end
+		
+		--printf("Campfire time is "..tostring(self.campfire_duration_time))
+		
+		if (self.__campfire_check_time == nil or game.get_game_time():diffSec(self.__campfire_check_time) > self.campfire_duration_time) then
 			bind_campfire.turn_off_campfires_by_smart_name(self:name())
 			self.__campfire_check_time = game.get_game_time()
+			self.campfire_duration_time = nil
 		end
 		
 		self:check_smart_faction()
