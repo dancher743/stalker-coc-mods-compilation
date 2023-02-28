@@ -37,8 +37,13 @@ function use_campfire(actor,zone,p)
 	if campfire ~= nil then
 		if (campfire:is_on()) then 
 			campfire:turn_off()
-		else 
-			campfire:turn_on()
+		else
+			local chance_to_ignite = utils.lerp(70, 10, level.rain_factor())
+			
+			if math.random(100) < chance_to_ignite then
+				campfire:turn_on()
+			end
+			
 			if matches_sound:playing() then
 				matches_sound:stop()
 			end
