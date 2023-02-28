@@ -1,6 +1,6 @@
 --//  Shows belted artifacts on primary hud
 
-local HUD,belted_arts,weapon_zoom_in
+local HUD,belted_arts
 local update_rate = 1000 --[ms]
 
 function activate_hud()
@@ -85,12 +85,10 @@ function actor_item_to_belt(item)
 end
 
 function actor_on_weapon_zoom_in(item)
-	weapon_zoom_in = true
 	HUD:show_hud(false)
 end 
 
 function actor_on_weapon_zoom_out(item)
-	weapon_zoom_in = false
 	HUD:show_hud(true)
 end
 
@@ -155,7 +153,7 @@ function slot_hud:Update()
 	
 	CUIScriptWnd.Update(self)
 	
-	self:show_hud(not db.actor:is_talking() and not weapon_zoom_in)
+	self:show_hud(not db.actor:is_talking() and not axr_main.weapon_is_zoomed)
 	
 	if (axr_main.config:r_value("mm_options","enable_slot_hud",1,true)) == false then
 		if table.size(belted_arts) > 0 then
