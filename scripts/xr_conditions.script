@@ -1530,6 +1530,10 @@ function is_rain (actor, npc)
 	return db.actor ~= nil and level.rain_factor() > 0
 end
 
+function is_light_rain (actor, npc)
+	return db.actor ~= nil and level.rain_factor() > 0 and level.rain_factor() < 0.5
+end
+
 function is_heavy_rain (actor, npc)
 	return db.actor ~= nil and level.rain_factor() >= 0.5
 end
