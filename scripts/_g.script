@@ -45,7 +45,7 @@ b_discard_settings_shown = false
 
 function start_game_callback()
 	math.randomseed(os.time())
-	printf("Call of Chernobyl version %s + %s",GAME_VERSION)
+	printf("Call of Chernobyl version %s + %s",GAME_VERSION,MOD_VERSION)
 	if (USE_MARSHAL) then
 		printf("using marshal library")
 	end
