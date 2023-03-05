@@ -1,7 +1,7 @@
 --
---	Cooking manager
+--	Cooking Manager
 --	Allows actor to cook some items
---	by Dancher
+--	Added by Dancher
 --	Special thanks to Team Epic
 --
 
@@ -20,10 +20,40 @@ function can_cook_all(item)
 end
 
 function cook(item)
+	cook_raw_item(item)
+	play_cooking_sound()
+end
+
+function cook_all(item)
+	local items = {}
+	
+	local function iterator(actor, inventory_item)
+		if inventory_item:section() == item:section() then
+			table.insert(items, inventory_item)
+		end
+	end
+	
+	-- iterate all items in the actor's inventory
+	db.actor:iterate_inventory(iterator, nil)
+	
+	for i,v in ipairs(items) do
+		cook_raw_item(v)
+	end
+	
+	play_cooking_sound()
+end
+
+function has_burning_campfire_nearby()
+	local range = 4
+	local campfire = bind_campfire.get_nearest_campfire(db.actor, range)
+	return campfire ~= nil and campfire:is_on()
+end
+
+function cook_raw_item(item)
 	local sim = alife()
 	local actor = db.actor
-	
-	-- create "cooked" item
+
+	-- create cooked item
 	local cooked_section = system_ini():r_string_ex(item:section(),"cooked_section")
 	if cooked_section == nil then
 		return
@@ -35,55 +65,11 @@ function cook(item)
 	if (se_obj) then 
 		sim:release(se_obj)
 	end
-	
-	-- play cooking sound
+end
+
+function play_cooking_sound()
 	if cooking_sound:playing() then
 		cooking_sound:stop()
 	end
-	
 	cooking_sound:play(db.actor,0,sound_object.s2d)
-end
-
-function cook_all(item)
-	local sim = alife()
-	local actor = db.actor
-	
-	local items = {}
-
-	local function iterator(npc, inventory_item)
-		if inventory_item:section() == item:section() then
-			table.insert(items, inventory_item)
-		end
-	end
-	
-	-- iterate all items in the actor's inventory
-	actor:iterate_inventory(iterator, nil)
-	
-	for i,v in ipairs(items) do
-		-- create "cooked" item
-		local cooked_section = system_ini():r_string_ex(v:section(),"cooked_section")
-		if cooked_section == nil then
-			return
-		end
-		sim:create(cooked_section,actor:position(),actor:level_vertex_id(),actor:game_vertex_id(),actor:id())
-		
-		-- release row item
-		local se_obj = sim:object(v:id())
-		if (se_obj) then 
-			sim:release(se_obj)
-		end
-	end
-	
-	-- play cooking sound
-	if cooking_sound:playing() then
-		cooking_sound:stop()
-	end
-	
-	cooking_sound:play(db.actor,0,sound_object.s2d)
-end
-
-function has_burning_campfire_nearby()
-	local range = 4
-	local campfire = bind_campfire.get_nearest_campfire(db.actor, range)
-	return campfire ~= nil and campfire:is_on()
 end
