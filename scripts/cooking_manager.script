@@ -7,24 +7,15 @@
 
 local cooking_sound = sound_object([[interface\inv_cooking]])
 
-function can_cook_near_campfire(item)
+function can_cook(item)
 	local result = nil
-	local campfire = bind_campfire.get_nearest_campfire(db.actor, 4)
-	
-	if campfire ~= nil and campfire:is_on() then
-		result = game.translate_string("st_try_to_cook")
+	if has_burning_campfire_nearby() then
+		if get_object_count(item:section(), db.actor) > 1 then
+			result = game.translate_string("st_try_to_cook_all")
+		else
+			result = game.translate_string("st_try_to_cook")
+		end		
 	end
-
-	return result
-end
-
-function can_cook_all_near_campfire(item)
-	local result = nil
-	
-	if get_object_count(item:section(), db.actor) > 1 and can_cook_near_campfire(item) ~= nil then
-		result = game.translate_string("st_try_to_cook_all")
-	end
-
 	return result
 end
 
@@ -89,4 +80,10 @@ function cook_all(item)
 	end
 	
 	cooking_sound:play(db.actor,0,sound_object.s2d)
+end
+
+function has_burning_campfire_nearby()
+	local range = 4
+	local campfire = bind_campfire.get_nearest_campfire(db.actor, range)
+	return campfire ~= nil and campfire:is_on()
 end
