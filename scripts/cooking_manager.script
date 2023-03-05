@@ -8,15 +8,15 @@
 local cooking_sound = sound_object([[interface\inv_cooking]])
 
 function can_cook(item)
-	local result = nil
 	if has_burning_campfire_nearby() then
-		if get_object_count(item:section(), db.actor) > 1 then
-			result = game.translate_string("st_try_to_cook_all")
-		else
-			result = game.translate_string("st_try_to_cook")
-		end		
+		return game.translate_string("st_try_to_cook")
 	end
-	return result
+end
+
+function can_cook_all(item)
+	if has_burning_campfire_nearby() and get_object_count(item:section(), db.actor) > 1 then
+		return game.translate_string("st_try_to_cook_all")
+	end
 end
 
 function cook(item)
