@@ -45,4 +45,7 @@
 	<string id="st_try_to_cook">
 		<text>cook</text>
 	</string>
+	<string id="st_try_to_cook_all">
+		<text>cook all</text>
+	</string>
 </string_table>

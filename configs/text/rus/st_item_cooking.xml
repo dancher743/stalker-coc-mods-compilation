@@ -45,4 +45,7 @@
 	<string id="st_try_to_cook">
 		<text>готовить</text>
 	</string>
+	<string id="st_try_to_cook_all">
+		<text>готовить всё</text>
+	</string>
 </string_table>

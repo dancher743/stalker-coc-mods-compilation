@@ -1330,8 +1330,10 @@ eat_sleepiness                           = 0.026
 eat_health                               = -0.07
 eat_alcohol                              = -0.01
 
-use1_functor							 = cooking_manager.can_cook_near_campfire
+use1_functor							 = cooking_manager.can_cook
 use1_action_functor						 = cooking_manager.cook
+use2_functor							 = cooking_manager.can_cook_all
+use2_action_functor						 = cooking_manager.cook_all
 
 [mutant_part_flesh_meat]:mutant_part_general_meat
 $spawn                                   = "devices\monster_items\mutant_flesh_meat"

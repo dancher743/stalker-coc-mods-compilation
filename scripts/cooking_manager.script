@@ -1,28 +1,59 @@
 --
---	Cooking manager
+--	Cooking Manager
 --	Allows actor to cook some items
---	by Dancher
+--	Added by Dancher
 --	Special thanks to Team Epic
 --
 
 local cooking_sound = sound_object([[interface\inv_cooking]])
 
-function can_cook_near_campfire(item)
-	local result = nil
-	local campfire = bind_campfire.get_nearest_campfire(db.actor, 4)
-	
-	if campfire ~= nil and campfire:is_on() then
-		result = game.translate_string("st_try_to_cook")
+function can_cook(item)
+	if has_burning_campfire_nearby() then
+		return game.translate_string("st_try_to_cook")
 	end
+end
 
-	return result
+function can_cook_all(item)
+	if has_burning_campfire_nearby() and get_object_count(item:section(), db.actor) > 1 then
+		return game.translate_string("st_try_to_cook_all")
+	end
 end
 
 function cook(item)
+	cook_raw_item(item)
+	play_cooking_sound()
+end
+
+function cook_all(item)
+	local items = {}
+	
+	local function iterator(actor, inventory_item)
+		if inventory_item:section() == item:section() then
+			table.insert(items, inventory_item)
+		end
+	end
+	
+	-- iterate all items in the actor's inventory
+	db.actor:iterate_inventory(iterator, nil)
+	
+	for i,v in ipairs(items) do
+		cook_raw_item(v)
+	end
+	
+	play_cooking_sound()
+end
+
+function has_burning_campfire_nearby()
+	local range = 4
+	local campfire = bind_campfire.get_nearest_campfire(db.actor, range)
+	return campfire ~= nil and campfire:is_on()
+end
+
+function cook_raw_item(item)
 	local sim = alife()
 	local actor = db.actor
-	
-	-- create "cooked" item
+
+	-- create cooked item
 	local cooked_section = system_ini():r_string_ex(item:section(),"cooked_section")
 	if cooked_section == nil then
 		return
@@ -34,11 +65,11 @@ function cook(item)
 	if (se_obj) then 
 		sim:release(se_obj)
 	end
-	
-	-- play cooking sound
+end
+
+function play_cooking_sound()
 	if cooking_sound:playing() then
 		cooking_sound:stop()
 	end
-	
 	cooking_sound:play(db.actor,0,sound_object.s2d)
 end
