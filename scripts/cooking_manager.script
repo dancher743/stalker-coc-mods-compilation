@@ -18,6 +18,17 @@ function can_cook_near_campfire(item)
 	return result
 end
 
+function can_cook_all_near_campfire(item)
+	local result = nil
+	
+	-- change it
+	if item:get_remaining_uses() > 0 and can_cook_near_campfire(item) ~= nil then
+		result = "cook all"
+	end
+
+	return result
+end
+
 function cook(item)
 	local sim = alife()
 	local actor = db.actor
@@ -33,6 +44,44 @@ function cook(item)
 	local se_obj = sim:object(item:id())
 	if (se_obj) then 
 		sim:release(se_obj)
+	end
+	
+	-- play cooking sound
+	if cooking_sound:playing() then
+		cooking_sound:stop()
+	end
+	
+	cooking_sound:play(db.actor,0,sound_object.s2d)
+end
+
+function cook_all(item)
+	local sim = alife()
+	local actor = db.actor
+	
+	local items = {}
+
+	local function iterator(npc, inventory_item)
+		if inventory_item:section() == item:section() then
+			table.insert(items, inventory_item)
+		end
+	end
+	
+	-- iterate all items in the actor's inventory
+	actor:iterate_inventory(iterator, nil)
+	
+	for i,v in ipairs(items) do
+		-- create "cooked" item
+		local cooked_section = system_ini():r_string_ex(v:section(),"cooked_section")
+		if cooked_section == nil then
+			return
+		end
+		sim:create(cooked_section,actor:position(),actor:level_vertex_id(),actor:game_vertex_id(),actor:id())
+		
+		-- release row item
+		local se_obj = sim:object(v:id())
+		if (se_obj) then 
+			sim:release(se_obj)
+		end
 	end
 	
 	-- play cooking sound
