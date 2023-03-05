@@ -21,8 +21,7 @@ end
 function can_cook_all_near_campfire(item)
 	local result = nil
 	
-	-- change it
-	if item:get_remaining_uses() > 0 and can_cook_near_campfire(item) ~= nil then
+	if get_object_count(item:section(), db.actor) > 1 and can_cook_near_campfire(item) ~= nil then
 		result = "cook all"
 	end
 

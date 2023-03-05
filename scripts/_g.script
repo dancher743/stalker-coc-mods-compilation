@@ -1513,6 +1513,22 @@ function give_object_to_actor(obj,count)
   end
 end
 
+-- Get count of some item in NPC's inventory.
+-- Added by Dancher
+function get_object_count(obj,npc)
+	local count = 0
+	
+	local function iterator(npc, item)
+		if item:section() == obj then
+			count = count + 1
+		end
+	end
+	
+	npc:iterate_inventory(iterator, nil)
+	
+	return count
+end
+
 -- INI Extensions
 local ini_cache = { [system_ini()] = {} }
 function clear_ini_cache(ini)
