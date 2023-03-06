@@ -5,63 +5,63 @@
 		<text>Clear Sky patch</text>
 	</string>
 	<string id="csky_patch_description">
-		<text>An insignia torn from a uniform of the Clear Sky faction.</text>
+		<text>An insignia torn from a uniform of the Clear Sky faction. According to the stalkers, Dushman can exchange patches on a valuable items.</text>
 	</string>
 
 	<string id="freedom_patch">
 		<text>Freedom patch</text>
 	</string>
 	<string id="freedom_patch_description">
-		<text>An insignia torn from a uniform of the Freedom faction.</text>
+		<text>An insignia torn from a uniform of the Freedom faction. According to the stalkers, Dushman can exchange patches on a valuable items.</text>
 	</string>
 
 	<string id="stalker_patch">
 		<text>Loner patch</text>
 	</string>
 	<string id="stalker_patch_description">
-		<text>An insignia torn from the uniform of a loner.</text>
+		<text>An insignia torn from the uniform of a loner. According to the stalkers, Dushman can exchange patches on a valuable items.</text>
 	</string>
 
 	<string id="ecolog_patch">
 		<text>Ecologist patch</text>
 	</string>
 	<string id="ecolog_patch_description">
-		<text>An insignia torn from the uniform of an ecologist.</text>
+		<text>An insignia torn from the uniform of an ecologist. According to the stalkers, Dushman can exchange patches on a valuable items.</text>
 	</string>
 
 	<string id="bandit_patch">
 		<text>Bandit patch</text>
 	</string>
 	<string id="bandit_patch_description">
-		<text>An insignia torn from the uniform of a bandit.</text>
+		<text>An insignia torn from the uniform of a bandit. According to the stalkers, Dushman can exchange patches on a valuable items.</text>
 	</string>
 
 	<string id="duty_patch">
 		<text>Duty patch</text>
 	</string>
 	<string id="duty_patch_description">
-		<text>An insignia torn from a uniform of the Duty faction.</text>
+		<text>An insignia torn from a uniform of the Duty faction. According to the stalkers, Dushman can exchange patches on a valuable items.</text>
 	</string>
 
 	<string id="monolith_patch">
 		<text>Monolith patch</text>
 	</string>
 	<string id="monolith_patch_description">
-		<text>An insignia torn from a uniform of the Monolith faction.</text>
+		<text>An insignia torn from a uniform of the Monolith faction. According to the stalkers, Dushman can exchange patches on a valuable items.</text>
 	</string>
 
 	<string id="army_patch">
 		<text>Army patch</text>
 	</string>
 	<string id="army_patch_description">
-		<text>An insignia torn from a uniform of the Ukrainian army.</text>
+		<text>An insignia torn from a uniform of the Ukrainian army. According to the stalkers, Dushman can exchange patches on a valuable items.</text>
 	</string>
 
 	<string id="merc_patch">
 		<text>Mercenary patch</text>
 	</string>
 	<string id="merc_patch_description">
-		<text>An insignia torn from the uniform of a mercenary.</text>
+		<text>An insignia torn from the uniform of a mercenary. According to the stalkers, Dushman can exchange patches on a valuable items.</text>
 	</string>
 	
 </string_table>
