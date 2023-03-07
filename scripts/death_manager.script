@@ -20,7 +20,7 @@ function Wafel_func_drop()
 	
 	local aliases={'zero','novice','trainee','experienced','professional','veteran','expert','master','legend'}
 	
-	return function (rank,mode)
+	return function (rank,mode,npc)
 		math.randomseed( os.time() )
 		local result
 		local  function find_pos(where,what)
@@ -51,7 +51,8 @@ function Wafel_func_drop()
 			---
 			-- Additional chances to change weapon's condition:
 			-- 10% chance to set weapon's condition to 100%,
-			-- 25% chance to decrease weapon's condition on 20%.
+			-- 25% chance to decrease weapon's condition on 20%,
+			-- if npc is zombied, his weapon's condition additionally will be divide by 2.
 			-- Added by Dancher.
 			--
 			local chance = math.random(100)
@@ -60,6 +61,10 @@ function Wafel_func_drop()
 				result = 100
 			elseif (chance <= 25) then
 				result = result * (1 - 0.2)
+			end
+			
+			if npc:character_community() == "zombied" then
+				result = result / 2
 			end
 			---
 			
@@ -290,7 +295,7 @@ function set_weapon_drop_condition(npc,itm)
 	--Wafel start			 	
 	local rank = ranks.get_obj_rank_name(npc)	
 	local rank_dep_drop_W=Wafel_func_drop()  
-	local condition  = rank_dep_drop_W(rank,'wpn')	
+	local condition  = rank_dep_drop_W(rank,'wpn',npc)	
 	--Wafel end	
 	--local condition  = (math.random(40)+5)/100--commented by Wafel
 	--printf("condition [%s]", tostring(condition))
