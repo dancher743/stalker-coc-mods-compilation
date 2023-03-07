@@ -51,14 +51,14 @@ function Wafel_func_drop()
 			---
 			-- Additional chances to change weapon's condition:
 			-- 10% chance to set weapon's condition to 100%,
-			-- 20% chance to reduce weapon's condition on 20%.
+			-- 40% chance to decrease weapon's condition on 20%.
 			-- Added by Dancher.
 			--
 			local chance = math.random(100)
 			
 			if (chance <= 10) then
 				result = 100
-			elseif (chance <= 20) then
+			elseif (chance <= 40) then
 				result = result * (1 - 0.2)
 			end
 			---
