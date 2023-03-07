@@ -4,35 +4,35 @@
 		<text>Flesh meat</text>
 	</string>
 	<string id="mutant_flesh_meat_description">
-		<text>Tough and bitter flesh meat is a frequently ate meal in the Zone. Inexpensive, but most stalkers would prefer overpriced canned goods given the choice.</text>
+		<text>Tough and bitter flesh meat is a frequently ate meal in the Zone. Inexpensive, but most stalkers would prefer overpriced canned goods given the choice. Can be cooked on a campfire.</text>
 	</string>
 	
 	<string id="mutant_boar_chop">
 		<text>Boar chop</text>
 	</string>
 	<string id="mutant_boar_chop_description">
-		<text>Much tougher to chew than their non-radioactive counterpart outside the Zone. Mutated boar chops will fetch a low but reasonable price.</text>
+		<text>Much tougher to chew than their non-radioactive counterpart outside the Zone. Mutated boar chops will fetch a low but reasonable price. Can be cooked on a campfire.</text>
 	</string>
 	
 	<string id="mutant_dog_meat">
 		<text>Dog meat</text>
 	</string>
 	<string id="mutant_dog_meat_description">
-		<text>Commonly harvested and traded in the Zone. Preferred over flesh meat because of its less bitter taste. Trades for a low but acceptable price.</text>
+		<text>Commonly harvested and traded in the Zone. Preferred over flesh meat because of its less bitter taste. Trades for a low but acceptable price. Can be cooked on a campfire.</text>
 	</string>
 	
 	<string id="mutant_psevdodog_meat">
 		<text>Pseudodog meat</text>
 	</string>
 	<string id="mutant_psevdodog_meat_description">
-		<text>Harder to obtain than dog meat, but tastes almost exactly the same. Most stalkers won't pay a substantial amount because of this.</text>
+		<text>Harder to obtain than dog meat, but tastes almost exactly the same. Most stalkers won't pay a substantial amount because of this. Can be cooked on a campfire.</text>
 	</string>
 	
 	<string id="mutant_krovosos_meat">
 		<text>Bloodsucker meat</text>
 	</string>
 	<string id="mutant_krovosos_meat_description">
-		<text>A stringy portion of bloodsucker meat. Despite the risks involved to kill one, it is often sold cheap because of its putrid taste.</text>
+		<text>A stringy portion of bloodsucker meat. Despite the risks involved to kill one, it is often sold cheap because of its putrid taste. Can be cooked on a campfire.</text>
 	</string>
 	
 	<string id="mutant_snork_hand">
@@ -60,14 +60,14 @@
 		<text>Chimera meat</text>
 	</string>
 	<string id="mutant_chimera_meat_description">
-		<text>A heavy slab of meat harvested from a chimera. Not many get the chance to feast upon such a horrifying beast, so naturally the meat is found sold at high prices.</text>
+		<text>A heavy slab of meat harvested from a chimera. Not many get the chance to feast upon such a horrifying beast, so naturally the meat is found sold at high prices. Can be cooked on a campfire.</text>
 	</string>
 	
 	<string id="mutant_tushkano_meat">
 		<text>Rodent meat</text>
 	</string>
 	<string id="mutant_tushkano_meat_description">
-		<text>Whilst it comes in small portions there is also quite a large supply. Stalkers will only be willing to part with a small amount of rubles because of this.</text>
+		<text>Whilst it comes in small portions there is also quite a large supply. Stalkers will only be willing to part with a small amount of rubles because of this. Can be cooked on a campfire.</text>
 	</string>
 	
 	<string id="mutant_flesh_eye">
