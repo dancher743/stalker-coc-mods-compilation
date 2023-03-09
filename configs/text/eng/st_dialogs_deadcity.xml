@@ -2,14 +2,6 @@
 <string_table>
 
 	<!-- From Anomaly 1.5.1.2 -->
-	<string id="talk_to_aslan_on_main_base_merk_0">
-		<text>Tell me about yourself.</text>
-	</string>
-	<string id="talk_to_aslan_on_main_base_merk_1"> <!-- Fixed -->
-		<text>What's there to tell? I'm the local bartender - but who can tell amidst this crap, yeah? We've been stuck here for days, barely maintaining ourselves. I took part in the defense of the president's palace back then, migrated to Switzerland. Then I came to the Zone. I enjoyed visiting the Bar with friends, drinking and reminiscing of older days... During one of such visits I was offered a place in the the Syndicate. It was barely upholding at the time, so Dushman and I are sort of pioneers in this. So what? The roundabouts are fitting, there are people who've been in Afghanistan and Georgia. But people from the Baltic aren't too eager to come, never mind the first world countries.</text>
-	</string>
-
-
 	<string id="talk_to_aslan_about_lottery_0">
 		<text>Heard that you're interested in faction patches.</text>
 	</string>
