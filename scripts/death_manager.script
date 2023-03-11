@@ -171,6 +171,8 @@ function create_release_item(npc)
 	
 	try_spawn_ammo(npc,spawn_items)
 	
+	spawn_patch_if_zombied(npc)
+	
 	local grenade_classes = { 
 								["ammo_m209"] = true,
 								["ammo_vog-25"] = true,
@@ -226,6 +228,31 @@ function try_spawn_ammo(npc,spawn_items)
 		end
 	end
 	npc:iterate_inventory(itr,npc)
+end
+
+function spawn_patch_if_zombied(npc)
+	if npc:character_community() ~= "zombied" then
+		return
+	end
+	
+	local visual = npc:get_visual_name()
+	local visual_exploded = alun_utils.str_explode(visual,"\\")
+	visual = visual_exploded[3]
+	
+	local patch_item = death_ini:r_string_ex("zombied_patch_by_visual",visual)
+	
+	if (patch_item == nil or patch_item == "") then
+		printf("! death_manager: patch not found for '%s' visual", visual)
+		return
+	end
+	
+	local number = 1
+	
+	if (item_count[patch_item]) then
+		number = math.random(item_count[patch_item][1], item_count[patch_item][2])
+	end
+	
+	create_items(npc, patch_item, number, 1)
 end
 
 --' Функция вызывается для каждого предмета, если вернет false то предмет удалится.
