@@ -1390,7 +1390,7 @@ function DynamicNewsManager:FoundStash() -- reaction of angry stash owners
 		return false
 	end
 	
-	if (math.random(100) < 40) then -- %40 chance to show message, %60 chance to ignore
+	if (math.random(100) < 60) then -- %60 chance to ignore
 		return false
 	end
 	
