@@ -50,21 +50,23 @@ function Wafel_func_drop()
 			
 			---
 			-- Additional chances to change weapon's condition:
-			-- 10% chance to set weapon's condition to 100%,
 			-- 25% chance to decrease weapon's condition on 20%,
-			-- if npc is zombied, his weapon's condition additionally will be divide by 2.
+			-- if npc is zombied, his weapon's condition additionally will be divide by 2,
+			-- 10% chance to set weapon's condition to 100% for any stalker (including zombied).
 			-- Added by Dancher.
 			--
 			local chance = math.random(100)
 			
-			if (chance <= 10) then
-				result = 100
-			elseif (chance <= 25) then
+			if (chance <= 25) then
 				result = result * (1 - 0.2)
 			end
 			
 			if npc:character_community() == "zombied" then
 				result = result / 2
+			end
+			
+			if (chance <= 10) then
+				result = 100
 			end
 			---
 			
