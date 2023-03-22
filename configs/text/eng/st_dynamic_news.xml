@@ -951,6 +951,9 @@
 	<string id="st_dyn_news_comm_freedom_14">
 		<text>Shit, help!</text>
 	</string>
+	<string id="st_dyn_news_comm_unknown">
+		<text>unknown</text>
+	</string>
 
 	<!-- weapon class description -->
 	<string id="st_dyn_news_wpn_cls_1_1">

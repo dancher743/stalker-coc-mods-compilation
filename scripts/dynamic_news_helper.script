@@ -794,7 +794,7 @@ function GetCommunityDescription(obj,index) -- Return the faction of the sender 
 	
 	local msg = game.translate_string("st_dyn_news_comm_" .. comm .. "_" .. index)
 	if (msg == "st_dyn_news_comm_" .. comm .. "_" .. index) then
-		return "unknown" --"some asshole"
+		return game.translate_string("st_dyn_news_comm_unknown") --"some asshole"
 	end
 	
 	return msg
