@@ -1246,7 +1246,7 @@ end
 function faction_ui:LoadDifficulty (rand)
 	self.list_difficulty:ClearList()
 	for i=1,#self.table_difficulty do
-		self.list_difficulty:AddItem(gs(self.table_difficulty[i]), i)
+		self.list_difficulty:AddItem(gs("gd_" .. self.table_difficulty[i]), i)
 	end
 	local pick = rand and self.table_difficulty[math.random(#self.table_difficulty)] or self.table_difficulty[2]
 	self.list_difficulty:SetText(gs("gd_" .. pick))
