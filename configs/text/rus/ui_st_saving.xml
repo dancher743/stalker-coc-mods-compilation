@@ -2,11 +2,11 @@
 <string_table>
 
 	<string id="st_ui_save">
-		<text>сохранить</text>
+		<text>сохранить игру</text>
 	</string>
 	
 	<string id="st_ui_no_save_timer">
-		<text>Таймер активен, вы не можете %s сейчас.</text>
+		<text>Таймер активен, ты не можешь %s сейчас.</text>
 	</string>
 	
 	<string id="st_ui_no_save_campfire">
