@@ -1725,7 +1725,7 @@ function faction_ui:OnStartGame()
 	end
 	
 	-- check location
-	if (self.selected_map == nil or self.selected_map == "" or self.list_map:CurrentID() <= 0) then
+	if (self.selected_map == nil or self.selected_map == "") then
 		local index = math.random(1,#self.table_map)
 		self.selected_map = self.table_map[index]
 	end
