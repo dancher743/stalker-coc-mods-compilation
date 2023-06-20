@@ -19,7 +19,6 @@ local SKIP_FACTION_SELECTION = false -- TRUE to disable faction selection menu a
 class "main_menu" (CUIScriptWnd)
 function main_menu:__init() super()
 	math.randomseed(os.time())
-	math.random()
 	self.mbox_mode = 0
     self:InitControls()
     self:InitCallBacks()
@@ -77,6 +76,7 @@ end
 
 function main_menu:InitCallBacks()
 	-- new game
+	self:AddCallback("btn_new_game_2",	ui_events.BUTTON_CLICKED,				self.OnButton_new_game_clicked,	self)
 	self:AddCallback("btn_novice",		ui_events.BUTTON_CLICKED,				self.OnButton_new_novice_game,		self)
 	self:AddCallback("btn_stalker",		ui_events.BUTTON_CLICKED,				self.OnButton_new_stalker_game,		self)
 	self:AddCallback("btn_veteran",		ui_events.BUTTON_CLICKED,				self.OnButton_new_veteran_game,		self)
@@ -167,10 +167,7 @@ function main_menu:OnButton_last_save()
 end
 
 function main_menu:OnButton_credits_clicked()
-	--game.start_tutorial("credits_seq")
-	local console = get_console()
-	console:execute("g_game_difficulty gd_stalker")
-	self:ShowFactionUI()
+	game.start_tutorial("credits_seq")
 end
 
 function main_menu:OnButton_quit_clicked()
@@ -208,6 +205,10 @@ function main_menu:OnButton_return_game()
 	local console = get_console()
 	console:execute("main_menu off")
 	SendScriptCallback("main_menu_on_quit",self)
+end
+
+function main_menu:OnButton_new_game_clicked()
+	self:ShowFactionUI()
 end
 
 function main_menu:OnButton_new_novice_game()
@@ -378,6 +379,7 @@ function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
 		elseif (dik == DIK_keys.DIK_NUMPAD0) then
 			if (reload_system_ini) then
 				reload_system_ini()
+				clear_ini_cache(system_ini())
 				printf("system_ini_reload = success!")
 			end
 		end
