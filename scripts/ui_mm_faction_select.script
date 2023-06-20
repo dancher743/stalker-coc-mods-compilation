@@ -1482,16 +1482,15 @@ function faction_ui:UpdateIcon()
 end
 
 function faction_ui:UpdateMap()
-	if self.selected_map == "random_location" then
+	local selected_map = self.selected_map;
+	if selected_map == "random_location" then
 		self.box_map:InitTexture("")
-		return
+	else
+		local map = alun_utils.read_from_ini(ini_map, self.selected_faction .. "_start_locations", selected_map, "string")
+		self.box_map:InitTexture("ui_new_game_map_" .. map)
+		self.box_map:SetStretchTexture(true)
+		self.box_map:SetWndSize(vector2():set(self.box_map:GetWidth(),self.box_map:GetHeight()))
 	end
-
-	local map = alun_utils.read_from_ini(ini_map, self.selected_faction .. "_start_locations", self.selected_map, "string")
-	
-	self.box_map:InitTexture("ui_new_game_map_" .. map)
-	self.box_map:SetStretchTexture(true)
-	self.box_map:SetWndSize(vector2():set(self.box_map:GetWidth(),self.box_map:GetHeight()))
 end
 
 function faction_ui:UpdateMoney()
