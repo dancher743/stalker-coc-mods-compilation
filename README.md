@@ -3,12 +3,13 @@ My mods compilation for S.T.A.L.K.E.R.: Call of Chernobyl 1.4.22 (ENG/RUS)
 
 Install
 ---
-Place all files to an empty "gamedata" folder.
+Place all files to an empty `gamedata` folder.
 
 Settings
 ---
-* To access Dynamic News settings: load your game, then open the main menu and press Page-Up button.
-* To make the sky less bright type `r2_tonemap off` command in the console.
+* To access Dynamic News settings: load your game, then open the main menu and press Page-Up button
+* To ignite/extinguish a campfire holster your weapon first
+* To make the sky less bright type `r2_tonemap off` command in the console
 
 Mods
 ---
@@ -48,4 +49,7 @@ Mods
 34. Faction Uniform Patches Lottery from Anomaly 1.5.1.2/MLR addon (Anomaly Developers, MLR team)
 35. DoctorX Dynamic Anomalies 2.1 [CoC 1.5 / 1.4.22] (DoctorX)
 36. NPC's vision thru vegetation fix (EmSobac)
-37. Added gauss ammo exchange dialog from Mutantum v 2.2 (sunxshilo)
+37. Gauss ammo exchange dialog from Mutantum v 2.2 (sunxshilo)
+38. Companions Quick Menu 1.1 [UPDATE August 8] [CoC 1.5 r4] (Debrovski)
+39. Cooking the mutants parts (Team Epic, Anomaly Developers, Dancher)
+40. Added matches sound for campfires ignition from NLC 7 (Сяк & Co)

@@ -1,6 +1,6 @@
 <w>
 <!--     From Anomaly 1.5.1.2     -->
-	<companion_list x="13" y="40" width="90" height="606" stretch="1">
+	<companion_list x="13" y="50" width="90" height="606" stretch="1">
 		<slot x="0" y="0" width="90" height="67" stretch="1">
 			<background x="0" y="0" width="90" height="67" stretch="1">
 				<texture a="150">ui_inGame2_companion_hud_slot</texture>

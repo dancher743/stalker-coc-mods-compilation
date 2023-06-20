@@ -951,6 +951,9 @@
 	<string id="st_dyn_news_comm_freedom_14">
 		<text>Shit, help!</text>
 	</string>
+	<string id="st_dyn_news_comm_unknown">
+		<text>unknown</text>
+	</string>
 
 	<!-- weapon class description -->
 	<string id="st_dyn_news_wpn_cls_1_1">
@@ -4052,6 +4055,9 @@
 	<string id="st_dyn_news_spam_faction_bandit_17">
 		<text>Fucking state. You don't get shit from them, you turn the other direction and they ruin your life for nothing.</text>
 	</string>
+	<string id="st_dyn_news_spam_faction_bandit_18">
+		<text>So, where is there to hand over these fucking patches from mercs, huh? As soon as I found out, I killed a dozen assholes.</text>
+	</string>
 
 	<string id="st_dyn_news_spam_faction_csky_1">
 		<text>All Clear Sky personnel, it's urgent to go into the private channel. update the defense, otherwise, do not complain that the renegades have learned about your little secrets.</text>
@@ -4089,6 +4095,10 @@
 	<string id="st_dyn_news_spam_faction_csky_12">
 		<text>There are signs of bandits camping in the northern farms. Don't let them get comfortable.</text>
 	</string>
+	    
+    <string id="st_dyn_news_spam_faction_stalker_1">
+        <text>They say that the mercenaries have some kind of lottery for patches, or something related to them. Damn, it turns out that now they can slam you for no reason!</text>
+    </string>
 
 	<string id="st_dyn_news_spam_faction_dolg_1">
 		<text>Attention, all squads: upon your arrival at the base, immediately report to the command post for instructions on the use of our new equipment models.</text>
@@ -5277,6 +5287,9 @@
 	<string id="st_dyn_news_spam_168">
 		<text>$clr_1Anonymous\n$clr_2REMOVE ROCK remove rock you are worst cult. you are the cult idiot you are the cult smell. return to powerplant. to our powerplant cousins you may come our Zone. you may live in the garbage....ahahahaha ,monolith we will never forgeve you. cetnik rascal FUck but fuck asshole cult stink monolith sqhipere shqipare..monolith genocide best day of my life. take a bath of dead monolith..ahahahahahMONOLITH WE WILL GET YOU!! do not forget first emission. monolith we kill the C-consciousness , monolith return to your precious rock....hahahahaha idiot cult and monolith smell so bad..wow I can smell it. REMOVE CULT FROM THE PREMISES. you will get caught. loner+bandit+duty+freedom=kill monolith...you will blowout/ strelok alive in zone, strelok making quest of zone. fast hunt strelok zone. we are rich and have artefacts now hahahaha ha because of strelok... you are ppoor stink monolith... you live in a powerplant hahahaha, you live in a sarcophagus strelok alive numbr one #1 in zone....fuck the monolith ,..FUCKk ashol cult no good I spit in the mouth eye of ur patch and faction. strelok aliv and real strong wizard kill all the monolith farm aminal with 9x39 magic now we the loner rule. ape of the pripyat presidant c-con fukc the great cherno and lay egg this egg hatch and monolith was born. stupid baby form the eggn give bak our clay we will crush u lik a skull of flesh. loner greattst faction</text>
 	</string>
+	<string id="st_dyn_news_spam_169">
+		<text>$clr_1Six\n$clr_2And what's going on with mercs with these patches? I cut a couple here.</text>
+	</string>
 
 	<!-- Corpse findings-->
 	<string id="st_dyn_news_death_reason_1">
@@ -6329,6 +6342,9 @@
 	<string id="st_dyn_news_companion_life_freedom_11">
 		<text>Sooner or later, we will free the zone from those who abuse its treasures.</text>
 	</string>
+	<string id="st_dyn_news_companion_life_freedom_12">
+        <text>Seems like mercenaries have some kind of lottery with patches... What do you think about this?</text>
+    </string>
 
 	<string id="st_dyn_news_companion_life_killer_1">
 		<text>To be honest, I don't really feel comfortable about killing all those people. But hey, work is work, and I need to make a living.</text>

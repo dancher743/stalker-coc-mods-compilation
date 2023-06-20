@@ -13,7 +13,7 @@ if (jit == nil) then
 end
 
 GAME_VERSION = "1.4.22"
-MOD_VERSION = "Dancher's CoC Compilation 1.2.2 RC1"
+MOD_VERSION = "Dancher's CoC Compilation 1.2.2 RC8"
 
 if string.find(command_line(), "-dbg") then
 	DEV_DEBUG = true
@@ -45,7 +45,7 @@ b_discard_settings_shown = false
 
 function start_game_callback()
 	math.randomseed(os.time())
-	printf("Call of Chernobyl version %s + %s",GAME_VERSION)
+	printf("Call of Chernobyl version %s + %s",GAME_VERSION,MOD_VERSION)
 	if (USE_MARSHAL) then
 		printf("using marshal library")
 	end
@@ -1061,6 +1061,14 @@ function alife_character_community (obj)
 	return "monster"
 end
 
+function actor_community()
+	local community = db.actor:character_community()
+	if (string.find(community, "actor_")) then
+		community = community:sub(7) -- remove 'actor_' prefix
+	end
+	return community
+end
+
 -- получить геймобжект по стори_айди.
 function level_object_by_sid( sid )
 	local sim = alife()
@@ -1503,6 +1511,22 @@ function give_object_to_actor(obj,count)
   for i=1, count do
      alife():create(obj,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
   end
+end
+
+-- Get count of some item in NPC's inventory.
+-- Added by Dancher
+function get_object_count(obj,npc)
+	local count = 0
+	
+	local function iterator(npc, item)
+		if item:section() == obj then
+			count = count + 1
+		end
+	end
+	
+	npc:iterate_inventory(iterator, nil)
+	
+	return count
 end
 
 -- INI Extensions

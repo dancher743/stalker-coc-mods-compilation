@@ -11,7 +11,7 @@ function get_amount(npc, section, mode)
 -- mode 1: can count item uses, but not ammo count
 
 	local amount = 0
-	local has_use_condition = utils_ext.has_use_condition(section)
+	local has_use_condition = system_ini():r_bool_ex(section,"use_condition",false)
 	local is_ammo = utils.is_ammo(section)
 	
 	local function itr(temp, obj)

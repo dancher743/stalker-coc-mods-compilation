@@ -138,6 +138,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 end
 
 local function play_discovered_sound()
+	-- Sound from Anomaly 1.5.1.2	
 	local sound = sound_object([[interface\spot_discovered]])
 	sound:play(db.actor,0,sound_object.s2d)
 end

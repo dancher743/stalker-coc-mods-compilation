@@ -951,6 +951,9 @@
 	<string id="st_dyn_news_comm_freedom_14">
 		<text>Спасите...</text>
 	</string>
+	<string id="st_dyn_news_comm_unknown">
+		<text>неизвестно</text>
+	</string>
 
 	<!-- weapon class description -->
 	<string id="st_dyn_news_wpn_cls_1_1">
@@ -3999,6 +4002,9 @@
 	<string id="st_dyn_news_spam_faction_bandit_17">
 		<text>Мы тут мля нарвались недавно на чёрную хренотень такую летающую, эт чё?</text>
 	</string>
+	<string id="st_dyn_news_spam_faction_bandit_18">
+		<text>Эт короче, а куда там определять нашивки эти сраные у мерков-то, а? Я как прочухал, так с десяток чушкарей и зажмурил.</text>
+	</string>
 
 	<string id="st_dyn_news_spam_faction_csky_1">
 		<text>В Деревне, на северо-востоке, короче, есть такая херь, 'Разлом', мож кто знает? Там, говорят, какой-то артефакт есть, типа Монолита, короче, который желания выполняет. Вот бы добраться до него.</text>
@@ -4035,6 +4041,10 @@
 	</string>
 	<string id="st_dyn_news_spam_faction_csky_12">
 		<text>На Янтаре пси-излучение совсем свихнулось. Гасит волнами так, что чуть ли не до лагеря яйцеголовых достает. Не к добру это, ох не к добру…</text>
+	</string>
+	
+	<string id="st_dyn_news_spam_faction_stalker_1">
+		<text>Говорят, у наёмников какая-то лотерея на нашивки, или что-то такое с ними связанное. Блин, это ж получается, что теперь и за просто так прихлопнуть могут!</text>
 	</string>
 
 	<string id="st_dyn_news_spam_faction_dolg_1">
@@ -5230,6 +5240,9 @@
 	<string id="st_dyn_news_spam_168">
 		<text>$clr_1Анонимно\n$clr_2А слышали, техника некоторая в Зоне работает ещё? Вроде на кладбище техники такой образец найти можно и причём ездит то без бензина! От чудеса.</text>
 	</string>
+	<string id="st_dyn_news_spam_169">
+		<text>$clr_1Шестёрка\n$clr_2А чё за тема там у мерков с нашивками этими? Я тут посрезал парочку.</text>
+	</string>
 
 	<!-- Corpse findings-->
 	<string id="st_dyn_news_death_reason_1">
@@ -6279,6 +6292,9 @@
 	</string>
 	<string id="st_dyn_news_companion_life_freedom_11">
 		<text>Вскоре мы освободим Зону.</text>
+	</string>
+	<string id="st_dyn_news_companion_life_freedom_12">
+		<text>Говорят, у наёмников какая-то лотерея с нашивками... Что думаешь по этому поводу?</text>
 	</string>
 	
 	<string id="st_dyn_news_companion_life_killer_1">
