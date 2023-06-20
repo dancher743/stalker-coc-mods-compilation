@@ -1143,6 +1143,7 @@ end
 
 function faction_ui:LoadMap (rand)
 	self.table_map = {}
+	table.insert(self.table_map, "random_location")
 	
 	local n = ini_map:line_count(self.selected_faction .. "_start_locations") or 0
 	for i=0, n-1 do
@@ -1154,7 +1155,7 @@ function faction_ui:LoadMap (rand)
 	for i=1,#self.table_map do
 		self.list_map:AddItem(gs("ui_st_"..self.table_map[i]), i)
 	end
-	local pick = rand and self.table_map[math.random(#self.table_map)] or self.table_map[1]
+	local pick = rand and self.table_map[math.random(2,#self.table_map)] or self.table_map[1]
 	self.list_map:SetText(gs("ui_st_".. pick))
 	
 	self.selected_map = pick
@@ -1481,6 +1482,11 @@ function faction_ui:UpdateIcon()
 end
 
 function faction_ui:UpdateMap()
+	if self.selected_map == "random_location" then
+		self.box_map:InitTexture("")
+		return
+	end
+
 	local map = alun_utils.read_from_ini(ini_map, self.selected_faction .. "_start_locations", self.selected_map, "string")
 	
 	self.box_map:InitTexture("ui_new_game_map_" .. map)
@@ -1725,8 +1731,8 @@ function faction_ui:OnStartGame()
 	end
 	
 	-- check location
-	if (self.selected_map == nil or self.selected_map == "") then
-		local index = math.random(1,#self.table_map)
+	if (self.selected_map == "random_location" or self.selected_map == nil or self.selected_map == "") then
+		local index = math.random(2,#self.table_map)
 		self.selected_map = self.table_map[index]
 	end
 	

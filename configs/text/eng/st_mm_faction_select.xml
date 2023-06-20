@@ -202,6 +202,9 @@
 	<string id="st_mm_new_game_points_used">
 		<text>Points used:</text>
 	</string>
+	<string id="ui_st_random_location">
+		<text>Random start location</text>
+	</string>
 	
 
 	<!-- Description elements -->

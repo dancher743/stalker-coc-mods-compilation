@@ -216,6 +216,9 @@
 	<string id="st_mm_new_game_points_used">
 		<text>Очков вложено:</text>
 	</string>
+	<string id="ui_st_random_location">
+		<text>Произвольное место старта</text>
+	</string>
 	
 
 	<!-- Description elements -->
