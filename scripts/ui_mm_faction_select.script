@@ -1757,12 +1757,13 @@ function faction_ui:OnStartGame()
 		end
 	end
 	
-	-- preparing game difficulty values
-	if (self.selected_difficulty == nil or self.selected_difficulty == "") then
-		self.selected_difficulty = self.table_difficulty[1]
+	-- set difficulty
+	local selected_difficulty = self.selected_difficulty
+	if (selected_difficulty == nil or selected_difficulty == "") then
+		selected_difficulty = self.table_difficulty[2]
 	end
-	local diff = self.selected_difficulty:gsub("st_diff_","")
-	diff = tonumber(diff) or 1
+	local console = get_console()
+	console:execute("g_game_difficulty gd_" .. selected_difficulty)
 	
 	--[[
 	-- preparing economy values
@@ -1775,14 +1776,12 @@ function faction_ui:OnStartGame()
 	local wpn = ini_eco:r_float_ex(econ, "multi_wpn_condition") or axr_main.config:r_value("mm_options","multi_wpn_conditions",2,1)
 	local loot = ini_eco:r_float_ex(econ, "multi_loot") or axr_main.config:r_value("mm_options","multi_loot",2,1)
 	
+	axr_main.config:w_value("character_creation","new_game_difficulty",self.selected_difficulty)
 	axr_main.config:w_value("character_creation","new_game_economy_goodwill",utils.round(goodwill,2))
 	axr_main.config:w_value("character_creation","new_game_economy_money",utils.round(money,2))
 	axr_main.config:w_value("character_creation","new_game_economy_wpn",utils.round(wpn,2))
 	axr_main.config:w_value("character_creation","new_game_economy_loot",utils.round(loot,2))
 	--]]
-	local console = get_console()
-	console:execute("g_game_difficulty gd_" .. self.selected_difficulty)
-	axr_main.config:w_value("character_creation","new_game_difficulty",diff)
 	axr_main.config:w_value("character_creation","new_game_hardcore_mode",self.ck_hardcore and self.ck_hardcore:GetCheck() and true or nil)
 	axr_main.config:w_value("character_creation","new_game_hardcore_mode_lives",self.ck_hardcore and self.selected_hardcore_lives[1] or nil)
 	axr_main.config:w_value("character_creation","new_game_hardcore_mode_regenerate",self.ck_hardcore and hardcore_regen or nil)
