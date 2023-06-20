@@ -6,47 +6,47 @@
 	</string>
 	
 	<string id="st_ui_no_save_timer">
-		<text>Таймер активен, ты не можешь %s сейчас.</text>
+		<text>Нельзя %s пока таймер активен.</text>
 	</string>
 	
 	<string id="st_ui_no_save_campfire">
-		<text>Ты можешь %s только возле костров.</text>
+		<text>Можно %s только возле костров.</text>
 	</string>
 	
 	<string id="st_ui_no_save_combat">
-		<text>Ты не можешь %s во время битвы.</text>
+		<text>Нельзя %s во время боя.</text>
 	</string>
 	
 	<string id="st_ui_no_save_surge">
-		<text>Ты не можешь %s во время выброса или пси-шторма.</text>
+		<text>Нельзя %s во время выброса или пси-шторма.</text>
 	</string>
 	
 	<string id="st_ui_no_save_bleed">
-		<text>Ты не можешь %s пока истекаешь кровью.</text>
+		<text>Нельзя %s пока истекаешь кровью.</text>
 	</string>
 	
 	<string id="st_ui_no_save_radiation">
-		<text>Ты не можешь %s пока облучен.</text>
+		<text>Нельзя %s пока облучен.</text>
 	</string>
 	
 	<string id="st_ui_no_save_bleed_radiation">
-		<text>Ты не можешь %s пока истекаешь кровью и облучен.</text>
+		<text>Нельзя %s пока истекаешь кровью и облучен.</text>
 	</string>
 	
 	<string id="st_ui_no_save_injury_1">
-		<text>Тебе нельзя %s страдая от умеренных травм.</text>
+		<text>Нельзя %s страдая от умеренных травм.</text>
 	</string>
 	
 	<string id="st_ui_no_save_injury_2">
-		<text>Тебе нельзя %s страдая от серьезных травм.</text>
+		<text>Нельзя %s страдая от серьезных травм.</text>
 	</string>
 	
 	<string id="st_ui_no_save_injury_3">
-		<text>Тебе нельзя %s страдая от тяжелых травм.</text>
+		<text>Нельзя %s страдая от тяжелых травм.</text>
 	</string>
 	
 	<string id="st_ui_no_save_injury_4">
-		<text>Тебе нельзя %s страдая от критических травм.</text>
+		<text>Нельзя %s страдая от критических травм.</text>
 	</string>
 	
 </string_table>
