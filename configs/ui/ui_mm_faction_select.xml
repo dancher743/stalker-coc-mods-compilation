@@ -223,17 +223,17 @@
 				<texture>ui_inGame2_checkbox</texture>
 			</check_campfire>
 			
-			<cap_check_conditions x="679" y="70" width="40" height="20" stretch="1">
+			<cap_check_conditions x="679" y="30" width="40" height="20" stretch="1">
 				<text r="170" g="170" b="170" font="letterica16" align="l" vert_align="c">st_cap_check_conditions</text>
 			</cap_check_conditions>		
-			<check_conditions x="639" y="69" width="35" height="23" stretch="1">
+			<check_conditions x="639" y="29" width="35" height="23" stretch="1">
 				<texture>ui_inGame2_checkbox</texture>
 			</check_conditions>
 			
-			<cap_list_timer x="715" y="110" width="40" height="20" stretch="1">
+			<cap_list_timer x="715" y="70" width="40" height="20" stretch="1">
 				<text r="170" g="170" b="170" font="letterica16" align="l" vert_align="c">st_cap_list_timer</text>
 			</cap_list_timer>		
-			<list_timer x="635" y="109" width="75" height="29">
+			<list_timer x="635" y="69" width="75" height="29">
 				<list_font r="190" g="190" b="190" font="letterica16"/>
 				<text_color>
 					<e r="170" g="170" b="170"/>
