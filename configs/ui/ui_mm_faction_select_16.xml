@@ -39,12 +39,12 @@
 		<cap_money x="200" y="315" width="49" height="17">
 			<text r="150" g="150" b="150" font="letterica16"  align="c">st_mm_new_game_money</text>
 		</cap_money>
-		<cap_points_left x="413" y="248" width="69" height="18">
-			<text r="150" g="150" b="150" font="letterica16">st_mm_new_game_points_left</text>
-		</cap_points_left>
-		<cap_points_used x="589" y="248" width="69" height="18">
+		<cap_points_used x="413" y="248" width="69" height="18">
 			<text r="150" g="150" b="150" font="letterica16">st_mm_new_game_points_used</text>
 		</cap_points_used>
+		<cap_points_left x="589" y="248" width="69" height="18">
+			<text r="150" g="150" b="150" font="letterica16">st_mm_new_game_points_left</text>
+		</cap_points_left>
 		
 		<!-- Interactive Text -->
 		<input_name x="207" y="285" width="131" height="17">
@@ -53,12 +53,12 @@
 		<text_money x="253" y="316" width="82" height="17">
 			<text complex_mode="1" r="150" g="150" b="150" align="l"  vert_align="c" font="letterica16" />
 		</text_money>
-		<text_points_left x="486" y="248" width="44" height="18">
-			<text complex_mode="1" r="150" g="150" b="150" align="l"  vert_align="c" font="letterica16" />
-		</text_points_left>
-		<text_points_used x="662" y="248" width="44" height="18">
+		<text_points_used x="486" y="248" width="44" height="18">
 			<text complex_mode="1" r="150" g="150" b="150" align="l"  vert_align="c" font="letterica16" />
 		</text_points_used>
+		<text_points_left x="662" y="248" width="44" height="18">
+			<text complex_mode="1" r="150" g="150" b="150" align="l"  vert_align="c" font="letterica16" />
+		</text_points_left>
 		
 		<text_relations x="26" y="76" width="98" height="150">
 			<text complex_mode="1" r="150" g="150" b="150" align="l"  vert_align="c" font="letterica16" />
