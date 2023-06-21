@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+
+	<string id="st_ui_save">
+		<text>сохранить игру</text>
+	</string>
+	
+	<string id="st_ui_no_save_timer">
+		<text>Нельзя %s пока таймер активен.</text>
+	</string>
+	
+	<string id="st_ui_no_save_campfire">
+		<text>Можно %s только возле костров.</text>
+	</string>
+	
+	<string id="st_ui_no_save_combat">
+		<text>Нельзя %s во время боя.</text>
+	</string>
+	
+	<string id="st_ui_no_save_surge">
+		<text>Нельзя %s во время выброса или пси-шторма.</text>
+	</string>
+	
+	<string id="st_ui_no_save_bleed">
+		<text>Нельзя %s пока истекаешь кровью.</text>
+	</string>
+	
+	<string id="st_ui_no_save_radiation">
+		<text>Нельзя %s пока облучен.</text>
+	</string>
+	
+	<string id="st_ui_no_save_bleed_radiation">
+		<text>Нельзя %s пока истекаешь кровью и облучен.</text>
+	</string>
+	
+	<string id="st_ui_no_save_injury_1">
+		<text>Нельзя %s страдая от умеренных травм.</text>
+	</string>
+	
+	<string id="st_ui_no_save_injury_2">
+		<text>Нельзя %s страдая от серьезных травм.</text>
+	</string>
+	
+	<string id="st_ui_no_save_injury_3">
+		<text>Нельзя %s страдая от тяжелых травм.</text>
+	</string>
+	
+	<string id="st_ui_no_save_injury_4">
+		<text>Нельзя %s страдая от критических травм.</text>
+	</string>
+	
+</string_table>
