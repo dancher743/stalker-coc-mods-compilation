@@ -37,7 +37,7 @@ task_complete_descr = drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_defaul
 
 condlist_0 = {-drx_sl_dummy_info} complete
 condlist_1 = {!task_giver_alive(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_default_task)} fail
-condlist_2 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_2 = {=drx_sl_is_enemy(freedom)} fail
 
 on_complete = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_default_task)%
 on_fail = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_default_task)%
@@ -62,7 +62,7 @@ stage_complete = 1
 target_functor = general_bounty_task
 status_functor = bounty_task
 condlist_0 = {!task_giver_alive(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 on_init = %=drx_sl_setup_bounty_hunt(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_task_1:freedom)%
 on_complete = %=drx_sl_reward_random(3500:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:freedom) =inc_task_stage(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_task_1) =drx_sl_unregister_task_giver(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_task_1)%
@@ -90,7 +90,7 @@ status_functor = check_smart_under_faction_control_staged
 status_functor_params = monolith
 condlist_0 = {!squad_exist(drx_sl_raid_companion_squad_freedom_2)} fail
 condlist_1 = {!task_giver_alive(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_task_2)} fail
-condlist_2 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_2 = {=drx_sl_is_enemy(freedom)} fail
 
 on_init = %=setup_companion_task(drx_sl_raid_companion_squad_freedom_2:mil_smart_terrain_7_7) =find_smart_under_faction_control_ex(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_task_2_id:monolith)%
 on_complete = %=drx_sl_reward_random(7500:9000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:freedom) =inc_task_stage(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_task_2) =pstor_reset(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_task_2_id) =pstor_reset(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_task_2_target_id) =remove_special_task_squad(drx_sl_raid_companion_squad_freedom_2) =drx_sl_unregister_task_giver(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_task_2)%
@@ -117,7 +117,7 @@ target = {!actor_has_item(main_story_5_lab_x8_documents)} pri_space_restrictor_t
 status_functor = drx_sl_retrieve_item_task_status
 status_functor_params = main_story_5_lab_x8_documents
 condlist_0 = {!task_giver_alive(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 on_complete = %+main_5_search_labx8_task_done =drx_sl_reward_random(7000:10000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:freedom) =inc_task_stage(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_task_3) =remove_item(main_story_5_lab_x8_documents) =drx_sl_unregister_task_giver(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_task_3)%
 on_fail = %=fail_task_dec_goodwill(25:freedom) =drx_sl_meet_random_honcho() =drx_sl_decrease_sl_tasks_count =drx_sl_unregister_task_giver(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_task_3)%
@@ -154,7 +154,7 @@ stage_complete = 1
 target_functor = drx_sl_money_task_target
 status_functor = drx_sl_money_task_status
 condlist_0 = {!task_giver_alive(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_cf_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 on_init = %=pstor_set(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_cf_task_1_fetch:15000) +drx_sl_on_cf_task%
 on_complete = %=drx_sl_money_task_payment(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_cf_task_1_fetch) =drx_sl_change_factions(freedom) =inc_task_stage(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_cf_task_1) =pstor_reset(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_cf_task_1_fetch) =drx_sl_unregister_task_giver(drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_cf_task_1) -drx_sl_on_cf_task%
@@ -194,7 +194,7 @@ target_functor = general_under_faction_control
 status_functor = drx_sl_assault_task_status
 status_functor_params = freedom
 condlist_0 = {!task_giver_alive(mil_smart_terrain_7_7_freedom_leader_stalker_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 on_init = %=drx_sl_setup_assault_local(mil_smart_terrain_7_7_freedom_leader_stalker_task_1_id:freedom)%
 on_complete = %=drx_sl_reward_random(4000:7500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:freedom) =inc_task_stage(mil_smart_terrain_7_7_freedom_leader_stalker_task_1) =pstor_reset(mil_smart_terrain_7_7_freedom_leader_stalker_task_1_id) =pstor_reset(mil_smart_terrain_7_7_freedom_leader_stalker_task_1_target_id) =drx_sl_unregister_task_giver(mil_smart_terrain_7_7_freedom_leader_stalker_task_1) =drx_sl_reset_stored_task(mil_smart_terrain_7_7_freedom_leader_stalker_task_1)%
@@ -221,7 +221,7 @@ target_functor = general_under_faction_control
 status_functor = check_smart_under_faction_control_staged
 status_functor_params = dolg
 condlist_0 = {!task_giver_alive(mil_smart_terrain_7_7_freedom_leader_stalker_task_2)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 on_init = %=find_smart_under_faction_control_ex(mil_smart_terrain_7_7_freedom_leader_stalker_task_2_id:dolg)%
 on_complete = %=drx_sl_reward_random(4000:7500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:freedom) =inc_task_stage(mil_smart_terrain_7_7_freedom_leader_stalker_task_2) =pstor_reset(mil_smart_terrain_7_7_freedom_leader_stalker_task_2_id) =pstor_reset(mil_smart_terrain_7_7_freedom_leader_stalker_task_2_target_id) =drx_sl_unregister_task_giver(mil_smart_terrain_7_7_freedom_leader_stalker_task_2) =drx_sl_reset_stored_task(mil_smart_terrain_7_7_freedom_leader_stalker_task_2)%
@@ -247,7 +247,7 @@ stage_complete = 1
 target_functor = general_bounty_task
 status_functor = bounty_task
 condlist_0 = {!task_giver_alive(mil_smart_terrain_7_7_freedom_leader_stalker_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 on_init = %=on_init_bounty_hunt(mil_smart_terrain_7_7_freedom_leader_stalker_task_3:monolith)%
 on_complete = %=drx_sl_reward_random(4500:6000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:freedom) =inc_task_stage(mil_smart_terrain_7_7_freedom_leader_stalker_task_3) =drx_sl_unregister_task_giver(mil_smart_terrain_7_7_freedom_leader_stalker_task_3) =drx_sl_reset_stored_task(mil_smart_terrain_7_7_freedom_leader_stalker_task_3)%
@@ -273,7 +273,7 @@ stage_complete = 1
 target_functor = general_bounty_task
 status_functor = bounty_task
 condlist_0 = {!task_giver_alive(mil_smart_terrain_7_7_freedom_leader_stalker_task_4)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 on_init = %=on_init_bounty_hunt(mil_smart_terrain_7_7_freedom_leader_stalker_task_4:dolg)%
 on_complete = %=drx_sl_reward_random(3500:5000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:freedom) =inc_task_stage(mil_smart_terrain_7_7_freedom_leader_stalker_task_4) =drx_sl_unregister_task_giver(mil_smart_terrain_7_7_freedom_leader_stalker_task_4) =drx_sl_reset_stored_task(mil_smart_terrain_7_7_freedom_leader_stalker_task_4)%
@@ -302,7 +302,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(mil_smart_terrain_7_7_freedom_leader_stalker_task_5)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 fetch_func = %=drx_sl_setup_fetch_weapon(mil_smart_terrain_7_7_freedom_leader_stalker_task_5_fetch:1:1)%
 on_complete = %=drx_sl_fetch_reward_money(mil_smart_terrain_7_7_freedom_leader_stalker_task_5_fetch:0.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:freedom) =inc_task_stage(mil_smart_terrain_7_7_freedom_leader_stalker_task_5) =pstor_reset(mil_smart_terrain_7_7_freedom_leader_stalker_task_5_fetch) =drx_sl_unregister_task_giver(mil_smart_terrain_7_7_freedom_leader_stalker_task_5) =drx_sl_reset_stored_task(mil_smart_terrain_7_7_freedom_leader_stalker_task_5)%
@@ -331,7 +331,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(mil_smart_terrain_7_10_freedom_trader_stalker_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 fetch_func = %=drx_sl_setup_fetch_mutant_meat(mil_smart_terrain_7_10_freedom_trader_stalker_task_1_fetch:8:12)%
 on_complete = %=drx_sl_fetch_reward_random(mil_smart_terrain_7_10_freedom_trader_stalker_task_1_fetch:6.0) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:freedom) =inc_task_stage(mil_smart_terrain_7_10_freedom_trader_stalker_task_1) =pstor_reset(mil_smart_terrain_7_10_freedom_trader_stalker_task_1_fetch) =drx_sl_unregister_task_giver(mil_smart_terrain_7_10_freedom_trader_stalker_task_1) =drx_sl_reset_stored_task(mil_smart_terrain_7_10_freedom_trader_stalker_task_1)%
@@ -357,7 +357,7 @@ stage_complete = 1
 target_functor = drx_sl_quest_item_task_2_target
 status_functor = drx_sl_quest_item_task_2_status
 condlist_0 = {!task_giver_alive(mil_smart_terrain_7_10_freedom_trader_stalker_task_2)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 on_init = %=drx_sl_create_quest_stash_2() +drx_sl_quest_item_task_2_started%
 on_complete = %=drx_sl_reward_random_item(2500:4000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:freedom) =remove_item(drx_sl_quest_item_2) =inc_task_stage(mil_smart_terrain_7_10_freedom_trader_stalker_task_2) =pstor_reset(drx_sl_quest_stash_2_id) -drx_sl_quest_item_task_2_started =drx_sl_unregister_task_giver(mil_smart_terrain_7_10_freedom_trader_stalker_task_2) =drx_sl_reset_stored_task(mil_smart_terrain_7_10_freedom_trader_stalker_task_2)%
@@ -398,7 +398,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(mil_smart_terrain_7_7_freedom_mechanic_stalker_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 fetch_func = %=setup_generic_fetch_task(mil_smart_terrain_7_7_freedom_mechanic_stalker_task_1_fetch:1:itm_repairkit_tier_1)%
 on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:freedom) =remove_fetch_item(mil_smart_terrain_7_7_freedom_mechanic_stalker_task_1_fetch) =inc_task_stage(mil_smart_terrain_7_7_freedom_mechanic_stalker_task_1) +mil_smart_terrain_7_7_freedom_mechanic_stalker_upgrade_tier_1 =drx_sl_unregister_task_giver(mil_smart_terrain_7_7_freedom_mechanic_stalker_task_1)%
@@ -426,7 +426,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(mil_smart_terrain_7_7_freedom_mechanic_stalker_task_2)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 fetch_func = %=setup_generic_fetch_task(mil_smart_terrain_7_7_freedom_mechanic_stalker_task_2_fetch:1:itm_repairkit_tier_2)%
 on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:freedom) =remove_fetch_item(mil_smart_terrain_7_7_freedom_mechanic_stalker_task_2_fetch) =inc_task_stage(mil_smart_terrain_7_7_freedom_mechanic_stalker_task_2) +mil_smart_terrain_7_7_freedom_mechanic_stalker_upgrade_tier_2 =drx_sl_unregister_task_giver(mil_smart_terrain_7_7_freedom_mechanic_stalker_task_2)%
@@ -454,7 +454,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(mil_smart_terrain_7_7_freedom_mechanic_stalker_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 fetch_func = %=setup_generic_fetch_task(mil_smart_terrain_7_7_freedom_mechanic_stalker_task_3_fetch:1:itm_repairkit_tier_3)%
 on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:freedom) =remove_fetch_item(mil_smart_terrain_7_7_freedom_mechanic_stalker_task_3_fetch) =inc_task_stage(mil_smart_terrain_7_7_freedom_mechanic_stalker_task_3) +mil_smart_terrain_7_7_freedom_mechanic_stalker_upgrade_tier_3 =drx_sl_unregister_task_giver(mil_smart_terrain_7_7_freedom_mechanic_stalker_task_3)%

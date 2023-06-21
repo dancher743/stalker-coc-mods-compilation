@@ -37,7 +37,7 @@ task_complete_descr = drx_sl_pri_monolith_monolith_trader_stalker_default_task_f
 
 condlist_0 = {-drx_sl_dummy_info} complete
 condlist_1 = {!task_giver_alive(drx_sl_pri_monolith_monolith_trader_stalker_default_task)} fail
-condlist_2 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_2 = {=drx_sl_is_enemy(monolith)} fail
 
 on_complete = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_pri_monolith_monolith_trader_stalker_default_task)%
 on_fail = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_pri_monolith_monolith_trader_stalker_default_task)%
@@ -64,7 +64,7 @@ status_functor = drx_sl_assault_task_status
 status_functor_params = monolith
 condlist_0 = {!squad_exist(drx_sl_raid_companion_squad_monolith_2)} fail
 condlist_1 = {!task_giver_alive(drx_sl_pri_monolith_monolith_trader_stalker_task_1)} fail
-condlist_2 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_2 = {=drx_sl_is_enemy(monolith)} fail
 
 on_init = %=setup_companion_task(drx_sl_raid_companion_squad_monolith_2:pri_monolith) =drx_sl_setup_assault_remote(drx_sl_pri_monolith_monolith_trader_stalker_task_1_id:monolith)%
 on_complete = %=drx_sl_reward_random(5000:7000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:monolith) =inc_task_stage(drx_sl_pri_monolith_monolith_trader_stalker_task_1) =pstor_reset(drx_sl_pri_monolith_monolith_trader_stalker_task_1_id) =pstor_reset(drx_sl_pri_monolith_monolith_trader_stalker_task_1_target_id) =remove_special_task_squad(drx_sl_raid_companion_squad_monolith_2) =drx_sl_unregister_task_giver(drx_sl_pri_monolith_monolith_trader_stalker_task_1)%
@@ -93,7 +93,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(drx_sl_pri_monolith_monolith_trader_stalker_task_2)} fail
-condlist_1 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_1 = {=drx_sl_is_enemy(monolith)} fail
 
 fetch_func = %=drx_sl_setup_fetch_supplies(drx_sl_pri_monolith_monolith_trader_stalker_task_2_fetch:12:16)%
 on_complete = %=drx_sl_fetch_reward_item(drx_sl_pri_monolith_monolith_trader_stalker_task_2_fetch:1.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:monolith) =inc_task_stage(drx_sl_pri_monolith_monolith_trader_stalker_task_2) =pstor_reset(drx_sl_pri_monolith_monolith_trader_stalker_task_2_fetch) =drx_sl_unregister_task_giver(drx_sl_pri_monolith_monolith_trader_stalker_task_2)%
@@ -120,7 +120,7 @@ target_functor = general_under_faction_control
 status_functor = drx_sl_assault_task_status
 status_functor_params = monolith
 condlist_0 = {!task_giver_alive(drx_sl_pri_monolith_monolith_trader_stalker_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_1 = {=drx_sl_is_enemy(monolith)} fail
 
 on_init = %=drx_sl_setup_assault_remote(drx_sl_pri_monolith_monolith_trader_stalker_task_3_id:monolith)%
 on_complete = %=drx_sl_reward_random_item(3500:5000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:monolith) =inc_task_stage(drx_sl_pri_monolith_monolith_trader_stalker_task_3) =pstor_reset(drx_sl_pri_monolith_monolith_trader_stalker_task_3_id) =pstor_reset(drx_sl_pri_monolith_monolith_trader_stalker_task_3_target_id) =drx_sl_unregister_task_giver(drx_sl_pri_monolith_monolith_trader_stalker_task_3)%
@@ -142,7 +142,7 @@ task_complete_descr = drx_sl_pri_monolith_monolith_mechanic_stalker_default_task
 
 condlist_0 = {-drx_sl_dummy_info} complete
 condlist_1 = {!task_giver_alive(drx_sl_pri_monolith_monolith_mechanic_stalker_default_task)} fail
-condlist_2 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_2 = {=drx_sl_is_enemy(monolith)} fail
 
 on_complete = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_pri_monolith_monolith_mechanic_stalker_default_task)%
 on_fail = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_pri_monolith_monolith_mechanic_stalker_default_task)%
@@ -167,7 +167,7 @@ stage_complete = 1
 target_functor = drx_sl_quest_item_task_2_target
 status_functor = drx_sl_quest_item_task_2_status
 condlist_0 = {!task_giver_alive(drx_sl_pri_monolith_monolith_mechanic_stalker_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_1 = {=drx_sl_is_enemy(monolith)} fail
 
 on_init = %=drx_sl_create_quest_stash_2() +drx_sl_quest_item_task_2_started%
 on_complete = %=drx_sl_reward_random_item(1500:3000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:monolith) =remove_item(drx_sl_quest_item_2) =inc_task_stage(drx_sl_pri_monolith_monolith_mechanic_stalker_task_1) =pstor_reset(drx_sl_quest_stash_2_id) -drx_sl_quest_item_task_2_started =drx_sl_unregister_task_giver(drx_sl_pri_monolith_monolith_mechanic_stalker_task_1)%
@@ -194,7 +194,7 @@ target_functor = general_under_faction_control
 status_functor = drx_sl_assault_mutant_task_status
 condlist_0 = {!squad_exist(drx_sl_raid_companion_squad_monolith_1)} fail
 condlist_1 = {!task_giver_alive(drx_sl_pri_monolith_monolith_mechanic_stalker_task_2)} fail
-condlist_2 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_2 = {=drx_sl_is_enemy(monolith)} fail
 
 on_init = %=setup_companion_task(drx_sl_raid_companion_squad_monolith_1:pri_monolith) =drx_sl_setup_assault_mutant(drx_sl_pri_monolith_monolith_mechanic_stalker_task_2_id)%
 on_complete = %=drx_sl_reward_random(1500:3000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:monolith) =inc_task_stage(drx_sl_pri_monolith_monolith_mechanic_stalker_task_2) =pstor_reset(drx_sl_pri_monolith_monolith_mechanic_stalker_task_2_id) =pstor_reset(drx_sl_pri_monolith_monolith_mechanic_stalker_task_2_target_id) =remove_special_task_squad(drx_sl_raid_companion_squad_monolith_1) =drx_sl_unregister_task_giver(drx_sl_pri_monolith_monolith_mechanic_stalker_task_2)%
@@ -223,7 +223,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(drx_sl_pri_monolith_monolith_mechanic_stalker_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_1 = {=drx_sl_is_enemy(monolith)} fail
 
 fetch_func = %=drx_sl_setup_fetch_weapon(drx_sl_pri_monolith_monolith_mechanic_stalker_task_3_fetch:3:4)%
 on_complete = %=drx_sl_fetch_reward_artefact(drx_sl_pri_monolith_monolith_mechanic_stalker_task_3_fetch:0.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:monolith) =inc_task_stage(drx_sl_pri_monolith_monolith_mechanic_stalker_task_3) =pstor_reset(drx_sl_pri_monolith_monolith_mechanic_stalker_task_3_fetch) =drx_sl_unregister_task_giver(drx_sl_pri_monolith_monolith_mechanic_stalker_task_3)%
@@ -261,7 +261,7 @@ stage_complete = 1
 target_functor = drx_sl_money_task_target
 status_functor = drx_sl_money_task_status
 condlist_0 = {!task_giver_alive(drx_sl_pri_monolith_monolith_trader_stalker_cf_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_1 = {=drx_sl_is_enemy(monolith)} fail
 
 on_init = %=pstor_set(drx_sl_pri_monolith_monolith_trader_stalker_cf_task_1_fetch:1000) +drx_sl_on_cf_task%
 on_complete = %=drx_sl_money_task_payment(drx_sl_pri_monolith_monolith_trader_stalker_cf_task_1_fetch) =drx_sl_change_factions(monolith) =inc_task_stage(drx_sl_pri_monolith_monolith_trader_stalker_cf_task_1) =pstor_reset(drx_sl_pri_monolith_monolith_trader_stalker_cf_task_1_fetch) =drx_sl_unregister_task_giver(drx_sl_pri_monolith_monolith_trader_stalker_cf_task_1) -drx_sl_on_cf_task%
@@ -301,7 +301,7 @@ target_functor = general_under_faction_control
 status_functor = drx_sl_assault_task_status
 status_functor_params = monolith
 condlist_0 = {!task_giver_alive(pri_monolith_monolith_trader_stalker_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_1 = {=drx_sl_is_enemy(monolith)} fail
 
 on_init = %=drx_sl_setup_assault_remote(pri_monolith_monolith_trader_stalker_task_1_id:monolith)%
 on_complete = %=drx_sl_reward_random(2500:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:monolith) =inc_task_stage(pri_monolith_monolith_trader_stalker_task_1) =pstor_reset(pri_monolith_monolith_trader_stalker_task_1_id) =pstor_reset(pri_monolith_monolith_trader_stalker_task_1_target_id) =drx_sl_unregister_task_giver(pri_monolith_monolith_trader_stalker_task_1) =drx_sl_reset_stored_task(pri_monolith_monolith_trader_stalker_task_1)%
@@ -327,7 +327,7 @@ stage_complete = 1
 target_functor = general_bounty_task
 status_functor = bounty_task
 condlist_0 = {!task_giver_alive(pri_monolith_monolith_trader_stalker_task_2)} fail
-condlist_1 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_1 = {=drx_sl_is_enemy(monolith)} fail
 
 on_init = %=drx_sl_setup_bounty_hunt(pri_monolith_monolith_trader_stalker_task_2:monolith)%
 on_complete = %=drx_sl_reward_random(2000:4000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:monolith) =inc_task_stage(pri_monolith_monolith_trader_stalker_task_2) =drx_sl_unregister_task_giver(pri_monolith_monolith_trader_stalker_task_2) =drx_sl_reset_stored_task(pri_monolith_monolith_trader_stalker_task_2)%
@@ -356,7 +356,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(pri_monolith_monolith_trader_stalker_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_1 = {=drx_sl_is_enemy(monolith)} fail
 
 fetch_func = %=drx_sl_setup_fetch_weapon(pri_monolith_monolith_trader_stalker_task_3_fetch:1:1)%
 on_complete = %=drx_sl_fetch_reward_random(pri_monolith_monolith_trader_stalker_task_3_fetch:0.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:monolith) =inc_task_stage(pri_monolith_monolith_trader_stalker_task_3) =pstor_reset(pri_monolith_monolith_trader_stalker_task_3_fetch) =drx_sl_unregister_task_giver(pri_monolith_monolith_trader_stalker_task_3) =drx_sl_reset_stored_task(pri_monolith_monolith_trader_stalker_task_3)%
@@ -385,7 +385,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(pri_monolith_monolith_trader_stalker_task_4)} fail
-condlist_1 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_1 = {=drx_sl_is_enemy(monolith)} fail
 
 fetch_func = %=drx_sl_setup_fetch_mutant_meat(pri_monolith_monolith_trader_stalker_task_4_fetch:9:12)%
 on_complete = %=drx_sl_fetch_reward_random(pri_monolith_monolith_trader_stalker_task_4_fetch:6.0) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:monolith) =inc_task_stage(pri_monolith_monolith_trader_stalker_task_4) =pstor_reset(pri_monolith_monolith_trader_stalker_task_4_fetch) =drx_sl_unregister_task_giver(pri_monolith_monolith_trader_stalker_task_4) =drx_sl_reset_stored_task(pri_monolith_monolith_trader_stalker_task_4)%
@@ -414,7 +414,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(pri_monolith_monolith_trader_stalker_task_5)} fail
-condlist_1 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_1 = {=drx_sl_is_enemy(monolith)} fail
 
 fetch_func = %=drx_sl_setup_fetch_supplies(pri_monolith_monolith_trader_stalker_task_5_fetch:1:8)%
 on_complete = %=drx_sl_fetch_reward_random(pri_monolith_monolith_trader_stalker_task_5_fetch:1.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:monolith) =inc_task_stage(pri_monolith_monolith_trader_stalker_task_5) =pstor_reset(pri_monolith_monolith_trader_stalker_task_5_fetch) =drx_sl_unregister_task_giver(pri_monolith_monolith_trader_stalker_task_5) =drx_sl_reset_stored_task(pri_monolith_monolith_trader_stalker_task_5)%
@@ -443,7 +443,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(pri_monolith_monolith_trader_stalker_task_6)} fail
-condlist_1 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_1 = {=drx_sl_is_enemy(monolith)} fail
 
 fetch_func = %=drx_sl_setup_fetch_artefact(pri_monolith_monolith_trader_stalker_task_6_fetch:1:1)%
 on_complete = %=drx_sl_fetch_reward_money(pri_monolith_monolith_trader_stalker_task_6_fetch:0.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:monolith) =inc_task_stage(pri_monolith_monolith_trader_stalker_task_6) =pstor_reset(pri_monolith_monolith_trader_stalker_task_6_fetch) =drx_sl_unregister_task_giver(pri_monolith_monolith_trader_stalker_task_6) =drx_sl_reset_stored_task(pri_monolith_monolith_trader_stalker_task_6)%
@@ -484,7 +484,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(pri_monolith_monolith_mechanic_stalker_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_1 = {=drx_sl_is_enemy(monolith)} fail
 
 fetch_func = %=setup_generic_fetch_task(pri_monolith_monolith_mechanic_stalker_task_1_fetch:1:itm_repairkit_tier_1)%
 on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:monolith) =remove_fetch_item(pri_monolith_monolith_mechanic_stalker_task_1_fetch) =inc_task_stage(pri_monolith_monolith_mechanic_stalker_task_1) +pri_monolith_monolith_mechanic_stalker_upgrade_tier_1 =drx_sl_unregister_task_giver(pri_monolith_monolith_mechanic_stalker_task_1)%
@@ -512,7 +512,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(pri_monolith_monolith_mechanic_stalker_task_2)} fail
-condlist_1 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_1 = {=drx_sl_is_enemy(monolith)} fail
 
 fetch_func = %=setup_generic_fetch_task(pri_monolith_monolith_mechanic_stalker_task_2_fetch:1:itm_repairkit_tier_2)%
 on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:monolith) =remove_fetch_item(pri_monolith_monolith_mechanic_stalker_task_2_fetch) =inc_task_stage(pri_monolith_monolith_mechanic_stalker_task_2) +pri_monolith_monolith_mechanic_stalker_upgrade_tier_2 =drx_sl_unregister_task_giver(pri_monolith_monolith_mechanic_stalker_task_2)%
@@ -540,7 +540,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(pri_monolith_monolith_mechanic_stalker_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_1 = {=drx_sl_is_enemy(monolith)} fail
 
 fetch_func = %=setup_generic_fetch_task(pri_monolith_monolith_mechanic_stalker_task_3_fetch:1:itm_repairkit_tier_3)%
 on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:monolith) =remove_fetch_item(pri_monolith_monolith_mechanic_stalker_task_3_fetch) =inc_task_stage(pri_monolith_monolith_mechanic_stalker_task_3) +pri_monolith_monolith_mechanic_stalker_upgrade_tier_3 =drx_sl_unregister_task_giver(pri_monolith_monolith_mechanic_stalker_task_3)%

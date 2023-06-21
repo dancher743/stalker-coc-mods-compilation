@@ -37,7 +37,7 @@ task_complete_descr = drx_sl_mar_smart_terrain_base_stalker_leader_marsh_default
 
 condlist_0 = {-drx_sl_dummy_info} complete
 condlist_1 = {!task_giver_alive(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_default_task)} fail
-condlist_2 = {=drx_sl_is_enemy(csky)} fail
+;condlist_2 = {=drx_sl_is_enemy(csky)} fail
 
 on_complete = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_default_task)%
 on_fail = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_default_task)%
@@ -62,7 +62,7 @@ stage_complete = 1
 target_functor = drx_sl_quest_item_task_1_target
 status_functor = drx_sl_quest_item_task_1_status
 condlist_0 = {!task_giver_alive(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(csky)} fail
+;condlist_1 = {=drx_sl_is_enemy(csky)} fail
 
 on_init = %=drx_sl_create_quest_stash_1() +drx_sl_quest_item_task_1_started%
 on_complete = %=drx_sl_reward_random(2500:3500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =remove_item(drx_sl_quest_item_1) =inc_task_stage(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_1) =pstor_reset(drx_sl_quest_stash_1_id) -drx_sl_quest_item_task_1_started =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_1)%
@@ -89,7 +89,7 @@ target_functor = general_under_faction_control
 status_functor = drx_sl_assault_task_status
 status_functor_params = csky
 condlist_0 = {!task_giver_alive(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2)} fail
-condlist_1 = {=drx_sl_is_enemy(csky)} fail
+;condlist_1 = {=drx_sl_is_enemy(csky)} fail
 
 on_init = %=drx_sl_setup_assault_local(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2_id:csky)%
 on_complete = %=drx_sl_reward_random(4000:6000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =inc_task_stage(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2) =pstor_reset(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2_id) =pstor_reset(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2_target_id) =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_2)%
@@ -118,7 +118,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(csky)} fail
+;condlist_1 = {=drx_sl_is_enemy(csky)} fail
 
 fetch_func = %=drx_sl_setup_fetch_artefact(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3_fetch:1:1)%
 on_complete = %=drx_sl_fetch_reward_random(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3_fetch:0.7) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =inc_task_stage(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3) =pstor_reset(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3_fetch) =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_3)%
@@ -145,7 +145,7 @@ target = {!actor_has_item(main_story_1_quest_case)} agr_space_restrictor_to_agr_
 status_functor = drx_sl_retrieve_item_task_status
 status_functor_params = main_story_1_quest_case
 condlist_0 = {!task_giver_alive(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_4)} fail
-condlist_1 = {=drx_sl_is_enemy(csky)} fail
+;condlist_1 = {=drx_sl_is_enemy(csky)} fail
 
 on_complete = %+main_1_search_agr_ug_task_done =drx_sl_reward_random(6000:8000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =inc_task_stage(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_4) =remove_item(main_story_1_quest_case) =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_4)%
 on_fail = %=fail_task_dec_goodwill(25:csky) =drx_sl_meet_random_honcho() =drx_sl_decrease_sl_tasks_count =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_task_4)%
@@ -166,7 +166,7 @@ task_complete_descr = drx_sl_mar_base_stalker_barmen_default_task_finish
 
 condlist_0 = {-drx_sl_dummy_info} complete
 condlist_1 = {!task_giver_alive(drx_sl_mar_base_stalker_barmen_default_task)} fail
-condlist_2 = {=drx_sl_is_enemy(csky)} fail
+;condlist_2 = {=drx_sl_is_enemy(csky)} fail
 
 on_complete = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_mar_base_stalker_barmen_default_task)%
 on_fail = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_mar_base_stalker_barmen_default_task)%
@@ -191,7 +191,7 @@ stage_complete = 1
 target_functor = general_under_faction_control
 status_functor = drx_sl_assault_mutant_task_status
 condlist_0 = {!task_giver_alive(drx_sl_mar_base_stalker_barmen_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(csky)} fail
+;condlist_1 = {=drx_sl_is_enemy(csky)} fail
 
 on_init = %=drx_sl_setup_assault_mutant(drx_sl_mar_base_stalker_barmen_task_1_id)%
 on_complete = %=drx_sl_reward_random(1500:3000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =inc_task_stage(drx_sl_mar_base_stalker_barmen_task_1) =pstor_reset(drx_sl_mar_base_stalker_barmen_task_1_id) =pstor_reset(drx_sl_mar_base_stalker_barmen_task_1_target_id) =drx_sl_unregister_task_giver(drx_sl_mar_base_stalker_barmen_task_1)%
@@ -220,7 +220,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(drx_sl_mar_base_stalker_barmen_task_2)} fail
-condlist_1 = {=drx_sl_is_enemy(csky)} fail
+;condlist_1 = {=drx_sl_is_enemy(csky)} fail
 
 fetch_func = %=drx_sl_setup_fetch_supplies(drx_sl_mar_base_stalker_barmen_task_2_fetch:12:16)%
 on_complete = %=drx_sl_fetch_reward_random(drx_sl_mar_base_stalker_barmen_task_2_fetch:1.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =inc_task_stage(drx_sl_mar_base_stalker_barmen_task_2) =pstor_reset(drx_sl_mar_base_stalker_barmen_task_2_fetch) =drx_sl_unregister_task_giver(drx_sl_mar_base_stalker_barmen_task_2)%
@@ -258,7 +258,7 @@ stage_complete = 1
 target_functor = drx_sl_money_task_target
 status_functor = drx_sl_money_task_status
 condlist_0 = {!task_giver_alive(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_cf_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(csky)} fail
+;condlist_1 = {=drx_sl_is_enemy(csky)} fail
 
 on_init = %=pstor_set(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_cf_task_1_fetch:15000) +drx_sl_on_cf_task%
 on_complete = %=drx_sl_money_task_payment(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_cf_task_1_fetch) =drx_sl_change_factions(csky) =inc_task_stage(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_cf_task_1) =pstor_reset(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_cf_task_1_fetch) =drx_sl_unregister_task_giver(drx_sl_mar_smart_terrain_base_stalker_leader_marsh_cf_task_1) -drx_sl_on_cf_task%
@@ -292,7 +292,7 @@ descr = mar_base_owl_stalker_trader_task_1_text
 job_descr = mar_base_owl_stalker_trader_task_1_about
 
 target_functor = mar_base_owl_stalker_trader_task_target_1
-condlist_0 = {=drx_sl_is_enemy(stalker)} fail
+;condlist_0 = {=drx_sl_is_enemy(stalker)} fail
 
 on_init = %=give_actor(mar_base_owl_stalker_trader_task_1_pda)%
 on_complete = %+mar_base_owl_stalker_trader_task_1_complete =drx_sl_unregister_task_giver(mar_base_owl_stalker_trader_task_1) =drx_sl_reset_stored_task(mar_base_owl_stalker_trader_task_1)%
@@ -314,7 +314,7 @@ descr = mar_base_owl_stalker_trader_task_2_text
 job_descr = mar_base_owl_stalker_trader_task_2_about
 
 target_functor = mar_base_owl_stalker_trader_task_target_2
-condlist_0 = {=drx_sl_is_enemy(csky)} fail
+;condlist_0 = {=drx_sl_is_enemy(csky)} fail
 
 on_complete = %+mar_base_owl_stalker_trader_discount_1 =drx_sl_unregister_task_giver(mar_base_owl_stalker_trader_task_2) =drx_sl_reset_stored_task(mar_base_owl_stalker_trader_task_2)%
 on_fail = %=drx_sl_unregister_task_giver(mar_base_owl_stalker_trader_task_2) =drx_sl_reset_stored_task(mar_base_owl_stalker_trader_task_2)%
@@ -338,7 +338,7 @@ task_complete_descr = mar_base_owl_stalker_trader_task_3_finish
 target_functor = mar_base_owl_stalker_trader_task_target_3
 condlist_0 = {!squad_exist(ecolog_companion_task_1)} fail
 condlist_1 = {!task_giver_alive(mar_base_owl_stalker_trader_task_3)} fail
-condlist_2 = {=drx_sl_is_enemy(csky)} fail
+;condlist_2 = {=drx_sl_is_enemy(csky)} fail
 condlist_3 = {=drx_sl_is_enemy(ecolog)} fail
 
 on_init = %=setup_companion_task(ecolog_companion_task_1:mar_smart_terrain_base) =setup_task_target_anomaly -ecolog_companion_task_1_started -ecolog_companion_task_1_force_started%
@@ -366,7 +366,7 @@ target_functor = general_under_faction_control
 status_functor = drx_sl_assault_mutant_task_status
 condlist_0 = {!squad_exist(drx_sl_raid_companion_squad_csky_1)} fail
 condlist_1 = {!task_giver_alive(mar_base_stalker_barmen_task_1)} fail
-condlist_2 = {=drx_sl_is_enemy(csky)} fail
+;condlist_2 = {=drx_sl_is_enemy(csky)} fail
 
 on_init = %=setup_companion_task(drx_sl_raid_companion_squad_csky_1:mar_smart_terrain_base) =drx_sl_setup_assault_mutant(mar_base_stalker_barmen_task_1_id)%
 on_complete = %=drx_sl_reward_random(1000:2000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =inc_task_stage(mar_base_stalker_barmen_task_1) =pstor_reset(mar_base_stalker_barmen_task_1_id) =pstor_reset(mar_base_stalker_barmen_task_1_target_id) =remove_special_task_squad(drx_sl_raid_companion_squad_csky_1) =drx_sl_unregister_task_giver(mar_base_stalker_barmen_task_1) =drx_sl_reset_stored_task(mar_base_stalker_barmen_task_1)%
@@ -394,7 +394,7 @@ status_functor = check_smart_under_faction_control_staged
 status_functor_params = bandit
 condlist_0 = {!squad_exist(drx_sl_raid_companion_squad_csky_2)} fail
 condlist_1 = {!task_giver_alive(mar_base_stalker_barmen_task_2)} fail
-condlist_2 = {=drx_sl_is_enemy(csky)} fail
+;condlist_2 = {=drx_sl_is_enemy(csky)} fail
 
 on_init = %=setup_companion_task(drx_sl_raid_companion_squad_csky_2:mar_smart_terrain_base) =find_smart_under_faction_control(mar_base_stalker_barmen_task_2_id:bandit)%
 on_complete = %=drx_sl_reward_random(1500:4000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =inc_task_stage(mar_base_stalker_barmen_task_2) =pstor_reset(mar_base_stalker_barmen_task_2_id) =pstor_reset(mar_base_stalker_barmen_task_2_target_id) =remove_special_task_squad(drx_sl_raid_companion_squad_csky_2) =drx_sl_unregister_task_giver(mar_base_stalker_barmen_task_2) =drx_sl_reset_stored_task(mar_base_stalker_barmen_task_2)%
@@ -423,7 +423,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(mar_base_stalker_barmen_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(csky)} fail
+;condlist_1 = {=drx_sl_is_enemy(csky)} fail
 
 fetch_func = %=drx_sl_setup_fetch_mutant_meat(mar_base_stalker_barmen_task_3_fetch:9:12)%
 on_complete = %=drx_sl_fetch_reward_random(mar_base_stalker_barmen_task_3_fetch:6.0) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =inc_task_stage(mar_base_stalker_barmen_task_3) =pstor_reset(mar_base_stalker_barmen_task_3_fetch) =drx_sl_unregister_task_giver(mar_base_stalker_barmen_task_3) =drx_sl_reset_stored_task(mar_base_stalker_barmen_task_3)%
@@ -464,7 +464,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(mar_base_stalker_tech_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(csky)} fail
+;condlist_1 = {=drx_sl_is_enemy(csky)} fail
 
 fetch_func = %=setup_generic_fetch_task(mar_base_stalker_tech_task_1_fetch:1:itm_repairkit_tier_1)%
 on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:csky) =remove_fetch_item(mar_base_stalker_tech_task_1_fetch) =inc_task_stage(mar_base_stalker_tech_task_1) +mar_base_stalker_tech_upgrade_tier_1 =drx_sl_unregister_task_giver(mar_base_stalker_tech_task_1)%
@@ -492,7 +492,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(mar_base_stalker_tech_task_2)} fail
-condlist_1 = {=drx_sl_is_enemy(csky)} fail
+;condlist_1 = {=drx_sl_is_enemy(csky)} fail
 
 fetch_func = %=setup_generic_fetch_task(mar_base_stalker_tech_task_2_fetch:1:itm_repairkit_tier_2)%
 on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:csky) =remove_fetch_item(mar_base_stalker_tech_task_2_fetch) =inc_task_stage(mar_base_stalker_tech_task_2) +mar_base_stalker_tech_upgrade_tier_2 =drx_sl_unregister_task_giver(mar_base_stalker_tech_task_2)%
@@ -520,7 +520,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(mar_base_stalker_tech_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(csky)} fail
+;condlist_1 = {=drx_sl_is_enemy(csky)} fail
 
 fetch_func = %=setup_generic_fetch_task(mar_base_stalker_tech_task_3_fetch:1:itm_repairkit_tier_3)%
 on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:csky) =remove_fetch_item(mar_base_stalker_tech_task_3_fetch) =inc_task_stage(mar_base_stalker_tech_task_3) +mar_base_stalker_tech_upgrade_tier_3 =drx_sl_unregister_task_giver(mar_base_stalker_tech_task_3)%

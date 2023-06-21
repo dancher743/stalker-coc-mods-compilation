@@ -37,7 +37,7 @@ task_complete_descr = drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_koval
 
 condlist_0 = {-drx_sl_dummy_info} complete
 condlist_1 = {!task_giver_alive(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_default_task)} fail
-condlist_2 = {=drx_sl_is_enemy(army)} fail
+;condlist_2 = {=drx_sl_is_enemy(army)} fail
 
 on_complete = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_default_task)%
 on_fail = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_default_task)%
@@ -62,7 +62,7 @@ stage_complete = 1
 target_functor = general_bounty_task
 status_functor = bounty_task
 condlist_0 = {!task_giver_alive(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(army)} fail
+;condlist_1 = {=drx_sl_is_enemy(army)} fail
 
 on_init = %=drx_sl_setup_bounty_hunt(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_1:army)%
 on_complete = %=drx_sl_reward_random_money(2500:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:army) =inc_task_stage(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_1) =drx_sl_unregister_task_giver(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_1)%
@@ -90,7 +90,7 @@ status_functor = drx_sl_assault_task_status
 status_functor_params = army
 condlist_0 = {!squad_exist(drx_sl_raid_companion_squad_army_2)} fail
 condlist_1 = {!task_giver_alive(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_2)} fail
-condlist_2 = {=drx_sl_is_enemy(army)} fail
+;condlist_2 = {=drx_sl_is_enemy(army)} fail
 
 on_init = %=drx_sl_reward_random_rifle(5000:7500) =setup_companion_task(drx_sl_raid_companion_squad_army_2:agr_smart_terrain_1_6) =drx_sl_setup_assault_remote(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_2_id:army)%
 on_complete = %=drx_sl_reward_random_money(2000:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:army) =inc_task_stage(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_2) =pstor_reset(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_2_id) =pstor_reset(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_2_target_id) =remove_special_task_squad(drx_sl_raid_companion_squad_army_2) =drx_sl_unregister_task_giver(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_2)%
@@ -118,7 +118,7 @@ status_functor = drx_sl_assault_task_status
 status_functor_params = army
 condlist_0 = {!squad_exist(drx_sl_raid_companion_squad_army_2)} fail
 condlist_1 = {!task_giver_alive(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_3)} fail
-condlist_2 = {=drx_sl_is_enemy(army)} fail
+;condlist_2 = {=drx_sl_is_enemy(army)} fail
 
 on_init = %=setup_companion_task(drx_sl_raid_companion_squad_army_2:agr_smart_terrain_1_6) =drx_sl_setup_assault_local(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_3_id:army)%
 on_complete = %=drx_sl_reward_random_money(2500:5000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:army) =inc_task_stage(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_3) =pstor_reset(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_3_id) =pstor_reset(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_3_target_id) =remove_special_task_squad(drx_sl_raid_companion_squad_army_2) =drx_sl_unregister_task_giver(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_3)%
@@ -140,7 +140,7 @@ task_complete_descr = drx_sl_agr_smart_terrain_1_6_army_mechanic_stalker_default
 
 condlist_0 = {-drx_sl_dummy_info} complete
 condlist_1 = {!task_giver_alive(drx_sl_agr_smart_terrain_1_6_army_mechanic_stalker_default_task)} fail
-condlist_2 = {=drx_sl_is_enemy(army)} fail
+;condlist_2 = {=drx_sl_is_enemy(army)} fail
 
 on_complete = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_agr_smart_terrain_1_6_army_mechanic_stalker_default_task)%
 on_fail = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_agr_smart_terrain_1_6_army_mechanic_stalker_default_task)%
@@ -165,7 +165,7 @@ stage_complete = 1
 target_functor = drx_sl_quest_item_task_1_target
 status_functor = drx_sl_quest_item_task_1_status
 condlist_0 = {!task_giver_alive(drx_sl_agr_smart_terrain_1_6_army_mechanic_stalker_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(army)} fail
+;condlist_1 = {=drx_sl_is_enemy(army)} fail
 
 on_init = %=drx_sl_create_quest_stash_1() +drx_sl_quest_item_task_1_started%
 on_complete = %=drx_sl_reward_random_money(1500:3000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:army) =remove_item(drx_sl_quest_item_1) =inc_task_stage(drx_sl_agr_smart_terrain_1_6_army_mechanic_stalker_task_1) =pstor_reset(drx_sl_quest_stash_1_id) -drx_sl_quest_item_task_1_started =drx_sl_unregister_task_giver(drx_sl_agr_smart_terrain_1_6_army_mechanic_stalker_task_1)%
@@ -192,7 +192,7 @@ target_functor = general_under_faction_control
 status_functor = drx_sl_assault_task_status
 status_functor_params = army
 condlist_0 = {!task_giver_alive(drx_sl_agr_smart_terrain_1_6_army_mechanic_stalker_task_2)} fail
-condlist_1 = {=drx_sl_is_enemy(army)} fail
+;condlist_1 = {=drx_sl_is_enemy(army)} fail
 
 on_init = %=drx_sl_setup_assault_local(drx_sl_agr_smart_terrain_1_6_army_mechanic_stalker_task_2_id:army)%
 on_complete = %=drx_sl_reward_random_money(2000:6000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:army) =inc_task_stage(drx_sl_agr_smart_terrain_1_6_army_mechanic_stalker_task_2) =pstor_reset(drx_sl_agr_smart_terrain_1_6_army_mechanic_stalker_task_2_id) =pstor_reset(drx_sl_agr_smart_terrain_1_6_army_mechanic_stalker_task_2_target_id) =drx_sl_unregister_task_giver(drx_sl_agr_smart_terrain_1_6_army_mechanic_stalker_task_2)%
@@ -230,7 +230,7 @@ stage_complete = 1
 target_functor = drx_sl_money_task_target
 status_functor = drx_sl_money_task_status
 condlist_0 = {!task_giver_alive(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_cf_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(army)} fail
+;condlist_1 = {=drx_sl_is_enemy(army)} fail
 
 on_init = %=pstor_set(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_cf_task_1_fetch:8000) +drx_sl_on_cf_task%
 on_complete = %=drx_sl_money_task_payment(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_cf_task_1_fetch) =drx_sl_change_factions(army) =inc_task_stage(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_cf_task_1) =pstor_reset(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_cf_task_1_fetch) =drx_sl_unregister_task_giver(drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_cf_task_1) -drx_sl_on_cf_task%
@@ -271,7 +271,7 @@ status_functor = drx_sl_assault_task_status
 status_functor_params = army
 condlist_0 = {!squad_exist(drx_sl_raid_companion_squad_army_2)} fail
 condlist_1 = {!task_giver_alive(agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_1)} fail
-condlist_2 = {=drx_sl_is_enemy(army)} fail
+;condlist_2 = {=drx_sl_is_enemy(army)} fail
 
 on_init = %=setup_companion_task(drx_sl_raid_companion_squad_army_2:agr_smart_terrain_1_6) =drx_sl_setup_assault_local(agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_1_id:army)%
 on_complete = %=drx_sl_reward_random_money(5500:7000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:army) =inc_task_stage(agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_1) =pstor_reset(agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_1_id) =pstor_reset(agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_1_target_id) =remove_special_task_squad(drx_sl_raid_companion_squad_army_2) =drx_sl_unregister_task_giver(agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_1) =drx_sl_reset_stored_task(agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_1)%
@@ -298,7 +298,7 @@ target_functor = general_under_faction_control
 status_functor = drx_sl_assault_task_status
 status_functor_params = army
 condlist_0 = {!task_giver_alive(agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_2)} fail
-condlist_1 = {=drx_sl_is_enemy(army)} fail
+;condlist_1 = {=drx_sl_is_enemy(army)} fail
 
 on_init = %=drx_sl_setup_assault_remote(agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_2_id:army)%
 on_complete = %=drx_sl_reward_random_money(5500:7000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:army) =inc_task_stage(agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_2) =pstor_reset(agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_2_id) =pstor_reset(agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_2_target_id) =drx_sl_unregister_task_giver(agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_2) =drx_sl_reset_stored_task(agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_2)%
@@ -324,7 +324,7 @@ stage_complete = 1
 target_functor = general_bounty_task
 status_functor = bounty_task
 condlist_0 = {!task_giver_alive(agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(army)} fail
+;condlist_1 = {=drx_sl_is_enemy(army)} fail
 
 on_init = %=drx_sl_setup_bounty_hunt(agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_3:army)%
 on_complete = %=drx_sl_reward_random_money(2500:5000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:army) =inc_task_stage(agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_3) =drx_sl_unregister_task_giver(agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_3) =drx_sl_reset_stored_task(agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_3)%
@@ -365,7 +365,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(agr_smart_terrain_1_6_army_mechanic_stalker_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(army)} fail
+;condlist_1 = {=drx_sl_is_enemy(army)} fail
 
 fetch_func = %=setup_generic_fetch_task(agr_smart_terrain_1_6_army_mechanic_stalker_task_1_fetch:1:itm_repairkit_tier_1)%
 on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:army) =remove_fetch_item(agr_smart_terrain_1_6_army_mechanic_stalker_task_1_fetch) =inc_task_stage(agr_smart_terrain_1_6_army_mechanic_stalker_task_1) +agr_smart_terrain_1_6_army_mechanic_stalker_upgrade_tier_1 =drx_sl_unregister_task_giver(agr_smart_terrain_1_6_army_mechanic_stalker_task_1)%
@@ -393,7 +393,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(agr_smart_terrain_1_6_army_mechanic_stalker_task_2)} fail
-condlist_1 = {=drx_sl_is_enemy(army)} fail
+;condlist_1 = {=drx_sl_is_enemy(army)} fail
 
 fetch_func = %=setup_generic_fetch_task(agr_smart_terrain_1_6_army_mechanic_stalker_task_2_fetch:1:itm_repairkit_tier_2)%
 on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:army) =remove_fetch_item(agr_smart_terrain_1_6_army_mechanic_stalker_task_2_fetch) =inc_task_stage(agr_smart_terrain_1_6_army_mechanic_stalker_task_2) +agr_smart_terrain_1_6_army_mechanic_stalker_upgrade_tier_2 =drx_sl_unregister_task_giver(agr_smart_terrain_1_6_army_mechanic_stalker_task_2)%
@@ -421,7 +421,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(agr_smart_terrain_1_6_army_mechanic_stalker_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(army)} fail
+;condlist_1 = {=drx_sl_is_enemy(army)} fail
 
 fetch_func = %=setup_generic_fetch_task(agr_smart_terrain_1_6_army_mechanic_stalker_task_3_fetch:1:itm_repairkit_tier_3)%
 on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:army) =remove_fetch_item(agr_smart_terrain_1_6_army_mechanic_stalker_task_3_fetch) =inc_task_stage(agr_smart_terrain_1_6_army_mechanic_stalker_task_3) +agr_smart_terrain_1_6_army_mechanic_stalker_upgrade_tier_3 =drx_sl_unregister_task_giver(agr_smart_terrain_1_6_army_mechanic_stalker_task_3)%

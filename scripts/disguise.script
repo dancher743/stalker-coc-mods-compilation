@@ -1,0 +1,324 @@
+----------------------
+-- File: Disguise System
+-- Author: strelocc
+-- Adapted and improved for Anomaly: seargedp
+-- Tweaked for CoC 1.4.22: SarisKhan
+----------------------
+
+--time you need to be hidden (not seen by any npc) before changing outfit to make the disguise effective, 100 means roughly 10 seconds
+local time_to_forget = 100
+
+--minimum condition for an outfit to work as disguise
+--set to 0 to not consider outfit condition, if you want only mint condition outfits to work set to 0.99 and not 1 because condition can never be exactly 1
+local min_condition = 0.25
+
+--minimum condition for an helmet to reduce suspicion buildup
+--set to 0 to not consider helmet condition, if you want only mint condition helmets to work set to 0.99 and not 1 because condition can never be exactly 1
+local min_condition_h = 0.25
+
+--distance within npc will start doubting the disguise (if they are seeing you)
+--5 = 1 wood box width
+local discovery_distance = 25
+
+--how much time it takes to be discovered when in view, 100 is roughly 1 minute with uncovered face
+local suspicion_limit = 100
+local warning_limit = suspicion_limit * 2 / 3
+local dewarn_limit = suspicion_limit * 1 / 3
+
+function on_game_start()
+	RegisterScriptCallback("actor_on_update",update)
+	RegisterScriptCallback("npc_on_update",npc_update)
+	
+	RegisterScriptCallback("on_game_load",on_game_load)
+	RegisterScriptCallback("save_state",save_state)
+	RegisterScriptCallback("load_state",load_state)
+end
+
+local last_seen = {}
+local suspicion = {}
+local callout = false
+local warned = false
+
+function npc_update(npc)
+	if not default_faction or not db.actor then return end
+	
+	local npc_is_enemy = game_relations.is_factions_enemies(default_faction, npc:character_community()) or npc:relation(db.actor) == game_object.enemy
+
+	local current = character_community(db.actor):sub(7)
+	if current ~= default_faction and npc:see(db.actor) and npc_is_enemy then
+		local id = npc:id()
+		last_seen[id] = game.get_game_time()
+		
+		if suspicion[id] then
+			local distance = npc:position():distance_to_sqr(db.actor:position())
+			suspicion[id] = suspicion[id] + suspicion_increase(distance)
+			
+			if (suspicion[id] > suspicion_limit) then
+				db.actor:set_character_community( ("actor_" .. default_faction), 0, 0 )
+				if not callout then 
+					news_manager.send_tip(db.actor, "You have been discovered! Everybody knows you are a " .. game.translate_string(default_faction) .." member in disguise.", nil, nil, 5000) 
+					--printf("discovered at %s",os.date("%X"))
+					callout = true
+					warned = true
+				end
+			elseif not warned and suspicion[id] > warning_limit then
+				news_manager.send_tip(db.actor, "You are getting suspicious looks. Someone may see through your disguise if you are not careful.", nil, nil, 5000) 
+				warned = true
+			end
+		else
+			--printf("saw at %s",os.date("%X"))
+			suspicion[id] = 1
+		end
+	else
+		local id = npc:id()
+		if suspicion[id] then
+			suspicion[id] = suspicion[id] - 1
+			if (suspicion[id] <= 0) then
+				suspicion[id] = nil
+			end
+		end
+	end
+
+	if warned and current ~= default_faction then
+		local suspicious = false
+		for k,v in pairs(suspicion) do
+			if v and v > dewarn_limit then
+				suspicious = true
+				break
+			end
+		end
+		if not suspicious then
+			news_manager.send_tip(db.actor, "You have narrowly avoided exposure. For now, your disguise remains effective.", nil, nil, 5000) 
+			warned = false
+		end
+	end
+end
+
+function suspicion_increase(distance)
+
+	local increase = 1
+	
+	if(distance > discovery_distance) then
+		increase = 0
+	else
+		local helm = db.actor:item_in_slot(12)
+		local outfit = db.actor:item_in_slot(7)
+		
+		local helm_cover = false
+		
+		if outfit then
+			local integrated_h = alun_utils.read_from_ini(nil,outfit:section(),"helmet_avaliable","bool",false)
+			if (not integrated_h) then
+				if helm then
+					local cond_h = helm:condition()
+					if (cond_h > min_condition_h) then
+						helm_cover = true
+					end
+				end
+			else
+				helm_cover = true
+			end
+		else
+			if helm then
+				local cond_h = helm:condition()
+				if (cond_h > min_condition_h) then
+					helm_cover = true
+				end
+			end
+		end
+		
+		increase = helm_cover and 0.5 or 1
+	end
+	
+	return increase
+end
+
+local oldfit
+function update()
+	if not default_faction then return end
+
+	local outfit = db.actor:item_in_slot(7)
+	
+	local broken = outfit and outfit:condition() or 0
+	
+	broken = broken < min_condition
+	
+	outfit = outfit and outfit:section() or "naked"
+	
+	local new_comm
+	
+	if (oldfit and oldfit ~= outfit) then
+		if(outfit == "naked") then
+			new_comm = default_faction
+			change_to(new_comm,true)
+		else
+			new_comm = comm_from_outfit(outfit)
+			if new_comm == default_faction then
+				change_to(new_comm,false)
+			elseif broken then
+				local current = character_community(db.actor):sub(7)
+				if current == default_faction then
+					news_manager.send_tip(db.actor, "Your disguise is excessively damaged, everybody recognises you're a " .. game.translate_string(default_faction) .." member in disguise.", nil, nil, 5000)
+				else
+					news_manager.send_tip(db.actor, "Your disguise is excessively damaged, everybody still assumes you're a " .. game.translate_string(current) .." member.", nil, nil, 5000)
+				end
+			else
+				change_to(new_comm,false)
+			end
+		end
+	end
+	oldfit = outfit
+end
+
+function change_to(x,naked)
+	local current = character_community(db.actor):sub(7)
+
+	if x == current then return end
+
+	if x == default_faction then
+		news_manager.send_tip(db.actor, "You're now identified as a member of " .. game.translate_string(default_faction) .. " again.", nil, nil, 5000)
+
+		db.actor:set_character_community( ("actor_" .. x), 0, 0 )
+		suspicion = {}
+		callout = true
+		warned = true
+	elseif anybody_see() then
+		news_manager.send_tip(db.actor, "You have been seen changing outfit, everybody remembers you as a " .. game.translate_string(current) .." member.", nil, nil, 5000)
+	elseif anybody_remember() then
+		news_manager.send_tip(db.actor, "You have been seen recently, everybody remembers you as a " .. game.translate_string(current) .." member.", nil, nil, 5000)
+	else
+		if naked then
+			news_manager.send_tip(db.actor, "Without any outfit people will know you're a member of the " .. game.translate_string(default_faction) .. " faction.", nil, nil, 5000)
+		else
+			news_manager.send_tip(db.actor, "With this outfit people will assume you're a member of the " .. game.translate_string(x) .. " faction.", nil, nil, 5000)
+		end
+		
+		db.actor:set_character_community( ("actor_" .. x), 0, 0 )
+		suspicion = {}
+		callout = false
+		warned = false
+	end
+end
+
+function comm_from_outfit(section)
+	local new_comm = default_faction
+	
+	if(string.match(section,"specops_") or string.match(section,"military_")) then
+		new_comm = "army"
+	elseif(string.match(section,"bandit_") or string.match(section,"trenchcoat_") or string.match(section,"banditmerc_")) then
+		new_comm = "bandit"
+	elseif(string.match(section,"cs_")) then
+		new_comm = "csky"	
+	elseif(string.match(section,"svoboda_")) then
+		new_comm = "freedom"	
+	elseif(string.match(section,"ecolog_")) then
+		new_comm = "ecolog"	
+	elseif(string.match(section,"dolg_")) then
+		new_comm = "dolg"
+	elseif(string.match(section,"merc_")) then
+		new_comm = "killer"
+	elseif(string.match(section,"stalker_") or string.match(section,"scientific_") or string.match(section,"exo_")) then
+		new_comm = "stalker"
+	elseif(string.match(section,"monolith_")) then
+		new_com = default_faction
+	end
+	
+	return new_comm
+end
+
+function update_default(faction)
+	default_faction = faction
+	suspicion = {}
+	callout = true
+	warned = true
+
+	--printf("DBG default " .. (default_faction or "?"))
+end
+
+function anybody_see()
+	for i=1, #db.OnlineStalkers do
+		npc = level.object_by_id(db.OnlineStalkers[i])
+		if (npc and IsStalker(npc,npc:clsid()) and npc:alive()) then
+			if(npc:see(db.actor)) then
+				return true
+			end
+		end
+	end
+	return false
+end
+
+function anybody_remember()
+	local time_passed
+	for k,v in pairs(last_seen) do
+		if(v)then
+			time_passed = game.get_game_time():diffSec(v)
+			if( time_passed < time_to_forget) then
+				return true
+			else
+				last_seen[k] = nil
+			end
+		end
+	end
+	return false
+end
+
+function on_game_load()
+	--printf("DBG on_game_load")
+	local defaults = {
+		disguise_system = {
+			ds_default_faction = default_faction or character_community(db.actor):sub(7) or "stalker",
+			ds_last_seen = last_seen,
+			ds_suspicion = suspicion,
+			ds_callout = callout,
+			ds_warned = warned,
+		}
+	}
+	load_state(defaults)
+
+	oldfit = db.actor:item_in_slot(7)
+
+	--printf("DBG default " .. (default_faction or "?"))
+end
+
+function save_state(data)
+	--printf("DBG save_state")
+	data.disguise_system = {}
+	data.disguise_system.ds_default_faction = default_faction
+	data.disguise_system.ds_callout = callout
+	data.disguise_system.ds_warned = warned
+	data.disguise_system.ds_last_seen = last_seen
+	data.disguise_system.ds_suspicion = suspicion
+
+	--printf("DBG default " .. (default_faction or "?"))
+end
+
+function load_state(data)
+	--printf("DBG load_state")
+	if not data.disguise_system then return end
+	default_faction = data.disguise_system.ds_default_faction
+	callout = data.disguise_system.ds_callout
+	warned = data.disguise_system.ds_warned or callout
+
+	if not default_faction or default_faction == "" then
+		default_faction = db.actor and character_community(db.actor):sub(7) or ""
+		printf("DBG loaded default " .. (default_faction or "?"))
+	end
+
+	local last_seen_load = data.disguise_system.ds_last_seen
+	last_seen = {}
+	for k,v in pairs(last_seen_load) do
+		if v then
+			last_seen[k] = v
+		end
+	end
+
+	local suspicion_load = data.disguise_system.ds_suspicion
+	suspicion = {}
+	for k,v in pairs(suspicion_load) do
+		if v then
+			suspicion[k] = v
+		end
+	end
+
+	--printf("DBG default " .. (default_faction or "?"))
+end

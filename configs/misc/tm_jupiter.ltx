@@ -37,7 +37,7 @@ task_complete_descr = drx_sl_jup_b6_scientist_tech_default_task_finish
 
 condlist_0 = {-drx_sl_dummy_info} complete
 condlist_1 = {!task_giver_alive(drx_sl_jup_b6_scientist_tech_default_task)} fail
-condlist_2 = {=drx_sl_is_enemy(ecolog)} fail
+;condlist_2 = {=drx_sl_is_enemy(ecolog)} fail
 
 on_complete = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_jup_b6_scientist_tech_default_task)%
 on_fail = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_jup_b6_scientist_tech_default_task)%
@@ -65,7 +65,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(drx_sl_jup_b6_scientist_tech_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(ecolog)} fail
+;condlist_1 = {=drx_sl_is_enemy(ecolog)} fail
 
 fetch_func = %=drx_sl_setup_fetch_mutant_parts(drx_sl_jup_b6_scientist_tech_task_1_fetch:1:1)%
 on_complete = %=drx_sl_fetch_reward_artefact(drx_sl_jup_b6_scientist_tech_task_1_fetch:2.0) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:ecolog) =inc_task_stage(drx_sl_jup_b6_scientist_tech_task_1) =pstor_reset(drx_sl_jup_b6_scientist_tech_task_1_fetch) =drx_sl_unregister_task_giver(drx_sl_jup_b6_scientist_tech_task_1)%
@@ -93,7 +93,7 @@ status_functor = hostage_task
 status_functor_params = hostage_companion_task_1
 condlist_0 = {!squad_exist(hostage_companion_task_1)} fail
 condlist_1 = {!task_giver_alive(drx_sl_jup_b6_scientist_tech_task_2)} fail
-condlist_2 = {=drx_sl_is_enemy(ecolog)} fail
+;condlist_2 = {=drx_sl_is_enemy(ecolog)} fail
 
 on_init = %=find_smart_under_faction_control_ex(drx_sl_jup_b6_scientist_tech_task_2_id:bandit) =setup_companion_task(hostage_companion_task_1_ecolog:nil:drx_sl_jup_b6_scientist_tech_task_2_id:true) +hostage_companion_task_1_started%
 on_complete = %=drx_sl_reward_random(2500:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:ecolog) =remove_special_task_squad(hostage_companion_task_1) =pstor_reset(drx_sl_jup_b6_scientist_tech_task_2_id) =pstor_reset(drx_sl_jup_b6_scientist_tech_task_2_target_id) -hostage_companion_task_1_hostage_rescued -hostage_companion_task_1_started =inc_task_stage(drx_sl_jup_b6_scientist_tech_task_2) =unlock_smart(drx_sl_jup_b6_scientist_tech_task_2_id) =drx_sl_unregister_task_giver(drx_sl_jup_b6_scientist_tech_task_2)%
@@ -119,7 +119,7 @@ stage_complete = 1
 target_functor = drx_sl_quest_item_task_3_target
 status_functor = drx_sl_quest_item_task_3_status
 condlist_0 = {!task_giver_alive(drx_sl_jup_b6_scientist_tech_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(ecolog)} fail
+;condlist_1 = {=drx_sl_is_enemy(ecolog)} fail
 
 on_init = %=drx_sl_create_quest_stash_3() +drx_sl_quest_item_task_3_started%
 on_complete = %=drx_sl_reward_random(1500:3000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:ecolog) =remove_item(drx_sl_quest_item_3) =inc_task_stage(drx_sl_jup_b6_scientist_tech_task_3) =pstor_reset(drx_sl_quest_stash_3_id) -drx_sl_quest_item_task_3_started =drx_sl_unregister_task_giver(drx_sl_jup_b6_scientist_tech_task_3)%
@@ -146,7 +146,7 @@ target = {!actor_has_item(main_story_6_jup_ug_documents)} jupiter_space_restrict
 status_functor = drx_sl_retrieve_item_task_status
 status_functor_params = main_story_6_jup_ug_documents
 condlist_0 = {!task_giver_alive(drx_sl_jup_b6_scientist_tech_task_4)} fail
-condlist_1 = {=drx_sl_is_enemy(ecolog)} fail
+;condlist_1 = {=drx_sl_is_enemy(ecolog)} fail
 
 on_complete = %+main_6_search_jup_ug_task_done =drx_sl_reward_random(7500:12000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:ecolog) =inc_task_stage(drx_sl_jup_b6_scientist_tech_task_4) =remove_item(main_story_6_jup_ug_documents) =drx_sl_unregister_task_giver(drx_sl_jup_b6_scientist_tech_task_4)%
 on_fail = %=fail_task_dec_goodwill(25:ecolog) =drx_sl_meet_random_honcho() =drx_sl_decrease_sl_tasks_count =drx_sl_unregister_task_giver(drx_sl_jup_b6_scientist_tech_task_4)%
@@ -167,7 +167,7 @@ task_complete_descr = drx_sl_jup_a6_freedom_leader_default_task_finish
 
 condlist_0 = {-drx_sl_dummy_info} complete
 condlist_1 = {!task_giver_alive(drx_sl_jup_a6_freedom_leader_default_task)} fail
-condlist_2 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_2 = {=drx_sl_is_enemy(freedom)} fail
 
 on_complete = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_jup_a6_freedom_leader_default_task)%
 on_fail = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_jup_a6_freedom_leader_default_task)%
@@ -195,7 +195,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(drx_sl_jup_a6_freedom_leader_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 fetch_func = %=drx_sl_setup_fetch_weapon(drx_sl_jup_a6_freedom_leader_task_1_fetch:3:4)%
 on_complete = %=drx_sl_fetch_reward_random(drx_sl_jup_a6_freedom_leader_task_1_fetch:0.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:freedom) =inc_task_stage(drx_sl_jup_a6_freedom_leader_task_1) =pstor_reset(drx_sl_jup_a6_freedom_leader_task_1_fetch) =drx_sl_unregister_task_giver(drx_sl_jup_a6_freedom_leader_task_1)%
@@ -222,7 +222,7 @@ target_functor = general_under_faction_control
 status_functor = check_smart_under_faction_control_staged
 status_functor_params = monolith
 condlist_0 = {!task_giver_alive(drx_sl_jup_a6_freedom_leader_task_2)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 on_init = %=find_smart_under_faction_control_ex(drx_sl_jup_a6_freedom_leader_task_2_id:monolith)%
 on_complete = %=drx_sl_reward_random(7500:9000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:freedom) =inc_task_stage(drx_sl_jup_a6_freedom_leader_task_2) =pstor_reset(drx_sl_jup_a6_freedom_leader_task_2_id) =pstor_reset(drx_sl_jup_a6_freedom_leader_task_2_target_id) =drx_sl_unregister_task_giver(drx_sl_jup_a6_freedom_leader_task_2)%
@@ -251,7 +251,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(drx_sl_jup_a6_freedom_leader_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 fetch_func = %=drx_sl_setup_fetch_artefact(drx_sl_jup_a6_freedom_leader_task_3_fetch:1:1)%
 on_complete = %=drx_sl_fetch_reward_random(drx_sl_jup_a6_freedom_leader_task_3_fetch:0.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:freedom) =inc_task_stage(drx_sl_jup_a6_freedom_leader_task_3) =pstor_reset(drx_sl_jup_a6_freedom_leader_task_3_fetch) =drx_sl_unregister_task_giver(drx_sl_jup_a6_freedom_leader_task_3)%
@@ -278,7 +278,7 @@ target = {!actor_has_item(main_story_7_mon_con_documents)} aes2_space_restrictor
 status_functor = drx_sl_retrieve_item_task_status
 status_functor_params = main_story_7_mon_con_documents
 condlist_0 = {!task_giver_alive(drx_sl_jup_a6_freedom_leader_task_4)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 on_complete = %+main_7_search_mon_con_task_done =drx_sl_reward_random(9000:12000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:freedom) =inc_task_stage(drx_sl_jup_a6_freedom_leader_task_4) =remove_item(main_story_7_mon_con_documents) =drx_sl_unregister_task_giver(drx_sl_jup_a6_freedom_leader_task_4)%
 on_fail = %=fail_task_dec_goodwill(25:freedom) =drx_sl_meet_random_honcho() =drx_sl_decrease_sl_tasks_count =drx_sl_unregister_task_giver(drx_sl_jup_a6_freedom_leader_task_4)%
@@ -315,7 +315,7 @@ task_complete_descr = jup_b6_scientist_tech_task_finish
 target_functor = jup_b6_scientist_tech_task_target_1
 condlist_0 = {!squad_exist(ecolog_companion_task_2)} fail
 condlist_1 = {!task_giver_alive(jup_b6_scientist_tech_task_1)} fail
-condlist_2 = {=drx_sl_is_enemy(ecolog)} fail
+;condlist_2 = {=drx_sl_is_enemy(ecolog)} fail
 
 on_init = %=setup_companion_task(ecolog_companion_task_2:jup_b41) =setup_task_target_anomaly -ecolog_companion_task_2_started -ecolog_companion_task_2_force_started%
 on_complete = %=drx_sl_reward_random_artefact(2500:7000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:ecolog) =remove_special_task_squad(ecolog_companion_task_2) =drx_sl_unregister_task_giver(jup_b6_scientist_tech_task_1) =drx_sl_reset_stored_task(jup_b6_scientist_tech_task_1)%
@@ -344,7 +344,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(jup_b6_scientist_tech_task_2)} fail
-condlist_1 = {=drx_sl_is_enemy(ecolog)} fail
+;condlist_1 = {=drx_sl_is_enemy(ecolog)} fail
 
 fetch_func = %=drx_sl_setup_fetch_artefact(jup_b6_scientist_tech_task_2_fetch:1:1)%
 on_complete = %=drx_sl_fetch_reward(jup_b6_scientist_tech_task_2_fetch:1:scientific_outfit) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:ecolog) =inc_task_stage(jup_b6_scientist_tech_task_2) =pstor_reset(jup_b6_scientist_tech_task_2_fetch) =drx_sl_unregister_task_giver(jup_b6_scientist_tech_task_2) =drx_sl_reset_stored_task(jup_b6_scientist_tech_task_2)%
@@ -372,7 +372,7 @@ status_functor = check_smart_under_faction_control_staged
 status_functor_params = bandit
 condlist_0 = {!squad_exist(drx_sl_raid_companion_squad_ecolog_2)} fail
 condlist_1 = {!task_giver_alive(jup_b6_scientist_tech_task_3)} fail
-condlist_2 = {=drx_sl_is_enemy(ecolog)} fail
+;condlist_2 = {=drx_sl_is_enemy(ecolog)} fail
 
 on_init = %=setup_companion_task(drx_sl_raid_companion_squad_ecolog_2:jup_b41) =find_smart_under_faction_control(jup_b6_scientist_tech_task_3_id:bandit)%
 on_complete = %=drx_sl_reward_random(3500:6000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:ecolog) =inc_task_stage(jup_b6_scientist_tech_task_3) =pstor_reset(jup_b6_scientist_tech_task_3_id) =pstor_reset(jup_b6_scientist_tech_task_3_target_id) =remove_special_task_squad(drx_sl_raid_companion_squad_ecolog_2) =drx_sl_unregister_task_giver(jup_b6_scientist_tech_task_3) =drx_sl_reset_stored_task(jup_b6_scientist_tech_task_3)%
@@ -399,7 +399,7 @@ target_functor = general_under_faction_control
 status_functor = drx_sl_assault_mutant_task_status
 condlist_0 = {!squad_exist(drx_sl_raid_companion_squad_stalker_1)} fail
 condlist_1 = {!task_giver_alive(jup_b220_trapper_task_1)} fail
-condlist_2 = {=drx_sl_is_enemy(stalker)} fail
+;condlist_2 = {=drx_sl_is_enemy(stalker)} fail
 
 on_init = %=setup_companion_task(drx_sl_raid_companion_squad_stalker_1:jup_a6) =drx_sl_setup_assault_mutant(jup_b220_trapper_task_1_id)%
 on_complete = %=drx_sl_reward_random_money(1000:3500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(jup_b220_trapper_task_1) =pstor_reset(jup_b220_trapper_task_1_id) =pstor_reset(jup_b220_trapper_task_1_target_id) =remove_special_task_squad(drx_sl_raid_companion_squad_stalker_1) =drx_sl_unregister_task_giver(jup_b220_trapper_task_1) =drx_sl_reset_stored_task(jup_b220_trapper_task_1)%
@@ -425,7 +425,7 @@ stage_complete = 1
 target_functor = general_bounty_task
 status_functor = bounty_task
 condlist_0 = {!task_giver_alive(jup_b220_trapper_task_2)} fail
-condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+;condlist_1 = {=drx_sl_is_enemy(stalker)} fail
 
 on_init = %=drx_sl_setup_bounty_hunt(jup_b220_trapper_task_2:stalker)%
 on_complete = %=drx_sl_reward_random_money(4500:7000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(jup_b220_trapper_task_2) =drx_sl_unregister_task_giver(jup_b220_trapper_task_2) =drx_sl_reset_stored_task(jup_b220_trapper_task_2)%
@@ -454,7 +454,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(jup_b220_trapper_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+;condlist_1 = {=drx_sl_is_enemy(stalker)} fail
 
 fetch_func = %=drx_sl_setup_fetch_weapon(jup_b220_trapper_task_3_fetch:1:1)%
 on_complete = %=drx_sl_fetch_reward_money(jup_b220_trapper_task_3_fetch:0.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(jup_b220_trapper_task_3) =pstor_reset(jup_b220_trapper_task_3_fetch) =drx_sl_unregister_task_giver(jup_b220_trapper_task_3) =drx_sl_reset_stored_task(jup_b220_trapper_task_3)%
@@ -483,7 +483,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(jup_b220_trapper_task_4)} fail
-condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+;condlist_1 = {=drx_sl_is_enemy(stalker)} fail
 
 fetch_func = %=drx_sl_setup_fetch_mutant_parts(jup_b220_trapper_task_4_fetch:1:1)%
 on_complete = %=drx_sl_reward_random(2500:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =remove_fetch_item(jup_b220_trapper_task_4_fetch) =inc_task_stage(jup_b220_trapper_task_4) =pstor_reset(jup_b220_trapper_task_4_fetch) =drx_sl_unregister_task_giver(jup_b220_trapper_task_4) =drx_sl_reset_stored_task(jup_b220_trapper_task_4)%
@@ -524,7 +524,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(jup_b217_stalker_tech_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+;condlist_1 = {=drx_sl_is_enemy(stalker)} fail
 
 fetch_func = %=setup_generic_fetch_task(jup_b217_stalker_tech_task_1_fetch:1:itm_repairkit_tier_1)%
 on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:stalker) =remove_fetch_item(jup_b217_stalker_tech_task_1_fetch) =inc_task_stage(jup_b217_stalker_tech_task_1) +jup_b217_stalker_tech_upgrade_tier_1 =drx_sl_unregister_task_giver(jup_b217_stalker_tech_task_1)%
@@ -552,7 +552,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(jup_b217_stalker_tech_task_2)} fail
-condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+;condlist_1 = {=drx_sl_is_enemy(stalker)} fail
 
 fetch_func = %=setup_generic_fetch_task(jup_b217_stalker_tech_task_2_fetch:1:itm_repairkit_tier_2)%
 on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:) =remove_fetch_item(jup_b217_stalker_tech_task_2_fetch) =inc_task_stage(jup_b217_stalker_tech_task_2) +jup_b217_stalker_tech_upgrade_tier_2 =drx_sl_unregister_task_giver(jup_b217_stalker_tech_task_2)%
@@ -580,7 +580,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(jup_b217_stalker_tech_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+;condlist_1 = {=drx_sl_is_enemy(stalker)} fail
 
 fetch_func = %=setup_generic_fetch_task(jup_b217_stalker_tech_task_3_fetch:1:itm_repairkit_tier_3)%
 on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:stalker) =remove_fetch_item(jup_b217_stalker_tech_task_3_fetch) =inc_task_stage(jup_b217_stalker_tech_task_3) +jup_b217_stalker_tech_upgrade_tier_3 =drx_sl_unregister_task_giver(jup_b217_stalker_tech_task_3)%
