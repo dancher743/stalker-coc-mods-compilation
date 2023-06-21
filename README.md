@@ -54,4 +54,5 @@ Mods
 39. Cooking the mutants parts (Team Epic, Anomaly Developers, Dancher)
 40. Added matches sound for campfires ignition from NLC 7 (Сяк & Co)
 41. TRX: Fresh Start (1.4) with adaptations (Tronex, Dancher)
-42. Russificator for TRX: Fresh Start (1.4) with adaptations (GhostWarrior98, Dancher)
+42. Better New Game Loadouts for TRX-Fresh Start 1.4 + AO 3.1 | CoC 1.4.22 (mithriak)
+43. Russificator for TRX: Fresh Start (1.4) with adaptations (GhostWarrior98, Dancher)
