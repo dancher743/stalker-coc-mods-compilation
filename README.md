@@ -53,5 +53,5 @@ Mods
 38. Companions Quick Menu 1.1 [UPDATE August 8] [CoC 1.5 r4] (Debrovski)
 39. Cooking the mutants parts (Team Epic, Anomaly Developers, Dancher)
 40. Added matches sound for campfires ignition from NLC 7 (Сяк & Co)
-41. TRX: Fresh Start (1.4) with adaptations (DoctorX, Dancher)
+41. TRX: Fresh Start (1.4) with adaptations (Tronex, Dancher)
 42. Russificator for TRX: Fresh Start (1.4) with adaptations (GhostWarrior98, Dancher)
