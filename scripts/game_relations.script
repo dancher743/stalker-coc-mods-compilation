@@ -218,7 +218,7 @@ local function drx_df_npc_on_death_callback( npc, who )
 	end
 
 	-- Base value for relation change:
-	local max_value = 200
+	local max_value = 50
 
 	-- Get dead guy faction:
 	local sim = alife( )
