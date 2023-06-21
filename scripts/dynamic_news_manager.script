@@ -1384,13 +1384,14 @@ function DynamicNewsManager:FoundArtefact(sender,itm) -- stalker found an artifa
 	return true
 end
 
-function DynamicNewsManager:FoundStash() -- reaction of angry stash owners
+function DynamicNewsManager:FoundStash(has_spot) -- reaction of angry stash owners
 	--printf(">>> Dyn News: FoundStash - call")
 	if not (shw_stash and self.sentences_fnames and self.sentences_snames) then
 		return false
 	end
 	
-	if (math.random(100) < 60) then -- %60 chance to ignore
+	local chance_to_ignore = has_spot and 70 or 30
+	if (math.random(100) < chance_to_ignore) then
 		return false
 	end
 	

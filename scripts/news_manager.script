@@ -197,13 +197,13 @@ function send_task(actor, type, tsk)
 
 end
 
-function send_treasure(param)
+function send_treasure(param, has_spot)
 	local news_caption = ""
 	if(param==0) then
 		news_caption = game.translate_string("st_found_new_treasure")
 	elseif(param==1) then
 		news_caption = game.translate_string("st_got_treasure")
-		dynamic_news_manager.get_dynamic_news():FoundStash() -- send stash found news
+		dynamic_news_manager.get_dynamic_news():FoundStash(has_spot) -- send stash found news
 	elseif(param==2) then
 		news_caption = game.translate_string("st_found_old_treasure")
 	end

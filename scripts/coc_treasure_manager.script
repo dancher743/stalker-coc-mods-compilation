@@ -82,9 +82,12 @@ local function actor_on_item_take_from_box(box,itm)
 		if (hud and box:is_inv_box_empty()) then
 			hud:HideActorMenu()
 		end
-		level.map_remove_object_spot(box:id(), "treasure")
+		local has_spot = level.map_has_object_spot(box:id(),"treasure") == 1
 		xr_statistic.inc_counter("stashes_found")
-		news_manager.send_treasure(1)
+		news_manager.send_treasure(1, has_spot)
+		if has_spot then
+			level.map_remove_object_spot(box:id(), "treasure")
+		end
 	end
 end
 
