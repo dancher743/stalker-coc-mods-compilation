@@ -33,7 +33,10 @@
 	
 <!-- TRX: Dynamic Relations (1.1) Option -->
 	<string id="ui_mm_dynamic_relations">
-        <text>Dynamic Faction Relations</text>
+        <text>Dynamic relations</text>
+    </string>
+	<string id="ui_mm_dynamic_relations_factor">
+        <text>Dynamic relations factor</text>
     </string>
 
 </string_table>
