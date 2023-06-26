@@ -45,10 +45,10 @@ local function save_state(m_data)
 end
 
 local function load_state(m_data)
-	sleep_hrs = m_data.ironman_sleep_hrs
-	granted_lives = m_data.ironman_granted_lives
-	life_cycle = m_data.ironman_life_cycle
-	life_feature = m_data.ironman_life_feature
+	sleep_hrs = m_data.ironman_sleep_hrs or sleep_hrs
+	granted_lives = m_data.ironman_granted_lives or granted_lives
+	life_cycle = m_data.ironman_life_cycle or life_cycle
+	life_feature = m_data.ironman_life_feature or life_feature
 	--printf(">>> Tronex: load_state | sleep_hrs: " .. tostring(sleep_hrs) .. " | granted_lives: " .. tostring(granted_lives) .. " | life_cycle: " .. tostring(life_cycle) .. " | life_feature: " .. tostring(life_feature))
 end
 
