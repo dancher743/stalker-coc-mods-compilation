@@ -1,0 +1,29 @@
+--
+--	Patch dressing
+--	Allows actor to dress/undress patch
+--	Added by Dancher
+--
+
+function can_use(item)
+	-- config, where patch = community
+	-- if actor == community - skip
+	-- else
+		-- if item ~= dressed (not contains) - spawn dressed patch and invoke "dressed" callback
+		-- else spawn undressed patch and invoke "undressed" callback
+		return "can_use"
+end
+
+function use(item)
+end
+
+function can_dress(item)
+end
+
+function dress(item)
+end
+
+function can_undress(item)
+end
+
+function undress(item)
+end
