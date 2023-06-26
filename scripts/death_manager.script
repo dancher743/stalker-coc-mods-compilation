@@ -181,7 +181,7 @@ function create_release_item(npc)
 								["ammo_og-7b"] = true
 							}
 	for sec,v in pairs(spawn_items) do
-		if (v > 0 and item_count[sec] and not utils.is_ammo(sec) and not grenade_classes[sec]) then
+		if (v > 0 and item_count[sec] and not utils.is_ammo(sec) and not grenade_classes[sec] and sec ~= "zombied_patch") then
 			local number = math.random(item_count[sec][1], item_count[sec][2])
 			create_items(npc, sec, number, v)
 		end
