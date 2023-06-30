@@ -16,8 +16,13 @@ function can_dress(item)
 end
 
 function dress(item)
-	local dressed_patch = system_ini():r_string_ex(item:section(),"dressed")
-	try_replace(item, dressed_patch)
+	local system_ini = system_ini()
+	local dressed_patch = system_ini:r_string_ex(item:section(),"dressed")
+	local patch_community = system_ini:r_string_ex(item:section(),"community")
+	
+	if try_replace(item, dressed_patch) == true then
+		SendScriptCallback("actor_on_item_patch_dressed", patch_community)
+	end
 end
 
 function can_undress(item)
@@ -26,7 +31,9 @@ end
 
 function undress(item)
 	local undressed_patch = system_ini():r_string_ex(item:section(),"undressed")
-	try_replace(item, undressed_patch)
+	if try_replace(item, undressed_patch) == true then
+		SendScriptCallback("actor_on_item_patch_undressed")
+	end
 end
 
 function has_patch_dressed(item)
