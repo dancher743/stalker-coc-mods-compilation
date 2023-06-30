@@ -174,47 +174,64 @@ function npc_update(npc)
 end
 
 function suspicion_increase(distance)
-	local increase = 1.5
+	local increase = 1
 	
 	if(distance > discovery_distance) then
 		increase = 0
 	else
 		local helm = db.actor:item_in_slot(12)
 		local outfit = db.actor:item_in_slot(7)
+		local has_helm_hides = helm and (helm:condition() > min_condition_h)
+		local has_outfit_hides = outfit and (outfit:condition() > min_condition_o)
+		local actor_community = utils.get_actor_community()
 		
-		local helm_cover = false
-		
-		if outfit then
-			local integrated_h = alun_utils.read_from_ini(nil,outfit:section(),"helmet_avaliable","bool",false)
-			if (not integrated_h) then
-				if helm then
-					local cond_h = helm:condition()
-					if (cond_h > min_condition_h) then
-						helm_cover = true
-					end
-				end
-			else
-				helm_cover = true
-			end
-		else
-			if helm then
-				local cond_h = helm:condition()
-				if (cond_h > min_condition_h) then
-					helm_cover = true
-				end
-			end
+		if not has_helm_hides and has_outfit_hides then
+			has_helm_hides = alun_utils.read_from_ini(nil,outfit:section(),"helmet_avaliable","bool",false)
 		end
 		
-		if outfit and outfit:condition() > min_condition_o then
-			increase = increase - 0.5
+		if has_helm_hides then
+			increase = increase - 0.25
 		end
 		
-		if helm_cover then
-			increase = increase - 0.5
+		if has_outfit_hides then
+			local value = 0.25
+			
+			if is_outfit_fits(actor_community, outfit:section()) then
+				value = value + 0.25
+			end
+		
+			increase = increase - value
 		end
 	end
 	
+	--printf("DBG suspicion increased: "..increase)
 	return increase
+end
+
+function is_outfit_fits(npc_community, outfit) -- where outfit is section
+	local outfit_community = ""
+	
+	if(string.match(outfit,"specops_") or string.match(outfit,"military_")) then
+		outfit_community = "army"
+	elseif(string.match(outfit,"bandit_") or string.match(outfit,"trenchcoat_") or string.match(outfit,"banditmerc_")) then
+		outfit_community = "bandit"
+	elseif(string.match(outfit,"cs_")) then
+		outfit_community = "csky"	
+	elseif(string.match(outfit,"svoboda_")) then
+		outfit_community = "freedom"	
+	elseif(string.match(outfit,"ecolog_")) then
+		outfit_community = "ecolog"	
+	elseif(string.match(outfit,"dolg_")) then
+		outfit_community = "dolg"
+	elseif(string.match(outfit,"merc_")) then
+		outfit_community = "killer"
+	elseif(string.match(outfit,"stalker_") or string.match(outfit,"scientific_") or string.match(outfit,"exo_")) then
+		outfit_community = "stalker"
+	elseif(string.match(outfit,"monolith_")) then
+		outfit_community = monolith
+	end
+	
+	return outfit_community == npc_community
 end
 
 function save_state(data)
