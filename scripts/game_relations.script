@@ -24,6 +24,7 @@ game_relations_by_num = {	[0] = "friend",
 							[2] = "enemy",
 }
 temp_goodwill_table = {}
+local drx_debug_logs_enabled = false
 
 
 -- ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -123,7 +124,7 @@ function drx_df_change_faction_relations( faction_1, faction_2, delta )
 	alun_utils.save_var( db.actor, ("drx_df_" .. faction_1 .. "_" .. faction_2 .. "_relations"), relation )
 	set_factions_community_num( faction_2, faction_1, relation )
 	alun_utils.save_var( db.actor, ("drx_df_" .. faction_2 .. "_" .. faction_1 .. "_relations"), relation )
-	printf( ("DRX DF: " .. faction_1 .. " / " .. faction_2 .. " relations changed from " .. tostring( old_1_2_relations ) .. " to " .. tostring( get_factions_community( faction_1, faction_2 ) )) )
+	drx_debug_log( (faction_1 .. " / " .. faction_2 .. " relations changed from " .. tostring( old_1_2_relations ) .. " to " .. tostring( get_factions_community( faction_1, faction_2 ) )) )
 
 	-- Change actor faction / faction 2 relations:
 	set_factions_community_num( ("actor_" .. faction_1), faction_2, relation )
@@ -139,7 +140,7 @@ function drx_df_change_faction_relations( faction_1, faction_2, delta )
 
 	-- Check if faction war footing has changed to hostile:
 	if ( (old_1_2_relations > ENEMIES) and (get_factions_community( faction_1, faction_2 ) <= ENEMIES) ) then
-		printf( ("DRX DF: " .. faction_1 .. " has declared war on " .. faction_2) )
+		drx_debug_log( (faction_1 .. " has declared war on " .. faction_2) )
 		news_manager.send_tip( db.actor, (game.translate_string( faction_1 ) .. " " .. game.translate_string("st_drx_relations_and") .. " " .. game.translate_string( faction_2 ) .. " " .. game.translate_string("st_drx_relations_declared_war")), nil, "patriarch", nil, nil )
 		if ( character_community( db.actor ) == faction_1 or ("actor_" .. faction_1) ) then
 			relation_registry.set_community_goodwill( faction_2, db.actor:id( ), 0 )
@@ -150,7 +151,7 @@ function drx_df_change_faction_relations( faction_1, faction_2, delta )
 
 	-- Check if faction war footing has changed to allied:
 	if ( (old_1_2_relations < FRIENDS) and (get_factions_community( faction_1, faction_2 ) >= FRIENDS) ) then
-		printf( ("DRX DF: " .. faction_1 .. " has formed an alliance with " .. faction_2) )
+		drx_debug_log( (faction_1 .. " has formed an alliance with " .. faction_2) )
 		news_manager.send_tip( db.actor, (game.translate_string( faction_1 ) .. " " .. game.translate_string("st_drx_relations_and") .. " " .. game.translate_string( faction_2 ) .. " " .. game.translate_string("st_drx_relations_alliance")), nil, "completionist", nil, nil )
 		if ( character_community( db.actor ) == faction_1 or ("actor_" .. faction_1) ) then
 			relation_registry.set_community_goodwill( faction_2, db.actor:id( ), 0 )
@@ -161,7 +162,7 @@ function drx_df_change_faction_relations( faction_1, faction_2, delta )
 
 	-- Check if faction war footing has changed from allied to neutral:
 	if ( (old_1_2_relations >= FRIENDS) and (get_factions_community( faction_1, faction_2 ) < FRIENDS) and (get_factions_community( faction_1, faction_2 ) > ENEMIES) ) then
-		printf( ("DRX DF: Relations between " .. faction_1 .. " and " .. faction_2 .. " are deteriorating") )
+		drx_debug_log( ("Relations between " .. faction_1 .. " and " .. faction_2 .. " are deteriorating") )
 		news_manager.send_tip( db.actor, (game.translate_string( faction_1 ) .. " - " .. game.translate_string( faction_2 ) .. "" .. game.translate_string("st_drx_relations_deteriorating")), nil, "silver_or_lead", nil, nil )
 		if ( character_community( db.actor ) == faction_1 or ("actor_" .. faction_1) ) then
 			relation_registry.set_community_goodwill( faction_2, db.actor:id( ), 0 )
@@ -172,7 +173,7 @@ function drx_df_change_faction_relations( faction_1, faction_2, delta )
 
 	-- Check if faction war footing has changed from hostile to neutral:
 	if ( (old_1_2_relations <= ENEMIES) and (get_factions_community( faction_1, faction_2 ) < FRIENDS) and (get_factions_community( faction_1, faction_2 ) > ENEMIES) ) then
-		printf( ("DRX DF: " .. faction_1 .. " and " .. faction_2 .. " have declared a cease-fire") )
+		drx_debug_log( (faction_1 .. " and " .. faction_2 .. " have declared a cease-fire") )
 		news_manager.send_tip( db.actor, (game.translate_string( faction_1 ) .. " " .. game.translate_string("st_drx_relations_and") .. " " .. game.translate_string( faction_2 ) .. " " .. game.translate_string("st_drx_relations_cease_fire")), nil, nil, nil, nil )
 		if ( character_community( db.actor ) == faction_1 or ("actor_" .. faction_1) ) then
 			relation_registry.set_community_goodwill( faction_2, db.actor:id( ), 0 )
@@ -360,7 +361,7 @@ function drx_df_on_game_load_callback( )
 			relation = alun_utils.load_var( db.actor, ("drx_df_" .. faction_1 .. "_" .. faction_2 .. "_relations"), nil )
 			if ( relation ~= nil ) then
 				set_factions_community_num( faction_1, faction_2, relation )
-				printf( ("DRX DF: " .. faction_1 .. " - " .. faction_2 .. " relations restored to " .. tostring( relation )) )
+				drx_debug_log( (faction_1 .. " - " .. faction_2 .. " relations restored to " .. tostring( relation )) )
 			end
 			relation = alun_utils.load_var( db.actor, ("drx_df_" .. faction_2 .. "_" .. faction_1 .. "_relations"), nil )
 			if ( relation ~= nil ) then
@@ -752,4 +753,13 @@ function get_squad_relation_to_actor_by_id(squad_id)
         end
     end
 	return "enemy"
+end
+
+-- Debug
+function drx_debug_log(message)
+	if not drx_debug_logs_enabled then
+		return
+	end
+	
+	printf("DRX DF: " .. message)
 end
