@@ -906,3 +906,7 @@ end
 function pos_in_rect(p,r)
 	return (p.x >= r.x1) and (p.x <= r.x2) and (p.y >= r.y1) and (p.y <= r.y2)
 end
+
+function get_actor_community()
+	return string.sub(db.actor:character_community(), 7)
+end

@@ -4,26 +4,55 @@
 --	Added by Dancher
 --
 
-function can_use(item)
-	-- config, where patch = community
-	-- if actor == community - skip
-	-- else
-		-- if item ~= dressed (not contains) - spawn dressed patch and invoke "dressed" callback
-		-- else spawn undressed patch and invoke "undressed" callback
-		return "can_use"
-end
-
-function use(item)
-end
-
 function can_dress(item)
+	local actor_community = utils.get_actor_community()
+	local patch_community = system_ini():r_string_ex(item:section(),"community")
+	
+	if patch_community ~= actor_community and 
+		not has_patch_dressed(item)
+	then
+		return "dress"
+	end
 end
 
 function dress(item)
+	local dressed_patch = system_ini():r_string_ex(item:section(),"dressed")
+	try_replace(item, dressed_patch)
 end
 
 function can_undress(item)
+	return "undress"
 end
 
 function undress(item)
+	local undressed_patch = system_ini():r_string_ex(item:section(),"undressed")
+	try_replace(item, undressed_patch)
+end
+
+function has_patch_dressed(item)
+	local result = false
+	local function iterator(npc, inventory_item)
+		if string.find(tostring(inventory_item:section()), "patch_dressed") then
+			result = true
+		end
+	end
+	
+	db.actor:iterate_inventory(iterator, nil)
+	return result
+end
+
+function try_replace(item, by_item)	
+	if item == nil or by_item == nil then
+		return false
+	end
+
+	local sim = alife()
+	local actor = db.actor
+	sim:create(by_item,actor:position(),actor:level_vertex_id(),actor:game_vertex_id(),actor:id())
+	
+	local se_obj = sim:object(item:id())
+	if (se_obj) then 
+		sim:release(se_obj)
+	end
+	return true
 end

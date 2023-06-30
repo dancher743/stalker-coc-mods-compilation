@@ -16,14 +16,16 @@ inv_grid_width                           = 1
 inv_grid_height                          = 1
 cost                                     = 50
 auto_attach                              = false
-use1_functor							 = patch_dressing.can_use
-use1_action_functor						 = patch_dressing.use
+use1_functor							 = patch_dressing.can_dress
+use1_action_functor						 = patch_dressing.dress
 
 [csky_patch]:base_patch
 visual                                   = dynamics\tfw_badges\tfw_badge_csky.ogf
 inv_name                                 = csky_patch
 inv_name_short                           = csky_patch
 description                              = csky_patch_description
+community							 	 = csky
+dressed									 = csky_patch_dressed
 inv_grid_x                               = 17
 inv_grid_y                               = 3
 
@@ -32,6 +34,8 @@ visual                                   = dynamics\tfw_badges\tfw_badge_freedom
 inv_name                                 = freedom_patch
 inv_name_short                           = freedom_patch
 description                              = freedom_patch_description
+community							 	 = freedom
+dressed									 = freedom_patch_dressed
 inv_grid_x                               = 0
 inv_grid_y                               = 4
 
@@ -40,6 +44,8 @@ visual                                   = dynamics\tfw_badges\tfw_badge_defianc
 inv_name                                 = stalker_patch
 inv_name_short                           = stalker_patch
 description                              = stalker_patch_description
+community							 	 = stalker
+dressed									 = stalker_patch_dressed
 inv_grid_x                               = 1
 inv_grid_y                               = 5
 
@@ -48,6 +54,8 @@ visual                                   = dynamics\tfw_badges\tfw_badge_ecolog.
 inv_name                                 = ecolog_patch
 inv_name_short                           = ecolog_patch
 description                              = ecolog_patch_description
+community							 	 = ecolog
+dressed									 = ecolog_patch_dressed
 inv_grid_x                               = 19
 inv_grid_y                               = 3
 
@@ -56,6 +64,8 @@ visual                                   = dynamics\tfw_badges\tfw_badge_bandit.
 inv_name                                 = bandit_patch
 inv_name_short                           = bandit_patch
 description                              = bandit_patch_description
+community							 	 = bandit
+dressed									 = bandit_patch_dressed
 inv_grid_x                               = 16
 inv_grid_y                               = 3
 
@@ -64,6 +74,8 @@ visual                                   = dynamics\tfw_badges\tfw_badge_dolg.og
 inv_name                                 = duty_patch
 inv_name_short                           = duty_patch
 description                              = duty_patch_description
+community							 	 = duty
+dressed									 = duty_patch_dressed
 inv_grid_x                               = 18
 inv_grid_y                               = 3
 
@@ -72,6 +84,8 @@ visual                                   = dynamics\tfw_badges\tfw_badge_monolit
 inv_name                                 = monolith_patch
 inv_name_short                           = monolith_patch
 description                              = monolith_patch_description
+community							 	 = monolith
+dressed									 = monolith_patch_dressed
 inv_grid_x                               = 3
 inv_grid_y                               = 4
 
@@ -80,6 +94,8 @@ visual                                   = dynamics\tfw_badges\tfw_badge_militar
 inv_name                                 = army_patch
 inv_name_short                           = army_patch
 description                              = army_patch_description
+community							 	 = army
+dressed									 = army_patch_dressed
 inv_grid_x                               = 14
 inv_grid_y                               = 3
 
@@ -88,9 +104,106 @@ visual                                   = dynamics\tfw_badges\tfw_badge_merc.og
 inv_name                                 = merc_patch
 inv_name_short                           = merc_patch
 description                              = merc_patch_description
+community							 	 = merc
+dressed									 = merc_patch_dressed
 inv_grid_x                               = 2
 inv_grid_y                               = 4
 
 [zombied_patch]:base_patch
 ; This is a dummy patch that will be replaced by a patch based on a zombied's visual.
 ; See "death_manager.try_spawn_patch_for_zombied(...)" function for more details.
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;	DRESSED PATCHES
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[base_patch_dressed]:identity_immunities
+GroupControlSection                      = spawn_group
+discovery_dependency                     =
+$spawn                                   = "devices\monster_items\mutant_psevdodog_tail"
+;$prefetch 								 = 32
+class                                    = II_ATTCH
+cform                                    = skeleton
+radius                                   = 1
+inv_weight                               = 0.01
+can_trade                                = false
+quest_item								 = true
+description                              = base_patch_dressed_description
+inv_grid_width                           = 1
+inv_grid_height                          = 1
+cost                                     = 50
+auto_attach                              = false
+use1_functor							 = patch_dressing.can_undress
+use1_action_functor						 = patch_dressing.undress
+
+[csky_patch_dressed]:base_patch_dressed
+visual                                   = dynamics\tfw_badges\tfw_badge_csky.ogf
+inv_name                                 = csky_patch_dressed_name
+inv_name_short                           = csky_patch_dressed_name
+undressed								 = csky_patch
+inv_grid_x                               = 17
+inv_grid_y                               = 3
+
+[freedom_patch_dressed]:base_patch_dressed
+visual                                   = dynamics\tfw_badges\tfw_badge_freedom.ogf
+inv_name                                 = freedom_patch_dressed_name
+inv_name_short                           = freedom_patch_dressed_name
+undressed								 = freedom_patch
+inv_grid_x                               = 0
+inv_grid_y                               = 4
+
+[stalker_patch_dressed]:base_patch_dressed
+visual                                   = dynamics\tfw_badges\tfw_badge_defiance.ogf
+inv_name                                 = stalker_patch_dressed_name
+inv_name_short                           = stalker_patch_dressed_name
+undressed								 = stalker_patch
+inv_grid_x                               = 1
+inv_grid_y                               = 5
+
+[ecolog_patch_dressed]:base_patch_dressed
+visual                                   = dynamics\tfw_badges\tfw_badge_ecolog.ogf
+inv_name                                 = ecolog_patch_dressed_name
+inv_name_short                           = ecolog_patch_dressed_name
+undressed								 = ecolog_patch
+inv_grid_x                               = 19
+inv_grid_y                               = 3
+
+[bandit_patch_dressed]:base_patch_dressed
+visual                                   = dynamics\tfw_badges\tfw_badge_bandit.ogf
+inv_name                                 = bandit_patch_dressed_name
+inv_name_short                           = bandit_patch_dressed_name
+undressed								 = bandit_patch
+inv_grid_x                               = 16
+inv_grid_y                               = 3
+
+[duty_patch_dressed]:base_patch_dressed
+visual                                   = dynamics\tfw_badges\tfw_badge_dolg.ogf
+inv_name                                 = duty_patch_dressed_name
+inv_name_short                           = duty_patch_dressed_name
+undressed								 = duty_patch
+inv_grid_x                               = 18
+inv_grid_y                               = 3
+
+[monolith_patch_dressed]:base_patch_dressed
+visual                                   = dynamics\tfw_badges\tfw_badge_monolith.ogf
+inv_name                                 = monolith_patch_dressed_name
+inv_name_short                           = monolith_patch_dressed_name
+undressed								 = monolith_patch
+inv_grid_x                               = 3
+inv_grid_y                               = 4
+
+[army_patch_dressed]:base_patch_dressed
+visual                                   = dynamics\tfw_badges\tfw_badge_military.ogf
+inv_name                                 = army_patch_dressed_name
+inv_name_short                           = army_patch_dressed_name
+undressed								 = army_patch
+inv_grid_x                               = 14
+inv_grid_y                               = 3
+
+[merc_patch_dressed]:base_patch_dressed
+visual                                   = dynamics\tfw_badges\tfw_badge_merc.ogf
+inv_name                                 = merc_patch_dressed_name
+inv_name_short                           = merc_patch_dressed_name
+undressed								 = merc_patch
+inv_grid_x                               = 2
+inv_grid_y                               = 4
