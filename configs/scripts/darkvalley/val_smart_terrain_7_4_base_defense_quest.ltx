@@ -5,7 +5,7 @@ active = sr_idle@wait_for_actor
 on_actor_inside = sr_idle@check_conditions, {+warlab_deactivate_generators_done} sr_idle@nil
 
 [sr_idle@check_conditions]
-on_info = {=is_arx_check_option_enabled("bases_defense") =is_dark_night -actor_is_sleeping !is_faction_enemy_to_actor(bandit) -warlab_deactivate_generators_done =random_chance(25)} sr_idle@decide
+on_info = {=is_arx_check_option_enabled(bases_defense) =is_dark_night -actor_is_sleeping !is_faction_enemy_to_actor(bandit) -warlab_deactivate_generators_done =random_chance(25)} sr_idle@decide
 on_actor_outside = sr_idle@wait_for_actor
 
 [sr_idle@decide]
