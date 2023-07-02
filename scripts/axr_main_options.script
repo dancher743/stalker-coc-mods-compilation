@@ -97,6 +97,8 @@ function opt_menu_on_init(menu)
 			end
 		end
 	end}
+	-- Base defense quests
+	menu.gameplay_options["bases_defense"]		= {default=true, 	debug_only=false, 	typ="check"}
 	
 	-- I do not recommend allowing a factor greater than 1.5 because there are not enough smart terrain jobs
 	menu.gameplay_options["alife_mutant_pop"]			= {default=0.5, 	debug_only=false, 	typ="list", list={0.25,0.50,1.0,1.5}}

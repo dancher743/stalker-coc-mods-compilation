@@ -514,4 +514,7 @@
 	<string id="ui_mm_localization">
 		<text>Локализация</text>
 	</string>
+	<string id="ui_mm_bases_defense">
+		<text>Защита лагерей</text>
+	</string>
 </string_table>
