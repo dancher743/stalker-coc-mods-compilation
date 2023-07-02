@@ -3362,5 +3362,5 @@ function get_start_time_elapsed_ge(actor,npc,p)
 end
 
 function is_arx_check_option_enabled(actor,npc,p)
-	return axr_main.config:r_value("mm_options","enable_"..p,1,false)
+	return p[1] and axr_main.config:r_value("mm_options","enable_"..p[1],1,false)
 end
