@@ -3360,3 +3360,7 @@ end
 function get_start_time_elapsed_ge(actor,npc,p)
 	return p[1] and tonumber(game.get_game_time():diffSec(level.get_start_time())) >= tonumber(p[1])
 end
+
+function is_arx_check_option_enabled(actor,npc,p)
+	return p[1] and axr_main.config:r_value("mm_options","enable_"..p[1],1,false)
+end
