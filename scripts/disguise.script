@@ -31,6 +31,8 @@ local suspicion = {}
 local callout = false
 local warned = false
 
+local patch_sections
+
 function on_game_start()
 	RegisterScriptCallback("npc_on_update",npc_update)
 	
@@ -38,8 +40,8 @@ function on_game_start()
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
 	
-	RegisterScriptCallback("actor_on_item_patch_dressed", actor_on_item_patch_dressed)
-	RegisterScriptCallback("actor_on_item_patch_undressed", actor_on_item_patch_undressed)
+	RegisterScriptCallback("actor_item_to_slot",actor_item_to_slot)
+	RegisterScriptCallback("actor_item_to_ruck",actor_item_to_ruck)
 end
 
 function on_game_load()
@@ -57,12 +59,19 @@ function on_game_load()
 	--printf("DBG default " .. (default_faction or "?"))
 end
 
-function actor_on_item_patch_dressed(patch_community)
-	change_community(patch_community)
+function actor_item_to_slot(item)
+	if IsPatch(item) then
+		--printf("To slot. Is patch. Section: ".. item:section())
+		local patch_community = system_ini():r_string_ex(item:section(),"community")
+		change_community(patch_community)
+	end
 end
 
-function actor_on_item_patch_undressed()
-	change_community(default_faction);
+function actor_item_to_ruck(item)
+	if IsPatch(item) then
+		--printf("To ruck. Is patch. Section: ".. item:section())
+		change_community(default_faction);
+	end
 end
 
 function change_community(community)
@@ -275,4 +284,21 @@ function load_state(data)
 	end
 
 	--printf("DBG default " .. (default_faction or "?"))
+end
+
+function IsPatch(obj)
+	if not (patch_sections) then
+		patch_sections = {
+			["csky_patch"] 			= true,
+			["freedom_patch"] 		= true,
+			["stalker_patch"] 		= true,
+			["ecolog_patch"] 			= true,
+			["bandit_patch"] 			= true,
+			["duty_patch"] 			= true,
+			["monolith_patch"] 		= true,
+			["army_patch"] 			= true,
+			["merc_patch"] 			= true
+		}
+	end
+	return obj and patch_sections[obj:section()] or false
 end
