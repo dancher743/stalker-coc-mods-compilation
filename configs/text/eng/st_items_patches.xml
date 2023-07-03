@@ -6,63 +6,63 @@
 		<text>Clear Sky patch</text>
 	</string>
 	<string id="csky_patch_description">
-		<text>An insignia torn from a uniform of the Clear Sky faction. This faction insignia depicts a sunrise against a clean blue sky, flanked by doves. It is meant to communicate the faction's desire to heal the Zone, as well as its distaste for conflict. Clear Sky has asserted an aim to gradually reduce the frequency and severity of blowouts and other anomalous cataclysms. Few stalkers believe such a thing will ever actually be possible.</text>
+		<text>An insignia from a uniform of the Clear Sky faction. Allows you to disguise yourself as a member of this faction. This faction insignia depicts a sunrise against a clean blue sky, flanked by doves. It is meant to communicate the faction's desire to heal the Zone, as well as its distaste for conflict. Clear Sky has asserted an aim to gradually reduce the frequency and severity of blowouts and other anomalous cataclysms. Few stalkers believe such a thing will ever actually be possible.</text>
 	</string>
 
 	<string id="freedom_patch">
 		<text>Freedom patch</text>
 	</string>
 	<string id="freedom_patch_description">
-		<text>An insignia torn from a uniform of the Freedom faction. This faction insignia depicts a green wolf set against a black background alongside the Ukrainian flag. Overall, the design is meant to communicate Freedom's social nature and love of the land alongside their staunch determination and collective predatory viciousness in battle. Why anarchists would want any country's flag as part of their design, however, is a mystery.</text>
+		<text>An insignia from a uniform of the Freedom faction. Allows you to disguise yourself as a member of this faction. This faction insignia depicts a green wolf set against a black background alongside the Ukrainian flag. Overall, the design is meant to communicate Freedom's social nature and love of the land alongside their staunch determination and collective predatory viciousness in battle. Why anarchists would want any country's flag as part of their design, however, is a mystery.</text>
 	</string>
 
 	<string id="stalker_patch">
 		<text>Loner patch</text>
 	</string>
 	<string id="stalker_patch_description">
-		<text>An insignia torn from the uniform of a loner. Commonly worn by unaligned stalkers, this patch is deemed a collectible by mercenaries, who exchange badges like this for spoils from a mysterious patron. As loners are numerous, yet often split and alone, they're considered easy pickings by the more organized and predatory groups in the Zone.</text>
+		<text>An insignia from the uniform of a loner. Allows you to disguise yourself as a member of this faction. Commonly worn by unaligned stalkers, this patch is deemed a collectible by mercenaries, who exchange badges like this for spoils from a mysterious patron. As loners are numerous, yet often split and alone, they're considered easy pickings by the more organized and predatory groups in the Zone.</text>
 	</string>
 
 	<string id="ecolog_patch">
 		<text>Ecologist patch</text>
 	</string>
 	<string id="ecolog_patch_description">
-		<text>An insignia torn from the uniform of an ecologist. This faction insignia depicts a pair of golden wings set against a white and cyan background. The Zone's black market highly values Ecologist patches, as sewing one convincingly into a suit can allow a stalker to go almost anywhere without fear of molestation by other groups. Ecologists seldom part with their patches willingly, although that doesn't stop the Zone's less scrupulous denizens.</text>
+		<text>An insignia from the uniform of an ecologist. Allows you to disguise yourself as a member of this faction. This faction insignia depicts a pair of golden wings set against a white and cyan background. The Zone's black market highly values Ecologist patches, as sewing one convincingly into a suit can allow a stalker to go almost anywhere without fear of molestation by other groups. Ecologists seldom part with their patches willingly, although that doesn't stop the Zone's less scrupulous denizens.</text>
 	</string>
 
 	<string id="bandit_patch">
 		<text>Bandit patch</text>
 	</string>
 	<string id="bandit_patch_description">
-		<text>An insignia torn from the uniform of a bandit. This faction insignia depicts a cracked black skull set against a white shield. This symbol is highly in keeping with the vision held by some of the faction's leaders - that they are no mere thugs, but rather the lords of feudal mobs, bringing order to those who accept their "protection" and visiting ruthless retribution upon anyone who dares defy them.</text>
+		<text>An insignia from the uniform of a bandit. Allows you to disguise yourself as a member of this faction. This faction insignia depicts a cracked black skull set against a white shield. This symbol is highly in keeping with the vision held by some of the faction's leaders - that they are no mere thugs, but rather the lords of feudal mobs, bringing order to those who accept their "protection" and visiting ruthless retribution upon anyone who dares defy them.</text>
 	</string>
 
 	<string id="duty_patch">
 		<text>Duty patch</text>
 	</string>
 	<string id="duty_patch_description">
-		<text>An insignia torn from a uniform of the Duty faction. This faction insignia depicts a gold crosshair set against a red and black shield. The design is meant to allude to the faction's military roots, but without detracting from their chief role as the stoic soldiers who resolutely contend the Zone's every move for the sake of the world outside.</text>
+		<text>An insignia from a uniform of the Duty faction. Allows you to disguise yourself as a member of this faction. This faction insignia depicts a gold crosshair set against a red and black shield. The design is meant to allude to the faction's military roots, but without detracting from their chief role as the stoic soldiers who resolutely contend the Zone's every move for the sake of the world outside.</text>
 	</string>
 
 	<string id="monolith_patch">
 		<text>Monolith patch</text>
 	</string>
 	<string id="monolith_patch_description">
-		<text>An insignia torn from a uniform of the Monolith faction. This insignia pictures feathered wings in profile set against a golden sun - perhaps a symbol for the Wish Granter. The most intriguing aspect of this patch is that it is worn almost exclusively by a group perceived as brainwashed and insane. The very existence of this patch suggests that Monolith troops either retain a higher level of creativity than initially thought, or an outside force is covertly outfitting them. Monolith patches are prized among other groups, as they demonstrate the ability to fight against Monolith and live - an ability highly respected by the veterans of the Zone.</text>
+		<text>An insignia from a uniform of the Monolith faction. Allows you to disguise yourself as a member of this faction. This insignia pictures feathered wings in profile set against a golden sun - perhaps a symbol for the Wish Granter. The most intriguing aspect of this patch is that it is worn almost exclusively by a group perceived as brainwashed and insane. The very existence of this patch suggests that Monolith troops either retain a higher level of creativity than initially thought, or an outside force is covertly outfitting them. Monolith patches are prized among other groups, as they demonstrate the ability to fight against Monolith and live - an ability highly respected by the veterans of the Zone.</text>
 	</string>
 
 	<string id="army_patch">
 		<text>Army patch</text>
 	</string>
 	<string id="army_patch_description">
-		<text>An insignia torn from a uniform of the Ukrainian army. This faction emblem is a full military coat of arms. It depicts three heater shields, the centermost one in the colours of the Ukrainian flag with two swords in saltire behind it. Encircling these shields are golden laurels. The Military forces in the Zone seem to fancy themselves as protectors and peacekeepers first and foremost. In reality, whether or not these Zone forces even try to fulfill this role is a topic of bitter contention.</text>
+		<text>An insignia from a uniform of the Ukrainian army. Allows you to disguise yourself as a member of this faction. This faction emblem is a full military coat of arms. It depicts three heater shields, the centermost one in the colours of the Ukrainian flag with two swords in saltire behind it. Encircling these shields are golden laurels. The Military forces in the Zone seem to fancy themselves as protectors and peacekeepers first and foremost. In reality, whether or not these Zone forces even try to fulfill this role is a topic of bitter contention.</text>
 	</string>
 
 	<string id="merc_patch">
 		<text>Mercenary patch</text>
 	</string>
 	<string id="merc_patch_description">
-		<text>An insignia torn from the uniform of a mercenary. This loose clan insignia depicts an azure bird of prey set against a black background. It is meant to be indicative of the Mercs' character as a faction of cold, precise, highly mobile soldiers of fortune, ready to capture or terminate their objectives at a moment's notice.</text>
+		<text>An insignia from the uniform of a mercenary. Allows you to disguise yourself as a member of this faction. This loose clan insignia depicts an azure bird of prey set against a black background. It is meant to be indicative of the Mercs' character as a faction of cold, precise, highly mobile soldiers of fortune, ready to capture or terminate their objectives at a moment's notice.</text>
 	</string>
 	
 </string_table>
