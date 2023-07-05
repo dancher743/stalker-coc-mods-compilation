@@ -60,6 +60,10 @@ function on_game_load()
 end
 
 function actor_item_to_slot(item)
+	if not db.actor:alive() then
+		return
+	end
+	
 	if IsPatch(item) then
 		--printf("To slot. Is patch. Section: ".. item:section())
 		local patch_community = system_ini():r_string_ex(item:section(),"community")
@@ -68,6 +72,10 @@ function actor_item_to_slot(item)
 end
 
 function actor_item_to_ruck(item)
+	if not db.actor:alive() then
+		return
+	end
+
 	if IsPatch(item) then
 		--printf("To ruck. Is patch. Section: ".. item:section())
 		change_community(default_faction);
