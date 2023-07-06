@@ -67,33 +67,26 @@ function on_game_load()
 end
 
 function actor_item_to_slot(item)
-	if not db.actor:alive() or not IsPatch(item) then
-		return
-	end
-	
-	local patch_community = system_ini():r_string_ex(item:section(),"community")
-	local result_type = try_change_community(patch_community)
-	
-	if result_type == same then
-		return
-	end
-	
-	hide_actor_menu_lazy("slot",result_type,patch_community)
+	disguise_by_patch(true, item)
 end
 
 function actor_item_to_ruck(item)
+	disguise_by_patch(false, item)
+end
+
+function disguise_by_patch(is_slot, item)
 	if not db.actor:alive() or not IsPatch(item) then
 		return
 	end
-
-	local patch_community = default_faction
+	
+	local patch_community = is_slot and system_ini():r_string_ex(item:section(),"community") or default_faction
 	local result_type = try_change_community(patch_community)
 	
 	if result_type == same then
 		return
 	end
 	
-	hide_actor_menu_lazy("ruck",result_type,patch_community)
+	hide_actor_menu_lazy(is_slot,result_type,patch_community)
 end
 
 function try_change_community(community)
@@ -122,12 +115,13 @@ function try_change_community(community)
 	return result_type
 end
 
-function hide_actor_menu_lazy(act_id,result_type,community)
+function hide_actor_menu_lazy(is_slot,result_type,community)
+	local act_id = is_slot and "slot" or "ruck"
 	local function hide_actor_menu()
 		local hud = get_hud()
 		if (hud) then
 			hud:HideActorMenu()
-			printf("actor_item_to_slot -> "..result_type)
+			--printf("actor_item_to_"..act_id.." -> "..result_type)
 			show_message(result_type, community)
 		end
 		return true
