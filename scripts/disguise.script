@@ -32,6 +32,7 @@ local callout = false
 local warned = false
 
 local patch_sections
+local current_patch_in_slot
 
 -- results of try_change_community() function
 local same = 0
@@ -41,14 +42,16 @@ local remember = 3
 local changed = 4
 
 function on_game_start()
-	RegisterScriptCallback("npc_on_update",npc_update)
+	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
+	RegisterScriptCallback("actor_on_update",actor_on_update)
+	RegisterScriptCallback("npc_on_update",npc_on_update)
 	
 	RegisterScriptCallback("on_game_load",on_game_load)
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
 	
-	RegisterScriptCallback("actor_item_to_slot",actor_item_to_slot)
-	RegisterScriptCallback("actor_item_to_ruck",actor_item_to_ruck)
+	--RegisterScriptCallback("actor_item_to_slot",actor_item_to_slot)
+	--RegisterScriptCallback("actor_item_to_ruck",actor_item_to_ruck)
 end
 
 function on_game_load()
@@ -66,12 +69,44 @@ function on_game_load()
 	--printf("DBG default " .. (default_faction or "?"))
 end
 
-function actor_item_to_slot(item)
-	disguise_by_patch(true, item)
+function actor_on_first_update()
+	current_patch_in_slot = db.actor:item_in_slot(14)
 end
 
-function actor_item_to_ruck(item)
-	disguise_by_patch(false, item)
+function actor_on_update()
+	local actor = db.actor
+	
+	if not actor:alive() then
+		return
+	end
+	
+	local new_patch_in_slot = actor:item_in_slot(14)
+	
+	if current_patch_in_slot == nil and new_patch_in_slot ~= nil then
+		-- item to slot
+		on_item_to_slot(new_patch_in_slot)
+	elseif current_patch_in_slot ~= nil and new_patch_in_slot == nil then
+		-- item to ruck
+		on_item_to_ruck(current_patch_in_slot)
+	elseif current_patch_in_slot ~= nil and new_patch_in_slot ~= nil and 
+		current_patch_in_slot:section() ~= new_patch_in_slot:section() then
+		-- replace slot by item
+		on_item_in_slot_replaced(new_patch_in_slot, current_patch_in_slot)
+	end
+	
+	current_patch_in_slot = new_patch_in_slot
+end
+
+function on_item_to_slot(item)
+	news_manager.send_tip(db.actor, "Patch added into slot: ".. item:section(), nil, nil, 5000)
+end
+
+function on_item_to_ruck(item)
+	news_manager.send_tip(db.actor, "Patch removed to ruck: ".. item:section(), nil, nil, 5000)
+end
+
+function on_item_in_slot_replaced(item, old_item)
+	news_manager.send_tip(db.actor, "Patch ".. old_item:section() .." in slot was replaced by: ".. item:section(), nil, nil, 5000)
 end
 
 function disguise_by_patch(is_slot, item)
@@ -178,7 +213,7 @@ function anybody_remember()
 	return false
 end
 
-function npc_update(npc)
+function npc_on_update(npc)
 	if not default_faction or not db.actor then return end
 	
 	local npc_is_enemy = game_relations.is_factions_enemies(default_faction, npc:character_community()) or npc:relation(db.actor) == game_object.enemy
