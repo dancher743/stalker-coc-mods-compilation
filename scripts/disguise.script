@@ -31,15 +31,15 @@ local suspicion = {}
 local callout = false
 local warned = false
 
+local patch_slot_number = 14
 local patch_sections
 local current_patch_in_slot
 
 -- results of try_change_community() function
-local same = 0
-local returned = 1
-local see = 2
-local remember = 3
-local changed = 4
+local returned = 0
+local see = 1
+local remember = 2
+local changed = 3
 
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
@@ -70,7 +70,7 @@ function on_game_load()
 end
 
 function actor_on_first_update()
-	current_patch_in_slot = db.actor:item_in_slot(14)
+	current_patch_in_slot = db.actor:item_in_slot(patch_slot_number)
 end
 
 function actor_on_update()
@@ -80,17 +80,18 @@ function actor_on_update()
 		return
 	end
 	
-	local new_patch_in_slot = actor:item_in_slot(14)
+	send_patch_slot_callback()
+end
+
+function send_patch_slot_callback()
+	local new_patch_in_slot = db.actor:item_in_slot(patch_slot_number)
 	
 	if current_patch_in_slot == nil and new_patch_in_slot ~= nil then
-		-- item to slot
 		on_item_to_slot(new_patch_in_slot)
 	elseif current_patch_in_slot ~= nil and new_patch_in_slot == nil then
-		-- item to ruck
 		on_item_to_ruck(current_patch_in_slot)
 	elseif current_patch_in_slot ~= nil and new_patch_in_slot ~= nil and 
 		current_patch_in_slot:section() ~= new_patch_in_slot:section() then
-		-- replace slot by item
 		on_item_in_slot_replaced(new_patch_in_slot, current_patch_in_slot)
 	end
 	
@@ -98,38 +99,39 @@ function actor_on_update()
 end
 
 function on_item_to_slot(item)
-	news_manager.send_tip(db.actor, "Patch added into slot: ".. item:section(), nil, nil, 5000)
+	disguise_by_patch(true, item)
+	--news_manager.send_tip(db.actor, "Patch added into slot: ".. item:section(), nil, nil, 5000)
 end
 
 function on_item_to_ruck(item)
-	news_manager.send_tip(db.actor, "Patch removed to ruck: ".. item:section(), nil, nil, 5000)
+	disguise_by_patch(false, item)
+	--news_manager.send_tip(db.actor, "Patch removed to ruck: ".. item:section(), nil, nil, 5000)
 end
 
 function on_item_in_slot_replaced(item, old_item)
-	news_manager.send_tip(db.actor, "Patch ".. old_item:section() .." in slot was replaced by: ".. item:section(), nil, nil, 5000)
+	disguise_by_patch(true, item)
+	--news_manager.send_tip(db.actor, "Patch ".. old_item:section() .." in slot was replaced by: ".. item:section(), nil, nil, 5000)
 end
 
-function disguise_by_patch(is_slot, item)
-	if not db.actor:alive() or not IsPatch(item) then
+function disguise_by_patch(is_to_slot, item)
+	if not IsPatch(item) then
 		return
 	end
 	
-	local patch_community = is_slot and system_ini():r_string_ex(item:section(),"community") or default_faction
+	local patch_community = is_to_slot and system_ini():r_string_ex(item:section(),"community") or default_faction
+	
+	if utils.get_actor_community() == patch_community then
+		return
+	end
+	
 	local result_type = try_change_community(patch_community)
-	
-	if result_type == same then
-		return
-	end
-	
-	hide_actor_menu_lazy(is_slot,result_type,patch_community)
+	hide_actor_menu_lazy(is_to_slot, result_type, patch_community)
 end
 
 function try_change_community(community)
 	local result_type
 	
-	if community == utils.get_actor_community() then
-		result_type = same
-	elseif community == default_faction then
+	if community == default_faction then
 		db.actor:set_character_community( ("actor_" .. community), 0, 0 )
 		suspicion = {}
 		callout = true
@@ -150,24 +152,21 @@ function try_change_community(community)
 	return result_type
 end
 
-function hide_actor_menu_lazy(is_slot,result_type,community)
-	local act_id = is_slot and "slot" or "ruck"
+function hide_actor_menu_lazy(is_to_slot,result_type,community)
 	local function hide_actor_menu()
 		local hud = get_hud()
 		if (hud) then
 			hud:HideActorMenu()
-			--printf("actor_item_to_"..act_id.." -> "..result_type)
 			show_message(result_type, community)
 		end
 		return true
 	end
+	local act_id = is_to_slot and "slot" or "ruck"
 	CreateTimeEvent("disguise","hide_actor_menu_when_to_"..act_id,0.1,hide_actor_menu)
 end
 
 function show_message(type, community)
-	if type == same then
-		return
-	elseif type == returned then
+	if type == returned then
 		--news_manager.send_tip(db.actor, "You're now identified as a member of " .. game.translate_string(default_faction) .. " again.", nil, nil, 5000)
 		--SetHudMsg("You're now identified as a member of " .. game.translate_string(default_faction) .. " again.", 5)
 		SetHudMsg("returned", 5)
