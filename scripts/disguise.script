@@ -125,6 +125,11 @@ function disguise_by_patch(is_to_slot, item)
 	end
 	
 	local result_type = try_change_community(patch_community)
+	
+	if result_type == see or result_type == remember then
+		db.actor:transfer_item(item,db.actor)
+	end
+	
 	hide_actor_menu_lazy(is_to_slot, result_type, patch_community)
 end
 
