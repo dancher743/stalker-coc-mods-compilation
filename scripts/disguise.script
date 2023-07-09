@@ -32,8 +32,19 @@ local callout = false
 local warned = false
 
 local patch_slot_number = 14
-local patch_sections
 local current_patch_in_slot
+
+local patch_sections = {
+	["csky_patch"] 			= "csky",
+	["freedom_patch"] 		= "freedom",
+	["stalker_patch"] 		= "stalker",
+	["ecolog_patch"] 		= "ecolog",
+	["bandit_patch"] 		= "bandit",
+	["duty_patch"] 			= "dolg",
+	["monolith_patch"] 		= "monolith",
+	["army_patch"] 			= "army",
+	["merc_patch"] 			= "killer"
+}
 
 local change_community_result = {
 	not_allowed = 0,
@@ -42,16 +53,12 @@ local change_community_result = {
 }
 
 function on_game_start()
-	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
 	RegisterScriptCallback("actor_on_update",actor_on_update)
 	RegisterScriptCallback("npc_on_update",npc_on_update)
 	
 	RegisterScriptCallback("on_game_load",on_game_load)
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
-	
-	--RegisterScriptCallback("actor_item_to_slot",actor_item_to_slot)
-	--RegisterScriptCallback("actor_item_to_ruck",actor_item_to_ruck)
 end
 
 function on_game_load()
@@ -69,13 +76,6 @@ function on_game_load()
 	--printf("DBG default " .. (default_faction or "?"))
 end
 
-function actor_on_first_update()
-	current_patch_in_slot = db.actor:item_in_slot(patch_slot_number)
-end
-
-local transfered
-local make_active
-
 local does_anybody_see
 local does_anybody_remember
 local message_flag = false
@@ -91,7 +91,7 @@ function actor_on_update()
 	local actor_community = utils.get_actor_community()
 
 	if patch_in_slot then
-		local patch_community = system_ini():r_string_ex(patch_in_slot:section(),"community")
+		local patch_community = patch_sections[patch_in_slot:section()]
 		if actor_community ~= patch_community then
 			change_community(patch_community)
 		end
@@ -100,147 +100,35 @@ function actor_on_update()
 			change_community(default_faction)
 		end
 	end
-	
-	current_patch_in_slot = patch_in_slot
-end
-
-function send_patch_slot_callback(new_patch_in_slot)
-	printf("DANCHER: send_patch_slot_callback")
-	
-	local has_patch_added_to_empty_slot = current_patch_in_slot == nil and new_patch_in_slot ~= nil
-	if has_patch_added_to_empty_slot then
-		on_item_to_slot(new_patch_in_slot)
-		return
-	end
-	
-	local has_patch_removed_from_slot = current_patch_in_slot ~= nil and new_patch_in_slot == nil
-	if has_patch_removed_from_slot then
-		on_item_to_ruck(current_patch_in_slot)
-		return
-	end
-	
-	local has_patch_in_slot_replaced_by_new_patch = current_patch_in_slot ~= nil and new_patch_in_slot ~= nil and 
-		current_patch_in_slot:section() ~= new_patch_in_slot:section()
-	if has_patch_in_slot_replaced_by_new_patch then
-		on_item_in_slot_replaced(new_patch_in_slot, current_patch_in_slot)
-	end
-end
-
-function on_item_to_slot(item)
-	printf("DANCHER: on_item_to_slot")
-	if check_if_disguise_possible(item, false) then
-		disguise_by_patch(item)
-	end
-	
-	--news_manager.send_tip(db.actor, "Patch added into slot: ".. item:section(), nil, nil, 5000)
-end
-
-function on_item_to_ruck(item)
-	printf("DANCHER: on_item_to_ruck")
-	if check_if_disguise_possible(item, true) then
-		undisguise_without_patch()
-	end
-	--news_manager.send_tip(db.actor, "Patch removed to ruck: ".. item:section(), nil, nil, 5000)
-end
-
-function on_item_in_slot_replaced(item, old_item)
-	printf("DANCHER: on_item_in_slot_replaced")
-	if check_if_disguise_possible(old_item, true) then
-		disguise_by_patch(item)
-	end
-	--news_manager.send_tip(db.actor, "Patch ".. old_item:section() .." in slot was replaced by: ".. item:section(), nil, nil, 5000)
-end
-
-function check_if_disguise_possible(item, is_to_ruck)
-	printf("DANCHER: try check_if_disguise_possible")
-	--local has_community_changed = utils.get_actor_community() ~= default_faction
-	local result = true
-	if anybody_see() or anybody_remember() then
-		result = false
-		local actor = db.actor
-		
-		if is_to_ruck then
-			printf("DANCHER: make_item_active")
-			actor:make_item_active(item)
-			make_active = true
-		else
-			printf("DANCHER: transfer_item")
-			actor:transfer_item(item,actor)
-			transfered = true
-		end
-		
-		local message = get_message(change_community_result.not_allowed)
-		hide_actor_menu_lazy(message)
-	end
-	return result
-end
-
-function disguise_by_patch(item)
-	local patch_community = system_ini():r_string_ex(item:section(),"community")
-	if utils.get_actor_community() == patch_community then
-		return
-	end
-	change_community(patch_community)
-	
-	local message_type
-	if patch_community == default_faction then
-		message_type = change_community_result.returned
-	else
-		message_type = change_community_result.changed
-	end
-	local message = get_message(message_type, patch_community)
-	
-	hide_actor_menu_lazy(message)
-end
-
-function undisguise_without_patch()
-	if utils.get_actor_community() == default_faction then
-		return
-	end
-	change_community(default_faction)
-	
-	local message = get_message(change_community_result.returned, default_faction)
-	
-	hide_actor_menu_lazy(message)
 end
 
 function change_community(community)
+	local actor = db.actor
+	local message
+	
 	if does_anybody_see or does_anybody_remember then
 		if not message_flag then
-			news_manager.send_tip(db.actor, "not allowed to changed", nil, nil, 5000)
+			message = get_message(change_community_result.not_allowed)
+			news_manager.send_tip(actor, message, nil, nil, 5000)
 			message_flag = true
 		end
-		return
-	end
-	
-	if community == default_faction then
-		suspicion = {}
-		callout = true
-		warned = true
-		news_manager.send_tip(db.actor, "community returned", nil, nil, 5000)
-		message_flag = false
 	else
-		suspicion = {}
-		callout = false
-		warned = false
-		news_manager.send_tip(db.actor, "community changed", nil, nil, 5000)
+		if community == default_faction then
+			suspicion = {}
+			callout = true
+			warned = true
+			message = get_message(change_community_result.returned)
+		else
+			suspicion = {}
+			callout = false
+			warned = false
+			message = get_message(change_community_result.changed)
+		end
+		
+		actor:set_character_community( ("actor_" .. community), 0, 0 )
+		news_manager.send_tip(actor, message, nil, nil, 5000)
 		message_flag = false
 	end
-	
-	db.actor:set_character_community( ("actor_" .. community), 0, 0 )
-end
-
-function hide_actor_menu_lazy(message)
-	local function hide_actor_menu()
-		local hud = get_hud()
-		if (hud) then
-			hud:HideActorMenu()
-			SetHudMsg(message, 5)
-		end
-		return true
-	end
-	RemoveTimeEvent("disguise","hide_actor_menu")
-	CreateTimeEvent("disguise","hide_actor_menu",0.1,hide_actor_menu)
 end
 
 function get_message(type, community)
@@ -444,21 +332,4 @@ function load_state(data)
 	end
 
 	--printf("DBG default " .. (default_faction or "?"))
-end
-
-function IsPatch(obj)
-	if not (patch_sections) then
-		patch_sections = {
-			["csky_patch"] 			= true,
-			["freedom_patch"] 		= true,
-			["stalker_patch"] 		= true,
-			["ecolog_patch"] 		= true,
-			["bandit_patch"] 		= true,
-			["duty_patch"] 			= true,
-			["monolith_patch"] 		= true,
-			["army_patch"] 			= true,
-			["merc_patch"] 			= true
-		}
-	end
-	return obj and patch_sections[obj:section()] or false
 end
