@@ -76,6 +76,10 @@ end
 local transfered
 local make_active
 
+local does_anybody_see
+local does_anybody_remember
+local message_flag = false
+
 function actor_on_update()
 	local actor = db.actor
 	
@@ -83,31 +87,21 @@ function actor_on_update()
 		return
 	end
 	
-	printf("DANCHER: actor_on_update started")
-	
-	local new_patch_in_slot = db.actor:item_in_slot(patch_slot_number)
-	
-	if new_patch_in_slot and not IsPatch(new_patch_in_slot) then
-		return
+	local patch_in_slot = db.actor:item_in_slot(patch_slot_number)
+	local actor_community = utils.get_actor_community()
+
+	if patch_in_slot then
+		local patch_community = system_ini():r_string_ex(patch_in_slot:section(),"community")
+		if actor_community ~= patch_community then
+			change_community(patch_community)
+		end
+	else
+		if actor_community ~= default_faction then
+			change_community(default_faction)
+		end
 	end
 	
-	send_patch_slot_callback(new_patch_in_slot)
-	
-	if transfered then
-		new_patch_in_slot = nil
-	end
-	
-	if make_active then
-		new_patch_in_slot = current_patch_in_slot
-	end
-	
-	local v = new_patch_in_slot and new_patch_in_slot:section() or "nil"
-	printf("DANCHER: befor actor_on_update ended: updated new_patch_in_slot -> "..v)
-	
-	current_patch_in_slot = new_patch_in_slot
-	transfered = false
-	make_active = false
-	printf("DANCHER: actor_on_update ended")
+	current_patch_in_slot = patch_in_slot
 end
 
 function send_patch_slot_callback(new_patch_in_slot)
@@ -210,15 +204,27 @@ function undisguise_without_patch()
 	hide_actor_menu_lazy(message)
 end
 
-function change_community(community)	
+function change_community(community)
+	if does_anybody_see or does_anybody_remember then
+		if not message_flag then
+			news_manager.send_tip(db.actor, "not allowed to changed", nil, nil, 5000)
+			message_flag = true
+		end
+		return
+	end
+	
 	if community == default_faction then
 		suspicion = {}
 		callout = true
 		warned = true
+		news_manager.send_tip(db.actor, "community returned", nil, nil, 5000)
+		message_flag = false
 	else
 		suspicion = {}
 		callout = false
 		warned = false
+		news_manager.send_tip(db.actor, "community changed", nil, nil, 5000)
+		message_flag = false
 	end
 	
 	db.actor:set_character_community( ("actor_" .. community), 0, 0 )
@@ -279,6 +285,9 @@ function anybody_remember()
 end
 
 function npc_on_update(npc)
+	does_anybody_see = anybody_see()
+    does_anybody_remember = anybody_remember()
+
 	if not default_faction or not db.actor then return end
 	
 	local npc_is_enemy = game_relations.is_factions_enemies(default_faction, npc:character_community()) or npc:relation(db.actor) == game_object.enemy
