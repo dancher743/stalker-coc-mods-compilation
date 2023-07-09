@@ -73,12 +73,17 @@ function actor_on_first_update()
 	current_patch_in_slot = db.actor:item_in_slot(patch_slot_number)
 end
 
+local transfered
+local make_active
+
 function actor_on_update()
 	local actor = db.actor
 	
 	if not actor:alive() then
 		return
 	end
+	
+	printf("DANCHER: actor_on_update started")
 	
 	local new_patch_in_slot = db.actor:item_in_slot(patch_slot_number)
 	
@@ -88,10 +93,26 @@ function actor_on_update()
 	
 	send_patch_slot_callback(new_patch_in_slot)
 	
+	if transfered then
+		new_patch_in_slot = nil
+	end
+	
+	if make_active then
+		new_patch_in_slot = current_patch_in_slot
+	end
+	
+	local v = new_patch_in_slot and new_patch_in_slot:section() or "nil"
+	printf("DANCHER: befor actor_on_update ended: updated new_patch_in_slot -> "..v)
+	
 	current_patch_in_slot = new_patch_in_slot
+	transfered = false
+	make_active = false
+	printf("DANCHER: actor_on_update ended")
 end
 
 function send_patch_slot_callback(new_patch_in_slot)
+	printf("DANCHER: send_patch_slot_callback")
+	
 	local has_patch_added_to_empty_slot = current_patch_in_slot == nil and new_patch_in_slot ~= nil
 	if has_patch_added_to_empty_slot then
 		on_item_to_slot(new_patch_in_slot)
@@ -107,23 +128,57 @@ function send_patch_slot_callback(new_patch_in_slot)
 	local has_patch_in_slot_replaced_by_new_patch = current_patch_in_slot ~= nil and new_patch_in_slot ~= nil and 
 		current_patch_in_slot:section() ~= new_patch_in_slot:section()
 	if has_patch_in_slot_replaced_by_new_patch then
-		on_item_in_slot_replaced(new_patch_in_slot)
+		on_item_in_slot_replaced(new_patch_in_slot, current_patch_in_slot)
 	end
 end
 
 function on_item_to_slot(item)
-	disguise_by_patch(item)
+	printf("DANCHER: on_item_to_slot")
+	if check_if_disguise_possible(item, false) then
+		disguise_by_patch(item)
+	end
+	
 	--news_manager.send_tip(db.actor, "Patch added into slot: ".. item:section(), nil, nil, 5000)
 end
 
 function on_item_to_ruck(item)
-	undisguise_without_patch()
+	printf("DANCHER: on_item_to_ruck")
+	if check_if_disguise_possible(item, true) then
+		undisguise_without_patch()
+	end
 	--news_manager.send_tip(db.actor, "Patch removed to ruck: ".. item:section(), nil, nil, 5000)
 end
 
-function on_item_in_slot_replaced(item)
-	disguise_by_patch(item)
+function on_item_in_slot_replaced(item, old_item)
+	printf("DANCHER: on_item_in_slot_replaced")
+	if check_if_disguise_possible(old_item, true) then
+		disguise_by_patch(item)
+	end
 	--news_manager.send_tip(db.actor, "Patch ".. old_item:section() .." in slot was replaced by: ".. item:section(), nil, nil, 5000)
+end
+
+function check_if_disguise_possible(item, is_to_ruck)
+	printf("DANCHER: try check_if_disguise_possible")
+	--local has_community_changed = utils.get_actor_community() ~= default_faction
+	local result = true
+	if anybody_see() or anybody_remember() then
+		result = false
+		local actor = db.actor
+		
+		if is_to_ruck then
+			printf("DANCHER: make_item_active")
+			actor:make_item_active(item)
+			make_active = true
+		else
+			printf("DANCHER: transfer_item")
+			actor:transfer_item(item,actor)
+			transfered = true
+		end
+		
+		local message = get_message(change_community_result.not_allowed)
+		hide_actor_menu_lazy(message)
+	end
+	return result
 end
 
 function disguise_by_patch(item)
@@ -183,6 +238,10 @@ function hide_actor_menu_lazy(message)
 end
 
 function get_message(type, community)
+	if community == nil then
+		community = ""
+	end
+	
 	if type == change_community_result.not_allowed then
 		return "not_allowed"
 	elseif type == change_community_result.changed then
