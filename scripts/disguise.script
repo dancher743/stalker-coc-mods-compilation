@@ -77,11 +77,15 @@ end
 function actor_on_update()
 	local actor = db.actor
 	
-	if not actor:alive() or not IsPatch(item) then
+	if not actor:alive() then
 		return
 	end
 	
 	local new_patch_in_slot = db.actor:item_in_slot(patch_slot_number)
+	
+	if new_patch_in_slot and not IsPatch(new_patch_in_slot) then
+		return
+	end
 	
 	send_patch_slot_callback(new_patch_in_slot)
 	
@@ -397,8 +401,8 @@ function IsPatch(obj)
 			["csky_patch"] 			= true,
 			["freedom_patch"] 		= true,
 			["stalker_patch"] 		= true,
-			["ecolog_patch"] 			= true,
-			["bandit_patch"] 			= true,
+			["ecolog_patch"] 		= true,
+			["bandit_patch"] 		= true,
 			["duty_patch"] 			= true,
 			["monolith_patch"] 		= true,
 			["army_patch"] 			= true,
