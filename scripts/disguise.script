@@ -36,10 +36,9 @@ local patch_sections
 local current_patch_in_slot
 
 local change_community_result = {
-   see = 0,
-   remember = 1,
-   changed = 2,
-   returned = 3
+	not_allowed = 0,
+	changed = 1,
+	returned = 2
 }
 
 function on_game_start()
@@ -113,75 +112,69 @@ function send_patch_slot_callback(new_patch_in_slot)
 end
 
 function on_item_to_slot(item)
-	disguise_by_patch(item, false)
+	disguise_by_patch(item)
 	--news_manager.send_tip(db.actor, "Patch added into slot: ".. item:section(), nil, nil, 5000)
 end
 
 function on_item_to_ruck(item)
-	disguise_by_patch(item, true)
+	undisguise_without_patch()
 	--news_manager.send_tip(db.actor, "Patch removed to ruck: ".. item:section(), nil, nil, 5000)
 end
 
 function on_item_in_slot_replaced(item)
-	disguise_by_patch(item, false)
+	disguise_by_patch(item)
 	--news_manager.send_tip(db.actor, "Patch ".. old_item:section() .." in slot was replaced by: ".. item:section(), nil, nil, 5000)
 end
 
-function disguise_by_patch(item, is_to_ruck)
-	local patch_community = is_to_ruck and default_faction or system_ini():r_string_ex(item:section(),"community")
-	
+function disguise_by_patch(item)
+	local patch_community = system_ini():r_string_ex(item:section(),"community")
 	if utils.get_actor_community() == patch_community then
 		return
 	end
+	change_community(patch_community)
 	
-	local result_type = try_change_community(patch_community)
-	
-	if result_type == change_community_result.see or
-		result_type == change_community_result.remember 
-	then
-		local actor = db.actor
-		if is_to_ruck then
-			actor:make_item_active(item)
-		else
-			actor:transfer_item(item,actor)
-		end
-	end
-	
-	hide_actor_menu_lazy(result_type, patch_community)
-end
-
-function try_change_community(community)
-	local result_type
-	
-	if anybody_see() then
-		result_type = change_community_result.see
-	elseif anybody_remember() then
-		result_type = change_community_result.remember
+	local message_type
+	if patch_community == default_faction then
+		message_type = change_community_result.returned
 	else
-		if community == default_faction then
-			suspicion = {}
-			callout = true
-			warned = true
-			result_type = change_community_result.returned
-		else
-			suspicion = {}
-			callout = false
-			warned = false
-			result_type = change_community_result.changed
-		end
-		
-		db.actor:set_character_community( ("actor_" .. community), 0, 0 )
+		message_type = change_community_result.changed
 	end
+	local message = get_message(message_type, patch_community)
 	
-	return result_type
+	hide_actor_menu_lazy(message)
 end
 
-function hide_actor_menu_lazy(message_type,community)
+function undisguise_without_patch()
+	if utils.get_actor_community() == default_faction then
+		return
+	end
+	change_community(default_faction)
+	
+	local message = get_message(change_community_result.returned, default_faction)
+	
+	hide_actor_menu_lazy(message)
+end
+
+function change_community(community)	
+	if community == default_faction then
+		suspicion = {}
+		callout = true
+		warned = true
+	else
+		suspicion = {}
+		callout = false
+		warned = false
+	end
+	
+	db.actor:set_character_community( ("actor_" .. community), 0, 0 )
+end
+
+function hide_actor_menu_lazy(message)
 	local function hide_actor_menu()
 		local hud = get_hud()
 		if (hud) then
 			hud:HideActorMenu()
-			show_message(message_type, community)
+			SetHudMsg(message, 5)
 		end
 		return true
 	end
@@ -189,23 +182,13 @@ function hide_actor_menu_lazy(message_type,community)
 	CreateTimeEvent("disguise","hide_actor_menu",0.1,hide_actor_menu)
 end
 
-function show_message(type, community)
-	if type == change_community_result.see then
-		--news_manager.send_tip(db.actor, "You have been seen changing outfit, everybody remembers you as a " .. game.translate_string(community) .." --member.", nil, nil, 5000)
-		--SetHudMsg("You have been seen changing outfit, everybody remembers you as a " .. game.translate_string(community) ..", 5)
-		SetHudMsg("see", 5)
-	elseif type == change_community_result.remember then
-		--[[news_manager.send_tip(db.actor, "You have been seen recently, everybody remembers you as a " .. game.translate_string(community) .." member.", nil, nil, 5000)]]
-		--SetHudMsg("You have been seen recently, everybody remembers you as a " .. game.translate_string(community) .." member.", 5)
-		SetHudMsg("remember", 5)
+function get_message(type, community)
+	if type == change_community_result.not_allowed then
+		return "not_allowed"
 	elseif type == change_community_result.changed then
-		--news_manager.send_tip(db.actor, "With this outfit people will assume you're a member of the " .. game.translate_string(community) .. " faction.", nil, nil, --5000)
-		--SetHudMsg("With this outfit people will assume you're a member of the " .. game.translate_string(community) .. " faction.", 5)
-		SetHudMsg("changed", 5)
+		return "changed"
 	elseif type == change_community_result.returned then
-		--news_manager.send_tip(db.actor, "You're now identified as a member of " .. game.translate_string(default_faction) .. " again.", nil, nil, 5000)
-		--SetHudMsg("You're now identified as a member of " .. game.translate_string(default_faction) .. " again.", 5)
-		SetHudMsg("returned", 5)
+		return "returned"
 	end
 end
 
