@@ -52,10 +52,10 @@ local patch_sections = {
 	["merc_patch"] 			= "killer"
 }
 
-local disguise_result_type = {
+local message_type = {
 	not_allowed = 0,
-	started = 1,
-	ended = 2
+	changed = 1,
+	returned = 2
 }
 
 function on_game_start()
@@ -114,19 +114,19 @@ function disguise_by_patch()
 		local patch_community = patch_sections[patch_in_slot:section()]
 		if actor_community ~= patch_community then
 			if has_actor_in_sight then
-				message_about_disguise(disguise_result_type.not_allowed, true)
+				message_about_disguise(message_type.not_allowed, true)
 			else
 				change_community(patch_community)
-				message_about_disguise(disguise_result_type.started, false)
+				message_about_disguise(message_type.changed, false)
 			end
 		end
 	else
 		if actor_community == disguise_community then
 			if has_actor_in_sight then
-				message_about_disguise(disguise_result_type.not_allowed, true)
+				message_about_disguise(message_type.not_allowed, true)
 			else
 				change_community(default_faction)
-				message_about_disguise(disguise_result_type.ended, false)
+				message_about_disguise(message_type.returned, false)
 			end
 		end
 	end
@@ -155,11 +155,11 @@ function message_about_disguise(type, is_once)
 
 	local message
 
-	if type == disguise_result_type.not_allowed then
+	if type == message_type.not_allowed then
 		message = "not_allowed"
-	elseif type == disguise_result_type.started then
+	elseif type == message_type.changed then
 		message = "changed"
-	elseif type == disguise_result_type.ended then
+	elseif type == message_type.returned then
 		message = "returned"
 	end
 	
