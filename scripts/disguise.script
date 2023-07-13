@@ -31,6 +31,8 @@ local suspicion = {}
 local callout = false
 local warned = false
 
+local default_faction
+local disguise_activated = false
 local patch_slot_number = 14
 local current_patch_in_slot
 
@@ -70,6 +72,7 @@ function on_game_load()
 			ds_suspicion = suspicion,
 			ds_callout = callout,
 			ds_warned = warned,
+			ds_community = disguise_community
 		}
 	}
 	load_state(defaults)
@@ -79,6 +82,7 @@ end
 local does_anybody_see
 local does_anybody_remember
 local message_flag = false
+local disguise_community
 
 function actor_on_update()
 	local actor = db.actor
@@ -90,21 +94,32 @@ function actor_on_update()
 	local patch_in_slot = db.actor:item_in_slot(patch_slot_number)
 	local actor_community = utils.get_actor_community()
 
+	if (disguise_community ~= nil and actor_community ~= disguise_community) or 
+		(disguise_community == nil and actor_community ~= default_faction) then
+		default_faction = actor_community
+	end
+
 	if patch_in_slot then
 		local patch_community = patch_sections[patch_in_slot:section()]
 		if actor_community ~= patch_community then
-			change_community(patch_community)
+			if try_change_community(patch_community) then
+				disguise_community = patch_community
+			end
 		end
 	else
-		if actor_community ~= default_faction then
-			change_community(default_faction)
+		if actor_community == disguise_community then
+			if try_change_community(default_faction) then
+				disguise_community = nil
+				printf("disguise_community -> "..tostring(disguise_community))
+			end
 		end
 	end
 end
 
-function change_community(community)
+function try_change_community(community)
 	local actor = db.actor
 	local message
+	local result
 	
 	if does_anybody_see or does_anybody_remember then
 		if not message_flag then
@@ -112,6 +127,7 @@ function change_community(community)
 			news_manager.send_tip(actor, message, nil, nil, 5000)
 			message_flag = true
 		end
+		result = false
 	else
 		if community == default_faction then
 			suspicion = {}
@@ -128,7 +144,10 @@ function change_community(community)
 		actor:set_character_community( ("actor_" .. community), 0, 0 )
 		news_manager.send_tip(actor, message, nil, nil, 5000)
 		message_flag = false
+		result = true
 	end
+	
+	return result
 end
 
 function get_message(type, community)
@@ -299,6 +318,7 @@ function save_state(data)
 	data.disguise_system.ds_warned = warned
 	data.disguise_system.ds_last_seen = last_seen
 	data.disguise_system.ds_suspicion = suspicion
+	data.disguise_system.ds_community = disguise_community
 
 	--printf("DBG default " .. (default_faction or "?"))
 end
@@ -309,6 +329,7 @@ function load_state(data)
 	default_faction = data.disguise_system.ds_default_faction
 	callout = data.disguise_system.ds_callout
 	warned = data.disguise_system.ds_warned or callout
+	disguise_community = data.disguise_system.ds_community 
 
 	if not default_faction or default_faction == "" then
 		default_faction = db.actor and character_community(db.actor):sub(7) or ""
