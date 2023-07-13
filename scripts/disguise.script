@@ -31,10 +31,14 @@ local suspicion = {}
 local callout = false
 local warned = false
 
-local default_faction
-local disguise_activated = false
 local patch_slot_number = 14
-local current_patch_in_slot
+
+local does_anybody_see = false
+local does_anybody_remember = false
+local message_once = false
+
+local default_faction
+local disguise_community
 
 local patch_sections = {
 	["csky_patch"] 			= "csky",
@@ -48,10 +52,10 @@ local patch_sections = {
 	["merc_patch"] 			= "killer"
 }
 
-local change_community_result = {
+local disguise_result_type = {
 	not_allowed = 0,
-	changed = 1,
-	returned = 2
+	started = 1,
+	ended = 2
 }
 
 function on_game_start()
@@ -59,6 +63,7 @@ function on_game_start()
 	RegisterScriptCallback("npc_on_update",npc_on_update)
 	
 	RegisterScriptCallback("on_game_load",on_game_load)
+	
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
 end
@@ -79,89 +84,87 @@ function on_game_load()
 	--printf("DBG default " .. (default_faction or "?"))
 end
 
-local does_anybody_see
-local does_anybody_remember
-local message_flag = false
-local disguise_community
-
 function actor_on_update()
 	local actor = db.actor
 	
 	if not actor:alive() then
 		return
 	end
-	
-	local patch_in_slot = db.actor:item_in_slot(patch_slot_number)
-	local actor_community = utils.get_actor_community()
 
-	if (disguise_community ~= nil and actor_community ~= disguise_community) or 
-		(disguise_community == nil and actor_community ~= default_faction) then
+	update_default_faction()
+	disguise_by_patch()
+end
+
+function update_default_faction()
+	local actor_community = utils.get_actor_community()
+	local has_faction_changed_during_disguise = disguise_community ~= nil and actor_community ~= disguise_community
+	local has_faction_changed = disguise_community == nil and actor_community ~= default_faction
+	
+	if has_faction_changed_during_disguise or has_faction_changed then
 		default_faction = actor_community
 	end
+end
 
+function disguise_by_patch()
+	local actor_community = utils.get_actor_community()
+	local patch_in_slot = db.actor:item_in_slot(patch_slot_number)
+	local has_actor_in_sight = does_anybody_see or does_anybody_remember
+	
 	if patch_in_slot then
 		local patch_community = patch_sections[patch_in_slot:section()]
 		if actor_community ~= patch_community then
-			if try_change_community(patch_community) then
-				disguise_community = patch_community
+			if has_actor_in_sight then
+				message_about_disguise(disguise_result_type.not_allowed, true)
+			else
+				change_community(patch_community)
+				message_about_disguise(disguise_result_type.started, false)
 			end
 		end
 	else
 		if actor_community == disguise_community then
-			if try_change_community(default_faction) then
-				disguise_community = nil
-				printf("disguise_community -> "..tostring(disguise_community))
+			if has_actor_in_sight then
+				message_about_disguise(disguise_result_type.not_allowed, true)
+			else
+				change_community(default_faction)
+				message_about_disguise(disguise_result_type.ended, false)
 			end
 		end
 	end
 end
 
-function try_change_community(community)
-	local actor = db.actor
-	local message
-	local result
-	
-	if does_anybody_see or does_anybody_remember then
-		if not message_flag then
-			message = get_message(change_community_result.not_allowed)
-			news_manager.send_tip(actor, message, nil, nil, 5000)
-			message_flag = true
-		end
-		result = false
+function change_community(community)	
+	if community == default_faction then
+		suspicion = {}
+		callout = true
+		warned = true
+		disguise_community = nil
 	else
-		if community == default_faction then
-			suspicion = {}
-			callout = true
-			warned = true
-			message = get_message(change_community_result.returned)
-		else
-			suspicion = {}
-			callout = false
-			warned = false
-			message = get_message(change_community_result.changed)
-		end
-		
-		actor:set_character_community( ("actor_" .. community), 0, 0 )
-		news_manager.send_tip(actor, message, nil, nil, 5000)
-		message_flag = false
-		result = true
+		suspicion = {}
+		callout = false
+		warned = false
+		disguise_community = community
 	end
 	
-	return result
+	db.actor:set_character_community( ("actor_" .. community), 0, 0 )
 end
 
-function get_message(type, community)
-	if community == nil then
-		community = ""
+function message_about_disguise(type, is_once)
+	if message_once and is_once then
+		return
+	end
+
+	local message
+
+	if type == disguise_result_type.not_allowed then
+		message = "not_allowed"
+	elseif type == disguise_result_type.started then
+		message = "changed"
+	elseif type == disguise_result_type.ended then
+		message = "returned"
 	end
 	
-	if type == change_community_result.not_allowed then
-		return "not_allowed"
-	elseif type == change_community_result.changed then
-		return "changed"
-	elseif type == change_community_result.returned then
-		return "returned"
-	end
+	news_manager.send_tip(db.actor, message, nil, nil, 5000)
+	message_once = is_once
 end
 
 function anybody_see()
