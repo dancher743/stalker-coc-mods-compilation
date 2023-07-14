@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="st_disguise_actor_in_sight">
+        <text>Маскировка невозможна: вас видели или запомнили другие сталкеры.</text>
+    </string>
+
+    <string id="st_disguise_faction_changed">
+        <text>Вы замаскировались под %s.</text>
+    </string>
+	
+	<string id="st_disguise_faction_returned">
+        <text>Вы больше не замаскированы под %s.</text>
+    </string>
+	
+	<string id="st_disguise_faction_member_stalker">
+        <text>вольного сталкера</text>
+    </string>
+	
+	<string id="st_disguise_faction_member_army">
+        <text>военного</text>
+    </string>
+	
+	<string id="st_disguise_faction_member_bandit">
+        <text>бандита</text>
+    </string>
+
+	<string id="st_disguise_faction_member_csky">
+		<text>чистонебовца</text>
+	</string>
+	
+	<string id="st_disguise_faction_member_dolg">
+		<text>долговца</text>
+	</string>
+	
+	<string id="st_disguise_faction_member_ecolog">
+		<text>учёного</text>
+	</string>
+
+	<string id="st_disguise_faction_member_freedom">
+		<text>свободовца</text>
+	</string>
+	
+	<string id="st_disguise_faction_member_killer">
+		<text>наёмника</text>
+	</string>
+	
+	<string id="st_disguise_faction_member_monolith">
+		<text>члена группировки «Монолит»</text>
+	</string>
+	
+	<string id="actor_zombied">
+		<text>зомбированного</text>
+	</string>
+</string_table>

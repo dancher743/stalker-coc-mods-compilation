@@ -114,19 +114,20 @@ function disguise_by_patch()
 		local patch_community = patch_sections[patch_in_slot:section()]
 		if actor_community ~= patch_community then
 			if has_actor_in_sight then
-				message_about_disguise(message_type.not_allowed, true)
+				message_about_disguise(message_type.not_allowed, "", true)
 			else
 				change_community(patch_community)
-				message_about_disguise(message_type.changed, false)
+				message_about_disguise(message_type.changed, patch_community, false)
 			end
 		end
 	else
 		if actor_community == disguise_community then
 			if has_actor_in_sight then
-				message_about_disguise(message_type.not_allowed, true)
+				message_about_disguise(message_type.not_allowed, "", true)
 			else
+				local previous_community = disguise_community
 				change_community(default_faction)
-				message_about_disguise(message_type.returned, false)
+				message_about_disguise(message_type.returned, previous_community, false)
 			end
 		end
 	end
@@ -148,19 +149,24 @@ function change_community(community)
 	db.actor:set_character_community( ("actor_" .. community), 0, 0 )
 end
 
-function message_about_disguise(type, is_once)
+function message_about_disguise(type, community, is_once)
 	if message_once and is_once then
 		return
 	end
 
 	local message
-
 	if type == message_type.not_allowed then
-		message = "not_allowed"
-	elseif type == message_type.changed then
-		message = "changed"
-	elseif type == message_type.returned then
-		message = "returned"
+		message = game.translate_string("st_disguise_actor_in_sight")
+	else
+		local text
+		if type == message_type.changed then 
+			text = game.translate_string("st_disguise_faction_changed")
+		elseif type == message_type.returned then
+			text = game.translate_string("st_disguise_faction_returned")
+		end
+		
+		local member_name = game.translate_string("st_disguise_faction_member_"..community)
+		message = string.format(text, member_name)
 	end
 	
 	news_manager.send_tip(db.actor, message, nil, nil, 5000)
