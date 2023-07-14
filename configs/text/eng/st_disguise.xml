@@ -1,58 +1,58 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="st_disguise_actor_in_sight">
-        <text>Маскировка невозможна: вас видели или запомнили другие сталкеры.</text>
+		<text>Can't disguise; some stalkers have seen or remembered you.</text>
     </string>
 	
 	<string id="st_disguise_actor_in_same_faction">
-        <text>Маскировка невозможна: вы уже состоите в данной группировке.</text>
+		<text>Can't disguise; you're already a member of this faction.</text>
     </string>
 
     <string id="st_disguise_faction_changed">
-        <text>Вы замаскировались под %s.</text>
+        <text>You have disguised themselves as a %s.</text>
     </string>
 	
 	<string id="st_disguise_faction_returned">
-        <text>Вы больше не замаскированы под %s.</text>
+        <text>You're no longer disguised as a %s.</text>
     </string>
 	
 	<string id="st_disguise_faction_member_stalker">
-        <text>вольного сталкера</text>
+        <text>loner</text>
     </string>
 	
 	<string id="st_disguise_faction_member_army">
-        <text>военного</text>
+        <text>military</text>
     </string>
 	
 	<string id="st_disguise_faction_member_bandit">
-        <text>бандита</text>
+        <text>bandit</text>
     </string>
 
 	<string id="st_disguise_faction_member_csky">
-		<text>чистонебовца</text>
+		<text>Clear Sky member</text>
 	</string>
 	
 	<string id="st_disguise_faction_member_dolg">
-		<text>долговца</text>
+		<text>Duty member</text>
 	</string>
 	
 	<string id="st_disguise_faction_member_ecolog">
-		<text>учёного</text>
+		<text>ecologist</text>
 	</string>
 
 	<string id="st_disguise_faction_member_freedom">
-		<text>свободовца</text>
+		<text>Freedom member</text>
 	</string>
 	
 	<string id="st_disguise_faction_member_killer">
-		<text>наёмника</text>
+		<text>mercenary</text>
 	</string>
 	
 	<string id="st_disguise_faction_member_monolith">
-		<text>члена группировки «Монолит»</text>
+		<text>Monolith member</text>
 	</string>
 	
 	<string id="actor_zombied">
-		<text>зомбированного</text>
+		<text>zombified</text>
 	</string>
 </string_table>
