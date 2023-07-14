@@ -3,6 +3,10 @@
 	<string id="st_disguise_actor_in_sight">
         <text>ћаскировка невозможна: вас видели или запомнили другие сталкеры.</text>
     </string>
+	
+	<string id="st_disguise_actor_in_same_faction">
+        <text>ћаскировка невозможна: вы уже состоите в данной группировке.</text>
+    </string>
 
     <string id="st_disguise_faction_changed">
         <text>¬ы замаскировались под %s.</text>
