@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
+	<!-- Disguise messages for actor -->
+	
 	<string id="st_disguise_actor_in_sight">
         <text>Маскировка невозможна: вас видели или запомнили другие сталкеры.</text>
     </string>
@@ -55,4 +57,47 @@
 	<string id="st_disguise_faction_member_zombied">
 		<text>зомбированного</text>
 	</string>
+	
+	<!-- Suspicious messages from NPC -->
+	
+	<string id="st_disguise_suspicious_stalker_1">
+		<text>Мужики, кто-нибудь знает сталкера по имени %s? Не видел его здесь раньше...</text>
+	</string>
+	
+	<string id="st_disguise_suspicious_army_1">
+		<text>Докладываю: у нас появился неизвестный новобранец %s. Запрашиваю проверку личности.</text>
+	</string>
+	
+	<string id="st_disguise_suspicious_bandit_1">
+		<text>Что за кнут здесь тусуется? %s знает кто такого?</text>
+	</string>
+	
+	<string id="st_disguise_suspicious_csky_1">
+		<text>%s, что-то я не припоминаю тебя. Ты недавно примкнул к нашей группировке?</text>
+	</string>
+	
+	<string id="st_disguise_suspicious_dolg_1">
+		<text>Петренко, проверь-ка долговца с именем %s. Мало-ли завелись у нас засланные казачки.</text>
+	</string>
+	
+	<string id="st_disguise_suspicious_ecolog_1">
+		<text>Кто вы, %s? Вас прислали для охраны наших научных экспедиций?</text>
+	</string>
+	
+	<string id="st_disguise_suspicious_freedom_1">
+		<text>%s, мэн, как дела?! Не видел тебя ни разу с нами у костра.</text>
+	</string>
+	
+	<string id="st_disguise_suspicious_killer_1">
+		<text>Опа! Видали - %s. Походу, к нам прислали свежее мясцо.</text>
+	</string>
+	
+	<string id="st_disguise_suspicious_monolith_1">
+		<text>Брат, %s, ты уже молился Великому Монолиту? Время пришло.</text>
+	</string>
+	
+	<string id="st_disguise_suspicious_zombied_1">
+		<text>В-видел стал-кк-к-ера. Он %s.</text>
+	</string>
+	
 </string_table>
