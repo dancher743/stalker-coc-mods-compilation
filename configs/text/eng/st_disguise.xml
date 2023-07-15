@@ -52,7 +52,7 @@
 		<text>Monolith member</text>
 	</string>
 	
-	<string id="actor_zombied">
+	<string id="st_disguise_faction_member_zombied">
 		<text>zombified</text>
 	</string>
 </string_table>

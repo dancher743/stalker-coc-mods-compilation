@@ -52,7 +52,7 @@
 		<text>монолитовца</text>
 	</string>
 	
-	<string id="actor_zombied">
+	<string id="st_disguise_faction_member_zombied">
 		<text>зомбированного</text>
 	</string>
 </string_table>
