@@ -211,6 +211,15 @@ function message_about_disguise(type, community)
 	disguise_messages[type] = true
 end
 
+function message_about_suspicious(npc)
+	local actor_name = alife():actor():character_name()
+	local text = "st_disguise_suspicious_"..npc:character_community().."_1"
+	text = game.translate_string(text)
+	local news_text = string.format(text, actor_name)
+	
+	db.actor:give_game_news(npc:character_name()..":", news_text, npc:character_icon(), 0, 10000)
+end
+
 function reset_disguise_messages()
 	for k,v in pairs(disguise_messages) do
 		disguise_messages[k] = false
@@ -252,7 +261,7 @@ function npc_on_update(npc)
 	
 	local npc_is_enemy = game_relations.is_factions_enemies(default_faction, npc:character_community()) or npc:relation(db.actor) == game_object.enemy
 
-	local current = character_community(db.actor):sub(7)
+	local current = utils.get_actor_community()
 	if current ~= default_faction and npc:see(db.actor) and npc_is_enemy then
 		local id = npc:id()
 		last_seen[id] = game.get_game_time()
@@ -262,15 +271,17 @@ function npc_on_update(npc)
 			suspicion[id] = suspicion[id] + suspicion_increase(distance)
 			
 			if (suspicion[id] > suspicion_limit) then
-				db.actor:set_character_community( ("actor_" .. default_faction), 0, 0 )
+				change_community(default_faction)
+				current = utils.get_actor_community()
 				if not callout then 
-					news_manager.send_tip(db.actor, "You have been discovered! Everybody knows you are a " .. game.translate_string(default_faction) .." member in disguise.", nil, nil, 5000) 
+					--[[news_manager.send_tip(db.actor, "You have been discovered! Everybody knows you are a " .. game.translate_string(default_faction) .." member in disguise.", nil, nil, 5000)]] 
 					--printf("discovered at %s",os.date("%X"))
 					callout = true
 					warned = true
 				end
 			elseif not warned and suspicion[id] > warning_limit then
-				news_manager.send_tip(db.actor, "You are getting suspicious looks. Someone may see through your disguise if you are not careful.", nil, nil, 5000) 
+				message_about_suspicious(npc)
+				--news_manager.send_tip(db.actor, "You are getting suspicious looks. Someone may see through your disguise if you are not careful.", nil, nil, 5000) 
 				warned = true
 			end
 		else
