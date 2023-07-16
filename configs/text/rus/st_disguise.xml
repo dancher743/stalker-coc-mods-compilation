@@ -69,7 +69,7 @@
 	</string>
 	
 	<string id="st_disguise_suspicious_bandit_1">
-		<text>Что за кнут здесь тусуется? %s знает кто такого?</text>
+		<text>Чё за кнут здесь тусуется? %s - знает кто такого?</text>
 	</string>
 	
 	<string id="st_disguise_suspicious_csky_1">
@@ -81,7 +81,7 @@
 	</string>
 	
 	<string id="st_disguise_suspicious_ecolog_1">
-		<text>Кто вы, %s? Вас прислали для охраны наших научных экспедиций?</text>
+		<text>Позвольте спросить, кто вы, %s? Вас прислали для охраны наших экспедиций?</text>
 	</string>
 	
 	<string id="st_disguise_suspicious_freedom_1">
