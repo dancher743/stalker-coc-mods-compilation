@@ -294,7 +294,7 @@ function npc_on_update(npc)
 					--printf("discovered at %s",os.date("%X"))
 				end
 				change_community(default_faction)
-				current = utils.get_actor_community()
+				current = default_faction
 				reset_disguise_messages()
 			elseif not warned and suspicion[id] > warning_limit then
 				message_about_suspicious(npc) 
