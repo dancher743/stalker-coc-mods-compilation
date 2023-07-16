@@ -99,5 +99,15 @@
 	<string id="st_disguise_suspicious_zombied_1">
 		<text>S-saw stal-kk-k-er. This is-s %s.</text>
 	</string>
+	
+	<!-- Exposure messages for actor -->
+	
+	<string id="st_disguise_exposure_avoided">
+        <text>You have narrowly avoided exposure. Your disguise remains effective.</text>
+    </string>
+	
+	<string id="st_disguise_exposure_discovered">
+        <text>You have been discovered.</text>
+    </string>
 		
 </string_table>

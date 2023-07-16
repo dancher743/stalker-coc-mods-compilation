@@ -100,4 +100,14 @@
 		<text>В-видел стал-кк-к-ера. Он %s.</text>
 	</string>
 	
+	<!-- Exposure messages for actor -->
+	
+	<string id="st_disguise_exposure_avoided">
+        <text>Вы едва избежали разоблачения. Ваша маскировка остается эффективной.</text>
+    </string>
+	
+	<string id="st_disguise_exposure_discovered">
+        <text>Вас разоблачили.</text>
+    </string>
+	
 </string_table>
