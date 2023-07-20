@@ -219,7 +219,7 @@ function npc_on_update(npc)
 			
 			if (suspicion[id] > suspicion_limit) then
 				if not callout then
-					disguise_news.send_exposure_discovered_tip(npc)
+					disguise_news.send_tip(game.translate_string("st_disguise_exposure_discovered"))
 					--printf("discovered at %s",os.date("%X"))
 				end
 				change_community(default_faction)
