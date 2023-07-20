@@ -34,9 +34,6 @@ local warned = false
 local patch_slot_number = 14
 local prev_patch_in_slot
 
-local does_anybody_see = false
-local does_anybody_remember = false
-
 local default_faction
 local disguise_community
 
@@ -90,32 +87,31 @@ function actor_on_update()
 		return
 	end
 
-	update_default_faction()
-	disguise_by_patch()
+	local actor_community = utils.get_actor_community()
+
+	update_default_faction(actor_community)
+	disguise_by_patch(actor_community)
 end
 
-function update_default_faction()
-	local actor_community = utils.get_actor_community()
-	local has_faction_changed_during_disguise = disguise_community ~= nil and actor_community ~= disguise_community
-	local has_faction_changed = disguise_community == nil and actor_community ~= default_faction
-	
-	if has_faction_changed_during_disguise or has_faction_changed then
-		default_faction = actor_community
+function update_default_faction(actor_community)	
+	if not disguise_helper.has_faction_changed(actor_community, disguise_community, default_faction) then
+		return
 	end
+	
+	default_faction = actor_community
 end
 
-function disguise_by_patch()
-	local actor_community = utils.get_actor_community()
+function disguise_by_patch(actor_community)
 	local patch_in_slot = db.actor:item_in_slot(patch_slot_number)
-	local has_actor_in_sight = does_anybody_see or does_anybody_remember
+	local has_actor_under_disguise = disguise_community ~= nil and actor_community == disguise_community
 	local disguise_tip_type = disguise_news.disguise_tip_type
 	
-	if has_patch_changed(patch_in_slot) then
+	if disguise_helper.has_patch_changed(patch_in_slot, prev_patch_in_slot) then
 		disguise_news.reset_once_disguise_tips()
 	end
 	
-	if not patch_in_slot and is_under_disguise(actor_community) then
-		if has_actor_in_sight then
+	if not patch_in_slot and has_actor_under_disguise then
+		if disguise_helper.has_actor_in_sight(last_seen, time_to_forget) then
 			disguise_news.send_disguise_tip_once(disguise_tip_type.not_allowed)
 		else
 			local previous_community = disguise_community
@@ -128,7 +124,7 @@ function disguise_by_patch()
 		local patch_community = patch_sections[patch_in_slot:section()]
 		
 		if actor_community ~= patch_community then
-			if has_actor_in_sight then
+			if disguise_helper.has_actor_in_sight(last_seen, time_to_forget) then
 				disguise_news.send_disguise_tip_once(disguise_tip_type.not_allowed)
 			else
 				change_community(patch_community)
@@ -136,25 +132,12 @@ function disguise_by_patch()
 					disguise_news.send_disguise_tip(disguise_tip_type.changed, patch_community)
 				end
 			end
-		elseif not is_under_disguise(actor_community) then
+		elseif not has_actor_under_disguise then
 			disguise_news.send_disguise_tip_once(disguise_tip_type.same)
 		end
 	end
 	
 	prev_patch_in_slot = patch_in_slot
-end
-
-function has_patch_changed(current_patch_in_slot)
-	local has_patch_added_to_empty_slot = current_patch_in_slot == nil and prev_patch_in_slot ~= nil
-	local has_patch_removed_from_slot = current_patch_in_slot ~= nil and prev_patch_in_slot == nil
-	local has_patch_in_slot_replaced_by_new_patch = current_patch_in_slot ~= nil and prev_patch_in_slot ~= nil and 
-		current_patch_in_slot:section() ~= prev_patch_in_slot:section()
-	
-	return has_patch_added_to_empty_slot or has_patch_removed_from_slot or has_patch_in_slot_replaced_by_new_patch
-end
-
-function is_under_disguise(actor_community)
-	return disguise_community ~= nil and actor_community == disguise_community
 end
 
 function change_community(community)	
@@ -173,37 +156,7 @@ function change_community(community)
 	db.actor:set_character_community( ("actor_" .. community), 0, 0 )
 end
 
-function anybody_see()
-	for i=1, #db.OnlineStalkers do
-		npc = level.object_by_id(db.OnlineStalkers[i])
-		if (npc and IsStalker(npc,npc:clsid()) and npc:alive()) then
-			if(npc:see(db.actor)) then
-				return true
-			end
-		end
-	end
-	return false
-end
-
-function anybody_remember()
-	local time_passed
-	for k,v in pairs(last_seen) do
-		if(v)then
-			time_passed = game.get_game_time():diffSec(v)
-			if( time_passed < time_to_forget) then
-				return true
-			else
-				last_seen[k] = nil
-			end
-		end
-	end
-	return false
-end
-
 function npc_on_update(npc)
-	does_anybody_see = anybody_see()
-    does_anybody_remember = anybody_remember()
-
 	if not default_faction or not db.actor then return end
 	
 	local npc_is_enemy = game_relations.is_factions_enemies(default_faction, npc:character_community()) or npc:relation(db.actor) == game_object.enemy
@@ -281,7 +234,7 @@ function suspicion_increase(distance)
 		if has_outfit_hides then
 			local value = 0.25
 			
-			if is_outfit_fits(actor_community, outfit:section()) then
+			if disguise_helper.is_outfit_fits_community(actor_community, outfit:section()) then
 				value = value + 0.25
 			end
 		
@@ -291,32 +244,6 @@ function suspicion_increase(distance)
 	
 	--printf("DBG suspicion increased: "..increase)
 	return increase
-end
-
-function is_outfit_fits(npc_community, outfit) -- where outfit is section
-	local outfit_community = ""
-	
-	if(string.match(outfit,"specops_") or string.match(outfit,"military_")) then
-		outfit_community = "army"
-	elseif(string.match(outfit,"bandit_") or string.match(outfit,"trenchcoat_") or string.match(outfit,"banditmerc_")) then
-		outfit_community = "bandit"
-	elseif(string.match(outfit,"cs_")) then
-		outfit_community = "csky"	
-	elseif(string.match(outfit,"svoboda_")) then
-		outfit_community = "freedom"	
-	elseif(string.match(outfit,"ecolog_")) then
-		outfit_community = "ecolog"	
-	elseif(string.match(outfit,"dolg_")) then
-		outfit_community = "dolg"
-	elseif(string.match(outfit,"merc_")) then
-		outfit_community = "killer"
-	elseif(string.match(outfit,"stalker_") or string.match(outfit,"scientific_") or string.match(outfit,"exo_")) then
-		outfit_community = "stalker"
-	elseif(string.match(outfit,"monolith_")) then
-		outfit_community = monolith
-	end
-	
-	return outfit_community == npc_community
 end
 
 function save_state(data)
