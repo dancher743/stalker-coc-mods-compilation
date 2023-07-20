@@ -232,13 +232,11 @@ function suspicion_increase(distance)
 		end
 		
 		if has_outfit_hides then
-			local value = 0.25
+			increase = increase - 0.25
 			
 			if disguise_helper.is_outfit_fits_community(actor_community, outfit:section()) then
-				value = value + 0.25
+				increase = increase - 0.25
 			end
-		
-			increase = increase - value
 		end
 	end
 	
