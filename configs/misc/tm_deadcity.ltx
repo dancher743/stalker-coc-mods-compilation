@@ -37,7 +37,7 @@ task_complete_descr = drx_sl_cit_killers_merc_trader_stalker_default_task_finish
 
 condlist_0 = {-drx_sl_dummy_info} complete
 condlist_1 = {!task_giver_alive(drx_sl_cit_killers_merc_trader_stalker_default_task)} fail
-condlist_2 = {=drx_sl_is_enemy(killer)} fail
+;condlist_2 = {=drx_sl_is_enemy(killer)} fail
 
 on_complete = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_cit_killers_merc_trader_stalker_default_task)%
 on_fail = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_cit_killers_merc_trader_stalker_default_task)%
@@ -63,7 +63,7 @@ target_functor = general_under_faction_control
 status_functor = drx_sl_assault_task_status
 status_functor_params = killer
 condlist_0 = {!task_giver_alive(drx_sl_cit_killers_merc_trader_stalker_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(killer)} fail
+;condlist_1 = {=drx_sl_is_enemy(killer)} fail
 
 on_init = %=drx_sl_setup_assault_remote(drx_sl_cit_killers_merc_trader_stalker_task_1_id:killer)%
 on_complete = %=drx_sl_reward_random_money(7500:9000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:killer) =inc_task_stage(drx_sl_cit_killers_merc_trader_stalker_task_1) =pstor_reset(drx_sl_cit_killers_merc_trader_stalker_task_1_id) =pstor_reset(drx_sl_cit_killers_merc_trader_stalker_task_1_target_id) =drx_sl_unregister_task_giver(drx_sl_cit_killers_merc_trader_stalker_task_1)%
@@ -91,7 +91,7 @@ status_functor = check_smart_under_faction_control_staged
 status_functor_params = bandit
 condlist_0 = {!squad_exist(drx_sl_raid_companion_squad_killer_2)} fail
 condlist_1 = {!task_giver_alive(drx_sl_cit_killers_merc_trader_stalker_task_2)} fail
-condlist_2 = {=drx_sl_is_enemy(killer)} fail
+;condlist_2 = {=drx_sl_is_enemy(killer)} fail
 
 on_init = %=setup_companion_task(drx_sl_raid_companion_squad_killer_2:cit_killers) =find_smart_under_faction_control(drx_sl_cit_killers_merc_trader_stalker_task_2_id:bandit)%
 on_complete = %=drx_sl_reward_random_money(5000:6500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:killer) =inc_task_stage(drx_sl_cit_killers_merc_trader_stalker_task_2) =pstor_reset(drx_sl_cit_killers_merc_trader_stalker_task_2_id) =pstor_reset(drx_sl_cit_killers_merc_trader_stalker_task_2_target_id) =remove_special_task_squad(drx_sl_raid_companion_squad_killer_2) =drx_sl_unregister_task_giver(drx_sl_cit_killers_merc_trader_stalker_task_2)%
@@ -113,7 +113,7 @@ task_complete_descr = drx_sl_cit_killers_merc_mechanic_stalker_default_task_fini
 
 condlist_0 = {-drx_sl_dummy_info} complete
 condlist_1 = {!task_giver_alive(drx_sl_cit_killers_merc_mechanic_stalker_default_task)} fail
-condlist_2 = {=drx_sl_is_enemy(killer)} fail
+;condlist_2 = {=drx_sl_is_enemy(killer)} fail
 
 on_complete = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_cit_killers_merc_mechanic_stalker_default_task)%
 on_fail = %=drx_sl_meet_random_honcho() =drx_sl_unregister_task_giver(drx_sl_cit_killers_merc_mechanic_stalker_default_task)%
@@ -140,7 +140,7 @@ status_functor = drx_sl_assault_task_status
 status_functor_params = killer
 condlist_0 = {!squad_exist(drx_sl_raid_companion_squad_killer_2)} fail
 condlist_1 = {!task_giver_alive(drx_sl_cit_killers_merc_mechanic_stalker_task_1)} fail
-condlist_2 = {=drx_sl_is_enemy(killer)} fail
+;condlist_2 = {=drx_sl_is_enemy(killer)} fail
 
 on_init = %=setup_companion_task(drx_sl_raid_companion_squad_killer_2:cit_killers) =drx_sl_setup_assault_local(drx_sl_cit_killers_merc_mechanic_stalker_task_1_id:killer)%
 on_complete = %=drx_sl_reward_random(5000:7000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:killer) =inc_task_stage(drx_sl_cit_killers_merc_mechanic_stalker_task_1) =pstor_reset(drx_sl_cit_killers_merc_mechanic_stalker_task_1_id) =pstor_reset(drx_sl_cit_killers_merc_mechanic_stalker_task_1_target_id) =remove_special_task_squad(drx_sl_raid_companion_squad_killer_2) =drx_sl_unregister_task_giver(drx_sl_cit_killers_merc_mechanic_stalker_task_1)%
@@ -168,7 +168,7 @@ status_functor = hostage_task
 status_functor_params = hostage_companion_task_1
 condlist_0 = {!squad_exist(hostage_companion_task_1)} fail
 condlist_1 = {!task_giver_alive(drx_sl_cit_killers_merc_mechanic_stalker_task_2)} fail
-condlist_2 = {=drx_sl_is_enemy(killer)} fail
+;condlist_2 = {=drx_sl_is_enemy(killer)} fail
 
 on_init = %=find_smart_under_faction_control_ex(drx_sl_cit_killers_merc_mechanic_stalker_task_2_id:army) =setup_companion_task(hostage_companion_task_1_killer:nil:drx_sl_cit_killers_merc_mechanic_stalker_task_2_id:true) +hostage_companion_task_1_started%
 on_complete = %=drx_sl_reward_random(2500:4000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:killer) =remove_special_task_squad(hostage_companion_task_1) =pstor_reset(drx_sl_cit_killers_merc_mechanic_stalker_task_2_id) =pstor_reset(drx_sl_cit_killers_merc_mechanic_stalker_task_2_target_id) -hostage_companion_task_1_hostage_rescued -hostage_companion_task_1_started =inc_task_stage(drx_sl_cit_killers_merc_mechanic_stalker_task_2) =unlock_smart(drx_sl_cit_killers_merc_mechanic_stalker_task_2_id) =drx_sl_unregister_task_giver(drx_sl_cit_killers_merc_mechanic_stalker_task_2)%
@@ -197,7 +197,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(drx_sl_cit_killers_merc_mechanic_stalker_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(killer)} fail
+;condlist_1 = {=drx_sl_is_enemy(killer)} fail
 
 fetch_func = %=drx_sl_setup_fetch_mutant_parts(drx_sl_cit_killers_merc_mechanic_stalker_task_3_fetch:1:1)%
 on_complete = %=drx_sl_fetch_reward_random(drx_sl_cit_killers_merc_mechanic_stalker_task_3_fetch:1.0) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:killer) =inc_task_stage(drx_sl_cit_killers_merc_mechanic_stalker_task_3) =pstor_reset(drx_sl_cit_killers_merc_mechanic_stalker_task_3_fetch) =drx_sl_unregister_task_giver(drx_sl_cit_killers_merc_mechanic_stalker_task_3)%
@@ -235,7 +235,7 @@ stage_complete = 1
 target_functor = drx_sl_money_task_target
 status_functor = drx_sl_money_task_status
 condlist_0 = {!task_giver_alive(drx_sl_cit_killers_merc_trader_stalker_cf_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(killer)} fail
+;condlist_1 = {=drx_sl_is_enemy(killer)} fail
 
 on_init = %=pstor_set(drx_sl_cit_killers_merc_trader_stalker_cf_task_1_fetch:12000) +drx_sl_on_cf_task%
 on_complete = %=drx_sl_money_task_payment(drx_sl_cit_killers_merc_trader_stalker_cf_task_1_fetch) =drx_sl_change_factions(killer) =inc_task_stage(drx_sl_cit_killers_merc_trader_stalker_cf_task_1) =pstor_reset(drx_sl_cit_killers_merc_trader_stalker_cf_task_1_fetch) =drx_sl_unregister_task_giver(drx_sl_cit_killers_merc_trader_stalker_cf_task_1) -drx_sl_on_cf_task%
@@ -274,7 +274,7 @@ stage_complete = 1
 target_functor = general_bounty_task
 status_functor = bounty_task
 condlist_0 = {!task_giver_alive(cit_killers_merc_trader_stalker_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(killer)} fail
+;condlist_1 = {=drx_sl_is_enemy(killer)} fail
 
 on_init = %=drx_sl_setup_bounty_hunt(cit_killers_merc_trader_stalker_task_1:killer)%
 on_complete = %=drx_sl_reward_random_money(3500:7000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:killer) =inc_task_stage(cit_killers_merc_trader_stalker_task_1) =drx_sl_unregister_task_giver(cit_killers_merc_trader_stalker_task_1) =drx_sl_reset_stored_task(cit_killers_merc_trader_stalker_task_1)%
@@ -302,7 +302,7 @@ status_functor = drx_sl_assault_task_status
 status_functor_params = killer
 condlist_0 = {!squad_exist(drx_sl_raid_companion_squad_killer_2)} fail
 condlist_1 = {!task_giver_alive(cit_killers_merc_trader_stalker_task_2)} fail
-condlist_2 = {=drx_sl_is_enemy(killer)} fail
+;condlist_2 = {=drx_sl_is_enemy(killer)} fail
 
 on_init = %=setup_companion_task(drx_sl_raid_companion_squad_killer_2:cit_killers) =drx_sl_setup_assault_local(cit_killers_merc_trader_stalker_task_2_id:killer)%
 on_complete = %=drx_sl_reward_random(7500:9000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:killer) =inc_task_stage(cit_killers_merc_trader_stalker_task_2) =pstor_reset(cit_killers_merc_trader_stalker_task_2_id) =pstor_reset(cit_killers_merc_trader_stalker_task_2_target_id) =remove_special_task_squad(drx_sl_raid_companion_squad_killer_2) =drx_sl_unregister_task_giver(cit_killers_merc_trader_stalker_task_2) =drx_sl_reset_stored_task(cit_killers_merc_trader_stalker_task_2)%
@@ -328,7 +328,7 @@ stage_complete = 1
 target_functor = drx_sl_quest_item_task_1_target
 status_functor = drx_sl_quest_item_task_1_status
 condlist_0 = {!task_giver_alive(cit_killers_merc_trader_stalker_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(killer)} fail
+;condlist_1 = {=drx_sl_is_enemy(killer)} fail
 
 on_init = %=drx_sl_create_quest_stash_1() +drx_sl_quest_item_task_1_started%
 on_complete = %=drx_sl_reward_random_money(2000:4000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:killer) =remove_item(drx_sl_quest_item_1) =inc_task_stage(cit_killers_merc_trader_stalker_task_3) =pstor_reset(drx_sl_quest_stash_1_id) -drx_sl_quest_item_task_1_started =drx_sl_unregister_task_giver(cit_killers_merc_trader_stalker_task_3) =drx_sl_reset_stored_task(cit_killers_merc_trader_stalker_task_3)%
@@ -369,7 +369,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(cit_killers_merc_mechanic_stalker_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(killer)} fail
+;condlist_1 = {=drx_sl_is_enemy(killer)} fail
 
 fetch_func = %=setup_generic_fetch_task(cit_killers_merc_mechanic_stalker_task_1_fetch:1:itm_repairkit_tier_1)%
 on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:killer) =remove_fetch_item(cit_killers_merc_mechanic_stalker_task_1_fetch) =inc_task_stage(cit_killers_merc_mechanic_stalker_task_1) +cit_killers_merc_mechanic_stalker_upgrade_tier_1 =drx_sl_unregister_task_giver(cit_killers_merc_mechanic_stalker_task_1)%
@@ -397,7 +397,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(cit_killers_merc_mechanic_stalker_task_2)} fail
-condlist_1 = {=drx_sl_is_enemy(killer)} fail
+;condlist_1 = {=drx_sl_is_enemy(killer)} fail
 
 fetch_func = %=setup_generic_fetch_task(cit_killers_merc_mechanic_stalker_task_2_fetch:1:itm_repairkit_tier_2)%
 on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:killer) =remove_fetch_item(cit_killers_merc_mechanic_stalker_task_2_fetch) =inc_task_stage(cit_killers_merc_mechanic_stalker_task_2) +cit_killers_merc_mechanic_stalker_upgrade_tier_2 =drx_sl_unregister_task_giver(cit_killers_merc_mechanic_stalker_task_2)%
@@ -425,7 +425,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(cit_killers_merc_mechanic_stalker_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(killer)} fail
+;condlist_1 = {=drx_sl_is_enemy(killer)} fail
 
 fetch_func = %=setup_generic_fetch_task(cit_killers_merc_mechanic_stalker_task_3_fetch:1:itm_repairkit_tier_3)%
 on_complete = %=reward_money(1000) =complete_task_inc_goodwill(50:killer) =remove_fetch_item(cit_killers_merc_mechanic_stalker_task_3_fetch) =inc_task_stage(cit_killers_merc_mechanic_stalker_task_3) +cit_killers_merc_mechanic_stalker_upgrade_tier_3 =drx_sl_unregister_task_giver(cit_killers_merc_mechanic_stalker_task_3)%

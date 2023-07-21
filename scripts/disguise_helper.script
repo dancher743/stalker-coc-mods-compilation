@@ -1,0 +1,78 @@
+--------------------------------------------
+-- Disguise helper
+-- Various functions-helpers for disguise
+-- Author: Dancher
+--------------------------------------------
+
+function has_faction_changed(actor_community, disguise_community, default_faction)
+	local has_faction_changed_during_disguise = disguise_community ~= nil and actor_community ~= disguise_community
+	local has_faction_changed = disguise_community == nil and actor_community ~= default_faction
+	
+	return has_faction_changed_during_disguise or has_faction_changed
+end
+
+function has_patch_changed(current_patch_in_slot, previous_patch_in_slot)
+	local has_patch_added_to_empty_slot = current_patch_in_slot == nil and previous_patch_in_slot ~= nil
+	local has_patch_removed_from_slot = current_patch_in_slot ~= nil and previous_patch_in_slot == nil
+	local has_patch_in_slot_replaced_by_new_patch = current_patch_in_slot ~= nil and previous_patch_in_slot ~= nil and 
+		current_patch_in_slot:section() ~= previous_patch_in_slot:section()
+	
+	return has_patch_added_to_empty_slot or has_patch_removed_from_slot or has_patch_in_slot_replaced_by_new_patch
+end
+
+function has_actor_in_sight(last_seen, time_to_forget)
+	return anybody_see() or anybody_remember(last_seen, time_to_forget)
+end
+
+function anybody_see()
+	for i=1, #db.OnlineStalkers do
+		npc = level.object_by_id(db.OnlineStalkers[i])
+		if (npc and IsStalker(npc,npc:clsid()) and npc:alive()) then
+			if(npc:see(db.actor)) then
+				return true
+			end
+		end
+	end
+	return false
+end
+
+function anybody_remember(last_seen, time_to_forget)
+	local time_passed
+	for k,v in pairs(last_seen) do
+		if(v)then
+			time_passed = game.get_game_time():diffSec(v)
+			if( time_passed < time_to_forget) then
+				return true
+			else
+				last_seen[k] = nil
+			end
+		end
+	end
+	return false
+end
+
+function is_outfit_fits_community(npc_community, outfit_section)
+	local outfit_community = ""
+	
+	if(string.match(outfit_section,"specops_") or string.match(outfit_section,"military_")) then
+		outfit_community = "army"
+	elseif(string.match(outfit_section,"bandit_") or string.match(outfit_section,"trenchcoat_") or string.match(outfit_section,"banditmerc_")) then
+		outfit_community = "bandit"
+	elseif(string.match(outfit_section,"cs_")) then
+		outfit_community = "csky"	
+	elseif(string.match(outfit_section,"svoboda_")) then
+		outfit_community = "freedom"	
+	elseif(string.match(outfit_section,"ecolog_")) then
+		outfit_community = "ecolog"	
+	elseif(string.match(outfit_section,"dolg_")) then
+		outfit_community = "dolg"
+	elseif(string.match(outfit_section,"merc_")) then
+		outfit_community = "killer"
+	elseif(string.match(outfit_section,"stalker_") or string.match(outfit_section,"scientific_") or string.match(outfit_section,"exo_")) then
+		outfit_community = "stalker"
+	elseif(string.match(outfit_section,"monolith_")) then
+		outfit_community = monolith
+	end
+	
+	return outfit_community == npc_community
+end
