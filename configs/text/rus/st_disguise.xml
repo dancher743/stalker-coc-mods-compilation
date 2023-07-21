@@ -81,7 +81,7 @@
 	</string>
 	
 	<string id="st_disguise_suspicious_ecolog_1">
-		<text>Позвольте спросить, кто вы, %s? Вас прислали для охраны наших экспедиций?</text>
+		<text>Кто вы, %s? Вас прислали для охраны наших экспедиций?</text>
 	</string>
 	
 	<string id="st_disguise_suspicious_freedom_1">
@@ -103,7 +103,7 @@
 	<!-- Exposure messages for actor -->
 	
 	<string id="st_disguise_exposure_avoided">
-        <text>Вы едва избежали разоблачения. Ваша маскировка остается эффективной.</text>
+        <text>Вы избежали разоблачения.</text>
     </string>
 	
 	<string id="st_disguise_exposure_discovered">
