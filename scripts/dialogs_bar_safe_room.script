@@ -1,0 +1,22 @@
+-- ============================================================
+--
+-- Script functions for bar room dialogs (dialogs_bar_safe_room.xml)
+-- Author: Dancher
+--
+-- ============================================================
+
+local safe_houses_ini = ini_file("misc\\safe_houses.ltx")
+local safe_room_cost = tonumber(safe_houses_ini:r_string_ex("bar_safe_room","cost"))
+
+function is_actor_have_money(actor, npc)
+	return actor:money() >= safe_room_cost
+end
+
+function buy_safe_room(actor, npc)
+	dialogs.relocate_money_from_actor(actor, npc, safe_room_cost)
+	actor:give_info_portion("bar_safe_room_bought")
+	spawn_furniture()
+end
+
+function spawn_furniture()
+end

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
     <dialog id="bar_barman_safe_room_dialog">
+		<dont_has_info>bar_safe_room_bought</dont_has_info>
         <phrase_list>
             <phrase id="0">
                 <text>bar_barman_safe_room_0</text>
@@ -12,7 +13,10 @@
 				<next>3</next>
             </phrase>
 			<phrase id="2">
-                <text>bar_barman_safe_room_2</text>
+                <precondition>dialogs_bar_safe_room.is_actor_have_money</precondition>
+				<text>bar_barman_safe_room_2</text>
+				<action>dialogs_bar_safe_room.buy_safe_room</action>
+                <give_info>bar_safe_room_bought</give_info>
 				<next>4</next>
             </phrase>
 			<phrase id="3">
