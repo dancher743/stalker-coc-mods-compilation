@@ -29,7 +29,8 @@
     <crouch_type>-1</crouch_type>
     <supplies></supplies>
         <start_dialog>bar_visitors_barman_stalker_trader_start_dialog</start_dialog>
-        <actor_dialog>dm_broker_dialog</actor_dialog>
+        <actor_dialog>bar_barman_safe_room_dialog</actor_dialog>
+		<actor_dialog>dm_broker_dialog</actor_dialog>
         <actor_dialog>actor_break_dialog</actor_dialog>
         </specific_character>
 
