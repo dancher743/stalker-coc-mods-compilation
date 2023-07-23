@@ -1,9 +1,7 @@
--- ============================================================
 --
 -- Script functions for bar room dialogs (dialogs_bar_safe_room.xml)
 -- Author: Dancher
 --
--- ============================================================
 
 local safe_houses_ini = ini_file("misc\\safe_houses.ltx")
 local safe_room_cost = tonumber(safe_houses_ini:r_string_ex("bar_safe_room","cost"))
