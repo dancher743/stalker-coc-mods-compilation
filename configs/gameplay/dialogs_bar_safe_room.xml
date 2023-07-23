@@ -31,4 +31,15 @@
             </phrase>
         </phrase_list>
     </dialog>
+	
+	<dialog id="bar_guard_pass_dialog">
+		<has_info>bar_safe_room_bought</has_info>
+        <phrase_list>
+            <phrase id="0">
+                <text>bar_guard_safe_room_0</text>
+				<give_info>bar_guard_allowed_to_pass</give_info>
+				<action>dialogs.break_dialog</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
 </game_dialogs>
