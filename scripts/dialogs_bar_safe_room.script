@@ -6,6 +6,24 @@
 local safe_houses_ini = ini_file("misc\\safe_houses.ltx")
 local safe_room_cost = tonumber(safe_houses_ini:r_string_ex("bar_safe_room","cost"))
 
+local function spawn_bed()
+end
+
+local function spawn_safe()
+	local v = vector()
+	v.x = 113.65
+	v.y = -4.25
+	v.z = 15.81
+	lvid = 33494
+	gvid = 1744
+	alife():create("bar_room_safe",v,lvid,gvid)
+end
+
+local function spawn_furniture()
+	spawn_bed()
+	spawn_safe()
+end
+
 function is_actor_have_money(actor, npc)
 	return actor:money() >= safe_room_cost
 end

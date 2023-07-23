@@ -447,4 +447,8 @@
 	<string id="st_nothing_useful">
 		<text>Nothing useful</text>
 	</string>
+	
+	<string id="st_search_bar_room_safe">
+		<text>Search the safe ($$ACTION_USE$$)</text>
+	</string>
 </string_table>
