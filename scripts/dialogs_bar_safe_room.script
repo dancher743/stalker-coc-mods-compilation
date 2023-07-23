@@ -10,13 +10,12 @@ local function spawn_bed()
 end
 
 local function spawn_safe()
-	local v = vector()
-	v.x = 113.65
-	v.y = -4.25
-	v.z = 15.81
-	lvid = 33494
-	gvid = 1744
-	alife():create("bar_room_safe",v,lvid,gvid)
+	local x = 113.65
+	local y = -4.25
+	local z = 15.81
+	local lvid = 33494
+	local gvid = 1744
+	alife():create("bar_room_safe",vector():set(x,y,z),lvid,gvid)
 end
 
 local function spawn_furniture()
