@@ -12,7 +12,7 @@ local function spawn_bed()
 	local z = 14.01
 	local lvid = 33618
 	local gvid = 1744
-	alife():create("place_to_sleep",vector():set(x,y,z),lvid,gvid)
+	alife():create("sleeping_place",vector():set(x,y,z),lvid,gvid)
 end
 
 local function spawn_safe()

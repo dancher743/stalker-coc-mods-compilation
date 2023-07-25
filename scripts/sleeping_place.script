@@ -1,3 +1,9 @@
+--
+-- Sleeping place
+-- Describses script functionality of `sleeping_place` object (see `system.ltx`)
+-- Author: Dancher
+--
+
 local alarm_sound = sound_object([[device\pda\pda_alarm2]])
 
 function on_game_start()
@@ -6,7 +12,7 @@ function on_game_start()
 end
 
 function physic_object_on_use_callback(obj,who) 
-	if (obj:section() == "place_to_sleep") then
+	if (obj:section() == "sleeping_place") then
 		ui_sleep_dialog.sleep()
 		give_info("sleep_active")
 		alarm_sound:stop()
@@ -15,7 +21,6 @@ end
 
 function actor_on_awoke_after_sleeping(hours)
 	if (hours > 3) then
-		alarm_sound:stop()
 		alarm_sound:play(db.actor,0,sound_object.s2d)
 	end
 end
