@@ -439,6 +439,6 @@
 		<text>Обыскать сейф ($$ACTION_USE$$)</text>
 	</string>
 	<string id="st_sleep_bar_room_sofa">
-		<text>Спать на диване ($$ACTION_USE$$)</text>
+		<text>Отдохнуть ($$ACTION_USE$$)</text>
 	</string>
 </string_table>
