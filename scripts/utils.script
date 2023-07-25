@@ -910,3 +910,7 @@ end
 function get_actor_community()
 	return string.sub(db.actor:character_community(), 7)
 end
+
+function get_parent_section(section)
+	return system_ini():r_string_ex(section,"parent_section")
+end
