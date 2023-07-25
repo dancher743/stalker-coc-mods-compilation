@@ -1,0 +1,10 @@
+function on_game_start()
+	RegisterScriptCallback("physic_object_on_use_callback",physic_object_on_use_callback)
+end
+
+function physic_object_on_use_callback(obj,who) 
+	if (obj:section() == "place_to_sleep") then
+		ui_sleep_dialog.sleep()
+		give_info("sleep_active")
+	end
+end

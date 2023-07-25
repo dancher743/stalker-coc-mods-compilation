@@ -7,6 +7,12 @@ local safe_houses_ini = ini_file("misc\\safe_houses.ltx")
 local safe_room_cost = tonumber(safe_houses_ini:r_string_ex("bar_safe_room","cost"))
 
 local function spawn_bed()
+	local x = 113.91
+	local y = -4.96
+	local z = 14.01
+	local lvid = 33618
+	local gvid = 1744
+	alife():create("place_to_sleep",vector():set(x,y,z),lvid,gvid)
 end
 
 local function spawn_safe()
