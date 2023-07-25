@@ -451,4 +451,7 @@
 	<string id="st_search_bar_room_safe">
 		<text>Search the safe ($$ACTION_USE$$)</text>
 	</string>
+	<string id="st_sleep_bar_room_sofa">
+		<text>Sleep on the sofa ($$ACTION_USE$$)</text>
+	</string>
 </string_table>
