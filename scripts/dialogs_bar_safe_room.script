@@ -39,3 +39,37 @@ function buy_safe_room(actor, npc)
 	actor:give_info_portion("bar_safe_room_bought")
 	spawn_furniture()
 end
+
+local function map_spot_menu_add_property(property_ui,id,level_name)
+	local se_obj = alife_object(id)
+	if not (se_obj) then
+		return
+	end
+	
+	if (se_obj:name() == "bar_room_sofa"..id) then
+		property_ui:AddItem(game.translate_string("st_pda_fast_travel_to").." "..game.translate_string("st_ui_safe_house_bar_room_fast_travel"))
+	end
+end
+
+local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
+	local se_obj = alife_object(id)
+	if not (se_obj) then
+		return
+	end
+
+	if (se_obj:name() == "bar_room_sofa"..id) then
+		return
+	end
+
+	if (se_obj.online) then
+		db.actor:set_actor_position(se_obj.position)
+		get_hud():HidePdaMenu()
+	else
+		ChangeLevel(se_obj.position,se_obj.m_level_vertex_id,se_obj.m_game_vertex_id,vector():set(0,0,0))
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("map_spot_menu_add_property",map_spot_menu_add_property)
+	RegisterScriptCallback("map_spot_menu_property_clicked",map_spot_menu_property_clicked)
+end
