@@ -118,6 +118,16 @@
                 <texture>ui_hud_icon_sleep</texture>
         </fast_travel_spot_mini>
 
+		<safe_house>
+                <level_map spot="safe_house_spot"/>
+				<mini_map spot="safe_house_spot_mini"/>
+        </safe_house>
+        <safe_house_spot x="0" y="0" width="25" height="25" alignment="c" location_level="1" scale_max="1">
+				<texture r="132" g="199" b="231" a="255">ui_hud_icon_safe_house</texture>
+        </safe_house_spot>
+		<safe_house_spot_mini x="0" y="0" width="17" height="17" alignment="c" location_level="1" scale_max="1">
+                <texture r="132" g="199" b="231" a="255">ui_hud_icon_safe_house</texture>
+        </safe_house_spot_mini>
 
         <level_changer_up>
                 <level_map spot="level_changer_up_spot" pointer="quest_pointer"/>

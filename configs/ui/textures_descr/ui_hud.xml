@@ -54,6 +54,7 @@
     <texture id="ui_hud_icon_psycho" x="225" y="226" width="64" height="64" />
     <texture id="ui_hud_icon_drop" x="225" y="290" width="64" height="64" />
     <texture id="ui_hud_icon_artefact" x="289" y="226" width="64" height="64" />
+	<texture id="ui_hud_icon_safe_house" x="353" y="226" width="64" height="64" />
     <texture id="ui_hud_icon_weapon" x="289" y="290" width="64" height="64" />
     <texture id="ui_hud_frame_voting" x="424" y="375" width="600" height="371" />
     <texture id="ui_hud_button_voting_01_e" x="65" y="429" width="37" height="25" />
