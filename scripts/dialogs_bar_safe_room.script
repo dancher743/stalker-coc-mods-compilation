@@ -13,7 +13,7 @@ local function spawn_bed()
 	local lvid = 33618
 	local gvid = 1744
 	local se_obj = alife():create("bar_room_sofa",vector():set(x,y,z),lvid,gvid)
-	level.map_add_object_spot_ser(se_obj.id, "safe_house", "bar_room")
+	level.map_add_object_spot_ser(se_obj.id, "safe_house", "st_ui_safe_house_bar_room")
 end
 
 local function spawn_safe()
