@@ -4,7 +4,7 @@
 --
 
 local safe_houses_ini = ini_file("misc\\safe_houses.ltx")
-local safe_room_cost = tonumber(safe_houses_ini:r_string_ex("bar_safe_room","cost"))
+local bar_room_cost = tonumber(safe_houses_ini:r_string_ex("bar_room","cost"))
 
 local function spawn_bed()
 	local x = 113.91
@@ -13,7 +13,7 @@ local function spawn_bed()
 	local lvid = 33618
 	local gvid = 1744
 	local se_obj = alife():create("bar_room_sofa",vector():set(x,y,z),lvid,gvid)
-	level.map_add_object_spot_ser(se_obj.id, "safe_house", "st_ui_safe_house_bar_room")
+	level.map_add_object_spot_ser(se_obj.id, "safe_house", "st_ui_safe_houses_bar_room")
 end
 
 local function spawn_safe()
@@ -31,11 +31,11 @@ local function spawn_furniture()
 end
 
 function is_actor_have_money(actor, npc)
-	return actor:money() >= safe_room_cost
+	return actor:money() >= bar_room_cost
 end
 
 function buy_room(actor, npc)
-	dialogs.relocate_money_from_actor(actor, npc, safe_room_cost)
+	dialogs.relocate_money_from_actor(actor, npc, bar_room_cost)
 	actor:give_info_portion("bar_safe_room_bought")
 	spawn_furniture()
 end
