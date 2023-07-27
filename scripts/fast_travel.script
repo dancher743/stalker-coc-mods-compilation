@@ -13,8 +13,43 @@ local longnames = false
 local markermessage = false
 local notime = false
 local tsmarts = nil
+local tsafehouses = nil
 
 quick_travel_smarts = nil
+
+local function init_safe_houses_table()
+	local mapspots_ini = ini_file("plugins\\safe_houses_quick_travel.ltx")
+	local need_section_name = "mapspoted_objects"
+	tsafehouses = alun_utils.collect_section(mapspots_ini,need_section_name,true)
+end
+
+local function safe_house_map_spot_menu_add_property(property_ui,id,level_name)
+	local se_obj = alife_object(id)
+	if not (se_obj) then
+		return
+	end
+	
+	local se_obj_name = se_obj:name():gsub(id, "")	
+	
+	if (tsafehouses[se_obj_name] ~= nil) then
+		if (longnames) then
+			property_ui:AddItem(string.format("%s %s. %s", game.translate_string("st_pda_fast_travel_to"), game.translate_string(level_name), game.translate_string(tsafehouses[se_obj_name])))
+		else
+			property_ui:AddItem(string.format("%s %s", game.translate_string("st_pda_fast_travel_to"), game.translate_string(tsafehouses[se_obj_name])))
+		end
+	end
+end
+
+local function is_map_spot_safe_house_exists(id)
+	local se_obj = alife_object(id)
+	if not (se_obj) then
+		return false
+	end
+
+	local se_obj_name = se_obj:name():gsub(id, "")
+	
+	return tsafehouses[se_obj_name] ~= nil
+end
 
 local function bbp_extra_weight()
 	local w,ini = 0,system_ini()
@@ -38,17 +73,21 @@ local function bbp_extra_weight()
 end
 
 local function map_spot_menu_add_property(property_ui,id,level_name)
+	if enabled == 0 then
+		return
+	end
 	local se_obj = alife_object(id)
 	if not (se_obj) then
 		return
 	end
-	if (DEV_DEBUG_DEV) or (enabled > 0 and se_obj:clsid() == clsid.smart_terrain and tsmarts[se_obj:name()]) then
+	if (DEV_DEBUG_DEV) or (se_obj:clsid() == clsid.smart_terrain and tsmarts[se_obj:name()]) then
 		if (longnames) then
 				property_ui:AddItem(game.translate_string("st_pda_fast_travel_to").." ".. game.translate_string(level_name)..". "..game.translate_string(se_obj:name()))
 		else
 				property_ui:AddItem(game.translate_string("st_pda_fast_travel_to").." "..game.translate_string(se_obj:name()))
 		end
 	end
+	safe_house_map_spot_menu_add_property(property_ui,id,level_name)
 end
 
 local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
@@ -57,14 +96,15 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 		return
 	end
 
+	local is_fast_travel_to_smart
 	if (longnames) then
-		if (prop ~= (game.translate_string("st_pda_fast_travel_to").." "..game.translate_string(level_name)..". "..game.translate_string(se_obj:name()))) then
-			return
-		end
+		is_fast_travel_to_smart = prop == (game.translate_string("st_pda_fast_travel_to").." "..game.translate_string(level_name)..". "..game.translate_string(se_obj:name()))
 	else
-		if (prop ~= (game.translate_string("st_pda_fast_travel_to").." "..game.translate_string(se_obj:name()))) then
-			return
-		end
+		is_fast_travel_to_smart = prop == (game.translate_string("st_pda_fast_travel_to").." "..game.translate_string(se_obj:name()))
+	end
+	
+	if (not is_fast_travel_to_smart and not is_map_spot_safe_house_exists(id)) then
+		return
 	end
 	
 	-- Prevent fast travel if actor is guide.
@@ -234,6 +274,7 @@ local function on_game_load()
 			end
 		end
 	end
+	init_safe_houses_table()
 	return true
 end
 
