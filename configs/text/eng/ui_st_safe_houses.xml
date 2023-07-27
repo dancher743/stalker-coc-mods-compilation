@@ -3,8 +3,4 @@
 	<string id="st_ui_safe_houses_bar_room">
 		<text>Safe house in bar room</text>
 	</string>
-	
-	<string id="st_ui_safe_houses_bar_room_fast_travel">
-		<text>Bar room</text>
-	</string>
 </string_table>
