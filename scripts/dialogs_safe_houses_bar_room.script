@@ -36,6 +36,5 @@ end
 
 function buy_room(actor, npc)
 	dialogs.relocate_money_from_actor(actor, npc, bar_room_cost)
-	actor:give_info_portion("bar_safe_room_bought")
 	spawn_furniture()
 end
