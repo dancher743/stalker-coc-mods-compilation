@@ -4,25 +4,15 @@
 -- Author: Dancher
 --
 
-local alarm_sound = sound_object([[device\pda\pda_alarm2]])
+local function physic_object_on_use_callback(obj,who) 
+	local section = obj:section()
+	if (section == "sleeping_place" or 
+	utils.get_parent_section(section) == "sleeping_place") then
+		ui_sleep_dialog.sleep_item(section)
+		give_info("sleep_active")
+	end
+end
 
 function on_game_start()
 	RegisterScriptCallback("physic_object_on_use_callback",physic_object_on_use_callback)
-	RegisterScriptCallback("actor_on_awoke_after_sleeping",actor_on_awoke_after_sleeping)
-end
-
-function physic_object_on_use_callback(obj,who) 
-	local section = obj:section()
-	if (section == "sleeping_place" or 
-		utils.get_parent_section(section) == "sleeping_place") then
-		ui_sleep_dialog.sleep()
-		give_info("sleep_active")
-		alarm_sound:stop()
-	end
-end
-
-function actor_on_awoke_after_sleeping(hours)
-	if (hours > 3) then
-		alarm_sound:play(db.actor,0,sound_object.s2d)
-	end
 end

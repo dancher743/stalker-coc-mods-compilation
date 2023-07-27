@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <game_information_portions>
-    <info_portion id="bar_safe_room_bought"></info_portion>
+    <info_portion id="bar_room_bought"></info_portion>
 	<info_portion id="bar_guard_allowed_to_pass"></info_portion>
 </game_information_portions>
