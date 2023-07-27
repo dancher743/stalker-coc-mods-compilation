@@ -32,11 +32,7 @@ local function safe_house_map_spot_menu_add_property(property_ui,id,level_name)
 	local se_obj_name = se_obj:name():gsub(id, "")	
 	
 	if (tsafehouses[se_obj_name] ~= nil) then
-		if (longnames) then
-			property_ui:AddItem(string.format("%s %s. %s", game.translate_string("st_pda_fast_travel_to"), game.translate_string(level_name), game.translate_string(tsafehouses[se_obj_name])))
-		else
-			property_ui:AddItem(string.format("%s %s", game.translate_string("st_pda_fast_travel_to"), game.translate_string(tsafehouses[se_obj_name])))
-		end
+		property_ui:AddItem(string.format("%s %s", game.translate_string("st_pda_fast_travel_to"), game.translate_string(tsafehouses[se_obj_name])))
 	end
 end
 
