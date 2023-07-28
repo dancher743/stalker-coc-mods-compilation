@@ -1,0 +1,18 @@
+--
+-- Sleeping place
+-- Describses script functionality of `sleeping_place` object (see `system.ltx`)
+-- Author: Dancher
+--
+
+local function physic_object_on_use_callback(obj,who) 
+	local section = obj:section()
+	if (section == "sleeping_place" or 
+	utils.get_parent_section(section) == "sleeping_place") then
+		ui_sleep_dialog.sleep_item(section)
+		give_info("sleep_active")
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("physic_object_on_use_callback",physic_object_on_use_callback)
+end

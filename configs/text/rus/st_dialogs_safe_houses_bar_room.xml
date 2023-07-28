@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<!-- Barman dialogs -->
+	
+	<string id="barman_safe_houses_bar_room_0">
+        <text>Я ищу укромное место, чтобы обжиться. Не подскажешь?</text>
+    </string>
+	<string id="barman_safe_houses_bar_room_1">
+        <text>У меня как раза пустует задняя комната. В ней есть диван для сна и сейф, в котором ты можешь хранить свои вещи. Также в ней можно безопасно пережить выброс. За 30000 рублей она станет твоей.</text>
+    </string>
+	<string id="barman_safe_houses_bar_room_2">
+		<text>Я согласен. Вот деньги.</text>
+	</string>
+	<string id="barman_safe_houses_bar_room_3">
+		<text>В другой раз.</text>
+	</string>
+	<string id="barman_safe_houses_bar_room_4">
+		<text>Отлично. Проходи в комнату и располагайся там. Я скажу Гарику, чтобы он тебя пропускал. Можешь проходить когда захочешь.</text>
+	</string>
+	<string id="barman_safe_houses_bar_room_5">
+		<text>Здорово! Спасибо.</text>
+	</string>
+	
+	<!-- Guard dialogs -->
+	
+	<string id="bar_guard_safe_houses_bar_room_pass_0">
+		<text>Пропусти меня.</text>
+	</string>
+</string_table>

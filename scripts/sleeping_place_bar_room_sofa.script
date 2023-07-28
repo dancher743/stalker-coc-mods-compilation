@@ -1,0 +1,31 @@
+--
+-- Bar room sofa sleeping place
+-- Describses specific script functionality of `bar_room_sofa` object (see `system.ltx`)
+-- Author: Dancher
+--
+
+local alarm_sound = sound_object([[device\pda\pda_alarm2]])
+
+local function physic_object_on_use_callback(obj,who) 
+	local section = obj:section()
+	if (section ~= "bar_room_sofa") then
+		return
+	end
+	
+	alarm_sound:stop()
+end
+
+local function actor_on_awoke_after_sleeping(hours,section)
+	if (section ~= "bar_room_sofa") then
+		return
+	end
+
+	if (hours > 3) then
+		alarm_sound:play(db.actor,0,sound_object.s2d)
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("physic_object_on_use_callback",physic_object_on_use_callback)
+	RegisterScriptCallback("actor_on_awoke_after_sleeping",actor_on_awoke_after_sleeping)
+end

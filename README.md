@@ -57,3 +57,4 @@ Mods
 42. Better New Game Loadouts for TRX-Fresh Start 1.4 + AO 3.1 | CoC 1.4.22 (mithriak)
 43. Russificator for TRX: Fresh Start (1.4) with adaptations (GhostWarrior98, Dancher)
 44. Patches Infiltration Addon (SarisKhan, Dancher)
+45. Bar room as safe-house (Dancher)

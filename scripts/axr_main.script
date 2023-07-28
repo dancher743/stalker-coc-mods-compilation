@@ -131,6 +131,7 @@ local intercepts = {
 	actor_item_to_slot			= {},
 	actor_on_item_patch_dressed	= {},
 	actor_on_item_patch_undressed	= {},
+	actor_on_awoke_after_sleeping	= {},
 	
 	-- level_input.script 
 	level_input_on_key_press	= {},

@@ -434,4 +434,11 @@
 	<string id="st_nothing_useful">
 		<text>Ничего полезного</text>
 	</string>
+	
+	<string id="st_search_bar_room_safe">
+		<text>Обыскать сейф ($$ACTION_USE$$)</text>
+	</string>
+	<string id="st_sleep_bar_room_sofa">
+		<text>Отдохнуть ($$ACTION_USE$$)</text>
+	</string>
 </string_table>

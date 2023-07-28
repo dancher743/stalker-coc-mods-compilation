@@ -1,0 +1,40 @@
+--
+-- Script functions for bar room dialogs (dialogs_safe_houses_bar_room.xml)
+-- Author: Dancher
+--
+
+local safe_houses_ini = ini_file("misc\\safe_houses.ltx")
+local bar_room_cost = tonumber(safe_houses_ini:r_string_ex("bar_room","cost"))
+
+local function spawn_bed()
+	local x = 113.91
+	local y = -4.96
+	local z = 14.01
+	local lvid = 33618
+	local gvid = 1744
+	local se_obj = alife():create("bar_room_sofa",vector():set(x,y,z),lvid,gvid)
+	level.map_add_object_spot_ser(se_obj.id, "safe_house", "st_ui_safe_houses_bar_room")
+end
+
+local function spawn_safe()
+	local x = 113.65
+	local y = -4.25
+	local z = 15.81
+	local lvid = 33494
+	local gvid = 1744
+	alife():create("bar_room_safe",vector():set(x,y,z),lvid,gvid)
+end
+
+local function spawn_furniture()
+	spawn_bed()
+	spawn_safe()
+end
+
+function is_actor_have_money(actor, npc)
+	return actor:money() >= bar_room_cost
+end
+
+function buy_room(actor, npc)
+	dialogs.relocate_money_from_actor(actor, npc, bar_room_cost)
+	spawn_furniture()
+end
