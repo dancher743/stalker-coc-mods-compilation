@@ -599,22 +599,16 @@ nil
 
 -- Умер сталкер
 function npc_on_death(npc)
-	local rnd_value = math.random(1,99)
-	if rnd_value > 10 then return end
-
-	local rank = ranks.get_obj_rank_name(npc)
-	local comm = npc:character_community()
-	local coef = get_comb_coeff(rank,comm)^0.44
 	local visual = npc:get_visual_name()
 	local outfit_section, helmet_section = get_outfit_sections(visual)
-	if outfit_section then
+	if outfit_section and has_chance_to_create(outfit_section) then
 		local se_outfit = alife():create(outfit_section, npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
-		curent_outfit[se_outfit.id] = coef
+		curent_outfit[se_outfit.id] = get_comb_coeff(npc)
 		update_outfit()
 	end
-	if helmet_section then
+	if helmet_section and has_chance_to_create(helmet_section) then
 		local se_helmet = alife():create(helmet_section, npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
-		curent_helmet[se_helmet.id] = coef
+		curent_helmet[se_helmet.id] = get_comb_coeff(npc)
 		update_helmet()
 	end
 end
@@ -710,10 +704,20 @@ function mean_random(index_min,index_max,mean_index,left_power,right_power,flag)
 end
 
 
-function get_comb_coeff(rank,comm)
+function get_comb_coeff(npc)
+	local rank = ranks.get_obj_rank_name(npc)
+	local comm = npc:character_community()
 	local rank_coeffs_table = {novice = 0.3, trainee = 0.4, experienced = 0.5, professional = 0.6, veteran = 0.7, expert = 0.8, master = 0.9, legend = 1}
 	local comm_coeffs_table = {zombied = 0.4, ecolog = 0.9, bandit = 0.8, freedom = 0.9, stalker = 0.9, csky = 1, dolg = 1, killer = 1, army = 1, monolith = 1}
 	local rank_coeff = rank_coeffs_table[rank] or 0
 	local comm_coeff = comm_coeffs_table[comm] or 0
-	return rank_coeff * comm_coeff
+	return (rank_coeff * comm_coeff)^0.44
+end
+
+function has_chance_to_create(section)
+	local cost = system_ini:r_string_ex(section, "cost")
+	if cost == nil then
+		return false
+	end
+	return math.random() <= (1000 / cost)
 end
