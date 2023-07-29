@@ -241,7 +241,7 @@ function try_spawn_patch_for_zombied(npc,spawn_items)
 	local visual_exploded = alun_utils.str_explode(visual,"\\")
 	visual = visual_exploded[3]
 	
-	local section = death_ini:r_string_ex("zombied_patch_by_visual",visual)
+	local section = death_ini:r_string_ex("zombied_patches",visual)
 	
 	if (section == nil or section == "") then
 		printf("! death_manager: patch section not found for '%s' visual", visual)
