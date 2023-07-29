@@ -58,3 +58,4 @@ Mods
 43. Russificator for TRX: Fresh Start (1.4) with adaptations (GhostWarrior98, Dancher)
 44. Patches Infiltration Addon (SarisKhan, Dancher)
 45. Bar room as safe-house (Dancher)
+46. Outfit loot CoC 1 4 22 v2 with adaptations (av661194, Dancher)
