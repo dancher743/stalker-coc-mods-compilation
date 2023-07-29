@@ -6,18 +6,14 @@
 -- Снятие брони с трупов.
 ----------------------
 
+local death_visual_ini = ini_file([[misc\death_items_by_visuals.ltx]])
+local visuals = {}
 local curent_outfit = {}
 local curent_helmet = {}
-
--- Таблица визуалов
--- ВИЗУАЛ = {"СЕКЦИЯ БРОНИ", "СЕКЦИЯ ШЛЕМА"}
--- Если шлем не нужен, то ничего не пишем.
 
 function on_game_start()
 	RegisterScriptCallback("npc_on_death_callback", npc_on_death)
 end
-
-local visuals = {}
 
 -- Умер сталкер
 function npc_on_death(npc)
@@ -37,6 +33,9 @@ end
 
 -- Получим секцию брони и шлема
 function get_outfit_sections(visual)
+	if (#visuals == 0) then
+		fill_visuals()
+	end
 	local s_name = alun_utils.str_explode(visual,"\\")
 	local v_name = s_name[3]
 	local t_vis = visuals[v_name]
@@ -137,9 +136,24 @@ function get_comb_coeff(npc)
 end
 
 function has_chance_to_create(section)
-	local cost = system_ini:r_string_ex(section, "cost")
+	local cost = system_ini():r_string_ex(section, "cost")
 	if cost == nil then
 		return false
 	end
 	return math.random() <= (1000 / cost)
+end
+
+function fill_visuals()
+	visuals = {}
+	local n = death_visual_ini:line_count("outfits_and_helms")
+	local id, value = "", ""
+	for i=0,n-1 do
+		local result, id, value = death_visual_ini:r_line_ex("outfits_and_helms",i,"","")
+		local p = alun_utils.str_explode(value,",")
+		if (p) then
+			p[1] = tostring(p[1])
+			p[2] = tostring(p[2])
+			visuals[id] = {p[1],p[2]}
+		end
+	end
 end
