@@ -1,0 +1,167 @@
+level_timers = {}
+level_information = {}
+
+function update()
+	for i,lvl in pairs(sim_tables.active_levels) do
+		update_level(lvl)
+	end
+end
+
+function setup_faction_table(lvl, faction)
+	if (faction ~= "none") then
+		level_information[lvl].faction_count = level_information[lvl].faction_count + 1
+	end
+
+	level_information[lvl].faction_stats[faction] = {
+		base_count = 0,
+		territory_count = 0,
+		resource_count = 0,
+		total_power = 0,
+		inactive_count = 0,
+		active_count = 0,
+	}
+end
+
+function faction_enemy_present(lvl, faction)
+    
+	if (faction == "none") then
+		return 0, {}
+	end
+
+	local enemyCount = 0
+	local enemies = {}
+
+	for f,tbl in pairs(level_information[lvl].faction_stats) do
+		if (faction ~= f) then
+			if (game_relations.is_factions_enemies(faction, f)) then
+				enemyCount = enemyCount + 1
+				enemies[f] = true
+			end
+		end
+	end	
+	return enemyCount, enemies
+end
+
+
+function update_level(lvl)
+	if (not level_timers[lvl] or game.get_game_time():diffSec(level_timers[lvl]) >= (level_information[lvl].next_update*60)) then
+        
+		level_timers[lvl] = game.get_game_time() 		
+		level_information[lvl].next_update = 20
+		level_information[lvl].faction_stats = {}		
+		level_information[lvl].faction_count = 0
+		level_information[lvl].faction_war = false
+
+		setup_faction_table(lvl, "none")
+		
+		for i,sm in pairs(level_information[lvl].smarts) do
+			local smart = sm and alife():object(sm)
+			
+			if (smart and smart.owning_faction) then
+				if not (level_information[lvl].faction_stats[smart.owning_faction]) then
+					setup_faction_table(lvl, smart.owning_faction)
+				end
+				
+				if (smart.props.base > 0) then
+					level_information[lvl].faction_stats[smart.owning_faction].base_count = level_information[lvl].faction_stats[smart.owning_faction].base_count + 1
+					level_information[lvl].faction_stats[smart.owning_faction].total_power = level_information[lvl].faction_stats[smart.owning_faction].total_power + smart.defense_power
+				elseif (smart.props.territory > 0) then
+					level_information[lvl].faction_stats[smart.owning_faction].territory_count = level_information[lvl].faction_stats[smart.owning_faction].territory_count + 1
+					level_information[lvl].faction_stats[smart.owning_faction].total_power = level_information[lvl].faction_stats[smart.owning_faction].total_power + smart.defense_power
+				end
+				
+				if (smart.props.resource > 0) then
+					level_information[lvl].faction_stats[smart.owning_faction].resource_count = level_information[lvl].faction_stats[smart.owning_faction].resource_count + 1
+					level_information[lvl].faction_stats[smart.owning_faction].total_power = level_information[lvl].faction_stats[smart.owning_faction].total_power + smart.defense_power
+				end
+			end
+		end
+		
+		for f,tbl in pairs(level_information[lvl].faction_stats) do
+			if f ~= "none" then	
+				if level_information[lvl].faction_count == 1 then
+					level_information[lvl].faction_stats[f].faction_war = false
+				else				
+					local enemyCount, enemies = faction_enemy_present(lvl, f)
+					level_information[lvl].faction_stats[f].faction_war = (enemyCount > 0)
+				end
+			end
+		end
+
+		if level_information[lvl].first_update then
+			level_information[lvl].first_update = false	
+			level_information[lvl].next_update = 0
+			return
+		end
+
+		if (level_information[lvl].base_count > 0) then
+			for f,tbl in pairs(level_information[lvl].faction_stats) do
+				if f ~= "none" then		
+					if not (level_information[lvl].faction_stats[f].faction_war or level_information[lvl].faction_stats["none"].base_count > 0) then
+						if (math.random(0, 100) < 70) then
+							local target = get_level_target(lvl, f)
+							level_information[lvl].faction_stats[f].target_level = target
+						end
+					end
+				end
+			end
+		end
+
+		for f,tbl in pairs(level_information[lvl].faction_stats) do
+			local bc = tbl.base_count
+			local tc = tbl.territory_count
+			local rc = tbl.resource_count
+			local tp = tbl.total_power
+			local fw = tbl.faction_war
+			local ac = tbl.active_count
+			local ic = tbl.inactive_count
+		end
+	end
+
+    
+end
+
+function get_level_target(lvl, faction)
+    
+	local links = sim_tables.level_links[lvl]
+	local levels = sim_tables.active_levels
+	local dists = {}
+	
+	local a = sim_tables.level_offsets[lvl]
+	
+	for i,lvl2 in pairs(levels) do
+		if lvl ~= lvl2 and level_information[lvl2].faction_stats then
+			local b = sim_tables.level_offsets[lvl2]
+			local dist = math.pow(b[1] - a[1], 2) + math.pow(b[2] - a[2], 2) + math.pow(b[3] - a[3], 2)
+			local priority = 1
+
+			if links[lvl2] then
+				priority = priority + 50
+			end
+			
+			local enemyCount, enemies = faction_enemy_present(lvl2, faction)
+			if enemyCount > 0 then
+	
+				for f,v in pairs(enemies) do	
+					local presence = level_information[lvl2].faction_stats[f].base_count	
+					priority = priority + 2
+				end
+			end
+
+			if level_information[lvl2].faction_priority[faction] then
+				priority = priority + level_information[lvl2].faction_priority[faction]
+			end
+
+			if (enemyCount > 0 or level_information[lvl2].faction_stats["none"].base_count > 0) then
+				dists[#dists+1] = { lvl2, dist, priority, (dist/priority) }
+			end
+		end
+	end
+	
+	function level_sort(a, b)
+		return a[4] < b[4]
+	end
+	
+	table.sort(dists, level_sort)
+	return dists[1] and dists[1][1]
+end

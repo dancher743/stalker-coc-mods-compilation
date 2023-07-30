@@ -59,3 +59,4 @@ Mods
 44. Patches Infiltration Addon (SarisKhan, Dancher)
 45. Bar room as safe-house (Dancher)
 46. Outfit loot CoC 1 4 22 v2 with reworking (av661194, Dancher)
+47. CoC Extended Offline (EOC) Lite 1.7.6 (xr_Sanya)

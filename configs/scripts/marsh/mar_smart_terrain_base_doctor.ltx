@@ -1,0 +1,30 @@
+[logic@marsh_doctor]
+suitable = {=check_npc_name(mar_smart_terrain_base_doctor)} true, {=check_npc_name(sim_default_army_medik)} true, {=check_npc_name(sim_default_freedom_medik)} true, {=check_npc_name(sim_default_bandit_medik)} true, {=check_npc_name(sim_default_dolg_medik)} true, {=check_npc_name(sim_default_monolith_medik)} true, {=check_npc_name(sim_default_stalker_medik)} true, {=check_npc_name(sim_default_ecolog_medik)} true, {=check_npc_name(sim_default_csky_medik)} true, {=check_npc_name(sim_default_killer_medik)} true
+trade = misc\trade\trade_medic.ltx
+prior = 200
+active = animpoint@base
+level_spot = medic
+
+[animpoint@base]
+cover_name = mar_base_doctor_medic
+use_camp = false
+meet = meet
+combat_ignore_cond = true
+out_restr = mar_base_surge_hide_a2
+gather_items_enabled = false
+help_wounded_enabled = false
+corpse_detection_enabled = false
+
+[meet]
+close_snd_hello = mar_csky_doctor_meet
+close_snd_bye = mar_csky_doctor_meet_bye
+close_anim 		= nil
+close_victim 	= nil
+far_anim 		= nil
+far_victim 		= nil
+close_distance  = 0
+far_distance 	= 0
+close_snd_distance = 3
+use = {=actor_enemy} false, true
+allow_break 	= false
+meet_on_talking = false

@@ -1,0 +1,246 @@
+squads_by_level = {}
+ocs_power_table = {}
+
+function calculate_squad_power(squad)  
+
+	local power = 15    
+	local faction = squad:get_squad_community()
+	local faction_boost = 0
+	
+	if faction == "monster" then	
+	   if string.find(squad:name(), "controller") or string.find(squad:name(), "chimera") or string.find(squad:name(), "gigant") or string.find(squad:name(), "burer") or string.find(squad:name(), "poltergeist") then
+          power = 40
+	   elseif string.find(squad:name(), "snork") or string.find(squad:name(), "bloodsucker") then
+          power = 30
+	   elseif string.find(squad:name(), "flesh") or string.find(squad:name(), "zombie") then
+          power = 15
+	   elseif string.find(squad:name(), "fracture") or string.find(squad:name(), "cat") or string.find(squad:name(), "dog") or string.find(squad:name(), "boar") then
+          power = 20
+	   elseif string.find(squad:name(), "rat") or string.find(squad:name(), "tushkano") then
+	      power = 10
+       end   
+    else	
+	   if string.find(squad:name(), "novice") then
+		  power = 25
+	   elseif string.find(squad:name(), "advanced") then
+		  power = 30
+	   elseif string.find(squad:name(), "veteran") or string.find(squad:name(), "sniper") then
+		  power = 35
+	   end
+	end
+	
+	if faction == "stalker" then
+	   faction_boost = 8
+	elseif faction == "bandit" then
+	   faction_boost = 5
+	elseif faction == "csky" then
+	   faction_boost = 10
+	elseif faction == "army" then
+	   faction_boost = 12
+	elseif faction == "freedom" then
+	   faction_boost = 12
+	elseif faction == "dolg" then
+       faction_boost = 12
+	elseif faction == "ecolog" then
+	   faction_boost = 5
+	elseif faction == "killer" then
+	   faction_boost = 10
+	elseif faction == "monolith" then
+	   faction_boost = 15
+	end
+
+	power = power + faction_boost
+    ocs_power_table[squad.id] = utils.round(power)
+end
+
+function squad_on_update(squad)
+    
+	if squad.registered_in_simultaion then
+		local sim = alife()
+		local gg = game_graph()
+
+		if not (squad.current_level_id) then
+			local lvl = gg:vertex(squad.m_game_vertex_id):level_id()
+			squad.current_level_id = lvl
+
+			if not squads_by_level[lvl] then
+				squads_by_level[lvl] = {}
+			end
+
+			squads_by_level[lvl][squad.id] = true
+		end
+
+		if not squad.online then
+
+			if (squad.sim_combat_manager and not squad.sim_combat_manager.disbanded) then
+				squad.sim_combat_manager:simulate(squad)
+			end
+
+			local last = squad.current_level_id
+			local lvl = gg:vertex(squad.m_game_vertex_id):level_id()
+			
+			squad.current_level_id = lvl
+
+			if (last ~= lvl) then
+				if squads_by_level[last] then
+					squads_by_level[last][squad.id] = nil
+				end
+
+				if (not squads_by_level[lvl]) then
+					squads_by_level[lvl] = {}
+				end
+
+				squads_by_level[lvl][squad.id] = true
+			end
+
+			local f0 = squad:get_squad_community()
+			
+			for i,t in pairs(squads_by_level[lvl]) do				
+			    local squad2 = i and sim:object(i)
+						
+				if (squad2 and squad2.registered_in_simultaion and not squad2.online) then						
+					local f1 = squad2:get_squad_community()
+				    local d = squad.position:distance_to_sqr(squad2.position)
+							
+					if (not (f0 == "monster" and f1 == "monster") and (f0 == "monster" or f1 == "monster") and d < (30*30)) or (game_relations.is_factions_enemies(f0, f1) and d < (75*75)) then				
+					    local power1 = ocs_power_table[squad.id]							
+					    local power2 = ocs_power_table[squad2.id]		
+						
+                        if power1 and power1 > 0 and power2 and power2 > 0	then					
+						   sim_offline_control.set_sim_combat_manager(squad, squad2)
+						end
+					end
+				end
+		    end
+        end
+    end
+end
+
+function set_sim_combat_manager(squad1, squad2)
+
+	if (squad1.sim_combat_manager and squad2.sim_combat_manager) then       
+		return
+	end
+	
+	if (squad1.online or squad2.online) then       
+		return
+	end
+
+	if not (SIMBOARD.squads[squad1.id]) or not (SIMBOARD.squads[squad2.id]) or (squad1:npc_count() == 0) or (squad2:npc_count() == 0) then       
+		return
+	end
+
+	if (squad1.sim_combat_manager) then
+		squad1.sim_combat_manager:register(squad2, squad1.id)       
+		return
+	elseif (squad2.sim_combat_manager) then
+		squad2.sim_combat_manager:register(squad1, squad2.id)       
+		return
+	end
+	
+	local group = sim_combat_manager.sim_combat_manager()
+	group:register(squad1, squad2.id)
+	group:register(squad2, squad1.id) 
+    
+end
+
+function get_num_squads_on_level(lvl, faction)
+
+	if (squads_by_level[lvl]) then
+		local count = 0
+		
+		for s,_ in pairs(squads_by_level[lvl]) do
+			local squad = alife():object(s)
+			
+			if (squad) then	
+				if (squad.get_squad_community and squad:get_squad_community() == faction) then
+					count = count + 1
+				end
+			end
+		end
+
+		return count
+	end
+
+	return 0
+end
+
+function calc_all_npc_on_level(lvl, faction)
+
+	if (squads_by_level[lvl]) then
+		local count = 0
+		
+		for s,_ in pairs(squads_by_level[lvl]) do
+			local squad = alife():object(s)
+			
+			if (squad) then	
+				if (squad.get_squad_community and squad:get_squad_community() == faction) then
+				    local npc_in_squad = squad:npc_count()
+					count = count + npc_in_squad
+				end
+			end
+		end
+
+		return count
+	end
+
+	return 0
+end
+
+function calc_passive_npc_on_level(lvl, faction)
+
+	if (squads_by_level[lvl]) then
+		local count = 0
+		
+		for s,_ in pairs(squads_by_level[lvl]) do
+			local squad = alife():object(s)
+			
+			if (squad) then			
+				if (squad.get_squad_community and squad:get_squad_community() == faction and squad.current_action == 1) then
+					local target = squad.current_target_id
+					local obj = target and alife():object(target)
+					
+					if (obj) and (obj:clsid() == clsid.smart_terrain) then
+						if (obj.owning_faction == faction and obj.props and (obj.props.base > 0 or obj.props.resource > 0)) then
+							local npc_in_squad = squad:npc_count()
+					        count = count + npc_in_squad
+						end
+					end
+				end
+			end
+		end
+		
+		return count
+	end
+
+	return 0
+end
+
+function calc_active_npc_on_level(lvl, faction)
+	if (squads_by_level[lvl]) then
+		local count = 0
+		
+		for s,_ in pairs(squads_by_level[lvl]) do
+			local squad = alife():object(s)
+			
+			if (squad) then			
+				if (squad.get_squad_community and squad:get_squad_community() == faction and squad.current_action == 0) then
+					local target = squad.current_target_id
+					local obj = target and alife():object(target)
+					
+					if (obj) and (obj:clsid() == clsid.smart_terrain) then
+						if (obj.props and (obj.props.base > 0 or obj.props.resource > 0)) then
+							local npc_in_squad = squad:npc_count()
+					        count = count + npc_in_squad
+						end
+					end
+				end
+			end
+		end
+		
+		return count
+	end
+
+	return 0
+end
+

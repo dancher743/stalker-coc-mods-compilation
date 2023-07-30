@@ -1,0 +1,91 @@
+faction_information = {}
+faction_timers = {}
+
+function update()
+	for i,faction in pairs(sim_tables.factions) do
+		if faction ~= "monster" then
+			update_faction(faction)
+		end
+	end
+end
+
+function update_faction(faction)
+	if not (faction_information[faction]) then
+		faction_information[faction] = {}
+		faction_information[faction].base_count = 0
+		faction_information[faction].resource_count = 0
+		faction_information[faction].total_power = 0		
+		faction_information[faction].passive_npc = 0
+		faction_information[faction].active_npc = 0
+		faction_information[faction].faction_passive_npc_limit = 0
+		faction_information[faction].faction_active_npc_limit = 0 
+		faction_information[faction].respawn_defend = 0
+		faction_information[faction].respawn_attack = 0
+		faction_information[faction].respawn_patrol = 0
+	end
+
+	if (not faction_information[faction].timer or game.get_game_time():diffSec(faction_information[faction].timer) >= (faction_information[faction].next_update*60)) then	
+		faction_information[faction] = {}
+        faction_information[faction].timer = game.get_game_time()
+		faction_information[faction].next_update = math.random(5, 10)		
+		faction_information[faction].base_count = 0
+		faction_information[faction].resource_count = 0
+		faction_information[faction].total_power = 0		
+		faction_information[faction].passive_npc = 0
+		faction_information[faction].active_npc = 0
+		faction_information[faction].faction_passive_npc_limit = 0
+		faction_information[faction].faction_active_npc_limit = 0 
+		faction_information[faction].respawn_defend = 0
+		faction_information[faction].respawn_attack = 0
+		faction_information[faction].respawn_patrol = 0
+
+		for i,lvl in pairs(sim_tables.active_levels) do
+			local info = sim_levels.level_information[lvl]
+			
+			
+			if (info.faction_stats and info.faction_stats[faction]) then
+				local num_active = sim_offline_control.calc_active_npc_on_level(lvl, faction)
+				local num_inactive = sim_offline_control.calc_passive_npc_on_level(lvl, faction)
+
+				faction_information[faction].base_count = faction_information[faction].base_count + info.faction_stats[faction].base_count
+				faction_information[faction].resource_count = faction_information[faction].resource_count + info.faction_stats[faction].resource_count
+				faction_information[faction].total_power = faction_information[faction].total_power + info.faction_stats[faction].total_power
+				faction_information[faction].active_npc = faction_information[faction].active_npc + num_active
+				faction_information[faction].passive_npc = faction_information[faction].passive_npc + num_inactive
+			end
+		end
+
+		faction_information[faction].faction_passive_npc_limit = utils.round(faction_information[faction].base_count * 11)
+        faction_information[faction].faction_active_npc_limit = utils.round(25 + (faction_information[faction].base_count + faction_information[faction].resource_count))
+		faction_information[faction].respawn_defend = utils.round(math.random(200, 250) - (faction_information[faction].resource_count * 3))
+		faction_information[faction].respawn_attack = utils.round(math.random(150, 200) - (faction_information[faction].resource_count * 3))
+		faction_information[faction].respawn_patrol = utils.round(math.random(70, 120) - (faction_information[faction].resource_count * 3))
+
+		if faction_information[faction].respawn_attack < 50 then
+		   faction_information[faction].respawn_attack = 50
+		end
+		
+		if faction_information[faction].respawn_defend < 50 then
+		   faction_information[faction].respawn_defend = 50
+		end
+		
+		if faction_information[faction].base_count <= 3 then
+		   faction_information[faction].respawn_attack = (faction_information[faction].respawn_attack * 0.5)
+		end
+		
+		if faction_information[faction].base_count >= 10 then
+		   faction_information[faction].respawn_attack = (faction_information[faction].respawn_attack * 1.5)
+		end
+		
+		--printf("--- " .. faction .. " Респавн защиты: " ..  faction_information[faction].respawn_defend .. " ---")
+		--printf("--- " .. faction .. " Респавн атаки: " ..  faction_information[faction].respawn_attack .. " ---")
+		--printf("--- " .. faction .. " Респавн патруля: " ..  faction_information[faction].respawn_patrol .. " ---")
+	    --printf("--- " .. faction .. " Пассивные НПС: " ..  faction_information[faction].passive_npc .. " ---")
+		--printf("--- " .. faction .. " Лимит пассивных НПС: " ..  faction_information[faction].faction_passive_npc_limit .. " ---")
+	    --printf("--- " .. faction .. " Активные НПС: " ..  faction_information[faction].active_npc .. " ---")
+	    --printf("--- " .. faction .. " Лимит активных НПС: " ..  faction_information[faction].faction_active_npc_limit .. " ---")
+		--printf("--- " .. faction .. " Количество баз: " .. faction_information[faction].base_count .. " ---")
+		--printf("--- " .. faction .. " Количество ресурсов: " .. faction_information[faction].resource_count .. " ---")
+		--printf("--- " .. faction .. " Сила фракции: " .. utils.round(faction_information[faction].total_power * (faction_information[faction].base_count + faction_information[faction].resource_count)) .. " ---")
+	end
+end

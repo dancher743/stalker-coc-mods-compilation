@@ -1,0 +1,183 @@
+
+class "sim_combat_manager"
+function sim_combat_manager:__init()
+	self.squads = {}
+	self.npc_count = 0
+	self.disbanded = false
+end
+
+
+function sim_combat_manager:register(squad1, opponent)
+    
+	if not (self.disbanded) then
+		if not (self.squads[squad1.id]) then
+			self.squads[squad1.id] = squad1.current_target_id
+			squad1.combat_target_id = squad1.current_target_id
+			self.npc_count = self.npc_count + 1
+			squad1.sim_combat_manager = self
+			squad1.assigned_target_id = opponent
+		end
+	end	
+end
+
+function sim_combat_manager:unregister(squad)
+    
+	squad.assigned_target_id = squad.current_target_id or self.squads[squad.id]
+	self.squads[squad.id] = nil
+	self.npc_count = self.npc_count - 1
+	squad.sim_combat_manager = nil
+	squad.combat_target_id = nil
+	
+	if not squad.assigned_target_id then		
+		local f = squad:get_squad_community()
+		local t2 = sim_tables.registered_squads[f][squad.id]
+	end
+end
+
+
+function sim_combat_manager:find_enemy(squad)
+       
+	local faction = squad:get_squad_community()	
+	local sim = alife()
+	
+	for s,t in pairs(self.squads) do
+		if s ~= squad.id then	
+			local squad2 = sim:object(s)
+			
+			if squad2 and squad2.get_squad_community then
+				local faction2 = squad2:get_squad_community()
+				squad2_power = sim_offline_control.ocs_power_table[s]
+				if squad2_power and squad2_power > 0 and game_relations.is_factions_enemies(faction, faction2) then
+					return s
+				end
+			end
+		end
+	end
+	return nil
+end
+
+function sim_combat_manager:is_valid()
+	local foundEnemy = false
+
+	for s,t in pairs(self.squads) do
+		for s2,t2 in pairs(self.squads) do
+			if s ~= s2 then
+				local squad = alife():object(s)
+				local squad2 = alife():object(s2)
+
+				if squad and squad.get_squad_community and squad2 and squad2.get_squad_community then
+					local faction = squad:get_squad_community()
+					local faction2 = squad2:get_squad_community()
+					squad2_power = sim_offline_control.ocs_power_table[s]
+					if squad2_power and squad2_power > 0 and game_relations.is_factions_enemies(faction, faction2) then
+						return true
+					end
+				end
+			end
+		end
+	end
+	
+	return false
+end
+
+function sim_combat_manager:simulate(squad)
+    
+	if not (self:is_valid()) then
+		self:disband()
+		return
+	end
+
+	local sim = alife()
+	local squad_power = sim_offline_control.ocs_power_table[squad.id]
+	local s2id = squad.assigned_target_id
+
+	if not (self.squads[s2id]) then
+		local new = self:find_enemy(squad)
+
+		if (new) then
+			squad.assigned_target_id = new
+			s2id = new
+		else
+			self:unregister(squad)
+			return
+		end
+	end
+	
+	local squad2 = sim:object(s2id)
+	
+	if not (squad2) then
+	   return
+	end
+	
+	if squad.online or squad2.online then
+		self:disband()
+		return
+	end
+	
+	local squad2_power = sim_offline_control.ocs_power_table[s2id]
+	
+	local squad_npcs = {}
+	local squad2_npcs = {}
+	
+	if (squad:npc_count() <= 0) then
+		printf("### EOC: сквад %s был убит сквадом %s ###", squad:name(), squad2:name())
+		sim_squad.remove_squad(squad)
+		self:unregister(squad) 
+		sim_offline_control.calculate_squad_power(squad2)
+		return			
+	end
+	
+	if (squad2:npc_count() <= 0) then		
+		printf("### EOC: сквад %s был убит сквадом %s ###", squad2:name(), squad:name())
+		sim_squad.remove_squad(squad2)
+		self:unregister(squad2) 
+		sim_offline_control.calculate_squad_power(squad)
+		return
+    end		
+	
+	for k in squad:squad_members() do
+		squad_npcs[#squad_npcs+1] = k
+	end
+	
+	local k1 = squad_npcs[math.random(#squad_npcs)]	
+	
+	for k in squad2:squad_members() do
+		squad2_npcs[#squad2_npcs+1] = k
+	end
+		
+	local k2 = squad2_npcs[math.random(#squad2_npcs)]
+		
+	local random = math.random(30,70)
+	local total_power = squad_power - squad2_power
+
+	random = random + total_power
+
+	if random >= 50 then  
+		squad2:remove_npc(k2.id)
+	else
+		squad:remove_npc(k1.id)
+	end
+end
+
+
+function sim_combat_manager:disband()
+    
+	local sim = alife()
+
+	if not (self.disbanded) then
+		for s,t in pairs(self.squads) do
+			local squad = sim:object(s)
+			
+			if squad then				
+				squad.assigned_target_id = squad.current_target_id or self.squads[squad.id]
+				squad.sim_combat_manager = nil
+				squad.combat_target_id = nil
+				self.squads[squad.id] = nil
+			end
+		end
+		
+		self.squads = {}
+		self.disbanded = true
+	end  
+    
+end

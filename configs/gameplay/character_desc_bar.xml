@@ -19,7 +19,7 @@
     <map_icon x="1" y="4"></map_icon>
     <bio>bar_barmen_bio</bio>
     <class>bar_visitors_barman_stalker_trader</class>
-    <community>stalker</community>
+    <community>trader</community>
     <terrain_sect>stalker_terrain</terrain_sect>
     <money min="1000000" max="1000000" infinitive="1"></money>
     <rank>14490</rank>
@@ -41,7 +41,7 @@
         <map_icon x="0" y="0"></map_icon>
         <bio>bar_bar_guard_bio</bio>
         <class>bar_visitors_garik_stalker_guard</class>
-        <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+        <community>trader</community> <terrain_sect>stalker_terrain</terrain_sect>
         <money min="200" max="600" infinitive="0"></money>
         <rank>7327</rank>
         <reputation>976</reputation>
@@ -66,7 +66,7 @@
     <map_icon x="0" y="0"></map_icon>
     <bio>bar_bar_guard2_bio</bio>
     <class>bar_visitors_zhorik_stalker_guard2</class>
-    <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <community>trader</community> <terrain_sect>stalker_terrain</terrain_sect>
     <money min="200" max="600" infinitive="0"></money>
     <rank>6516</rank>
     <reputation>817</reputation>
@@ -310,7 +310,7 @@
         <map_icon x="1" y="6"></map_icon>
         <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
         <class>bar_arena_manager</class>
-        <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+        <community>trader</community> <terrain_sect>stalker_terrain</terrain_sect>
         <money min="600" max="2000" infinitive="0"></money>
         <rank>3290</rank>
         <reputation>265</reputation>
