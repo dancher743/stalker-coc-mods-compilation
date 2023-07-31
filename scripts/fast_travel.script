@@ -13,32 +13,22 @@ local longnames = false
 local markermessage = false
 local notime = false
 local tsmarts = nil
-local safe_houses_mapspoted_objects = nil
-local safe_houses_map_spots_names = {}
+local spotted_objects = nil
+local objects_spots_hints = {}
 
 quick_travel_smarts = nil
 
-local function init_safe_houses_mapspoted_objects()
-	local mapspots_ini = ini_file("plugins\\safe_houses_quick_travel.ltx")
-	safe_houses_mapspoted_objects = alun_utils.collect_section(mapspots_ini,"mapspoted_objects",true)
-end
-
-local function get_name_for_safe_house_map_spot(se_obj)
-	local id = se_obj.id
-	local name = safe_houses_map_spots_names[id]
-	if (name == nil) then
-		local mapspoted_object = se_obj:name():gsub(id, "")
-		name = safe_houses_mapspoted_objects[mapspoted_object]
-		safe_houses_map_spots_names[id] = name
+local function get_spotted_object_hint(se_obj_spot)
+	local spot_id = se_obj_spot.id
+	local spot_hint = objects_spots_hints[spot_id]
+	
+	if (spot_hint == nil) then
+		local object_name = se_obj_spot:name():gsub(spot_id, "")
+		spot_hint = spotted_objects[object_name]
+		objects_spots_hints[spot_id] = spot_hint
 	end
-	return name
-end
-
-local function map_spot_safe_house_menu_add_property(property_ui,se_obj)
-	local safe_house_map_spot_name = get_name_for_safe_house_map_spot(se_obj)
-	if (safe_house_map_spot_name ~= nil) then
-		property_ui:AddItem(string.format("%s %s", game.translate_string("st_pda_fast_travel_to"), game.translate_string(safe_house_map_spot_name)))
-	end
+	
+	return spot_hint
 end
 
 local function bbp_extra_weight()
@@ -77,7 +67,11 @@ local function map_spot_menu_add_property(property_ui,id,level_name)
 				property_ui:AddItem(game.translate_string("st_pda_fast_travel_to").." "..game.translate_string(se_obj:name()))
 		end
 	end
-	map_spot_safe_house_menu_add_property(property_ui,se_obj)
+	
+	local spotted_object_hint = get_spotted_object_hint(se_obj)
+	if (spotted_object_hint ~= nil) then
+		property_ui:AddItem(string.format("%s %s", game.translate_string("st_pda_fast_travel_to"), game.translate_string(spotted_object_hint)))
+	end
 end
 
 local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
@@ -86,7 +80,6 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 		return
 	end
 
-	local is_fast_travel_to_safe_house = get_name_for_safe_house_map_spot(se_obj)
 	local is_fast_travel_to_smart
 	if (longnames) then
 		is_fast_travel_to_smart = prop == (game.translate_string("st_pda_fast_travel_to").." "..game.translate_string(level_name)..". "..game.translate_string(se_obj:name()))
@@ -94,7 +87,10 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 		is_fast_travel_to_smart = prop == (game.translate_string("st_pda_fast_travel_to").." "..game.translate_string(se_obj:name()))
 	end
 	
-	if (not is_fast_travel_to_smart and not is_fast_travel_to_safe_house) then
+	local spotted_object_hint = get_spotted_object_hint(se_obj)
+	local is_fast_travel_to_spotted_object = spotted_object_hint ~= nil
+	
+	if (not is_fast_travel_to_smart and not is_fast_travel_to_spotted_object) then
 		return
 	end
 	
@@ -265,7 +261,11 @@ local function on_game_load()
 			end
 		end
 	end
-	init_safe_houses_mapspoted_objects()
+	
+	if (spotted_objects == nil) then
+		spotted_objects = alun_utils.collect_section(pini,"spotted_objects",true)
+	end
+	
 	return true
 end
 
