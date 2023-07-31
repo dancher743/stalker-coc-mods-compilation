@@ -211,7 +211,7 @@
 		<text>Деньги:</text>
 	</string>
 	<string id="st_mm_new_game_points_left">
-		<text>Очков имеется:</text>
+		<text>Очков осталось:</text>
 	</string>
 	<string id="st_mm_new_game_points_used">
 		<text>Очков вложено:</text>
