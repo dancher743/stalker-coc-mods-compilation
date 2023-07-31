@@ -15,7 +15,7 @@
 		<text>Next time.</text>
 	</string>
 	<string id="barman_safe_houses_bar_room_4">
-		<text>Great. Go into the room and make yourself at home. I'll tell Garik to let you through. Come back whenever you like.</text>
+		<text>Great. Go into the room and make yourself at home. I'll tell Garik to let you through. You can pass when you want.</text>
 	</string>
 	<string id="barman_safe_houses_bar_room_5">
 		<text>Amazing! Thank you.</text>
@@ -24,6 +24,6 @@
 	<!-- Guard dialogs -->
 	
 	<string id="bar_guard_safe_houses_bar_room_pass_0">
-		<text>Let me in.</text>
+		<text>Let me through.</text>
 	</string>
 </string_table>
