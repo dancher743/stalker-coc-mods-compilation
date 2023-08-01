@@ -38,7 +38,14 @@ function use_campfire(actor,zone,p)
 		if (campfire:is_on()) then 
 			campfire:turn_off()
 		else
-			local chance_to_ignite = utils.lerp(70, 30, level.rain_factor())
+			local chance_to_ignite
+			
+			local rain_factor = level.rain_factor()
+			if (rain_factor > 0) then
+				chance_to_ignite = utils.lerp(70, 30, rain_factor)
+			else
+				chance_to_ignite = 90
+			end
 			
 			if math.random(100) < chance_to_ignite then
 				campfire:turn_on()
