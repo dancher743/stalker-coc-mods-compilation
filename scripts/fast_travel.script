@@ -96,9 +96,11 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 	
 	-- Prevent fast travel if actor is guide.
 	if not guidertravel then
-		get_hud():HidePdaMenu()
-		SetHudMsg(game.translate_string("st_travel_guider"),4)
-		return
+		if jg_guider.has_guiding_started() then
+			get_hud():HidePdaMenu()
+			SetHudMsg(game.translate_string("st_travel_guider"),4)
+			return
+		end
 	end
 
 	-- Prevent fast travel if in combat.

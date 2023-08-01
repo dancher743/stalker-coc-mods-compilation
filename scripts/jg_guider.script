@@ -220,3 +220,7 @@ function send_tip(npc, news_text, news_sound)
 	db.actor:give_game_news(news_caption, news_text, news_icon, 0, 15000)
 	news_sound:play(db.actor,0,sound_object.s2d)
 end
+
+function has_guiding_started()
+    return db.actor:has_info('guider_start')
+end
