@@ -119,34 +119,36 @@ function sim_combat_manager:simulate(squad)
 	local squad_npcs = {}
 	local squad2_npcs = {}
 	
-	if (squad:npc_count() <= 0) then
-		printf("### EOC: сквад %s был убит сквадом %s ###", squad:name(), squad2:name())
+	if (squad:npc_count() > 0) then
+	
+	    for k in squad:squad_members() do
+		    squad_npcs[#squad_npcs+1] = k
+	    end
+	
+	    local k1 = squad_npcs[math.random(#squad_npcs)]		
+	else
 		sim_squad.remove_squad(squad)
 		self:unregister(squad) 
 		sim_offline_control.calculate_squad_power(squad2)
-		return			
+		squad_npc_killed_offline_combat(squad2:get_squad_community(), squad:get_squad_community())	
+		return
 	end
 	
-	if (squad2:npc_count() <= 0) then		
-		printf("### EOC: сквад %s был убит сквадом %s ###", squad2:name(), squad:name())
+	if (squad2:npc_count() > 0) then
+	
+	    for k in squad2:squad_members() do
+		    squad2_npcs[#squad2_npcs+1] = k
+	    end
+		
+		local k2 = squad2_npcs[math.random(#squad2_npcs)]
+	else
 		sim_squad.remove_squad(squad2)
 		self:unregister(squad2) 
 		sim_offline_control.calculate_squad_power(squad)
+		squad_npc_killed_offline_combat(squad:get_squad_community(), squad2:get_squad_community())
 		return
     end		
-	
-	for k in squad:squad_members() do
-		squad_npcs[#squad_npcs+1] = k
-	end
-	
-	local k1 = squad_npcs[math.random(#squad_npcs)]	
-	
-	for k in squad2:squad_members() do
-		squad2_npcs[#squad2_npcs+1] = k
-	end
-		
-	local k2 = squad2_npcs[math.random(#squad2_npcs)]
-		
+
 	local random = math.random(30,70)
 	local total_power = squad_power - squad2_power
 
@@ -180,4 +182,63 @@ function sim_combat_manager:disband()
 		self.disbanded = true
 	end  
     
+end
+
+function squad_npc_killed_offline_combat(killer, victim)
+
+	if not game_relations.allowed_relation_change then
+		return
+	end
+
+	local killed_faction = victim
+	local start, finish = string.find( killed_faction, "actor_" )
+	
+	if (finish) then
+		killed_faction = string.sub(killed_faction, (finish + 1))
+	end
+
+	local faction_check = false
+	
+	for j = 1, #game_relations.allowed_relation_change do
+		if (killed_faction == game_relations.allowed_relation_change[j]) then
+			faction_check = true
+			break
+		end
+	end
+	
+	if (not faction_check) then
+		return
+	end
+	
+	local killer_faction = killer
+	local start, finish = string.find( killer_faction, "actor_" )
+	
+	if (finish) then
+		killer_faction = string.sub( killer_faction, (finish + 1) )
+	end
+
+	local faction_check = false
+	
+	for j = 1, #game_relations.allowed_relation_change do
+		if (killer_faction == game_relations.allowed_relation_change[j]) then
+			faction_check = true
+			break
+		end
+	end
+	
+	if (not faction_check) then
+		return
+	end
+
+	for i = 1, #game_relations.allowed_relation_change do
+		if (game_relations.allowed_relation_change[i] ~= killer_faction) then
+			if (game_relations.is_factions_enemies(game_relations.allowed_relation_change[i], killed_faction)) then
+			    local value = math.random(100) * 0.5
+				game_relations.change_relation(game_relations.allowed_relation_change[i], killer_faction, value)
+			else
+				local value = math.random(100)
+				game_relations.change_relation(game_relations.allowed_relation_change[i], killer_faction, -(value))
+			end
+		end
+	end	
 end
