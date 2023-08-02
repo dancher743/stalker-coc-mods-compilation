@@ -119,38 +119,36 @@ function sim_combat_manager:simulate(squad)
 	local squad_npcs = {}
 	local squad2_npcs = {}
 	
-	if (squad:npc_count() > 0) then
-	
-	    for k in squad:squad_members() do
-		    squad_npcs[#squad_npcs+1] = k
-	    end
-	
-	    local k1 = squad_npcs[math.random(#squad_npcs)]		
-	else
-		printf("### EOC: —Å–∫–≤–∞–¥ %s –±—ã–ª —É–±–∏—Ç —Å–∫–≤–∞–¥–æ–º %s ###", squad:name(), squad2:name())
+	if (squad:npc_count() <= 0) then
+		printf("### EOC: ÒÍ‚‡‰ %s ·˚Î Û·ËÚ ÒÍ‚‡‰ÓÏ %s ###", squad:name(), squad2:name())
 		sim_squad.remove_squad(squad)
 		self:unregister(squad) 
 		sim_offline_control.calculate_squad_power(squad2)
-		game_relations.drx_df_npc_on_death_callback(squad2:get_squad_community(), squad:get_squad_community())	
-		return
+		game_relations.drx_df_npc_on_death_callback(squad:get_squad_community(), squad2:get_squad_community())        
+		return			
 	end
 	
-	if (squad2:npc_count() > 0) then
-	
-	    for k in squad2:squad_members() do
-		    squad2_npcs[#squad2_npcs+1] = k
-	    end
-		
-		local k2 = squad2_npcs[math.random(#squad2_npcs)]
-	else
-		printf("### EOC: —Å–∫–≤–∞–¥ %s –±—ã–ª —É–±–∏—Ç —Å–∫–≤–∞–¥–æ–º %s ###", squad2:name(), squad:name())
+	if (squad2:npc_count() <= 0) then		
+		printf("### EOC: ÒÍ‚‡‰ %s ·˚Î Û·ËÚ ÒÍ‚‡‰ÓÏ %s ###", squad2:name(), squad:name())
 		sim_squad.remove_squad(squad2)
 		self:unregister(squad2) 
 		sim_offline_control.calculate_squad_power(squad)
-		game_relations.drx_df_npc_on_death_callback(squad:get_squad_community(), squad2:get_squad_community())
+		game_relations.drx_df_npc_on_death_callback(squad2:get_squad_community(), squad:get_squad_community())    
 		return
     end		
-
+	
+	for k in squad:squad_members() do
+		squad_npcs[#squad_npcs+1] = k
+	end
+	
+	local k1 = squad_npcs[math.random(#squad_npcs)]	
+	
+	for k in squad2:squad_members() do
+		squad2_npcs[#squad2_npcs+1] = k
+	end
+		
+	local k2 = squad2_npcs[math.random(#squad2_npcs)]
+		
 	local random = math.random(30,70)
 	local total_power = squad_power - squad2_power
 
