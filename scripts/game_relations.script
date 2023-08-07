@@ -211,7 +211,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 -- NPC killed callback - raises or lowers faction relations when an NPC is killed:
-local function drx_df_npc_on_death_callback( npc, who )
+function drx_df_npc_on_death_callback( npc, who )
 	-- Return if Dynamic Relations option is off
 	if ( not axr_main.config:r_value("mm_options","enable_dynamic_relations", 1, true) ) then
 		return
