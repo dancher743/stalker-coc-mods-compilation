@@ -124,7 +124,7 @@ function sim_combat_manager:simulate(squad)
 		sim_squad.remove_squad(squad)
 		self:unregister(squad) 
 		sim_offline_control.calculate_squad_power(squad2)
-		game_relations.drx_df_npc_on_death_callback(squad:get_squad_community(), squad2:get_squad_community())        
+		game_relations.drx_df_faction_npc_on_death(squad:get_squad_community(), squad2:get_squad_community())        
 		return			
 	end
 	
@@ -133,7 +133,7 @@ function sim_combat_manager:simulate(squad)
 		sim_squad.remove_squad(squad2)
 		self:unregister(squad2) 
 		sim_offline_control.calculate_squad_power(squad)
-		game_relations.drx_df_npc_on_death_callback(squad2:get_squad_community(), squad:get_squad_community())    
+		game_relations.drx_df_faction_npc_on_death(squad2:get_squad_community(), squad:get_squad_community())    
 		return
     end		
 	

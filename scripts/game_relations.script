@@ -211,15 +211,11 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 -- NPC killed callback - raises or lowers faction relations when an NPC is killed:
-function drx_df_npc_on_death_callback( npc, who )
+local function drx_df_npc_on_death_callback( npc, who )
 	-- Return if Dynamic Relations option is off
 	if ( not axr_main.config:r_value("mm_options","enable_dynamic_relations", 1, true) ) then
 		return
 	end
-
-	-- Base value for relation change:
-	local max_value = (axr_main.config:r_value("mm_options","dynamic_relations_factor",5) or 200)
-	--printf("Max value:"..tostring(max_value))
 
 	-- Get dead guy faction:
 	local sim = alife( )
@@ -230,24 +226,6 @@ function drx_df_npc_on_death_callback( npc, who )
 	end
 	local killed_faction = alife_character_community( se_obj )
 
-	-- Format faction name:
-	local start, finish = string.find( killed_faction, "actor_" )
-	if ( finish ) then
-		killed_faction = string.sub( killed_faction, (finish + 1) )
-	end
-
-	-- Check if dead guy changeable faction:
-	local faction_check = false
-	for j = 1, #drx_df_changeable_factions_list do
-		if ( killed_faction == drx_df_changeable_factions_list[j] ) then
-			faction_check = true
-			break
-		end
-	end
-	if ( not faction_check ) then
-		return
-	end
-
 	-- Get killer faction:
 	local sim = alife( )
 	local id = who:id( )
@@ -257,62 +235,7 @@ function drx_df_npc_on_death_callback( npc, who )
 	end
 	local killer_faction = alife_character_community( se_obj )
 
-	-- Format faction name:
-	local start, finish = string.find( killer_faction, "actor_" )
-	if ( finish ) then
-		killer_faction = string.sub( killer_faction, (finish + 1) )
-	end
-
-	-- Check if killer changeable faction:
-	local faction_check = false
-	for j = 1, #drx_df_changeable_factions_list do
-		if ( killer_faction == drx_df_changeable_factions_list[j] ) then
-			faction_check = true
-			break
-		end
-	end
-	if ( not faction_check ) then
-		return
-	end
-
-	-- If killed NPC was enemy of facton, raise goodwill toward killer faction:
-	if ( math.random( 100 ) > 50 ) then
-		for i = 1, #drx_df_changeable_factions_list do
-			if ( drx_df_changeable_factions_list[i] ~= killer_faction ) then
-				if ( game_relations.is_factions_enemies( drx_df_changeable_factions_list[i], killed_faction ) ) then
-					if ( math.random( 100 ) > 50 ) then
-						local value = math.random( 0, max_value )
-						if ( math.random( 100 ) > 50 ) then
-							value = math.floor( (value * math.random( )) )
-						else
-							value = math.floor( (value * (1 + math.random( ))) )
-						end
-						drx_df_change_faction_relations( drx_df_changeable_factions_list[i], killer_faction, value )
-					end
-				end
-			end
-		end
-
-	-- If killed NPC was friend or neutral to facton, lower goodwill toward killer faction:
-	else
-		for i = 1, #drx_df_changeable_factions_list do
-			if ( drx_df_changeable_factions_list[i] ~= killer_faction ) then
-				if ( not game_relations.is_factions_enemies( drx_df_changeable_factions_list[i], killed_faction ) ) then
-					if ( math.random( 100 ) > 50 ) then
-						local value = math.random( 0, max_value )
-						if ( math.random( 100 ) > 50 ) then
-							value = math.floor( (value * math.random( )) )
-						else
-							value = math.floor( (value * (1 + math.random( ))) )
-						end
-						drx_df_change_faction_relations( drx_df_changeable_factions_list[i], killer_faction, -(value) )
-					end
-				end
-			end
-		end
-
-	end
-
+	drx_df_faction_npc_on_death(killed_faction, killer_faction)
 end
 
 -- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -752,4 +675,95 @@ function get_squad_relation_to_actor_by_id(squad_id)
         end
     end
 	return "enemy"
+end
+
+-- ------------------------------------------------------------------------------------------------
+--	Allows change faction relations if only factions are known
+--	Added by Dancher
+--	for DoctorX Dynamic Factions 1.8
+-- ------------------------------------------------------------------------------------------------
+function drx_df_faction_npc_on_death( killed_faction, killer_faction )
+	-- Return if Dynamic Relations option is off
+	if ( not axr_main.config:r_value("mm_options","enable_dynamic_relations", 1, true) ) then
+		return
+	end
+
+	-- Format faction name:
+	local start, finish = string.find( killed_faction, "actor_" )
+	if ( finish ) then
+		killed_faction = string.sub( killed_faction, (finish + 1) )
+	end
+
+	-- Check if dead guy changeable faction:
+	local faction_check = false
+	for j = 1, #drx_df_changeable_factions_list do
+		if ( killed_faction == drx_df_changeable_factions_list[j] ) then
+			faction_check = true
+			break
+		end
+	end
+	if ( not faction_check ) then
+		return
+	end
+
+	-- Format faction name:
+	local start, finish = string.find( killer_faction, "actor_" )
+	if ( finish ) then
+		killer_faction = string.sub( killer_faction, (finish + 1) )
+	end
+
+	-- Check if killer changeable faction:
+	local faction_check = false
+	for j = 1, #drx_df_changeable_factions_list do
+		if ( killer_faction == drx_df_changeable_factions_list[j] ) then
+			faction_check = true
+			break
+		end
+	end
+	if ( not faction_check ) then
+		return
+	end
+	
+	-- Base value for relation change:
+	local max_value = (axr_main.config:r_value("mm_options","dynamic_relations_factor",5) or 200)
+	--printf("Max value:"..tostring(max_value))
+
+	-- If killed NPC was enemy of facton, raise goodwill toward killer faction:
+	if ( math.random( 100 ) > 50 ) then
+		for i = 1, #drx_df_changeable_factions_list do
+			if ( drx_df_changeable_factions_list[i] ~= killer_faction ) then
+				if ( game_relations.is_factions_enemies( drx_df_changeable_factions_list[i], killed_faction ) ) then
+					if ( math.random( 100 ) > 50 ) then
+						local value = math.random( 0, max_value )
+						if ( math.random( 100 ) > 50 ) then
+							value = math.floor( (value * math.random( )) )
+						else
+							value = math.floor( (value * (1 + math.random( ))) )
+						end
+						drx_df_change_faction_relations( drx_df_changeable_factions_list[i], killer_faction, value )
+					end
+				end
+			end
+		end
+
+	-- If killed NPC was friend or neutral to facton, lower goodwill toward killer faction:
+	else
+		for i = 1, #drx_df_changeable_factions_list do
+			if ( drx_df_changeable_factions_list[i] ~= killer_faction ) then
+				if ( not game_relations.is_factions_enemies( drx_df_changeable_factions_list[i], killed_faction ) ) then
+					if ( math.random( 100 ) > 50 ) then
+						local value = math.random( 0, max_value )
+						if ( math.random( 100 ) > 50 ) then
+							value = math.floor( (value * math.random( )) )
+						else
+							value = math.floor( (value * (1 + math.random( ))) )
+						end
+						drx_df_change_faction_relations( drx_df_changeable_factions_list[i], killer_faction, -(value) )
+					end
+				end
+			end
+		end
+
+	end
+
 end
