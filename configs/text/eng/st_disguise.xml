@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<!-- Disguise messages for actor -->
+	
+	<string id="st_disguise_actor_has_companion">
+        <text>Can't disguise; you're traveling with the companions.</text>
+    </string>
 
 	<string id="st_disguise_actor_in_sight">
 		<text>Can't disguise; some stalkers have seen or remembered you.</text>

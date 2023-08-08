@@ -124,7 +124,9 @@ function disguise_by_patch(actor_community)
 		local patch_community = patch_sections[patch_in_slot:section()]
 		
 		if actor_community ~= patch_community then
-			if disguise_helper.has_actor_in_sight(last_seen, time_to_forget) then
+			if axr_companions.has_companion() then
+				disguise_news.send_disguise_tip_once(disguise_tip_type.has_companion)
+			elseif disguise_helper.has_actor_in_sight(last_seen, time_to_forget) then
 				disguise_news.send_disguise_tip_once(disguise_tip_type.not_allowed)
 			else
 				change_community(patch_community)
