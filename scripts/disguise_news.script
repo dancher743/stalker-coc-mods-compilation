@@ -8,7 +8,8 @@ disguise_tip_type = {
 	not_allowed = 0,
 	changed = 1,
 	returned = 2,
-	same = 3
+	same = 3,
+	has_companion = 4
 }
 
 local once_disguise_messages = {}
@@ -32,7 +33,9 @@ end
 function send_disguise_tip(tip_type, community)
 	local text
 	
-	if tip_type == disguise_tip_type.not_allowed then
+	if tip_type == disguise_tip_type.has_companion then
+		text = game.translate_string("st_disguise_actor_has_companion")
+	elseif tip_type == disguise_tip_type.not_allowed then
 		text = game.translate_string("st_disguise_actor_in_sight")
 	elseif tip_type == disguise_tip_type.same then
 		text = game.translate_string("st_disguise_actor_in_same_faction")

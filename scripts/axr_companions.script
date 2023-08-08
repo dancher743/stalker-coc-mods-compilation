@@ -886,3 +886,22 @@ function UICompanionList:Update(force)
 		end
 	end
 end
+
+------------------------------------------
+-- Added by Dancher
+------------------------------------------
+
+function has_companion()
+    local result = false
+    
+	for id,squad in pairs(companion_squads) do
+		if (squad) then
+			for member in squad:squad_members() do
+				result = true
+				break
+			end
+		end
+	end
+    
+    return result
+end

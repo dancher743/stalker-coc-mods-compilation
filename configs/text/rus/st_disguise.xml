@@ -2,6 +2,10 @@
 <string_table>
 	<!-- Disguise messages for actor -->
 	
+	<string id="st_disguise_actor_has_companion">
+        <text>Маскировка невозможна: вы путешествуете с напарниками.</text>
+    </string>
+	
 	<string id="st_disguise_actor_in_sight">
         <text>Маскировка невозможна: вас видели или запомнили другие сталкеры.</text>
     </string>
