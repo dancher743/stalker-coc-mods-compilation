@@ -115,21 +115,24 @@ function disguise_by_patch(actor_community)
 			disguise_news.send_disguise_tip_once(disguise_tip_type.not_allowed)
 		else
 			local previous_community = disguise_community
-			change_community(default_faction)
+			change_actor_community(default_faction)
+			actor_community = default_faction
+			has_actor_under_disguise = false
 			disguise_news.send_disguise_tip(disguise_tip_type.returned, previous_community)
 		end
 	end
 	
 	if patch_in_slot then
 		local patch_community = patch_sections[patch_in_slot:section()]
-		
 		if actor_community ~= patch_community then
 			if axr_companions.has_companion() then
 				disguise_news.send_disguise_tip_once(disguise_tip_type.has_companion)
 			elseif disguise_helper.has_actor_in_sight(last_seen, time_to_forget) then
 				disguise_news.send_disguise_tip_once(disguise_tip_type.not_allowed)
 			else
-				change_community(patch_community)
+				change_actor_community(patch_community)
+				actor_community = patch_community
+				has_actor_under_disguise = true
 				if patch_community ~= default_faction then
 					disguise_news.send_disguise_tip(disguise_tip_type.changed, patch_community)
 				end
@@ -142,7 +145,7 @@ function disguise_by_patch(actor_community)
 	prev_patch_in_slot = patch_in_slot
 end
 
-function change_community(community)	
+function change_actor_community(community)	
 	if community == default_faction then
 		suspicion = {}
 		callout = true
@@ -177,7 +180,7 @@ function npc_on_update(npc)
 					disguise_news.send_tip(game.translate_string("st_disguise_exposure_discovered"))
 					--printf("discovered at %s",os.date("%X"))
 				end
-				change_community(default_faction)
+				change_actor_community(default_faction)
 				current = default_faction
 				disguise_news.reset_once_disguise_tips()
 			elseif not warned and suspicion[id] > warning_limit then
