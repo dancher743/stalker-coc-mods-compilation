@@ -12,21 +12,21 @@ disguise_tip_type = {
 	has_companion = 4
 }
 
-local once_disguise_tips = {}
+local once_disguise_messages = {}
 
-function send_disguise_tip_once(tip_type, community)
-	if once_disguise_tips[tip_type] then
+function send_disguise_tip_once(type, community)
+	if once_disguise_messages[type] then
 		return
 	end
 
-	send_disguise_tip(tip_type, community)
+	send_disguise_tip(type, community)
 	
-	once_disguise_tips[tip_type] = true
+	once_disguise_messages[type] = true
 end
 
 function reset_once_disguise_tips()
-	for tip_type,v in pairs(once_disguise_tips) do
-		once_disguise_tips[tip_type] = false
+	for k,v in pairs(once_disguise_messages) do
+		once_disguise_messages[k] = false
 	end
 end
 
