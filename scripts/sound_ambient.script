@@ -13,12 +13,8 @@ local enable_debug = false
 local ambients = {}
 local snd_chanels = {}
 local tot_size
-
-local clamp = clamp
 local opt = {
-	ambient_volume = 1,
-	effects_wind_enabled = true,
-	effects_rain_enabled = false,
+    ambient_volume = 1
 }
 
 function reset_settings(level_name, ambient)
@@ -37,7 +33,7 @@ function reset_settings(level_name, ambient)
 		return false
 	end
 
-	local channels = parse_list(ini_lvl,ambient,"sound_channels_dynamic")
+	local channels = alun_utils.parse_list(ini_lvl,ambient,"sound_channels")
 	if #channels == 0 then
 		print_dbg("no sound channel are found for ambient [%s] - file: %s", ambient, level_name)
 		return false
@@ -61,7 +57,7 @@ function reset_settings(level_name, ambient)
 			local period_2 = ini_snd:r_float_ex(ch,"period2")
 			local period_3 = ini_snd:r_float_ex(ch,"period3")
 			snd_chanels[idx].periods = {period_0, period_1, period_2, period_3}
-			snd_chanels[idx].sounds = parse_list(ini_snd,ch,"sounds")
+			snd_chanels[idx].sounds = alun_utils.parse_list(ini_snd,ch,"sounds")
 			
 			print_dbg("reading sound channel [%s] (%s) | size = %s", ch, idx, #snd_chanels[idx].sounds)
 		end
@@ -118,8 +114,8 @@ function update_ambient()
 	--print_dbg("tg = %s - idx = %s - next = %s", tg, next_idx, ch.next)
 	if ch.next <= tg then
 		
-		local inside = GetEvent("current_safe_cover")
-		local bLevelUnderground = GetEvent("underground")
+		local inside = surge_manager.npc_in_cover(db.actor)
+		local bLevelUnderground = level_weathers.bLevelUnderground
 		
 		-- Calculate sound position
 		local actor = db.actor
@@ -177,114 +173,13 @@ function update_ambient()
 	return false
 end
 
-function update_wind(rain_volume, inside, bLevelUnderground)
-	
-	if (not opt.effects_wind_enabled) or bLevelUnderground then return end
-	
-	local sound_state = inside and 0 or 0.5
-	
-	local volume = math.floor(rain_volume*100)
-	--printf(tostring(volume))
-	local wind_velocity = weather.get_value_numric("wind_velocity") or 0
-	local wind_k = wind_velocity/1000
-		
-	local sound1 = "wind_storm1"
-	local sound2 = "wind_storm2"
-	local sound3 = "wind_storm3"
-	local sound4 = "underground_drone"
-	
-	local volume1 = 0
-	local volume2 = 0
-	local volume3 = 0
-	local volume4 = 0
-	
-	if (volume < 35) then
-		volume1 = 60 + volume
-	end
-	
-	if (volume > 25) and (volume < 60) then
-		volume1 = 70 - volume
-		volume2 = 35 + volume
-	end
-	
-	if (volume > 50) then
-		volume1 = 0
-		volume2 = 70 - volume
-		volume3 = volume
-	end
-	
-	volume1 = volume1 * wind_k
-	volume2 = volume2 * wind_k
-	volume3 = volume3 * wind_k
-	volume4 = inside and (not bLevelUnderground) and 30 or 0
-	
-	volume1 = clamp(volume1,0,100)
-	volume2 = clamp(volume2,0,100)
-	volume3 = clamp(volume3,0,100)
-	
-	
-	--printf(volume1.." "..volume2.." "..volume3)
-	
-	xr_sound.play_sound_looped(AC_ID, sound1)
-	xr_sound.play_sound_looped(AC_ID, sound2)
-	xr_sound.play_sound_looped(AC_ID, sound3)
-	xr_sound.play_sound_looped(AC_ID, sound4)
-	
-	xr_sound.set_volume_sound_looped(AC_ID, sound1, volume1 * 0.01)
-	xr_sound.set_volume_sound_looped(AC_ID, sound2, volume2 * 0.01)
-	xr_sound.set_volume_sound_looped(AC_ID, sound3, volume3 * 0.01)
-	xr_sound.set_volume_sound_looped(AC_ID, sound4, volume4 * 0.01)
-end
-
-function update_rain_helm_sound(rain_factor, rain_volume, inside, bLevelUnderground)
-
-	if bLevelUnderground or (rain_factor < 0.1) or (not opt.effects_rain_enabled) then return end
-
-	local sound1 = "rain_helmet"
-	local sound2 = "rain_indoors"
-	
-	local volume1 = ((not inside) and (actor_effects.is_mask_on()) and clamp((rain_volume*rain_volume),0,0.35)) or 0
-	local volume2 = (inside and (rain_factor > 0.3) and 1) or 0
-	
-	xr_sound.play_sound_looped(AC_ID, sound1)
-	xr_sound.play_sound_looped(AC_ID, sound2)
-	
-	xr_sound.set_volume_sound_looped(AC_ID, sound1, volume1)
-	xr_sound.set_volume_sound_looped(AC_ID, sound2, volume2)
-	
-	--printf("-Dynamic rain sounds - rain_factor: %s - rain_volume: %s - volume1: %s - volume2: %s", rain_factor, rain_volume, volume1, volume2)
-end
-
-
 -------------------------------
 -- CALLBACKS
 -------------------------------
-local function update_settings()
-	opt.effects_wind_enabled = ui_options.get("sound/environment/wind_sound")
-	opt.effects_rain_enabled = ui_options.get("sound/environment/helmet_rain_sound")
-	opt.ambient_volume = ui_options.get("sound/environment/ambient_volume")
-end
-
 local function actor_on_first_update()
-	--if (not IsTestMode()) then
-		CreateTimeEvent("sound_channels", "update_ambient", 1, update_ambient)
-	--end
-		
-	update_settings()
-end
-
-local function actor_on_update()
-	local rain_factor = level.rain_factor()
-	local rain_volume = level.get_rain_volume()
-	local inside = GetEvent("current_safe_cover")
-	bLevelUnderground = GetEvent("underground")
-
-	update_wind(rain_volume, inside, bLevelUnderground)
-	update_rain_helm_sound(rain_factor, rain_volume, inside, bLevelUnderground)
+	CreateTimeEvent("sound_channels", "update_ambient", 1, update_ambient)
 end
 	
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
-	RegisterScriptCallback("actor_on_update",actor_on_update)
-	RegisterScriptCallback("on_option_change",update_settings)
 end
