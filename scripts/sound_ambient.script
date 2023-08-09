@@ -33,7 +33,7 @@ function reset_settings(level_name, ambient)
 		return false
 	end
 
-	local channels = alun_utils.parse_list(ini_lvl,ambient,"sound_channels")
+	local channels = alun_utils.parse_list(ini_lvl,ambient,"sound_channels_dynamic")
 	if #channels == 0 then
 		print_dbg("no sound channel are found for ambient [%s] - file: %s", ambient, level_name)
 		return false
