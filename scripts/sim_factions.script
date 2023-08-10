@@ -57,16 +57,49 @@ function update_faction(faction)
 
 		faction_information[faction].faction_passive_npc_limit = utils.round(faction_information[faction].base_count * 11)
         faction_information[faction].faction_active_npc_limit = utils.round(25 + (faction_information[faction].base_count + faction_information[faction].resource_count))
-		faction_information[faction].respawn_defend = utils.round(math.random(200, 250) - (faction_information[faction].resource_count * 3))
-		faction_information[faction].respawn_attack = utils.round(math.random(150, 200) - (faction_information[faction].resource_count * 3))
-		faction_information[faction].respawn_patrol = utils.round(math.random(70, 120) - (faction_information[faction].resource_count * 3))
-
-		if faction_information[faction].respawn_attack < 50 then
-		   faction_information[faction].respawn_attack = 50
+		
+		local respawn_defend_min_value, respawn_defend_max_value = 0, 0
+		local respawn_attack_min_value, respawn_attack_max_value = 0, 0
+		local respawn_patrol_min_value, respawn_patrol_max_value = 0, 0
+		local resource_count_value = 0
+		
+		local option_type
+		local option = axr_main.config:r_string_ex("mm_options","eoc_faction_warfare_activity")
+		
+		if (option == game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_low")) then
+			option_type = 1
+			respawn_defend_min_value, respawn_defend_max_value = 200, 250
+			respawn_attack_min_value, respawn_attack_max_value = 150, 200
+			respawn_patrol_min_value, respawn_patrol_max_value = 70, 120 
+			resource_count_value = 2
+		elseif (option == game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_high")) then
+			option_type = 2
+			respawn_defend_min_value, respawn_defend_max_value = 100, 150
+			respawn_attack_min_value, respawn_attack_max_value = 50, 100
+			respawn_patrol_min_value, respawn_patrol_max_value = 70, 120
+			resource_count_value = 3
+		else -- medium as default
+			option_type = 0
+			respawn_defend_min_value, respawn_defend_max_value = 200, 250
+			respawn_attack_min_value, respawn_attack_max_value = 150, 200
+			respawn_patrol_min_value, respawn_patrol_max_value = 70, 120
+			resource_count_value = 3
 		end
 		
-		if faction_information[faction].respawn_defend < 50 then
-		   faction_information[faction].respawn_defend = 50
+		faction_information[faction].respawn_defend = utils.round(math.random(respawn_defend_min_value, respawn_defend_max_value) - (faction_information[faction].resource_count * resource_count_value))
+		
+		faction_information[faction].respawn_attack = utils.round(math.random(respawn_attack_min_value, respawn_attack_max_value) - (faction_information[faction].resource_count * resource_count_value))
+		
+		faction_information[faction].respawn_patrol = utils.round(math.random(respawn_patrol_min_value, respawn_patrol_max_value) - (faction_information[faction].resource_count * resource_count_value))
+
+		if (option_type ~= 2) then
+			if faction_information[faction].respawn_attack < 50 then
+				faction_information[faction].respawn_attack = 50
+			end
+			
+			if faction_information[faction].respawn_defend < 50 then
+				faction_information[faction].respawn_defend = 50
+			end
 		end
 		
 		if faction_information[faction].base_count <= 3 then
