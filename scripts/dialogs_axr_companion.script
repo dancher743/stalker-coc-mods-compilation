@@ -257,21 +257,25 @@ end
 
 function is_actor_can_ask_neutral_to_join(actor,npc)
 	local npc = dialogs.who_is_npc(actor,npc)
+	local actor = db.actor
 
 	local squad = get_object_squad(npc)
 	if not (squad) then
 		return false
 	end
-
-	if not (axr_companions.allow_simulation_squads_as_companions) or
-		not (axr_companions.allow_neutrals_as_companions) or
-		npc:relation(db.actor) ~= game_object.neutral or
-		npc:character_community() ~= actor_community()
-	then
+	
+	if not (axr_companions.allow_simulation_squads_as_companions) then
 		return false
 	end
 
-	return actor:character_rank() > npc:character_rank()
+	if not (axr_companions.allow_neutrals_as_companions) or (npc:relation(actor) ~= game_object.neutral) then
+		return false
+	end
+
+	local actor_rank = actor:character_rank() + actor:character_reputation() * 0.2
+	local npc_rank = npc:character_rank() + npc:character_reputation() * 0.2
+
+	return actor_rank > npc_rank
 end
 
 function is_actor_friend(actor,npc)
