@@ -129,7 +129,6 @@ local intercepts = {
 	actor_item_to_belt			= {},
 	actor_item_to_ruck			= {},
 	actor_item_to_slot			= {},
-	actor_on_awoke_after_sleeping	= {},
 	
 	-- level_input.script 
 	level_input_on_key_press	= {},
@@ -161,6 +160,7 @@ local intercepts = {
 	TrdWndClosed					= {},
 	
 	-- Callbacks added by Dancher
+	actor_on_awoke_after_sleeping	= {},
 	sound_on_ambient_playing		= {}
 }
 
