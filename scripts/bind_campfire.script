@@ -102,7 +102,7 @@ function get_nearest_campfire(npc, range)
 end
 
 local function sound_on_ambient_playing(snd_obj, snd_path, snd_channel_name, snd_volume, snd_dist)
-	if (wind_sounds_channels[snd_channel_name] and snd_dist <= 30 and snd_volume > 0.3) then
+	if (wind_sounds_channels[snd_channel_name] and snd_dist <= 40 and snd_volume > 0.3) then
 		playing_wind_sounds[snd_path] = snd_obj
 	end
 end
