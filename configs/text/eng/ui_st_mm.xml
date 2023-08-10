@@ -514,4 +514,16 @@
 	<string id="ui_mm_bases_defense">
 		<text>Bases defense quests</text>
 	</string>
+	<string id="ui_mm_eoc_faction_warfare_activity">
+		<text>Faction warfare activity</text>
+	</string>
+	<string id="ui_mm_eoc_faction_warfare_activity_opt_high">
+		<text>High</text>
+	</string>
+	<string id="ui_mm_eoc_faction_warfare_activity_opt_medium">
+		<text>Medium</text>
+	</string>
+	<string id="ui_mm_eoc_faction_warfare_activity_opt_low">
+		<text>Low</text>
+	</string>
 </string_table>

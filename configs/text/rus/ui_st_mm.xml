@@ -517,4 +517,16 @@
 	<string id="ui_mm_bases_defense">
 		<text>Задания по защите лагерей</text>
 	</string>
+	<string id="ui_mm_eoc_faction_warfare_activity">
+		<text>Активность войны группировок</text>
+	</string>
+	<string id="ui_mm_eoc_faction_warfare_activity_opt_high">
+		<text>высокая</text>
+	</string>
+	<string id="ui_mm_eoc_faction_warfare_activity_opt_medium">
+		<text>средняя</text>
+	</string>
+	<string id="ui_mm_eoc_faction_warfare_activity_opt_low">
+		<text>низкая</text>
+	</string>
 </string_table>
