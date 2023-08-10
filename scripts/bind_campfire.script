@@ -8,12 +8,19 @@ campfires_all = {}
 -- Matches sound from NLC 7: Build 3.0
 local matches_sound = sound_object([[nlc\matches_1_short]])
 
-local wind_sounds = {}
+local wind_sounds_channels = {
+	restored_rnd_wind		= true,
+	darkwind_1				= true,
+    forest_rnd_wind			= true,
+    marsh_rnd_wind			= true
+}
+
+local playing_wind_sounds = {}
 
 local function is_windy()
 	local result = false
 
-	for snd_path,snd_obj in pairs(wind_sounds) do
+	for snd_path,snd_obj in pairs(playing_wind_sounds) do
 		if (snd_obj:playing()) then
 			result = true
 			break
@@ -94,9 +101,9 @@ function get_nearest_campfire(npc, range)
 	return nil
 end
 
-local function sound_on_ambient_playing(snd_obj, snd_path, snd_dist, snd_channel_name, snd_volume)
-	if (snd_channel_name == "restored_rnd_wind" and snd_dist <= 40 and snd_volume > 0.3) then
-		wind_sounds[snd_path] = snd_obj
+local function sound_on_ambient_playing(snd_obj, snd_path, snd_channel_name, snd_volume, snd_dist)
+	if (wind_sounds_channels[snd_channel_name] and snd_dist <= 30 and snd_volume > 0.3) then
+		playing_wind_sounds[snd_path] = snd_obj
 	end
 end
 
