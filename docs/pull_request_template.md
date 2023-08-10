@@ -1,11 +1,23 @@
-## CHANGELOG
+## Description
+Added a cool feature (or bugfix :) to allow us bla-bla-bla...
 
-### Added mods
-- Mod 1
-- Mod 2
-- Mod 3
+## What's new
+- Introduced a new code -
+```
+...
+some code here
+...
+```
+- Added `foo` function into `some.script`
 
+## Screenshots
 <details>
  <summary>Spoiler</summary>
- Some text or screenshot here.
+
+Screenshots_1
+
+Screenshots_2
+
+Screenshots_3
+
 </details>
