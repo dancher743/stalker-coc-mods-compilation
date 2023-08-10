@@ -1,0 +1,187 @@
+-- Added from Anomaly 1.5.1.2 mod
+
+--[[
+
+	Tronex
+	Last edit: 2020/5/5
+
+	Ambient sound effect, simulated similary to engine method with additional techniques
+	
+--]]
+
+local enable_debug = false
+
+local ambients = {}
+local snd_chanels = {}
+local tot_size
+local opt = {
+    ambient_volume = 1
+}
+
+function reset_settings(level_name, ambient)
+
+	empty_table(snd_chanels)
+	print_dbg("level_name: %s - ambient: %s", level_name, ambient)
+	
+	if not (level_name and ambient and ambient ~= "") then
+		print_dbg("level_name or ambient is missing")
+		return false
+	end
+	
+	local ini_lvl = ini_file("environment\\ambients\\" .. level_name .. ".ltx")
+	if (not ini_lvl) then
+		print_dbg("environment\\ambients\\%s.ltx couldn't be found!", level_name)
+		return false
+	end
+
+	local channels = alun_utils.parse_list(ini_lvl,ambient,"sound_channels_dynamic")
+	if #channels == 0 then
+		print_dbg("no sound channel are found for ambient [%s] - file: %s", ambient, level_name)
+		return false
+	end
+	
+	local cached = {}
+	local ini_snd = ini_file("environment\\sound_channels.ltx")
+	for i=1,#channels do
+		local ch = channels[i]
+		if ini_snd:section_exist(ch) and (not cached[ch]) then
+			cached[ch] = true
+			local idx = #snd_chanels + 1
+			snd_chanels[idx] = {}
+			snd_chanels[idx].name = ch
+			snd_chanels[idx].max_dist = ini_snd:r_float_ex(ch,"max_distance")
+			snd_chanels[idx].min_dist = ini_snd:r_float_ex(ch,"min_distance")
+			snd_chanels[idx].height = ini_snd:r_float_ex(ch,"height") or 0
+			snd_chanels[idx].indoor = ini_snd:r_bool_ex(ch,"indoor") or false
+			local period_0 = ini_snd:r_float_ex(ch,"period0")
+			local period_1 = ini_snd:r_float_ex(ch,"period1")
+			local period_2 = ini_snd:r_float_ex(ch,"period2")
+			local period_3 = ini_snd:r_float_ex(ch,"period3")
+			snd_chanels[idx].periods = {period_0, period_1, period_2, period_3}
+			snd_chanels[idx].sounds = alun_utils.parse_list(ini_snd,ch,"sounds")
+			
+			print_dbg("reading sound channel [%s] (%s) | size = %s", ch, idx, #snd_chanels[idx].sounds)
+		end
+	end
+	tot_size = #snd_chanels
+	return true
+end
+
+function print_dbg(fmt, ...)
+	if enable_debug then
+		printf("sound_ambient | " .. fmt, ...)
+	end
+end
+
+
+-------------------------------
+-- UPDATE
+-------------------------------
+local next_idx = 0
+local last_hour
+local next_hour
+function update_ambient()
+	ResetTimeEvent("sound_channels","update_ambient",1)
+	
+	local next_hour = level.get_time_hours()
+	if (next_hour ~= last_hour) then
+		last_hour = next_hour
+		next_idx = 0
+		
+		local ambient =  level_weathers.get_weather_manager():get_curr_ambient()
+		local is_set = reset_settings(level.name() , ambient)
+		if is_set then
+			print_dbg("ambient sounds table reset for the next hour: %s", next_hour)
+			return false
+		else
+			print_dbg("ambient sounds timer went off")
+			return true
+		end
+	end
+	
+	next_idx = next_idx + 1
+	if (next_idx > tot_size) then
+		next_idx = 1
+	end
+	
+	local tg = time_global()
+	local ch = snd_chanels[next_idx]
+	if (not ch.next) then
+		ch.next = tg + math.random( 1 , (ch.periods[math.random(4)] + 1) )
+		print_dbg("sound [%s] set to play at %s",ch.name,ch.next)
+		return false
+	end
+	
+	--print_dbg("tg = %s - idx = %s - next = %s", tg, next_idx, ch.next)
+	if ch.next <= tg then
+		
+		local inside = surge_manager.npc_in_cover(db.actor)
+		local bLevelUnderground = level_weathers.bLevelUnderground
+		
+		-- Calculate sound position
+		local actor = db.actor
+		local pos = actor:position()
+		local max_dist = ch.max_dist
+		local min_dist = ch.min_dist --bLevelUnderground and ch.min_dist or ((max_dist + ch.min_dist)/2)
+		local dist = math.random(min_dist, max_dist) --/ 2 --(bLevelUnderground and 4 or 2)
+		--[[
+		local sign_x = (math.random(100) <= 50) and 1 or -1
+		local pos_x = pos.x + sign_x * dist
+		local sign_z = (math.random(100) <= 50) and 1 or -1
+		local pos_z = pos.z + sign_z * dist
+		--]]
+		local angle_dec = math.random(0,359)
+		local angle_rad = math.rad(angle_dec)
+		local pos_x = math.cos(angle_rad)*dist
+		local pos_z = math.sin(angle_rad)*dist
+		local pos_y = ch.height
+		local vec = vector():set( (pos.x + pos_x) , (pos.y + pos_y) , (pos.z + pos_z) )
+		
+		local file = ch.sounds[math.random(#ch.sounds)]
+		ch.snd = sound_object(file)
+		ch.snd:play_at_pos(actor, vec)
+		
+		-- Volume management
+		local vol
+		if (bLevelUnderground or inside) then
+			if ch.indoor then
+				vol = 1
+			else
+				vol = 0.3
+			end
+		else
+			if ch.indoor then
+				vol = 0
+			else
+				vol = 1
+			end
+		end
+		
+		vol = vol * opt.ambient_volume
+		
+		ch.snd.volume = vol
+
+		-- Set next play time
+		ch.next = tg + (ch.periods[math.random(4)])
+
+		print_dbg("sound [%s] set to use sound: %s - volume: %s - distance: %s", ch.name, file, ch.snd.volume, dist)
+		print_dbg("sound [%s] set to play next at %s | time now: %s", ch.name, ch.next, tg)
+		--print_dbg("angle_dec: %s - angle_rad: %s - math.cos(angle_rad): %s - math.sin(angle_rad): %s", angle_dec, angle_rad, math.cos(angle_rad), math.sin(angle_rad))
+		--print_dbg("player | x: %s - y: %s - z: %s", (pos.x), (pos.y), (pos.z))
+		--print_dbg("sound  | x: %s - y: %s - z: %s", (pos.x + pos_x), (pos.y), (pos.z + pos_z))
+		SendScriptCallback("sound_on_ambient_playing", ch.snd, file, ch.name, ch.snd.volume, dist)
+	end
+	
+	return false
+end
+
+-------------------------------
+-- CALLBACKS
+-------------------------------
+local function actor_on_first_update()
+	CreateTimeEvent("sound_channels", "update_ambient", 1, update_ambient)
+end
+	
+function on_game_start()
+	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
+end

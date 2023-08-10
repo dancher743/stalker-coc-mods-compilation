@@ -8,6 +8,28 @@ campfires_all = {}
 -- Matches sound from NLC 7: Build 3.0
 local matches_sound = sound_object([[nlc\matches_1_short]])
 
+local wind_sounds_channels = {
+	restored_rnd_wind		= true,
+	darkwind_1				= true,
+    forest_rnd_wind			= true,
+    marsh_rnd_wind			= true
+}
+
+local playing_wind_sounds = {}
+
+local function is_windy()
+	local result = false
+
+	for snd_path,snd_obj in pairs(playing_wind_sounds) do
+		if (snd_obj:playing()) then
+			result = true
+			break
+		end
+	end
+	
+	return result
+end
+
 -- For use with Marshal save state system
 local function save_state(m_data)
 	--alun_utils.debug_write("bind_campfire:save_state")
@@ -43,6 +65,8 @@ function use_campfire(actor,zone,p)
 			local rain_factor = level.rain_factor()
 			if (rain_factor > 0) then
 				chance_to_ignite = utils.lerp(70, 30, rain_factor)
+			elseif (is_windy()) then
+				chance_to_ignite = 50
 			else
 				chance_to_ignite = 90
 			end
@@ -75,6 +99,12 @@ function get_nearest_campfire(npc, range)
 	end
 
 	return nil
+end
+
+local function sound_on_ambient_playing(snd_obj, snd_path, snd_channel_name, snd_volume, snd_dist)
+	if (wind_sounds_channels[snd_channel_name] and snd_dist <= 40 and snd_volume > 0.3) then
+		playing_wind_sounds[snd_path] = snd_obj
+	end
 end
 
 function on_game_start()
@@ -120,6 +150,7 @@ function on_game_start()
 	end
 
 	AddUniqueCall(main_loop)
+	RegisterScriptCallback("sound_on_ambient_playing",sound_on_ambient_playing)
 end 
 
 
@@ -209,11 +240,3 @@ function turn_off_campfires_by_smart_name(smart_name,turn_off_chance)
 		end
 	end
 end
-
-
-
-
-
-
-
-
