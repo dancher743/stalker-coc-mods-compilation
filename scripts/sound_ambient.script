@@ -121,8 +121,8 @@ function update_ambient()
 		local actor = db.actor
 		local pos = actor:position()
 		local max_dist = ch.max_dist
-		local min_dist = bLevelUnderground and ch.min_dist or ((max_dist + ch.min_dist)/2)
-		local dist = math.random(min_dist, max_dist) / 2 --(bLevelUnderground and 4 or 2)
+		local min_dist = ch.min_dist --bLevelUnderground and ch.min_dist or ((max_dist + ch.min_dist)/2)
+		local dist = math.random(min_dist, max_dist) --/ 2 --(bLevelUnderground and 4 or 2)
 		--[[
 		local sign_x = (math.random(100) <= 50) and 1 or -1
 		local pos_x = pos.x + sign_x * dist
