@@ -158,7 +158,10 @@ local intercepts = {
 	load_state						= {},
 	
 	TrdWndOpened					= {},
-	TrdWndClosed					= {}
+	TrdWndClosed					= {},
+	
+	-- Callbacks added by Dancher
+	sound_on_ambient_playing		= {}
 }
 
 -----------------------------------------------------------

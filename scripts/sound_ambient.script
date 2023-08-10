@@ -168,6 +168,13 @@ function update_ambient()
 		--print_dbg("angle_dec: %s - angle_rad: %s - math.cos(angle_rad): %s - math.sin(angle_rad): %s", angle_dec, angle_rad, math.cos(angle_rad), math.sin(angle_rad))
 		--print_dbg("player | x: %s - y: %s - z: %s", (pos.x), (pos.y), (pos.z))
 		--print_dbg("sound  | x: %s - y: %s - z: %s", (pos.x + pos_x), (pos.y), (pos.z + pos_z))
+		
+		local snd_obj = ch.snd
+		local snd_path = file
+		local snd_dist = dist
+		local snd_channel_name = ch.name
+		local snd_volume = snd_obj.volume
+		SendScriptCallback("sound_on_ambient_playing", snd_obj, snd_path, snd_dist, snd_channel_name, snd_volume)
 	end
 	
 	return false

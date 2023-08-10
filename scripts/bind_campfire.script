@@ -8,35 +8,13 @@ campfires_all = {}
 -- Matches sound from NLC 7: Build 3.0
 local matches_sound = sound_object([[nlc\matches_1_short]])
 
-local wind_sounds = {
-	-- restored_rnd_wind
-	"ambient\\rnd_outdoor\\ambient_wind_1",
-	"ambient\\rnd_outdoor\\ambient_wind_2",
-	"ambient\\rnd_outdoor\\ambient_wind_3",
-	"ambient\\rnd_outdoor\\ambient_wind_4",
-	"ambient\\rnd_outdoor_restored\\rnd_wind_1",
-	"ambient\\rnd_outdoor_restored\\rnd_wind_2",
-	"ambient\\rnd_outdoor_restored\\rnd_wind_3",
-	
-	-- darkwind_1
-	"ambient\\rnd_outdoor\\rnd_darkwind3",
-	"ambient\\rnd_outdoor\\rnd_darkwind5",
-	"ambient\\rnd_outdoor\\rnd_darkwind6",
-	
-	-- forest_rnd_wind
-	"ambient\\rnd_outdoor\\rnd_wind_tree",
-		
-	-- marsh_rnd_wind
-	"ambient\\outdoors\\swamp_wind_short_1",
-	"ambient\\outdoors\\swamp_wind_short_2"
-}
+local wind_sounds = {}
 
 local function is_windy()
 	local result = false
-	
-	for i,v in ipairs(wind_sounds) do
-		local wind_sound = sound_object(v)
-		if (wind_sound:playing()) then
+
+	for snd_path,snd_obj in pairs(wind_sounds) do
+		if (snd_obj:playing()) then
 			result = true
 			break
 		end
@@ -116,6 +94,12 @@ function get_nearest_campfire(npc, range)
 	return nil
 end
 
+local function sound_on_ambient_playing(snd_obj, snd_path, snd_dist, snd_channel_name, snd_volume)
+	if (snd_channel_name == "restored_rnd_wind" and snd_dist <= 40 and snd_volume > 0.3) then
+		wind_sounds[snd_path] = snd_obj
+	end
+end
+
 function on_game_start()
 	local tutorial_ran = 0 -- because we don't want to conflict with other tutorials, we need to identify if we are running (ie. > 0)
 	local function main_loop()
@@ -159,6 +143,7 @@ function on_game_start()
 	end
 
 	AddUniqueCall(main_loop)
+	RegisterScriptCallback("sound_on_ambient_playing",sound_on_ambient_playing)
 end 
 
 
@@ -248,11 +233,3 @@ function turn_off_campfires_by_smart_name(smart_name,turn_off_chance)
 		end
 	end
 end
-
-
-
-
-
-
-
-
