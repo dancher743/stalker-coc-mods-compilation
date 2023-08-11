@@ -25,6 +25,12 @@ local function on_fighting_actor(npc)
 	if not (IsStalker(npc)) then
 		return 
 	end
+	
+	if (is_companion(npc)) then
+		remove_from_actor_squad(npc)
+		return
+	end
+	
 	--alun_utils.debug_write(strformat("axr_companions.on_fighting_actor"))
 				
 	for id,squad in pairs(companion_squads) do 
