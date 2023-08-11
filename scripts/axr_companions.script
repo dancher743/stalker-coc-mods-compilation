@@ -905,3 +905,17 @@ function has_companion()
     
     return result
 end
+
+function is_companion(npc)
+	local result = false
+
+	if (has_companion()) then
+		result = npc:has_info("npcx_is_companion")
+		if (not result) then
+			local clist = list_actor_squad_by_id()
+			result = clist[npc:id()] ~= nil
+		end
+	end
+    
+    return result
+end

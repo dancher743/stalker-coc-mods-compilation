@@ -29,7 +29,9 @@ function anybody_see()
 		npc = level.object_by_id(db.OnlineStalkers[i])
 		if (npc and IsStalker(npc,npc:clsid()) and npc:alive()) then
 			if(npc:see(db.actor)) then
-				return true
+				if (not axr_companions.is_companion(npc)) then
+                    return true
+                end
 			end
 		end
 	end
@@ -42,7 +44,10 @@ function anybody_remember(last_seen, time_to_forget)
 		if(v)then
 			time_passed = game.get_game_time():diffSec(v)
 			if( time_passed < time_to_forget) then
-				return true
+				local npc = level.object_by_id(k)
+                if (not (axr_companions.is_companion(npc))) then
+                    return true
+                end
 			else
 				last_seen[k] = nil
 			end
