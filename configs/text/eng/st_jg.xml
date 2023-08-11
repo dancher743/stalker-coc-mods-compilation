@@ -60,4 +60,7 @@
 	<string id="st_travel_guider">
         <text>You can't travel as a guide</text>
     </string>
+	<string id="ui_st_jg_squad_killed">
+        <text>As a guide, your entire squad is killed.</text>
+    </string>
 </string_table>

@@ -23,7 +23,8 @@ end
 function squad_on_npc_death(squad,se_npc)
 	if ((squad.id == curr_guid['squad_id']) and (squad:npc_count() == 0)) then
 		if db.actor:has_info('guider_start') then
-		xr_statistic.inc_actor_reputation(-1000)
+			news_manager.send_tip(db.actor, game.translate_string("ui_st_jg_squad_killed"), nil, nil, 5000)
+			xr_statistic.inc_actor_reputation(-1000)
 		end
 		clear()
 	end
