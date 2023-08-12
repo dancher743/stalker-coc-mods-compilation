@@ -86,6 +86,20 @@ function update_faction(faction)
 			resource_count_value = 3
 		end
 		
+		if (alife_storage_manager.get_state().enable_survival_mode) then
+			if faction == "zombied" then
+				respawn_defend_min_value, respawn_defend_max_value = 50, 70
+				respawn_attack_min_value, respawn_attack_max_value = 50, 70
+				respawn_patrol_min_value, respawn_patrol_max_value = 50, 70
+				resource_count_value = math.random(5,10)
+			else
+				respawn_defend_min_value, respawn_defend_max_value = respawn_defend_min_value * math.random(1,2), respawn_defend_max_value * math.random(1,2)
+				respawn_attack_min_value, respawn_attack_max_value = respawn_attack_min_value * math.random(3,5), respawn_attack_max_value * math.random(3,5)
+				respawn_patrol_min_value, respawn_patrol_max_value = respawn_patrol_min_value * math.random(3,5), respawn_patrol_max_value * math.random(3,5)
+				resource_count_value = 1
+			end
+		end
+		
 		faction_information[faction].respawn_defend = utils.round(math.random(respawn_defend_min_value, respawn_defend_max_value) - (faction_information[faction].resource_count * resource_count_value))
 		
 		faction_information[faction].respawn_attack = utils.round(math.random(respawn_attack_min_value, respawn_attack_max_value) - (faction_information[faction].resource_count * resource_count_value))

@@ -549,6 +549,12 @@ function find_targets(smart)
                       priority = priority - 500	
                    end	
                 end				  
+
+				if (alife_storage_manager.get_state().enable_survival_mode) then
+                   if (faction == "zombied") then
+                      priority = priority + 25
+				   end
+                end
 				
 				if (faction2 == "none" or game_relations.is_factions_enemies(faction, faction2)) then
 					targets[#targets+1] = {math.abs(dist/priority), other.id}
