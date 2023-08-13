@@ -1,5 +1,5 @@
 --
---	Simulation of survival mode for EOC mod
+--	Function-helpers for the simulation of EOC's survival mode
 --	Added by Dancher
 --
 
@@ -11,6 +11,7 @@ local zombie_mutants = {
     "simulation_snork"
 }
 
+-- From Anomaly 1.5.1.2 mod
 local function print_dbg(fmt, ...)
 	if enable_debug then
 		printf("DANCHER: sim_survival.script | " .. fmt, ...)
