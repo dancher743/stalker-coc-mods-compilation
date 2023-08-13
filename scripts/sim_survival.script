@@ -1,4 +1,9 @@
-local enable_debug = false
+--
+--	Simulation of survival mode for EOC mod
+--	Added by Dancher
+--
+
+local enable_debug = true
 
 local zombie_mutants = {
     "simulation_zombie",
