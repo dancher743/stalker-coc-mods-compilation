@@ -9,17 +9,22 @@ local function get_hours_elapsed()
 	local seconds = tonumber(game.get_game_time():diffSec(start_time))
 	local hours = math.floor(seconds/60/60)
 	return hours
-end 
+end
+
+local function get_chance_by_elapsed_hours(max_hours, max_chance)
+	local hours_elapses = get_hours_elapsed()
+	local chance_factor = utils.inverse_lerp(0, max_hours, hours_elapses)
+	local chance = utils.lerp(0 , max_chance, chance_factor)
+	--printf(string.format("DACNHER: zombied's virus! Factor: %s, chance: %s", zombie_chance_factor, zombie_chance))
+	return chance
+end
 
 function should_faction_replace_by_zombied(faction)
 	local result = false
 
 	if (IsSurvivalMode()) then
-		local hours_elapses = get_hours_elapsed()
-		local zombie_chance_factor = utils.inverse_lerp(0, 24, hours_elapses)
-		local zombie_chance = utils.lerp(0 , 90, zombie_chance_factor)
-		printf(string.format("DACNHER: zombied's virus! Factor: %s, chance: %s", zombie_chance_factor, zombie_chance))
-		if (faction ~= "zombied" and math.random(100) <= zombie_chance) then
+		local chance = get_chance_by_elapsed_hours(24, 90)
+		if (faction ~= "zombied" and math.random(100) <= chance) then
 			result = true
 		end
 	end
@@ -41,14 +46,16 @@ end
 
 
 function try_replace_mutant_by_zombies(section)
-	local result = section
+	local result = false
+	local zombie_section = nil
 
 	if (IsSurvivalMode()) then
-		if (math.random(100) <= 40 and not (utils.contains(zombie_mutants,section))) then
-			result = zombie_mutants[math.random(#zombie_mutants)]
-			printf(string.format("DACNHER: mutant-zombies! %s -> %s", section, zombie_chance, result))
+		local chance = get_chance_by_elapsed_hours(12, 40)
+		if (math.random(100) <= chance and not (utils.contains(zombie_mutants,section))) then
+			zombie_section = zombie_mutants[math.random(#zombie_mutants)]
+			result = true
 		end
 	end
 
-	return result
+	return result, zombie_section
 end
