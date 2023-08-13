@@ -88,6 +88,12 @@ function create_squad(smart, faction, target, type, number, param)
 			sim_offline_control.squads_by_level[lvl][squad.id] = true
 	    end  
 	else
+		if (sim_survival.should_faction_replace_by_zombied(faction)) then
+			faction = "zombied"
+		elseif (sim_survival.should_dont_create_squad(faction)) then
+			return
+		end
+	
 	    local random = math.random(30) + sim_factions.faction_information[faction].resource_count
 	    local section = "novice"
 

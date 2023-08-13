@@ -11,28 +11,35 @@ local function get_hours_elapsed()
 	return hours
 end 
 
-function try_change_faction_to_zombie(faction)
-	local dont_create = false
+function should_faction_replace_by_zombied(faction)
+	local result = false
 
-	if (not (IsSurvivalMode())) then
-		return faction, dont_create
+	if (IsSurvivalMode()) then
+		local hours_elapses = get_hours_elapsed()
+		local zombie_chance_factor = utils.inverse_lerp(0, 24, hours_elapses)
+		local zombie_chance = utils.lerp(0 , 90, zombie_chance_factor)
+		printf(string.format("DACNHER: zombied's virus! Factor: %s, chance: %s", zombie_chance_factor, zombie_chance))
+		if (faction ~= "zombied" and math.random(100) <= zombie_chance) then
+			result = true
+		end
 	end
-	
-	local hours_elapses = get_hours_elapsed()
-	local zombie_chance_factor = utils.inverse_lerp(0, 24, hours_elapses)
-	local zombie_chance = utils.lerp(0 , 90, zombie_chance_factor)
-	local npc_chance = 10
-	local current_chance = math.random(100)
-	
-	if (faction ~= "zombied" and current_chance <= zombie_chance) then
-		faction = "zombied"
-	elseif (current_chance > npc_chance)
-		dont_create = true
-	end
-	
-	return faction, dont_create
+
+	return result
 end
 
+function should_dont_create_squad(faction)
+	local result = false
+
+	if (IsSurvivalMode()) then
+		if (faction ~= "zombied" and math.random(100) > 10) then
+			result = true
+		end
+	end
+
+	return result
+end
+
+--[[
 function foo_mutant(section)
 	if (not (IsSurvivalMode())) then
 		return
@@ -41,4 +48,4 @@ function foo_mutant(section)
 	if (zombies[section] == nil) then
 		section = zombies[math.random(#zombies)]
 	end
-end
+end]]
