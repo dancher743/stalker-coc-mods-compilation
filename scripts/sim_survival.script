@@ -30,12 +30,10 @@ end
 function should_faction_replace_by_zombied(faction)
 	local result = false
 
-	if (IsSurvivalMode()) then
-		local chance = get_chance_by_elapsed_hours(24, 90)
-		if (faction ~= "zombied" and math.random(100) <= chance) then
-			print_dbg("FACTION: %s -> %s", faction, "zombied")
-			result = true
-		end
+	local chance = get_chance_by_elapsed_hours(24, 90)
+	if (faction ~= "zombied" and math.random(100) <= chance) then
+		print_dbg("FACTION: %s -> %s", faction, "zombied")
+		result = true
 	end
 
 	return result
@@ -44,27 +42,22 @@ end
 function should_dont_create_squad(faction)
 	local result = false
 
-	if (IsSurvivalMode()) then
-		if (faction ~= "zombied" and math.random(100) > 10) then
-			result = true
-		end
+	if (faction ~= "zombied" and math.random(100) > 10) then
+		result = true
 	end
 
 	return result
 end
 
-
 function try_replace_mutant_by_zombies(section)
 	local result = false
 	local zombie_section = nil
 
-	if (IsSurvivalMode()) then
-		local chance = get_chance_by_elapsed_hours(12, 40)
-		if (math.random(100) <= chance and not (utils.contains(zombie_mutants,section))) then
-			zombie_section = zombie_mutants[math.random(#zombie_mutants)]
-			print_dbg("MUTANT: %s -> %s", section, zombie_section)
-			result = true
-		end
+	local chance = get_chance_by_elapsed_hours(12, 40)
+	if (math.random(100) <= chance and not (utils.contains(zombie_mutants,section))) then
+		zombie_section = zombie_mutants[math.random(#zombie_mutants)]
+		print_dbg("MUTANT: %s -> %s", section, zombie_section)
+		result = true
 	end
 
 	return result, zombie_section
