@@ -904,10 +904,25 @@ end
 -- Added by Dancher
 ----------------------------
 
+--
 -- Linearly interpolates between "a" and "b" by "t".
 -- The parameter "t" is clamped to the range [0, 1].
+--
 function lerp(a, b, t)
 	return a + (b-a) * clamp(t, 0, 1)
+end
+
+--
+-- Determines where a value lies between two points.
+-- `value` is the point within the range you want to calculate.
+--
+function inverse_lerp(a, b, value)
+	if (a != b)
+	{
+		return clamp((value - a) / (b - a), 0, 1);
+	}
+	
+	return 0;
 end
 
 function get_actor_community()

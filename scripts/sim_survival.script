@@ -1,0 +1,44 @@
+local zombies = {
+    ["simulation_zombie"] = true,
+    ["simulation_fracture"] = true,
+    ["simulation_snork"] = true
+}
+
+local function get_hours_elapsed()
+	local start_time = level.get_start_time()
+	local seconds = tonumber(game.get_game_time():diffSec(start_time))
+	local hours = math.floor(seconds/60/60)
+	return hours
+end 
+
+function try_change_faction_to_zombie(faction)
+	local dont_create = false
+
+	if (not (IsSurvivalMode())) then
+		return faction, dont_create
+	end
+	
+	local hours_elapses = get_hours_elapsed()
+	local zombie_chance_factor = utils.inverse_lerp(0, 24, hours_elapses)
+	local zombie_chance = utils.lerp(0 , 90, zombie_chance_factor)
+	local npc_chance = 10
+	local current_chance = math.random(100)
+	
+	if (faction ~= "zombied" and current_chance <= zombie_chance) then
+		faction = "zombied"
+	elseif (current_chance > npc_chance)
+		dont_create = true
+	end
+	
+	return faction, dont_create
+end
+
+function foo_mutant(section)
+	if (not (IsSurvivalMode())) then
+		return
+	end
+	
+	if (zombies[section] == nil) then
+		section = zombies[math.random(#zombies)]
+	end
+end
