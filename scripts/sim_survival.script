@@ -1,7 +1,7 @@
-local zombies = {
-    ["simulation_zombie"] = true,
-    ["simulation_fracture"] = true,
-    ["simulation_snork"] = true
+local zombie_mutants = {
+    "simulation_zombie",
+    "simulation_fracture",
+    "simulation_snork"
 }
 
 local function get_hours_elapsed()
@@ -39,13 +39,16 @@ function should_dont_create_squad(faction)
 	return result
 end
 
---[[
-function foo_mutant(section)
-	if (not (IsSurvivalMode())) then
-		return
+
+function try_replace_mutant_by_zombies(section)
+	local result = section
+
+	if (IsSurvivalMode()) then
+		if (math.random(100) <= 40 and not (utils.contains(zombie_mutants,section))) then
+			result = zombie_mutants[math.random(#zombie_mutants)]
+			printf(string.format("DACNHER: mutant-zombies! %s -> %s", section, zombie_chance, result))
+		end
 	end
-	
-	if (zombies[section] == nil) then
-		section = zombies[math.random(#zombies)]
-	end
-end]]
+
+	return result
+end
