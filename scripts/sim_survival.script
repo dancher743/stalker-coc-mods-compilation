@@ -3,7 +3,7 @@
 --	Added by Dancher
 --
 
-local enable_debug = true
+local enable_debug = false
 
 local zombie_mutants = {
     "simulation_zombie",
