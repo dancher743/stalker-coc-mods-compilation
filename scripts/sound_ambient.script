@@ -51,6 +51,7 @@ function reset_settings(level_name, ambient)
 			snd_chanels[idx].name = ch
 			snd_chanels[idx].max_dist = ini_snd:r_float_ex(ch,"max_distance")
 			snd_chanels[idx].min_dist = ini_snd:r_float_ex(ch,"min_distance")
+			snd_chanels[idx].div_dist_for_surv_mode = ini_snd:r_bool_ex(ch,"div_distance_for_surv_mode") or false
 			snd_chanels[idx].height = ini_snd:r_float_ex(ch,"height") or 0
 			snd_chanels[idx].indoor = ini_snd:r_bool_ex(ch,"indoor") or false
 			local period_0 = ini_snd:r_float_ex(ch,"period0")
@@ -130,6 +131,9 @@ function update_ambient()
 		local sign_z = (math.random(100) <= 50) and 1 or -1
 		local pos_z = pos.z + sign_z * dist
 		--]]
+		if (IsSurvivalMode() and ch.div_dist_for_surv_mode) then
+			dist = dist / 2
+		end		
 		local angle_dec = math.random(0,359)
 		local angle_rad = math.rad(angle_dec)
 		local pos_x = math.cos(angle_rad)*dist

@@ -904,10 +904,23 @@ end
 -- Added by Dancher
 ----------------------------
 
+--
 -- Linearly interpolates between "a" and "b" by "t".
 -- The parameter "t" is clamped to the range [0, 1].
+--
 function lerp(a, b, t)
 	return a + (b-a) * clamp(t, 0, 1)
+end
+
+--
+-- Determines where a value lies between two points.
+-- `value` is the point within the range you want to calculate.
+--
+function inverse_lerp(a, b, value)
+	if (a ~= b) then
+		return clamp((value - a) / (b - a), 0, 1)
+	end
+	return 0
 end
 
 function get_actor_community()
@@ -916,4 +929,21 @@ end
 
 function get_parent_section(section)
 	return system_ini():r_string_ex(section,"parent_section")
+end
+
+function contains(array, value)
+    for i,v in ipairs(array) do
+        if v == value then
+            return true
+        end
+    end
+
+    return false
+end
+
+function get_hours_elapsed()
+	local start_time = level.get_start_time()
+	local seconds = tonumber(game.get_game_time():diffSec(start_time))
+	local hours = math.floor(seconds/60/60)
+	return hours
 end

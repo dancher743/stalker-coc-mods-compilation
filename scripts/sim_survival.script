@@ -1,0 +1,60 @@
+--
+--	Function-helpers for the simulation of EOC's survival mode
+--	Added by Dancher
+--
+
+local enable_debug = false
+
+local zombie_mutants = {
+    "simulation_zombie",
+    "simulation_fracture",
+    "simulation_snork"
+}
+
+-- From Anomaly 1.5.1.2 mod
+local function print_dbg(fmt, ...)
+	if enable_debug then
+		printf("DANCHER: sim_survival.script | " .. fmt, ...)
+	end
+end
+
+local function get_chance_by_elapsed_hours(max_hours, max_chance)
+	local hours_elapses = utils.get_hours_elapsed()
+	local chance_factor = utils.inverse_lerp(0, max_hours, hours_elapses)
+	local chance = utils.lerp(0 , max_chance, chance_factor)
+	print_dbg("get_chance_by_elapsed_hours! Factor: %s, chance: %s", chance_factor, chance)
+	return chance
+end
+
+function should_faction_replace_by_zombied(faction)
+	local result = false
+
+	if (faction ~= "zombied" and math.random(100) <= get_chance_by_elapsed_hours(24, 90)) then
+		print_dbg("FACTION: %s -> %s", faction, "zombied")
+		result = true
+	end
+
+	return result
+end
+
+function should_dont_create_squad(faction)
+	local result = false
+
+	if (faction ~= "zombied" and math.random(100) > 10) then
+		result = true
+	end
+
+	return result
+end
+
+function try_replace_mutant_by_zombies(section)
+	local result_section = section
+
+	if (not (utils.contains(zombie_mutants,section)) and math.random(100) <= get_chance_by_elapsed_hours(12, 40)) then
+		result_section = zombie_mutants[math.random(#zombie_mutants)]
+		print_dbg("MUTANT: %s -> %s", section, zombie_section)
+		result = true
+	end
+
+	return result_section
+end

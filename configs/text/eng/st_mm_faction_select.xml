@@ -119,8 +119,12 @@
 	</string>
 	<string id="st_mm_ck_survival_desc">
 		<text>
-			%c[0,150,150,150]Survival mode is a feature that replaces all spawns with Zombies.\n
+			%c[0,150,150,150]Survival mode is a feature that replaces most of spawns with Zombies.\n
 			\nThese hordes will make their way to your location - be prepared! See how long you can survive!
+			\n
+			\nIn Survival mode you will have relatively safe only the first 24 hours, as the activity of Zombies in the Zone will increase every hour.
+			\n
+			\nUse your time wisely!
 		</text>
 	</string>
 	<string id="st_mm_ck_azazel_mode_desc">
