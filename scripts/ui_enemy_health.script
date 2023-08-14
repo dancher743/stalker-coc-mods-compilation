@@ -73,6 +73,8 @@ function on_hit(obj,power,dir,who,bi)
 			text = game.translate_string("ui_st_helicopter")
 		elseif (IsStalker(nil,cls)) then 
 			text = obj:character_name()
+		elseif (IsMonster(nil,cls)) then 
+			text = game.translate_string("monster")
 		else 
 			local sid = get_object_story_id(obj:id())
 			if (sid) then 
