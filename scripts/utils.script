@@ -940,3 +940,10 @@ function contains(array, value)
 
     return false
 end
+
+function get_hours_elapsed()
+	local start_time = level.get_start_time()
+	local seconds = tonumber(game.get_game_time():diffSec(start_time))
+	local hours = math.floor(seconds/60/60)
+	return hours
+end
