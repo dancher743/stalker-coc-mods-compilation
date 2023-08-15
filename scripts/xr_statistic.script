@@ -259,6 +259,10 @@ function npc_on_death_callback(victim,who)
 	local npc_faction = character_community(victim)
 	local actor_faction = character_community(who)
 	
+	if (disgues and disgues.has_actor_disguised()) then
+		actor_faction = disgues.get_actor_default_faction()
+	end
+	
 	-- Kiled a friendly NPC.
 	if (xr_conditions.is_factions_friends(nil, nil, { npc_faction, actor_faction })) then
 		inc_actor_rank(rank_rep.killed_friend.rnk)

@@ -103,21 +103,21 @@ end
 
 function disguise_by_patch(actor_community)
 	local patch_in_slot = db.actor:item_in_slot(patch_slot_number)
-	local has_actor_under_disguise = disguise_community ~= nil and actor_community == disguise_community
+	local has_actor_disguised = has_actor_disguised(actor_community)
 	local disguise_tip_type = disguise_news.disguise_tip_type
 	
 	if disguise_helper.has_patch_changed(patch_in_slot, prev_patch_in_slot) then
 		disguise_news.reset_once_disguise_tips()
 	end
 	
-	if not patch_in_slot and has_actor_under_disguise then
+	if not patch_in_slot and has_actor_disguised then
 		if disguise_helper.has_actor_in_sight(last_seen, time_to_forget) then
 			disguise_news.send_disguise_tip_once(disguise_tip_type.not_allowed)
 		else
 			local previous_community = disguise_community
 			change_actor_community(default_faction)
 			actor_community = default_faction
-			has_actor_under_disguise = false
+			has_actor_disguised = false
 			disguise_news.send_disguise_tip(disguise_tip_type.returned, previous_community)
 		end
 	end
@@ -132,17 +132,24 @@ function disguise_by_patch(actor_community)
 			else
 				change_actor_community(patch_community)
 				actor_community = patch_community
-				has_actor_under_disguise = true
+				has_actor_disguised = true
 				if patch_community ~= default_faction then
 					disguise_news.send_disguise_tip(disguise_tip_type.changed, patch_community)
 				end
 			end
-		elseif not has_actor_under_disguise then
+		elseif not has_actor_disguised then
 			disguise_news.send_disguise_tip_once(disguise_tip_type.same)
 		end
 	end
 	
 	prev_patch_in_slot = patch_in_slot
+end
+
+function has_actor_disguised(actor_community)
+	if (actor_community == nil) then
+		actor_community = utils.get_actor_community()
+	end
+	return disguise_community ~= nil and disguise_community == actor_community
 end
 
 function change_actor_community(community)	
@@ -292,4 +299,8 @@ function load_state(data)
 	end
 
 	--printf("DBG default " .. (default_faction or "?"))
+end
+
+function get_actor_default_faction()
+	return default_faction
 end
