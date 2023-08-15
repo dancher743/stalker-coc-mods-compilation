@@ -153,7 +153,7 @@ function slot_hud:Update()
 	
 	CUIScriptWnd.Update(self)
 	
-	self:show_hud(not db.actor:is_talking() and not axr_main.weapon_is_zoomed)
+	self:show_hud(main_hud_shown())
 	
 	if (axr_main.config:r_value("mm_options","enable_slot_hud",1,true)) == false then
 		if table.size(belted_arts) > 0 then

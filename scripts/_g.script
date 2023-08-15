@@ -1766,6 +1766,7 @@ function main_hud_shown()
 	and (not axr_main.weapon_is_zoomed) 
 	and (not actor:is_talking())
 	and (actor:alive())
+	and (not actor:has_info("actor_is_sleeping"))
 	then
 		return true
 	end
