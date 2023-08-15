@@ -488,10 +488,10 @@
 		<text>Динамический HUD</text>
 	</string>
 	<string id="ui_mm_alife_mutant_pop">
-		<text>Коэф-нт числа мутантов</text>
+		<text>Популяция: коэф. мутантов</text>
 	</string>
 	<string id="ui_mm_alife_stalker_pop">
-		<text>Коэф-нт числа сталкеров</text>
+		<text>Популяция: коэф. сталкеров</text>
 	</string>
 	<string id="ui_mm_hud_fov">
 		<text>Интерфейс</text>
@@ -518,7 +518,7 @@
 		<text>Задания по защите лагерей</text>
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_activity">
-		<text>Активность войны группировок</text>
+		<text>Популяция: активность</text>
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_activity_opt_high">
 		<text>высокая</text>
