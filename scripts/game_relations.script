@@ -321,7 +321,7 @@ end
 -- From TRX: Dynamic Relations (1.1) mod
 local function opt_menu_on_init(menu)
 	menu.gameplay_options["dynamic_relations"] = { default = true,	 debug_only = true,	 typ = "check" }
-	menu.gameplay_options["dynamic_relations_factor"] = {default=200, 	debug_only=false, 	typ="list", list={25,50,100,150,200,250}}
+	menu.gameplay_options["dynamic_relations_factor"] = {default=100, 	debug_only=false, 	typ="list", list={25,50,100,150,200,250}}
 end
 
 -- ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -725,7 +725,7 @@ function drx_df_faction_npc_on_death( killed_faction, killer_faction )
 	end
 	
 	-- Base value for relation change:
-	local max_value = (axr_main.config:r_value("mm_options","dynamic_relations_factor",5) or 200)
+	local max_value = (axr_main.config:r_value("mm_options","dynamic_relations_factor",5) or 100)
 	--printf("Max value:"..tostring(max_value))
 
 	-- If killed NPC was enemy of facton, raise goodwill toward killer faction:
