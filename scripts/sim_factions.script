@@ -66,9 +66,9 @@ function update_faction(faction)
 		local option = axr_main.config:r_string_ex("mm_options","eoc_faction_warfare_activity")
 		
 		if (option == game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_very_low")) then
-			respawn_defend_min_value, respawn_defend_max_value = 200, 250
-			respawn_attack_min_value, respawn_attack_max_value = 150, 200
-			respawn_patrol_min_value, respawn_patrol_max_value = 70, 120 
+			respawn_defend_min_value, respawn_defend_max_value = 250, 300
+			respawn_attack_min_value, respawn_attack_max_value = 200, 250
+			respawn_patrol_min_value, respawn_patrol_max_value = 120, 170 
 			resource_count_value = 1
 		elseif (option == game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_low")) then
 			respawn_defend_min_value, respawn_defend_max_value = 200, 250
