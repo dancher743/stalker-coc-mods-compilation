@@ -66,14 +66,20 @@ function update_faction(faction)
 		local option_type
 		local option = axr_main.config:r_string_ex("mm_options","eoc_faction_warfare_activity")
 		
-		if (option == game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_low")) then
+		if (option == game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_very_low")) then
 			option_type = 1
+			respawn_defend_min_value, respawn_defend_max_value = 200, 250
+			respawn_attack_min_value, respawn_attack_max_value = 150, 200
+			respawn_patrol_min_value, respawn_patrol_max_value = 70, 120 
+			resource_count_value = 1
+		elseif (option == game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_low")) then
+			option_type = 2
 			respawn_defend_min_value, respawn_defend_max_value = 200, 250
 			respawn_attack_min_value, respawn_attack_max_value = 150, 200
 			respawn_patrol_min_value, respawn_patrol_max_value = 70, 120 
 			resource_count_value = 2
 		elseif (option == game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_high")) then
-			option_type = 2
+			option_type = 3
 			respawn_defend_min_value, respawn_defend_max_value = 100, 150
 			respawn_attack_min_value, respawn_attack_max_value = 50, 100
 			respawn_patrol_min_value, respawn_patrol_max_value = 70, 120
@@ -92,7 +98,7 @@ function update_faction(faction)
 		
 		faction_information[faction].respawn_patrol = utils.round(math.random(respawn_patrol_min_value, respawn_patrol_max_value) - (faction_information[faction].resource_count * resource_count_value))
 
-		if (option_type ~= 2) then
+		if (option_type ~= 3) then
 			if faction_information[faction].respawn_attack < 50 then
 				faction_information[faction].respawn_attack = 50
 			end
