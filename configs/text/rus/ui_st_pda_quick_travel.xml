@@ -2,7 +2,7 @@
 <string_table>
 	<!-- options menu -->
 	<string id="ui_mm_fast_travel">
-		<text>Быстрый переход</text>
+		<text>Быстрые переходы</text>
 	</string>
 	<string id="ui_mm_combat_travel">
 		<text>Переход во время боя</text>

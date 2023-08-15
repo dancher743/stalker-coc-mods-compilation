@@ -2,7 +2,7 @@
 <string_table>
 	<!-- options menu -->
 	<string id="ui_mm_fast_travel">
-		<text>Fast travel</text>
+		<text>Fast travels</text>
 	</string>
 	<string id="ui_mm_combat_travel">
 		<text>Fast travel in combat</text>
