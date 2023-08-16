@@ -6,7 +6,7 @@
 		<text>Heard that you're interested in faction patches.</text>
 	</string>
 	<string id="talk_to_aslan_about_lottery_1">
-		<text>How can I put this? Personally, no, I'm not "interested" in them - however, with morale being rather low lately, it's an optimal method for our guys to earn some spoils of war. Plus, the high-ups want them. Here's how it works: you bring me patches from stalkers, you get some gear or nothing at all - sometimes the tray's gotta be empty, eh? For twenty-five patches of any faction, apart from those of Ecologists and the Monolith, you have a chance to get a subpar artefact, or not get jack shit. With fifty patches, you'll have a chance to get a decent artefact and some rather solid gear, but there's also a chance that you won't get anything. And for twenty-five Monolith or Ecologist patches, you will get a pretty good artefact with the same chance as for fifty patches of any other faction. Fifty Monolith or Ecologist patches will guarantee you an outstanding item and good equipment dedicated only to the most experienced of stalkers, no chance of losing. You might ask, "why so generous?"... Because many people prefer to keep the patches for themselves as combat trophies.</text>
+		<text>How can I put this? Personally, no, I'm not "interested" in them - however, with morale being rather low lately, it's an optimal method for our guys to earn some spoils of war. Plus, the high-ups want them. Here's how it works: you bring me patches from stalkers, you get some gear or nothing at all - sometimes the tray's gotta be empty, eh? For twenty-five patches of any faction, apart from those of Ecologists and the Monolith, you have a chance to get a subpar artefact, or not get jack shit. With fifty patches, you'll have a chance to get a decent artefact and some rather solid gear, but there's also a chance that you won't get anything. And for twenty-five Monolith or Ecologist patches, you will get a pretty good artefact with the same chance as for fifty patches of any other faction. Fifty Monolith or Ecologist patches will guarantee you an outstanding item and good equipment dedicated only to the most experienced of stalkers, no chance of losing. You might ask, "why so generous?"... Because many people prefer to keep the patches for themselves as combat trophies. And yes, I will only accept mercenary patches if you are in our faction. I need a guarantee that you're not killing our guys.</text>
 	</string>
 	<string id="talk_to_aslan_about_lottery_2">
 		<text>What about you? What are you doing with them all?</text>
@@ -68,6 +68,13 @@
 		</string>
 		<string id="lottery_ds_aslan_mlr_18">
 			<text>Military, fifty patches.</text>
+		</string>
+		<!-- Mercs -->
+		<string id="lottery_ds_aslan_mlr_merc_25">
+		<text>Mercenaries, twenty-five patches.</text>
+		</string>
+		<string id="lottery_ds_aslan_mlr_merc_50">
+		<text>Mercenaries, fifty patches.</text>
 		</string>
 	<string id="lottery_ds_aslan_mlr_10">
 		<text>Changed my mind.</text>

@@ -52,6 +52,8 @@
 				<next>17</next>
 				<next>18</next>
 				<next>10</next>
+				<next>42</next>
+				<next>43</next>
 			</phrase>
 			<phrase id="2">
 				<precondition>dialogs_mlr.have_csky_patch_for_lottery_10</precondition>
@@ -368,6 +370,36 @@
 			<phrase id="41">
 				<text>lottery_ds_aslan_mlr_41</text>
 				<action>dialogs_mlr.lottery_present_hight_5</action>
+			</phrase>
+			<!-- Mercs -->
+			<phrase id="42">
+				<precondition>dialogs_mlr.have_faction_and_merc_patch_for_lottery_25</precondition>
+				<text>lottery_ds_aslan_mlr_merc_25</text>
+				<action>dialogs_mlr.take_csky_patch_for_lottery_25</action>
+				<next>19</next>
+				<next>20</next>
+				<next>21</next>
+				<next>22</next>
+				<next>23</next>
+				<next>24</next>
+				<next>38</next>
+				<next>37</next>
+				<next>39</next>
+			</phrase>
+			<phrase id="43">
+				<precondition>dialogs_mlr.have_faction_and_merc_patch_for_lottery_50</precondition>
+				<text>lottery_ds_aslan_mlr_merc_50</text>
+				<action>dialogs_mlr.take_merc_patch_for_lottery_50</action>
+				<next>25</next>
+				<next>26</next>
+				<next>27</next>
+				<next>28</next>
+				<next>29</next>
+				<next>30</next>
+				<next>31</next>
+				<next>38</next>
+				<next>37</next>
+				<next>39</next>
 			</phrase>
 		</phrase_list>
 	</dialog>
