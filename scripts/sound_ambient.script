@@ -123,17 +123,17 @@ function update_ambient()
 		local actor = db.actor
 		local pos = actor:position()
 		local max_dist = ch.max_dist
-		local min_dist = ch.min_dist --bLevelUnderground and ch.min_dist or ((max_dist + ch.min_dist)/2)
-		local dist = math.random(min_dist, max_dist) --/ 2 --(bLevelUnderground and 4 or 2)
+		local min_dist = bLevelUnderground and ch.min_dist or ((max_dist + ch.min_dist)/2)
+		local dist = math.random(min_dist, max_dist) / 2 --(bLevelUnderground and 4 or 2)
+		if (IsSurvivalMode() and ch.div_dist_for_surv_mode) then
+			dist = dist / 2
+		end
 		--[[
 		local sign_x = (math.random(100) <= 50) and 1 or -1
 		local pos_x = pos.x + sign_x * dist
 		local sign_z = (math.random(100) <= 50) and 1 or -1
 		local pos_z = pos.z + sign_z * dist
 		--]]
-		if (IsSurvivalMode() and ch.div_dist_for_surv_mode) then
-			dist = dist / 2
-		end		
 		local angle_dec = math.random(0,359)
 		local angle_rad = math.rad(angle_dec)
 		local pos_x = math.cos(angle_rad)*dist
