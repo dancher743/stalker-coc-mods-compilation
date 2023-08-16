@@ -114,7 +114,7 @@ local function on_game_load(binder)
 	local new_character_icon = config:r_value("character_creation","new_game_icon",3)
 	if (new_character_icon and new_character_icon ~= "") then
 		db.actor_binder.character_icon = new_character_icon
-		
+		db.actor:set_character_icon(db.actor_binder.character_icon)
 		config:w_value("character_creation","new_game_icon")
 		need_save = true
 	end
