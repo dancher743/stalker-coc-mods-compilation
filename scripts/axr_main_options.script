@@ -159,11 +159,17 @@ function opt_menu_on_init(menu)
 					if (outfit) then 
 						local icon = system_ini():r_string_ex(outfit:section(),"character_portrait")
 						if (icon) then 
-							db.actor:set_character_icon(icon)
+							db.actor_binder.character_icon = icon
+							db.actor:set_character_icon(db.actor_binder.character_icon)
 						end
 					end
 				else 
+					db.actor_binder.character_icon = menu.gameplay_options["char_portrait"].ctrl:GetText()
 					db.actor:set_character_icon(db.actor_binder.character_icon or "ui_inGame2_Strelok")
+				end
+				
+				if (handler.char_icon) then
+					handler.char_icon:InitTexture(db.actor_binder.character_icon)
 				end
 			end
 		}
