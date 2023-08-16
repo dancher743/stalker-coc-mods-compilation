@@ -9,7 +9,7 @@
 local ico_size = 0.7
 local ico_width = (device().width / device().height > (1024/768+0.01)) and 0.8 or 1
 local ini = system_ini()
-local ini_ico = ini_file("plugins\\player_icons.ltx")
+local ini_ico = ini_file("plugins\\faction_portraits.ltx")
 local ini_itm = ini_file("plugins\\new_game_loadouts.ltx")
 local ini_map = ini_file("plugins\\new_game_start_locations.ltx")
 local ini_opt = ini_file("plugins\\new_game_options.ltx")
@@ -1122,15 +1122,16 @@ function faction_ui:LoadFaction (rand, faction)
 end
 
 function faction_ui:LoadIcon (rand)
-	local def_icon = "ui_inGame2_no_data"
 	self.table_icon = {}
-	table.insert(self.table_icon, def_icon)
 
 	local section = self.selected_faction .. "_portraits"
 	local n = ini_ico:section_exist(section) and ini_ico:line_count(section) or 0
+
+	local def_icon = ini_ico:r_string_ex(section, "default_portrait")
+	table.insert(self.table_icon, def_icon)	
 	for i=0 , n-1 do
 		local result, id, value = ini_ico:r_line(section,i,"","" )
-		if (id ~= "") then
+		if (id ~= "" and id ~= "default_portrait") then
 			table.insert(self.table_icon, id)
 		end
 	end

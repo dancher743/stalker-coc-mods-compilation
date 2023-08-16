@@ -244,14 +244,18 @@ function opt_menu_on_set_values(menu,optMgr)
 end
 
 function get_character_icon_list()
-	local t = {"ui_inGame2_Strelok"}
+	local t = {}
 	local faction = character_community(db.actor):sub(7)
 	local ini = ini_file("plugins\\faction_portraits.ltx")
 	local section = faction.."_portraits"
 	local n = ini:section_exist(section) and ini:line_count(section) or 0
+	local def_icon = ini:r_string_ex(section, "default_portrait")
+	table.insert(t, def_icon)
 	for i=0, n-1 do
 		local result, id, value = ini:r_line(section,i,"","" )
-		table.insert(t,id)
+		if (id ~= "" and id ~= "default_portrait") then
+			table.insert(t,id)
+		end
 	end
 
 	return t
