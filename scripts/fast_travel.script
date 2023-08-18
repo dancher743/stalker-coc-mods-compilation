@@ -18,6 +18,8 @@ local objects_spots_hints = {}
 
 quick_travel_smarts = nil
 
+local spot_discovered_sound = nil
+
 local function get_spotted_object_hint(se_obj_spot)
 	local spot_id = se_obj_spot.id
 	local spot_hint = objects_spots_hints[spot_id]
@@ -168,8 +170,11 @@ end
 
 local function play_discovered_sound()
 	-- Sound from Anomaly 1.5.1.2	
-	local sound = sound_object([[interface\spot_discovered]])
-	sound:play(db.actor,0,sound_object.s2d)
+	if (spot_discovered_sound == nil) then
+		-- Let's cache this sound to not allow garbage collector clean it during playback
+		spot_discovered_sound = sound_object([[interface\spot_discovered]])
+	end
+	spot_discovered_sound:play(db.actor,0,sound_object.s2d)
 end
 
 -- Used for Visit_Only mode, catches the player near the marker and updates things.
