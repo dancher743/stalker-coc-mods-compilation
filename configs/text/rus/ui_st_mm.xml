@@ -518,7 +518,7 @@
 		<text>Задания по защите лагерей</text>
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_activity">
-		<text>Популяция: активность</text>
+		<text>Популяция: частота спавна</text>
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_activity_opt_high">
 		<text>высокая</text>
