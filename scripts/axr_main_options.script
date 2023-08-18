@@ -106,10 +106,10 @@ function opt_menu_on_init(menu)
 		default=game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_medium"), debug_only=false, typ="list", 
 		list=
 		{
-			game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_high"),
-			game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_medium"),
+			game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_very_low"),
 			game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_low"),
-			game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_very_low")
+			game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_medium"),
+			game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_high")
 		}
 	}
 	
