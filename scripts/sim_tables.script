@@ -454,6 +454,8 @@ ignore = {
 	["mar_smart_terrain_doc_squad"] = true,
 	["esc_2_12_stalker_nimble_squad"] = true,
 	["dar_control_poltergeist_squad"] = true,
+	["cit_killers_merc_trader_stalker_squad"] = true,
+	["zat_a2_stalker_mechanic_squad"] = true,
 }
 
 registered_squads = {
