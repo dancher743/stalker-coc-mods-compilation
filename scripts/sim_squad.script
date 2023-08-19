@@ -75,7 +75,7 @@ function create_squad(smart, faction, target, type, number, param)
     local squad
 
 	if type then
-	   squad = alun_utils.create_squad(type, smart:name())
+	   squad = SIMBOARD:create_squad(smart, type)
 	   local faction = squad:get_squad_community()
 	   
 	    if faction == "monster" then
@@ -106,9 +106,9 @@ function create_squad(smart, faction, target, type, number, param)
 	    end
 		
 		if (not(number) or number < 3) then
-		   squad = alun_utils.create_squad(faction .."_sim_squad_".. section, smart:name())
+		   squad = SIMBOARD:create_squad(smart, faction .."_sim_squad_".. section)
 		else
-           squad = alun_utils.create_squad(faction .."_sim_squad_".. section .."_"..number, smart:name())
+		   squad = SIMBOARD:create_squad(smart, faction .."_sim_squad_".. section .."_"..number)
 		end
 	end
 	
@@ -141,7 +141,7 @@ function remove_squad(squad)
 	squad:hide() 
 	
 	if (squad:clsid() == clsid.online_offline_group_s) then
-		squad:remove_squad()
+		SIMBOARD:remove_squad(squad)
 	end
 end
 
