@@ -449,6 +449,7 @@ ignore = {
 	["bar_visitors_barman_stalker_trader_squad"] = true,
 	["bar_visitors_garik_stalker_guard_squad"] = true,
 	["bar_visitors_zhorik_stalker_guard2_squad"] = true,
+	["bar_visitors_cardan_tech_squad"] = true,
 	["bun_krovosos_nest_squad"] = true,
 	["yan_stalker_sakharov_squad"] = true,
 	["mar_smart_terrain_doc_squad"] = true,
