@@ -63,4 +63,3 @@ Mods
 48. Clear Sky's graphics presets from CoP and CS atmosphere for CoC v1.1 [CoC 1.4.22] (Sanctuary)
 49. Pre-Blowout Murder Addon [CoC 1.4.22] (Ethylia, adapted by Misery)
 50. S.W.T.C. - Call of Chernobyl Edition [CoC 1.4.22 / 1.5b] (brainscorcher)
-51. Enhanced Sun Effects [CoC 1.4.22 / 1.5b] (brainscorcher)
