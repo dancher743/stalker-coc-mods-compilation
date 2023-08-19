@@ -532,4 +532,19 @@
 	<string id="ui_mm_eoc_faction_warfare_activity_opt_very_low">
 		<text>минимальная</text>
 	</string>
+	<string id="ui_mm_eoc_faction_warfare_control">
+		<text>Популяция: частота обновления</text>
+	</string>
+	<string id="ui_mm_eoc_faction_warfare_control_opt_very_high">
+		<text>максимальная</text>
+	</string>
+	<string id="ui_mm_eoc_faction_warfare_control_opt_high">
+		<text>высокая</text>
+	</string>
+	<string id="ui_mm_eoc_faction_warfare_control_opt_medium">
+		<text>средняя</text>
+	</string>
+	<string id="ui_mm_eoc_faction_warfare_control_opt_low">
+		<text>низкая</text>
+	</string>
 </string_table>

@@ -227,8 +227,21 @@ function smart_control(smart)
 	if smart.last_npc_check ~= nil and tg < smart.last_npc_check then
 		return
 	end
+	
+	local option_factor = 1
+	local option = axr_main.config:r_string_ex("mm_options","eoc_faction_warfare_control")
 
-	smart.last_npc_check = tg + 30000
+	if (option == game.translate_string("ui_mm_eoc_faction_warfare_control_opt_low")) then
+		option_factor = 1.5
+	elseif (option == game.translate_string("ui_mm_eoc_faction_warfare_control_opt_medium")) then
+		option_factor = 1
+	elseif (option == game.translate_string("ui_mm_eoc_faction_warfare_control_opt_high")) then
+		option_factor = 0.5
+	elseif (option == game.translate_string("ui_mm_eoc_faction_warfare_control_opt_very_high")) then
+		option_factor = 0.25
+	end
+
+	smart.last_npc_check = tg + 30000 * option_factor
 
 	local squads = SIMBOARD.smarts[smart.id].squads
 
