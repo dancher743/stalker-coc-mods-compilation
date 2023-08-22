@@ -572,4 +572,8 @@
 	<string id="ui_st_helicopter">
 		<text>Вертолёт</text>
 	</string>
+
+	<string id="st_stash_removed">
+		<text>Тайник убран</text>
+	</string>
 </string_table>

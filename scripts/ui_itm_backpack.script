@@ -1,10 +1,11 @@
 -- ui_itm_backpack
 -- Alundaio
 class "backpack_ui" (CUIScriptWnd)
-function backpack_ui:__init(owner,box_id,box_spot) super()
+function backpack_ui:__init(owner,box_id,box_spot,on_ok_clicked) super()
 	self.owner = owner
 	self.box_id = box_id
 	self.box_spot = box_spot
+	self.on_ok_clicked = on_ok_clicked
 	self:InitControls()
 	self:InitCallBacks()
 end
@@ -58,6 +59,7 @@ function backpack_ui:OnOk()
 		level.map_add_object_spot_ser(se_obj.id, self.box_spot, txt)
 	end
 
+	self.on_ok_clicked()
 	self:HideDialog()
 end
 
