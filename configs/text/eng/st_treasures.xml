@@ -1789,4 +1789,14 @@
 	<string id="st_mil_q9_n_a_descr">
 		<text>Behind the cabin of the army MAZ there's a small box with a secret. That's the secret I'm selling you.</text>
 	</string>
+	
+	<string id="st_no_descr_1">
+		<text>No description.</text>
+	</string>
+	<string id="st_no_descr_2">
+		<text>The description is encrypted.\n</text>
+	</string>
+	<string id="st_no_descr_2_1">
+		<text>1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ</text>
+	</string>
 </string_table>
