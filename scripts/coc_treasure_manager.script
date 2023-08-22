@@ -384,7 +384,7 @@ function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery )
 
 			-- Create map spot:
 			if ( no_spot ~= true and level.map_has_object_spot( id, "treasure" ) == 0 ) then
-				level.map_add_object_spot_ser( id, "treasure", hint or "" )
+				level.map_add_object_spot_ser( id, "treasure", hint or game.translate_string("st_ui_pda_secret") )
 				news_manager.send_treasure_with_level(se_box:name(), se_box.m_game_vertex_id)
 			end
 
@@ -407,7 +407,7 @@ function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery )
 
 	-- Create map spot:
 	if ( no_spot ~= true and level.map_has_object_spot( id, "treasure" ) == 0 ) then
-		level.map_add_object_spot_ser( id, "treasure", hint or "" )
+		level.map_add_object_spot_ser( id, "treasure", hint or game.translate_string("st_ui_pda_secret") )
 		news_manager.send_treasure_with_level(se_box:name(), se_box.m_game_vertex_id)
 	end
 
