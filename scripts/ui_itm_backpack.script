@@ -43,15 +43,14 @@ function backpack_ui:Update()
 end
 
 function backpack_ui:InitCallBacks()
-	self:AddCallback("btn_ok", ui_events.BUTTON_CLICKED, self.OnInput, self)
+	self:AddCallback("btn_ok", ui_events.BUTTON_CLICKED, self.OnOk, self)
 	self:AddCallback("btn_cancel", ui_events.BUTTON_CLICKED, self.OnCancel, self)
-	self:AddCallback("fld_input", ui_events.EDIT_TEXT_COMMIT, self.OnInput, self)
 end
 
-function backpack_ui:OnInput()
+function backpack_ui:OnOk()
 	local txt = self.input:GetText()
 	if (txt == nil or txt == "") then
-		txt = level.name().." stash"
+		txt = game.translate_string("st_itm_stash_of_actor")
 	end
 
 	local se_obj = alife_object(self.box_id)
