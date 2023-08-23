@@ -1,15 +1,25 @@
 -- EOC Lite
+
+local function IsEocMode()
+	return axr_main.config and axr_main.config:r_value("character_creation","new_game_eoc_mode",1) == true or 
+		alife_storage_manager.get_state().enable_eoc_mode == true
+end
+
 function on_game_start()
+	if (not IsEocMode()) then
+		return
+	end
+
 	RegisterScriptCallback("fill_start_position", fill_start_position)
 	RegisterScriptCallback("smart_terrain_on_update", sim_smart.smart_terrain_on_update)
 	RegisterScriptCallback("save_state", save_state)
 	RegisterScriptCallback("load_state", load_state)
 	RegisterScriptCallback("actor_on_update", actor_on_update)
 	RegisterScriptCallback("squad_on_update", sim_squad.squad_on_update)
+	
+	_G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = false
+	_G.ProcessEventQueueState = function() return end
 end
-
-_G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = false
-_G.ProcessEventQueueState = function() return end
 
 squad_community_by_behaviour["trader"] = "trader"
 actor_faction = nil
