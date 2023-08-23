@@ -122,9 +122,7 @@
 			%c[0,150,150,150]Survival mode is a feature that replaces most of spawns with Zombies.\n
 			\nThese hordes will make their way to your location - be prepared! See how long you can survive!
 			\n
-			\nIn Survival mode you will have relatively safe only the first 24 hours, as the activity of Zombies in the Zone will increase every hour.
-			\n
-			\nUse your time wisely!
+			\nIf Extended population mode is active, then you will have relatively safe only the first 24 hours, as the activity of Zombies in the Zone will increase every hour. Use your time wisely!
 		</text>
 	</string>
 	<string id="st_mm_ck_azazel_mode_desc">
@@ -172,6 +170,17 @@
 			%c[0,150,150,150]In Timer mode, you can save your game every specific amount of time. 
 			\nOnce you save your game, you cannot make another save once again until the timer is over.
 			\n \n%c[200,50,200,50]• %c[0,150,150,150]All hardcore save modes are compatible with each other.
+		</text>
+	</string>
+	<string id="st_mm_ck_eoc_desc">
+		<text>
+			%c[0,150,150,150]Extended population is a mode that adds more active life simulation to the Zone.
+			\n
+			\nMutants will guard their territories during the day, and at night they will gather and attack the camps of other stalkers. Stalkers will begin to explore the Zone and collect resources for themselves and their faction. Factions no longer sit in one place: each of them tries to strengthen its region, capture points and destroy the enemy.
+			\n
+			\nThe Zone lives its own life and can easily take the life of an individual stalker, a character, or an entire faction!
+			\n
+			\n%c[200,50,200,50]• %c[0,150,150,150]The mode is compatible with all modes, but keep in mind that the leaders of some factions may die.
 		</text>
 	</string>
 	
@@ -263,6 +272,9 @@
 	</string>
 	<string id="st_econ_4">
 		<text>Sluggish</text>
+	</string>
+	<string id="st_cap_check_eoc">
+		<text>Extended population</text>
 	</string>
 	
 	<string id="st_off">
