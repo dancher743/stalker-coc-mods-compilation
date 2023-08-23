@@ -6,6 +6,12 @@ local function IsEocMode()
 end
 
 function on_game_start()
+	RegisterScriptCallback("on_game_load",on_game_load)
+end
+
+function on_game_load()
+	UnregisterScriptCallback("on_game_load",on_game_load)
+	
 	if (not IsEocMode()) then
 		return
 	end
