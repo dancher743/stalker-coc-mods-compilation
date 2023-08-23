@@ -488,10 +488,10 @@
 		<text>Динамический HUD</text>
 	</string>
 	<string id="ui_mm_alife_mutant_pop">
-		<text>Популяция: коэф. мутантов</text>
+		<text>Коэф-нт числа мутантов</text>
 	</string>
 	<string id="ui_mm_alife_stalker_pop">
-		<text>Популяция: коэф. сталкеров</text>
+		<text>Коэф-нт числа сталкеров</text>
 	</string>
 	<string id="ui_mm_hud_fov">
 		<text>Интерфейс</text>
