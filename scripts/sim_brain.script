@@ -1,8 +1,8 @@
 -- EOC Lite
 
 local function IsEocMode()
-    return axr_main.config and axr_main.config:r_value("character_creation","new_game_eoc_mode",1) == true or 
-        alife_storage_manager.get_state().enable_eoc_mode == true
+	return axr_main.config and axr_main.config:r_value("character_creation","new_game_eoc_mode",1) == true or 
+		alife_storage_manager.get_state().enable_eoc_mode == true
 end
 
 local function opt_menu_on_init(menu)
