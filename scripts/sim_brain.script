@@ -1,12 +1,43 @@
 -- EOC Lite
 
 local function IsEocMode()
-	return axr_main.config and axr_main.config:r_value("character_creation","new_game_eoc_mode",1) == true or 
-		alife_storage_manager.get_state().enable_eoc_mode == true
+    return axr_main.config and axr_main.config:r_value("character_creation","new_game_eoc_mode",1) == true or 
+        alife_storage_manager.get_state().enable_eoc_mode == true
 end
+
+local function opt_menu_on_init(menu)
+	if (db.actor and IsEocMode()) then
+		-- EOC faction warfare activity
+		menu.gameplay_options["eoc_faction_warfare_activity"] = 
+		{
+			default=game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_medium"), debug_only=false, typ="list", 
+			list=
+			{
+				game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_very_low"),
+				game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_low"),
+				game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_medium"),
+				game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_high")
+			}
+		}
+		
+		-- EOC faction warfare control
+		menu.gameplay_options["eoc_faction_warfare_control"] = 
+		{
+			default=game.translate_string("ui_mm_eoc_faction_warfare_control_opt_medium"), debug_only=false, typ="list", 
+			list=
+			{
+				game.translate_string("ui_mm_eoc_faction_warfare_control_opt_low"),
+				game.translate_string("ui_mm_eoc_faction_warfare_control_opt_medium"),
+				game.translate_string("ui_mm_eoc_faction_warfare_control_opt_high"),
+				game.translate_string("ui_mm_eoc_faction_warfare_control_opt_very_high")
+			}
+		}
+	end
+end 
 
 function on_game_start()
 	RegisterScriptCallback("on_game_load",on_game_load)
+	RegisterScriptCallback("opt_menu_on_init",opt_menu_on_init)
 end
 
 function on_game_load()
