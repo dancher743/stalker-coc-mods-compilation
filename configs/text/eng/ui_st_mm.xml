@@ -515,7 +515,7 @@
 		<text>Bases defense quests</text>
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_activity">
-		<text>Population frequency</text>
+		<text>Population spawn frequency</text>
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_activity_opt_high">
 		<text>High</text>
@@ -530,7 +530,7 @@
 		<text>Minimal</text>
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_control">
-		<text>Population frequency</text>
+		<text>Population update frequency</text>
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_control_opt_very_high">
 		<text>Maximum</text>
