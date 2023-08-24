@@ -174,13 +174,11 @@
 	</string>
 	<string id="st_mm_ck_eoc_desc">
 		<text>
-			%c[0,150,150,150]Extended population is a mode that adds more active life simulation to the Zone.
+			%c[0,150,150,150]Extended population is a mode that makes life in the Zone more active and unpredictable.
 			\n
-			\nMutants will guard their territories during the day, and at night they will gather and attack the camps of other stalkers. Stalkers will begin to explore the Zone and collect resources for themselves and their faction. Factions no longer sit in one place: each of them tries to strengthen its region, capture points and destroy the enemy.
+			\nMutants will guard their territories during the day, and at night they will gather and attack the camps of other stalkers. Stalkers will begin to explore the Zone and collect resources for themselves and their faction. Factions no longer sit in one place: each of them tries to strengthen its region, capture points and destroy the enemy. Completely killed factions eventually respawns.
 			\n
-			\nThe Zone lives its own life and can easily take the life of an individual stalker, a character, or an entire faction!
-			\n
-			\n%c[200,50,200,50]• %c[0,150,150,150]The mode is compatible with all modes, but keep in mind that the leaders of some factions may die.
+			\n%c[200,50,200,50]• %c[0,150,150,150]Extended population mode is compatible with all modes, however, some characters that don't take part in the 'Mysteries of the Zone' storyline and factions leaders may die.
 		</text>
 	</string>
 	
