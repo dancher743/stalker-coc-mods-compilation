@@ -1,7 +1,7 @@
 -- EOC Lite
 
-local default_sim_on_non_linked_levels = _G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS
-local default_process_event_queue_state = _G.ProcessEventQueueState
+local default_sim_on_non_linked_levels = nil
+local default_process_event_queue_state = nil
 
 local function IsEocMode()
 	return axr_main.config and axr_main.config:r_value("character_creation","new_game_eoc_mode",1) == true or 
@@ -42,6 +42,8 @@ function on_game_start()
 	RegisterScriptCallback("opt_menu_on_init",opt_menu_on_init)
 	RegisterScriptCallback("on_game_load",on_game_load)
 	RegisterScriptCallback("fill_start_position", fill_start_position)
+	default_sim_on_non_linked_levels = _G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS
+	default_process_event_queue_state = _G.ProcessEventQueueState
 end
 
 function on_game_load()
