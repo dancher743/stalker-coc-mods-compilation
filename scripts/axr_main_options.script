@@ -100,32 +100,6 @@ function opt_menu_on_init(menu)
 	-- Base defense quests
 	menu.gameplay_options["bases_defense"]		= {default=true, 	debug_only=false, 	typ="check"}
 	
-	-- EOC faction warfare activity
-	menu.gameplay_options["eoc_faction_warfare_activity"] = 
-	{
-		default=game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_medium"), debug_only=false, typ="list", 
-		list=
-		{
-			game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_very_low"),
-			game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_low"),
-			game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_medium"),
-			game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_high")
-		}
-	}
-	
-	-- EOC faction warfare control
-	menu.gameplay_options["eoc_faction_warfare_control"] = 
-	{
-		default=game.translate_string("ui_mm_eoc_faction_warfare_control_opt_medium"), debug_only=false, typ="list", 
-		list=
-		{
-			game.translate_string("ui_mm_eoc_faction_warfare_control_opt_low"),
-			game.translate_string("ui_mm_eoc_faction_warfare_control_opt_medium"),
-			game.translate_string("ui_mm_eoc_faction_warfare_control_opt_high"),
-			game.translate_string("ui_mm_eoc_faction_warfare_control_opt_very_high")
-		}
-	}
-	
 	-- I do not recommend allowing a factor greater than 1.5 because there are not enough smart terrain jobs
 	menu.gameplay_options["alife_mutant_pop"]			= {default=0.5, 	debug_only=false, 	typ="list", list={0.25,0.50,1.0,1.5}}
 	menu.gameplay_options["alife_stalker_pop"]			= {default=0.5, 	debug_only=false, 	typ="list", list={0.25,0.50,1.0,1.5}}

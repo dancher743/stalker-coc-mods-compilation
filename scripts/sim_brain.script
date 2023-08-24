@@ -1,15 +1,70 @@
 -- EOC Lite
-function on_game_start()
-	RegisterScriptCallback("fill_start_position", fill_start_position)
-	RegisterScriptCallback("smart_terrain_on_update", sim_smart.smart_terrain_on_update)
-	RegisterScriptCallback("save_state", save_state)
-	RegisterScriptCallback("load_state", load_state)
-	RegisterScriptCallback("actor_on_update", actor_on_update)
-	RegisterScriptCallback("squad_on_update", sim_squad.squad_on_update)
+
+local default_sim_on_non_linked_levels = nil
+local default_process_event_queue_state = nil
+
+local function IsEocMode()
+	return axr_main.config and axr_main.config:r_value("character_creation","new_game_eoc_mode",1) == true or 
+		alife_storage_manager.get_state().enable_eoc_mode == true
 end
 
-_G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = false
-_G.ProcessEventQueueState = function() return end
+local function opt_menu_on_init(menu)
+	if (db.actor and IsEocMode()) then
+		-- EOC faction warfare activity
+		menu.gameplay_options["eoc_faction_warfare_activity"] = 
+		{
+			default=game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_medium"), debug_only=false, typ="list", 
+			list=
+			{
+				game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_very_low"),
+				game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_low"),
+				game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_medium"),
+				game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_high")
+			}
+		}
+		
+		-- EOC faction warfare control
+		menu.gameplay_options["eoc_faction_warfare_control"] = 
+		{
+			default=game.translate_string("ui_mm_eoc_faction_warfare_control_opt_medium"), debug_only=false, typ="list", 
+			list=
+			{
+				game.translate_string("ui_mm_eoc_faction_warfare_control_opt_low"),
+				game.translate_string("ui_mm_eoc_faction_warfare_control_opt_medium"),
+				game.translate_string("ui_mm_eoc_faction_warfare_control_opt_high"),
+				game.translate_string("ui_mm_eoc_faction_warfare_control_opt_very_high")
+			}
+		}
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("opt_menu_on_init",opt_menu_on_init)
+	RegisterScriptCallback("on_game_load",on_game_load)
+	RegisterScriptCallback("fill_start_position", fill_start_position)
+	default_sim_on_non_linked_levels = _G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS
+	default_process_event_queue_state = _G.ProcessEventQueueState
+end
+
+function on_game_load()
+	if (IsEocMode()) then
+		RegisterScriptCallback("smart_terrain_on_update", sim_smart.smart_terrain_on_update)
+		RegisterScriptCallback("save_state", save_state)
+		RegisterScriptCallback("load_state", load_state)
+		RegisterScriptCallback("actor_on_update", actor_on_update)
+		RegisterScriptCallback("squad_on_update", sim_squad.squad_on_update)
+		_G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = false
+		_G.ProcessEventQueueState = function() return end
+	else
+		UnregisterScriptCallback("smart_terrain_on_update", sim_smart.smart_terrain_on_update)
+		UnregisterScriptCallback("save_state", save_state)
+		UnregisterScriptCallback("load_state", load_state)
+		UnregisterScriptCallback("actor_on_update", actor_on_update)
+		UnregisterScriptCallback("squad_on_update", sim_squad.squad_on_update)
+		_G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = default_sim_on_non_linked_levels
+		_G.ProcessEventQueueState = default_process_event_queue_state
+	end
+end
 
 squad_community_by_behaviour["trader"] = "trader"
 actor_faction = nil
@@ -191,7 +246,7 @@ end
 
 
 function fill_start_position()
-	if (SIMBOARD.start_position_filled) then
+	if (not IsEocMode() or SIMBOARD.start_position_filled) then
 		return
 	end
 	

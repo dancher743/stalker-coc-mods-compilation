@@ -1533,6 +1533,48 @@ faction = zombied
 npc_random = sim_default_zombied_2, sim_default_zombied_3, sim_default_zombied_4
 npc_in_squad = 9, 10
 
+;--------------- no EOC simulation squads -----------------------
+
+[duty_sim_squad_novice]:online_offline_group
+faction = dolg
+npc_random = sim_default_duty_0, sim_default_duty_1, sim_default_duty_2
+npc_in_squad = 1, 3
+
+[duty_sim_squad_advanced]:online_offline_group
+faction = dolg
+npc_random = sim_default_duty_1, sim_default_duty_1, sim_default_duty_2, sim_default_duty_2, sim_default_duty_3
+npc_in_squad = 1, 3
+
+[duty_sim_squad_veteran]:online_offline_group
+faction = dolg
+npc_random = sim_default_duty_2, sim_default_duty_2, sim_default_duty_3, sim_default_duty_3, sim_default_duty_4
+npc_in_squad = 1, 3
+
+[army_sim_squad_sniper]:online_offline_group
+faction = army
+npc_random = sim_default_military_3_sniper, sim_default_military_3_sniper
+npc_in_squad = 1, 3
+
+[merc_sim_squad_novice]:online_offline_group
+faction = killer
+npc_random = sim_default_killer_0, sim_default_killer_1, sim_default_killer_2
+npc_in_squad = 1, 3
+
+[merc_sim_squad_advanced]:online_offline_group
+faction = killer
+npc_random = sim_default_killer_1, sim_default_killer_1, sim_default_killer_2, sim_default_killer_2, sim_default_killer_3
+npc_in_squad = 1, 3
+
+[merc_sim_squad_veteran]:online_offline_group
+faction = killer
+npc_random = sim_default_killer_2, sim_default_killer_2, sim_default_killer_3, sim_default_killer_3, sim_default_killer_4
+npc_in_squad = 1, 3
+
+[monolith_sim_squad_sniper]:online_offline_group
+faction = monolith
+npc_random = sim_monolith_specnaz_rg6, sim_monolith_sniper, sim_monolith_sniper_gauss
+npc_in_squad = 1, 3
+
 ;--------------- monster simulation squads -----------------------
 
 [simulation_bloodsucker]:online_offline_group

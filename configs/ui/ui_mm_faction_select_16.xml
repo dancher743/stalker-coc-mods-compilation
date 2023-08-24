@@ -241,6 +241,13 @@
 					<d r="70" g="70" b="70"/>
 				</text_color>
 			</list_timer>
+			
+			<cap_check_eoc x="543" y="110" width="38" height="20" stretch="1">
+				<text r="170" g="170" b="170" font="letterica16" align="l" vert_align="c">st_cap_check_eoc</text>
+			</cap_check_eoc>		
+			<check_eoc x="511" y="109" width="28" height="23" stretch="1">
+				<texture>ui_inGame2_checkbox</texture>
+			</check_eoc>
 		</options>
 		
 		<popup_faction>

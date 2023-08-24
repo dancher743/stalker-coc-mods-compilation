@@ -66,7 +66,11 @@ local function on_game_load(binder)
 			config:w_value("character_creation","new_game_timer_mode")
 			need_save = true
 		end
-		
+		if (config:r_value("character_creation","new_game_eoc_mode",1) == true) then
+			alife_storage_manager.get_state().enable_eoc_mode = true
+			config:w_value("character_creation","new_game_eoc_mode")
+			need_save = true
+		end
 		
 		if (config:r_value("character_creation","new_game_difficulty",3)) then
 			local diff = config:r_value("character_creation","new_game_difficulty",3) or "stalker"
@@ -662,6 +666,10 @@ function faction_ui:Main_Controls()
 		self:Register(self.list_timer, "list_timer")
 		self:LoadTimer()
 		
+		self.ck_eoc_cap = xml:InitStatic("main_dialog:options:cap_check_eoc",self.templ_options)
+		self.ck_eoc = xml:InitCheck("main_dialog:options:check_eoc", self.templ_options)
+		self:Register(self.ck_eoc,"check_eoc")
+		
 		self.ck_states = { 	
 							--["box_faction"] = false,
 							--["box_icon"] = false,
@@ -674,6 +682,7 @@ function faction_ui:Main_Controls()
 							["ck_story"] = false,
 							["ck_campfire"] = false,
 							["ck_conditions"] = false,
+							["ck_eoc"] = false,
 							
 							["list_difficulty"] = false,
 							["list_economy"] = false,
@@ -1796,6 +1805,7 @@ function faction_ui:OnStartGame()
 	axr_main.config:w_value("character_creation","new_game_campfire_mode",self.ck_campfire and self.ck_campfire:GetCheck() and true or nil)
 	axr_main.config:w_value("character_creation","new_game_conditions_mode",self.ck_conditions and self.ck_conditions:GetCheck() and true or nil)
 	axr_main.config:w_value("character_creation","new_game_timer_mode",timer or nil)
+	axr_main.config:w_value("character_creation","new_game_eoc_mode",self.ck_eoc and self.ck_eoc:GetCheck() and true or nil)
 	
 	axr_main.config:w_value("character_creation","new_game_character_name",character_name:gsub(" ","_") )
 	axr_main.config:w_value("character_creation","new_game_faction",self.selected_faction or nil)
