@@ -462,6 +462,8 @@ ignore = {
 	["dar_control_poltergeist_squad"] = true,
 	["cit_killers_merc_trader_stalker_squad"] = true,
 	["zat_a2_stalker_mechanic_squad"] = true,
+	["jup_b6_mechanic_group"] = true,
+	["jup_b6_trader_group"] = true,
 }
 
 registered_squads = {
