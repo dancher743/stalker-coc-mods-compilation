@@ -41,21 +41,27 @@ end
 function on_game_start()
 	RegisterScriptCallback("opt_menu_on_init",opt_menu_on_init)
 	RegisterScriptCallback("on_game_load",on_game_load)
+	RegisterScriptCallback("on_game_unload",on_game_unload)
 	RegisterScriptCallback("fill_start_position", fill_start_position)
-	default_sim_on_non_linked_levels = _G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS
-	default_process_event_queue_state = _G.ProcessEventQueueState
 end
 
 function on_game_load()
-	if (IsEocMode()) then
+	if (IsEocMode() and not started) then
 		RegisterScriptCallback("smart_terrain_on_update", sim_smart.smart_terrain_on_update)
 		RegisterScriptCallback("save_state", save_state)
 		RegisterScriptCallback("load_state", load_state)
 		RegisterScriptCallback("actor_on_update", actor_on_update)
 		RegisterScriptCallback("squad_on_update", sim_squad.squad_on_update)
+		default_sim_on_non_linked_levels = _G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS
+		default_process_event_queue_state = _G.ProcessEventQueueState
 		_G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = false
 		_G.ProcessEventQueueState = function() return end
-	else
+		started = true
+	end
+end
+
+function on_game_unload()
+	if (IsEocMode() and started) then
 		UnregisterScriptCallback("smart_terrain_on_update", sim_smart.smart_terrain_on_update)
 		UnregisterScriptCallback("save_state", save_state)
 		UnregisterScriptCallback("load_state", load_state)
@@ -63,6 +69,7 @@ function on_game_load()
 		UnregisterScriptCallback("squad_on_update", sim_squad.squad_on_update)
 		_G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = default_sim_on_non_linked_levels
 		_G.ProcessEventQueueState = default_process_event_queue_state
+		started = false
 	end
 end
 
@@ -71,6 +78,7 @@ actor_faction = nil
 base_count = 0
 resource_count = 0
 
+started = false
 initialized = false
 
 function save_state(m_data)
