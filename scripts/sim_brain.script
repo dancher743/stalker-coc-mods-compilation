@@ -4,37 +4,31 @@ local default_sim_on_non_linked_levels = nil
 local default_process_event_queue_state = nil
 
 function on_game_start()
+	RegisterScriptCallback("fill_start_position", fill_start_position)
+	RegisterScriptCallback("smart_terrain_on_update", smart_terrain_on_update)
+	RegisterScriptCallback("save_state", save_state)
+	RegisterScriptCallback("load_state", load_state)
+	RegisterScriptCallback("actor_on_update", actor_on_update)
+	RegisterScriptCallback("squad_on_update", squad_on_update)
+	
+	default_sim_on_non_linked_levels = _G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS
+	default_process_event_queue_state = _G.ProcessEventQueueState
 	RegisterScriptCallback("on_game_load",on_game_load)
 	RegisterScriptCallback("on_game_unload",on_game_unload)
-	RegisterScriptCallback("fill_start_position", fill_start_position)
 end
 
 function on_game_load()
-	if (IsEocMode() and not started) then
-		RegisterScriptCallback("smart_terrain_on_update", sim_smart.smart_terrain_on_update)
-		RegisterScriptCallback("save_state", save_state)
-		RegisterScriptCallback("load_state", load_state)
-		RegisterScriptCallback("actor_on_update", actor_on_update)
-		RegisterScriptCallback("squad_on_update", sim_squad.squad_on_update)
-		default_sim_on_non_linked_levels = _G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS
-		default_process_event_queue_state = _G.ProcessEventQueueState
+	if (IsEocMode()) then
 		_G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = false
 		_G.ProcessEventQueueState = function() return end
-		started = true
 		printf("### EOC: started ###")
 	end
 end
 
 function on_game_unload()
-	if (IsEocMode() and started) then
-		UnregisterScriptCallback("smart_terrain_on_update", sim_smart.smart_terrain_on_update)
-		UnregisterScriptCallback("save_state", save_state)
-		UnregisterScriptCallback("load_state", load_state)
-		UnregisterScriptCallback("actor_on_update", actor_on_update)
-		UnregisterScriptCallback("squad_on_update", sim_squad.squad_on_update)
+	if (IsEocMode()) then
 		_G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = default_sim_on_non_linked_levels
 		_G.ProcessEventQueueState = default_process_event_queue_state
-		started = false
 		printf("### EOC: stopped ###")
 	end
 end
@@ -44,10 +38,12 @@ actor_faction = nil
 base_count = 0
 resource_count = 0
 
-started = false
 initialized = false
 
 function save_state(m_data)
+	if (not IsEocMode()) then
+		return
+	end
 
 	if (not m_data.simulation) then
 		m_data.simulation = {}
@@ -83,6 +79,9 @@ function save_state(m_data)
 end
 
 function load_state(m_data)
+	if (not IsEocMode()) then
+		return
+	end
 
 	if (not m_data.simulation) then
 		return
@@ -135,6 +134,9 @@ end
 local last_update
 
 function actor_on_update()
+	if (not IsEocMode()) then
+		return
+	end
 
 	local tg = time_global()
 	
@@ -378,3 +380,19 @@ function sort_priority_table(tbl)
 	
 	return tbl
 end	
+
+function smart_terrain_on_update(smart)
+	if (not IsEocMode()) then
+		return
+	end
+
+	sim_smart.smart_terrain_on_update(smart)
+end
+
+function squad_on_update(squad)
+	if (not IsEocMode()) then
+		return
+	end
+
+	sim_squad.squad_on_update(squad)
+end
