@@ -229,15 +229,15 @@ function smart_control(smart)
 	end
 	
 	local option_factor = 1
-	local option = axr_main.config:r_string_ex("mm_options","eoc_faction_warfare_control")
+	local option = sim_options.get_warfare_control_option()
 
-	if (option == game.translate_string("ui_mm_eoc_faction_warfare_control_opt_low")) then
+	if (option == sim_options.warfare_control.low) then
 		option_factor = 1.5
-	elseif (option == game.translate_string("ui_mm_eoc_faction_warfare_control_opt_medium")) then
+	elseif (option == sim_options.warfare_control.medium) then
 		option_factor = 1
-	elseif (option == game.translate_string("ui_mm_eoc_faction_warfare_control_opt_high")) then
+	elseif (option == sim_options.warfare_control.high) then
 		option_factor = 0.5
-	elseif (option == game.translate_string("ui_mm_eoc_faction_warfare_control_opt_very_high")) then
+	elseif (option == sim_options.warfare_control.very_high) then
 		option_factor = 0.25
 	end
 
