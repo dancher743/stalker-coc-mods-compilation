@@ -1559,7 +1559,7 @@ function faction_ui:UpdateItem (item, is_item_in_inventory)
 	-- name
 	self.text_item_name:SetText( "%c[0,150,150,50]• %c[0,150,150,150]" .. gs(ini:r_string_ex(item.name,"inv_name") or "") )
 	if (not is_item_in_inventory and item.points > self.points_left) then
-		self.text_item_points:SetText( "%c[0,100,50,200]• %c[0,175,50,50]" .. gs("st_mm_new_game_points") .. ": " .. tostring(item.points) )
+		self.text_item_points:SetText( "%c[200,200,50,50]• %c[0,175,50,50]" .. gs("st_mm_new_game_points") .. ": " .. tostring(item.points) )
 	else
 		self.text_item_points:SetText( "%c[0,100,50,200]• %c[0,150,150,150]" .. gs("st_mm_new_game_points") .. ": " .. tostring(item.points) )
 	end
