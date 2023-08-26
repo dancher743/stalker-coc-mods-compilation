@@ -94,7 +94,7 @@
 	</string>
 	<string id="st_mm_list_difficulty_desc">
 		<text>
-			%c[0,150,150,150]Gameplay difficulty affects player's protection and the accuracy of weapons in general. It applies to the player and other stalkers alike.\n \n%c[200,200,50,50]• %c[0,150,150,150]You can change gameplay difficulty in your playthrough at any time.
+			%c[0,150,150,150]Gameplay difficulty affects player's protection and the accuracy of weapons in general. It applies to the player and other stalkers alike.\n \n%c[200,50,200,50]• %c[0,150,150,150]You can change gameplay difficulty in your playthrough at any time.
 			\nSee "Options" -> "Game" -> "Difficulty"
 		</text>
 	</string>
@@ -103,7 +103,7 @@
 			%c[0,150,150,150]Story mode starts the game with the 'Mysteries of the Zone' storyline, and with the goals to disable the Brain Scorcher and Miracle Machine.\n 
 			\nElements from previous storylines are borrowed and recreated, so this is not for players who feel that strict story continuity is essential.\n
 			\nOnly available to Loner, Duty, Freedom, Ecologist, Mercenary and Clear Sky factions.\n
-			\n \n%c[200,200,50,50]• %c[0,150,150,150]Not compatible with Azazel mode.
+			\n%c[200,200,50,50]• %c[0,150,150,150]Not compatible with Azazel mode.
 		</text>
 	</string>
 	<string id="st_mm_ck_hardcore_desc">
@@ -122,7 +122,7 @@
 			%c[0,150,150,150]Survival mode is a feature that replaces most of spawns with Zombies.\n
 			\nThese hordes will make their way to your location - be prepared! See how long you can survive!
 			\n
-			\nIf Extended population mode is active, then you will have relatively safe only the first 24 hours, as the activity of Zombies in the Zone will increase every hour. Use your time wisely!
+			\n%c[200,200,200,50]• %c[0,150,150,150]If Extended population mode is active, then you will have relatively safe only the first 24 hours, as the activity of Zombies in the Zone will increase every hour. Use your time wisely!
 		</text>
 	</string>
 	<string id="st_mm_ck_azazel_mode_desc">
@@ -130,7 +130,7 @@
 			%c[0,150,150,150]In Azazel mode, death is not the end.\n
 			\nLike the demon Azazel you will possess a new body when you die; taking over the form of another random stalker that really exists in the Zone.\n
 			\nIf you have companions, you will become one of them. This feature compliments Ironman and/or Survival mode very well.\n
-			\n \n%c[200,200,50,50]• %c[0,150,150,150]Not compatible with Story mode.
+			\n%c[200,200,50,50]• %c[0,150,150,150]Not compatible with Story mode.
 		</text>
 	</string>
 	<string id="st_mm_ck_campfire_desc">
@@ -176,9 +176,13 @@
 		<text>
 			%c[0,150,150,150]Extended population is a mode that makes life in the Zone more active and unpredictable.
 			\n
-			\nMutants will guard their territories during the day, and at night they will gather and attack the camps of other stalkers. Stalkers will begin to explore the Zone and collect resources for themselves and their faction. Factions no longer sit in one place: each of them tries to strengthen its region, capture points and destroy the enemy. Completely killed factions eventually respawns.
+			\nMutants will guard their territories during the day, and at night they will gather and attack the camps of stalkers. Stalkers will begin to explore the Zone and collect resources for themselves and their faction. Factions are trying to strengthen their region and capture the neighboring one.
 			\n
 			\n%c[200,50,200,50]• %c[0,150,150,150]Extended population mode is compatible with all modes, however, some characters that don't take part in the 'Mysteries of the Zone' storyline and factions leaders may die.
+			\n%c[200,50,200,50]• %c[0,150,150,150]You can change extended population in your playthrough at any time.
+			\nSee "Options" -> "Game". Then "Population spawn frequency" and "Population update frequency".
+			\n
+			\n%c[0,255,255,255]Recommended for: players who are familiar with the 'Mysteries of the Zone' storyline or have played without it.
 		</text>
 	</string>
 	
