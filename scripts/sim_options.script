@@ -50,6 +50,23 @@ function get_warfare_activity_option()
 	return axr_main.config:r_string_ex("mm_options","eoc_faction_warfare_activity")
 end
 
-function get_warfare_control_option()
+local function get_warfare_control_option()
 	return axr_main.config:r_string_ex("mm_options","eoc_faction_warfare_control")
+end
+
+function get_warfare_control_option_factor()
+	local option_factor = 1
+	local option = get_warfare_control_option()
+
+	if (option == warfare_control.low) then
+		option_factor = 1.5
+	elseif (option == warfare_control.medium) then
+		option_factor = 1
+	elseif (option == warfare_control.high) then
+		option_factor = 0.5
+	elseif (option == warfare_control.very_high) then
+		option_factor = 0.25
+	end
+	
+	return option_factor
 end

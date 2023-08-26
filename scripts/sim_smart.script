@@ -228,19 +228,7 @@ function smart_control(smart)
 		return
 	end
 	
-	local option_factor = 1
-	local option = sim_options.get_warfare_control_option()
-
-	if (option == sim_options.warfare_control.low) then
-		option_factor = 1.5
-	elseif (option == sim_options.warfare_control.medium) then
-		option_factor = 1
-	elseif (option == sim_options.warfare_control.high) then
-		option_factor = 0.5
-	elseif (option == sim_options.warfare_control.very_high) then
-		option_factor = 0.25
-	end
-
+	local option_factor = sim_options.get_warfare_control_option_factor()
 	smart.last_npc_check = tg + 30000 * option_factor
 
 	local squads = SIMBOARD.smarts[smart.id].squads
