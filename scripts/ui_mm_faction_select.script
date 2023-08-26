@@ -603,6 +603,8 @@ function faction_ui:Main_Controls()
 	
 	self.ck_reset = xml:Init3tButton("main_dialog:check_reset", self.dialog)
 	self:Register(self.ck_reset,"check_reset")
+	self.ck_random = xml:Init3tButton("main_dialog:check_random", self.dialog)
+	self:Register(self.ck_random,"check_random")
 	
 	
 	-- Update info
@@ -723,6 +725,7 @@ function faction_ui:Main_CallBacks()
 	
 	self:AddCallback("list_map", ui_events.LIST_ITEM_SELECT, self.OnSelectMap, self)
 	self:AddCallback("check_reset", ui_events.BUTTON_CLICKED, self.OnCheckResetList, self)
+	self:AddCallback("check_random", ui_events.BUTTON_CLICKED, self.OnCheckRandomList, self)
 	
 	self:AddCallback("list_inv", ui_events.LIST_ITEM_CLICKED, self.OnInventoryClicked, self)
 	self:AddCallback("list_inv", ui_events.WINDOW_LBUTTON_DB_CLICK, self.OnInventoryDbClicked, self)
@@ -1466,6 +1469,13 @@ function faction_ui:OnCheckResetList()
 	self:LoadLoadout()
 end
 
+function faction_ui:OnCheckRandomList()
+	if (not self.access) then
+		return
+	end
+	
+	self:LoadLoadout(true)
+end
 
 --=======================================< Update visuals >=======================================--
 function faction_ui:UpdateAll (rand, faction)
