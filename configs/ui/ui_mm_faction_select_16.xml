@@ -97,6 +97,9 @@
 		<check_reset x="511" y="245" width="28" height="23" stretch="1">
 			<texture>ui_new_game_btn_checkbox</texture>
 		</check_reset>
+		<check_random x="689" y="245" width="28" height="23" stretch="1">
+			<texture>ui_new_game_btn_checkbox</texture>
+		</check_random>
 
 		
 		<!-- Main buttons -->
