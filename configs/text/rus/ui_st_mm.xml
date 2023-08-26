@@ -479,7 +479,7 @@
 		<text>Портрет в костюме</text>
 	</string>
 	<string id="ui_mm_show_enemy_health">
-		<text>Данные о противнике</text>
+		<text>Показывать здоровье врага</text>
 	</string>
 	<string id="ui_mm_quicksave_cnt">
 		<text>Быстрых сохранений</text>
@@ -546,5 +546,11 @@
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_control_opt_low">
 		<text>низкая</text>
+	</string>
+	<string id="ui_mm_show_monsters_on_map">
+		<text>Показ. монстров на карте</text>
+	</string>
+	<string id="ui_mm_show_stalkers_on_map">
+		<text>Показ. сталкеров на карте</text>
 	</string>
 </string_table>
