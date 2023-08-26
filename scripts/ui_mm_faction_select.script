@@ -1477,6 +1477,7 @@ function faction_ui:OnCheckRandomList()
 	self:LoadLoadout(true)
 end
 
+
 --=======================================< Update visuals >=======================================--
 function faction_ui:UpdateAll (rand, faction)
 	self:LoadFaction(rand, faction)
