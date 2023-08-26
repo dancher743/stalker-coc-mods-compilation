@@ -16,7 +16,7 @@ local function give_hunt_target_talk_message(target_id)
 	if (se_obj) then
 		local character_name = string.format("%s %s", game.translate_string("st_mm_new_game_name"), se_obj:character_name())
 		
-		local faction_name = string.format("%s: %s", game.translate_string("st_mm_btn_new_game_faction"), game.translate_string(se_obj:community()))
+		local faction_name = string.format("%s: %s", game.translate_string("ui_st_community"), game.translate_string(se_obj:community()))
 		
 		local level_id = alife():level_name(game_graph():vertex(se_obj.m_game_vertex_id):level_id())
 		local location_name = string.format("%s: %s", game.translate_string("st_mm_pda_location"), game.translate_string(level_id))
