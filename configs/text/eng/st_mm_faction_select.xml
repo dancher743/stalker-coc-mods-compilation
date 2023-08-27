@@ -104,12 +104,16 @@
 			\nElements from previous storylines are borrowed and recreated, so this is not for players who feel that strict story continuity is essential.\n
 			\nOnly available to Loner, Duty, Freedom, Ecologist, Mercenary and Clear Sky factions.\n
 			\n%c[200,200,50,50]• %c[0,150,150,150]Not compatible with Azazel mode.
+			\n
+			\n%c[0,255,255,255]Recommended for: new players.
 		</text>
 	</string>
 	<string id="st_mm_ck_hardcore_desc">
 		<text>
 			%c[0,150,150,150]Ironman mode is a feature that will remove your game saves upon death.\n
 			\nYou are free to make as many saves as you wish but dying will result in the removal of all saves made with this character.
+			\n
+			\n%c[0,255,255,255]Recommended for: advanced players.
 		</text>
 	</string>
 	<string id="st_mm_ck_hardcore_aim_desc">
@@ -182,7 +186,7 @@
 			\n%c[200,50,200,50]• %c[0,150,150,150]You can change extended population in your playthrough at any time.
 			\nSee "Options" -> "Game". Then "Population spawn frequency" and "Population update frequency".
 			\n
-			\n%c[0,255,255,255]Recommended for: players who are familiar with the 'Mysteries of the Zone' storyline or have played without it.
+			\n%c[0,255,255,255]Recommended for: advanced players who are familiar with the 'Mysteries of the Zone' storyline or have played without it.
 		</text>
 	</string>
 	
