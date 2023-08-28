@@ -302,5 +302,5 @@ function load_state(data)
 end
 
 function get_actor_default_faction()
-	return default_faction
+	return "actor_"..default_faction
 end
