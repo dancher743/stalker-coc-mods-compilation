@@ -81,6 +81,28 @@ function sim_squad_scripted:init_squad_on_load()
 	--self.need_to_reset_location_masks = true
 	--alun_utils.debug_write(self:name().."init_squad_on_load end")
 end
+
+--***********************************************************************************************
+--*										RESET													*
+--***********************************************************************************************
+
+function sim_squad_scripted:reset()
+	self.smart_id 			= nil
+	self.current_spot_id 	= nil
+	self.current_action 	= nil
+	self.current_target_id	= nil
+	self.assigned_target_id	= nil
+	self.scripted_target 	= nil
+	
+	self.first_update = false
+	self.disabled = false
+	
+	self.__lock = false
+	
+	self:init_squad()
+	self:init_squad_on_load()
+end
+
 --***********************************************************************************************
 --*										SCRIPT_TARGET_SELECTION									*
 --***********************************************************************************************

@@ -3096,9 +3096,8 @@ function remove_task_companion(actor,npc,p)
 		return
 	end
 
-	squad.scripted_target = nil
-	squad.current_action = nil
 	axr_companions.companion_squads[squad.id] = nil
+	squad:reset()
 
 	for k in squad:squad_members() do
 		local npc = k.id and (db.storage[k.id] and db.storage[k.id].object or level.object_by_id(k.id))
