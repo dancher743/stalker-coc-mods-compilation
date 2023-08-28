@@ -285,7 +285,7 @@ function create_random_stash(no_spot,hint,bonus_items)
 
 --------------------------------------------------Тайники из ЧН
 
-			hint = stash_names(sim,se_box,hint,id)
+			hint = get_extended_hint(sim,se_box,hint,id)
 
 --------------------------------------------------Тайники из ЧН
 
@@ -384,7 +384,8 @@ function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery )
 
 			-- Create map spot:
 			if ( no_spot ~= true and level.map_has_object_spot( id, "treasure" ) == 0 ) then
-				level.map_add_object_spot_ser( id, "treasure", hint or game.translate_string("st_ui_pda_secret") )
+				hint = get_extended_hint(sim,se_box,hint,id)
+				level.map_add_object_spot_ser( id, "treasure", hint or "" )
 				news_manager.send_treasure_with_level(se_box:name(), se_box.m_game_vertex_id)
 			end
 
@@ -407,7 +408,8 @@ function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery )
 
 	-- Create map spot:
 	if ( no_spot ~= true and level.map_has_object_spot( id, "treasure" ) == 0 ) then
-		level.map_add_object_spot_ser( id, "treasure", hint or game.translate_string("st_ui_pda_secret") )
+		hint = get_extended_hint(sim,se_box,hint,id)
+		level.map_add_object_spot_ser( id, "treasure", hint or "" )
 		news_manager.send_treasure_with_level(se_box:name(), se_box.m_game_vertex_id)
 	end
 
@@ -680,7 +682,7 @@ local function get_fake_encrypted_string()
 	return result
 end
 
-function stash_names(sim,stash,hint,id)
+function get_extended_hint(sim,stash,hint,id)
 	local stash_name = stash:name()
 	
 	if string.find(stash_name,"level_prefix") ~= nil then
@@ -695,15 +697,15 @@ function stash_names(sim,stash,hint,id)
 	local descr
 	
 	if stash_name == nil then
+		name = game.translate_string("st_ui_pda_secret")
 		if hint and string.match(hint, string.format(game.translate_string("st_itm_stash_of_character"),'')) then
-			name = game.translate_string("st_ui_pda_secret")
 			local random_value = math.random(1,2)
 			descr = game.translate_string("st_no_descr_"..random_value)
 			if random_value == 2 then
 				descr = descr..get_fake_encrypted_string()
 			end
 		else
-			return hint or game.translate_string("st_ui_pda_secret")
+			descr = game.translate_string("st_no_descr_1")
 		end
 	else
 		name = game.translate_string("st_" .. stash_name .. "_name")
