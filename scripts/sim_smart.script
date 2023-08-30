@@ -132,6 +132,9 @@ function check_npc(smart)
 	local mechanic = faction .. "_sim_squad_mechanic"
 	local barmen = faction .. "_sim_squad_barmen"
 	local medik = faction .. "_sim_squad_medik"
+	local uniques_npc = {}
+	uniques_npc.cit_killers 			= { killer = { "cit_killers_merc_trader_stalker", nil, nil, nil } }
+	uniques_npc.zat_stalker_base_smart 	= { stalker = { nil, "zat_a2_stalker_mechanic", nil, nil } }
 	
 	local uniques = {}	
 	uniques.mar_smart_terrain_base  = { 1, 1, 1, 1 }
@@ -192,27 +195,35 @@ function check_npc(smart)
 		local smart_limit = npc_count(smart, smart.owning_faction)
 
 	    if (smart_limit < smart.max_population) then	
+			
+			local smart_tbl = uniques_npc[smart:name()]
+			local faction_tbl = smart_tbl and smart_tbl[faction]
+			
+			local unique_trader = faction_tbl and faction_tbl[1]
+			local unique_mechanic = faction_tbl and faction_tbl[2]
+			local unique_barmen = faction_tbl and faction_tbl[3]
+			local unique_medik = faction_tbl and faction_tbl[4]
 	
 		    while mechanic_in_smart < mechanic_pop do	
-                sim_squad.create_squad(smart, faction, nil, mechanic , nil, 1)
+				sim_squad.create_squad(smart, faction, nil, unique_mechanic or mechanic, nil, 1)
 			    mechanic_in_smart = mechanic_in_smart + 1
 				printf("### EOC: -- check_npc 1 -- ".. smart:name() .." - mechanic ###")
 		    end
 			   
 		    while trader_in_smart < trader_pop do
-		        sim_squad.create_squad(smart, faction, nil, trader, nil, 1)
+				sim_squad.create_squad(smart, faction, nil, unique_trader or trader, nil, 1)
 			    trader_in_smart = trader_in_smart + 1
 		        printf("### EOC: -- check_npc 2 -- ".. smart:name() .." - trader ###")
 		    end
 		
 		    while barmen_in_smart < barmen_pop do
-		       sim_squad.create_squad(smart, faction, nil, barmen, nil, 1)
+		       sim_squad.create_squad(smart, faction, nil, unique_barmen or barmen, nil, 1)
 			   barmen_in_smart = barmen_in_smart + 1
 		       printf("### EOC: -- check_npc 3 -- ".. smart:name() .." - barmen ###")
 		    end
 		
 		    while medik_in_smart < medik_pop do
-                sim_squad.create_squad(smart, faction, nil, medik, nil, 1)
+                sim_squad.create_squad(smart, faction, nil, unique_medik or medik, nil, 1)
 			    medik_in_smart = medik_in_smart + 1
 		        printf("### EOC: -- check_npc 4 -- ".. smart:name() .." - medik ###")
 		    end	
