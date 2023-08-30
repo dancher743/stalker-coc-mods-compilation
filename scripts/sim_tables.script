@@ -449,16 +449,15 @@ ignore = {
 	["bar_visitors_barman_stalker_trader_squad"] = true,
 	["bar_visitors_garik_stalker_guard_squad"] = true,
 	["bar_visitors_zhorik_stalker_guard2_squad"] = true,
-	["bar_visitors_stalker_mechanic"] = true,
+	["bar_visitors_cardan_tech_squad"] = true,
 	["bun_krovosos_nest_squad"] = true,
 	["yan_stalker_sakharov_squad"] = true,
-	["yan_ecolog_kruglov"] = true,
+	["yan_ecolog_kruglov_squad"] = true,
 	["mar_smart_terrain_doc_squad"] = true,
 	["mar_smart_terrain_doc_dog_squad"] = true,
 	["mar_smart_terrain_base_dog_doctor_squad"] = true,
 	["esc_2_12_stalker_nimble_squad"] = true,
 	["dar_control_poltergeist_squad"] = true,
-	["red_forester_tech"] = true,
 }
 
 registered_squads = {
