@@ -54,7 +54,7 @@ function use_campfire(actor,zone,p)
 		actor = db.actor
 	end
 
-	local campfire = get_nearest_campfire(actor)
+	local campfire, campfire_pos = get_nearest_campfire(actor)
 	
 	if campfire ~= nil then
 		if (campfire:is_on()) then 
@@ -78,7 +78,7 @@ function use_campfire(actor,zone,p)
 			if matches_sound:playing() then
 				matches_sound:stop()
 			end
-			matches_sound:play(db.actor,0,sound_object.s2d)
+			matches_sound:play_at_pos(actor, campfire_pos)
 		end
 	end
 end
@@ -92,8 +92,9 @@ function get_nearest_campfire(npc, range)
 	
 	for id,binder in pairs(campfires_all) do 
 		if (binder and binder.campfire) then
-			if (pos:distance_to_sqr(binder.object:position()) <= range) then
-				return binder.campfire
+			local campfire_position = binder.object:position()
+			if (pos:distance_to_sqr(campfire_position) <= range) then
+				return binder.campfire, campfire_position
 			end
 		end 
 	end
