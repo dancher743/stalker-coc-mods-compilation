@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="ui_st_enemy_health_bloodsucker">
+		<text>Bloodsucker</text>
+	</string>
+	<string id="ui_st_enemy_health_boar">
+		<text>Boar</text>
+	</string>
+	<string id="ui_st_enemy_health_burer">
+		<text>Burer</text>
+	</string>
+	<string id="ui_st_enemy_health_cat">
+		<text>Cat</text>
+	</string>
+	<string id="ui_st_enemy_health_chimera">
+		<text>Chimera</text>
+	</string>
+	<string id="ui_st_enemy_health_controller">
+		<text>Controller</text>
+	</string>
+	<string id="ui_st_enemy_health_dog">
+		<text>Blind dog</text>
+	</string>
+	<string id="ui_st_enemy_health_flesh">
+		<text>Flesh</text>
+	</string>
+	<string id="ui_st_enemy_health_fracture">
+		<text>Fracture</text>
+	</string>
+	<string id="ui_st_enemy_health_gigant">
+		<text>Pseudogiant</text>
+	</string>
+	<string id="ui_st_enemy_health_poltergeist">
+		<text>Poltergeist</text>
+	</string>
+	<string id="ui_st_enemy_health_pseudodog">
+		<text>Pseudodog</text>
+	</string>
+	<string id="ui_st_enemy_health_psy_dog_phantom">
+		<text>Psy dog</text>
+	</string>
+	<string id="ui_st_enemy_health_psy_dog">
+		<text>Psy dog</text>
+	</string>
+	<string id="ui_st_enemy_health_rat">
+		<text>Rat</text>
+	</string>
+	<string id="ui_st_enemy_health_snork">
+		<text>Snork</text>
+	</string>
+	<string id="ui_st_enemy_health_tushkano">
+		<text>Tushkano</text>
+	</string>
+	<string id="ui_st_enemy_health_zombie">
+		<text>Zombie</text>
+	</string>
+</string_table>

@@ -4,6 +4,31 @@ ui_enemy_health allows the ability to show health progress of last hit enemy if 
 author: Alundaio
 --]]
 
+--
+-- Added by Dancher
+--
+local monster_classes = {
+	[clsid.bloodsucker_s] 			= "bloodsucker",
+	[clsid.boar_s] 					= "boar",
+	[clsid.burer_s] 				= "burer",
+	[clsid.cat_s] 					= "cat",
+	[clsid.chimera_s] 				= "chimera",
+	[clsid.controller_s] 			= "controller",
+	[clsid.dog_s] 					= "dog",
+	[clsid.flesh_s] 				= "flesh",
+	[clsid.fracture_s] 				= "fracture",
+	[clsid.gigant_s] 				= "gigant",
+	[clsid.poltergeist_s] 			= "poltergeist",
+	[clsid.pseudodog_s] 			= "pseudodog",
+	[clsid.psy_dog_phantom_s] 		= "psy_dog_phantom",
+	[clsid.psy_dog_s] 				= "psy_dog",
+	[clsid.rat]						= "rat",
+	[clsid.rat_s]					= "rat",
+	[clsid.snork_s] 				= "snork",
+	[clsid.tushkano_s] 				= "tushkano",
+	[clsid.zombie_s] 				= "zombie"
+}
+
 local progress = nil
 local last_id = nil
 
@@ -74,7 +99,12 @@ function on_hit(obj,power,dir,who,bi)
 		elseif (IsStalker(nil,cls)) then 
 			text = obj:character_name()
 		elseif (IsMonster(nil,cls)) then 
-			text = game.translate_string("monster")
+			local monster_name = monster_classes[cls]
+			if (monster_name ~= nil) then
+				text = game.translate_string("ui_st_enemy_health_"..monster_name)
+			else
+				text = game.translate_string("monster")
+			end
 		else 
 			local sid = get_object_story_id(obj:id())
 			if (sid) then 
