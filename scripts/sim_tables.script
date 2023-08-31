@@ -446,6 +446,7 @@ factions = {
 
 ignore = {
 	["bar_arena_manager_squad"] = true,
+	["bar_arena_guard_squad"] = true,
 	["bar_visitors_barman_stalker_trader_squad"] = true,
 	["bar_visitors_garik_stalker_guard_squad"] = true,
 	["bar_visitors_zhorik_stalker_guard2_squad"] = true,
