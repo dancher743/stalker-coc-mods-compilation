@@ -70,3 +70,8 @@ function get_warfare_control_option_factor()
 	
 	return option_factor
 end
+
+function write_defaults_to_config()
+	axr_main.config:w_value("mm_options","eoc_faction_warfare_activity",warfare_activity.medium)
+	axr_main.config:w_value("mm_options","eoc_faction_warfare_control",warfare_control.medium)
+end
