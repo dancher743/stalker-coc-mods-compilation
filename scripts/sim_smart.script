@@ -133,17 +133,6 @@ function check_npc(smart)
 	local barmen = faction .. "_sim_squad_barmen"
 	local medik = faction .. "_sim_squad_medik"
 	
-	local uniques_npc = {}
-	uniques_npc.mar_smart_terrain_base  = { ["csky"] 		= { nil, "mar_base_stalker_tech_squad", nil, nil } }
-	uniques_npc.esc_smart_terrain_5_7   = { ["stalker"] 	= { nil, "esc_smart_terrain_5_7_loner_mechanic_stalker_squad", nil, nil } }
-	uniques_npc.val_smart_terrain_7_3   = { ["bandit"]		= { nil, "val_smart_terrain_7_3_bandit_mechanic_stalker_squad", nil, nil } }
-	uniques_npc.agr_smart_terrain_1_6   = { ["army"] 		= { nil, "agr_smart_terrain_1_6_army_mechanic_stalker_squad", nil, nil } }
-	uniques_npc.mil_smart_terrain_7_7   = { ["freedom"] 	= { nil, "mil_smart_terrain_7_7_freedom_mechanic_stalker_squad", nil, nil } }
-	uniques_npc.cit_killers 			= { ["killer"] 		= { "cit_killers_merc_trader_stalker_squad", "cit_killers_merc_mechanic_stalker_squad", nil, nil } }
-	uniques_npc.pri_monolith            = { ["monolith"]	= { nil, "pri_monolith_monolith_mechanic_stalker_squad", nil, nil } }
-	uniques_npc.zat_stalker_base_smart 	= { ["stalker"] 	= { nil, "zat_a2_stalker_mechanic_squad", nil, nil } }
-	uniques_npc.jup_a6                  = { ["stalker"] 	= { nil, "jup_b10_stalker_drunk_squad", nil, nil } }
-	
 	local uniques = {}	
 	uniques.mar_smart_terrain_base  = { 1, 1, 1, 1 }
 	uniques.esc_smart_terrain_5_7   = { 0, 1, 0, 0 }
@@ -204,7 +193,7 @@ function check_npc(smart)
 
 	    if (smart_limit < smart.max_population) then	
 			
-			local smart_tbl = uniques_npc[smart:name()]
+			local smart_tbl = sim_tables.unique_npcs[smart:name()]
 			local faction_tbl = smart_tbl and smart_tbl[faction]
 			
 			local unique_trader = faction_tbl and faction_tbl[1]

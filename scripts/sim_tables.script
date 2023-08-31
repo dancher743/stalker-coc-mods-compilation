@@ -547,3 +547,41 @@ level_offsets = {
 	[31] = { 3000.0,    800.0,		4500.0 },
 	[32] = { 3000.0,	1000.0,		2000.0 },
 }
+
+unique_npcs = {
+	["mar_smart_terrain_base"] = {
+		["csky"] = { nil, "mar_base_stalker_tech_squad", nil, nil },
+	},
+	
+	["esc_smart_terrain_5_7"] = {
+		["stalker"] = { nil, "esc_smart_terrain_5_7_loner_mechanic_stalker_squad", nil, nil },
+	},
+	
+	["val_smart_terrain_7_3"] = { 
+		["bandit"] = { nil, "val_smart_terrain_7_3_bandit_mechanic_stalker_squad", nil, nil },
+	},
+	
+	["agr_smart_terrain_1_6"] = { 
+		["army"] = { nil, "agr_smart_terrain_1_6_army_mechanic_stalker_squad", nil, nil },
+	},
+	
+	["mil_smart_terrain_7_7"] = {
+		["freedom"] = { nil, "mil_smart_terrain_7_7_freedom_mechanic_stalker_squad", nil, nil },
+	},
+	
+	["cit_killers"] = {
+		["killer"] = { "cit_killers_merc_trader_stalker_squad", "cit_killers_merc_mechanic_stalker_squad", nil, nil },
+	},
+	
+	["pri_monolith"] = {
+		["monolith"] = { nil, "pri_monolith_monolith_mechanic_stalker_squad", nil, nil },
+	},
+	
+	["zat_stalker_base_smart"] = {
+		["stalker"] = { nil, "zat_a2_stalker_mechanic_squad", nil, nil },
+	},
+	
+	["jup_a6"] = {
+		["stalker"] = { nil, "jup_b10_stalker_drunk_squad", nil, nil },
+	},
+}
