@@ -193,7 +193,7 @@ function check_npc(smart)
 
 	    if (smart_limit < smart.max_population) then	
 			
-			local smart_tbl = sim_tables.unique_npcs[smart:name()]
+			local smart_tbl = sim_tables.unique_squads[smart:name()]
 			local faction_tbl = smart_tbl and smart_tbl[faction]
 			
 			local unique_trader = faction_tbl and faction_tbl[1]

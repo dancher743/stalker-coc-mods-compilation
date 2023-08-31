@@ -548,7 +548,7 @@ level_offsets = {
 	[32] = { 3000.0,	1000.0,		2000.0 },
 }
 
-unique_npcs = {
+unique_squads = {
 	-- trader, mechanic, barmen, medic
 	
 	["mar_smart_terrain_base"] = {
