@@ -49,12 +49,13 @@ local function save_state(m_data)
 end 
 
 -- called from game_tutorials.xml
-function use_campfire(actor,zone,p)
-	if actor == nil then
-		actor = db.actor
+function use_campfire(npc,zone,p)
+	local actor = db.actor
+	if npc == nil then
+		npc = actor
 	end
 
-	local campfire, campfire_pos = get_nearest_campfire(actor)
+	local campfire, campfire_pos = get_nearest_campfire(npc)
 	
 	if campfire ~= nil then
 		if (campfire:is_on()) then 
@@ -78,7 +79,13 @@ function use_campfire(actor,zone,p)
 			if matches_sound:playing() then
 				matches_sound:stop()
 			end
-			matches_sound:play_at_pos(actor, campfire_pos)
+			
+			if npc == actor then
+				matches_sound:play(actor,0,sound_object.s2d)
+			else
+				matches_sound:play_at_pos(actor, campfire_pos)
+			end
+			
 		end
 	end
 end
