@@ -549,24 +549,38 @@ level_offsets = {
 }
 
 unique_npcs = {
+	-- trader, mechanic, barmen, medic
+	
 	["mar_smart_terrain_base"] = {
-		["csky"] = { nil, "mar_base_stalker_tech_squad", nil, nil },
+		["csky"] = { "mar_base_owl_stalker_trader_squad", "mar_base_stalker_tech_squad", "mar_base_stalker_barmen_squad", "mar_doctor_squad" },
 	},
 	
 	["esc_smart_terrain_5_7"] = {
 		["stalker"] = { nil, "esc_smart_terrain_5_7_loner_mechanic_stalker_squad", nil, nil },
 	},
 	
-	["val_smart_terrain_7_3"] = { 
+	["val_smart_terrain_7_4"] = {
+		["bandit"] = { "val_smart_terrain_7_4_bandit_trader_stalker_squad", nil, nil, nil },
+	},
+	
+	["val_smart_terrain_7_3"] = {
 		["bandit"] = { nil, "val_smart_terrain_7_3_bandit_mechanic_stalker_squad", nil, nil },
 	},
 	
-	["agr_smart_terrain_1_6"] = { 
-		["army"] = { nil, "agr_smart_terrain_1_6_army_mechanic_stalker_squad", nil, nil },
+	["agr_smart_terrain_1_6"] = {
+		["army"] = { "agr_smart_terrain_1_6_army_trader_stalker_squad", "agr_smart_terrain_1_6_army_mechanic_stalker_squad", nil, nil },
+	},
+	
+	["bar_dolg_general"] = {
+		["dolg"] = { "bar_dolg_general_petrenko_stalker_squad", nil, nil, nil },
 	},
 	
 	["mil_smart_terrain_7_7"] = {
 		["freedom"] = { nil, "mil_smart_terrain_7_7_freedom_mechanic_stalker_squad", nil, nil },
+	},
+	
+	["mil_smart_terrain_7_10"] = {
+		["freedom"] = { "mil_smart_terrain_7_10_freedom_trader_stalker_squad", nil, nil, nil },
 	},
 	
 	["cit_killers"] = {
@@ -574,14 +588,18 @@ unique_npcs = {
 	},
 	
 	["pri_monolith"] = {
-		["monolith"] = { nil, "pri_monolith_monolith_mechanic_stalker_squad", nil, nil },
+		["monolith"] = { "pri_monolith_monolith_trader_stalker_squad", "pri_monolith_monolith_mechanic_stalker_squad", nil, nil },
 	},
 	
 	["zat_stalker_base_smart"] = {
-		["stalker"] = { nil, "zat_a2_stalker_mechanic_squad", nil, nil },
+		["stalker"] = { "zat_b30_owl_stalker_trader_squad", "zat_a2_stalker_mechanic_squad", "zat_b22_barmen", "zat_b22_medic" },
 	},
 	
 	["jup_a6"] = {
-		["stalker"] = { nil, "jup_b10_stalker_drunk_squad", nil, nil },
+		["freedom"] = { "jup_a6_freedom_trader_ashot_squad", "jup_b10_stalker_drunk_squad", "jup_a6_stalker_barmen_squad", "jup_a6_stalker_medik_squad" },
+	},
+	
+	["jup_b41"] = {
+		["ecolog"] = { "jup_b6_trader_group", "jup_b6_mechanic_group", nil, nil },
 	},
 }
