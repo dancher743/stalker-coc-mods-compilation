@@ -85,7 +85,6 @@ function use_campfire(npc,zone,p)
 			else
 				matches_sound:play_at_pos(actor, campfire_pos)
 			end
-			
 		end
 	end
 end
