@@ -1,0 +1,54 @@
+----------------------------------------------------------------------------------------
+-- Фонарик. Содержит звуки вкл./выкл.
+-- Автор: Grelka
+-- Адаптация: Dancher
+-----------------------------------------------------------------------------------------
+
+local sound_flashlight_on  = sound_object( [[makdm\flashlight_on]] ) -- путь к звуку включения фонарика, относительно папки SOUND
+local sound_flashlight_off = sound_object( [[makdm\flashlight_off]] ) -- путь к звуку отключения фонарика, относительно папки SOUND
+local flag_game_start = nil  -- флаг старта игры
+local flag_flashlight_on = nil  -- флаг поднят - фонарик горит
+local flag_flashlight_off = nil -- флаг поднят - фонарик не горит
+
+local function flashlight_update()
+
+	local torch = db.actor:object( "device_torch" )
+	if torch == nil then 
+		flag_game_start = nil
+		return
+	end
+	
+	if flag_game_start == nil then
+		flag_game_start = true
+		if torch:torch_enabled() then -- фонарь включен
+			flag_flashlight_on = true
+		else -- фонарь выключен
+			flag_flashlight_off = true
+		end
+	end
+	
+-- Выключаем фонарик	
+	if torch:torch_enabled() == false and flag_flashlight_on == true then
+		flag_flashlight_off = true
+		flag_flashlight_on = false
+		sound_flashlight_off:play_at_pos( db.actor, db.actor:position(), 0, sound_object.s3d )
+	end
+
+-- Включаем фонарик
+	if torch:torch_enabled() == true and flag_flashlight_off == true then
+		flag_flashlight_off = false
+		flag_flashlight_on = true
+		sound_flashlight_on:play_at_pos( db.actor, db.actor:position(), 0, sound_object.s3d )
+	end
+end
+
+local function actor_on_update()
+	if not (db.actor:alive()) then
+		return
+	end
+	flashlight_update()
+end
+
+function on_game_start()
+	RegisterScriptCallback("actor_on_update", actor_on_update)
+end
