@@ -64,3 +64,4 @@ Mods
 49. Pre-Blowout Murder Addon [CoC 1.4.22] (Ethylia, adapted by Misery)
 50. Flashlight sound for vanilla CoC (Grelka)
 51. My Classic SoC Flashlight for CoC with changes (default white light) (Shovelled)
+52. Clear weather from All AtmosFear 3 cycles for CoC (owdred)
