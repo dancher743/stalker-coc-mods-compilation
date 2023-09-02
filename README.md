@@ -65,4 +65,3 @@ Mods
 50. S.W.T.C. - Call of Chernobyl Edition [CoC 1.4.22 / 1.5b] (brainscorcher)
 51. Flashlight sound for vanilla CoC (Grelka)
 52. My Classic SoC Flashlight for CoC with changes (default white light) (Shovelled)
-53. Added skyboxes with panarams from All AtmosFear 3 cycles for CoC (CrommCruac)
