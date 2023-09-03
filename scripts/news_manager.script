@@ -219,11 +219,9 @@ end
 
 function send_treasure_with_level(stash_name, stash_game_vertex_id)
 	local level_id = alife():level_name(game_graph():vertex(stash_game_vertex_id):level_id())
-	local level_name = "("..game.translate_string(level_id)..")"
-	stash_name = get_stash_translated_name(stash_name, level_id)
-		
+	local level_name = game.translate_string(level_id)
 	local news_caption = game.translate_string("st_found_new_treasure")
-	local news_text = stash_name.." "..level_name
+	local news_text = string.format("%s (%s)", stash_name, level_name)
 	
 	if db.actor:is_talking() then
 		db.actor:give_talk_message2(news_caption, news_text, "ui_inGame2_Polucheni_koordinaty_taynika", "iconed_answer_item")
@@ -232,23 +230,6 @@ function send_treasure_with_level(stash_name, stash_game_vertex_id)
 	end
 	
 	xr_sound.set_sound_play(db.actor:id(), "pda_news")
-end
-
-function get_stash_translated_name(stash_name, level_id)
-	if string.find(stash_name,"level_prefix") ~= nil then
-		stash_name = string.gsub(stash_name,"level_prefix",level_id,1)
-	end
-	
-	local ini = ini_file("plugins\\stash_names.ltx")
-	stash_name = ini:r_string_ex("stash_tbl", stash_name)
-	
-	if stash_name == nil then
-		stash_name = game.translate_string("st_ui_pda_secret")
-	else
-		stash_name = game.translate_string("st_" ..stash_name.. "_name")
-	end
-	
-	return stash_name
 end
 
 function get_inv_name(section)
