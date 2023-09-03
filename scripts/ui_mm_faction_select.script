@@ -584,6 +584,9 @@ function faction_ui:Main_Controls()
 	
 	btn = xml:Init3tButton("main_dialog:btn_icon", self.dialog)
 	self:Register(btn,"btn_icon")
+		
+	self.ck_random_name = xml:Init3tButton("main_dialog:check_random_name", self.dialog)
+	self:Register(self.ck_random_name,"check_random_name")
 	
 	self.list_map = xml:InitComboBox("main_dialog:list_map", self.dialog)
 	self.list_map:SetAutoDelete(true)
@@ -722,6 +725,8 @@ function faction_ui:Main_CallBacks()
 	
 	self:AddCallback("btn_faction", ui_events.BUTTON_CLICKED, self.OnFactionClicked, self)
 	self:AddCallback("btn_icon", ui_events.BUTTON_CLICKED, self.OnIconClicked, self)
+	
+	self:AddCallback("check_random_name", ui_events.BUTTON_CLICKED, self.OnCheckRandomName, self)
 	
 	self:AddCallback("list_map", ui_events.LIST_ITEM_SELECT, self.OnSelectMap, self)
 	self:AddCallback("check_reset", ui_events.BUTTON_CLICKED, self.OnCheckResetList, self)
@@ -1316,6 +1321,20 @@ function faction_ui:LoadTimer (rand)
 	self.selected_timer = pick
 end
 
+function faction_ui:RandomizeName()
+	local subset
+	if (self.selected_faction == "army" or self.selected_faction == "dolg") then 
+		subset = random_choice("private","sergeant","senior_sergeant","lieutenant","captain")
+	else 
+		subset = random_choice("stalker","bandit","science")
+	end
+	local name_cnt = ini:r_float_ex("stalker_names_"..subset,"name_cnt")
+	local last_name_cnt = ini:r_float_ex("stalker_names_"..subset,"last_name_cnt")
+	local first_name = gs( strformat("name_%s_%s",subset,math.random(0,name_cnt-1)) )
+	local last_name = gs( strformat("lname_%s_%s",subset,math.random(0,last_name_cnt-1)) )
+	self.character_name:SetText(first_name .. " " .. last_name)
+end
+
 
 --=======================================< GUI Callbacks >=======================================-
 function faction_ui:OnFactionClicked()
@@ -1475,6 +1494,14 @@ function faction_ui:OnCheckRandomList()
 	end
 	
 	self:LoadLoadout(true)
+end
+
+function faction_ui:OnCheckRandomName()
+	if (not self.access) then
+		return
+	end
+	
+	self:RandomizeName()
 end
 
 
@@ -1695,17 +1722,7 @@ function faction_ui:OnRandomize()
 	self.selected_faction  = self.table_faction[math.random(#self.table_faction)]
 	
 	-- Name
-	local subset
-	if (self.selected_faction == "army" or self.selected_faction == "dolg") then 
-		subset = random_choice("private","sergeant","senior_sergeant","lieutenant","captain")
-	else 
-		subset = random_choice("stalker","bandit","science")
-	end
-	local name_cnt = ini:r_float_ex("stalker_names_"..subset,"name_cnt")
-	local last_name_cnt = ini:r_float_ex("stalker_names_"..subset,"last_name_cnt")
-	local first_name = gs( strformat("name_%s_%s",subset,math.random(0,name_cnt-1)) )
-	local last_name = gs( strformat("lname_%s_%s",subset,math.random(0,last_name_cnt-1)) )
-	self.character_name:SetText(first_name .. " " .. last_name)
+	self:RandomizeName()
 	
 	-- Everything else
 	self:UpdateAll(true, self.selected_faction)
