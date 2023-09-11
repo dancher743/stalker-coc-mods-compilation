@@ -1,5 +1,5 @@
 local sim_objects_registry = nil
-local props_ini = ini_file("misc\\simulation_objects_props.ltx")
+local props_ini = nil
 config = ini_file_ex("ai_tweaks\\simulation_objects.ltx")
 
 local ALLOW_NPC_LEVEL_TRANSITION = true
@@ -57,6 +57,14 @@ function simulation_objects_registry:get_props(obj)
 	end
 	
 	obj.props = {}
+	
+	if (props_ini == nil) then
+		if (IsEocMode()) then
+			props_ini = ini_file("misc\\simulation_objects_props_eoc_mode.ltx")
+		else
+			props_ini = ini_file("misc\\simulation_objects_props.ltx")
+		end
+	end
 	
 	local props_section
 	if (cls == clsid.online_offline_group_s) then
