@@ -55,7 +55,7 @@ function use_campfire(npc,zone,p)
 		npc = actor
 	end
 
-	local campfire, campfire_pos = get_nearest_campfire(npc)
+	local campfire = get_nearest_campfire(npc)
 	
 	if campfire ~= nil then
 		if (campfire:is_on()) then 
@@ -82,8 +82,6 @@ function use_campfire(npc,zone,p)
 			
 			if npc == actor then
 				matches_sound:play(actor,0,sound_object.s2d)
-			else
-				matches_sound:play_at_pos(actor, campfire_pos)
 			end
 		end
 	end
