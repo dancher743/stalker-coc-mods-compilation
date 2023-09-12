@@ -9,7 +9,13 @@ Settings
 ---
 * To access Dynamic News settings: load your game, then open the main menu and press Page-Up button
 * To ignite/extinguish a campfire holster your weapon first
-* To make the sky less bright type `r2_tonemap off` command in the console
+* To make the sky less bright type `r2_tonemap off` command at the console
+
+Optimization
+---
+* Type `vid_restart` at the console if you are faced with _"Too many occlusion queries were issued"_ warnings. This command restarts the renderer
+* Add `-noprefetch` to the end of a shortcut as launch parameter. It forces the game to clear RAM
+* Disable "Sun shadow" in "Options", "Video" to reduce a video card load
 
 Mods
 ---
