@@ -355,6 +355,7 @@ function actor_on_item_use(obj)
 					hud:HideActorMenu()
 					local ui = ui_itm_backpack and ui_itm_backpack.backpack_ui(hud,se_obj.id,BackPackStashSpot, show_back_pack_stash_tip)
 					if (ui) then
+						SetHudMsg("",0)
 						ui:ShowDialog(true)
 					end
 				end
