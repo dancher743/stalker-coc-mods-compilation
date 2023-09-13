@@ -50,12 +50,12 @@ end
 
 function backpack_ui:OnOk()
 	local txt = self.input:GetText()
-	if (txt == nil or txt == "") then
+	if (txt == nil) then
 		txt = game.translate_string("st_itm_stash_of_actor")
 	end
 
 	local se_obj = alife_object(self.box_id)
-	if (se_obj) then
+	if (se_obj and txt ~= "") then
 		level.map_add_object_spot_ser(se_obj.id, self.box_spot, txt)
 	end
 
