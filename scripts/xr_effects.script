@@ -2487,6 +2487,7 @@ function drx_sl_setup_sim_hostage_task( actor, npc, p )
 			utils.se_obj_save_var( se_obj.id,se_obj:name( ), "companion", true )
 			utils.se_obj_save_var( se_obj.id,se_obj:name( ), "companion_cannot_dismiss", true )
 			utils.se_obj_save_var( se_obj.id,se_obj:name( ), "companion_cannot_teleport", p[4] == "true" )
+			utils.se_obj_save_var( se_obj.id,se_obj:name( ), "companion_is_hostage", true )
 			xrs_kill_wounded.hostage_list[se_obj.id] = smart.id
 		end
 	end
