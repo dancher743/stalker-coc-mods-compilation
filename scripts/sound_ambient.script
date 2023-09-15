@@ -20,6 +20,12 @@ local opt = {
 
 function reset_settings(level_name, ambient)
 
+	for i,ch in ipairs(snd_chanels) do
+		if ch.snd and ch.snd:playing() then
+			ch.snd:stop()
+		end
+	end
+
 	empty_table(snd_chanels)
 	print_dbg("level_name: %s - ambient: %s", level_name, ambient)
 	
