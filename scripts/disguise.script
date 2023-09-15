@@ -6,6 +6,14 @@
 -- Reworked due to patch dressing feature: Dancher
 ----------------------
 
+-- update rates in milliseconds
+local actor_update_rate = 1000
+local npc_update_rate = 2000
+
+-- update timers
+local actor_update_timer = time_global()
+local npc_update_timer = time_global()
+
 --time you need to be hidden (not seen by any npc) before changing outfit to make the disguise effective, 100 means roughly 10 seconds
 local time_to_forget = 100
 
@@ -85,6 +93,13 @@ function actor_on_update()
 	
 	if not actor:alive() then
 		return
+	end
+	
+	local time_global = time_global()
+	if actor_update_timer >= time_global then
+		return
+	else
+		actor_update_timer = time_global + actor_update_rate
 	end
 
 	local actor_community = utils.get_actor_community()
@@ -170,6 +185,13 @@ end
 
 function npc_on_update(npc)
 	if not default_faction or not db.actor then return end
+	
+	local time_global = time_global()
+	if npc_update_timer >= time_global then
+		return
+	else
+		npc_update_timer = time_global + npc_update_rate
+	end
 	
 	local npc_is_enemy = game_relations.is_factions_enemies(default_faction, npc:character_community()) or npc:relation(db.actor) == game_object.enemy
 
