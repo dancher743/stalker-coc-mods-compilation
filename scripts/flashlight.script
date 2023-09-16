@@ -8,12 +8,19 @@
 local sound_flashlight_on 	= sound_object([[makdm\flashlight_on]])
 local sound_flashlight_off 	= sound_object([[makdm\flashlight_off]])
 
+local function play_sound(sound_to_play, sound_to_stop)
+	if sound_to_stop:playing() then
+		sound_to_stop:stop()
+	end
+	sound_to_play:play(db.actor,0,sound_object.s2d)
+end
+
 local function actor_on_torch_enabled()
-	sound_flashlight_on:play(db.actor,0,sound_object.s2d)
+	play_sound(sound_flashlight_on, sound_flashlight_off)
 end
 
 local function actor_on_torch_disabled()
-	sound_flashlight_off:play(db.actor,0,sound_object.s2d)
+	play_sound(sound_flashlight_off, sound_flashlight_on)
 end
 
 function on_game_start()
