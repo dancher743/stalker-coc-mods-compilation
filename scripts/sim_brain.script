@@ -42,6 +42,7 @@ initialized = false
 
 function save_state(m_data)
 	if (not IsEocMode()) then
+		UnregisterScriptCallback("save_state", save_state)
 		return
 	end
 
@@ -80,6 +81,7 @@ end
 
 function load_state(m_data)
 	if (not IsEocMode()) then
+		UnregisterScriptCallback("load_state", load_state)
 		return
 	end
 
@@ -135,6 +137,7 @@ local last_update
 
 function actor_on_update()
 	if (not IsEocMode()) then
+		UnregisterScriptCallback("actor_on_update", actor_on_update)
 		return
 	end
 
@@ -222,7 +225,12 @@ end
 
 
 function fill_start_position()
-	if (not IsEocMode() or SIMBOARD.start_position_filled) then
+	if (not IsEocMode()) then
+		UnregisterScriptCallback("fill_start_position", fill_start_position)
+		return
+	end
+	
+	if (SIMBOARD.start_position_filled) then
 		return
 	end
 	
@@ -278,6 +286,8 @@ function fill_start_position()
 		end
 	end
 	)
+	
+	printf("### EOC: start position filled ###")
 end
 
 
@@ -383,6 +393,7 @@ end
 
 function smart_terrain_on_update(smart)
 	if (not IsEocMode()) then
+		UnregisterScriptCallback("smart_terrain_on_update", smart_terrain_on_update)
 		return
 	end
 
@@ -391,6 +402,7 @@ end
 
 function squad_on_update(squad)
 	if (not IsEocMode()) then
+		UnregisterScriptCallback("squad_on_update", squad_on_update)
 		return
 	end
 
