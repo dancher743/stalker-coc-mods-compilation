@@ -100,7 +100,7 @@ function actor_on_update(binder,delta)
 		db.actor.psy_health = 1
 		db.actor.radiation = -1
 	end
-	--[[ enable if you need it
+
 	local torch = db.actor:object("device_torch")
 	if (torch and not actor_light and torch:torch_enabled()) then
 		actor_light = true
@@ -111,7 +111,7 @@ function actor_on_update(binder,delta)
 			SendScriptCallback("actor_on_torch_disabled")
 		end
 	end
-	--]]
+
 	SendScriptCallback("actor_on_update",binder,delta)
 end
 

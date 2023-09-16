@@ -1,54 +1,22 @@
 ----------------------------------------------------------------------------------------
--- Фонарик. Содержит звуки вкл./выкл.
+-- Доп. функции фонарика
 -- Автор: Grelka
--- Адаптация: Dancher
+-- Рефакторинг: Dancher
 -----------------------------------------------------------------------------------------
 
-local sound_flashlight_on  = sound_object( [[makdm\flashlight_on]] ) -- путь к звуку включения фонарика, относительно папки SOUND
-local sound_flashlight_off = sound_object( [[makdm\flashlight_off]] ) -- путь к звуку отключения фонарика, относительно папки SOUND
-local flag_game_start = nil  -- флаг старта игры
-local flag_flashlight_on = nil  -- флаг поднят - фонарик горит
-local flag_flashlight_off = nil -- флаг поднят - фонарик не горит
+-- Звуки вкл./выкл
+local sound_flashlight_on 	= sound_object([[makdm\flashlight_on]])
+local sound_flashlight_off 	= sound_object([[makdm\flashlight_off]])
 
-local function flashlight_update()
-
-	local torch = db.actor:object( "device_torch" )
-	if torch == nil then 
-		flag_game_start = nil
-		return
-	end
-	
-	if flag_game_start == nil then
-		flag_game_start = true
-		if torch:torch_enabled() then -- фонарь включен
-			flag_flashlight_on = true
-		else -- фонарь выключен
-			flag_flashlight_off = true
-		end
-	end
-	
--- Выключаем фонарик	
-	if torch:torch_enabled() == false and flag_flashlight_on == true then
-		flag_flashlight_off = true
-		flag_flashlight_on = false
-		sound_flashlight_off:play_at_pos( db.actor, db.actor:position(), 0, sound_object.s3d )
-	end
-
--- Включаем фонарик
-	if torch:torch_enabled() == true and flag_flashlight_off == true then
-		flag_flashlight_off = false
-		flag_flashlight_on = true
-		sound_flashlight_on:play_at_pos( db.actor, db.actor:position(), 0, sound_object.s3d )
-	end
+local function actor_on_torch_enabled()
+	sound_flashlight_on:play(db.actor,0,sound_object.s2d)
 end
 
-local function actor_on_update()
-	if not (db.actor:alive()) then
-		return
-	end
-	flashlight_update()
+local function actor_on_torch_disabled()
+	sound_flashlight_off:play(db.actor,0,sound_object.s2d)
 end
 
 function on_game_start()
-	RegisterScriptCallback("actor_on_update", actor_on_update)
+	RegisterScriptCallback("actor_on_torch_enabled",actor_on_torch_enabled)
+	RegisterScriptCallback("actor_on_torch_disabled",actor_on_torch_disabled)
 end
