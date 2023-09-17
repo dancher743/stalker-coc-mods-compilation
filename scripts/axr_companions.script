@@ -850,7 +850,7 @@ function UICompanionList:Update(force)
 	local clist = list_actor_squad_by_id()
 	for i=1,8 do
 		local se_obj = clist[i] and alife_object(clist[i])
-		if companions_hud and to_show and (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and is_hostage_rescued(se_obj)) then
+		if companions_hud and to_show and (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and not is_hostage(se_obj)) then
 			local st = db.storage[se_obj.id]
 			local npc = st and st.object
 			local ele = self.companion_info[i]
@@ -903,8 +903,11 @@ function has_companion()
 	for id,squad in pairs(companion_squads) do
 		if (squad) then
 			for member in squad:squad_members() do
-				result = true
-				break
+				local se_obj = member.object or alife():object(member.id)
+				if (not is_hostage(se_obj)) then
+					result = true
+					break
+				end
 			end
 		end
 	end
@@ -914,8 +917,11 @@ end
 
 function is_companion(npc)
 	local result = false
+	
+	local se_obj = alife():object(npc:id())
+	local is_npc_hostage = se_obj and is_hostage(se_obj)
 
-	if (has_companion()) then
+	if (has_companion() and not is_npc_hostage) then
 		result = npc:has_info("npcx_is_companion")
 		if (not result) then
 			local clist = list_actor_squad_by_id()
@@ -926,6 +932,6 @@ function is_companion(npc)
     return result
 end
 
-function is_hostage_rescued(se_obj)
-	return utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_is_hostage") == false
+function is_hostage(se_obj)
+	return utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_is_hostage") == true
 end
