@@ -17,6 +17,23 @@ Optimization
 * Add `-noprefetch` to the end of a shortcut as launch parameter. It forces the game to clear RAM
 * Disable "Sun shadow" in "Options", "Video" to reduce a video card load
 
+Screenshots
+---
+<details>
+<summary>Spoiler</summary>
+
+[![1.jpg](https://i.postimg.cc/R0VBJvdW/1.jpg)](https://postimg.cc/9DSSv5v2)
+[![2.jpg](https://i.postimg.cc/MHR2JH6F/2.jpg)](https://postimg.cc/7JxQgxT3)
+[![3.jpg](https://i.postimg.cc/y6SzZQmy/3.jpg)](https://postimg.cc/CdYty46R)
+[![4.jpg](https://i.postimg.cc/J4VCcNKV/4.jpg)](https://postimg.cc/8sHYTrqt)
+[![5.jpg](https://i.postimg.cc/DZRkNLTG/5.jpg)](https://postimg.cc/FdbBdf1F)
+[![6.jpg](https://i.postimg.cc/765rXXpD/6.jpg)](https://postimg.cc/bDf5w0yF)
+[![7.jpg](https://i.postimg.cc/Gp71k6gq/7.jpg)](https://postimg.cc/bGtMPVht)
+[![8.jpg](https://i.postimg.cc/QdjLvjRf/8.jpg)](https://postimg.cc/fJqg9QWd)
+[![9.jpg](https://i.postimg.cc/rF1XhDYd/9.jpg)](https://postimg.cc/zVGcvGN5)
+
+</details>
+
 Mods
 ---
 1. Original Item Models and Icons (Panzermann11)
