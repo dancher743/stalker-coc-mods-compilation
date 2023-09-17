@@ -919,7 +919,7 @@ function is_companion(npc)
 	local result = false
 	
 	local se_obj = alife():object(npc:id())
-	local is_npc_hostage = se_obj and is_hostage(se_obj)
+	local is_npc_hostage = se_obj and is_hostage(se_obj) or false
 
 	if (has_companion() and not is_npc_hostage) then
 		result = npc:has_info("npcx_is_companion")
