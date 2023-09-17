@@ -1,7 +1,7 @@
 --//  Shows belted artifacts on primary hud
 
 local HUD,belted_arts
-local update_rate = 2000 --[ms]
+local update_rate = 1000 --[ms]
 
 function activate_hud()
 	belted_arts = {}
