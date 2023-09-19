@@ -706,12 +706,21 @@ function get_extended_hint(sim,stash,hint,id)
 		end
 	end
 	
+	if descr_type == 1 then
+		local name_st = "st_" .. stash_name .. "_name"
+		local descr_st = "st_" .. stash_name .. "_descr"
+		
+		name = game.translate_string(name_st)
+		descr = game.translate_string(descr_st)
+		
+		if name == name_st or descr == descr_st then
+			descr_type = 0
+		end
+	end
+	
 	if descr_type == 0 then
 		name = game.translate_string("st_ui_pda_secret")
 		descr = game.translate_string("st_stash_no_descr")
-	elseif descr_type == 1 then
-		name = game.translate_string("st_" .. stash_name .. "_name")
-		descr = game.translate_string("st_" .. stash_name .. "_descr")
 	elseif descr_type == 2 then
 		name = game.translate_string("st_ui_pda_secret")
 		descr = game.translate_string("st_stash_encrypt_descr").."\\n"..get_fake_encrypted_string()
