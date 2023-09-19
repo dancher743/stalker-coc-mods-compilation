@@ -3364,3 +3364,7 @@ end
 function is_arx_check_option_enabled(actor,npc,p)
 	return p[1] and axr_main.config:r_value("mm_options","enable_"..p[1],1,false)
 end
+
+function is_yan_base_defense_quest_enabled(actor,npc,p)
+	return is_arx_check_option_enabled(actor,npc,"bases_defense") or not db.actor:has_info("yan_stalker_sakharov_offer_free_upgrade")
+end
