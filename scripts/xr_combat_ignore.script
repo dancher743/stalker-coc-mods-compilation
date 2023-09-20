@@ -7,7 +7,7 @@
 fighting_with_actor_npcs = {}
 safe_zone_npcs = {}
 
-local ignored_zone = {
+ignored_zone = {
 	--"bar_mutant_exile_zone",
 	"esc_smart_terrain_2_12_sr_no_assault",
 	"esc_lager_guard_kill_zone",

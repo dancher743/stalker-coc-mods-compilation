@@ -3,6 +3,14 @@
 local default_sim_on_non_linked_levels = nil
 local default_process_event_queue_state = nil
 
+local function override_combat_ignore()
+	xr_combat_ignore.ignored_zone = xr_combat_ignore_eoc.ignored_zone
+	xr_combat_ignore.is_enemy = xr_combat_ignore_eoc.is_enemy
+	xr_combat_ignore.ignore_enemy_by_overrides = xr_combat_ignore_eoc.ignore_enemy_by_overrides
+	xr_combat_ignore.npc_in_safe_zone = xr_combat_ignore_eoc.npc_in_safe_zone
+	printf("### EOC: xr_combat_ignore.script overrided ###")
+end
+
 function on_game_start()
 	RegisterScriptCallback("fill_start_position", fill_start_position)
 	RegisterScriptCallback("smart_terrain_on_update", smart_terrain_on_update)
@@ -19,6 +27,7 @@ end
 
 function on_game_load()
 	if (IsEocMode()) then
+		override_combat_ignore()
 		_G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = false
 		_G.ProcessEventQueueState = function() return end
 		printf("### EOC: started ###")
