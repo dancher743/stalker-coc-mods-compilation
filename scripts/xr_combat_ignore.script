@@ -8,6 +8,12 @@ fighting_with_actor_npcs = {}
 safe_zone_npcs = {}
 
 local ignored_zone = {
+	--"bar_mutant_exile_zone",
+	"esc_smart_terrain_2_12_sr_no_assault",
+	"esc_lager_guard_kill_zone",
+	"zat_a2_sr_no_assault",
+	"jup_a6_sr_no_assault",
+	"jup_b41_sr_no_assault"
 }
 
 ------------------------------------------
@@ -52,30 +58,13 @@ function is_enemy(obj,enemy,no_memory)
 		return false 
 	end
 	
-	-- Probably not really necessary, as I don't think it'd matter if a unique NPC killed off
-	-- critically wounded npcs, but disabling for now regardless.
-	--[[if (obj:critically_wounded()) then 
+	if (obj:critically_wounded()) then 
 		return true 
-	end]]
+	end
 	
 	local ene_id = enemy:id()
 	local id = obj:id()
 	local st = db.storage[id]
-	
-	local squad = id ~= 0 and get_object_squad(obj)
-	local ene_squad = ene_id ~= 0 and get_object_squad(enemy)
-	
-	if (squad) then
-		if (sim_tables.ignore[squad:section_name()]) then
-			return false
-		end
-	end
-	
-	if (ene_squad) then
-		if (sim_tables.ignore[ene_squad:section_name()]) then
-			return false
-		end
-	end
 	
 	if (DEV_DEBUG) then
 		if (xrs_debug_tools and xrs_debug_tools.debug_invis and ene_id == 0) then
@@ -147,7 +136,7 @@ function is_enemy(obj,enemy,no_memory)
 		local is_monster = character_community(enemy) == "zombied" or IsMonster(enemy)
 		
 		-- Ignore enemies with the safe_zone flag
-		--[[if (is_actor ~= true) then
+		if (is_actor ~= true) then
 		
 			-- ignore hostages
 			if (xrs_kill_wounded.hostage_list[ene_id]) then 
@@ -171,8 +160,7 @@ function is_enemy(obj,enemy,no_memory)
 					safe_zone_npcs[cid] = nil
 				else
 					for i,v in ipairs(ignored_zone) do
-						local zone = db.zone_by_name[v]
-						if (zone and utils.npc_in_zone(obj, zone)) then
+						if (utils.npc_in_zone(obj, v)) then
 							safe_zone_npcs[cid] = tg
 							return false
 						end
@@ -185,19 +173,27 @@ function is_enemy(obj,enemy,no_memory)
 					return false
 				else 
 					for i,v in ipairs(ignored_zone) do
-						local zone = db.zone_by_name[v]
-						if (zone and utils.npc_in_zone(enemy, zone)) then
+						if (utils.npc_in_zone(enemy, v)) then
 							safe_zone_npcs[bid] = tg
 							return false
 						end
 					end
 				end
 			end
-		end]]
+		end
 
 		--Ignore by distance; mainly unrestricted for all non-story stalker vs. stalker combat
 		local pos1 = obj:position()
 		local pos2 = enemy:position()
+		
+		local comm = character_community(obj)
+		local ene_comm = character_community(enemy)
+		if (comm == "army" and ene_comm == "stalker") or (comm == "stalker" and comm == "army") then 
+			-- In Cordon prevent stalker v military combat with distances greater than 60m
+			if (level.name() == "l01_escape" and pos1:distance_to_sqr(pos2) >= 3600) then
+				return false
+			end
+		end
 
 		if (is_actor) then
 			if (level.get_time_hours() < 4 or level.get_time_hours() > 19 or level.rain_factor() >= 0.4) and (pos1:distance_to_sqr(pos2) > 10000) then 
@@ -215,7 +211,7 @@ function is_enemy(obj,enemy,no_memory)
 			end
 		else
 			local dist = pos1:distance_to_sqr(pos2)
-			if (dist > 40000) then -- 200m max combat range for stalker v stalker
+			if (dist > 10000) then -- 100m max combat range for stalker v stalker
 				return 
 			end
 			if (dist > 5625) and (level.rain_factor() > 0 or level.get_time_hours() < 4 or level.get_time_hours() > 19) then 
@@ -228,7 +224,8 @@ function is_enemy(obj,enemy,no_memory)
 					return false
 				end
 				
-
+				local squad = get_object_squad(obj)
+				local ene_squad = get_object_squad(enemy)
 				
 				if (squad and get_object_story_id(squad.id) or ene_squad and get_object_story_id(ene_squad.id)) then 
 					return false
@@ -251,10 +248,58 @@ function is_enemy(obj,enemy,no_memory)
 end
 
 function ignore_enemy_by_overrides(obj,enemy,no_check_job)
+	if not (enemy) then
+		return true
+	end
+	
+	if (IsStalker(obj)) then
+		if (enemy:section() == "mar_smart_terrain_doc_dog" or enemy:section() == "mar_smart_terrain_base_dog_doctor") then 
+			return true 
+		end
+	end
+
+	local id = obj:id()
+	local ene_id = enemy:id()
+
+	local st = db.storage[id] and db.storage[id].overrides
+	if not (st) then
+		return false
+	end
+
+	-- combat_ignore_cond from custom data logic
+	local ignore = st and st.combat_ignore and xr_logic.pick_section_from_condlist(enemy, obj, st.combat_ignore.condlist)
+	if (ignore == "true") then
+		--obj:enable_memory_object(enemy,false)
+		return true
+	end
+	
+	-- enemy_ignore_cond override from custom data logic
+	-- if this is true then npc will IGNORE combat with this specific enemy
+	local ene_st = db.storage[ene_id] and db.storage[ene_id].overrides
+	if (ene_st) then
+		ignore = ene_st.enemy_ignore and xr_logic.pick_section_from_condlist(enemy, obj, ene_st.enemy_ignore.condlist)
+		if (ignore == "true") then
+			--obj:enable_memory_object(enemy,false)
+			return true
+		end
+	end
+
+	-- Ignore enemies because of no_combat_job
+	if (no_check_job ~= true) and (st and st.no_combat_job and xr_logic.pick_section_from_condlist(enemy, obj, st.no_combat_job.condlist) == "true") then
+		return true
+	end
+
 	return false
 end
 
 function npc_in_safe_zone(npc)
+	if (npc:id() == 0) then
+		return false
+	end
+	local squad = get_object_squad(npc)
+	if (squad and safe_zone_npcs[squad.id]) or (safe_zone_npcs[id]) then
+		return true
+	end
 	return false
 end
 ----------------------------------------------------------------------------------------------------------------------
