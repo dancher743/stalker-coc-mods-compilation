@@ -3368,3 +3368,11 @@ end
 function is_yan_base_defense_quest_enabled(actor,npc)
 	return is_arx_check_option_enabled(actor,npc,"bases_defense") or not db.actor:has_info("yan_stalker_sakharov_offer_free_upgrade")
 end
+
+function base_defense_is_actor_on_level(actor,npc,p)
+	local name = utils.load_var(db.actor,"base_defense_level")
+	if (name) then 
+		return name == level.name()
+	end 
+	return true
+end
