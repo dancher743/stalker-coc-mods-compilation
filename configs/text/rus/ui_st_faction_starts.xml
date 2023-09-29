@@ -2,127 +2,127 @@
 <string_table>
 
 	<string id="ui_st_abandoned_sawmill">
-		<text>Лесопилка</text>
+		<text>Лесопилка (Затон)</text>
 	</string>
 
 	<string id="ui_st_abandoned_school">
-		<text>Заброшенная школа</text>
+		<text>Заброшенная школа (Мёртвый город)</text>
 	</string>
 
 	<string id="ui_st_abandoned_village">
-		<text>Брошенный хутор</text>
+		<text>Брошенный хутор (Армейские Склады)</text>
 	</string>
 
 	<string id="ui_st_brain_scorcher">
-		<text>Выжигатель Мозгов</text>
+		<text>Выжигатель Мозгов (Радар)</text>
 	</string>
 
 	<string id="ui_st_cultural_center">
-		<text>ДК «Энергетик»</text>
+		<text>ДК «Энергетик» (Центр Припяти)</text>
 	</string>
 
 	<string id="ui_st_construction_site">
-		<text>Дикая Территория</text>
+		<text>Стройплощадка (Дикая Территория)</text>
 	</string>
 
 	<string id="ui_st_container_warehouse">
-		<text>Склад контейнеров</text>
+		<text>Склад контейнеров (Завод «Юпитер»)</text>
 	</string>
 
 	<string id="ui_st_eastern_checkpoint">
-		<text>Кладбище Техники</text>
+		<text>Восточный блокпост (Кладбище Техники)</text>
 	</string>
 
 	<string id="ui_st_eastern_factory">
-		<text>ТД. Завод над Х-18</text>
+		<text>Завод (Тёмная Долина)</text>
 	</string>
 
 	<string id="ui_st_factory_complex">
-		<text>Завод «Агропром»</text>
+		<text>Завод (Агропром)</text>
 	</string>
 
 	<string id="ui_st_hermanns_bunker">
-		<text>Янов.Бункер учёных</text>
+		<text>Бункер учёных (Станция «Янов»)</text>
 	</string>
 
 	<string id="ui_st_hidden_base">
-		<text>База «Чистого Неба»</text>
+		<text>База «Чистого Неба» (Болота)</text>
 	</string>
 
 	<string id="ui_st_kopachy_village">
-		<text>Копачи</text>
+		<text>Копачи (Станция «Янов»)</text>
 	</string>
 
 	<string id="ui_st_lodging_house">
-		<text>Бар «100 Рентген»</text>
+		<text>Бар «100 Рентген» (Бар)</text>
 	</string>
 
 	<string id="ui_st_machine_yard">
-		<text>Механизаторский двор</text>
+		<text>Механизаторский двор (Болота)</text>
 	</string>
 
 	<string id="ui_st_makeshift_barracks">
-		<text>Росток. База «Долга»</text>
+		<text>База «Долга» (Бар)</text>
 	</string>
 
 	<string id="ui_st_military_base">
-		<text>Военные Склады</text>
+		<text>Военная база (Армейские Склады)</text>
 	</string>
 
 	<string id="ui_st_northern_factory">
-		<text>ТД. Бывшая база Борова</text>
+		<text>Северная фабрика (Тёмная Долина)</text>
 	</string>
 
 	<string id="ui_st_hideout">
-		<text>Окраины Припяти</text>
+		<text>Окраины (Центр Припяти)</text>
 	</string>
 
 	<string id="ui_st_power_station">
-		<text>ЧАЭС</text>
+		<text>Подстанция (Юг ЧАЭС)</text>
 	</string>
 
 	<string id="ui_st_processing_station">
-		<text>Станция переработки отходов</text>
+		<text>Станция переработки отходов (Затон)</text>
 	</string>
 
 	<string id="ui_st_pumping_station">
-		<text>Насосная станция</text>
+		<text>Насосная станция (Болота)</text>
 	</string>
 	
 	<string id="ui_st_river_port">
-		<text>Речной порт</text>
+		<text>Речной порт (Центр Припяти)</text>
 	</string>
 
 	<string id="ui_st_rookie_village">
-		<text>Деревня новичков</text>
+		<text>Деревня новичков (Кордон)</text>
 	</string>
 
 	<string id="ui_st_research_institute">
-		<text>НИИ «Агропром»</text>
+		<text>НИИ (Агропром)</text>
 	</string>
 
 	<string id="ui_st_sakharovs_bunker">
-		<text>Янтарь</text>
+		<text>Лагерь учёных (Озеро «Янтарь»)</text>
 	</string>
 
 	<string id="ui_st_skadovsk_shipwreck">
-		<text>Скадовск</text>
+		<text>Сухогруз «Скадовск» (Затон)</text>
 	</string>
 
 	<string id="ui_st_southern_checkpoint">
-		<text>Кордон. Южный блокпост</text>
+		<text>Южный блокпост (Кордон)</text>
 	</string>
 
 	<string id="ui_st_sports_center">
-		<text>Мёртвый Город. Магазин</text>
+		<text>Магазин «Коопторг» (Мёртвый Город)</text>
 	</string>
 
 	<string id="ui_st_train_hangar">
-		<text>Свалка. Ангар</text>
+		<text>Депо (Свалка)</text>
 	</string>
 
 	<string id="ui_st_tunnel_entrance">
-		<text>Путепровод</text>
+		<text>Вход в Путепровод (Завод «Юпитер»)</text>
 	</string>
 
 	<string id="ui_st_tunnel_refuge">
@@ -130,15 +130,15 @@
 	</string>
 
 	<string id="ui_st_tuzla_outpost">
-		<text>Болота - восточнее ст.Тузла</text>
+		<text>Лодочная станция (Болота)</text>
 	</string>
 
 	<string id="ui_st_village_ruins">
-		<text>Болота. Брошенная деревня</text>
+		<text>Руины деревни (Болота)</text>
 	</string>
 
 	<string id="ui_st_yanov_station">
-		<text>Станция «Янов»</text>
+		<text>Станция (Станция «Янов»)</text>
 	</string>
 	
 </string_table>
