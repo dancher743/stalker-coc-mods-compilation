@@ -137,6 +137,7 @@ end
 
 function go_poisk()
 	local start_point = level.name()
+	if not tbl_way[start_point] then --[[log("! Нет путей из "..start_point)]] return end
 	if not level_weathers.valid_levels[start_point] then --[[log("! Мы в подземке: "..start_point)]] return end
 	local finish_point = get_rnd_level(start_point)
 	if start_point == finish_point then
