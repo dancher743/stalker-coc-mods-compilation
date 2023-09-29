@@ -48,10 +48,10 @@
 	<!-- DRX Storyline PDA Quest Item -->
 
 	<string id="drx_sl_quest_item_3_name">
-		<text>ПДА</text>
+		<text>КПК</text>
 	</string>
 	<string id="drx_sl_quest_item_3_desc">
-		<text>Зашифрованный ПДА. Обещали награду за его возвращение.</text>
+		<text>Зашифрованный КПК. Обещали награду за его возвращение.</text>
 	</string>
 
 	<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ -->
