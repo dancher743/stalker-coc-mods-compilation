@@ -1391,8 +1391,11 @@ function DynamicNewsManager:FoundStash(has_spot) -- reaction of angry stash owne
 	end
 	
 	local is_invalid_map = dynamic_news_helper.IsInvalidMap(level.name())
-	local chance_to_ignore = (is_invalid_map and 95) or (has_spot and 80) or 40
-
+	if (is_invalid_map) then
+		return false
+	end
+	
+	local chance_to_ignore = (has_spot and 80) or 40
 	if (math.random(100) < chance_to_ignore) then
 		return false
 	end
