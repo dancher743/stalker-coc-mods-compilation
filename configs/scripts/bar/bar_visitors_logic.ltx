@@ -8,6 +8,7 @@ turn_on_campfire = false
 reach_movement = walk_noweap
 use_camp = false
 meet = meet@bar_visitors_animpoint_meet
+invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 combat_ignore_cond = true
 gather_items_enabled = false
 help_wounded_enabled = false
@@ -110,6 +111,7 @@ prior = 65
 
 [beh@general]
 meet = meet@bar_visitors_animpoint_meet
+invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 combat_ignore_cond = true
 gather_items_enabled = false
 help_wounded_enabled = false

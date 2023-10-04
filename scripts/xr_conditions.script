@@ -3376,3 +3376,7 @@ function base_defense_is_actor_on_level(actor,npc,p)
 	end 
 	return true
 end
+
+function is_eoc_mode_enabled(actor,npc)
+	return IsEocMode()
+end

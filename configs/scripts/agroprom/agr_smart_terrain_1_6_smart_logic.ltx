@@ -113,6 +113,7 @@ combat_ignore_cond = true
 gather_items_enabled = false
 help_wounded_enabled = false
 corpse_detection_enabled = false
+invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 meet = meet@trade
 
 [meet@trade]
@@ -138,6 +139,7 @@ avail_animations = jup_b41_novikov_stand
 use_camp = false
 meet = meet@mechanic
 combat_ignore_cond = true
+invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 reach_distance = 10
 gather_items_enabled = false
 help_wounded_enabled = false
