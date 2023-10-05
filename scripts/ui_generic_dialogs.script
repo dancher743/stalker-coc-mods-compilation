@@ -1,9 +1,11 @@
--- Generic dialog window with text input
+--
+-- Generic dialog windows
 -- Added by Dancher
--- Based on "backpack_ui" window (Alundaio)
+--
 
-class "ui_input_dialog" (CUIScriptWnd)
-function ui_input_dialog:__init(owner, on_ok_clicked, on_cancel_clicked) super()
+-- Based on "backpack_ui" window (Alundaio)
+class "input_dialog_ui" (CUIScriptWnd)
+function input_dialog_ui:__init(owner, will_show_after_init, on_ok_clicked, on_cancel_clicked) super()
 	self.owner = owner
 	
 	self.on_ok_clicked = on_ok_clicked
@@ -11,11 +13,15 @@ function ui_input_dialog:__init(owner, on_ok_clicked, on_cancel_clicked) super()
 	
 	self:InitControls()
 	self:InitCallBacks()
+	
+	if (will_show_after_init == true) then
+		self:ShowDialog(true)
+	end
 end
 
-function ui_input_dialog:__finalize() end
+function input_dialog_ui:__finalize() end
 
-function ui_input_dialog:InitControls()
+function input_dialog_ui:InitControls()
 	self:SetWndRect(Frect():set(0,0,1024,768))
 	if(device().width/device().height>(1024/768+0.01)) then
 		wide = true
@@ -38,19 +44,19 @@ function ui_input_dialog:InitControls()
 	self:Register(btn,"btn_ok")
 end
 
-function ui_input_dialog:SetCurrentValues()
+function input_dialog_ui:SetCurrentValues()
 end
 
-function ui_input_dialog:Update()
+function input_dialog_ui:Update()
 	CUIScriptWnd.Update(self)
 end
 
-function ui_input_dialog:InitCallBacks()
+function input_dialog_ui:InitCallBacks()
 	self:AddCallback("btn_ok", ui_events.BUTTON_CLICKED, self.OnOk, self)
 	self:AddCallback("btn_cancel", ui_events.BUTTON_CLICKED, self.OnCancel, self)
 end
 
-function ui_input_dialog:GetText()
+function input_dialog_ui:GetText()
 	local text = self.input:GetText()
 	
 	if (text == nil) then
@@ -60,7 +66,7 @@ function ui_input_dialog:GetText()
 	return text
 end
 
-function ui_input_dialog:OnOk()
+function input_dialog_ui:OnOk()
 	local text = self:GetText()
 	
 	if (self.on_ok_clicked ~= nil) then
@@ -70,7 +76,7 @@ function ui_input_dialog:OnOk()
 	self:HideDialog()
 end
 
-function ui_input_dialog:OnCancel()
+function input_dialog_ui:OnCancel()
 	local text = self:GetText()
 	
 	if (self.on_cancel_clicked ~= nil) then
