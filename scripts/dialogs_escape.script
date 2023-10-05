@@ -261,11 +261,16 @@ function esc_2_12_hasnt_item_cost(first_speaker, second_speaker)
 	return not esc_2_12_has_item_cost(first_speaker, second_speaker)
 end
 
-function actor_has_money_to_change_name(first_speaker, second_speaker)
-	return db.actor:money() >= 1
+local function get_name_changing_cost()
+	local ini = ini_file("plugins\\other.ltx")
+	local cost = ini:r_string_ex("actor_name_changing","cost") or "0"
+	cost = tonumber(cost)
+	return cost
 end
 
---local ui_change_name_input_dialog
+function actor_has_money_to_change_name(first_speaker, second_speaker)
+	return db.actor:money() >= get_name_changing_cost()
+end
 
 function show_change_name_dialog_window(first_speaker, second_speaker)
 	local hud = get_hud()
@@ -275,9 +280,12 @@ function show_change_name_dialog_window(first_speaker, second_speaker)
 		if (text == "") then
 			return
 		end
-		local se_actor = alife():actor()
 		text = text:gsub("_"," ")
+		local se_actor = alife():actor()
 		se_actor:set_character_name(text)
+		
+		local cost = get_name_changing_cost()
+		dialogs.relocate_money_from_actor(first_speaker, second_speaker, cost)
 	end
 	
 	local ui_change_name_input_dialog = ui_input_dialog.ui_input_dialog(hud, on_ok_button_clicked, nil)
