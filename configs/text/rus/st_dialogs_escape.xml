@@ -13,6 +13,18 @@
 	<string id="esc_2_12_stalker_trader_start_dialog_esc_m_trader_task_2_complete">
 		<text>Хм, да у тебя талант, парень! Вот твоя награда, держи.</text>
 	</string>
+	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_0">
+		<text>Я хочу сменить имя.</text>
+	</string>
+	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_1">
+		<text>Это серьёзно... Хорошо, за 100000 тысяч я сменю тебе имя.</text>
+	</string>
+	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_11">
+		<text>Я согласен.</text>
+	</string>
+	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_12">
+		<text>В другой раз.</text>
+	</string>
 <!--------------------------- esc_2_12_stalker_wolf_start ------>
 	<string id="esc_2_12_stalker_wolf_start_dialog_1">
 		<text>Привет, сталкер! Какими судьбами в деревне?</text>

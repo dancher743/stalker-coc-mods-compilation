@@ -13,6 +13,18 @@
 	<string id="esc_2_12_stalker_trader_start_dialog_esc_m_trader_task_2_complete">
 		<text>You have a real talent, you know that? Here is your payment. This will be good for business.</text>
 	</string>
+	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_0">
+		<text>I want to change my name.</text>
+	</string>
+	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_1">
+		<text>This is serious... Okay, for 100,000 rubles I'll do it.</text>
+	</string>
+	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_11">
+		<text>I agree.</text>
+	</string>
+	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_12">
+		<text>Next time.</text>
+	</string>
 <!--------------------------- esc_2_12_stalker_wolf_start ------>
 	<string id="esc_2_12_stalker_wolf_start_dialog_1">
 		<text>Hello, stalker. What brings you to the village, today?</text>

@@ -260,3 +260,26 @@ end
 function esc_2_12_hasnt_item_cost(first_speaker, second_speaker)
 	return not esc_2_12_has_item_cost(first_speaker, second_speaker)
 end
+
+function actor_has_money_to_change_name(first_speaker, second_speaker)
+	return db.actor:money() >= 1
+end
+
+--local ui_change_name_input_dialog
+
+function show_change_name_dialog_window(first_speaker, second_speaker)
+	local hud = get_hud()
+	local ui_change_name_input_dialog
+	
+	local function on_ok_button_clicked(text)
+		if (text == "") then
+			return
+		end
+		local se_actor = alife():actor()
+		text = text:gsub("_"," ")
+		se_actor:set_character_name(text)
+	end
+	
+	local ui_change_name_input_dialog = ui_input_dialog.ui_input_dialog(hud, on_ok_button_clicked, nil)
+	ui_change_name_input_dialog:ShowDialog(true)
+end
