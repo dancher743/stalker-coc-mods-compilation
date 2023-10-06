@@ -50,6 +50,7 @@
 		<actor_dialog>dm_broker_dialog</actor_dialog>
 		<actor_dialog>dm_ordered_task_dialog</actor_dialog>
 		<actor_dialog>drx_sl_change_faction_dialog</actor_dialog>
+		<actor_dialog>esc_2_12_stalker_trader_change_actor_name_dialog</actor_dialog>
 		<actor_dialog>actor_break_dialog</actor_dialog>
 
     </specific_character>

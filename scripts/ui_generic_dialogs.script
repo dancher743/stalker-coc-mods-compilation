@@ -1,0 +1,87 @@
+--
+-- Generic dialog windows
+-- Added by Dancher
+--
+
+-- Based on "backpack_ui" window (Alundaio)
+class "input_dialog_ui" (CUIScriptWnd)
+function input_dialog_ui:__init(owner, will_show_after_init, on_ok_clicked, on_cancel_clicked) super()
+	self.owner = owner
+	
+	self.on_ok_clicked = on_ok_clicked
+	self.on_cancel_clicked = on_cancel_clicked
+	
+	self:InitControls()
+	self:InitCallBacks()
+	
+	if (will_show_after_init == true) then
+		self:ShowDialog(true)
+	end
+end
+
+function input_dialog_ui:__finalize() end
+
+function input_dialog_ui:InitControls()
+	self:SetWndRect(Frect():set(0,0,1024,768))
+	if(device().width/device().height>(1024/768+0.01)) then
+		wide = true
+	end
+	self:SetAutoDelete(true)
+	self:Enable(true)
+
+	local xml					= CScriptXmlInit()
+	xml:ParseFile				("ui_itm_main.xml")
+
+	self.back					= xml:InitStatic("itm_backpack:background", self)
+
+	self.input = xml:InitEditBox("itm_backpack:input",self)
+	self:Register(self.input,"fld_input")
+
+	local btn = xml:Init3tButton("itm_backpack:btn_cancel", self.back)
+	self:Register(btn,"btn_cancel")
+
+	btn = xml:Init3tButton("itm_backpack:btn_ok", self.back)
+	self:Register(btn,"btn_ok")
+end
+
+function input_dialog_ui:SetCurrentValues()
+end
+
+function input_dialog_ui:Update()
+	CUIScriptWnd.Update(self)
+end
+
+function input_dialog_ui:InitCallBacks()
+	self:AddCallback("btn_ok", ui_events.BUTTON_CLICKED, self.OnOk, self)
+	self:AddCallback("btn_cancel", ui_events.BUTTON_CLICKED, self.OnCancel, self)
+end
+
+function input_dialog_ui:GetText()
+	local text = self.input:GetText()
+	
+	if (text == nil) then
+		text = ""
+	end
+	
+	return text
+end
+
+function input_dialog_ui:OnOk()
+	local text = self:GetText()
+	
+	if (self.on_ok_clicked ~= nil) then
+		self.on_ok_clicked(text)
+	end
+	
+	self:HideDialog()
+end
+
+function input_dialog_ui:OnCancel()
+	local text = self:GetText()
+	
+	if (self.on_cancel_clicked ~= nil) then
+		self.on_cancel_clicked(text)
+	end
+	
+	self:HideDialog()
+end
