@@ -5,6 +5,8 @@
 #include "creatures\stalkers.ltx"
 #include "weapons\weapons.ltx"
 #include "misc\items.ltx"
+#include "misc\items_cooked_food.ltx"
+#include "misc\items_patches.ltx"
 
 #include "creatures\actor.ltx"
 #include "zones\zones.ltx"
@@ -65,6 +67,9 @@
 ; 2C
 #include "misc\artefacts_soc.ltx"
 
+; Safe-houses
+#include "misc\safe_houses.ltx"
+
 [smart_terrain]
 GroupControlSection		= 
 $spawn 					= "ai\smart_terrain"
@@ -98,10 +103,10 @@ ang_speed3                               = 2.0
 files                                    = ui_npc_unique, ui_npc_unique_2, ui_npc_unique_3
 
 [info_portions]
-files                                    = info_portions, info_upgrades, info_alife_switch, info_yantar, info_katacomb, info_escape, info_zaton, info_jupiter, info_pripyat, info_deadcity
+files                                    = info_portions, info_upgrades, info_alife_switch, info_yantar, info_katacomb, info_escape, info_zaton, info_jupiter, info_pripyat, info_deadcity, info_safe_houses_bar_room
 
 [dialogs]
-files                                    = dialogs, dialogs_yantar, dialogs_marsh, dialogs_redforest, dialogs_katacomb, dialogs_escape, dialogs_bar, dialogs_zaton, dialogs_jupiter, dialogs_pripyat, dialogs_darkvalley, dialogs_warlab, jg_dialogs, dialogs_deadcity
+files                                    = dialogs, dialogs_yantar, dialogs_marsh, dialogs_redforest, dialogs_katacomb, dialogs_escape, dialogs_bar, dialogs_zaton, dialogs_jupiter, dialogs_pripyat, dialogs_darkvalley, dialogs_warlab, jg_dialogs, dialogs_deadcity, dialogs_safe_houses_bar_room
 
 [profiles]
 files                                    = npc_profile
@@ -154,6 +159,9 @@ slot_active_12                           = false
 
 slot_persistent_13                       = false	                                       ;script animation
 slot_active_13                           = true
+
+slot_persistent_14                       = false	                                       ;script animation
+slot_active_14                           = false
 
 [lights_hanging_lamp]
 GroupControlSection                      = spawn_group
@@ -795,6 +803,15 @@ visual                                   = dynamics\vehicles\veh_btr\veh_btr_u_0
 $spawn                                   = "veh_hl2baggi"
 cform                                    = skeleton
 visual                                   = dynamics\vehicles\veh_baggi\veh_baggi_u_01.ogf
+
+[sleeping_place]:script_object
+visual                  = dynamics\decor\sleeping_decor_inviz.ogf 
+script_binding			= bind_physic_object.init
+custom_data             = scripts\ph_sleepbag.ltx
+
+[bar_room_sofa]:sleeping_place
+parent_section			= sleeping_place
+custom_data 			= scripts\bar\bar_room\bar_room_sofa_sleeping_place.ltx
 
 [ph_capture_visuals]
 ;Список объектов которvе можно таскать.

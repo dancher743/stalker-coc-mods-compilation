@@ -45,7 +45,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(simulation_task_1)} fail
-condlist_1 = {=drx_sl_is_enemy(csky)} fail
+;condlist_1 = {=drx_sl_is_enemy(csky)} fail
 
 fetch_func = %=drx_sl_setup_fetch_supplies(simulation_task_1_fetch:1:4)%
 on_complete = %=drx_sl_fetch_reward_random(simulation_task_1_fetch:2.2) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =inc_task_stage(simulation_task_1) =pstor_reset(simulation_task_1_fetch) =drx_sl_unregister_task_giver(simulation_task_1) =drx_sl_reset_stored_task(simulation_task_1)%
@@ -75,7 +75,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(simulation_task_2)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 fetch_func = %=drx_sl_setup_fetch_supplies(simulation_task_2_fetch:1:4)%
 on_complete = %=drx_sl_fetch_reward_money(simulation_task_2_fetch:2.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:freedom) =inc_task_stage(simulation_task_2) =pstor_reset(simulation_task_2_fetch) =drx_sl_unregister_task_giver(simulation_task_2) =drx_sl_reset_stored_task(simulation_task_2)%
@@ -105,7 +105,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(simulation_task_3)} fail
-condlist_1 = {=drx_sl_is_enemy(csky)} fail
+;condlist_1 = {=drx_sl_is_enemy(csky)} fail
 
 fetch_func = %=drx_sl_setup_fetch_mutant_meat(simulation_task_3_fetch:4:6)%
 on_complete = %=drx_sl_fetch_reward_random(simulation_task_3_fetch:6.0) =drx_sl_reward(4:ammo_9x39_ap:ammo_5.56x45_ap) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =inc_task_stage(simulation_task_3) =pstor_reset(simulation_task_3_fetch) =drx_sl_unregister_task_giver(simulation_task_3) =drx_sl_reset_stored_task(simulation_task_3)%
@@ -135,7 +135,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(simulation_task_4)} fail
-condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+;condlist_1 = {=drx_sl_is_enemy(stalker)} fail
 
 fetch_func = %=drx_sl_setup_fetch_artefact(simulation_task_4_fetch:1:1)%
 on_complete = %=drx_sl_fetch_reward_rifle(simulation_task_4_fetch:0.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(simulation_task_4) =pstor_reset(simulation_task_4_fetch) =drx_sl_unregister_task_giver(simulation_task_4) =drx_sl_reset_stored_task(simulation_task_4)%
@@ -165,7 +165,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(simulation_task_5)} fail
-condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+;condlist_1 = {=drx_sl_is_enemy(stalker)} fail
 
 fetch_func = %=drx_sl_setup_fetch_weapon(simulation_task_5_fetch:1:1)%
 on_complete = %=drx_sl_fetch_reward_money(simulation_task_5_fetch:0.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(simulation_task_5) =pstor_reset(simulation_task_5_fetch) =drx_sl_unregister_task_giver(simulation_task_5) =drx_sl_reset_stored_task(simulation_task_5)%
@@ -195,7 +195,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(simulation_task_6)} fail
-condlist_1 = {=drx_sl_is_enemy(dolg)} fail
+;condlist_1 = {=drx_sl_is_enemy(dolg)} fail
 
 fetch_func = %=drx_sl_setup_fetch_weapon(simulation_task_6_fetch:1:1)%
 on_complete = %=drx_sl_fetch_reward_random(simulation_task_6_fetch:0.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:dolg) =inc_task_stage(simulation_task_6) =pstor_reset(simulation_task_6_fetch) =drx_sl_unregister_task_giver(simulation_task_6) =drx_sl_reset_stored_task(simulation_task_6)%
@@ -224,7 +224,7 @@ status_functor = hostage_task
 status_functor_params = hostage_companion_task_1
 condlist_0 = {!squad_exist(hostage_companion_task_1)} fail
 condlist_1 = {!task_giver_alive(simulation_task_7)} fail
-condlist_2 = {=drx_sl_is_enemy(stalker)} fail
+;condlist_2 = {=drx_sl_is_enemy(stalker)} fail
 
 on_init = %=find_smart_under_faction_control_ex(simulation_task_7_id:bandit) =drx_sl_setup_sim_hostage_task(hostage_companion_task_1_stalker:nil:simulation_task_7_id:true) +hostage_companion_task_1_started%
 on_complete = %=drx_sl_reward_random(1500:3000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =remove_special_task_squad(hostage_companion_task_1) =pstor_reset(simulation_task_7_id) =pstor_reset(simulation_task_7_target_id) -hostage_companion_task_1_hostage_rescued -hostage_companion_task_1_started =inc_task_stage(simulation_task_7) =unlock_smart(simulation_task_7_id) =drx_sl_unregister_hostage_giver(simulation_task_7) =drx_sl_unregister_task_giver(simulation_task_7) =drx_sl_reset_stored_task(simulation_task_7)%
@@ -253,7 +253,7 @@ status_functor = hostage_task
 status_functor_params = hostage_companion_task_1
 condlist_0 = {!squad_exist(hostage_companion_task_1)} fail
 condlist_1 = {!task_giver_alive(simulation_task_8)} fail
-condlist_2 = {=drx_sl_is_enemy(dolg)} fail
+;condlist_2 = {=drx_sl_is_enemy(dolg)} fail
 
 on_init = %=find_smart_under_faction_control_ex(simulation_task_8_id:freedom) =drx_sl_setup_sim_hostage_task(hostage_companion_task_1_dolg:nil:simulation_task_8_id:true) +hostage_companion_task_1_started%
 on_complete = %=drx_sl_reward_random(1500:3000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:dolg) =remove_special_task_squad(hostage_companion_task_1) =pstor_reset(simulation_task_8_id) =pstor_reset(simulation_task_8_target_id) -hostage_companion_task_1_hostage_rescued -hostage_companion_task_1_started =inc_task_stage(simulation_task_8) =unlock_smart(simulation_task_8_id) =drx_sl_unregister_hostage_giver(simulation_task_8) =drx_sl_unregister_task_giver(simulation_task_8) =drx_sl_reset_stored_task(simulation_task_8)%
@@ -282,7 +282,7 @@ status_functor = hostage_task
 status_functor_params = hostage_companion_task_1
 condlist_0 = {!squad_exist(hostage_companion_task_1)} fail
 condlist_1 = {!task_giver_alive(simulation_task_9)} fail
-condlist_2 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_2 = {=drx_sl_is_enemy(freedom)} fail
 
 on_init = %=find_smart_under_faction_control_ex(simulation_task_9_id:monolith) =drx_sl_setup_sim_hostage_task(hostage_companion_task_1_freedom:nil:simulation_task_9_id:true) +hostage_companion_task_1_started%
 on_complete = %=drx_sl_reward_random(1500:3000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:freedom) =remove_special_task_squad(hostage_companion_task_1) =pstor_reset(simulation_task_9_id) =pstor_reset(simulation_task_9_target_id) -hostage_companion_task_1_hostage_rescued -hostage_companion_task_1_started =inc_task_stage(simulation_task_9) =unlock_smart(simulation_task_9_id) =drx_sl_unregister_hostage_giver(simulation_task_9) =drx_sl_unregister_task_giver(simulation_task_9) =drx_sl_reset_stored_task(simulation_task_9)%
@@ -311,7 +311,7 @@ status_functor = hostage_task
 status_functor_params = hostage_companion_task_1
 condlist_0 = {!squad_exist(hostage_companion_task_1)} fail
 condlist_1 = {!task_giver_alive(simulation_task_10)} fail
-condlist_2 = {=drx_sl_is_enemy(ecolog)} fail
+;condlist_2 = {=drx_sl_is_enemy(ecolog)} fail
 
 on_init = %=drx_sl_reward_random_money(1000:2500) =find_smart_under_faction_control_ex(simulation_task_10_id:bandit) =drx_sl_setup_sim_hostage_task(hostage_companion_task_1_ecolog:nil:simulation_task_10_id:true) +hostage_companion_task_1_started%
 on_complete = %=drx_sl_reward_random_artefact(1500:3000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:ecolog) =remove_special_task_squad(hostage_companion_task_1) =pstor_reset(simulation_task_10_id) =pstor_reset(simulation_task_10_target_id) -hostage_companion_task_1_hostage_rescued -hostage_companion_task_1_started =inc_task_stage(simulation_task_10) =unlock_smart(simulation_task_10_id) =drx_sl_unregister_hostage_giver(simulation_task_10) =drx_sl_unregister_task_giver(simulation_task_10) =drx_sl_reset_stored_task(simulation_task_10)%
@@ -338,7 +338,7 @@ stage_complete = 1
 target_functor = general_bounty_task
 status_functor = bounty_task
 condlist_0 = {!task_giver_alive(simulation_task_11)} fail
-condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+;condlist_1 = {=drx_sl_is_enemy(stalker)} fail
 
 on_init = %=drx_sl_setup_bounty_hunt(simulation_task_11:stalker)%
 on_complete = %=drx_sl_reward_random_money(2500:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(simulation_task_11) =drx_sl_unregister_task_giver(simulation_task_11) =drx_sl_reset_stored_task(simulation_task_11)%
@@ -365,7 +365,7 @@ stage_complete = 1
 target_functor = general_bounty_task
 status_functor = bounty_task
 condlist_0 = {!task_giver_alive(simulation_task_12)} fail
-condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+;condlist_1 = {=drx_sl_is_enemy(stalker)} fail
 
 on_init = %=on_init_bounty_hunt(simulation_task_12:bandit)%
 on_complete = %=drx_sl_reward_random_rifle(2000:8000) =drx_sl_reward(1:vodka) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(simulation_task_12) =drx_sl_unregister_task_giver(simulation_task_12) =drx_sl_reset_stored_task(simulation_task_12)%
@@ -395,7 +395,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(simulation_task_13)} fail
-condlist_1 = {=drx_sl_is_enemy(bandit)} fail
+;condlist_1 = {=drx_sl_is_enemy(bandit)} fail
 
 fetch_func = %=drx_sl_setup_fetch_supplies(simulation_task_13_fetch:1:4)%
 on_complete = %=drx_sl_fetch_reward_item(simulation_task_13_fetch:2.3) =drx_sl_reward(4:ammo_9x39_pab9:ammo_5.45x39_ap:ammo_vog-25) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:bandit) =inc_task_stage(simulation_task_13) =pstor_reset(simulation_task_13_fetch) =drx_sl_unregister_task_giver(simulation_task_13) =drx_sl_reset_stored_task(simulation_task_13)%
@@ -425,7 +425,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(simulation_task_14)} fail
-condlist_1 = {=drx_sl_is_enemy(army)} fail
+;condlist_1 = {=drx_sl_is_enemy(army)} fail
 
 fetch_func = %=drx_sl_setup_fetch_supplies(simulation_task_14_fetch:1:4)%
 on_complete = %=drx_sl_fetch_reward_item(simulation_task_14_fetch:2.1) =drx_sl_reward(4:ammo_5.45x39_fmj:ammo_9x19_pbp) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:army) =inc_task_stage(simulation_task_14) =pstor_reset(simulation_task_14_fetch) =drx_sl_unregister_task_giver(simulation_task_14) =drx_sl_reset_stored_task(simulation_task_14)%
@@ -455,7 +455,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(simulation_task_15)} fail
-condlist_1 = {=drx_sl_is_enemy(army)} fail
+;condlist_1 = {=drx_sl_is_enemy(army)} fail
 
 fetch_func = %=drx_sl_setup_fetch_artefact(simulation_task_15_fetch:1:1)%
 on_complete = %=drx_sl_fetch_reward_rifle(simulation_task_15_fetch:0.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:army) =inc_task_stage(simulation_task_15) =pstor_reset(simulation_task_15_fetch) =drx_sl_unregister_task_giver(simulation_task_15) =drx_sl_reset_stored_task(simulation_task_15)%
@@ -485,7 +485,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(simulation_task_16)} fail
-condlist_1 = {=drx_sl_is_enemy(bandit)} fail
+;condlist_1 = {=drx_sl_is_enemy(bandit)} fail
 
 fetch_func = %=drx_sl_setup_fetch_weapon(simulation_task_16_fetch:1:1)%
 on_complete = %=drx_sl_fetch_reward_money(simulation_task_16_fetch:0.7) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:bandit) =inc_task_stage(simulation_task_16) =pstor_reset(simulation_task_16_fetch) =drx_sl_unregister_task_giver(simulation_task_16) =drx_sl_reset_stored_task(simulation_task_16)%
@@ -512,7 +512,7 @@ stage_complete = 1
 target_functor = general_bounty_task
 status_functor = bounty_task
 condlist_0 = {!task_giver_alive(simulation_task_17)} fail
-condlist_1 = {=drx_sl_is_enemy(army)} fail
+;condlist_1 = {=drx_sl_is_enemy(army)} fail
 
 on_init = %=drx_sl_setup_bounty_hunt(simulation_task_17:army)%
 on_complete = %=drx_sl_reward_random_rifle(2000:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:army) =inc_task_stage(simulation_task_17) =drx_sl_unregister_task_giver(simulation_task_17) =drx_sl_reset_stored_task(simulation_task_17)%
@@ -539,7 +539,7 @@ stage_complete = 1
 target_functor = general_bounty_task
 status_functor = bounty_task
 condlist_0 = {!task_giver_alive(simulation_task_18)} fail
-condlist_1 = {=drx_sl_is_enemy(killer)} fail
+;condlist_1 = {=drx_sl_is_enemy(killer)} fail
 
 on_init = %=on_init_bounty_hunt(simulation_task_18:stalker:army:dolg)%
 on_complete = %=drx_sl_reward_random_money(2500:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:killer) =inc_task_stage(simulation_task_18) =drx_sl_unregister_task_giver(simulation_task_18) =drx_sl_reset_stored_task(simulation_task_18)%
@@ -567,7 +567,7 @@ target_functor = general_under_faction_control
 status_functor = drx_sl_assault_task_status
 status_functor_params = monolith
 condlist_0 = {!task_giver_alive(simulation_task_19)} fail
-condlist_1 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_1 = {=drx_sl_is_enemy(monolith)} fail
 
 on_init = %=drx_sl_setup_assault_local(simulation_task_19_id:monolith)%
 on_complete = %=drx_sl_reward_random(4000:6500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:monolith) =inc_task_stage(simulation_task_19) =pstor_reset(simulation_task_19_id) =pstor_reset(simulation_task_19_target_id) =drx_sl_unregister_task_giver(simulation_task_19) =drx_sl_reset_stored_task(simulation_task_19)%
@@ -595,7 +595,7 @@ target_functor = general_under_faction_control
 status_functor = drx_sl_assault_task_status
 status_functor_params = killer
 condlist_0 = {!task_giver_alive(simulation_task_20)} fail
-condlist_1 = {=drx_sl_is_enemy(killer)} fail
+;condlist_1 = {=drx_sl_is_enemy(killer)} fail
 
 on_init = %=drx_sl_setup_assault_remote(simulation_task_20_id:killer)%
 on_complete = %=drx_sl_reward_random_money(3500:5000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:killer) =inc_task_stage(simulation_task_20) =pstor_reset(simulation_task_20_id) =pstor_reset(simulation_task_20_target_id) =drx_sl_unregister_task_giver(simulation_task_20) =drx_sl_reset_stored_task(simulation_task_20)%
@@ -622,7 +622,7 @@ stage_complete = 1
 target_functor = general_under_faction_control
 status_functor = drx_sl_assault_mutant_task_status
 condlist_0 = {!task_giver_alive(simulation_task_21)} fail
-condlist_1 = {=drx_sl_is_enemy(dolg)} fail
+;condlist_1 = {=drx_sl_is_enemy(dolg)} fail
 
 on_init = %=drx_sl_setup_assault_mutant(simulation_task_21_id)%
 on_complete = %=drx_sl_reward_random(1500:3000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:dolg) =inc_task_stage(simulation_task_21) =pstor_reset(simulation_task_21_id) =pstor_reset(simulation_task_21_target_id) =drx_sl_unregister_task_giver(simulation_task_21) =drx_sl_reset_stored_task(simulation_task_21)%
@@ -650,7 +650,7 @@ target_functor = general_under_faction_control
 status_functor = drx_sl_assault_task_status
 status_functor_params = ecolog
 condlist_0 = {!task_giver_alive(simulation_task_22)} fail
-condlist_1 = {=drx_sl_is_enemy(ecolog)} fail
+;condlist_1 = {=drx_sl_is_enemy(ecolog)} fail
 
 on_init = %=drx_sl_setup_assault_remote(simulation_task_22_id:ecolog)%
 on_complete = %=drx_sl_reward_random_artefact(6000:10000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:ecolog) =inc_task_stage(simulation_task_22) =pstor_reset(simulation_task_22_id) =pstor_reset(simulation_task_22_target_id) =drx_sl_unregister_task_giver(simulation_task_22) =drx_sl_reset_stored_task(simulation_task_22)%
@@ -680,7 +680,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(simulation_task_23)} fail
-condlist_1 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_1 = {=drx_sl_is_enemy(monolith)} fail
 
 fetch_func = %=drx_sl_setup_fetch_supplies(simulation_task_23_fetch:1:4)%
 on_complete = %=drx_sl_fetch_reward_random(simulation_task_23_fetch:2.0) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:monolith) =inc_task_stage(simulation_task_23) =pstor_reset(simulation_task_23_fetch) =drx_sl_unregister_task_giver(simulation_task_23) =drx_sl_reset_stored_task(simulation_task_23)%
@@ -707,7 +707,7 @@ stage_complete = 1
 target_functor = drx_sl_quest_item_task_3_target
 status_functor = drx_sl_quest_item_task_3_status
 condlist_0 = {!task_giver_alive(simulation_task_24)} fail
-condlist_1 = {=drx_sl_is_enemy(stalker)} fail
+;condlist_1 = {=drx_sl_is_enemy(stalker)} fail
 
 on_init = %=drx_sl_create_quest_stash_3() +drx_sl_quest_item_task_3_started%
 on_complete = %=drx_sl_reward_random(1500:3000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =remove_item(drx_sl_quest_item_3) =inc_task_stage(simulation_task_24) =pstor_reset(drx_sl_quest_stash_3_id) -drx_sl_quest_item_task_3_started =drx_sl_unregister_task_giver(simulation_task_24) =drx_sl_reset_stored_task(simulation_task_24)%
@@ -737,7 +737,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(simulation_task_25)} fail
-condlist_1 = {=drx_sl_is_enemy(ecolog)} fail
+;condlist_1 = {=drx_sl_is_enemy(ecolog)} fail
 
 fetch_func = %=drx_sl_setup_fetch_mutant_parts(simulation_task_25_fetch:1:1)%
 on_complete = %=drx_sl_fetch_reward_money(simulation_task_25_fetch:1.2) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:ecolog) =inc_task_stage(simulation_task_25) =pstor_reset(simulation_task_25_fetch) =drx_sl_unregister_task_giver(simulation_task_25) =drx_sl_reset_stored_task(simulation_task_25)%
@@ -764,7 +764,7 @@ stage_complete = 1
 target_functor = drx_sl_quest_item_task_2_target
 status_functor = drx_sl_quest_item_task_2_status
 condlist_0 = {!task_giver_alive(simulation_task_26)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 on_init = %=drx_sl_create_quest_stash_2() +drx_sl_quest_item_task_2_started%
 on_complete = %=drx_sl_reward_random_money(2500:3500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:freedom) =remove_item(drx_sl_quest_item_2) =inc_task_stage(simulation_task_26) =pstor_reset(drx_sl_quest_stash_2_id) -drx_sl_quest_item_task_2_started =drx_sl_unregister_task_giver(simulation_task_26) =drx_sl_reset_stored_task(simulation_task_26)%
@@ -791,7 +791,7 @@ stage_complete = 1
 target_functor = drx_sl_quest_item_task_1_target
 status_functor = drx_sl_quest_item_task_1_status
 condlist_0 = {!task_giver_alive(simulation_task_27)} fail
-condlist_1 = {=drx_sl_is_enemy(csky)} fail
+;condlist_1 = {=drx_sl_is_enemy(csky)} fail
 
 on_init = %=drx_sl_create_quest_stash_1() +drx_sl_quest_item_task_1_started%
 on_complete = %=drx_sl_reward_random(1500:3500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =remove_item(drx_sl_quest_item_1) =inc_task_stage(simulation_task_27) =pstor_reset(drx_sl_quest_stash_1_id) -drx_sl_quest_item_task_1_started =drx_sl_unregister_task_giver(simulation_task_27) =drx_sl_reset_stored_task(simulation_task_27)%
@@ -819,7 +819,7 @@ target_functor = general_under_faction_control
 status_functor = check_smart_under_faction_control_staged
 status_functor_params = monolith
 condlist_0 = {!task_giver_alive(simulation_task_28)} fail
-condlist_1 = {=drx_sl_is_enemy(freedom)} fail
+;condlist_1 = {=drx_sl_is_enemy(freedom)} fail
 
 on_init = %=find_smart_under_faction_control(simulation_task_28_id:monolith)%
 on_complete = %=drx_sl_reward_random(3000:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:freedom) =inc_task_stage(simulation_task_28) =pstor_reset(simulation_task_28_id) =pstor_reset(simulation_task_28_target_id) =drx_sl_unregister_task_giver(simulation_task_28) =drx_sl_reset_stored_task(simulation_task_28)%
@@ -847,7 +847,7 @@ target_functor = general_under_faction_control
 status_functor = check_smart_under_faction_control_staged
 status_functor_params = bandit
 condlist_0 = {!task_giver_alive(simulation_task_29)} fail
-condlist_1 = {=drx_sl_is_enemy(dolg)} fail
+;condlist_1 = {=drx_sl_is_enemy(dolg)} fail
 
 on_init = %=find_smart_under_faction_control_ex(simulation_task_29_id:bandit)%
 on_complete = %=drx_sl_reward_random(3500:5000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:dolg) =inc_task_stage(simulation_task_29) =pstor_reset(simulation_task_29_id) =pstor_reset(simulation_task_29_target_id) =drx_sl_unregister_task_giver(simulation_task_29) =drx_sl_reset_stored_task(simulation_task_29)%
@@ -874,7 +874,7 @@ stage_complete = 1
 target_functor = general_bounty_task
 status_functor = bounty_task
 condlist_0 = {!task_giver_alive(simulation_task_30)} fail
-condlist_1 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_1 = {=drx_sl_is_enemy(monolith)} fail
 
 on_init = %=drx_sl_setup_bounty_hunt(simulation_task_30:monolith)%
 on_complete = %=drx_sl_reward_random(2500:3500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:monolith) =inc_task_stage(simulation_task_30) =drx_sl_unregister_task_giver(simulation_task_30) =drx_sl_reset_stored_task(simulation_task_30)%
@@ -904,7 +904,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(simulation_task_31)} fail
-condlist_1 = {=drx_sl_is_enemy(killer)} fail
+;condlist_1 = {=drx_sl_is_enemy(killer)} fail
 
 fetch_func = %=drx_sl_setup_fetch_supplies(simulation_task_31_fetch:1:4)%
 on_complete = %=drx_sl_fetch_reward_money(simulation_task_31_fetch:2.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:killer) =inc_task_stage(simulation_task_31) =pstor_reset(simulation_task_31_fetch) =drx_sl_unregister_task_giver(simulation_task_31) =drx_sl_reset_stored_task(simulation_task_31)%
@@ -934,7 +934,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(simulation_task_32)} fail
-condlist_1 = {=drx_sl_is_enemy(bandit)} fail
+;condlist_1 = {=drx_sl_is_enemy(bandit)} fail
 
 fetch_func = %=drx_sl_setup_fetch_mutant_meat(simulation_task_32_fetch:4:6)%
 on_complete = %=drx_sl_fetch_reward_random(simulation_task_32_fetch:6.0) =drx_sl_reward(4:ammo_9x39_ap:ammo_5.56x45_ap) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:bandit) =inc_task_stage(simulation_task_32) =pstor_reset(simulation_task_32_fetch) =drx_sl_unregister_task_giver(simulation_task_32) =drx_sl_reset_stored_task(simulation_task_32)%
@@ -964,7 +964,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(simulation_task_33)} fail
-condlist_1 = {=drx_sl_is_enemy(killer)} fail
+;condlist_1 = {=drx_sl_is_enemy(killer)} fail
 
 fetch_func = %=drx_sl_setup_fetch_weapon(simulation_task_33_fetch:1:1)%
 on_complete = %=drx_sl_fetch_reward_random(simulation_task_33_fetch:0.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:killer) =inc_task_stage(simulation_task_33) =pstor_reset(simulation_task_33_fetch) =drx_sl_unregister_task_giver(simulation_task_33) =drx_sl_reset_stored_task(simulation_task_33)%
@@ -994,7 +994,7 @@ stage_complete = 1
 target_functor = general_fetch_task
 status_functor = actor_has_fetch_item
 condlist_0 = {!task_giver_alive(simulation_task_34)} fail
-condlist_1 = {=drx_sl_is_enemy(army)} fail
+;condlist_1 = {=drx_sl_is_enemy(army)} fail
 
 fetch_func = %=drx_sl_setup_fetch_weapon(simulation_task_34_fetch:1:1)%
 on_complete = %=drx_sl_fetch_reward_random(simulation_task_34_fetch:0.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:army) =inc_task_stage(simulation_task_34) =pstor_reset(simulation_task_34_fetch) =drx_sl_unregister_task_giver(simulation_task_34) =drx_sl_reset_stored_task(simulation_task_34)%
@@ -1021,7 +1021,7 @@ stage_complete = 1
 target_functor = general_bounty_task
 status_functor = bounty_task
 condlist_0 = {!task_giver_alive(simulation_task_35)} fail
-condlist_1 = {=drx_sl_is_enemy(bandit)} fail
+;condlist_1 = {=drx_sl_is_enemy(bandit)} fail
 
 on_init = %=on_init_bounty_hunt(simulation_task_35:stalker:army:dolg)%
 on_complete = %=drx_sl_reward_random_money(2500:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:bandit) =inc_task_stage(simulation_task_35) =drx_sl_unregister_task_giver(simulation_task_35) =drx_sl_reset_stored_task(simulation_task_35)%
@@ -1048,7 +1048,7 @@ stage_complete = 1
 target_functor = general_under_faction_control
 status_functor = drx_sl_assault_mutant_task_status
 condlist_0 = {!task_giver_alive(simulation_task_36)} fail
-condlist_1 = {=drx_sl_is_enemy(csky)} fail
+;condlist_1 = {=drx_sl_is_enemy(csky)} fail
 
 on_init = %=drx_sl_setup_assault_mutant(simulation_task_36_id)%
 on_complete = %=drx_sl_reward_random(1500:3000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:csky) =inc_task_stage(simulation_task_36) =pstor_reset(simulation_task_36_id) =pstor_reset(simulation_task_36_target_id) =drx_sl_unregister_task_giver(simulation_task_36) =drx_sl_reset_stored_task(simulation_task_36)%
@@ -1075,7 +1075,7 @@ stage_complete = 1
 target_functor = general_under_faction_control
 status_functor = drx_sl_assault_mutant_task_status
 condlist_0 = {!task_giver_alive(simulation_task_37)} fail
-condlist_1 = {=drx_sl_is_enemy(monolith)} fail
+;condlist_1 = {=drx_sl_is_enemy(monolith)} fail
 
 on_init = %=drx_sl_setup_assault_mutant(simulation_task_37_id)%
 on_complete = %=drx_sl_reward_random(1500:3000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:monolith) =inc_task_stage(simulation_task_37) =pstor_reset(simulation_task_37_id) =pstor_reset(simulation_task_37_target_id) =drx_sl_unregister_task_giver(simulation_task_37) =drx_sl_reset_stored_task(simulation_task_37)%
@@ -1094,8 +1094,8 @@ title = {-yantar_faction_base_defense_quest_started} faction_base_defense_name, 
 descr = {-yantar_faction_base_defense_quest_started} faction_base_defense_text, {+yantar_faction_base_defense_quest_started} faction_base_defense_yantar_text
 target_functor = faction_base_defense_target
 condlist_0 = {+faction_base_defense_enemy_killed +faction_base_defense_2nd_enemy_killed} complete
-condlist_1 = {+yantar_faction_base_defense_quest_started -faction_base_defense_enemy_killed -faction_base_defense_2nd_enemy_killed !actor_on_level(l08_yantar)} fail
-on_init = %+faction_base_defense_active%
-on_complete = %-faction_base_defense_active =actor_surge_immuned(false)%
-on_fail = %-faction_base_defense_active =actor_surge_immuned(false)%
-on_cancel = %-faction_base_defense_active =actor_surge_immuned(false)%
+condlist_1 = {!base_defense_is_actor_on_level} fail
+on_init = %=setup_base_defense_fail_conditions%
+on_complete = %=actor_surge_immuned(false)%
+on_fail = %=actor_surge_immuned(false)%
+on_cancel = %=actor_surge_immuned(false)%

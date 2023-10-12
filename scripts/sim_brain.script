@@ -1,0 +1,419 @@
+-- EOC Lite
+
+local default_sim_on_non_linked_levels = nil
+local default_process_event_queue_state = nil
+
+local function override_combat_ignore()
+	xr_combat_ignore.ignored_zone = xr_combat_ignore_eoc.ignored_zone
+	xr_combat_ignore.is_enemy = xr_combat_ignore_eoc.is_enemy
+	xr_combat_ignore.ignore_enemy_by_overrides = xr_combat_ignore_eoc.ignore_enemy_by_overrides
+	xr_combat_ignore.npc_in_safe_zone = xr_combat_ignore_eoc.npc_in_safe_zone
+	printf("### EOC: xr_combat_ignore.script overrided ###")
+end
+
+function on_game_start()
+	RegisterScriptCallback("fill_start_position", fill_start_position)
+	RegisterScriptCallback("smart_terrain_on_update", smart_terrain_on_update)
+	RegisterScriptCallback("save_state", save_state)
+	RegisterScriptCallback("load_state", load_state)
+	RegisterScriptCallback("actor_on_update", actor_on_update)
+	RegisterScriptCallback("squad_on_update", squad_on_update)
+	
+	default_sim_on_non_linked_levels = _G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS
+	default_process_event_queue_state = _G.ProcessEventQueueState
+	RegisterScriptCallback("on_game_load",on_game_load)
+	RegisterScriptCallback("on_game_unload",on_game_unload)
+end
+
+function on_game_load()
+	if (IsEocMode()) then
+		override_combat_ignore()
+		_G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = false
+		_G.ProcessEventQueueState = function() return end
+		printf("### EOC: started ###")
+	end
+end
+
+function on_game_unload()
+	if (IsEocMode()) then
+		_G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = default_sim_on_non_linked_levels
+		_G.ProcessEventQueueState = default_process_event_queue_state
+		printf("### EOC: stopped ###")
+	end
+end
+
+squad_community_by_behaviour["trader"] = "trader"
+actor_faction = nil
+base_count = 0
+resource_count = 0
+
+initialized = false
+
+function save_state(m_data)
+	if (not IsEocMode()) then
+		UnregisterScriptCallback("save_state", save_state)
+		return
+	end
+
+	if (not m_data.simulation) then
+		m_data.simulation = {}
+		m_data.simulation.squads = {}
+		m_data.simulation.smart_owners = {}
+	end	
+
+	m_data.simulation.defense_timers = sim_smart.defense_timers
+	m_data.simulation.defense_next_update = sim_smart.defense_next_update
+	m_data.simulation.attack_timers = sim_smart.attack_timers
+	m_data.simulation.attack_next_update = sim_smart.attack_next_update
+	m_data.simulation.mutant_timers = sim_smart.mutant_timers
+	m_data.simulation.mutant_next_update = sim_smart.mutant_next_update
+	m_data.simulation.respawn_timers = sim_smart.respawn_timers
+	m_data.simulation.respawn_next_update = sim_smart.respawn_next_update
+	m_data.simulation.unique_check_timers = sim_smart.unique_check_timers
+	m_data.simulation.unique_check_next_update = sim_smart.unique_check_next_update
+
+	for faction,tbl in pairs(sim_tables.registered_squads) do
+
+		if not m_data.simulation.squads[faction] then
+			m_data.simulation.squads[faction] = {}
+		end
+
+		for ID,target in pairs(tbl) do
+			m_data.simulation.squads[faction][ID] = target
+		end
+	end
+	
+	for smart,faction in pairs(sim_smart.smart_owners) do
+		m_data.simulation.smart_owners[smart] = faction
+	end
+end
+
+function load_state(m_data)
+	if (not IsEocMode()) then
+		UnregisterScriptCallback("load_state", load_state)
+		return
+	end
+
+	if (not m_data.simulation) then
+		return
+	end
+	
+	sim_smart.defense_timers = m_data.simulation.defense_timers or {}
+	sim_smart.defense_next_update = m_data.simulation.defense_next_update or {}
+	sim_smart.attack_timers = m_data.simulation.attack_timers or {}
+	sim_smart.attack_next_update = m_data.simulation.attack_next_update or {}
+	sim_smart.mutant_timers = m_data.simulation.mutant_timers or {}
+	sim_smart.mutant_next_update = m_data.simulation.mutant_next_update or {}
+	sim_smart.respawn_timers = m_data.simulation.respawn_timers or {}
+	sim_smart.respawn_next_update = m_data.simulation.respawn_next_update or {}
+	sim_smart.unique_check_timers = m_data.simulation.unique_check_timers or {}
+	sim_smart.unique_check_next_update = m_data.simulation.unique_check_next_update or {}
+
+	for faction,tbl in pairs(m_data.simulation.squads) do
+
+		for ID,target in pairs(tbl) do
+			sim_tables.registered_squads[faction][ID] = target
+		end
+	end
+	
+	if (m_data.simulation.smart_owners) then
+		for smart,faction in pairs(m_data.simulation.smart_owners) do
+			sim_smart.smart_owners[smart] = faction
+		end
+	end
+	
+	m_data.simulation = nil
+end
+
+function squad_on_npc_creation(squad,se_obj,spawn_smart)
+
+	if not (ignore[squad:section_name()]) then
+		if (not squad.registered_in_simultaion) then
+
+			local faction = squad:get_squad_community()
+			
+			if (sim_tables.registered_squads[faction]) then
+				sim_tables.registered_squads[faction][squad.id] = spawn_smart.id
+				squad.assigned_target_id = spawn_smart.id
+				squad.registered_in_simultaion = true
+				spawn_smart:on_reach_target(squad)
+			end
+		end
+	end
+end
+
+local last_update
+
+function actor_on_update()
+	if (not IsEocMode()) then
+		UnregisterScriptCallback("actor_on_update", actor_on_update)
+		return
+	end
+
+	local tg = time_global()
+	
+	if not actor_faction then
+		actor_faction = alife():actor():community():sub(7)
+	end
+
+	if (not last_update) then
+		last_update = tg + 20000
+	end
+	
+	if (tg < last_update) then
+		return
+	end
+
+	actor_faction = alife():actor():community():sub(7)
+
+	last_update = tg + 10000
+	
+	if (not initialized) then
+		initialize()
+		sim_levels.update()		
+		sim_factions.update()
+	end
+
+	sim_levels.update()
+	sim_factions.update()
+end
+
+function initialize()
+	
+	for name,smart in pairs(SIMBOARD.smarts_by_names) do
+		if (not smart.level_id) then
+			smart.level_id = game_graph():vertex(smart.m_game_vertex_id):level_id()
+		end
+		
+		if (not sim_levels.level_information[smart.level_id]) then
+			sim_levels.level_information[smart.level_id] = {}
+			sim_levels.level_information[smart.level_id].smarts = {}
+			sim_levels.level_information[smart.level_id].faction_priority = {}
+			sim_levels.level_information[smart.level_id].base_count = 0 
+			sim_levels.level_information[smart.level_id].resource_count = 0
+			sim_levels.level_information[smart.level_id].territory_count = 0
+			sim_levels.level_information[smart.level_id].lair_count = 0
+			sim_levels.level_information[smart.level_id].first_update = true
+		end
+		
+		if (smart.props) then
+			table.insert(sim_levels.level_information[smart.level_id].smarts, smart.id)
+			
+			if smart.props then
+				if smart.props.base > 0 then
+					sim_levels.level_information[smart.level_id].base_count = sim_levels.level_information[smart.level_id].base_count + 1
+                    base_count = base_count + 1
+				elseif smart.props.territory > 0 then
+					sim_levels.level_information[smart.level_id].territory_count = sim_levels.level_information[smart.level_id].territory_count + 1
+				end
+				
+				if smart.props.resource > 0 then
+					sim_levels.level_information[smart.level_id].resource_count = sim_levels.level_information[smart.level_id].resource_count + 1
+                    resource_count = resource_count + smart.props.resource
+				end
+				
+				if smart.props.lair > 0 then
+					sim_levels.level_information[smart.level_id].lair_count = sim_levels.level_information[smart.level_id].lair_count + 1
+				end
+
+				for i,f in pairs(sim_tables.factions) do
+					if smart.props[f] and smart.props[f] > 0 then
+						if not sim_levels.level_information[smart.level_id].faction_priority[f] then
+							sim_levels.level_information[smart.level_id].faction_priority[f] = 0
+						end
+						
+						sim_levels.level_information[smart.level_id].faction_priority[f] = sim_levels.level_information[smart.level_id]["faction_priority"][f] + smart.props[f]
+					end
+				end		
+			end
+		end
+	end
+	
+	initialized = true
+end
+
+
+function fill_start_position()
+	if (not IsEocMode()) then
+		UnregisterScriptCallback("fill_start_position", fill_start_position)
+		return
+	end
+	
+	if (SIMBOARD.start_position_filled) then
+		return
+	end
+	
+	SIMBOARD.start_position_filled = true
+	
+	local setting_ini
+	if (IsSurvivalMode()) then 
+		setting_ini = ini_file("misc\\simulation_survival_mode.ltx")
+	else 
+		setting_ini = ini_file("misc\\simulation_eoc_mode.ltx")
+	end
+	
+	local stalker_pop_factor = (axr_main.config:r_value("mm_options","alife_stalker_pop",2) or 1)
+	local monster_pop_factor = (axr_main.config:r_value("mm_options","alife_mutant_pop",2) or 1)
+		
+	local result, squad_section, count, li, lc
+	setting_ini:section_for_each(function(section)
+		lc = setting_ini:line_count(section)
+		for li=0,lc-1 do
+			local smart = SIMBOARD.smarts_by_names[section]
+			if (smart) then
+				result, squad_section, count = setting_ini:r_line(section,li,"","")
+				count = tonumber(count) or 1
+				
+				if string.find(squad_section,"sim_squad_novice") or string.find(squad_section,"sim_squad_advanced") or string.find(squad_section,"sim_squad_veteran") or string.find(squad_section,"sim_squad_sniper") then
+					count = count*stalker_pop_factor
+					if (count == 0.25) then 
+						count = math.random() <= 0.25 and 1 or 0
+					elseif (count == 0.5) then 
+						count = math.random(0,1)
+					else 
+						count = utils.round(count)
+					end
+				elseif (string.find(squad_section,"simulation")) then
+					count = count*monster_pop_factor
+					if (count == 0.25) then 
+						count = math.random() <= 0.25 and 1 or 0
+					elseif (count == 0.5) then 
+						count = math.random(0,1)
+					else 
+						count = utils.round(count)
+					end
+				end
+						
+				for i=1,count do
+					squad = SIMBOARD:create_squad(smart,squad_section)
+
+					if smart and squad and sim_tables.registered_squads[squad:get_squad_community()] and not sim_tables.ignore[squad:section_name()] then
+						sim_squad.set_target(squad, smart.id)
+					end
+				end
+			end
+		end
+	end
+	)
+	
+	printf("### EOC: start position filled ###")
+end
+
+
+
+function check_individual_smart_pop(smart)
+
+    local name = smart:name()
+	local pop = 12
+  
+  	if name == "mar_smart_terrain_base"        or 
+	   name == "ds_kem2"                       or 
+	   name == "ds2_domik_st"                  or 
+	   name == "jup_b41"                       or 
+       name == "agr_smart_terrain_4_4_near_1"  then	 
+	   pop = 8
+    end
+	   
+	if name == "mar_smart_terrain_base"        or 
+	   name == "esc_smart_terrain_5_2"         or 
+	   name == "mar_smart_terrain_4_5"         or 
+       name == "agr_smart_terrain_4_4"         or	
+       name == "gar_smart_terrain_6_3"         or	
+       name == "val_smart_terrain_7_5"         or	   
+	   name == "val_smart_terrain_7_3"         or	
+	   name == "red_smart_terrain_4_2"         or 
+	   name == "mar_smart_terrain_10_5"        then 
+	   pop = 10
+	end
+	   
+	if name == "mar_smart_terrain_base"        or 
+	   name == "pri_monolith"                  or 
+	   name == "jup_a6"                        or
+	   name == "agr_smart_terrain_1_6"         then 
+	   pop = 15
+	end
+	
+    return pop
+end
+
+function check_mutant_coef(smart)
+
+    local level = alife():level_name(game_graph():vertex(smart.m_game_vertex_id):level_id())	
+	local coef = 5
+			
+	if level == "l12u_sarcofag"       or 
+	   level == "l11_hospital"        then 
+	   coef = 0
+	end
+	
+	if level == "zaton"           or 
+	   level == "jupiter"             or 
+	   level == "k02_trucks_cemetery" or 
+	   level == "k00_marsh"           then 
+	   coef = 10
+	end
+	
+	if level == "l11_pripyat"     or 
+	   level == "l02_garbage"         or 
+	   level == "l04_darkvalley"      or 
+	   level == "l10_red_forest"      then 
+	   coef = 7
+	end
+	
+  return coef
+end
+
+function monolith_level(smart)
+
+    local level = alife():level_name(game_graph():vertex(smart.m_game_vertex_id):level_id())	
+			
+	if level == "l13u_warlab"           or 
+	   level == "l12u_control_monolith" or 
+	   level == "l10u_bunker"           or 
+	   level == "l12_stancia_2"         or 
+	   level == "l12_stancia"           or 
+	   level == "l11_pripyat"           or 
+	   level == "l10_radar"             then
+	return true
+	end
+
+  return false
+end
+
+function hash_table_to_array(tbl)
+	local r = {}
+	
+	for k,v in pairs(tbl) do 
+		r[#r+1] = {key=k, value=v}
+	end
+	
+	return r
+end
+
+function sort_priority_table(tbl)
+	function priority_sort(a, b)
+		return a[1] < b[1]
+	end
+	
+	table.sort(tbl, priority_sort)
+	
+	return tbl
+end	
+
+function smart_terrain_on_update(smart)
+	if (not IsEocMode()) then
+		UnregisterScriptCallback("smart_terrain_on_update", smart_terrain_on_update)
+		return
+	end
+
+	sim_smart.smart_terrain_on_update(smart)
+end
+
+function squad_on_update(squad)
+	if (not IsEocMode()) then
+		UnregisterScriptCallback("squad_on_update", squad_on_update)
+		return
+	end
+
+	sim_squad.squad_on_update(squad)
+end

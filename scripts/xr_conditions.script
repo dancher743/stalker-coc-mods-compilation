@@ -1530,6 +1530,10 @@ function is_rain (actor, npc)
 	return db.actor ~= nil and level.rain_factor() > 0
 end
 
+function is_light_rain (actor, npc)
+	return db.actor ~= nil and level.rain_factor() > 0 and level.rain_factor() < 0.5
+end
+
 function is_heavy_rain (actor, npc)
 	return db.actor ~= nil and level.rain_factor() >= 0.5
 end
@@ -3355,4 +3359,24 @@ end
 
 function get_start_time_elapsed_ge(actor,npc,p)
 	return p[1] and tonumber(game.get_game_time():diffSec(level.get_start_time())) >= tonumber(p[1])
+end
+
+function is_arx_check_option_enabled(actor,npc,p)
+	return p[1] and axr_main.config:r_value("mm_options","enable_"..p[1],1,false)
+end
+
+function is_yan_base_defense_quest_enabled(actor,npc)
+	return is_arx_check_option_enabled(actor,npc,"bases_defense") or not db.actor:has_info("yan_stalker_sakharov_offer_free_upgrade")
+end
+
+function base_defense_is_actor_on_level(actor,npc,p)
+	local name = utils.load_var(db.actor,"base_defense_level")
+	if (name) then 
+		return name == level.name()
+	end 
+	return true
+end
+
+function is_eoc_mode_enabled(actor,npc)
+	return IsEocMode()
 end

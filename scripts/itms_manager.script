@@ -334,28 +334,31 @@ function actor_on_item_use(obj)
 				return
 			end
 		end
+		
+		local function show_back_pack_stash_tip()
+			if (BackPackStashEnableTip) then
+				SetHudMsg(game.translate_string("st_stash_created"),4)
+			end
+		end
 
 		local se_obj = alife():create("inv_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id())
 		if (se_obj) then
-			local level_name = level.name()
-
 			if not (BackPackStashEnableUi) then
+				local level_name = level.name()
 				local count = utils.load_var(db.actor, level_name.."bpk_count", 0)
 				utils.save_var(db.actor, level_name.."bpk_count", count+1)
-				level.map_add_object_spot_ser(se_obj.id, BackPackStashSpot, game.translate_string(level_name).." "..game.translate_string("st_itm_stash").." "..count+1)
+				level.map_add_object_spot_ser(se_obj.id, BackPackStashSpot, game.translate_string("st_itm_stash_of_actor").." №"..count+1)
+				show_back_pack_stash_tip()
 			else
 				local hud = get_hud()
 				if (hud) then
 					hud:HideActorMenu()
-					local ui = ui_itm_backpack and ui_itm_backpack.backpack_ui(hud,se_obj.id,BackPackStashSpot)
+					local ui = ui_itm_backpack and ui_itm_backpack.backpack_ui(hud,se_obj.id,BackPackStashSpot, show_back_pack_stash_tip)
 					if (ui) then
+						SetHudMsg("",0)
 						ui:ShowDialog(true)
 					end
 				end
-			end
-
-			if (BackPackStashEnableTip) then
-				SetHudMsg(game.translate_string("st_stash_created"),4)
 			end
 		end
 		return
@@ -511,6 +514,10 @@ function actor_on_item_take_from_box(box,obj)
 			alife():create("itm_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
 
 			alife():release( alife_object(box:id()) ,true)
+			
+			if (BackPackStashEnableTip) then
+				SetHudMsg(game.translate_string("st_stash_removed"),4)
+			end
 		end
 	end
 

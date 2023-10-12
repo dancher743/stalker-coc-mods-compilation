@@ -3,12 +3,36 @@ My mods compilation for S.T.A.L.K.E.R.: Call of Chernobyl 1.4.22 (ENG/RUS)
 
 Install
 ---
-Place all files to an empty "gamedata" folder.
+Place all files to an empty `gamedata` folder.
 
 Settings
 ---
-* To access Dynamic News settings: load your game, then open the main menu and press Page-Up button.
-* To make the sky less bright type `r2_tonemap off` command in the console.
+* To access Dynamic News settings: load your game, then open the main menu and press Page-Up button
+* To ignite/extinguish a campfire holster your weapon first
+* To make the sky less bright type `r2_tonemap off` command at the console
+
+Optimization
+---
+* Type `vid_restart` at the console if you are faced with _"Too many occlusion queries were issued"_ warnings. This command restarts the renderer
+* Add `-no_staging` to the end of a shortcut as a launch parameter. In DirectX 10/11, it will load textures directly into video memory without copying them to RAM, thus keeping it free
+* Disable "Sun shadow" in "Options" in "Video" to reduce the load on a video card
+
+Screenshots
+---
+<details>
+<summary>Spoiler</summary>
+
+[![1.jpg](https://i.postimg.cc/R0VBJvdW/1.jpg)](https://postimg.cc/9DSSv5v2)
+[![2.jpg](https://i.postimg.cc/MHR2JH6F/2.jpg)](https://postimg.cc/7JxQgxT3)
+[![3.jpg](https://i.postimg.cc/y6SzZQmy/3.jpg)](https://postimg.cc/CdYty46R)
+[![4.jpg](https://i.postimg.cc/J4VCcNKV/4.jpg)](https://postimg.cc/8sHYTrqt)
+[![5.jpg](https://i.postimg.cc/DZRkNLTG/5.jpg)](https://postimg.cc/FdbBdf1F)
+[![6.jpg](https://i.postimg.cc/765rXXpD/6.jpg)](https://postimg.cc/bDf5w0yF)
+[![7.jpg](https://i.postimg.cc/Gp71k6gq/7.jpg)](https://postimg.cc/bGtMPVht)
+[![8.jpg](https://i.postimg.cc/QdjLvjRf/8.jpg)](https://postimg.cc/fJqg9QWd)
+[![9.jpg](https://i.postimg.cc/rF1XhDYd/9.jpg)](https://postimg.cc/zVGcvGN5)
+
+</details>
 
 Mods
 ---
@@ -48,4 +72,19 @@ Mods
 34. Faction Uniform Patches Lottery from Anomaly 1.5.1.2/MLR addon (Anomaly Developers, MLR team)
 35. DoctorX Dynamic Anomalies 2.1 [CoC 1.5 / 1.4.22] (DoctorX)
 36. NPC's vision thru vegetation fix (EmSobac)
-37. Added gauss ammo exchange dialog from Mutantum v 2.2 (sunxshilo)
+37. Gauss ammo exchange dialog from Mutantum v 2.2 (sunxshilo)
+38. Companions Quick Menu 1.1 [UPDATE August 8] [CoC 1.5 r4] (Debrovski)
+39. Cooking the mutants parts (Team Epic, Anomaly Developers, Dancher)
+40. Added matches sound for campfires ignition from NLC 7 (Сяк & Co)
+41. TRX: Fresh Start (1.4) with adaptations (Tronex, Dancher)
+42. Better New Game Loadouts for TRX-Fresh Start 1.4 + AO 3.1 | CoC 1.4.22 with reworking (mithriak, Dancher)
+43. Russificator for TRX: Fresh Start (1.4) with adaptations (GhostWarrior98, Dancher)
+44. Patches Infiltration Addon (SarisKhan, Dancher)
+45. Bar room as safe-house (Dancher)
+46. Outfit loot CoC 1 4 22 v2 with reworking (av661194, Dancher)
+47. CoC Extended Offline (EOC) Lite 1.7.6 + dynamic faction relations (xr_Sanya)
+48. Clear Sky's graphics presets from CoP and CS atmosphere for CoC v1.1 [CoC 1.4.22] (Sanctuary)
+49. Pre-Blowout Murder Addon [CoC 1.4.22] (Ethylia, adapted by Misery)
+50. Flashlight sound for vanilla CoC (Grelka)
+51. Classic SoC Flashlight for CoC with Dancher's changes (default white light) (Shovelled, Dancher)
+52. Clear weather from All AtmosFear 3 cycles for CoC (owdred)

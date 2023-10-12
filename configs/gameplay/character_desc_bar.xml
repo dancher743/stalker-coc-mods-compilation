@@ -19,7 +19,7 @@
     <map_icon x="1" y="4"></map_icon>
     <bio>bar_barmen_bio</bio>
     <class>bar_visitors_barman_stalker_trader</class>
-    <community>stalker</community>
+    <community>trader</community>
     <terrain_sect>stalker_terrain</terrain_sect>
     <money min="1000000" max="1000000" infinitive="1"></money>
     <rank>14490</rank>
@@ -29,7 +29,8 @@
     <crouch_type>-1</crouch_type>
     <supplies></supplies>
         <start_dialog>bar_visitors_barman_stalker_trader_start_dialog</start_dialog>
-        <actor_dialog>dm_broker_dialog</actor_dialog>
+        <actor_dialog>barman_safe_houses_bar_room_dialog</actor_dialog>
+		<actor_dialog>dm_broker_dialog</actor_dialog>
         <actor_dialog>actor_break_dialog</actor_dialog>
         </specific_character>
 
@@ -40,20 +41,22 @@
         <map_icon x="0" y="0"></map_icon>
         <bio>bar_bar_guard_bio</bio>
         <class>bar_visitors_garik_stalker_guard</class>
-        <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+        <community>trader</community> <terrain_sect>stalker_terrain</terrain_sect>
         <money min="200" max="600" infinitive="0"></money>
         <rank>7327</rank>
         <reputation>976</reputation>
         <visual>actors\stalker_neutral\stalker_bar_security</visual>
         <snd_config>characters_voice\human_01\stalker\</snd_config>
         <crouch_type>-1</crouch_type>
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>bar_guard_safe_houses_bar_room_pass_dialog</actor_dialog>
+		<actor_dialog>actor_break_dialog</actor_dialog>
         <supplies>
         [spawn] \n
         wpn_ak74 \n
         ammo_5.45x39_fmj \n
     </supplies>
 #include "gameplay\character_criticals_4.xml"
-#include "gameplay\character_dialogs.xml"
     </specific_character>
 
     <!-------------------------- ZHORIK ---------------------- -->
@@ -63,7 +66,7 @@
     <map_icon x="0" y="0"></map_icon>
     <bio>bar_bar_guard2_bio</bio>
     <class>bar_visitors_zhorik_stalker_guard2</class>
-    <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <community>trader</community> <terrain_sect>stalker_terrain</terrain_sect>
     <money min="200" max="600" infinitive="0"></money>
     <rank>6516</rank>
     <reputation>817</reputation>
@@ -307,7 +310,7 @@
         <map_icon x="1" y="6"></map_icon>
         <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
         <class>bar_arena_manager</class>
-        <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+        <community>trader</community> <terrain_sect>stalker_terrain</terrain_sect>
         <money min="600" max="2000" infinitive="0"></money>
         <rank>3290</rank>
         <reputation>265</reputation>

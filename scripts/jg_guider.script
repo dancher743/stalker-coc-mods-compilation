@@ -23,7 +23,8 @@ end
 function squad_on_npc_death(squad,se_npc)
 	if ((squad.id == curr_guid['squad_id']) and (squad:npc_count() == 0)) then
 		if db.actor:has_info('guider_start') then
-		xr_statistic.inc_actor_reputation(-1000)
+			news_manager.send_tip(db.actor, game.translate_string("ui_st_jg_squad_killed"), nil, nil, 5000)
+			xr_statistic.inc_actor_reputation(-1000)
 		end
 		clear()
 	end
@@ -214,13 +215,13 @@ end
 
 --///////////////////////////////// Вспомогательные функции
 
-function is_started()
-	return db.actor:has_info('guider_start')
-end
-
 function send_tip(npc, news_text, news_sound)
 	local news_caption = strformat("%s, %s", npc:character_name(), game.translate_string(npc:character_community()))
 	local news_icon = npc:character_icon()
 	db.actor:give_game_news(news_caption, news_text, news_icon, 0, 15000)
 	news_sound:play(db.actor,0,sound_object.s2d)
+end
+
+function has_guiding_started()
+    return db.actor:has_info('guider_start')
 end

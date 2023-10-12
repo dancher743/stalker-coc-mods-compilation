@@ -1002,90 +1002,6 @@ bone_name                                = bip01_r_hand
 position_offset                          = 0.0,0.0,0.0
 angle_offset                             = 0,0,0
 can_trade                                = false
-[csky_patch]:identity_immunities
-GroupControlSection                      = spawn_group
-discovery_dependency                     =
-$spawn                                   = "devices\monster_items\mutant_psevdodog_tail"
-;$prefetch 				= 32
-class                                    = II_ATTCH
-cform                                    = skeleton
-visual                                   = dynamics\tfw_badges\tfw_badge_csky.ogf
-radius                                   = 1
-inv_name                                 = csky_patch
-inv_name_short                           = csky_patch
-description                              = csky_patch_description
-inv_weight                               = 0.01
-can_trade                                = true
-inv_grid_width                           = 1
-inv_grid_height                          = 1
-inv_grid_x                               = 17
-inv_grid_y                               = 3
-cost                                     = 50
-auto_attach                              = false
-
-[freedom_patch]:csky_patch
-visual                                   = dynamics\tfw_badges\tfw_badge_freedom.ogf
-inv_name                                 = freedom_patch
-inv_name_short                           = freedom_patch
-description                              = freedom_patch_description
-inv_grid_x                               = 0
-inv_grid_y                               = 4
-
-[stalker_patch]:csky_patch
-visual                                   = dynamics\tfw_badges\tfw_badge_defiance.ogf
-inv_name                                 = stalker_patch
-inv_name_short                           = stalker_patch
-description                              = stalker_patch_description
-inv_grid_x                               = 1
-inv_grid_y                               = 5
-
-[ecolog_patch]:csky_patch
-visual                                   = dynamics\tfw_badges\tfw_badge_ecolog.ogf
-inv_name                                 = ecolog_patch
-inv_name_short                           = ecolog_patch
-description                              = ecolog_patch_description
-inv_grid_x                               = 19
-inv_grid_y                               = 3
-
-[bandit_patch]:csky_patch
-visual                                   = dynamics\tfw_badges\tfw_badge_bandit.ogf
-inv_name                                 = bandit_patch
-inv_name_short                           = bandit_patch
-description                              = bandit_patch_description
-inv_grid_x                               = 16
-inv_grid_y                               = 3
-
-[duty_patch]:csky_patch
-visual                                   = dynamics\tfw_badges\tfw_badge_dolg.ogf
-inv_name                                 = duty_patch
-inv_name_short                           = duty_patch
-description                              = duty_patch_description
-inv_grid_x                               = 18
-inv_grid_y                               = 3
-
-[monolith_patch]:csky_patch
-visual                                   = dynamics\tfw_badges\tfw_badge_monolith.ogf
-inv_name                                 = monolith_patch
-inv_name_short                           = monolith_patch
-description                              = monolith_patch_description
-inv_grid_x                               = 3
-inv_grid_y                               = 4
-
-[army_patch]:csky_patch
-visual                                   = dynamics\tfw_badges\tfw_badge_military.ogf
-inv_name                                 = army_patch
-inv_name_short                           = army_patch
-description                              = army_patch_description
-inv_grid_x                               = 14
-inv_grid_y                               = 3
-
-[merc_patch]:csky_patch
-visual                                   = dynamics\tfw_badges\tfw_badge_merc.ogf
-inv_name                                 = merc_patch
-inv_name_short                           = merc_patch
-description                              = merc_patch_description
-inv_grid_x                               = 2
-inv_grid_y                               = 4
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;; NON-EATABLE MONSTER ITEMS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1330,6 +1246,11 @@ eat_sleepiness                           = 0.026
 eat_health                               = -0.07
 eat_alcohol                              = -0.01
 
+use1_functor							 = cooking_manager.can_cook
+use1_action_functor						 = cooking_manager.cook
+use2_functor							 = cooking_manager.can_cook_all
+use2_action_functor						 = cooking_manager.cook_all
+
 [mutant_part_flesh_meat]:mutant_part_general_meat
 $spawn                                   = "devices\monster_items\mutant_flesh_meat"
 visual                                   = dynamics\zpf\raw_flesh.ogf
@@ -1346,6 +1267,8 @@ eat_radiation                            = 0.349
 eat_sleepiness                           = 0.0209
 eat_health                               = -0.082
 eat_alcohol                              = -0.02
+
+cooked_section                           = meat_flesh
 
 [mutant_part_boar_chop]:mutant_part_general_meat
 $spawn                                   = "devices\monster_items\mutant_boar_chop"
@@ -1364,6 +1287,7 @@ eat_sleepiness                           = 0.0238
 eat_health                               = -0.092
 eat_alcohol                              = -0.02
 
+cooked_section                           = meat_boar
 
 [mutant_part_dog_meat]:mutant_part_general_meat
 $spawn                                   = "devices\monster_items\mutant_dog_meat"
@@ -1381,6 +1305,7 @@ eat_radiation                            = 0.121
 eat_sleepiness                           = 0.0099
 eat_health                               = -0.034
 
+cooked_section                           = meat_dog
 
 [mutant_part_psevdodog_meat]:mutant_part_general_meat
 $spawn                                   = "devices\monster_items\mutant_psevdodog_meat"
@@ -1398,7 +1323,7 @@ eat_radiation                            = 0.159
 eat_sleepiness                           = 0.0132
 eat_health                               = -0.046
 
-
+cooked_section                           = meat_pseudodog
 
 [mutant_part_krovosos_meat]:mutant_part_general_meat
 $spawn                                   = "devices\monster_items\mutant_krovosos_meat"
@@ -1417,6 +1342,7 @@ eat_sleepiness                           = 0.0195
 eat_health                               = -0.063
 eat_alcohol                              = -0.03
 
+cooked_section                           = meat_bloodsucker
 
 [mutant_part_chimera_meat]:mutant_part_general_meat
 $spawn                                   = "devices\monster_items\mutant_chimera_meat"
@@ -1435,6 +1361,8 @@ eat_sleepiness                           = 0.031
 eat_health                               = -0.095
 eat_alcohol                              = -0.03
 
+cooked_section                           = meat_chimera
+
 [mutant_part_tushkano_meat]:mutant_part_general_meat
 $spawn                                   = "devices\monster_items\mutant_tushkano_meat"
 visual                                   = dynamics\zpf\raw_tushkano.ogf
@@ -1450,6 +1378,8 @@ eat_satiety                              = 0.094
 eat_radiation                            = 0.073
 eat_sleepiness                           = 0.054
 eat_health                               = -0.018
+
+cooked_section                           = meat_tushkano
 
 [itm_gunsmith_toolkit]:booster_script
 $spawn                                   = "devices\repair_kit_10"

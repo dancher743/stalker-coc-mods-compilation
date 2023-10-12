@@ -2,7 +2,7 @@
 <string_table>
 	<!-- options menu -->
 	<string id="ui_mm_fast_travel">
-		<text>Быстрый переход</text>
+		<text>Быстрые переходы</text>
 	</string>
 	<string id="ui_mm_combat_travel">
 		<text>Переход во время боя</text>
@@ -15,6 +15,9 @@
 	</string>
 	<string id="ui_mm_storm_travel">
 		<text>Переход во время выброса</text>
+	</string>
+	<string id="ui_mm_guider_travel">
+		<text>Переход в роли проводника</text>
 	</string>
 	<string id="ui_mm_long_names">
 		<text>Полные названия мест</text>
@@ -289,7 +292,7 @@
 		<text>Лагерь у капера</text>
 	</string>
 	<string id="red_smart_terrain_6_3">
-		<text>Аномалия «Сверхпроводник»</text>
+		<text>Чёртова стоянка</text>
 	</string>
 	<string id="red_smart_terrain_bridge">
 		<text>Мост в Лиманск</text>

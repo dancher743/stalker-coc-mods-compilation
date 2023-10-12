@@ -20,7 +20,7 @@ function Wafel_func_drop()
 	
 	local aliases={'zero','novice','trainee','experienced','professional','veteran','expert','master','legend'}
 	
-	return function (rank,mode)
+	return function (rank,mode,npc)
 		math.randomseed( os.time() )
 		local result
 		local  function find_pos(where,what)
@@ -50,16 +50,28 @@ function Wafel_func_drop()
 			
 			---
 			-- Additional chances to change weapon's condition:
-			-- 10% chance to set weapon's condition to 100%,
-			-- 20% chance to reduce weapon's condition on 20%.
+			-- 75% chance to decrease weapon's condition on 20%,
+			-- if npc is zombied, his weapon's condition additionally will be divide by 2,
+			-- 20% chance to set weapon's condition to 50% for any stalker (including zombied),
+			-- 10% chance to set weapon's condition to 100% for any stalker (including zombied).
 			-- Added by Dancher.
 			--
 			local chance = math.random(100)
 			
+			if (chance <= 75) then
+				result = result - (result * 0.2)
+			end
+			
+			if npc:character_community() == "zombied" then
+				result = result / 2
+			end
+			
+			if (chance <= 20) then
+				result = 50
+			end
+			
 			if (chance <= 10) then
 				result = 100
-			elseif (chance <= 20) then
-				result = result * (1 - 0.2)
 			end
 			---
 			
@@ -166,13 +178,15 @@ function create_release_item(npc)
 	
 	try_spawn_ammo(npc,spawn_items)
 	
+	try_spawn_patch_for_zombied(npc,spawn_items)
+	
 	local grenade_classes = { 
 								["ammo_m209"] = true,
 								["ammo_vog-25"] = true,
 								["ammo_og-7b"] = true
 							}
 	for sec,v in pairs(spawn_items) do
-		if (v > 0 and item_count[sec] and not utils.is_ammo(sec) and not grenade_classes[sec]) then
+		if (v > 0 and item_count[sec] and not utils.is_ammo(sec) and not grenade_classes[sec] and sec ~= "zombied_patch") then
 			local number = math.random(item_count[sec][1], item_count[sec][2])
 			create_items(npc, sec, number, v)
 		end
@@ -221,6 +235,28 @@ function try_spawn_ammo(npc,spawn_items)
 		end
 	end
 	npc:iterate_inventory(itr,npc)
+end
+
+function try_spawn_patch_for_zombied(npc,spawn_items)
+	if npc:character_community() ~= "zombied" then
+		return
+	end
+	
+	local visual = npc:get_visual_name()
+	local visual_exploded = alun_utils.str_explode(visual,"\\")
+	visual = visual_exploded[3]
+	
+	local section = death_ini:r_string_ex("zombied_patches",visual)
+	
+	if (section == nil or section == "") then
+		printf("! death_manager: patch section not found for '%s' visual", visual)
+		return
+	end
+	
+	local count = math.random(item_count[section][1], item_count[section][2])
+	local probability = spawn_items["zombied_patch"]
+	
+	create_items(npc, section, count, probability)
 end
 
 --' Функция вызывается для каждого предмета, если вернет false то предмет удалится.
@@ -290,7 +326,7 @@ function set_weapon_drop_condition(npc,itm)
 	--Wafel start			 	
 	local rank = ranks.get_obj_rank_name(npc)	
 	local rank_dep_drop_W=Wafel_func_drop()  
-	local condition  = rank_dep_drop_W(rank,'wpn')	
+	local condition  = rank_dep_drop_W(rank,'wpn',npc)	
 	--Wafel end	
 	--local condition  = (math.random(40)+5)/100--commented by Wafel
 	--printf("condition [%s]", tostring(condition))

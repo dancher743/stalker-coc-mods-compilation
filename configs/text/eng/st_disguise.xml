@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<!-- Disguise messages for actor -->
+	
+	<string id="st_disguise_actor_has_companion">
+        <text>Can't disguise; you're traveling with the companions.</text>
+    </string>
+
+	<string id="st_disguise_actor_in_sight">
+		<text>Can't disguise; some stalkers have seen or remembered you.</text>
+    </string>
+	
+	<string id="st_disguise_actor_in_same_faction">
+		<text>Can't disguise; you're already a member of this faction.</text>
+    </string>
+
+    <string id="st_disguise_faction_changed">
+        <text>You have disguised themselves as a %s.</text>
+    </string>
+	
+	<string id="st_disguise_faction_returned">
+        <text>You're no longer disguised as a %s.</text>
+    </string>
+	
+	<string id="st_disguise_faction_member_stalker">
+        <text>loner</text>
+    </string>
+	
+	<string id="st_disguise_faction_member_army">
+        <text>military</text>
+    </string>
+	
+	<string id="st_disguise_faction_member_bandit">
+        <text>bandit</text>
+    </string>
+
+	<string id="st_disguise_faction_member_csky">
+		<text>Clear Sky member</text>
+	</string>
+	
+	<string id="st_disguise_faction_member_dolg">
+		<text>Duty member</text>
+	</string>
+	
+	<string id="st_disguise_faction_member_ecolog">
+		<text>ecologist</text>
+	</string>
+
+	<string id="st_disguise_faction_member_freedom">
+		<text>Freedom member</text>
+	</string>
+	
+	<string id="st_disguise_faction_member_killer">
+		<text>mercenary</text>
+	</string>
+	
+	<string id="st_disguise_faction_member_monolith">
+		<text>Monolith member</text>
+	</string>
+	
+	<string id="st_disguise_faction_member_zombied">
+		<text>zombified</text>
+	</string>
+	
+	<!-- Suspicious messages from NPC -->
+	
+	<string id="st_disguise_suspicious_stalker_1">
+		<text>Guys, does anyone know a stalker named %s? Haven't seen him here before...</text>
+	</string>
+	
+	<string id="st_disguise_suspicious_army_1">
+		<text>Reporting that we have an unknown recruit %s. Requesting identity verification.</text>
+	</string>
+	
+	<string id="st_disguise_suspicious_bandit_1">
+		<text>What kind of guy is %s? Who knows him? Does anyone know him?</text>
+	</string>
+	
+	<string id="st_disguise_suspicious_csky_1">
+		<text>%s, I don't remember you. Have you recently joined our faction?</text>
+	</string>
+	
+	<string id="st_disguise_suspicious_dolg_1">
+		<text>Petrenko, check out the member named %s. Little did we have cloak-and-dagger agents.</text>
+	</string>
+	
+	<string id="st_disguise_suspicious_ecolog_1">
+		<text>Who are you, %s? Were you sent to guard our expeditions?</text>
+	</string>
+	
+	<string id="st_disguise_suspicious_freedom_1">
+		<text>%s, hey, man, how are you?! I never saw you with us by the campfire.</text>
+	</string>
+	
+	<string id="st_disguise_suspicious_killer_1">
+		<text>Hey! Seen - %s. Campaign, they sent us fresh meat.</text>
+	</string>
+	
+	<string id="st_disguise_suspicious_monolith_1">
+		<text>Brother, %s, have you already prayed to the Great Monolith? The time has come.</text>
+	</string>
+	
+	<string id="st_disguise_suspicious_zombied_1">
+		<text>S-saw stal-kk-k-er. This is-s %s.</text>
+	</string>
+	
+	<!-- Exposure messages for actor -->
+	
+	<string id="st_disguise_exposure_avoided">
+        <text>You have avoided exposure.</text>
+    </string>
+	
+	<string id="st_disguise_exposure_discovered">
+        <text>You have been discovered.</text>
+    </string>
+		
+</string_table>

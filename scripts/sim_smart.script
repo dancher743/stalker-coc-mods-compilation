@@ -1,0 +1,736 @@
+defense_timers = {}
+defense_next_update = {}
+
+attack_timers = {}
+attack_next_update = {}
+
+mutant_timers = {}
+mutant_next_update = {}
+
+respawn_timers = {}
+respawn_next_update = {}
+
+unique_check_timers = {}
+unique_check_next_update = {}
+
+smart_owners = {}
+hide_sim = false
+
+function set_max_population(smart)
+	if (smart.props) then
+	    smart.max_population = 5
+		
+	    if smart.props.lair > 0 then
+	       smart.max_population = 8
+		   
+		elseif smart.props.base > 0 then		
+           smart.max_population = sim_brain.check_individual_smart_pop(smart)
+		end
+	end
+end
+
+function smart_terrain_on_update(smart)
+
+	local curr_time = game.get_game_time()
+	smart.last_respawn_update = curr_time
+
+	if not (smart.level_id) then
+		smart.level_id = game_graph():vertex(smart.m_game_vertex_id):level_id()
+	end
+	
+	if not (smart.first_update) then
+		smart.first_update = true		
+		
+		set_max_population(smart)	
+		
+		if (smart_owners[smart.id]) then
+			smart.owning_faction = smart_owners[smart.id]
+		end
+			
+		local offset = sim_tables.level_offsets[smart.level_id]
+		local p = smart.position
+		
+		if (offset) then
+			smart.global_position = vector():set(p.x + offset[1], p.y + offset[2], p.z + offset[3])
+		end
+	end
+
+	check_owner(smart)
+
+	if not (smart.target_smarts) then
+		smart.target_smarts = {}
+	end
+	
+	if not (smart.target_smart_count) then
+		smart.target_smart_count = 0
+	end
+	
+	if not (sim_brain.initialized) then
+		return
+	end
+	
+	local faction = smart.owning_faction
+	local dist = alife():actor().position:distance_to_sqr(smart.position)
+
+	if smart.props then
+		if dist > 20000 then
+	       smart_control(smart)
+	    end
+	    process_mutants(smart)
+	    if smart.props.base > 0 then	   
+	   	   set_targets(smart)	  
+		    if dist > 20000 then
+			    if faction == "none" then
+			 	   try_to_respawn_faction(smart) 
+		        else
+		           spawn_defense_squad(smart)	
+		           spawn_attack_squad(smart)
+				    if faction ~= "zombied" and faction ~= "monster" then
+		              check_npc(smart)		
+				    end
+		        end
+		    end		  
+	    elseif smart.props.lair > 0 then 			   
+		    if faction == "none" and dist > 20000 then
+		       spawn_mutants(smart)
+		    end
+		end
+    end	
+end
+
+function try_to_respawn_faction(smart)
+		 
+	if not (respawn_timers[smart.id]) or (game.get_game_time():diffSec(respawn_timers[smart.id]) > (respawn_next_update[smart.id]*60)) then
+		respawn_timers[smart.id] = game.get_game_time()
+		respawn_next_update[smart.id] = 200
+	else
+		return
+	end
+
+	for i,faction in pairs(sim_tables.factions) do 
+		if faction ~= "monster" then
+		   if (sim_factions.faction_information[faction].base_count) and sim_factions.faction_information[faction].base_count < 1 then
+			  sim_factions.faction_information[faction].base_count = 1
+			  sim_squad.create_squad(smart, faction, nil, nil, nil, 1)	
+			  printf("### EOC: -- try_to_respawn_faction -- ".. faction .." - ".. smart:name() .." ###")
+		   end
+		end
+	end
+end
+
+function check_npc(smart)
+
+	if not (unique_check_timers[smart.id]) or (game.get_game_time():diffSec(unique_check_timers[smart.id]) > (unique_check_next_update[smart.id]*60)) then
+		unique_check_timers[smart.id] = game.get_game_time()
+		unique_check_next_update[smart.id] = sim_factions.faction_information[smart.owning_faction].respawn_defend
+	else
+		return
+	end
+	
+	local faction = smart.owning_faction
+	local trader = faction .. "_sim_squad_trader"
+	local mechanic = faction .. "_sim_squad_mechanic"
+	local barmen = faction .. "_sim_squad_barmen"
+	local medik = faction .. "_sim_squad_medik"
+	
+	local uniques = {}	
+	uniques.mar_smart_terrain_base  = { 1, 1, 1, 1 }
+	uniques.esc_smart_terrain_5_7   = { 0, 1, 0, 0 }
+	uniques.esc_smart_terrain_2_12  = { 0, 0, 0, 1 }
+	uniques.val_smart_terrain_7_3   = { 0, 1, 0, 0 }
+	uniques.val_smart_terrain_7_4   = { 1, 0, 0, 0 }
+	uniques.agr_smart_terrain_1_6   = { 1, 1, 0, 0 }
+	uniques.bar_visitors            = { 0, 1, 0, 0 }
+	uniques.bar_dolg_general        = { 1, 0, 0, 1 }
+	uniques.mil_smart_terrain_7_7   = { 0, 1, 0, 0 }
+	uniques.mil_smart_terrain_7_10  = { 1, 0, 0, 0 }
+	uniques.cit_killers             = { 1, 1, 0, 0 }
+	uniques.pri_monolith            = { 1, 1, 0, 0 }
+	uniques.zat_stalker_base_smart  = { 1, 1, 1, 1 }
+	uniques.jup_a6                  = { 1, 1, 1, 1 }
+	uniques.pri_a16                 = { 1, 0, 0, 0 }
+	uniques.gar_smart_terrain_3_5   = { 1, 1, 0, 0 }
+	uniques.ds2_domik_st            = { 1, 1, 0, 0 }
+	uniques.mar_smart_terrain_10_5  = { 1, 1, 0, 0 }
+	uniques.jup_b41                 = { 1, 1, 0, 0 }
+
+	
+	if (uniques[smart:name()]) then
+
+		local tbl = uniques[smart:name()]		
+		local trader_pop = tbl[1]
+		local mechanic_pop = tbl[2]
+		local barmen_pop = tbl[3]
+		local medik_pop = tbl[4]
+
+		local mechanic_in_smart = 0
+		local trader_in_smart = 0
+		local medik_in_smart = 0
+		local barmen_in_smart = 0 
+		
+				
+		local squads = SIMBOARD.smarts[smart.id].squads
+		
+		for i,s in pairs(squads) do		
+			if string.find(s:name(), "mechanic") or string.find(s:name(), "tech") or string.find(s:name(), "drunk") then				
+               mechanic_in_smart = mechanic_in_smart + 1
+			end
+			   
+			if string.find(s:name(), "trader") or string.find(s:name(), "petrenko") then
+               trader_in_smart = trader_in_smart + 1
+			end
+			
+			if string.find(s:name(), "barmen") then
+               barmen_in_smart = barmen_in_smart + 1
+			end
+			
+			if string.find(s:name(), "medik") or string.find(s:name(), "medic") or string.find(s:name(), "doctor") then
+               medik_in_smart = medik_in_smart + 1
+			end		
+		end
+		
+		local smart_limit = npc_count(smart, smart.owning_faction)
+
+	    if (smart_limit < smart.max_population) then	
+			
+			local smart_tbl = sim_tables.unique_squads[smart:name()]
+			local faction_tbl = smart_tbl and smart_tbl[faction]
+			
+			local unique_trader = faction_tbl and faction_tbl[1]
+			local unique_mechanic = faction_tbl and faction_tbl[2]
+			local unique_barmen = faction_tbl and faction_tbl[3]
+			local unique_medik = faction_tbl and faction_tbl[4]
+	
+		    while mechanic_in_smart < mechanic_pop do	
+				sim_squad.create_squad(smart, faction, nil, unique_mechanic or mechanic, nil, 1)
+			    mechanic_in_smart = mechanic_in_smart + 1
+				printf("### EOC: -- check_npc 1 -- ".. smart:name() .." - mechanic ###")
+		    end
+			   
+		    while trader_in_smart < trader_pop do
+				sim_squad.create_squad(smart, faction, nil, unique_trader or trader, nil, 1)
+			    trader_in_smart = trader_in_smart + 1
+		        printf("### EOC: -- check_npc 2 -- ".. smart:name() .." - trader ###")
+		    end
+		
+		    while barmen_in_smart < barmen_pop do
+		       sim_squad.create_squad(smart, faction, nil, unique_barmen or barmen, nil, 1)
+			   barmen_in_smart = barmen_in_smart + 1
+		       printf("### EOC: -- check_npc 3 -- ".. smart:name() .." - barmen ###")
+		    end
+		
+		    while medik_in_smart < medik_pop do
+                sim_squad.create_squad(smart, faction, nil, unique_medik or medik, nil, 1)
+			    medik_in_smart = medik_in_smart + 1
+		        printf("### EOC: -- check_npc 4 -- ".. smart:name() .." - medik ###")
+		    end	
+		end
+	end
+end
+
+function smart_control(smart)
+
+	local tg = time_global()
+
+	if smart.last_npc_check ~= nil and tg < smart.last_npc_check then
+		return
+	end
+	
+	local option_factor = sim_options.get_warfare_control_option_factor()
+	smart.last_npc_check = tg + 30000 * option_factor
+
+	local squads = SIMBOARD.smarts[smart.id].squads
+
+	for i,squad in pairs(squads) do
+		local faction = squad:get_squad_community()
+		
+		if (squad.registered_in_simultaion and squad.current_action == 1 )then		
+		    local npc_count = npc_count_passive(smart, faction)
+					
+		    if (faction ~= smart.owning_faction and not game_relations.is_factions_enemies(faction, smart.owning_faction)) then
+		        if (smart.owning_faction ~= "none" and faction ~= "monster") then			  
+				    sim_squad.remove_squad(squad)
+					printf("### EOC: -- smart_control 1 -- ".. squad:name() .." - ".. smart:name() .." ###")
+			    end
+		    end
+
+			
+		    if (npc_count > smart.max_population) and (string.find(squad:name(), "veteran") or string.find(squad:name(), "advanced") or string.find(squad:name(), "novice")) then
+			    local squad_npcs = {}
+				
+		        if squad.current_action == 1 then
+			        for k in squad:squad_members() do
+		                squad_npcs[#squad_npcs+1] = k
+	                end
+					 
+			        local k1 = squad_npcs[math.random(#squad_npcs)]
+					
+					if (k1) then		
+		               squad:remove_npc(k1.id)
+					end
+					
+				   printf("### EOC: -- smart_control 2 -- ".. squad:name() .." - ".. smart:name() .." ###")
+				end
+			end
+	    end
+	end
+end
+
+
+function set_targets(smart)
+
+	local tg = time_global()
+
+	if smart.set_targets ~= nil and tg < smart.set_targets then
+		return
+	end
+
+	smart.set_targets = tg + 10000
+	
+	local target_smart_count = 0
+	for target,v in pairs(smart.target_smarts) do
+		local other = alife():object(target)
+		
+		if (other and other.owning_faction) then
+			if (other.owning_faction ~= "none" and not game_relations.is_factions_enemies(smart.owning_faction, other.owning_faction)) then
+				smart.target_smarts[other.id] = nil
+			else
+				target_smart_count = target_smart_count + 1
+			end
+		end
+	end
+
+	if (target_smart_count < 3) then
+		local targets = find_targets(smart)
+			
+		if (#targets > 0) then
+			for i=1,#targets do
+				if not (smart.target_smarts[targets[i][2]]) then
+					smart.target_smarts[targets[i][2]] = true
+					break
+				end
+			end
+		end
+	end
+
+end
+
+
+function spawn_defense_squad(smart)
+
+	if not (defense_timers[smart.id]) or (game.get_game_time():diffSec(defense_timers[smart.id]) > (defense_next_update[smart.id]*60)) then
+		defense_timers[smart.id] = game.get_game_time()
+		defense_next_update[smart.id] = sim_factions.faction_information[smart.owning_faction].respawn_defend
+	else
+		return
+	end
+	
+	local faction = smart.owning_faction
+	local npc_in_smart = npc_count_passive(smart, faction)
+	
+	local fi = sim_factions.faction_information[smart.owning_faction]
+	
+	if (fi) then
+	    if fi.faction_passive_npc_limit > fi.passive_npc then	
+	        if npc_in_smart < smart.max_population then
+	           sim_squad.create_squad(smart, faction, nil, nil, nil, 1)
+			end
+	    end
+	end
+end
+
+
+function spawn_attack_squad(smart)
+
+	if not (attack_timers[smart.id]) or (game.get_game_time():diffSec(attack_timers[smart.id]) > (attack_next_update[smart.id]*60)) then
+		attack_timers[smart.id] = game.get_game_time()
+		attack_next_update[smart.id] = sim_factions.faction_information[smart.owning_faction].respawn_attack
+	else
+		return
+	end
+
+	local night = (level.get_time_hours() < 6 or level.get_time_hours() > 20)
+	local faction = smart.owning_faction
+
+	if (night and math.random(100) > 80) then
+		return
+	end
+
+	local s = {}
+	for t,v in pairs(smart.target_smarts) do
+		s[#s+1] = t
+	end
+	
+	local target
+
+    for t,v in pairs(smart.target_smarts) do
+		local other = alife():object(t)
+			
+		if other then
+		
+			if squad_count(other, smart.owning_faction) < 3 then
+				target = other
+			end
+		end
+	end
+	
+	if (target) then
+
+      	local need_spawn = npc_count_passive(target, target.owning_faction)
+	
+        if need_spawn > 10 then
+	       need_spawn = 10
+	    end
+
+	    local fi = sim_factions.faction_information[smart.owning_faction]
+	
+	    if (fi) then
+		   local allowed_for_spawn = fi.faction_active_npc_limit - fi.active_npc
+		
+		    if need_spawn > allowed_for_spawn then
+		       need_spawn = allowed_for_spawn		   
+            end
+        end		
+		  			
+		sim_squad.create_squad(smart, faction, target, nil, need_spawn, 1)
+	end
+end		 
+
+function spawn_mutants(smart)
+
+	if not (mutant_timers[smart.id]) or (game.get_game_time():diffSec(mutant_timers[smart.id]) > (mutant_next_update[smart.id]*60)) then
+		mutant_timers[smart.id] = game.get_game_time()
+		mutant_next_update[smart.id] = 70
+	else
+		return
+	end
+
+	local mutants_on_level = sim_offline_control.get_num_squads_on_level(smart.level_id, "monster")
+	local mutants = squad_count(smart, "monster")
+	local mutant_coef = sim_brain.check_mutant_coef(smart)
+	local level = alife():level_name(game_graph():vertex(smart.m_game_vertex_id):level_id())
+	local section	
+	
+	if level ~= l12u_control_monolith or level ~= l12u_sarcofag or level ~= l11_hospital then
+	    if (mutants_on_level < mutant_coef) then
+		    if mutants < 1 then	
+		
+                local tier = sim_tables.mutants_tier_by_lvl
+
+	            if tier[level] ~= nil then
+		           section = tier[level][math.random(#tier[level])]
+           	    end		
+			
+			    if section then
+					if (IsSurvivalMode()) then
+						section = sim_survival.try_replace_mutant_by_zombies(section)
+					end
+                   sim_squad.create_squad(smart, nil, nil, section, nil, 1)
+			    end
+		    end
+	    end
+	end
+end
+
+function process_mutants(smart)
+
+	local tg = time_global()
+
+	if smart.process_mutants ~= nil and tg < smart.process_mutants then
+		return
+	end
+
+	smart.process_mutants = tg + 30000
+	
+	local squads = SIMBOARD.smarts[smart.id].squads
+	local night = (level.get_time_hours() < 6 or level.get_time_hours() > 20)
+	local level_info = sim_levels.level_information[smart.level_id]
+
+	for id,squad in pairs(squads) do
+	    if squad:get_squad_community() == "monster" then
+		    for i,sm in pairs(level_info.smarts) do
+		        if (game.get_game_time():diffSec(squad.arrive_time) >= squad.wait_time) then	
+			        local other = sm and alife():object(sm)	
+					if (other and other.props) then
+	                    if (night) then
+						    if math.random(100) > 50 then
+			                    if (other.owning_faction ~= "none") then
+				                   sim_squad.set_target(squad, sm)
+				                   break	
+                                end		
+                            else
+							    if (other.owning_faction == "none") then
+							 	    local mutants_in_target = squad_count(other, "monster")
+								
+                                    if mutants_in_target < 1 then
+								       sim_squad.set_target(squad, sm)									
+								       break
+							        end
+							    end	
+                            end								
+			            else											
+							if (other.owning_faction == "none") then
+								local mutants_in_target = squad_count(other, "monster")
+								
+                                if mutants_in_target < 1 then
+								    sim_squad.set_target(squad, sm)									
+								    break
+							    end
+							end
+				        end
+				    end				
+	            end
+            end
+	    end
+    end
+end
+
+function find_targets(smart)
+
+	local level = game_graph():vertex(smart.m_game_vertex_id):level_id()
+	local linked = sim_tables.level_links[level]	
+	local currentLevelSmarts = sim_levels.level_information[level].smarts
+	local smartCollection = {}
+	local faction = smart.owning_faction or "none"
+
+	for i=1,#currentLevelSmarts	do
+		smartCollection[#smartCollection+1] = currentLevelSmarts[i]
+	end
+	
+	for lvl,_ in pairs(linked) do
+		local smarts = sim_levels.level_information[lvl].smarts
+		
+		for i=1,#smarts do
+			smartCollection[#smartCollection+1] = smarts[i]
+		end
+	end
+	
+	local targets = {}
+	
+	if (faction == "monster") then
+		return
+	end
+	
+	for i=1,#smartCollection do
+
+		local other = alife_object(smartCollection[i])		
+		
+		if (other and other.props) then
+			if (other.props) then
+				local dist = smart.global_position:distance_to_sqr(other.global_position)
+				local priority = 0
+				local faction2 = other.owning_faction or "none"			
+				local otherLevel = game_graph():vertex(other.m_game_vertex_id):level_id()
+								
+				if (other.props[faction]) then
+					priority = priority + (other.props[faction] * 2)
+				end
+				
+				if (other.props.base > 0) then
+					priority = priority + 15
+					
+                    if other.owning_faction == "none" then
+				       priority = priority + 5
+					end
+				end
+				
+				if (other.props.resource > 0) then
+					priority = priority + 10
+				end			
+				
+				if (other.target_smarts) then
+					if (other.target_smarts[smart.id]) then
+						priority = priority + 7
+					end
+				end
+				
+				if (other.props.territory > 0) then
+					priority = priority + 3
+				end
+							
+				if (otherLevel == level) then
+					priority = priority + 5
+				end
+				
+				if (other.props.lair) > 0 then
+				    priority = priority - 10
+				end
+								               
+				if db.actor and not(db.actor:has_info("bar_deactivate_radar_done")) then
+                   if sim_brain.monolith_level(other) and (faction ~= "monolith" and faction ~= "zombied" and faction ~= "monster") then
+                      priority = priority - 500	
+                   end	
+                end				  
+				
+				if (faction2 == "none" or game_relations.is_factions_enemies(faction, faction2)) then
+					targets[#targets+1] = {math.abs(dist/priority), other.id}
+				end
+			end
+		end
+	end
+	
+	targets = sim_brain.sort_priority_table(targets)
+	return targets
+end
+
+function squad_count(smart, faction)
+
+	if not (smart.owning_faction) then
+		smart.owning_faction = "none"
+	end
+	
+	local squads = SIMBOARD.smarts[smart.id].squads
+    local squad_count = 0
+	
+	for i,squad in pairs(squads) do
+		if (squad.registered_in_simultaion and squad:get_squad_community() == faction) then
+			squad_count = squad_count + 1					
+		end
+	end
+
+	return squad_count
+end
+
+function npc_count(smart, faction)
+
+	if not (smart.owning_faction) then
+		smart.owning_faction = "none"
+	end
+	
+	local squads = SIMBOARD.smarts[smart.id].squads
+    local npc_count = 0
+	
+	for i,squad in pairs(squads) do
+		if (squad.registered_in_simultaion and squad:get_squad_community() == faction) then
+		    local npc_in_squad = squad:npc_count()
+			npc_count = npc_count + npc_in_squad					
+		end
+	end
+
+	return npc_count
+end
+
+function npc_count_passive(smart, faction)
+
+	if not (smart.owning_faction) then
+		smart.owning_faction = "none"
+	end
+	
+	local squads = SIMBOARD.smarts[smart.id].squads
+    local npc_count = 0
+	
+	for i,squad in pairs(squads) do
+		if (squad.registered_in_simultaion and squad:get_squad_community() == faction and squad.current_action == 1) then
+		    local npc_in_squad = squad:npc_count()
+			npc_count = npc_count + npc_in_squad					
+		end
+	end
+
+	return npc_count
+end
+
+function npc_count_active(smart, faction)
+
+	if not (smart.owning_faction) then
+		smart.owning_faction = "none"
+	end
+	
+	local squads = SIMBOARD.smarts[smart.id].squads
+    local npc_count = 0
+	
+	for i,squad in pairs(squads) do
+		if (squad.registered_in_simultaion and squad:get_squad_community() == faction and squad.current_action == 0) then
+		    local npc_in_squad = squad:npc_count()
+			npc_count = npc_count + npc_in_squad					
+		end
+	end
+
+	return npc_count
+end
+
+function check_owner(smart)
+
+	if not (smart) then
+		return
+	end
+	
+	if (smart.time_to_capture) then
+	    smart.owning_faction = "none"
+	    return
+	end
+	
+	if (not SIMBOARD.smarts[smart.id]) then
+		smart.owning_faction = "none"
+		return
+	end
+	
+	if not (SIMBOARD.smarts[smart.id].squads) then
+		smart.owning_faction = "none"
+		return
+	end
+
+	local squads = SIMBOARD.smarts[smart.id].squads
+	local squadCount = {}
+	local squadPowers = {}
+	
+	if not (smart.owning_faction) then
+		smart.owning_faction = "none"
+	end
+
+	for i,squad in pairs(squads) do
+		if ((squad.current_action == 1 or squad.combat_action == 1) and squad.registered_in_simultaion) then
+			local faction = squad:get_squad_community()
+			
+			if not (squadCount[faction]) then
+				squadCount[faction] = 0
+				squadPowers[faction] = 0
+			end
+			
+			local power = sim_offline_control.ocs_power_table[squad.id]
+			
+			if (power and power > 0) then
+				squadPowers[faction] = squadPowers[faction] + power
+			end
+
+			squadCount[faction] = squadCount[faction] + 1
+		end
+	end
+	
+	local owner = "none"
+	for faction,count in pairs(squadCount) do	
+		if (owner == "none" or faction == smart.owning_faction) then		
+			owner = faction
+		elseif (squadCount[owner] < count and smart.owning_faction == "none") then			
+			owner = faction
+		end
+	end
+	
+	if (owner == "monster") then
+		owner = "none"
+	end
+
+	smart.defense_count = squadCount[owner] or 0
+	smart.defense_power = squadPowers[owner] or 0
+	
+	if owner ~= "none" then
+	   smart.last_last_owner = owner
+	end
+	
+	if not (smart.last_owner) then
+		smart.last_owner = owner
+	end
+	
+	if (smart.last_owner ~= smart.owning_faction) then
+		if (smart.target_smarts) then		
+			smart:hide()
+			smart.target_smarts = {}
+			smart:show()			
+		end
+	end
+	
+	if (smart.last_owner) then
+		smart.last_owner = smart.owning_faction
+	end
+
+	smart.owning_faction = owner	
+end

@@ -4,7 +4,8 @@ by Alundaio
 -]]
 
 -- SEE configs\ai_tweaks\axr_companions
-allow_only_friends_as_companions = true
+allow_neutrals_as_companions = true
+allow_friends_as_companions = true
 allow_simulation_squads_as_companions = false
 max_actor_squad_size = 0 -- used only for non task companions
 
@@ -24,6 +25,12 @@ local function on_fighting_actor(npc)
 	if not (IsStalker(npc)) then
 		return 
 	end
+	
+	if (is_companion(npc)) then
+		remove_from_actor_squad(npc)
+		return
+	end
+	
 	--alun_utils.debug_write(strformat("axr_companions.on_fighting_actor"))
 				
 	for id,squad in pairs(companion_squads) do 
@@ -179,7 +186,8 @@ function on_game_start()
 	RegisterScriptCallback("load_state",load_state)
 	RegisterScriptCallback("on_game_load",on_game_load)
 
-	allow_only_friends_as_companions = ini:r_bool_ex("main","allow_only_friends_as_companions",false)
+	allow_neutrals_as_companions = ini:r_bool_ex("main","allow_neutrals_as_companions",false)
+	allow_friends_as_companions = ini:r_bool_ex("main","allow_friends_as_companions",false)
 	allow_simulation_squads_as_companions = ini:r_bool_ex("main","allow_simulation_squads_as_companions",false)
 	max_actor_squad_size = ini:r_float_ex("main","max_actor_squad_size") or 2
 end
@@ -268,8 +276,8 @@ end
 function remove_from_actor_squad(npc)
 	local squad = get_object_squad(npc)
 	if (squad) then 
-		squad.scripted_target = nil
 		companion_squads[squad.id] = nil
+		squad:reset()
 	end
 	
 	non_task_companions[npc:id()] = nil
@@ -293,7 +301,6 @@ function remove_all_from_actor_squad()
 			for k in squad:squad_members() do 
 				local se_obj = k.object or alife():object(k.id)
 				if (se_obj) then 
-					squad.scripted_target = nil
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion",nil)
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss",nil)
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_teleport",nil)		
@@ -306,8 +313,9 @@ function remove_all_from_actor_squad()
 					end
 				end
 			end
+			companion_squads[id] = nil
+			squad:reset()
 		end
-		companion_squads[id] = nil
 	end
 
 	for id,b in pairs(non_task_companions) do
@@ -842,7 +850,7 @@ function UICompanionList:Update(force)
 	local clist = list_actor_squad_by_id()
 	for i=1,8 do
 		local se_obj = clist[i] and alife_object(clist[i])
-		if companions_hud and to_show and (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive()) then
+		if companions_hud and to_show and (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and not is_hostage(se_obj)) then
 			local st = db.storage[se_obj.id]
 			local npc = st and st.object
 			local ele = self.companion_info[i]
@@ -883,4 +891,47 @@ function UICompanionList:Update(force)
 			self.companion_info[i].base:Show(false)
 		end
 	end
+end
+
+------------------------------------------
+-- Added by Dancher
+------------------------------------------
+
+function has_companion()
+    local result = false
+    
+	for id,squad in pairs(companion_squads) do
+		if (squad) then
+			for member in squad:squad_members() do
+				local se_obj = member.object or alife():object(member.id)
+				if (not is_hostage(se_obj)) then
+					result = true
+					break
+				end
+			end
+		end
+	end
+    
+    return result
+end
+
+function is_companion(npc)
+	local result = false
+	
+	local se_obj = alife():object(npc:id())
+	local is_npc_hostage = se_obj and is_hostage(se_obj) or false
+
+	if (has_companion() and not is_npc_hostage) then
+		result = npc:has_info("npcx_is_companion")
+		if (not result) then
+			local clist = list_actor_squad_by_id()
+			result = clist[npc:id()] ~= nil
+		end
+	end
+    
+    return result
+end
+
+function is_hostage(se_obj)
+	return utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_is_hostage") == true
 end

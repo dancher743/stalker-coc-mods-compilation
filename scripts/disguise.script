@@ -1,0 +1,328 @@
+----------------------
+-- File: Disguise System
+-- Author: strelocc
+-- Adapted and improved for Anomaly: seargedp
+-- Tweaked for CoC 1.4.22: SarisKhan
+-- Reworked due to patch dressing feature: Dancher
+----------------------
+
+-- update rates in milliseconds
+local actor_update_rate = 1000
+local npc_update_rate = 2000
+
+-- update timers
+local actor_update_timer = time_global()
+local npc_update_timer = time_global()
+
+--time you need to be hidden (not seen by any npc) before changing outfit to make the disguise effective, 100 means roughly 10 seconds
+local time_to_forget = 100
+
+--minimum condition for an outfit to work as disguise
+--set to 0 to not consider outfit condition, if you want only mint condition outfits to work set to 0.99 and not 1 because condition can never be exactly 1
+local min_condition_o = 0.25
+
+--minimum condition for an helmet to reduce suspicion buildup
+--set to 0 to not consider helmet condition, if you want only mint condition helmets to work set to 0.99 and not 1 because condition can never be exactly 1
+local min_condition_h = 0.25
+
+--distance within npc will start doubting the disguise (if they are seeing you)
+--5 = 1 wood box width
+local discovery_distance = 25
+
+--how much time it takes to be discovered when in view, 100 is roughly 1 minute with uncovered face
+local suspicion_limit = 100
+local warning_limit = suspicion_limit * 2 / 3
+local dewarn_limit = suspicion_limit * 1 / 3
+
+local last_seen = {}
+local suspicion = {}
+local callout = false
+local warned = false
+
+local patch_slot_number = 14
+local prev_patch_in_slot
+
+local default_faction
+local disguise_community
+
+local patch_sections = {
+	["csky_patch"] 			= "csky",
+	["freedom_patch"] 		= "freedom",
+	["stalker_patch"] 		= "stalker",
+	["ecolog_patch"] 		= "ecolog",
+	["bandit_patch"] 		= "bandit",
+	["duty_patch"] 			= "dolg",
+	["monolith_patch"] 		= "monolith",
+	["army_patch"] 			= "army",
+	["merc_patch"] 			= "killer"
+}
+
+function on_game_start()
+	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
+	RegisterScriptCallback("actor_on_update",actor_on_update)
+	RegisterScriptCallback("npc_on_update",npc_on_update)
+	
+	RegisterScriptCallback("on_game_load",on_game_load)
+	
+	RegisterScriptCallback("save_state",save_state)
+	RegisterScriptCallback("load_state",load_state)
+end
+
+function on_game_load()
+	--printf("DBG on_game_load")
+	local defaults = {
+		disguise_system = {
+			ds_default_faction = default_faction or character_community(db.actor):sub(7) or "stalker",
+			ds_last_seen = last_seen,
+			ds_suspicion = suspicion,
+			ds_callout = callout,
+			ds_warned = warned,
+			ds_community = disguise_community
+		}
+	}
+	load_state(defaults)
+	--printf("DBG default " .. (default_faction or "?"))
+end
+
+function actor_on_first_update()
+    prev_patch_in_slot = db.actor:item_in_slot(patch_slot_number)
+end
+
+function actor_on_update()
+	local actor = db.actor
+	
+	if not actor:alive() then
+		return
+	end
+	
+	local time_global = time_global()
+	if actor_update_timer >= time_global then
+		return
+	else
+		actor_update_timer = time_global + actor_update_rate
+	end
+
+	local actor_community = utils.get_actor_community()
+
+	update_default_faction(actor_community)
+	disguise_by_patch(actor_community)
+end
+
+function update_default_faction(actor_community)	
+	if not disguise_helper.has_faction_changed(actor_community, disguise_community, default_faction) then
+		return
+	end
+	
+	default_faction = actor_community
+end
+
+function disguise_by_patch(actor_community)
+	local patch_in_slot = db.actor:item_in_slot(patch_slot_number)
+	local has_actor_disguised = has_actor_disguised(actor_community)
+	local disguise_tip_type = disguise_news.disguise_tip_type
+	
+	if disguise_helper.has_patch_changed(patch_in_slot, prev_patch_in_slot) then
+		disguise_news.reset_once_disguise_tips()
+	end
+	
+	if not patch_in_slot and has_actor_disguised then
+		if disguise_helper.has_actor_in_sight(last_seen, time_to_forget) then
+			disguise_news.send_disguise_tip_once(disguise_tip_type.not_allowed)
+		else
+			local previous_community = disguise_community
+			change_actor_community(default_faction)
+			actor_community = default_faction
+			has_actor_disguised = false
+			disguise_news.send_disguise_tip(disguise_tip_type.returned, previous_community)
+		end
+	end
+	
+	if patch_in_slot then
+		local patch_community = patch_sections[patch_in_slot:section()]
+		if actor_community ~= patch_community then
+			if axr_companions.has_companion() then
+				disguise_news.send_disguise_tip_once(disguise_tip_type.has_companion)
+			elseif disguise_helper.has_actor_in_sight(last_seen, time_to_forget) then
+				disguise_news.send_disguise_tip_once(disguise_tip_type.not_allowed)
+			else
+				change_actor_community(patch_community)
+				actor_community = patch_community
+				has_actor_disguised = true
+				if patch_community ~= default_faction then
+					disguise_news.send_disguise_tip(disguise_tip_type.changed, patch_community)
+				end
+			end
+		elseif not has_actor_disguised then
+			disguise_news.send_disguise_tip_once(disguise_tip_type.same)
+		end
+	end
+	
+	prev_patch_in_slot = patch_in_slot
+end
+
+function has_actor_disguised(actor_community)
+	if (actor_community == nil) then
+		actor_community = utils.get_actor_community()
+	end
+	return disguise_community ~= nil and disguise_community == actor_community
+end
+
+function change_actor_community(community)	
+	if community == default_faction then
+		suspicion = {}
+		callout = true
+		warned = true
+		disguise_community = nil
+	else
+		suspicion = {}
+		callout = false
+		warned = false
+		disguise_community = community
+	end
+	
+	db.actor:set_character_community( ("actor_" .. community), 0, 0 )
+end
+
+function npc_on_update(npc)
+	if not default_faction or not db.actor then return end
+	
+	local time_global = time_global()
+	if npc_update_timer >= time_global then
+		return
+	else
+		npc_update_timer = time_global + npc_update_rate
+	end
+	
+	local npc_is_enemy = game_relations.is_factions_enemies(default_faction, npc:character_community()) or npc:relation(db.actor) == game_object.enemy
+
+	local current = utils.get_actor_community()
+	if current ~= default_faction and npc:see(db.actor) and npc_is_enemy then
+		local id = npc:id()
+		last_seen[id] = game.get_game_time()
+		
+		if suspicion[id] then
+			local distance = npc:position():distance_to_sqr(db.actor:position())
+			suspicion[id] = suspicion[id] + suspicion_increase(distance)
+			
+			if (suspicion[id] > suspicion_limit) then
+				if not callout then
+					disguise_news.send_tip(game.translate_string("st_disguise_exposure_discovered"))
+					--printf("discovered at %s",os.date("%X"))
+				end
+				change_actor_community(default_faction)
+				current = default_faction
+				disguise_news.reset_once_disguise_tips()
+			elseif not warned and suspicion[id] > warning_limit then
+				disguise_news.send_suspicious_tip(npc) 
+				warned = true
+			end
+		else
+			--printf("saw at %s",os.date("%X"))
+			suspicion[id] = 1
+		end
+	else
+		local id = npc:id()
+		if suspicion[id] then
+			suspicion[id] = suspicion[id] - 1
+			if (suspicion[id] <= 0) then
+				suspicion[id] = nil
+			end
+		end
+	end
+
+	if warned and current ~= default_faction then
+		local suspicious = false
+		for k,v in pairs(suspicion) do
+			if v and v > dewarn_limit then
+				suspicious = true
+				break
+			end
+		end
+		if not suspicious then
+			disguise_news.send_tip(game.translate_string("st_disguise_exposure_avoided"))
+			warned = false
+		end
+	end
+end
+
+function suspicion_increase(distance)
+	local increase = 1
+	
+	if(distance > discovery_distance) then
+		increase = 0
+	else
+		local helm = db.actor:item_in_slot(12)
+		local outfit = db.actor:item_in_slot(7)
+		local has_helm_hides = helm and (helm:condition() > min_condition_h)
+		local has_outfit_hides = outfit and (outfit:condition() > min_condition_o)
+		local actor_community = utils.get_actor_community()
+		
+		if not has_helm_hides and has_outfit_hides then
+			has_helm_hides = alun_utils.read_from_ini(nil,outfit:section(),"helmet_avaliable","bool",false)
+		end
+		
+		if has_helm_hides then
+			increase = increase - 0.25
+		end
+		
+		if has_outfit_hides then
+			increase = increase - 0.25
+			
+			if disguise_helper.is_outfit_fits_community(actor_community, outfit:section()) then
+				increase = increase - 0.25
+			end
+		end
+	end
+	
+	--printf("DBG suspicion increased: "..increase)
+	return increase
+end
+
+function save_state(data)
+	--printf("DBG save_state")
+	data.disguise_system = {}
+	data.disguise_system.ds_default_faction = default_faction
+	data.disguise_system.ds_callout = callout
+	data.disguise_system.ds_warned = warned
+	data.disguise_system.ds_last_seen = last_seen
+	data.disguise_system.ds_suspicion = suspicion
+	data.disguise_system.ds_community = disguise_community
+
+	--printf("DBG default " .. (default_faction or "?"))
+end
+
+function load_state(data)
+	--printf("DBG load_state")
+	if not data.disguise_system then return end
+	default_faction = data.disguise_system.ds_default_faction
+	callout = data.disguise_system.ds_callout
+	warned = data.disguise_system.ds_warned or callout
+	disguise_community = data.disguise_system.ds_community 
+
+	if not default_faction or default_faction == "" then
+		default_faction = db.actor and character_community(db.actor):sub(7) or ""
+		printf("DBG loaded default " .. (default_faction or "?"))
+	end
+
+	local last_seen_load = data.disguise_system.ds_last_seen
+	last_seen = {}
+	for k,v in pairs(last_seen_load) do
+		if v then
+			last_seen[k] = v
+		end
+	end
+
+	local suspicion_load = data.disguise_system.ds_suspicion
+	suspicion = {}
+	for k,v in pairs(suspicion_load) do
+		if v then
+			suspicion[k] = v
+		end
+	end
+
+	--printf("DBG default " .. (default_faction or "?"))
+end
+
+function get_actor_default_faction()
+	return "actor_"..default_faction
+end

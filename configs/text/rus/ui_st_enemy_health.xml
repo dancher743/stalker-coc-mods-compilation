@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="ui_st_enemy_health_bloodsucker">
+		<text>Кровосос</text>
+	</string>
+	<string id="ui_st_enemy_health_boar">
+		<text>Кабан</text>
+	</string>
+	<string id="ui_st_enemy_health_burer">
+		<text>Бюрер</text>
+	</string>
+	<string id="ui_st_enemy_health_cat">
+		<text>Кот-баюн</text>
+	</string>
+	<string id="ui_st_enemy_health_chimera">
+		<text>Химера</text>
+	</string>
+	<string id="ui_st_enemy_health_controller">
+		<text>Контролёр</text>
+	</string>
+	<string id="ui_st_enemy_health_dog">
+		<text>Слепой пёс</text>
+	</string>
+	<string id="ui_st_enemy_health_flesh">
+		<text>Плоть</text>
+	</string>
+	<string id="ui_st_enemy_health_fracture">
+		<text>Излом</text>
+	</string>
+	<string id="ui_st_enemy_health_gigant">
+		<text>Псевдогигант</text>
+	</string>
+	<string id="ui_st_enemy_health_poltergeist">
+		<text>Полтергейст</text>
+	</string>
+	<string id="ui_st_enemy_health_pseudodog">
+		<text>Псевдособака</text>
+	</string>
+	<string id="ui_st_enemy_health_psy_dog_phantom">
+		<text>Пси-собака</text>
+	</string>
+	<string id="ui_st_enemy_health_psy_dog">
+		<text>Пси-собака</text>
+	</string>
+	<string id="ui_st_enemy_health_rat">
+		<text>Крыса</text>
+	</string>
+	<string id="ui_st_enemy_health_snork">
+		<text>Снорк</text>
+	</string>
+	<string id="ui_st_enemy_health_tushkano">
+		<text>Тушкан</text>
+	</string>
+	<string id="ui_st_enemy_health_zombie">
+		<text>Зомби</text>
+	</string>
+</string_table>

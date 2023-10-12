@@ -1,0 +1,229 @@
+hide_sim = false
+
+function squad_on_update(squad)
+    
+	local faction = squad:get_squad_community()
+	
+	if sim_tables.ignore[squad:section_name()] then
+	   return
+	end
+
+	if not (squad.registered_in_simultaion) then	
+
+		if (squad.checked_register) then
+			return
+		end
+
+		squad.checked_register = true
+		
+		if (squad:clsid() ~= clsid.online_offline_group_s) then
+			return
+		end
+
+		if (sim_tables.registered_squads[faction] and sim_tables.registered_squads[faction][squad.id]) then
+			squad.registered_in_simultaion = true
+		end
+	end
+	
+    sim_offline_control.squad_on_update(squad)		
+	squad_control(squad)
+	squad_update(squad) 
+end
+
+
+function squad_control(squad)
+
+	squad.__lock = true
+	squad.scripted_target = ""	
+	
+	if not (sim_offline_control.ocs_power_table[squad.id]) then
+	    sim_offline_control.calculate_squad_power(squad)
+	end
+	
+	if squad.current_target_id and not squad.assigned_target_id then
+	    squad.assigned_target_id = squad.current_target_id
+	end
+
+	local power = sim_offline_control.ocs_power_table[squad.id]
+		
+	if squad.protect == true and squad.current_action == 1 then
+	   squad.protect = nil
+	end
+	
+	if squad.current_action and squad.current_action == 0 then
+	   squad.rush_to_target = true
+	else
+	   squad.rush_to_target = false
+	end
+
+	if (squad.sim_combat_manager) then
+		if (squad.online) then
+			squad.sim_combat_manager:disband()
+		end
+	end	
+	
+	if (power <= 0) or (squad:npc_count() <= 0) then
+	    if not(squad.sim_combat_manager) then
+           printf("### EOC: -- squad_control -- ".. squad:name() .." ###")		   
+	       remove_squad(squad)
+		end
+	end
+end
+
+function create_squad(smart, faction, target, type, number, param)
+
+    local squad
+
+	if type then
+	   squad = SIMBOARD:create_squad(smart, type)
+	   local faction = squad:get_squad_community()
+	   
+	    if faction == "monster" then
+			local lvl = game_graph():vertex(squad.m_game_vertex_id):level_id()	
+
+			if not sim_offline_control.squads_by_level[lvl] then
+				sim_offline_control.squads_by_level[lvl] = {}
+			end
+			
+			sim_offline_control.squads_by_level[lvl][squad.id] = true
+	    end  
+	else
+		if (IsSurvivalMode()) then
+			if (sim_survival.should_faction_replace_by_zombied(faction)) then
+				faction = "zombied"
+			elseif (sim_survival.should_dont_create_squad(faction)) then
+				return
+			end
+		end
+	
+	    local random = math.random(30) + sim_factions.faction_information[faction].resource_count
+	    local section = "novice"
+
+	    if random >= 20 and random <= 30 then
+	       section = "advanced"
+	    elseif random > 30 then
+		   section = "veteran"
+	    end
+		
+		if (not(number) or number < 3) then
+		   squad = SIMBOARD:create_squad(smart, faction .."_sim_squad_".. section)
+		else
+		   squad = SIMBOARD:create_squad(smart, faction .."_sim_squad_".. section .."_"..number)
+		end
+	end
+	
+	if (squad) and param == 2 then
+	    squad.protect = true
+	end
+	
+	if squad then
+	    if target then	     
+	       set_target(squad, target.id)
+		    printf("### EOC: -- create_squad 1 -- ".. squad:name() .." - ".. smart:name().." - ".. target:name().." ###")	
+	    else
+		   printf("### EOC: -- create_squad 2 -- ".. squad:name() .." - ".. smart:name().." ###")	
+	       set_target(squad, smart.id)
+	    end			
+	end	
+end
+
+function remove_squad(squad)
+	
+	if not(squad) then
+		return
+	end
+	
+	local f = squad:get_squad_community()
+
+	sim_tables.registered_squads[f][squad.id] = nil
+	sim_offline_control.ocs_power_table[squad.id] = nil
+	squad.registered_in_simultaion = false
+	squad:hide() 
+	
+	if (squad:clsid() == clsid.online_offline_group_s) then
+		SIMBOARD:remove_squad(squad)
+	end
+end
+
+function squad_update(squad)
+
+	if (squad.current_action) then
+		local se_target = squad.current_target_id and simulation_objects.get_sim_obj_registry().objects[squad.current_target_id]
+		
+		if (se_target) then
+			if (squad.smart_id ~= squad.current_target_id and se_target:clsid() == clsid.smart_terrain) then
+				squad:assign_smart(se_target, squad.smart_id)
+			end
+
+			if (squad.current_action == 0 and not squad.combat_target_id) then
+				if (se_target:clsid() == clsid.smart_terrain) then
+					local smartOwner = se_target.owning_faction or "none"
+					
+					if not (game_relations.is_factions_enemies(smartOwner, squad:get_squad_community())) then
+						if (se_target:am_i_reached(squad)) then
+							se_target:on_after_reach(squad)
+							squad.current_action = 1
+							squad.arrive_time = game.get_game_time()
+							squad.wait_time = math.random(10, 60)
+						end
+					end
+				else
+					if (se_target:am_i_reached(squad)) then
+						se_target:on_after_reach(squad)
+						squad.current_action = 1
+						squad.arrive_time = game.get_game_time()
+						squad.wait_time = math.random(10, 60)
+					end
+				end
+			end
+		else
+			local levelID = game_graph():vertex(squad.m_game_vertex_id):level_id()
+			
+			if (sim_levels.level_information[levelID] and sim_levels.level_information[levelID].smarts) then
+				for i,sm in pairs(sim_levels.level_information[levelID].smarts) do
+					local smart = sm and alife_object(sm)
+					
+					if (smart) then
+						sim_squad.set_target(squad, smart.id)
+					end
+				end
+			end
+		end
+	end	
+end
+
+function set_target(squad, target)
+    
+	if not (squad) then
+	    return
+    end
+	
+	if (sim_tables.ignore[squad:section_name()]) then
+		return
+	end
+
+    local obj = target and alife():object(target)
+
+    if (obj) then
+        squad.current_action = 0
+        squad.scripted_target = ""
+        squad.current_target_id = target
+        squad.assigned_target_id = target
+		squad.registered_in_simultaion = true
+		sim_tables.registered_squads[squad:get_squad_community()][squad.id] = target
+        obj:on_reach_target(squad)
+
+        if not (squad.registered_in_simultaion) then
+            squad.registered_in_simultaion = true
+            sim_tables.registered_squads[squad:get_squad_community()][squad.id] = target
+        end		
+	
+		local sim = alife()
+		for k in squad:squad_members() do
+			local se_obj = k.object or k.id and sim:object(k.id)
+			if (se_obj) then
+				SIMBOARD:setup_squad_and_group(se_obj)
+			end
+		end
+    end
+end

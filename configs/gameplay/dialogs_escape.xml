@@ -35,6 +35,31 @@
             </phrase>
           </phrase_list>
     </dialog>
+	<dialog id="esc_2_12_stalker_trader_change_actor_name_dialog">
+        <phrase_list>
+		    <phrase id="0">
+                <text>esc_2_12_stalker_trader_change_actor_name_dialog_0</text>
+				<next>1</next>
+            </phrase>
+		    <phrase id="1">
+                <text>esc_2_12_stalker_trader_change_actor_name_dialog_1</text>
+				<next>11</next>
+				<next>12</next>
+            </phrase>
+			<phrase id="11">
+				<precondition>dialogs_escape.actor_has_money_to_change_name</precondition>
+                <text>esc_2_12_stalker_trader_change_actor_name_dialog_11</text>
+				<action>dialogs_escape.show_change_name_dialog_window</action>
+				<next>2</next>
+            </phrase>
+			<phrase id="12">
+                <text>esc_2_12_stalker_trader_change_actor_name_dialog_12</text>
+            </phrase>
+			<phrase id="2">
+                <text>esc_2_12_stalker_trader_change_actor_name_dialog_2</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
 <!--------------------------- esc_2_12_stalker_wolf_start ---------- -->
    <dialog id="esc_2_12_stalker_wolf_start_dialog">
         <phrase_list>

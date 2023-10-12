@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<!-- Barman dialogs -->
+	
+	<string id="barman_safe_houses_bar_room_0">
+        <text>I'm looking for a safe house to settle in. Would you answer?</text>
+    </string>
+	<string id="barman_safe_houses_bar_room_1">
+        <text>I just have an empty back room. It has a sofa to sleep in and a safe where you can store your personal belongings. It can also safely survive a surge. For 30000 rubles it will be yours.</text>
+    </string>
+	<string id="barman_safe_houses_bar_room_2">
+		<text>I agree. Here's the money.</text>
+	</string>
+	<string id="barman_safe_houses_bar_room_3">
+		<text>Next time.</text>
+	</string>
+	<string id="barman_safe_houses_bar_room_4">
+		<text>Great. Go into the room and make yourself comfortable. I'll tell Garik to let you through. You can pass whenever you want, but talk with him first.</text>
+	</string>
+	<string id="barman_safe_houses_bar_room_5">
+		<text>Amazing! Thank you.</text>
+	</string>
+	
+	<!-- Guard dialogs -->
+	
+	<string id="bar_guard_safe_houses_bar_room_pass_0">
+		<text>Let me through.</text>
+	</string>
+</string_table>

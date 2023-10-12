@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>	
+	<string id="st_meat_tushkano">
+		<text>Rat skewers</text>
+	</string>
+	<string id="st_meat_tushkano_descr">
+		<text>Two small skewered tushkanos, grilled and seasoned with salt and chili pepper. The cheapest hot meal available in the Zone.</text>
+	</string>
+	<string id="st_meat_dog">
+		<text>Dog chops</text>
+	</string>
+	<string id="st_meat_dog_descr">
+		<text>A small hot meal of grilled dog chops mixed with garlic, peppers and mushrooms. A cheap alternative to the more popular boar beef.</text>
+	</string>
+	<string id="st_meat_pseudodog">
+		<text>Pseudodog chops</text>
+	</string>
+	<string id="st_meat_pseudodog_descr">
+		<text>Portion of grilled pseudodog meat chops. Good nutrition value due to thick muscles of the animal.</text>
+	</string>
+	<string id="st_meat_flesh">
+		<text>Fat bacon</text>
+	</string>
+	<string id="st_meat_flesh_descr">
+		<text>Slices of fat and greasy bacon made from mutated pigs commonly known as fleshes.</text>
+	</string>
+	<string id="st_meat_boar">
+		<text>Boar chops</text>
+	</string>
+	<string id="st_meat_boar_descr">
+		<text>A small portion of boar meat, grilled and seasoned with salt and mixed with peppers. The most popular warm meal among stalkers.</text>
+	</string>
+	<string id="st_meat_bloodsucker">
+		<text>Bloodsucker goulash</text>
+	</string>
+	<string id="st_meat_bloodsucker_descr">
+		<text>A small hot meal made from bloodsucker meat spiced with chilies and mixed with mushrooms.</text>
+	</string>
+	<string id="st_meat_chimera">
+		<text>The Masculine Meal</text>
+	</string>
+	<string id="st_meat_chimera_descr">
+		<text>A portion of grilled chimera meat, served with mushrooms and spices. An expensive meal, eaten most commonly by veteran Stalkers to celebrate accomplishment of difficult missions.</text>
+	</string>
+	<string id="st_try_to_cook">
+		<text>cook</text>
+	</string>
+	<string id="st_try_to_cook_all">
+		<text>cook all</text>
+	</string>
+</string_table>

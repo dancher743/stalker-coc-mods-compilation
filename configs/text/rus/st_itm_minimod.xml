@@ -69,4 +69,7 @@
 	<string id="st_itm_stash_of_character">
 		<text>%s. Его тайник</text>
 	</string>
+	<string id="st_itm_stash_of_actor">
+		<text>Тайник игрока</text>
+	</string>
 </string_table>

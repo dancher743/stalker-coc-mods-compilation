@@ -596,6 +596,23 @@
             </phrase>
         </phrase_list>
     </dialog>
+	<dialog id="neutral_companion_dialog">
+		<precondition>dialogs_axr_companion.is_non_story</precondition>
+		<precondition>dialogs_axr_companion.is_not_actor_companion</precondition>
+		<precondition>dialogs_axr_companion.is_actor_can_ask_neutral_to_join</precondition>
+		<precondition>dialogs_axr_companion.is_room_in_actor_squad</precondition>
+		<precondition>dialogs_axr_companion.is_not_hostage_task_giver</precondition>
+        <phrase_list>
+            <phrase id="0">
+                <text>axr_phrase_neutral_companion_ask_join</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>axr_phrase_neutral_companion_answer_join</text>
+				<action>dialogs_axr_companion.become_actor_companion</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
 	<dialog id="friendly_companion_dialog">
 		<precondition>dialogs_axr_companion.is_non_story</precondition>
 		<precondition>dialogs_axr_companion.is_not_actor_companion</precondition>

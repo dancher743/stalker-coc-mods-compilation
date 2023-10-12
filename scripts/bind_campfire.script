@@ -5,6 +5,31 @@
 
 campfires_all = {}
 
+-- Matches sound from NLC 7: Build 3.0
+local matches_sound = sound_object([[nlc\matches_1_short]])
+
+local wind_sounds_channels = {
+	restored_rnd_wind		= true,
+	darkwind_1				= true,
+    forest_rnd_wind			= true,
+    marsh_rnd_wind			= true
+}
+
+local playing_wind_sounds = {}
+
+local function is_windy()
+	local result = false
+
+	for snd_path,snd_obj in pairs(playing_wind_sounds) do
+		if (snd_obj:playing()) then
+			result = true
+			break
+		end
+	end
+	
+	return result
+end
+
 -- For use with Marshal save state system
 local function save_state(m_data)
 	--alun_utils.debug_write("bind_campfire:save_state")
@@ -24,19 +49,67 @@ local function save_state(m_data)
 end 
 
 -- called from game_tutorials.xml
-function use_campfire(actor,zone,p)
-	local pos = db.actor:position()
+function use_campfire(npc,zone,p)
+	local actor = db.actor
+	if npc == nil then
+		npc = actor
+	end
+
+	local campfire = get_nearest_campfire(npc)
+	
+	if campfire ~= nil then
+		if (campfire:is_on()) then 
+			campfire:turn_off()
+		else
+			local chance_to_ignite
+			
+			local rain_factor = level.rain_factor()
+			if (rain_factor > 0) then
+				chance_to_ignite = utils.lerp(70, 30, rain_factor)
+			elseif (is_windy()) then
+				chance_to_ignite = 50
+			else
+				chance_to_ignite = 90
+			end
+			
+			if math.random(100) < chance_to_ignite then
+				campfire:turn_on()
+			end
+			
+			if matches_sound:playing() then
+				matches_sound:stop()
+			end
+			
+			if npc == actor then
+				matches_sound:play(actor,0,sound_object.s2d)
+			end
+		end
+	end
+end
+
+function get_nearest_campfire(npc, range)
+	local pos = npc:position()
+	
+	if range == nil then
+		range = 2
+	end
+	
 	for id,binder in pairs(campfires_all) do 
 		if (binder and binder.campfire) then
-			if (pos:distance_to_sqr(binder.object:position()) <= 2) then
-				if (binder.campfire:is_on()) then 
-					binder.campfire:turn_off()
-				else 
-					binder.campfire:turn_on()
-				end
+			local campfire_position = binder.object:position()
+			if (pos:distance_to_sqr(campfire_position) <= range) then
+				return binder.campfire, campfire_position
 			end
 		end 
-	end 
+	end
+
+	return nil
+end
+
+local function sound_on_ambient_playing(snd_obj, snd_path, snd_channel_name, snd_volume, snd_dist)
+	if (wind_sounds_channels[snd_channel_name] and snd_dist <= 40 and snd_volume > 0.3) then
+		playing_wind_sounds[snd_path] = snd_obj
+	end
 end
 
 function on_game_start()
@@ -82,6 +155,7 @@ function on_game_start()
 	end
 
 	AddUniqueCall(main_loop)
+	RegisterScriptCallback("sound_on_ambient_playing",sound_on_ambient_playing)
 end 
 
 
@@ -150,11 +224,14 @@ function campfire_binder:net_destroy(server_object)
 	object_binder.net_destroy(self)
 end 
 
-function turn_off_campfires_by_smart_name(smart_name,use_rand)
+function turn_off_campfires_by_smart_name(smart_name,turn_off_chance)
 	local smart_campfires = db.campfire_table_by_smart_names[smart_name]
 	if smart_campfires ~= nil and not is_empty(smart_campfires) then
+		if turn_off_chance == nil then
+			turn_off_chance = 20
+		end
 		for k,v in pairs (smart_campfires) do
-			if (math.random(100) < 20) then
+			if (math.random(100) < turn_off_chance) then
 				-- shouldn't be needed with Open Xray because of DX11 lighting fix
 				--if (v.object) then
 				--	if (render_get_dx_level() == 655361) then 
@@ -168,11 +245,3 @@ function turn_off_campfires_by_smart_name(smart_name,use_rand)
 		end
 	end
 end
-
-
-
-
-
-
-
-

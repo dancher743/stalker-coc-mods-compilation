@@ -1790,4 +1790,14 @@
 	<string id="st_mil_q9_n_a_descr">
 		<text>За кабиной армейского МАЗа есть ящичек, да не простой, с секретом. Вот тебе этот секрет и продаю.</text>
 	</string>
+	
+	<string id="st_stash_no_descr">
+		<text>Описание отсутствует.</text>
+	</string>
+	<string id="st_stash_encrypt_descr">
+		<text>Описание зашифровано.</text>
+	</string>
+	<string id="st_stash_encrypt_descr_tmpl">
+		<text>1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ</text>
+	</string>
 </string_table>

@@ -8,6 +8,25 @@
 --
 -- ============================================================
 
+--
+-- Added by Dancher
+--
+local function give_hunt_target_talk_message(target_id)
+	local se_obj = alife():object(target_id)
+	if (se_obj) then
+		local character_name = string.format("%s %s", game.translate_string("st_mm_new_game_name"), se_obj:character_name())
+		
+		local faction_name = string.format("%s: %s", game.translate_string("ui_st_community"), game.translate_string(se_obj:community()))
+		
+		local level_id = alife():level_name(game_graph():vertex(se_obj.m_game_vertex_id):level_id())
+		local location_name = string.format("%s: %s", game.translate_string("st_mm_pda_location"), game.translate_string(level_id))
+		
+		local news_caption = string.format("%s:",  game.translate_string("st_target"))
+		local news_text = string.format("%s\\n %s\\n %s", character_name, faction_name, location_name)
+		db.actor:give_talk_message2(news_caption, news_text, se_obj:character_icon(), "iconed_answer_item")
+	end
+end
+
 
 -- ////////////////////////////////////////////////////////////////////////////////////////////////
 --
@@ -946,12 +965,11 @@ function drx_sl_setup_bounty_hunt( actor, npc, p )
 	axr_task_manager.bounties_by_id[p[1]] = target_id
 	printf( "drx_sl_setup_bounty_hunt target: %s", target_id )
 
-	local se_obj = sim:object(target_id)
-	if (se_obj) then
-		local news_caption = game.translate_string("st_target") .. ":"
-		local news_text = game.translate_string("st_mm_faction_cap_character_name") .. " " .. se_obj:character_name() .. "\\n " .. game.translate_string("st_mm_faction_cap_faction") .. " " .. game.translate_string(se_obj:community())
-		db.actor:give_talk_message2(news_caption, news_text, se_obj:character_icon(), "iconed_answer_item")
+	local function postpone_for_next_frame(target_id)
+		give_hunt_target_talk_message(target_id)
+		return true
 	end
+	CreateTimeEvent(0,"drx_sl_setup_bounty_hunt",0,postpone_for_next_frame,target_id)
 end
 
 -- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -2469,6 +2487,7 @@ function drx_sl_setup_sim_hostage_task( actor, npc, p )
 			utils.se_obj_save_var( se_obj.id,se_obj:name( ), "companion", true )
 			utils.se_obj_save_var( se_obj.id,se_obj:name( ), "companion_cannot_dismiss", true )
 			utils.se_obj_save_var( se_obj.id,se_obj:name( ), "companion_cannot_teleport", p[4] == "true" )
+			utils.se_obj_save_var( se_obj.id,se_obj:name( ), "companion_is_hostage", true )
 			xrs_kill_wounded.hostage_list[se_obj.id] = smart.id
 		end
 	end
@@ -3078,9 +3097,8 @@ function remove_task_companion(actor,npc,p)
 		return
 	end
 
-	squad.scripted_target = nil
-	squad.current_action = nil
 	axr_companions.companion_squads[squad.id] = nil
+	squad:reset()
 
 	for k in squad:squad_members() do
 		local npc = k.id and (db.storage[k.id] and db.storage[k.id].object or level.object_by_id(k.id))
@@ -3178,6 +3196,12 @@ function on_init_bounty_hunt(actor,npc,p)
 	--printf("on_init_bounty_hunt %s",target_id)
 
 	--utils.save_var(db.actor,p[1],target_id)
+	
+	local function postpone_for_next_frame(target_id)
+		give_hunt_target_talk_message(target_id)
+		return true
+	end
+	CreateTimeEvent(0,"on_init_bounty_hunt",0,postpone_for_next_frame,target_id)
 end
 
 function fail_task_dec_goodwill(actor,npc,p)
@@ -7853,4 +7877,8 @@ function force_always_online(actor,npc,p)
 
 	alife():set_switch_offline(squad.id,false)
 	alife():set_switch_online(squad.id,true)
+end
+
+function setup_base_defense_fail_conditions(actor,npc,p)
+	utils.save_var(db.actor,"base_defense_level",level.name())
 end

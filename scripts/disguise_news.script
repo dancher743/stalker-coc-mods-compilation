@@ -1,0 +1,75 @@
+--------------------------------------------
+-- Disguise news
+-- Shows messages during disguise
+-- Author: Dancher
+--------------------------------------------
+
+disguise_tip_type = {
+	not_allowed = 0,
+	changed = 1,
+	returned = 2,
+	same = 3,
+	has_companion = 4
+}
+
+local once_disguise_tips = {}
+
+function send_disguise_tip_once(tip_type, community)
+	if once_disguise_tips[tip_type] then
+		return
+	end
+
+	send_disguise_tip(tip_type, community)
+	
+	once_disguise_tips[tip_type] = true
+end
+
+function reset_once_disguise_tips()
+	for tip_type,v in pairs(once_disguise_tips) do
+		once_disguise_tips[tip_type] = false
+	end
+end
+
+function send_disguise_tip(tip_type, community)
+	local text
+	
+	if tip_type == disguise_tip_type.has_companion then
+		text = game.translate_string("st_disguise_actor_has_companion")
+	elseif tip_type == disguise_tip_type.not_allowed then
+		text = game.translate_string("st_disguise_actor_in_sight")
+	elseif tip_type == disguise_tip_type.same then
+		text = game.translate_string("st_disguise_actor_in_same_faction")
+	else
+		if tip_type == disguise_tip_type.changed then 
+			text = game.translate_string("st_disguise_faction_changed")
+		elseif tip_type == disguise_tip_type.returned then
+			text = game.translate_string("st_disguise_faction_returned")
+		end
+		
+		local faction_member
+		
+		if community == nil then
+			faction_member = "[community is nil]"
+		else
+			faction_member = game.translate_string("st_disguise_faction_member_"..community)
+		end
+		
+		text = string.format(text, faction_member)
+	end
+	
+	send_tip(text)
+end
+
+function send_tip(text)
+	news_manager.send_tip(db.actor, text, nil, nil, 5000)
+end
+
+function send_suspicious_tip(npc)
+	local actor = db.actor
+	local actor_name = alife():actor():character_name()
+	local text = game.translate_string("st_disguise_suspicious_"..npc:character_community().."_1")
+	local news_text = string.format(text, actor_name)
+	
+	actor:give_game_news(npc:character_name()..":", news_text, npc:character_icon(), 0, 10000)
+	xr_sound.set_sound_play(actor:id(), "pda_tips")
+end

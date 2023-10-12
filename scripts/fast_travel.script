@@ -8,12 +8,30 @@ local combattravel = false
 local weighttravel = false
 local damagetravel = false
 local stormtravel = false
+local guidertravel = false
 local longnames = false
 local markermessage = false
 local notime = false
 local tsmarts = nil
+local spotted_objects = nil
+local objects_spots_hints = {}
 
 quick_travel_smarts = nil
+
+local spot_discovered_sound = nil
+
+local function get_spotted_object_hint(se_obj_spot)
+	local spot_id = se_obj_spot.id
+	local spot_hint = objects_spots_hints[spot_id]
+	
+	if (spot_hint == nil) then
+		local object_name = se_obj_spot:name():gsub(spot_id, "")
+		spot_hint = spotted_objects[object_name]
+		objects_spots_hints[spot_id] = spot_hint
+	end
+	
+	return spot_hint
+end
 
 local function bbp_extra_weight()
 	local w,ini = 0,system_ini()
@@ -37,16 +55,24 @@ local function bbp_extra_weight()
 end
 
 local function map_spot_menu_add_property(property_ui,id,level_name)
+	if enabled == 0 then
+		return
+	end
 	local se_obj = alife_object(id)
 	if not (se_obj) then
 		return
 	end
-	if (DEV_DEBUG_DEV) or (enabled > 0 and se_obj:clsid() == clsid.smart_terrain and tsmarts[se_obj:name()]) then
+	if (DEV_DEBUG_DEV) or (se_obj:clsid() == clsid.smart_terrain and tsmarts[se_obj:name()]) then
 		if (longnames) then
 				property_ui:AddItem(game.translate_string("st_pda_fast_travel_to").." ".. game.translate_string(level_name)..". "..game.translate_string(se_obj:name()))
 		else
 				property_ui:AddItem(game.translate_string("st_pda_fast_travel_to").." "..game.translate_string(se_obj:name()))
 		end
+	end
+	
+	local spotted_object_hint = get_spotted_object_hint(se_obj)
+	if (spotted_object_hint ~= nil) then
+		property_ui:AddItem(string.format("%s %s", game.translate_string("st_pda_fast_travel_to"), game.translate_string(spotted_object_hint)))
 	end
 end
 
@@ -56,21 +82,27 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 		return
 	end
 
+	local is_fast_travel_to_smart
 	if (longnames) then
-		if (prop ~= (game.translate_string("st_pda_fast_travel_to").." "..game.translate_string(level_name)..". "..game.translate_string(se_obj:name()))) then
-			return
-		end
+		is_fast_travel_to_smart = prop == (game.translate_string("st_pda_fast_travel_to").." "..game.translate_string(level_name)..". "..game.translate_string(se_obj:name()))
 	else
-		if (prop ~= (game.translate_string("st_pda_fast_travel_to").." "..game.translate_string(se_obj:name()))) then
-			return
-		end
+		is_fast_travel_to_smart = prop == (game.translate_string("st_pda_fast_travel_to").." "..game.translate_string(se_obj:name()))
+	end
+	
+	local spotted_object_hint = get_spotted_object_hint(se_obj)
+	local is_fast_travel_to_spotted_object = spotted_object_hint ~= nil
+	
+	if (not is_fast_travel_to_smart and not is_fast_travel_to_spotted_object) then
+		return
 	end
 	
 	-- Prevent fast travel if actor is guide.
-	if jg_guider.is_started() then
-		get_hud():HidePdaMenu()
-		SetHudMsg(game.translate_string("st_travel_guide"),4)
-		return
+	if not guidertravel then
+		if jg_guider.has_guiding_started() then
+			get_hud():HidePdaMenu()
+			SetHudMsg(game.translate_string("st_travel_guider"),4)
+			return
+		end
 	end
 
 	-- Prevent fast travel if in combat.
@@ -137,8 +169,12 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 end
 
 local function play_discovered_sound()
-	local sound = sound_object([[interface\spot_discovered]])
-	sound:play(db.actor,0,sound_object.s2d)
+	-- Sound from Anomaly 1.5.1.2	
+	if (spot_discovered_sound == nil) then
+		-- Let's cache this sound to not allow garbage collector clean it during playback
+		spot_discovered_sound = sound_object([[interface\spot_discovered]])
+	end
+	spot_discovered_sound:play(db.actor,0,sound_object.s2d)
 end
 
 -- Used for Visit_Only mode, catches the player near the marker and updates things.
@@ -191,6 +227,7 @@ local function on_game_load()
 	weighttravel = axr_main.config:r_bool_ex("mm_options","enable_weight_travel",false)
 	damagetravel = axr_main.config:r_bool_ex("mm_options","enable_damage_travel",false)
 	stormtravel = axr_main.config:r_bool_ex("mm_options","enable_storm_travel",false)
+	guidertravel = axr_main.config:r_bool_ex("mm_options","enable_guider_travel",true)
 	longnames = axr_main.config:r_bool_ex("mm_options","enable_long_names",false)
 	markermessage = axr_main.config:r_bool_ex("mm_options","enable_visited_message",false)
 	notime = axr_main.config:r_bool_ex("mm_options","enable_no_time_travel",false)
@@ -231,6 +268,11 @@ local function on_game_load()
 			end
 		end
 	end
+	
+	if (spotted_objects == nil) then
+		spotted_objects = alun_utils.collect_section(pini,"spotted_objects",true)
+	end
+	
 	return true
 end
 
@@ -247,6 +289,7 @@ local function opt_menu_on_init(menu)
 	menu.gameplay_options["weight_travel"] = {default=false, debug_only=false, typ="check"}
 	menu.gameplay_options["damage_travel"] = {default=false, debug_only=false, typ="check"}
 	menu.gameplay_options["storm_travel"] = {default=false, debug_only=false, typ="check"}
+	menu.gameplay_options["guider_travel"] = {default=true, debug_only=false, typ="check"}
 	menu.gameplay_options["long_names"]	= {default=false, debug_only=false, typ="check"}
 	menu.gameplay_options["visited_message"] = {default=false, debug_only=false, typ="check"}
 	menu.gameplay_options["no_time_travel"]	= {default=false, debug_only=false, typ="check"}

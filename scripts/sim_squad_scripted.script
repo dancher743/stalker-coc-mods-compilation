@@ -81,6 +81,28 @@ function sim_squad_scripted:init_squad_on_load()
 	--self.need_to_reset_location_masks = true
 	--alun_utils.debug_write(self:name().."init_squad_on_load end")
 end
+
+--***********************************************************************************************
+--*										RESET													*
+--***********************************************************************************************
+
+function sim_squad_scripted:reset()
+	self.smart_id 			= nil
+	self.current_spot_id 	= nil
+	self.current_action 	= nil
+	self.current_target_id	= nil
+	self.assigned_target_id	= nil
+	self.scripted_target 	= nil
+	
+	self.first_update = false
+	self.disabled = false
+	
+	self.__lock = false
+	
+	self:init_squad()
+	self:init_squad_on_load()
+end
+
 --***********************************************************************************************
 --*										SCRIPT_TARGET_SELECTION									*
 --***********************************************************************************************
@@ -1087,48 +1109,39 @@ function sim_squad_scripted:show()
 	local spot = ""
 
 	if (DEV_DEBUG and axr_main.config:r_value("mm_options","enable_debug_hud",1,false) == true) then
+		if (DEV_DEBUG_HOLD_ACTION_1) then 
+			if (self.assigned_target_id ~= nil and smart_terrain.nearest_to_actor_smart.id == self.assigned_target_id) then 
+				spot = "storyline_task_location"
+			end
+		else
+			spot = "storyline_task_location"
+		end
+	elseif not(is_squad_monster[self.player_id]) then
+		if (axr_main.config:r_value("mm_options","enable_show_stalkers_on_map",1,false) == true) then
 -------------------------------------av661194--start---------------
-             if (axr_main.config:r_value("mm_options","enable_show_enemy_health",1,false) == true) then
-                if not(is_squad_monster[self.player_id])  then
-		local relation = self:get_squad_relation()
-		   if (relation=="friends") then
-			spot = "alife_presentation_squad_friend_1"
-		   elseif (relation=="neutral") then
-			spot = "alife_presentation_squad_neutral_1"
-		   else spot = "alife_presentation_squad_enemy_1"
-                   end
-	        else spot = "alife_presentation_squad_monster_1"
-                end
-
-             elseif not(is_squad_monster[self.player_id]) then
-		local relation = game_relations.get_squad_relation_to_actor_by_id(self.id)
-		if(relation=="friends") then
-			spot = "alife_presentation_squad_friend"
-		elseif(relation=="neutral") then
-			spot = "alife_presentation_squad_neutral"
-		end
-            end
-
-	elseif (axr_main.config:r_value("mm_options","enable_show_enemy_health",1,false) == true) then
-                if not(is_squad_monster[self.player_id])  then
-		local relation = self:get_squad_relation()
-		   if (relation=="friends") then
-			spot = "alife_presentation_squad_friend_1"
-		   elseif (relation=="neutral") then
-			spot = "alife_presentation_squad_neutral_1"
-		   else spot = "alife_presentation_squad_enemy_1"
-                   end
-	        else spot = "alife_presentation_squad_monster_1"
-                end
-
-        elseif not(is_squad_monster[self.player_id]) then
-		local relation = game_relations.get_squad_relation_to_actor_by_id(self.id)
-		if(relation=="friends") then
-			spot = "alife_presentation_squad_friend"
-		elseif(relation=="neutral") then
-			spot = "alife_presentation_squad_neutral"
-		end
+			local relation = self:get_squad_relation()
+			if (relation == "friends") then
+				spot = "alife_presentation_squad_friend_1"
+			elseif (relation == "neutral") then
+				spot = "alife_presentation_squad_neutral_1"
+			else
+				spot = "alife_presentation_squad_enemy_1"
+			end
 -------------------------------------av661194--end---------------
+		else
+			local relation = game_relations.get_squad_relation_to_actor_by_id(self.id)
+			if(relation=="friends") then
+				spot = "alife_presentation_squad_friend"
+			elseif(relation=="neutral") then
+				spot = "alife_presentation_squad_neutral"
+			end
+		end
+	else
+		if (axr_main.config:r_value("mm_options","enable_show_monsters_on_map",1,false) == true) then
+-------------------------------------av661194--start---------------
+			spot = "alife_presentation_squad_monster_1"
+-------------------------------------av661194--end---------------
+		end
 	end
 
 	if (spot~="") then
@@ -1154,49 +1167,24 @@ function sim_squad_scripted:get_squad_props()
 		local assigned_target = self.assigned_target_id and alife_object(self.assigned_target_id)
 		local current_target = self.current_target_id and alife_object(self.current_target_id)
 
-		local t = "%s\\n\\n%s\\n\\nЧисленность %s\\n\\nПозиция %s\\nЦель %s\\n\\n"
+		local t = "%s\\n\\n%s\\n\\nnpcs=%s\\n\\ncurrent_target=%s\\nassigned_target=%s\\n\\n"
 		t = strformat(t,self.disabled and "[disabled]" or "",self:name(),self:npc_count(),self.current_target_id == 0 and "actor" or current_target and current_target:name(),self.assigned_target_id == 0 and "actor" or assigned_target and assigned_target:name())
 
 		if (self.current_action) then
 			if (self.current_action == 0) then 
-				t = t .. "В пути"
+				t = t .. "Trying to Reach Target"
 			elseif (self.current_action == 1) then 
-				t = t .. "На месте"
+				t = t .. "Stay On Target"
 			end
------------------------------turoff 82--start--------------
---[[
------------------------------turoff 82--end--------------			
+			
 			if (self.current_action == 1 and self.stay_time) then
 				t = strformat("%s = %s (%s)",t,tostring(self.idle_time - game.get_game_time():diffSec(self.stay_time)),self.idle_time)
 			end
------------------------------turoff 82--start--------------
-]]
------------------------------turoff 82--end--------------
 		end
 
 		return t
 	else
---av661194--		return game.translate_string(self.player_id)
--------------------------------------av661194--start---------------
-
-	local tv = self.player_id
-
-    if tv == "monster_zombied_night" then
-     tv = "Ночной зомби"
-    elseif tv == "monster_zombied_day" then
-     tv = "Дневной зомби"
-    elseif tv == "monster_predatory_night" then
-     tv = "Ночной хищник"
-    elseif tv == "monster_predatory_day" then
-     tv = "Дневной хищник"
-    elseif tv == "monster_vegetarian" then
-     tv = "Травоядный мутант"
-    else
-     tv = game.translate_string(tv)
-    end
-return tv
-
--------------------------------------av661194--end---------------
+		return game.translate_string(self.player_id)
 	end
 end
 
@@ -1290,8 +1278,8 @@ end
 function sim_squad_scripted:evaluate_prior(squad)
 	return simulation_objects.evaluate_prior(self, squad)
 end
---xrSanya-----------------------------------------------
 
+--xrSanya-----------------------------------------------
 function sim_squad_scripted:get_squad_relation()
     local squad = alife_object(self.id)
     local goodwill = 0

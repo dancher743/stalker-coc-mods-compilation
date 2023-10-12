@@ -1,0 +1,160 @@
+----------------------
+-- File:   Outfit Marauder
+-- Author: Shoker
+-- CoM visuals table: ziken
+-- CoM script adaptation: Dimeyne
+-- Reworking: Dancher
+-- Снятие брони с трупов.
+----------------------
+
+local death_visual_ini = ini_file([[misc\death_items_by_visuals.ltx]])
+local visuals = {}
+local curent_outfit = {}
+local curent_helmet = {}
+
+function on_game_start()
+	RegisterScriptCallback("npc_on_death_callback", npc_on_death)
+end
+
+-- Умер сталкер
+function npc_on_death(npc)
+	local visual = npc:get_visual_name()
+	local outfit_section, helmet_section = get_outfit_sections(visual)
+	if outfit_section and has_chance_to_create(outfit_section) then
+		local se_outfit = alife():create(outfit_section, npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
+		curent_outfit[se_outfit.id] = get_comb_coeff(npc)
+		update_outfit()
+	end
+	if helmet_section and has_chance_to_create(helmet_section) then
+		local se_helmet = alife():create(helmet_section, npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
+		curent_helmet[se_helmet.id] = get_comb_coeff(npc)
+		update_helmet()
+	end
+end
+
+-- Получим секцию брони и шлема
+function get_outfit_sections(visual)
+	if (#visuals == 0) then
+		fill_visuals()
+	end
+	local s_name = alun_utils.str_explode(visual,"\\")
+	local v_name = s_name[3]
+	local t_vis = visuals[v_name]
+	if t_vis then
+		return t_vis[1], t_vis[2]
+	end
+end
+
+-- update
+function update_outfit()
+	local function actor_on_update()
+	local param = false
+		for k,v in pairs(curent_outfit) do
+		local outfit_obj = level.object_by_id(k)
+			if outfit_obj then
+			outfit_obj:set_condition(mean_random(10,45,v,1)/100)
+			curent_outfit[k] = nil
+			param = true
+			elseif param == true then
+			UnregisterScriptCallback("actor_on_update",actor_on_update)
+			return
+			end
+		end
+	end
+RegisterScriptCallback("actor_on_update",actor_on_update)
+end
+
+function update_helmet()
+	local function actor_on_update()
+	local param = false
+		for k,v in pairs(curent_helmet) do
+		local helmet_obj = level.object_by_id(k)
+			if helmet_obj then
+			helmet_obj:set_condition(mean_random(10,35,v,1)/100)
+			curent_helmet[k] = nil
+			param = true
+			elseif param == true then
+			UnregisterScriptCallback("actor_on_update",actor_on_update)
+			return
+			end
+		end
+	end
+RegisterScriptCallback("actor_on_update",actor_on_update)
+end
+
+--утилиты
+function mean_random(index_min,index_max,mean_index,left_power,right_power,flag)
+	local index_mean = mean_index or 0.5
+	if (index_mean >= 0) and (index_mean <= 1) then
+		index_mean = (index_max-index_min)*index_mean + index_min
+		local mean_down, mean_up = math.floor(index_mean), math.ceil(index_mean)
+		local d_mean_down, d_mean_up = index_mean - mean_down, mean_up - index_mean
+		if d_mean_down == d_mean_up then
+			index_mean = (math.random(0,1) == 1) and mean_down or mean_up
+		else
+			index_mean = (d_mean_down > d_mean_up) and mean_up or mean_down
+		end
+	end
+	local power_left = left_power or 1
+	local power_right = right_power or power_left
+	local coeffs_list = {}
+	local coeffs_total = 0
+	local coeff = 0
+	local power = 0
+	local base = 0
+	local shift = math.max(index_mean-index_min,index_max-index_mean) + 1
+	for i=index_min,index_max do
+		base = shift - math.abs(index_mean - i)
+		if i < index_mean then
+			power = power_left
+		elseif i == index_mean then
+			power = math.max(power_left,power_right)
+		else
+			power = power_right
+		end
+		coeff = base^power
+		coeffs_list[i] = coeff
+		coeffs_total = coeffs_total + coeff
+	end
+	local rnd = math.random(1,coeffs_total)
+	for i=index_min,index_max do
+		if rnd <= coeffs_list[i] then
+			return i
+		end
+		rnd = rnd - coeffs_list[i]
+	end
+end
+
+
+function get_comb_coeff(npc)
+	local rank = ranks.get_obj_rank_name(npc)
+	local comm = npc:character_community()
+	local rank_coeffs_table = {novice = 0.3, trainee = 0.4, experienced = 0.5, professional = 0.6, veteran = 0.7, expert = 0.8, master = 0.9, legend = 1}
+	local comm_coeffs_table = {zombied = 0.4, ecolog = 0.9, bandit = 0.8, freedom = 0.9, stalker = 0.9, csky = 1, dolg = 1, killer = 1, army = 1, monolith = 1}
+	local rank_coeff = rank_coeffs_table[rank] or 0
+	local comm_coeff = comm_coeffs_table[comm] or 0
+	return (rank_coeff * comm_coeff)^0.44
+end
+
+function has_chance_to_create(section)
+	local cost = system_ini():r_string_ex(section, "cost")
+	if cost == nil then
+		return false
+	end
+	return math.random() <= (1000 / cost)
+end
+
+function fill_visuals()
+	visuals = {}
+	local n = death_visual_ini:line_count("outfits_and_helms")
+	local id, value = "", ""
+	for i=0,n-1 do
+		local result, id, value = death_visual_ini:r_line_ex("outfits_and_helms",i,"","")
+		local p = alun_utils.str_explode(value,",")
+		if (p) then
+			p[1] = tostring(p[1])
+			p[2] = tostring(p[2])
+			visuals[id] = {p[1],p[2]}
+		end
+	end
+end

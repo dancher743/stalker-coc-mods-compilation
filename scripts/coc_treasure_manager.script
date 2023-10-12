@@ -82,9 +82,12 @@ local function actor_on_item_take_from_box(box,itm)
 		if (hud and box:is_inv_box_empty()) then
 			hud:HideActorMenu()
 		end
-		level.map_remove_object_spot(box:id(), "treasure")
+		local has_spot = level.map_has_object_spot(box:id(),"treasure") == 1
 		xr_statistic.inc_counter("stashes_found")
-		news_manager.send_treasure(1)
+		news_manager.send_treasure(1, has_spot)
+		if has_spot then
+			level.map_remove_object_spot(box:id(), "treasure")
+		end
 	end
 end
 
@@ -282,12 +285,12 @@ function create_random_stash(no_spot,hint,bonus_items)
 
 --------------------------------------------------Тайники из ЧН
 
-			hint = stash_names(sim,se_box,hint,id)
+			hint,name = get_extended_hint(sim,se_box,hint,id)
 
 --------------------------------------------------Тайники из ЧН
 
 			level.map_add_object_spot_ser(id, "treasure", hint or "")
-			news_manager.send_treasure_with_level(se_box:name(), se_box.m_game_vertex_id)
+			news_manager.send_treasure_with_level(name, se_box.m_game_vertex_id)
 		end
 		caches[id] = table.concat(spawned_item,",")
 	else
@@ -381,8 +384,9 @@ function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery )
 
 			-- Create map spot:
 			if ( no_spot ~= true and level.map_has_object_spot( id, "treasure" ) == 0 ) then
+				hint,name = get_extended_hint(sim,se_box,hint,id)
 				level.map_add_object_spot_ser( id, "treasure", hint or "" )
-				news_manager.send_treasure_with_level(se_box:name(), se_box.m_game_vertex_id)
+				news_manager.send_treasure_with_level(name, se_box.m_game_vertex_id)
 			end
 
 			-- Switch cache true, indicating it has treasure:
@@ -404,8 +408,9 @@ function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery )
 
 	-- Create map spot:
 	if ( no_spot ~= true and level.map_has_object_spot( id, "treasure" ) == 0 ) then
+		hint,name = get_extended_hint(sim,se_box,hint,id)
 		level.map_add_object_spot_ser( id, "treasure", hint or "" )
-		news_manager.send_treasure_with_level(se_box:name(), se_box.m_game_vertex_id)
+		news_manager.send_treasure_with_level(name, se_box.m_game_vertex_id)
 	end
 
 	math.random()
@@ -660,22 +665,68 @@ function get_valid_item_sections()
 	return t
 end
 
+local function get_fake_encrypted_string()
+	local chars = game.translate_string("st_stash_encrypt_descr_tmpl")
+	local result = ""
 
-function stash_names(sim,stash,hint,id)
-local stash_name = stash:name()
+	for i=1,math.random(25, 50) do
+		local char_index = math.random(1, #chars)
+		local char = string.sub(chars, char_index, char_index)
+		if math.random() <= 0.25 then
+			char = string.lower(char)
+		end
+	
+		result = result .. char
+	end
+	
+	return result
+end
+
+function get_extended_hint(sim,stash,hint,id)
+	local stash_name = stash:name()
+	
 	if string.find(stash_name,"level_prefix") ~= nil then
-	local level = sim:level_name(game_graph():vertex(stash.m_game_vertex_id):level_id())
-	stash_name = string.gsub(stash_name,"level_prefix",level,1)
+		local level = sim:level_name(game_graph():vertex(stash.m_game_vertex_id):level_id())
+		stash_name = string.gsub(stash_name,"level_prefix",level,1)
 	end
-local ini = ini_file("plugins\\stash_names.ltx")
-stash_name = ini:r_string_ex("stash_tbl", stash_name)
-	if stash_name == nil then
-	return hint or game.translate_string("st_ui_pda_secret")
+	
+	local ini = ini_file("plugins\\stash_names.ltx")
+	stash_name = ini:r_string_ex("stash_tbl", stash_name)
+	
+	local name
+	local descr
+	
+	local descr_type = stash_name == nil and 0 or 1
+
+	if hint and string.match(hint, string.format(game.translate_string("st_itm_stash_of_character"),'')) then			
+		if (math.random(100) <= 30) then
+			descr_type = 0
+		elseif (math.random(100) <= 20) then
+			descr_type = 2
+		end
 	end
-local name = game.translate_string("st_" .. stash_name .. "_name")
-local descr = game.translate_string("st_" .. stash_name .. "_descr")
+	
+	if descr_type == 1 then
+		local name_st = "st_" .. stash_name .. "_name"
+		local descr_st = "st_" .. stash_name .. "_descr"
+		
+		name = game.translate_string(name_st)
+		descr = game.translate_string(descr_st)
+		
+		if name == name_st or descr == descr_st then
+			descr_type = 0
+		end
+	end
+	
+	if descr_type == 0 then
+		name = game.translate_string("st_ui_pda_secret")
+		descr = game.translate_string("st_stash_no_descr")
+	elseif descr_type == 2 then
+		name = game.translate_string("st_ui_pda_secret")
+		descr = game.translate_string("st_stash_encrypt_descr").."\\n"..get_fake_encrypted_string()
+	end
+	
+	local extended_hint = "%c[255,255,160,0]" .. name .. "\\n%c[default]" .. descr .. "\\n%c[160,0,255,255]" .. (hint or "")
 
-stash_name = "%c[255,255,160,0]" .. name .. "\\n%c[default]" .. descr .. "\\n%c[160,0,255,255]" .. (hint or "")
-
-	return stash_name
+	return extended_hint, name
 end

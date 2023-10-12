@@ -1,0 +1,354 @@
+
+;; ===========================< Loadout >=============================
+;; To add items in the item lists:
+;; -------------------------------
+;; add a new line: "item_section			= value_1,value_2,value3" under the correct section below
+;; "item_section": is the section name of the your item
+;; "value_1": (boolean  value, must be true or false) determines wether this item should be added to player's inventory list (false) or to the loadout pick list (true)
+;; "value_2": (number) the amount of the said item
+;; "value_3": (number) how many points it requires
+;; ========================================================
+;; put your custom items under "custom" section, they will always appear to pick from
+
+
+[points]
+total_points = 1000
+
+
+[custom]	
+
+
+[shared]:custom
+device_torch 					= false,1,0
+wpn_binoc 						= false,1,0
+wpn_knife 						= false,1,0
+bandage							= true,4,150
+helm_respirator					= true,1,200
+
+
+[stalker_loadout]:shared
+novice_outfit 					= false,1,0
+wpn_pm							= false,1,0
+bread							= false,1,0
+kolbasa							= false,1,0
+stalker_patch					= false,1,0
+bandit_patch                    = true,1,50
+army_patch                      = true,1,50
+monolith_patch                  = true,1,50
+vodka							= true,3,100
+energy_drink					= true,2,150
+bread							= true,3,50
+kolbasa							= true,3,75
+conserva						= true,3,100
+medkit							= true,4,200
+detector_simple					= true,1,300
+grenade_rgd5					= true,3,150
+grenade_f1						= true,3,200
+wpn_mp5							= true,1,500
+wpn_ak74u						= true,1,550
+wpn_ak74						= true,1,600
+wpn_bm16						= true,1,350
+wpn_toz34						= true,1,450
+wpn_addon_scope_x2.7			= true,1,200
+wpn_addon_silencer				= true,1,200	
+
+
+[bandit_loadout]:shared
+bandit_novice_outfit 			= false,1,0
+wpn_pm							= false,1,0
+bandit_patch					= false,1,0
+stalker_patch                   = true,1,50
+ecolog_patch                    = true,1,50
+duty_patch                      = true,1,50
+freedom_patch                   = true,1,50
+merc_patch                      = true,1,50
+army_patch                      = true,1,50
+monolith_patch                  = true,1,50
+csky_patch                      = true,1,50
+vodka							= true,2,400
+energy_drink					= true,1,600
+bread							= true,3,200
+kolbasa							= true,3,300
+conserva						= true,2,400
+medkit							= true,1,400
+drug_antidot					= true,1,300
+drug_coagulant					= true,1,400
+drug_radioprotector				= true,1,400
+grenade_f1						= true,3,200
+wpn_mp5							= true,1,500
+wpn_ak74u						= true,1,550
+wpn_ak74						= true,1,600
+wpn_lr300						= true,1,650
+wpn_bm16						= true,1,350
+wpn_toz34						= true,1,450
+wpn_wincheaster1300				= true,1,600
+wpn_protecta					= true,1,800
+
+
+[ecolog_loadout]:shared
+ecolog_guard_outfit 			= false,1,0
+wpn_walther						= false,1,0
+bread							= false,1,0
+kolbasa							= false,1,0
+detector_simple					= false,1,0
+ecolog_patch					= false,1,0
+bandit_patch                    = true,1,50
+monolith_patch                  = true,1,50
+vodka							= true,3,100
+energy_drink					= true,2,150
+bread							= true,3,50
+kolbasa							= true,3,75
+conserva						= true,3,100
+medkit							= true,4,200
+medkit_scientic					= true,3,400
+drug_anabiotic					= true,1,300				
+drug_antidot					= true,3,150
+drug_coagulant					= true,3,200
+drug_psy_blockade				= true,1,300
+drug_radioprotector				= true,2,200
+helm_protective 				= true,1,300
+wpn_mp5							= true,1,500
+wpn_ak74u						= true,1,550
+wpn_abakan						= true,1,700
+wpn_lr300						= true,1,650
+wpn_l85							= true,1,700
+wpn_g36							= true,1,750
+
+
+[dolg_loadout]:shared
+dolg_outfit 					= false,1,0
+wpn_fort						= false,1,0
+bandage							= false,2,0
+kolbasa							= false,2,0
+duty_patch						= false,1,0
+bandit_patch                    = true,1,50
+freedom_patch                   = true,1,50
+merc_patch                      = true,1,50
+monolith_patch                  = true,1,50
+vodka							= true,3,100
+energy_drink					= true,2,150
+bread							= true,3,50
+kolbasa							= true,3,75
+conserva						= true,3,100
+medkit							= true,4,200
+medkit_army						= true,3,250
+drug_antidot					= true,3,150
+drug_coagulant					= true,3,200
+drug_radioprotector				= true,2,200
+helm_tactic						= true,1,300
+grenade_f1						= true,3,200
+wpn_ak74u						= true,1,550
+wpn_ak74						= true,1,600
+wpn_abakan						= true,1,700
+wpn_spas12						= true,1,600
+wpn_protecta					= true,1,800
+
+
+[freedom_loadout]:shared
+svoboda_light_outfit 			= false,1,0
+wpn_beretta						= false,1,0
+bandage							= false,2,0
+kolbasa							= false,2,0
+vodka							= false,1,0
+freedom_patch					= false,1,0
+bandit_patch                    = true,1,50
+duty_patch                      = true,1,50
+merc_patch                      = true,1,50
+army_patch                      = true,1,50
+monolith_patch                  = true,1,50
+csky_patch                      = true,1,50
+vodka							= true,6,50
+energy_drink					= true,2,150
+bread							= true,3,50
+kolbasa							= true,3,75
+conserva						= true,3,100
+medkit							= true,4,200				
+drug_antidot					= true,3,150
+drug_coagulant					= true,3,200
+drug_radioprotector				= true,2,200
+detector_simple					= true,1,300
+helm_tactic						= true,1,300
+wpn_mp5							= true,1,500
+wpn_ak47						= true,1,600
+wpn_sig550						= true,1,650
+wpn_lr300						= true,1,650
+wpn_l85							= true,1,700
+wpn_g36							= true,1,750
+wpn_wincheaster1300				= true,1,600
+wpn_addon_scope_x2.7			= true,1,200
+wpn_addon_scope_susat_x1.6		= true,1,200
+wpn_addon_silencer				= true,1,200
+
+
+[killer_loadout]:shared
+merc_outfit 					= false,1,0
+wpn_beretta						= false,1,0
+bandage							= false,2,0
+conserva						= false,2,0
+merc_patch						= false,1,0
+bandit_patch                    = true,1,50
+duty_patch                      = true,1,50
+freedom_patch                   = true,1,50
+army_patch                      = true,1,50
+monolith_patch                  = true,1,50
+energy_drink					= true,2,150
+bread							= true,3,50
+conserva						= true,3,100
+medkit							= true,4,200
+medkit_army						= true,3,250				
+drug_antidot					= true,3,150
+drug_coagulant					= true,3,200
+drug_radioprotector				= true,2,200
+helm_m40						= true,1,250
+grenade_rgd5					= true,3,150
+grenade_f1						= true,3,200
+wpn_mp5							= true,1,500
+wpn_ak47						= true,1,600
+wpn_sig550						= true,1,650
+wpn_lr300						= true,1,650
+wpn_l85							= true,1,700
+wpn_g36							= true,1,750
+wpn_wincheaster1300				= true,1,600
+wpn_addon_scope_x2.7			= true,1,100
+wpn_addon_scope_susat_x1.6		= true,1,100
+wpn_addon_silencer				= true,1,100
+
+
+[army_loadout]:shared
+specops_outfit 					= false,1,0
+wpn_pm							= false,1,0
+bandage							= false,2,0
+kolbasa							= false,2,0
+army_patch						= false,1,0
+stalker_patch                   = true,1,50
+bandit_patch                    = true,1,50
+freedom_patch                   = true,1,50
+merc_patch                      = true,1,50
+monolith_patch                  = true,1,50
+csky_patch                      = true,1,50
+vodka							= true,3,100
+energy_drink					= true,2,150
+bread							= true,3,50
+kolbasa							= true,3,75
+conserva						= true,3,100
+medkit							= true,4,200
+medkit_army						= true,3,200			
+drug_antidot					= true,3,150
+drug_coagulant					= true,3,200
+drug_radioprotector				= true,2,200
+helm_tactic						= true,1,300
+grenade_f1						= true,3,200
+wpn_ak74u						= true,1,550
+wpn_ak47						= true,1,600
+wpn_abakan						= true,1,700
+wpn_groza						= true,1,750
+wpn_val							= true,1,800
+wpn_svd							= true,1,850
+
+
+[monolith_loadout]:shared
+monolith_outfit 				= false,1,0
+wpn_colt1911					= false,1,0
+bandage							= false,2,0
+bread							= false,1,0
+kolbasa							= false,1,0
+monolith_patch					= false,1,0
+stalker_patch                   = true,1,50
+bandit_patch                    = true,1,50
+ecolog_patch                    = true,1,50
+duty_patch                      = true,1,50
+freedom_patch                   = true,1,50
+merc_patch                      = true,1,50
+army_patch                      = true,1,50
+csky_patch                      = true,1,50
+bread							= true,3,50
+kolbasa							= true,3,75
+conserva						= true,3,100
+medkit							= true,4,200
+medkit_army						= true,3,250				
+drug_antidot					= true,3,150
+drug_coagulant					= true,3,200
+drug_psy_blockade				= true,1,300
+drug_radioprotector				= true,2,200
+helm_protective 				= true,1,300
+grenade_f1						= true,3,200
+wpn_ak74u						= true,1,550
+wpn_ak47						= true,1,600
+wpn_abakan						= true,1,700
+wpn_sig550						= true,1,650
+wpn_lr300						= true,1,650
+wpn_l85							= true,1,700
+wpn_wincheaster1300				= true,1,600
+wpn_protecta					= true,1,800
+wpn_addon_scope_x2.7			= true,1,200
+wpn_addon_scope_susat_x1.6		= true,1,200
+wpn_addon_silencer				= true,1,200
+
+
+[csky_loadout]:shared
+cs_light_novice_outfit 			= false,1,0
+wpn_fort						= false,1,0
+bandage							= false,2,0
+bread							= false,1,0
+kolbasa							= false,1,0
+detector_simple					= false,1,0
+csky_patch						= false,1,0
+bandit_patch                    = true,1,50
+freedom_patch                   = true,1,50
+army_patch                      = true,1,50
+monolith_patch                  = true,1,50
+vodka							= true,3,100
+energy_drink					= true,2,150
+bread							= true,3,50
+kolbasa							= true,3,75
+conserva						= true,3,100
+medkit							= true,4,200
+medkit_scientic					= true,3,400			
+drug_antidot					= true,3,150
+drug_coagulant					= true,3,200
+drug_radioprotector				= true,2,200
+helm_hardhat					= true,1,200
+grenade_rgd5					= true,3,150
+wpn_mp5							= true,1,500
+wpn_ak74u						= true,1,550
+wpn_ak47						= true,1,600
+wpn_sig550						= true,1,650
+wpn_bm16						= true,1,350
+wpn_toz34						= true,1,450
+wpn_wincheaster1300				= true,1,600
+wpn_spas12						= true,1,600
+
+
+[zombied_loadout]:shared,stalker_loadout
+
+
+;; ===========================< Money >=============================
+[stalker_money]
+money = 500
+
+[bandit_money]
+money = 500
+
+[ecolog_money]
+money = 4000
+
+[dolg_money]
+money = 3500
+
+[freedom_money]
+money = 3500
+
+[killer_money]
+money = 5000
+
+[army_money]
+money = 3000
+
+[monolith_money]
+money = 800
+
+[csky_money]
+money = 3500
+
+[zombied_money]
+money = 500

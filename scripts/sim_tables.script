@@ -1,0 +1,605 @@
+mutants_tier_by_lvl = {
+	
+	l01_escape = {
+		"simulation_bloodsucker",
+		"simulation_boar",
+		"simulation_dog",
+		"simulation_pseudodog",
+		"simulation_flesh",
+		"simulation_snork",
+		"simulation_mix_dogs",
+	    "simulation_mix_boar_flesh",	
+		"simulation_tushkano",
+		"simulation_cat",
+		"simulation_psy_dog",
+	},
+
+	k01_darkscape = {
+		"simulation_bloodsucker",
+		"simulation_boar",
+		"simulation_dog",
+		"simulation_pseudodog",
+		"simulation_flesh",
+		"simulation_snork",
+		"simulation_mix_dogs",
+	    "simulation_mix_boar_flesh",	
+		"simulation_tushkano",
+		"simulation_cat",
+		"simulation_psy_dog",
+	    "simulation_gigant",	
+	    "simulation_chimera",
+	},
+
+	k00_marsh = {
+		"simulation_bloodsucker",
+		"simulation_boar",
+		"simulation_dog",
+		"simulation_pseudodog",
+		"simulation_flesh",
+		"simulation_snork",
+		"simulation_mix_dogs",
+	    "simulation_mix_boar_flesh",	
+		"simulation_tushkano",
+		"simulation_cat",
+		"simulation_psy_dog",
+	},
+
+	l02_garbage = {
+		"simulation_bloodsucker",
+		"simulation_boar",
+		"simulation_dog",
+		"simulation_pseudodog",
+		"simulation_flesh",
+		"simulation_snork",
+		"simulation_mix_dogs",
+	    "simulation_mix_boar_flesh",	
+		"simulation_tushkano",
+		"simulation_cat",
+		"simulation_psy_dog",
+		"simulation_zombie",
+	    "simulation_fracture",
+	    "simulation_gigant",
+	},
+
+	l03_agroprom = {
+		"simulation_bloodsucker",
+		"simulation_boar",
+		"simulation_dog",
+		"simulation_pseudodog",
+		"simulation_flesh",
+		"simulation_snork",
+		"simulation_mix_dogs",
+	    "simulation_mix_boar_flesh",	
+		"simulation_tushkano",
+		"simulation_cat",
+		"simulation_psy_dog",
+	},
+
+	l04_darkvalley = {
+		"simulation_bloodsucker",
+		"simulation_boar",
+		"simulation_dog",
+		"simulation_pseudodog",
+		"simulation_flesh",
+		"simulation_snork",
+		"simulation_mix_dogs",
+	    "simulation_mix_boar_flesh",	
+		"simulation_tushkano",
+		"simulation_cat",
+		"simulation_psy_dog",
+		"simulation_zombie",
+	    "simulation_fracture",
+	},
+
+	l08_yantar = {
+		"simulation_bloodsucker",
+		"simulation_snork",
+		"simulation_psy_dog",
+		"simulation_zombie",
+	    "simulation_fracture",
+	},
+
+	l06_rostok = {
+		"simulation_bloodsucker",
+		"simulation_pseudodog",
+		"simulation_snork",
+		"simulation_mix_dogs",
+	    "simulation_mix_boar_flesh",	
+		"simulation_tushkano",
+		"simulation_cat",
+		"simulation_psy_dog",
+		"simulation_zombie",
+	    "simulation_fracture",	
+       	"simulation_burer",			
+	    "simulation_chimera",
+	},
+
+	l05_bar = {
+		"simulation_mix_dogs",
+	    "simulation_mix_boar_flesh",
+		"simulation_cat",
+		"simulation_psy_dog",
+	},
+	
+	k02_trucks_cemetery = {
+		"simulation_bloodsucker",
+		"simulation_boar",
+		"simulation_dog",
+		"simulation_pseudodog",
+		"simulation_flesh",
+		"simulation_snork",
+		"simulation_mix_dogs",
+	    "simulation_mix_boar_flesh",	
+		"simulation_tushkano",
+		"simulation_cat",
+		"simulation_psy_dog",
+	    "simulation_fracture",
+	    "simulation_gigant",
+		"simulation_controller",			
+	    "simulation_chimera",
+	},
+
+	l07_military = {
+		"simulation_bloodsucker",
+		"simulation_pseudodog",
+		"simulation_snork",
+		"simulation_mix_dogs",
+	    "simulation_mix_boar_flesh",	
+		"simulation_tushkano",
+		"simulation_psy_dog",
+	    "simulation_fracture",
+	    "simulation_gigant",		
+     	"simulation_chimera",
+	},
+
+	l10_radar = {
+		"simulation_bloodsucker",
+		"simulation_pseudodog",
+		"simulation_snork",
+		"simulation_mix_dogs",
+	    "simulation_mix_boar_flesh",
+		"simulation_cat",
+		"simulation_psy_dog",
+	    "simulation_fracture",
+	    "simulation_gigant",
+		"simulation_controller",		
+	    "simulation_burer",			
+	    "simulation_chimera",
+	},
+
+	l10_red_forest = {	
+	    "simulation_bloodsucker",
+	    "simulation_pseudodog",
+	    "simulation_snork",
+	    "simulation_mix_dogs",
+	    "simulation_mix_boar_flesh",
+	    "simulation_cat",
+	    "simulation_gigant",	
+	    "simulation_controller",				
+	    "simulation_chimera",
+	    "simulation_psy_dog",
+	    "simulation_poltergeist_tele",
+	},
+
+	l10_limansk = {
+		"simulation_dog",
+		"simulation_pseudodog",
+		"simulation_snork",
+		"simulation_cat",
+	    "simulation_fracture",
+		"simulation_zombie",
+	},
+
+	l11_pripyat = {
+		"simulation_bloodsucker",
+		"simulation_pseudodog",
+		"simulation_snork",
+		"simulation_mix_dogs",
+		"simulation_cat",
+		"simulation_psy_dog",
+		"simulation_zombie",
+	    "simulation_fracture",
+	    "simulation_gigant",
+		"simulation_controller",		
+	    "simulation_chimera",
+	},
+
+	pripyat = {
+		"simulation_bloodsucker",
+		"simulation_pseudodog",
+		"simulation_snork",
+		"simulation_mix_dogs",
+		"simulation_cat",
+		"simulation_psy_dog",
+		"simulation_zombie",
+	    "simulation_fracture",
+	    "simulation_gigant",
+		"simulation_controller",				
+	    "simulation_chimera",
+	},
+
+	jupiter = {
+		"simulation_bloodsucker",
+		"simulation_pseudodog",
+		"simulation_snork",
+		"simulation_mix_dogs",
+	    "simulation_mix_boar_flesh",
+		"simulation_cat",
+		"simulation_psy_dog",
+		"simulation_zombie",
+	    "simulation_fracture",
+	    "simulation_gigant",	
+		"simulation_controller",				
+	    "simulation_chimera",
+	},
+		
+	l13_generators = {
+		"simulation_psy_dog",
+		"simulation_zombie",
+	    "simulation_fracture",
+		"simulation_controller",		
+	    "simulation_burer",		
+	},
+
+	l09_deadcity = {
+		"simulation_pseudodog",
+		"simulation_snork",
+		"simulation_mix_dogs",
+	    "simulation_mix_boar_flesh",
+		"simulation_cat",
+		"simulation_psy_dog",
+		"simulation_zombie",
+	    "simulation_fracture",
+	    "simulation_gigant",
+	},
+	
+	l12_stancia = {
+	    "simulation_bloodsucker",
+	    "simulation_pseudodog",
+	    "simulation_snork",
+	    "simulation_gigant",	
+	    "simulation_controller",		
+	    "simulation_burer",			
+	    "simulation_chimera",
+	    "simulation_psy_dog",
+	    "simulation_poltergeist_tele",
+	},
+
+	l12_stancia_2 = {
+	    "simulation_bloodsucker",
+	    "simulation_pseudodog",
+	    "simulation_snork",
+	    "simulation_gigant",	
+	    "simulation_controller",		
+	    "simulation_burer",			
+	    "simulation_chimera",
+	    "simulation_psy_dog",
+	    "simulation_poltergeist_tele",
+	},
+	
+	zaton = {
+		"simulation_bloodsucker",
+		"simulation_pseudodog",
+		"simulation_snork",
+		"simulation_mix_dogs",
+	    "simulation_mix_boar_flesh",
+		"simulation_cat",
+		"simulation_psy_dog",
+		"simulation_zombie",
+	    "simulation_fracture",
+	    "simulation_gigant",	
+		"simulation_controller",		
+	    "simulation_chimera",
+	},
+
+	l04u_labx18 = {
+		"simulation_poltergeist_tele",
+        "simulation_rats",
+        "simulation_burer",	
+        "simulation_controller",
+        "simulation_zombie",
+        "simulation_snork",
+		"simulation_tushkano",
+	},
+	
+	l10u_bunker = {
+		"simulation_poltergeist_tele",
+        "simulation_rats",
+        "simulation_burer",	
+        "simulation_controller",
+        "simulation_zombie",
+        "simulation_snork",
+		"simulation_tushkano",
+	},
+
+	l08u_brainlab = {
+		"simulation_poltergeist_tele",
+        "simulation_rats",
+        "simulation_burer",	
+        "simulation_controller",
+        "simulation_zombie",
+        "simulation_snork",
+		"simulation_tushkano",
+	},
+	
+	labx8 = {
+		"simulation_poltergeist_tele",
+        "simulation_rats",
+        "simulation_burer",	
+        "simulation_controller",
+        "simulation_zombie",
+        "simulation_snork",
+		"simulation_tushkano",
+	},
+	
+	l03u_agr_underground = {
+		"simulation_poltergeist_tele",
+        "simulation_rats",
+        "simulation_burer",	
+        "simulation_controller",
+        "simulation_zombie",
+        "simulation_snork",
+		"simulation_tushkano",
+	},
+
+	jupiter_underground = {
+		"simulation_poltergeist_tele",
+        "simulation_rats",
+        "simulation_burer",	
+        "simulation_controller",
+        "simulation_zombie",
+        "simulation_snork",
+		"simulation_tushkano",
+	},
+
+
+	l13u_warlab = {
+		"simulation_poltergeist_tele",
+        "simulation_rats",
+        "simulation_burer",	
+        "simulation_controller",
+        "simulation_zombie",
+        "simulation_snork",
+		"simulation_tushkano",
+	},
+}
+
+sender_icons = {
+	stalker = {
+		"ui_icon_news_neutral",
+	},
+
+	bandit = {
+		"ui_icon_news_bandit",
+	},
+
+	csky = {
+		"ui_icon_news_CS",
+	},
+
+	army = {
+		"ui_icon_news_army",
+	},
+
+	freedom = {
+		"ui_icon_news_svoboda",
+	},
+
+	dolg = {
+		"ui_icon_news_dolg",
+	},
+
+	ecolog = {
+		"ui_icon_news_ecolog",
+	},
+
+	killer = {
+		"ui_icon_news_killer",
+	},
+
+	monolith = {
+		"ui_icon_news_monolith",
+	},
+}
+
+squad_icons = {
+	["stalker"] = "stalker_spot",
+	["dolg"] = "duty_spot",
+	["freedom"] = "freedom_spot",
+	["killer"] = "killer_spot",
+	["csky"] = "csky_spot",
+	["monolith"] = "monolith_spot",
+	["army"] = "army_spot",
+	["ecolog"] = "ecolog_spot",
+	["bandit"] = "bandit_spot",
+	["zombied"] = "zombied_spot",
+	["monster"] = "mutant_spot",
+}
+
+pda_icons = {
+	["stalker"] = "circle_stalker",
+	["bandit"] = "circle_bandit",
+	["csky"] = "circle_csky",
+	["army"] = "circle_army",
+	["freedom"] = "circle_freedom",
+	["dolg"] = "circle_dolg",
+	["ecolog"] = "circle_ecolog",
+	["killer"] = "circle_killer",
+	["monolith"] = "circle_monolith",
+	["zombied"] = "circle_zombied",
+	["none"] = "circle_empty",
+	["target"] = "circle_target",
+}
+
+factions = {
+	"stalker",
+	"bandit",
+	"csky",
+	"army",
+	"freedom",
+	"dolg",
+	"ecolog",
+	"killer",
+	"monolith",
+	"zombied",
+}
+
+ignore = {
+	["bar_arena_manager_squad"] = true,
+	["bar_arena_guard_squad"] = true,
+	["bar_visitors_barman_stalker_trader_squad"] = true,
+	["bar_visitors_garik_stalker_guard_squad"] = true,
+	["bar_visitors_zhorik_stalker_guard2_squad"] = true,
+	["bar_visitors_cardan_tech_squad"] = true,
+	["bun_krovosos_nest_squad"] = true,
+	["yan_stalker_sakharov_squad"] = true,
+	["yan_ecolog_kruglov_squad"] = true,
+	["mar_smart_terrain_doc_squad"] = true,
+	["mar_smart_terrain_doc_dog_squad"] = true,
+	["mar_smart_terrain_base_dog_doctor_squad"] = true,
+	["esc_2_12_stalker_nimble_squad"] = true,
+	["dar_control_poltergeist_squad"] = true,
+}
+
+registered_squads = {
+	stalker = {},	
+	bandit = {},	
+	csky = {},	
+	army = {},	
+	freedom = {},	
+	dolg = {},	
+	ecolog = {},	
+	killer = {},	
+	monolith = {},
+	monster = {},
+	zombied = {},
+}
+
+active_levels = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, }
+labs = { 20, 21, 22, 23, 24, 25, 26, 29, 31, }
+
+level_links = {
+	[1] = { [4] = true, [2] = true, },
+	[2] = { [1] = true, [3] = true, [5] = true, },
+	[3] = { [2] = true, [4] = true, [7] = true, [8] = true, [6] = true, },
+	[4] = { [1] = true, [3] = true, [10] = true, [20] = true, },
+	[5] = { [2] = true, [6] = true, },
+	[6] = { [3] = true, [5] = true, [32] = true, [21] = true, },
+	[7] = { [3] = true, [8] = true, [9] = true, [32] = true, },
+	[8] = { [3] = true, [7] = true, [10] = true, },
+	[9] = { [7] = true, [13] = true, [11] = true, [32] = true, [14] = true, },
+	[10] = { [4] = true, [11] = true, [8] = true, [22] = true, },
+	[11] = { [10] = true, [9] = true, [12] = true, },
+	[12] = { [11] = true, [15] = true, [14] = true, },
+	[13] = { [9] = true, [14] = true, [16] = true, [23] = true, },
+	[14] = { [9] = true, [12] = true, [28] = true, },
+	[15] = { [12] = true, [18] = true, },
+	[16] = { [13] = true, [17] = true, [28] = true, [30] = true, },
+	[17] = { [16] = true, [18] = true, [27] = true, [24] = true, },
+	[18] = { [15] = true, [17] = true, [19] = true, },
+	[19] = { [18] = true, [26] = true, },
+	[20] = { [4] = true, },
+	[21] = { [6] = true, },
+	[22] = { [10] = true, },
+	[23] = { [13] = true, },
+	[24] = { [17] = true, [25] = true, },
+	[25] = { [24] = true, },
+	[26] = { [19] = true, },
+	[27] = { [17] = true, [28] = true, },
+	[28] = { [14] = true, [27] = true, [29] = true, },
+	[29] = { [28] = true, },
+	[30] = { [16] = true, [29] = true, [31] = true, },
+	[31] = { [30] = true, },
+	[32] = { [6] = true, [7] = true, [9] = true, },	
+}
+
+level_offsets = {
+	[1] =  { 1050.0,	1000.0,		0.0, },
+	[2] =  { 2050.0,	1000.0,		0.0 },
+	[3] =  { 2050.0,	1000.0,		1000.0 },
+	[4] =  { 1300.0,	1000.0,		1000.0 },
+	[5] =  { 3050.0,	1000.0,		0.0 },
+	[6] =  { 3050.0,	1000.0,		1000.0 },
+	[7] =  { 2000.0,	1000.0,		2000.0 },
+	[8] =  { 2000.0,	1000.0,		2000.0 },
+	[9] =  { 2130.0,	1000.0,		3000.0 },
+	[10] = { 1200.0,	1000.0,		2000.0 },
+	[11] = { 1100.0,	1000.0,		3000.0 },
+	[12] = { 1100.0,	1000.0,		4000.0 },
+	[13] = { 2750.0,	1000.0,		4000.0 },
+	[14] = { 1750.0,	1000.0,		4000.0 },
+	[15] = { 1530.0,	1000.0,		5000.0 },
+	[16] = { 2500.0,	1000.0,		5000.0 },
+	[17] = { 2000.0,	1000.0,		6000.0 },
+	[18] = { 2000.0,	1000.0,		6500.0 },
+	[19] = { 2500.0,	1000.0,		7000.0 },
+	[20] = { 1300.0,	800.0,		1845.0 },
+	[21] = { 3050.0,	800.0,		1845.0 },
+	[22] = { 1200.0,   	800.0, 		2845.0 },
+	[23] = { 2750.0, 	800.0,		4000.0 },
+	[24] = { 2000.0,  	1200.0,    	6500.0 },
+	[25] = { 2000.0,   	1400.0,    	6500.0 },
+	[26] = { 2500.0,    800.0,    	7000.0 },
+	[27] = { 1750.0,	1000.0,		5000.0 },
+	[28] = { 1750.0,	1000.0,		4500.0 },
+	[29] = { 1750.0,    800.0,		4500.0 },
+	[30] = { 3000.0,	1000.0,		4500.0 },
+	[31] = { 3000.0,    800.0,		4500.0 },
+	[32] = { 3000.0,	1000.0,		2000.0 },
+}
+
+unique_squads = {
+	-- trader, mechanic, barmen, medic
+	
+	["mar_smart_terrain_base"] = {
+		["csky"] = { "mar_base_owl_stalker_trader_squad", "mar_base_stalker_tech_squad", "mar_base_stalker_barmen_squad", "mar_doctor_squad" },
+	},
+	
+	["esc_smart_terrain_5_7"] = {
+		["stalker"] = { nil, "esc_smart_terrain_5_7_loner_mechanic_stalker_squad", nil, nil },
+	},
+	
+	["val_smart_terrain_7_4"] = {
+		["bandit"] = { "val_smart_terrain_7_4_bandit_trader_stalker_squad", nil, nil, nil },
+	},
+	
+	["val_smart_terrain_7_3"] = {
+		["bandit"] = { nil, "val_smart_terrain_7_3_bandit_mechanic_stalker_squad", nil, nil },
+	},
+	
+	["agr_smart_terrain_1_6"] = {
+		["army"] = { "agr_smart_terrain_1_6_army_trader_stalker_squad", "agr_smart_terrain_1_6_army_mechanic_stalker_squad", nil, nil },
+	},
+	
+	["bar_dolg_general"] = {
+		["dolg"] = { "bar_dolg_general_petrenko_stalker_squad", nil, nil, nil },
+	},
+	
+	["mil_smart_terrain_7_7"] = {
+		["freedom"] = { nil, "mil_smart_terrain_7_7_freedom_mechanic_stalker_squad", nil, nil },
+	},
+	
+	["mil_smart_terrain_7_10"] = {
+		["freedom"] = { "mil_smart_terrain_7_10_freedom_trader_stalker_squad", nil, nil, nil },
+	},
+	
+	["cit_killers"] = {
+		["killer"] = { "cit_killers_merc_trader_stalker_squad", "cit_killers_merc_mechanic_stalker_squad", nil, nil },
+	},
+	
+	["pri_monolith"] = {
+		["monolith"] = { "pri_monolith_monolith_trader_stalker_squad", "pri_monolith_monolith_mechanic_stalker_squad", nil, nil },
+	},
+	
+	["zat_stalker_base_smart"] = {
+		["stalker"] = { "zat_b30_owl_stalker_trader_squad", "zat_a2_stalker_mechanic_squad", "zat_b22_barmen", "zat_b22_medic" },
+	},
+	
+	["jup_a6"] = {
+		["freedom"] = { "jup_a6_freedom_trader_ashot_squad", "jup_b10_stalker_drunk_squad", "jup_a6_stalker_barmen_squad", "jup_a6_stalker_medik_squad" },
+	},
+	
+	["jup_b41"] = {
+		["ecolog"] = { "jup_b6_trader_group", "jup_b6_mechanic_group", nil, nil },
+	},
+}
