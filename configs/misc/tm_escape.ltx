@@ -273,7 +273,7 @@ status_functor = bounty_task
 ; condlist_0 = {!task_giver_alive(esc_m_trader_task_2)} fail
 ;condlist_1 = {=drx_sl_is_enemy(stalker)} fail
 
-on_init = %=on_init_bounty_hunt(esc_m_trader_task_2:stalker:killer:bandit)%
+on_job_descr = %=on_init_bounty_hunt(esc_m_trader_task_2:stalker:killer:bandit)%
 on_complete = %=reward_money(3000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(esc_m_trader_task_2) =drx_sl_unregister_task_giver(esc_m_trader_task_2) =drx_sl_reset_stored_task(esc_m_trader_task_2)%
 on_fail = %=fail_task_dec_goodwill(25:stalker) =drx_sl_unregister_task_giver(esc_m_trader_task_2) =drx_sl_reset_stored_task(esc_m_trader_task_2)%
 

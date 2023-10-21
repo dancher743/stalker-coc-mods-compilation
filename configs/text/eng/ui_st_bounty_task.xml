@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<string_table>
+	<string id="st_bounty_name">
+		<text>Name:</text>
+	</string>
+	<string id="st_bounty_faction">
+		<text>Faction:</text>
+	</string>
+	<string id="st_bounty_location">
+		<text>Location:</text>
+	</string>
+</string_table>

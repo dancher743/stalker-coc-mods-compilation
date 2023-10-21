@@ -276,7 +276,7 @@ status_functor = bounty_task
 condlist_0 = {!task_giver_alive(cit_killers_merc_trader_stalker_task_1)} fail
 ;condlist_1 = {=drx_sl_is_enemy(killer)} fail
 
-on_init = %=drx_sl_setup_bounty_hunt(cit_killers_merc_trader_stalker_task_1:killer)%
+on_job_descr = %=drx_sl_setup_bounty_hunt(cit_killers_merc_trader_stalker_task_1:killer)%
 on_complete = %=drx_sl_reward_random_money(3500:7000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:killer) =inc_task_stage(cit_killers_merc_trader_stalker_task_1) =drx_sl_unregister_task_giver(cit_killers_merc_trader_stalker_task_1) =drx_sl_reset_stored_task(cit_killers_merc_trader_stalker_task_1)%
 on_fail = %=fail_task_dec_goodwill(25:killer) =drx_sl_unregister_task_giver(cit_killers_merc_trader_stalker_task_1) =drx_sl_reset_stored_task(cit_killers_merc_trader_stalker_task_1)%
 

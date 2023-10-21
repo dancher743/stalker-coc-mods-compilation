@@ -118,7 +118,7 @@ status_functor = bounty_task
 condlist_0 = {!task_giver_alive(drx_sl_bar_dolg_general_petrenko_stalker_task_3)} fail
 ;condlist_1 = {=drx_sl_is_enemy(dolg)} fail
 
-on_init = %=drx_sl_setup_bounty_hunt(drx_sl_bar_dolg_general_petrenko_stalker_task_3:dolg)%
+on_job_descr = %=drx_sl_setup_bounty_hunt(drx_sl_bar_dolg_general_petrenko_stalker_task_3:dolg)%
 on_complete = %=drx_sl_reward_random(3000:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:dolg) =inc_task_stage(drx_sl_bar_dolg_general_petrenko_stalker_task_3) =drx_sl_unregister_task_giver(drx_sl_bar_dolg_general_petrenko_stalker_task_3)%
 on_fail = %=fail_task_dec_goodwill(25:dolg) =drx_sl_meet_random_honcho() =drx_sl_decrease_sl_tasks_count =drx_sl_unregister_task_giver(drx_sl_bar_dolg_general_petrenko_stalker_task_3)%
 
@@ -351,7 +351,7 @@ status_functor = bounty_task
 condlist_0 = {!task_giver_alive(bar_dolg_general_petrenko_stalker_task_3)} fail
 ;condlist_1 = {=drx_sl_is_enemy(dolg)} fail
 
-on_init = %=on_init_bounty_hunt(bar_dolg_general_petrenko_stalker_task_3:freedom:bandit)%
+on_job_descr = %=on_init_bounty_hunt(bar_dolg_general_petrenko_stalker_task_3:freedom:bandit)%
 on_complete = %=drx_sl_reward_random(3500:7000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:dolg) =inc_task_stage(bar_dolg_general_petrenko_stalker_task_3) =drx_sl_unregister_task_giver(bar_dolg_general_petrenko_stalker_task_3) =drx_sl_reset_stored_task(bar_dolg_general_petrenko_stalker_task_3)%
 on_fail = %=fail_task_dec_goodwill(25:dolg) =drx_sl_unregister_task_giver(bar_dolg_general_petrenko_stalker_task_3) =drx_sl_reset_stored_task(bar_dolg_general_petrenko_stalker_task_3)%
 

@@ -1,0 +1,157 @@
+xr_effects.drx_sl_setup_bounty_hunt = function(actor,npc,p)
+
+	-- List of all factions:
+	local factions_list = {
+		"stalker",
+		"dolg",
+		"freedom",
+		"csky",
+		"ecolog",
+		"killer",
+		"army",
+		"bandit",
+		"monolith"
+	}
+
+	-- Reset bounty id storage:
+	axr_task_manager.bounties_by_id[p[1]] = nil
+
+	-- Build list of mutual enemy factions:
+	local enemy_faction_list = {}
+	for i = 1, #factions_list do
+		if ( (game_relations.is_factions_enemies( factions_list[i], p[2] )) and (relation_registry.community_relation( factions_list[i], alife( ):actor( ):community( ) ) <= -1000) ) then
+			table.insert( enemy_faction_list, factions_list[i] )
+		end
+	end
+
+	-- If no mutual enemies found then build list of NPC enemies:
+	if ( #enemy_faction_list < 1 ) then
+		for j = 1, #factions_list do
+			if ( game_relations.is_factions_enemies( factions_list[j], p[2] ) ) then
+				table.insert( enemy_faction_list, factions_list[j] )
+			end
+		end
+	end
+
+	-- If no NPC enemies found then build list of actor enemies:
+	if ( #enemy_faction_list < 1 ) then
+		for m = 1, #factions_list do
+			if ( relation_registry.community_relation( factions_list[m], alife( ):actor( ):community( ) ) <= -1000 ) then
+				table.insert( enemy_faction_list, factions_list[m] )
+			end
+		end
+	end
+
+	-- Ensure an enemy faction was found:
+	if ( #enemy_faction_list < 1 ) then
+		printf( "DRX SL Error: drx_sl_setup_bounty_hunt failed, no enemy factions found !!!" )
+		return
+	end
+
+	-- Analyze all NPCs for valid target:
+	local sfind = string.find
+	local se_obj
+	local sim = alife( )
+	local valid_targets = {}
+	for k = 1, 65534 do
+
+		-- Analyze current sim stalker:
+		se_obj = sim:object( k )
+		if ( (se_obj and IsStalker( nil, se_obj:clsid( ) ) and se_obj:alive( ) and sfind( se_obj:section_name( ), "sim_default" ) and get_object_story_id( k ) == nil) and (se_obj.group_id == nil or se_obj.group_id == 65535 or get_object_story_id( se_obj.group_id ) == nil) ) then
+
+			-- If sim stalker is enemy faction then add to list of valid targets:
+			local current_sim_faction = alife_character_community( se_obj )
+			for l = 1, #enemy_faction_list do
+				if ( current_sim_faction == enemy_faction_list[l] ) then
+					table.insert( valid_targets, k )
+					break
+				end
+			end
+
+		end
+
+	end
+
+	-- Ensure a valid target was found:
+	if ( #valid_targets < 1 ) then
+		printf( "DRX SL Error: drx_sl_setup_bounty_hunt failed, no targets !!!" )
+		return
+	end
+
+	-- Pick random target from list:
+	local target_id = valid_targets[math.random( #valid_targets )]
+	if not( target_id ) then
+		printf( "DRX SL Error: drx_sl_setup_bounty_hunt failed, target ID invalid !!!" )
+		return
+	end
+
+	-- Add current target to bounty id storage:
+	axr_task_manager.bounties_by_id[p[1]] = target_id
+	printf( "drx_sl_setup_bounty_hunt target: %s", target_id )
+	--1.5 FIXES BEGINS
+	local function postpone_for_next_frame(target_id)
+		local se_obj = sim:object(target_id)
+		if (se_obj) then
+			local news_caption = game.translate_string(task_manager.task_ini:r_string_ex(p[1], "title")) or "error"
+			local news_text = game.translate_string("st_mm_faction_cap_character_name") .. " " .. se_obj:character_name() .. "\\n " .. game.translate_string("st_mm_faction_cap_faction") .. " " .. game.translate_string(se_obj:community()) .. "\\n " .. game.translate_string("st_location") .. " " .. game.translate_string(alife():level_name(game_graph():vertex(se_obj.m_game_vertex_id):level_id()))
+			db.actor:give_talk_message2(news_caption, news_text, se_obj:character_icon(), "iconed_answer_item")
+		end
+		return true
+	end
+	CreateTimeEvent(0,"drx_sl_setup_bounty_hunt",0,postpone_for_next_frame,target_id)
+	--1.5 FIXES ENDS
+end
+
+xr_effects.on_init_bounty_hunt = function(actor,npc,p)
+	axr_task_manager.bounties_by_id[p[1]] = nil
+
+	local valid_targets = {}
+	local sim = alife()
+	local comm
+	local sfind = string.find
+
+	local faction_lookup = {}
+	for i=2,#p do
+		faction_lookup[p[i]] = true
+	end
+
+	for i=1,65534 do
+		local se_obj = sim:object(i)
+		-- find random sim stalker
+		if (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and sfind(se_obj:section_name(),"sim_default") and get_object_story_id(i) == nil) and (se_obj.group_id == nil or se_obj.group_id == 65535 or get_object_story_id(se_obj.group_id) == nil) then
+			comm = alife_character_community(se_obj)
+			if (faction_lookup[comm] == true) then
+				table.insert(valid_targets,i)
+			end
+		end
+	end
+
+	local size = #valid_targets
+	if (size <= 0) then
+		printf("on_init_bounty_hunt failed, no targets")
+		return
+	end
+
+	local target_id = valid_targets[math.random(size)]
+	if not(target_id) then
+		return
+	end
+
+	axr_task_manager.bounties_by_id[p[1]] = target_id
+
+	--printf("on_init_bounty_hunt %s",target_id)
+
+	--utils.save_var(db.actor,p[1],target_id)
+	--1.5 FIXES BEGINS
+	local function postpone_for_next_frame(target_id)
+		local se_obj = sim:object(target_id)
+		if (se_obj) then
+			local news_caption = game.translate_string(task_manager.task_ini:r_string_ex(p[1], "title")) or "error"
+			local news_text = game.translate_string("st_mm_faction_cap_character_name") .. " " .. se_obj:character_name() .. "\\n " .. game.translate_string("st_mm_faction_cap_faction") .. " " .. game.translate_string(se_obj:community()) .. "\\n " .. game.translate_string("st_location") .. " " .. game.translate_string(alife():level_name(game_graph():vertex(se_obj.m_game_vertex_id):level_id()))
+			db.actor:give_talk_message2(news_caption, news_text, se_obj:character_icon(), "iconed_answer_item")
+		end
+		return true
+	end
+	CreateTimeEvent(0,"on_init_bounty_hunt",0,postpone_for_next_frame,target_id)
+	--1.5 FIXES ENDS
+end

@@ -88,3 +88,4 @@ Mods
 50. Flashlight sound for vanilla CoC (Grelka)
 51. Classic SoC Flashlight for CoC with Dancher's changes (default white light) (Shovelled, Dancher)
 52. Clear weather from All AtmosFear 3 cycles for CoC (owdred)
+53. Target location for DrX Questlines (SpcDan)
