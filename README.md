@@ -89,4 +89,4 @@ Mods
 51. Classic SoC Flashlight for CoC with Dancher's changes (default white light) (Shovelled, Dancher)
 52. Clear weather from All AtmosFear 3 cycles for CoC (owdred)
 53. Target location for DrX Questlines (SpcDan)
-54. Unload All Weapons [1.4.22/1.5 R6] (sLoPpYdOtBiGhOlE)
+54. Unload All Weapons [1.4.22/1.5 R6] with adaptations (sLoPpYdOtBiGhOlE, Dancher)
