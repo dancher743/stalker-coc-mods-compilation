@@ -8,7 +8,7 @@ local bgl,bsi,bsc
 local weapon_empty_sound = sound_object([[weapons\gen_empty]])
 
 local function on_key_press(key)
-	if (key_bindings.kCUSTOM11 == dik_to_bind(key)) then
+	if (key_bindings.kCUSTOM12 == dik_to_bind(key)) then
 		local inventory = ActorMenu.get_actor_menu()
 		if not (inventory and inventory:IsShown()) then 
 			return 
