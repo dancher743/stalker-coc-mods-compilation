@@ -91,4 +91,4 @@ Mods
 53. Target location for DrX Questlines (SpcDan)
 54. Unload All Weapons [1.4.22/1.5 R6] with adaptations (sLoPpYdOtBiGhOlE, Dancher)
 55. Rare Item Drops [CoC 1.4] (Fohom)
-56. SpecHUD – visual effect for low health (Батька Ковцур, D_E_M_A_N)
+56. SpecHUD – visual effect for low health with adaptations (Батька Ковцур, D_E_M_A_N, Dancher)

@@ -1,0 +1,51 @@
+local seldom_upd_time
+local isactcondset = false
+local radeffect = false
+local ble1 = 0
+local ble2 = false
+
+local function bleedcondition()
+    if db.actor.health < 0.20 and isactcondset ~= true then
+        level.add_pp_effector("cherno.ppe", 2012, true)
+        isactcondset = true
+    end
+    if db.actor.health > 0.20 and isactcondset ~= false then
+        level.remove_pp_effector(2012)
+        isactcondset = false
+    end
+    if db.actor.radiation > 0.3 and radeffect ~= true then
+        level.add_pp_effector("cherno.ppe", 2013, true)
+        radeffect = true
+    end
+    if db.actor.radiation == 0 and radeffect ~= false then
+        level.remove_pp_effector(2013)
+        radeffect = false
+    end
+    if db.actor.bleeding > 0.5 and db.actor.health < 0.4 and ble1 < time_global() then
+        level.add_pp_effector("deimos1.ppe", 2014, false)
+        ble1 = time_global() + math.random(4000, 10000)
+    end
+    if db.actor.bleeding > 0.4 and db.actor.power < 0.35 and ble2 ~= true then
+        level.add_cam_effector("camera_effects\\pripyat_horror.anm", 1001, false, "")
+        level.add_pp_effector("snd_shock.ppe", 2015, true)
+        ble2 = true
+    end
+    if db.actor.bleeding < 0.2 or db.actor.power > 0.7 and ble2 ~= false then
+        level.remove_pp_effector(2015)
+        ble2 = false
+    end
+end
+
+local function update()
+    if db.actor then
+        local tg = time_global()
+        if tg > (seldom_upd_time or 100) then
+            seldom_upd_time = tg + 400
+            bleedcondition()
+        end
+    end
+end
+
+function on_game_start()
+    RegisterScriptCallback("actor_on_update", update)
+end
