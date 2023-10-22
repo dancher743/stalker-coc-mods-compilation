@@ -1,0 +1,180 @@
+--------------------------------------------
+-- Unload All Weapons (CoC 1.4.22 / 1.5 R6)
+-- script version 8
+-- author: sLoPpYdOtBiGhOlE
+--------------------------------------------
+local bgl,bsi,bsc
+
+local function on_key_press(key)
+	if (key_bindings.kCUSTOM11 == dik_to_bind(key)) then
+		local ta, tb, ts, ini = {}, {}, {}, system_ini()
+		local i, k, v
+		ts["wpn_knife"] = true
+		ts["wpn_binoc"] = true
+		for i=1,12 do
+			k = db.actor:item_in_slot(i)
+			if (k) then
+				ts[k:id()] = true
+			end
+		end
+		if (string.find(GAME_VERSION,"1.5")) then
+			local function itr(npc,itm)
+				if (IsWeapon(itm) and not ts[itm:id()] and not ts[itm:section()]) then
+					if (bgl) then
+						if (itm:weapon_grenadelauncher_status() == 2 and itm:weapon_is_grenadelauncher()) then
+							v = ini:r_string(itm:section(),"grenade_launcher_name")
+							if (v and v ~= "") then
+								tb[itm] = v
+							end
+						end
+					end
+					if (bsc) then
+						if (itm:weapon_scope_status() == 2 and itm:weapon_is_scope()) then
+							-- weapon_addon_detach fails with scopes and i'm not sure why yet.
+							-- hopefully someone on the forum can help with an answer.
+							v = ini:r_string(itm:section(),"scopes_sect")
+							if (v and v ~= "") then
+								printf("scopes_sect: %s", v)
+								v = alun_utils.str_explode(v,",")
+								if (v) then
+									printf("scope index: %s", itm:weapon_get_scope())
+									v = v[itm:weapon_get_scope() + 1]
+									if (v and v ~= "") then
+										printf("scopes_sect index name: %s", v)
+										v = ini:r_string(v,"scope_name")
+										if (v and v ~= "") then
+											tb[itm] = v
+											printf("scope_name: %s ", v)
+										end
+									end
+								end
+							end
+						end
+					end
+					if (bsi) then
+						if (itm:weapon_silencer_status() == 2 and itm:weapon_is_silencer()) then
+							v = ini:r_string(itm:section(), "silencer_name")
+							if (v and v ~= "") then
+								tb[itm] = v
+							end
+						end
+					end
+					i = itm:get_ammo_in_magazine()
+					if (i > 0) then
+						k = alife_object(itm:id())
+						if (k) then
+							v = ini:r_string_ex(itm:section(),"ammo_class","")
+							if (v and v ~= "") then
+								v = alun_utils.str_explode(v,",")
+								if (v) then
+									v = v[k.ammo_type + 1]
+									if (v and v ~= "") then
+										if not (ta[v]) then
+											ta[v] = i
+										else
+											ta[v] = ta[v] + i
+										end
+										itm:unload_magazine()
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+			db.actor:iterate_inventory(itr,db.actor)
+			for k,v in pairs(tb) do
+				k:weapon_addon_detach(v)
+			end
+		elseif (string.find(GAME_VERSION,"1.4")) then
+			local function itr(npc,itm)
+				if (IsWeapon(itm) and not ts[itm:id()] and not ts[itm:section()]) then
+					i = itm:get_ammo_in_magazine()
+					if (i > 0) then
+						k = itm and alife():object(itm:id())
+						v = k and stpk_utils.get_weapon_data(k)
+						if (v) then
+							k = ini:r_string_ex(itm:section(),"ammo_class","")
+							if (k and k ~= "") then
+								k = alun_utils.str_explode(k,",")
+								if (k) then
+									k = k[v.ammo_type + 1]
+									if (k and k ~= "") then
+										if not (ta[k]) then
+											ta[k] = i
+										else
+											ta[k] = ta[k] + i
+										end
+										itm:unload_magazine()
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+			db.actor:iterate_inventory(itr,db.actor)
+		end
+		for k,v in pairs(ta) do
+			create_ammo(k,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id(),v)
+		end
+		sound_object([[weapons\gen_empty]]):play(db.actor,0,sound_object.s2d)
+	end
+end
+
+local function opt_menu_on_init(menu)
+	menu.gameplay_options["uaw_launcher"] = {default=false, debug_only=false, typ="check", on_accept=function(handler,optMgr,ctrl)
+		bgl = ctrl:GetCheck()
+	end}
+	--menu.gameplay_options["uaw_scope"] = {default=false, debug_only=false, typ="check", on_accept=function(handler,optMgr,ctrl)
+	--	bsc = ctrl:GetCheck()
+	--end}
+	menu.gameplay_options["uaw_silencer"] = {default=false, debug_only=false, typ="check", on_accept=function(handler,optMgr,ctrl)
+		bsi = ctrl:GetCheck()
+	end}
+end
+
+local function on_game_load()
+	bgl = axr_main.config:r_bool_ex("mm_options","enable_uaw_launcher", false)
+	--bsc = axr_main.config:r_bool_ex("mm_options","enable_uaw_scope", false)
+	bsi = axr_main.config:r_bool_ex("mm_options","enable_uaw_silencer", false)
+end
+
+function on_game_start()
+	local sPath = getFS():update_path('$game_config$', '')
+	local f,r = io.open(sPath.."ui\\ui_keybinding.xml","r"),nil
+	if (f) then
+		r = f:read("*all")
+		f:close()
+	else
+		if (string.find(GAME_VERSION,"1.5")) then
+			f = io.open(sPath.."ui\\ui_keybinding_15R6","r")
+		elseif (string.find(GAME_VERSION,"1.4")) then
+			f = io.open(sPath.."ui\\ui_keybinding_1422","r")
+		end
+		if (f) then
+			r = f:read("*all")
+			f:close()
+		end
+	end
+	if (r and r ~= "") then
+		if not (string.find(r, "Unload All Weapons")) then
+			local s = "wpn_firemode_prev\"/>\n"
+			s = s.."\t\t<command id=\"kb_custom11\""
+			s = s.."\t\t\t\t\t\texe=\"custom11\"/> <!-- Unload All Weapons -->"
+			r = string.gsub(r, "wpn_firemode_prev\"/>", s)
+			if (r and r ~= "") then
+				f = io.open(sPath.."ui\\ui_keybinding.xml","w+")
+				if (f) then
+					f:write(r)
+					f:close()
+				end
+			end
+		end
+	end
+	if (string.find(GAME_VERSION,"1.5")) then
+		RegisterScriptCallback("on_game_load",on_game_load)
+		RegisterScriptCallback("opt_menu_on_init",opt_menu_on_init)
+	end
+	RegisterScriptCallback("on_key_press",on_key_press)
+end
