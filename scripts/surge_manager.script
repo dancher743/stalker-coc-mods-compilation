@@ -1889,3 +1889,8 @@ function is_actor_immune()
 	end
 	return false
 end
+
+function has_stage(name)
+	local surge_manager = get_surge_manager()
+	return surge_manager.stages and surge_manager.stages[name] ~= nil
+end
