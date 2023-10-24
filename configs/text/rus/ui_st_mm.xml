@@ -553,4 +553,13 @@
 	<string id="ui_mm_show_stalkers_on_map">
 		<text>Показ. сталкеров на карте</text>
 	</string>
+	<string id="kb_slow_save">
+		<text>Медленное сохранение</text>
+	</string>
+	<string id="kb_quick_save">
+		<text>Быстрое сохранение</text>
+	</string>
+	<string id="kb_quick_load">
+		<text>Быстрая загрузка</text>
+	</string>
 </string_table>

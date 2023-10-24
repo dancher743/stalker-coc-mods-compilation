@@ -550,4 +550,13 @@
 	<string id="ui_mm_show_stalkers_on_map">
 		<text>Show stalkers on map</text>
 	</string>
+	<string id="kb_slow_save">
+		<text>Slow save</text>
+	</string>
+	<string id="kb_quick_save">
+		<text>Quick save</text>
+	</string>
+	<string id="kb_quick_load">
+		<text>Quick load</text>
+	</string>
 </string_table>

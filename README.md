@@ -93,3 +93,4 @@ Mods
 55. Rare Item Drops [CoC 1.4] (Fohom)
 56. SpecHUD – visual effect for low health with adaptations (Батька Ковцур, D_E_M_A_N, Dancher)
 57. PDA Off with reworking (FozeSt, Dancher)
+58. Slow saves (based on New saves by av661194) (Dancher)

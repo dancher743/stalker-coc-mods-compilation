@@ -70,8 +70,9 @@
 		<command id="kb_screenshot"						exe="screenshot"/>
 		<command id="kb_quit"						  	exe="quit"/>
 		<command id="kb_console"						exe="console"/>
-		<command id="ui_mm_save_game"					exe="quick_save"/>
-		<command id="ui_mm_load_game"					exe="quick_load"/>
+		<command id="kb_quick_save"						exe="quick_save"/>
+		<command id="kb_quick_load"						exe="quick_load"/>
+		<command id="kb_slow_save"              		exe="custom13"/> <!-- Slow Save -->
 		<command id="kb_cam_1"                          exe="cam_1"/>
 		<command id="kb_cam_2"                          exe="cam_2"/>
 		<command id="kb_cam_3"                      	exe="cam_3"/>
