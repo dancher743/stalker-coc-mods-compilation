@@ -1,0 +1,65 @@
+local hud,window,pdaoff_under,pdaoff_blowpsi
+
+function on_game_start()
+     RegisterScriptCallback("actor_on_info_callback",process_pda_infoportion)
+     RegisterScriptCallback("opt_menu_on_init",opt_menu_on_init)
+	 RegisterScriptCallback("on_game_load",on_game_load)	 
+end
+
+function opt_menu_on_init(menu)
+	menu.gameplay_options["pdaoff"]	= {default=false, 	debug_only=false, 	typ="check", on_accept=function(handler,optMgr,ctrl)
+	pdaoff_blowpsi = ctrl:GetCheck()
+	end}	
+	menu.gameplay_options["pdaoff1"]	= {default=false, 	debug_only=false, 	typ="check", on_accept=function(handler,optMgr,ctrl)
+	pdaoff_under = ctrl:GetCheck()
+	end}	
+end
+
+function on_game_load()
+	pdaoff_blowpsi = axr_main.config:r_bool_ex("mm_options","enable_pdaoff", false)
+	pdaoff_under = axr_main.config:r_bool_ex("mm_options","enable_pdaoff1", false)
+end	
+
+class "PdaNoiseWnd" (CUIScriptWnd)
+function PdaNoiseWnd:__init() super()
+  local xml = CScriptXmlInit() 
+  self:SetWndRect(Frect():set(0,0,1024,768))
+  xml:ParseFile("pdaoff.xml")
+  self.Element1 = xml:InitStatic("background_static", self)
+end
+
+function process_pda_infoportion(npc,info_id)
+	local lname = level.name()
+	local actor = db.actor
+	
+if (pdaoff_blowpsi) then
+	if actor then
+		if info_id == "ui_pda" and (surge_manager.is_started() or psi_storm_manager.is_started()) then
+			hud = get_hud()
+			window = PdaNoiseWnd()
+			hud:AddDialogToRender(window)
+				elseif info_id == "ui_pda_hide" and (surge_manager.is_started() or psi_storm_manager.is_started()) then
+			hud:RemoveDialogToRender(window)
+			window = nil
+			hud = nil
+		end
+	end
+end
+
+if (pdaoff_under) then	
+	if actor then	
+		if (lname == "l03u_agr_underground") or (lname == "l04u_labx18") or (lname == "l08u_brainlab") or (lname == "l12u_control_monolith") or (lname == "l10u_bunker") or (lname == "l13u_warlab") or (lname == "jupiter_underground") or (lname == "labx8") or (lname == "l12u_sarcofag") then
+			if info_id == "ui_pda" then
+				hud = get_hud()
+				window = PdaNoiseWnd()
+				hud:AddDialogToRender(window)
+					elseif info_id == "ui_pda_hide" then
+				hud:RemoveDialogToRender(window)
+				window = nil
+				hud = nil
+			end
+		end
+	end
+end
+
+end
