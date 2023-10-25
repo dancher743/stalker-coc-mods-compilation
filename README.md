@@ -95,4 +95,5 @@ Mods
 57. PDA Off with reworking (FozeSt, Dancher)
 58. Slow saves (based on New saves by av661194) (Dancher)
 59. New voice for Fanatic [1.4.22/1.5b r6] (Kostov)
-60. AprilTaurus Fix for vanilla icons v3 (upgrade icons only) (AprilTaurus)  
+60. AprilTaurus Fix for vanilla icons v3 (upgrade icons only) (AprilTaurus)
+61. White Corpses Minimap (bases on Blue Corpses Minimap by Hegel) (Dancher)
