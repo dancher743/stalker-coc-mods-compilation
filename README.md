@@ -98,3 +98,4 @@ Mods
 60. AprilTaurus Fix for vanilla icons v3 (upgrade icons only) (AprilTaurus)
 61. De-eyesore grass 1.0 (VodkaChicken)
 62. Red Forest = Red Grass (IaDagon)
+63. Azazel Fixes: Keep Tasks and much more (RenanMsV, strelocc, sariskhan, Roll-and, Aruhito_0)

@@ -1,27 +1,73 @@
+--- Azazel Customizable by RenanMsV for CoC 1.4.22 ---
+local addon = { version = "0.0.1", description = "Death is not the end here, get a new body after all deaths.", author = "coc1.4.22, RenanMsV"}
+
+local config_ini = ini_file("azazel_customizable.ltx")
+local azazel_customizable_config = {
+
+	fix_bleeding = alun_utils.read_from_ini(config_ini,"azazel_config", "fix_bleeding", "bool"),
+	disable_animation = alun_utils.read_from_ini(config_ini,"azazel_config", "disable_animation", "bool"),
+	invul_time = alun_utils.read_from_ini(config_ini,"azazel_config", "invul_time", "float"),
+	faction_spawn = alun_utils.read_from_ini(config_ini,"azazel_config", "faction_spawn", "bool"),
+	stay_on_map = alun_utils.read_from_ini(config_ini,"azazel_config", "stay_on_map", "bool"),
+	debugMessages = alun_utils.read_from_ini(config_ini,"azazel_config", "debugMessages", "bool"),
+	keep_tasks_squad = alun_utils.read_from_ini(config_ini,"azazel_tasks", "keep_tasks_squad", "bool"),
+	keep_tasks_faction = alun_utils.read_from_ini(config_ini,"azazel_tasks", "keep_tasks_faction", "bool"),
+	keep_tasks_always = alun_utils.read_from_ini(config_ini,"azazel_tasks", "keep_tasks_always", "bool"),
+	fail_tasks = alun_utils.read_from_ini(config_ini,"azazel_tasks", "fail_tasks", "bool"),
+	gain_money = alun_utils.read_from_ini(config_ini,"azazel_money", "gain_money", "bool"),
+	lose_all_money = alun_utils.read_from_ini(config_ini,"azazel_money", "lose_all_money", "bool"),
+	stalker_money = alun_utils.read_from_ini(config_ini,"azazel_money", "stalker_money", "bool"),
+	keep_money_squad = alun_utils.read_from_ini(config_ini,"azazel_money", "keep_money_squad", "bool"),
+	never_loose_money = alun_utils.read_from_ini(config_ini,"azazel_money", "never_loose_money", "bool"),
+	activate_supplies = alun_utils.read_from_ini(config_ini,"azazel_extra_supplies", "activate_supplies", "bool"),
+	give_medkit = alun_utils.read_from_ini(config_ini,"azazel_extra_supplies", "give_medkit", "float"),
+	give_bandage = alun_utils.read_from_ini(config_ini,"azazel_extra_supplies", "give_bandage", "float"),
+	give_bread = alun_utils.read_from_ini(config_ini,"azazel_extra_supplies", "give_bread", "float"),
+	give_vodka = alun_utils.read_from_ini(config_ini,"azazel_extra_supplies", "give_vodka", "float"),
+	give_vinca = alun_utils.read_from_ini(config_ini,"azazel_extra_supplies", "give_vinca", "bool")
+	
+}
+
+local rad_count = 0
+
 function on_game_start()
 	RegisterScriptCallback("actor_on_before_death",actor_on_before_death)
 	RegisterScriptCallback("on_game_load",on_game_load)
+	RegisterScriptCallback("actor_on_update",update)
+	setup_money_priority()
+	setup_tasks_priority()
 end
 
 function on_game_load()
 	if not (alife_storage_manager.get_state().enable_azazel_mode) then
 		return
 	end
-	
+
 	if (alife_storage_manager.get_state().azazel_death) then
 		alife_storage_manager.get_state().azazel_death = nil
 		SetHudMsg(strformat(game.translate_string("st_death_count"),xr_statistic.actor_statistic.deaths),8)
-		
-		-- Heal 
-		bind_stalker_ext.invulnerable_time = time_global() + 30000
+
+		-- Heal
 		db.actor:set_health_ex(1)
+		fix_bleeding()
+		bind_stalker_ext.invulnerable_time = time_global() + (azazel_customizable_config["invul_time"]*1000)
 
 		-- Transition
-		level.disable_input()
-		level.remove_cam_effector(210409)
-		level.add_cam_effector("camera_effects\\prison_1.anm", 210409, false, "azazel_mode.cam_effector_end")
-		level.add_pp_effector("deimos1.ppe", 210410, false)
+		if not azazel_customizable_config["disable_animation"] then
+			level.disable_input()
+			level.add_pp_effector("deimos1.ppe", 210410, false)
+			level.remove_cam_effector(210409)
+			level.add_cam_effector("camera_effects\\prison_1.anm", 210409, false, "azazel_mode.cam_effector_end")
+		else
+			level.remove_cam_effector(210409)
+		end
 	end
+
+	debug_sc(
+		"Version %c[255,255,0,0]" .. addon["version"] .. "%c[default] Loaded and Running...\\n"..
+		addon["description"] .. "\\n" ..
+		debug_vars() -- debug config and extra vars from debug_vars function
+	) -- debug
 end
 
 function actor_on_before_death(whoID,flags)
@@ -31,21 +77,25 @@ function actor_on_before_death(whoID,flags)
 
 	xr_statistic.actor_statistic.deaths = xr_statistic.actor_statistic.deaths + 1
 	SetHudMsg(strformat(game.translate_string("st_death_count"),xr_statistic.actor_statistic.deaths),8)
-	
+
 	-- find victims
 	local sim = alife()
 	local gg = game_graph()
 	local avail_entities = {}
-	local squad_mates = {}
-	--local faction_mates = {}
-	for i=1,65534 do 
+	squad_mates = {}
+	local faction_mates = {}
+	for i=1,65534 do
 		local se_obj = sim:object(i)
-		if (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and se_obj:community() ~= "zombied" and se_obj.group_id ~= 65535) then 
+		if (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and se_obj:community() ~= "zombied" and se_obj.group_id ~= 65535) then
 			if (IsSurvivalMode() or get_object_story_id(se_obj.group_id) == nil) then
-				if (axr_companions.companion_squads[se_obj.group_id]) then 
+				if (axr_companions.companion_squads[se_obj.group_id]) then
 					table.insert(squad_mates,se_obj.id)
-				--elseif (se_obj:community() == character_community(db.actor):sub(7)) then 
-					--table.insert(faction_mates,se_obj.id)
+				elseif azazel_customizable_config["faction_spawn"] then
+					if (se_obj:community() == db.actor:character_community():sub(7)) then
+						table.insert(faction_mates,se_obj.id)					
+					else
+					table.insert(avail_entities,se_obj.id)
+					end
 				else
 					table.insert(avail_entities,se_obj.id)
 				end
@@ -54,14 +104,14 @@ function actor_on_before_death(whoID,flags)
 	end
 
 	-- prior for victim is squad or faction or other
-	--local t = #squad_mates > 0 and squad_mates or #faction_mates > 0 and faction_mates or avail_entities
-	local t = #squad_mates > 0 and squad_mates or avail_entities
-	if (#t == 0) then 
+	local t = #squad_mates > 0 and squad_mates or #faction_mates > 0 and faction_mates or avail_entities
+	--local t = #squad_mates > 0 and squad_mates or avail_entities
+	if (#t == 0) then
 		SetHudMsg(strformat(game.translate_string("st_death_count").." " .. game.translate_string("st_nobody_left_to_replace"),xr_statistic.actor_statistic.deaths),10)
 		return
 	end
-	
-	bind_stalker_ext.invulnerable_time = time_global() + 30000
+
+	bind_stalker_ext.invulnerable_time = time_global() + (azazel_customizable_config["invul_time"]*1000)
 	db.actor:set_health_ex(1)
 
 	local ignore_list = {
@@ -90,43 +140,43 @@ function actor_on_before_death(whoID,flags)
 		-- ["main_story_6_jup_ug_documents"] = true,
 		-- ["main_story_7_mon_con_documents"] = true
 	}
-	
+
 	axr_companions.remove_all_from_actor_squad()
-	
+
 	local se_obj = sim:object(t[math.random(#t)])
-	
+
 	-- make squad actor companions
 	local squad = sim:object(se_obj.group_id)
 	if (squad) then
 		SIMBOARD:assign_squad_to_smart(squad, nil)
 		axr_companions.companion_squads[squad.id] = squad
-		for k in squad:squad_members() do 
+		for k in squad:squad_members() do
 			if (k.id ~= se_obj.id) then
 				axr_companions.non_task_companions[k.id] = true
 				utils.se_obj_save_var(k.id,k.object:name(),"companion",true)
-				local member = db.storage[k.id] and db.storage[k.id].object 
+				local member = db.storage[k.id] and db.storage[k.id].object
 				if (member) then
 					axr_companions.setup_companion_logic(member,db.storage[k.id],false)
 				end
 			end
 		end
 	end
-	
+
 	local se_actor = sim:actor()
-	
-	-- actor corpse 
+
+	-- actor corpse
 	local se_mimic = sim:create("stalker_azazel",se_actor.position,se_actor.m_level_vertex_id,se_actor.m_game_vertex_id)
-	if (se_mimic) then 
+	if (se_mimic) then
 		se_mimic:set_character_name(se_actor:character_name())
 		se_mimic:set_profile_name(se_actor:profile_name())
 		se_mimic:kill()
-		
+
 		local m_data = alife_storage_manager.get_se_obj_state(se_mimic,true)
 		if (m_data) then
 			m_data.icon_name = se_actor:character_icon()
 			m_data.visual = db.actor:get_visual_name()
 		end
-		
+
 		local function release_actor_item(temp, item)
 			if not (ignore_list[item:section()]) then
 				local se_item = sim:object(item:id())
@@ -139,25 +189,27 @@ function actor_on_before_death(whoID,flags)
 		end
 		db.actor:iterate_inventory(release_actor_item,nil)
 	end
-	
+
 	-- copy data over to player
-	if (db.actor_binder and db.actor_binder.character_icon) then 
+	if (db.actor_binder and db.actor_binder.character_icon) then
 		db.actor_binder.character_icon = se_obj:character_icon()
 		db.actor:set_character_icon(db.actor_binder.character_icon)
 	end
-	
+
 	se_actor:set_character_name(se_obj:character_name())
-	
+
 	local faction = se_obj:community()
+	local new_faction = se_obj:community() -- get new faction
+	local old_faction = character_community(db.actor):sub(7) -- get old faction
 	se_actor:set_rank(se_obj:rank())
 	db.actor:set_character_community("actor_"..faction)
 	db.actor:set_character_reputation(se_obj:reputation())
-	db.actor:give_money(10*math.random(1,250)+500)
-	
+	handle_actor_money(db.actor, se_obj)
+
 	game_relations.set_community_goodwill_for_faction("actor_"..faction)
-	
+
 	-- copy all items except ignored
-	for i=1,65534 do 
+	for i=1,65534 do
 		local se_item = sim:object(i)
 		if (se_item and se_item.parent_id == se_obj.id) then
 			local sec = se_item:section_name()
@@ -166,10 +218,12 @@ function actor_on_before_death(whoID,flags)
 			end
 		end
 	end
-	
+
+	give_extra_supplies()
+
 	-- create outfit based on stalker visual type
 	local section = se_obj:section_name()
-	if (string.find(section,"_4")) then 
+	if (string.find(section,"_4")) then
 		local f = {
 			["stalker"] = "exo_outfit",
 			["bandit"] = "bandit_exo_outfit",
@@ -182,7 +236,7 @@ function actor_on_before_death(whoID,flags)
 			["monolith"] = "monolith_exo_outfit"
 		}
 		give_object_to_actor(f[faction] or "novice_outfit")
-	elseif (string.find(section,"_3")) then 
+	elseif (string.find(section,"_3")) then
 		local f = {
 			["stalker"] = "exo_outfit",
 			["bandit"] = "bandit_exo_outfit",
@@ -194,8 +248,8 @@ function actor_on_before_death(whoID,flags)
 			["ecolog"] = "ecolog_outfit_orange",
 			["monolith"] = "monolith_scientific_outfit"
 		}
-		give_object_to_actor(f[faction] or "novice_outfit")		
-	elseif (string.find(section,"_2")) then 
+		give_object_to_actor(f[faction] or "novice_outfit")
+	elseif (string.find(section,"_2")) then
 		local f = {
 			["stalker"] = "stalker_outfit",
 			["bandit"] = "trenchcoat_outfit",
@@ -207,8 +261,8 @@ function actor_on_before_death(whoID,flags)
 			["ecolog"] = "ecolog_outfit_green",
 			["monolith"] = "monolith_outfit"
 		}
-		give_object_to_actor(f[faction] or "novice_outfit")		
-	elseif (string.find(section,"_1")) then 
+		give_object_to_actor(f[faction] or "novice_outfit")
+	elseif (string.find(section,"_1")) then
 		local f = {
 			["stalker"] = "stalker_outfit",
 			["bandit"] = "trenchcoat_outfit",
@@ -220,8 +274,8 @@ function actor_on_before_death(whoID,flags)
 			["ecolog"] = "ecolog_outfit_green",
 			["monolith"] = "monolith_outfit"
 		}
-		give_object_to_actor(f[faction] or "novice_outfit")		
-	else 
+		give_object_to_actor(f[faction] or "novice_outfit")
+	else
 		local f = {
 			["stalker"] = "novice_outfit",
 			["bandit"] = "bandit_novice_outfit",
@@ -233,36 +287,65 @@ function actor_on_before_death(whoID,flags)
 			["ecolog"] = "ecolog_guard_outfit",
 			["monolith"] = "monolith_novice_outfit"
 		}
-		give_object_to_actor(f[faction] or "novice_outfit")		
-	end 
-	
+		give_object_to_actor(f[faction] or "novice_outfit")
+	end
+
 	-- cancel all tasks
 	local task_info = task_manager.get_task_manager().task_info
 	local task_ini = task_manager.task_ini
 	for task_id,tbl in pairs(task_info) do
-		--if not (tbl.storyline) then
-			tbl.forced_status = "fail"
-			tbl.cancelled_by_actor = true
-		--end
+		if not azazel_customizable_config["keep_tasks_always"] then
+			if azazel_customizable_config["keep_tasks_squad"] then
+				if (#squad_mates == 0) then	
+					--if not (tbl.storyline) then
+						tbl.forced_status = "fail"
+						tbl.cancelled_by_actor = true
+					--end
+				end	
+			elseif azazel_customizable_config["keep_tasks_faction"] and (#squad_mates == 0) then
+				if (#faction_mates == 0) then	
+					--if not (tbl.storyline) then
+						tbl.forced_status = "fail"
+						tbl.cancelled_by_actor = true
+					--end
+				end	
+			end
+		end
+		if azazel_customizable_config["fail_tasks"] then
+			--if not (tbl.storyline) then
+					tbl.forced_status = "fail"
+					tbl.cancelled_by_actor = true
+			--end
+		end
 	end
-		
+
+	alife_storage_manager.get_state().azazel_db_old = old_faction -- set data
+	alife_storage_manager.get_state().azazel_db_new = new_faction -- set data
+	alife_storage_manager.get_state().azazel_db_update = true
+
 	-- initiate transitition and removal of victim
 	local level_name = sim:level_name(game_graph():vertex(se_obj.m_game_vertex_id):level_id())
-	if (level_name == level.name()) then 
+	if (level_name == level.name()) then
+		alife_storage_manager.get_state().azazel_db_samemap = true
 		local hud = get_hud()
 		hud:HidePdaMenu()
 		hud:HideActorMenu()
 		db.actor:set_actor_position(se_obj.position)
-		level.disable_input()
+		if not azazel_customizable_config["disable_animation"] then
+			level.disable_input()
+			level.add_pp_effector("deimos1.ppe", 210410, false)
+			level.add_cam_effector("camera_effects\\prison_1.anm", 210409, false, "azazel_mode.cam_effector_end")
+		end
 		level.remove_cam_effector(210409)
-		level.add_cam_effector("camera_effects\\prison_1.anm", 210409, false, "azazel_mode.cam_effector_end")
-		level.add_pp_effector("deimos1.ppe", 210410, false)
 		safe_release_manager.release(se_obj)
 	else
+		alife_storage_manager.get_state().azazel_db_samemap = false
 		local pos = se_obj.position
 		local lvid = se_obj.m_level_vertex_id
 		local gvid = se_obj.m_game_vertex_id
-		level.add_pp_effector("deimos1.ppe", 210410, false)
+		if not azazel_customizable_config["disable_animation"] then
+			level.add_pp_effector("deimos1.ppe", 210410, false)
+		end
 		safe_release_manager.release(se_obj)
 		alife_storage_manager.get_state().azazel_death = true
 		local function tele_me_now(id)
@@ -271,7 +354,7 @@ function actor_on_before_death(whoID,flags)
 		end
 		CreateTimeEvent(0,"tele",0,tele_me_now,se_obj.id)
 	end
-	
+
 	flags.ret_value = false
 end
 
@@ -279,4 +362,124 @@ function cam_effector_end()
 	level.enable_input()
 	db.actor:set_health_ex(1)
 	bind_stalker_ext.invulnerable_time = nil
+end
+
+function setup_money_priority()
+	if (azazel_customizable_config["gain_money"]) then
+		azazel_customizable_config["lose_all_money"] = false
+		azazel_customizable_config["stalker_money"] = false
+		azazel_customizable_config["keep_money_squad"] = false
+		azazel_customizable_config["never_loose_money"] = false
+	elseif azazel_customizable_config["lose_all_money"] then
+		azazel_customizable_config["stalker_money"] = false
+		azazel_customizable_config["keep_money_squad"] = false
+		azazel_customizable_config["never_loose_money"] = false
+	elseif azazel_customizable_config["stalker_money"] then
+		azazel_customizable_config["lose_all_money"] = false
+		azazel_customizable_config["keep_money_squad"] = false
+		azazel_customizable_config["never_loose_money"] = false
+	elseif azazel_customizable_config["keep_money_squad"] then
+		azazel_customizable_config["never_loose_money"] = false
+	elseif azazel_customizable_config["never_loose_money"] then
+		azazel_customizable_config["lose_all_money"] = false
+		azazel_customizable_config["stalker_money"] = false
+		azazel_customizable_config["keep_money_squad"] = false
+		azazel_customizable_config["gain_money"] = false
+	else
+		azazel_customizable_config["gain_money"] = true
+	end
+end
+
+function setup_tasks_priority()
+	if azazel_customizable_config["fail_tasks"] then
+		azazel_customizable_config["keep_tasks_faction"] = false
+		azazel_customizable_config["keep_tasks_always"] = false
+		azazel_customizable_config["keep_tasks_squad"] = false
+	elseif (azazel_customizable_config["keep_tasks_squad"]) then
+		azazel_customizable_config["keep_tasks_faction"] = false
+		azazel_customizable_config["keep_tasks_always"] = false
+		azazel_customizable_config["fail_tasks"] = false
+	elseif azazel_customizable_config["keep_tasks_faction"] then
+		azazel_customizable_config["keep_tasks_squad"] = false
+		azazel_customizable_config["keep_tasks_always"] = false
+		azazel_customizable_config["fail_tasks"] = false
+	elseif azazel_customizable_config["keep_tasks_always"] then
+		azazel_customizable_config["keep_tasks_faction"] = false
+		azazel_customizable_config["keep_tasks_always"] = false
+		azazel_customizable_config["fail_tasks"] = false
+	else
+		azazel_customizable_config["fail_tasks"] = true
+	end
+end
+
+function fix_bleeding()
+	if not azazel_customizable_config["fix_bleeding"] then return end
+	db.actor.power = 100000
+	db.actor.radiation = -100000
+	alife_storage_manager.get_state().azazel_db_rad = true
+	db.actor.bleeding = 100000
+	db.actor.satiety = 100000
+end
+
+function handle_actor_money(actor, npc)
+	if not azazel_customizable_config["never_loose_money"] then	
+		if azazel_customizable_config["gain_money"] then
+			actor:give_money(10*math.random(1,250)+500)
+		elseif azazel_customizable_config["lose_all_money"] then
+			local money = math.random(400,600)
+			actor:give_money(-actor:money())
+			actor:give_money(money)
+		elseif azazel_customizable_config["stalker_money"] then
+			local money = math.random(2000,7600)
+			actor:give_money(-actor:money())
+			actor:give_money(money)
+		elseif azazel_customizable_config["keep_money_squad"] and (#squad_mates == 0) then
+		local money = math.random(400,600)
+			actor:give_money(-actor:money())
+			actor:give_money(money)
+		end
+	end	
+end
+
+function give_extra_supplies()
+	if azazel_customizable_config["activate_supplies"] then
+		if azazel_customizable_config["give_medkit"] > math.random(1,99) then
+			alife():create("medkit", db.actor:position(), 1, db.actor:game_vertex_id(), db.actor:id())
+		end
+		if azazel_customizable_config["give_bandage"] > math.random(1,99) then
+			alife():create("bandage", db.actor:position(), 1, db.actor:game_vertex_id(), db.actor:id())	
+		elseif azazel_customizable_config["give_vinca"] then
+			alife():create("drug_coagulant", db.actor:position(), 1, db.actor:game_vertex_id(), db.actor:id())
+		end
+		if azazel_customizable_config["give_bread"] > math.random(1,99) then
+			alife():create("bread", db.actor:position(), 1, db.actor:game_vertex_id(), db.actor:id())
+		end
+		if azazel_customizable_config["give_vodka"] > math.random(1,99) then
+			alife():create("vodka", db.actor:position(), 1, db.actor:game_vertex_id(), db.actor:id())
+		end
+	end
+end
+
+function debug_sc(text, icon) -- debug function
+	if not azazel_customizable_config["debugMessages"] then return end
+	news_manager.send_tip(db.actor, "Azazel Fix >> Debug Message" .. "\\n" .. text, nil, "tourist", 50000)
+	alun_utils.printf(("Azazel Fix >> Debug Message" .. "\\n" .. text))
+end
+
+function debug_vars() -- return config and extra vars as strings
+	if not azazel_customizable_config["debugMessages"] then return "" end
+	return strformat("Configs: Fix Bleeding: %s , Disable Animation: %s , Gain Money: %s , Lose All Money: %s , Stalker Money: %s", azazel_customizable_config["fix_bleeding"], azazel_customizable_config["disable_animation"], azazel_customizable_config["gain_money"], azazel_customizable_config["lose_all_money"], azazel_customizable_config["stalker_money"])
+end
+
+function update()
+
+	if (alife_storage_manager.get_state().azazel_db_rad) then
+		if(rad_count < 5) then
+			db.actor.radiation = -1
+			rad_count = rad_count + 1
+		else
+			alife_storage_manager.get_state().azazel_db_rad = false
+		end
+	end
+	--debug_sc(strformat("Rad: %s , Bleed: %s , Pow: %s , Sat: %s", db.actor.radiation, db.actor.bleeding, db.actor.power, db.actor.satiety))
 end
