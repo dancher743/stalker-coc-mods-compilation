@@ -14,7 +14,7 @@ dmg_norm_walk_fwd_1			=	1,	  0.2,	    0.2,   0.65,     0.2
 dmg_norm_run_fwd_1			=	1,	  0.2,	    1,	   0.65,     1
 
 dmg_norm_walk_fwd_0			=	1,	  0.2,	    0.2,   0.65,     0.2
-dmg_norm_walk_back_0	               =	1,	  0.2,	    0.2,   0.65,     0.2
+dmg_norm_walk_back_0	    =	1,	  0.2,	    0.2,   0.65,     0.2
 dmg_norm_walk_ls_0			=	1,	  0.2,	    0.2,   0.65,     0.2
 dmg_norm_walk_rs_0			=	1,	  0.2,	    0.2,   0.65,     0.2
 
@@ -23,8 +23,8 @@ dmg_norm_run_back_0			=	1,	  0.2,	    1,	   0.65,     1
 dmg_norm_run_ls_0			=	1,	  0.2,	    1,	   0.65,     1
 dmg_norm_run_rs_0			=	1,	  0.2,	    1,	   0.65,     1
 
-dmg_norm_turn_left_0	        	=	1,	  0.2,	    0.2,   0.65,     0.2
-dmg_norm_turn_right_0	        	=	1,	  0.2,	    0.2,   0.65,     0.2
+dmg_norm_turn_left_0	    =	1,	  0.2,	    0.2,   0.65,     0.2
+dmg_norm_turn_right_0	    =	1,	  0.2,	    0.2,   0.65,     0.2
 
 norm_escape_0				=	1,	  0.2,	    1.3,   0.65,     1.1
 norm_escape_00				=	1,	  0.2,	    1.3,   0.65,     1.1
@@ -56,8 +56,8 @@ cr_walk_rs_0				=	1,	  0.2,	    0.1,   0.65,     0.1
 
 cr_run_fwd_0				=	1,	  0.2,	    0.1,   0.65,     0.1
 cr_run_back_0				=	1,	  0.2,	    0.1,   0.65,     0.1
-cr_run_ls_0				=	1,	  0.2,	    0.1,   0.65,     0.1
-cr_run_rs_0				=	1,	  0.2,	    0.1,   0.65,     0.1
+cr_run_ls_0					=	1,	  0.2,	    0.1,   0.65,     0.1
+cr_run_rs_0					=	1,	  0.2,	    0.1,   0.65,     0.1
 
 cr_turn_left_0				=	1,	  0.2,	    0.1,   0.65,     0.1
 cr_turn_right_0				=	1,	  0.2,	    0.1,   0.65,     0.1
@@ -74,85 +74,86 @@ cl_run_fwd_0				=	1,	  0.2,	    1,       0.4,     1
 
 [stalker_vision_free]
 min_view_distance   		= 0.4				; min range of cone based on eye_range
-max_view_distance	 		= 0.8				; max range of cone based on eye_range
-visibility_threshold	 	= 30				;Threshold in which object becomes visible based on factors
+max_view_distance	 		= 1.0				; max range of cone based on eye_range
+visibility_threshold	 	= 120				;Threshold in which object becomes visible based on factors
 always_visible_distance 	= 0					;Distance object is always considered visible (float)
 time_quant					= 0.005				;step increment to for sight calculations
 decrease_value				= 0.1 				;Decrease over time to overall threshold
-velocity_factor		     	= 0.4				;Higher value = greater bonus to detection speed when target is moving (depended on movement speed)
-luminocity_factor			= 0.70				;Low value = easier to see at night
-transparency_threshold	 	= 0.6 			    ;Low value = easier to see through objects
+velocity_factor		     	= 0.5				;Higher value = greater bonus to detection speed when target is moving (depended on movement speed)
+luminocity_factor			= 0.8				;Low value = easier to see at night
+transparency_threshold	 	= 0.8			    ;Low value = easier to see through objects
 still_visible_time          = 0 				;The time (milliseconds) that the object is still considered visible , even if it is not in the frustum (u32)
 
 [stalker_vision_danger]
-min_view_distance   		= 0.4				; min range of cone based on eye_range
-max_view_distance	 		= 1.0				; max range of cone based on eye_range
-visibility_threshold	 	= 30				;Threshold in which object becomes visible based on factors
+min_view_distance   		= 0.6				; min range of cone based on eye_range
+max_view_distance	 		= 1.5				; max range of cone based on eye_range
+visibility_threshold	 	= 60				;Threshold in which object becomes visible based on factors
 always_visible_distance 	= 0					;Distance object is always considered visible (float)
 time_quant					= 0.0054			;step increment to for sight calculations
 decrease_value				= 0.1				;Decrease over time to overall threshold
-velocity_factor		     	= 0.5				;Higher value = greater bonus to detection speed when target is moving (depended on movement speed)
-luminocity_factor			= 0.70				;Low value = easier to see at night
-transparency_threshold	 	= 0.6				;Low value = easier to see through objects (if greater then 1 then enemies are blind)
+velocity_factor		     	= 0.8				;Higher value = greater bonus to detection speed when target is moving (depended on movement speed)
+luminocity_factor			= 0.6			    ;Low value = easier to see at night
+transparency_threshold	 	= 0.6			    ;Low value = easier to see through objects (if greater then 1 then enemies are blind)
 still_visible_time          = 0					;The time (milliseconds) that the object is still considered visible , even if it is not in the frustum (u32)
 
 [stalker_sound_perceive]
 	weapon					= 2		; 0.75; 10 коэффициент усиления приоритета\силы звука
 	item					= 0.25	; коэффициент усиления приоритета\силы звука
-	npc						= 1 	;коэффициент усиления приоритета\силы звука
+	npc						= 0.4 	;коэффициент усиления приоритета\силы звука
 	anomaly					= 0.0	; коэффициент усиления приоритета\силы звука
-	world					= 0.1	; коэффициент усиления приоритета\силы звука
+	world					= 0.2	; коэффициент усиления приоритета\силы звука
 
 [stalker_damage]
-default						= 0.5, -1, 1.0
+default						= 0.75, -1, 1
 
-bip01_pelvis 				= 0.5, 1, 0.3
-bip01_spine 		 		= 1.0, 1, 0.8
-bip01_spine1 		 		= 1.0, 1, 0.8
-bip01_spine2 		 		= 1.0, 1, 0.8
-bip01_neck 			 		= 1.0, 0, 1.0
-bip01_head 			 		= 2.0, 0, 1.0, 	3
-eyelid_1 			 		= 2.0, 0, 1.0, 	3
-eye_left 			 		= 2.0, 0, 1.0, 	3
-eye_right 			 		= 2.0, 0, 1.0, 	3
-jaw_1 		 		 		= 2.0, 0, 1.0
+bip01_pelvis				= 0.6, 1, 0.6
+bip01_spine					= 0.85, 1, 0.8
+bip01_spine1				= 0.9, 1, 0.8
+bip01_spine2				= 0.95, 1, 0.8
+bip01_neck					= 1, 0, 2
+bip01_head					= 3.0, 0, 3
+eyelid_1					= 3.0, 0, 3
+eye_left					= 3.0, 0, 3
+eye_right					= 3.0, 0, 3
+jaw_1						= 3.0, 0, 1
 
-bip01_l_clavicle	 		= 0.35, 10, 0.45
-bip01_l_upperarm	 		= 0.25, 10, 0.45
-bip01_l_forearm	 	 	    = 0.25, 10, 0.25
-bip01_l_hand	 	 	    = 0.05, -1, 0.02
-bip01_l_finger0	 	 	    = 0.05, -1, 0.01
-bip01_l_finger01	 		= 0.05, -1, 0.01
-bip01_l_finger02	 		= 0.05, -1, 0.01
-bip01_l_finger1	 	 	    = 0.05, -1, 0.01
-bip01_l_finger11	 		= 0.05, -1, 0.01
-bip01_l_finger12	 		= 0.05, -1, 0.01
-bip01_l_finger2	 	 	    = 0.05, -1, 0.01
-bip01_l_finger21	 		= 0.05, -1, 0.01
-bip01_l_finger22	 		= 0.05, -1, 0.01
+bip01_l_clavicle			= 0.5, 10, 0.6
+bip01_l_upperarm			= 0.3, 10, 0.6
+bip01_l_forearm				= 0.2, 10, 0.5
+bip01_l_hand				= 0.1, -1, 0.2
+bip01_l_finger0				= 0.05, -1, 0.1
+bip01_l_finger01			= 0.05, -1, 0.1
+bip01_l_finger02			= 0.05, -1, 0.1
+bip01_l_finger1				= 0.05, -1, 0.1
+bip01_l_finger11			= 0.05, -1, 0.1
+bip01_l_finger12			= 0.05, -1, 0.1
+bip01_l_finger2				= 0.05, -1, 0.1
+bip01_l_finger21			= 0.05, -1, 0.1
+bip01_l_finger22			= 0.05, -1, 0.1
 
-bip01_r_clavicle	 		= 0.35, 10, 0.45
-bip01_r_upperarm	 		= 0.25, 10, 0.45
-bip01_r_forearm	 	 		= 0.15, 10, 0.25
-bip01_r_hand	 	 		= 0.05, -1, 0.02
-bip01_r_finger0	 	 		= 0.01, -1, 0.01
-bip01_r_finger01	 		= 0.01, -1, 0.01
-bip01_r_finger02	 		= 0.01, -1, 0.01
-bip01_r_finger1	 	 		= 0.01, -1, 0.01
-bip01_r_finger11	 		= 0.01, -1, 0.01
-bip01_r_finger12	 		= 0.01, -1, 0.01
-bip01_r_finger2	 	 	 	= 0.01, -1, 0.01
-bip01_r_finger21	 		= 0.01, -1, 0.01
-bip01_r_finger22	 		= 0.01, -1, 0.01
+bip01_r_clavicle			= 0.5, 8, 0.6
+bip01_r_upperarm			= 0.3, 8, 0.6
+bip01_r_forearm				= 0.2, 8, 0.5
+bip01_r_hand				= 0.1, -1, 0.2
+bip01_r_finger0				= 0.05, -1, 0.1
+bip01_r_finger01			= 0.05, -1, 0.1
+bip01_r_finger02			= 0.05, -1, 0.1
+bip01_r_finger1				= 0.05, -1, 0.1
+bip01_r_finger11			= 0.05, -1, 0.1
+bip01_r_finger12			= 0.05, -1, 0.1
+bip01_r_finger2				= 0.05, -1, 0.1
+bip01_r_finger21			= 0.05, -1, 0.1
+bip01_r_finger22			= 0.05, -1, 0.1
 
-bip01_l_thigh	 	 		= 0.40,  4, 0.45
-bip01_l_calf	 	 		= 0.35,  4, 0.4
-bip01_l_foot	 	 		= 0.10,  4, 0.01
-bip01_l_toe0	 	 		= 0.01, -1, 0.01
-bip01_r_thigh	 	 		= 0.40,  6, 0.45
-bip01_r_calf	 	 		= 0.35,  6, 0.4
-bip01_r_foot	 	 		= 0.10,  6, 0.01
-bip01_r_toe0	 	 		= 0.01, -1, 0.01
+bip01_l_thigh				= 0.5, 4, 0.5
+bip01_l_calf				= 0.4, 4, 0.4
+bip01_l_foot				= 0.1, 4, 0.3
+bip01_l_toe0				= 0.05, -1, 0.2
+
+bip01_r_thigh				= 0.5, 6, 0.5
+bip01_r_calf				= 0.4, 6, 0.4
+bip01_r_foot				= 0.1, 6, 0.3
+bip01_r_toe0				= 0.05, -1, 0.2
 
 [critical_wound_head_section]
 	bip01_head
@@ -386,20 +387,20 @@ terrain					= 255,255,255,255,0,1
 ;terrain				= stalker_terrain
 
 ;---SOUND-------------------------------------------------------------
-sound_threshold					= 0.09
+sound_threshold					= 0.1
 self_sound_factor				= 0.1	;1.0
 self_decrease_quant				= 250	; in milliseconds
-self_decrease_factor			= 0.94	; fading factor
+self_decrease_factor			= 0.5	; fading factor
 killer_clsids					= Z_MINCER,Z_GALANT,ZS_BFUZZ,ZS_MBALD,ZS_GALAN,ZS_MINCE
 sound_perceive_section			= stalker_sound_perceive
 
 ;---VISIBILITY--------------------------------------------------------
 vision_danger_section			= stalker_vision_danger
 vision_free_section				= stalker_vision_free
-eye_fov							= 90
-eye_range						= 150
+eye_fov							= 140
+eye_range						= 100
 far_plane_factor				= 1.0		; фактор дальности тумана
-fog_density_factor				= 0.05		; фактор плотности тумана
+fog_density_factor				= 0.7		; фактор плотности тумана
 
 
 ;---MEMORY------------------------------------------------------------
@@ -409,7 +410,7 @@ DynamicHitCount				= 32
 
 ;---ENEMY------------------------------------------------------------
 ignore_monster_threshold		= 0
-max_ignore_distance				= 90
+max_ignore_distance				= 25
 panic_threshold					= 0
 
 ;---SOUND PLAYER------------------------------------------------------
@@ -470,13 +471,13 @@ bone_model						= bip01
 crouch_type						= 0 ; 0 - crouch a little, 1 - crouch full; -1 - random crouch
 
 ;---FIRE DISPERSIONS--------------------------------------------------
-disp_walk_stand					= 8
-disp_walk_crouch				= 5
-disp_run_stand					= 15
-disp_run_crouch					= 12
-disp_stand_stand				= 5
-disp_stand_crouch				= 3
-disp_stand_stand_zoom			= 2
+disp_walk_stand         		= 4
+disp_walk_crouch        		= 2
+disp_run_stand          		= 8
+disp_run_crouch         		= 4
+disp_stand_stand        		= 2
+disp_stand_crouch       		= 1
+disp_stand_stand_zoom			= 1
 disp_stand_crouch_zoom			= 1
 
 FireRandomMin 		 =     	1
@@ -524,30 +525,30 @@ ph_character_have_wounded_state = false; имеет ли персонаж состояние раненый
 ;--					АНИМАЦИИ ДЛЯ СМЕРТИ
 ;--------------------------------------------------------------------------------------------------------------------
 ;cлучайные
-;random_death_animations = norm_2_critical_hit_legs_right_0,norm_2_critical_hit_torso_0,norm_2_critical_hit_torso_1,norm_2_critical_hit_legs_left_0,norm_2_critical_hit_hend_left_0,norm_2_critical_hit_hend_right_0,norm_2_critical_hit_head_0
+;random_death_animations = ;norm_2_critical_hit_legs_right_0,norm_2_critical_hit_torso_0,norm_2_critical_hit_torso_1,norm_2_critical_hit_legs_left_0,norm_2_critical_hit_hend_left_0,norm_2_critical_hit_hend_right_0,norm_2_critical_hit_head_0
 
 
 
 ;front/back/left/right
-;kill_enertion           = ragdoll_inertion_front_0/ragdoll_inertion_front_3/ragdoll_inertion_front_2/ragdoll_inertion_front_1
+kill_enertion           = ragdoll_inertion_front_0/ragdoll_inertion_front_3/ragdoll_inertion_front_2/ragdoll_inertion_front_1
 
 
 ;kill_burst				= ragdoll_burst_front_0,ragdoll_burst_front_1/ragdoll_burst_back_0/ragdoll_burst_left_0/ragdoll_burst_right_0
 
 
-;kill_shortgun	        = ragdoll_shortgun_front_0,ragdoll_shortgun_front_1,ragdoll_shortgun_front_2,ragdoll_shortgun_front_3,ragdoll_shortgun_front_4,ragdoll_shortgun_front_5,ragdoll_shortgun_front_6,ragdoll_shortgun_front_7,ragdoll_shortgun_front_8/ragdoll_shortgun_back_0,ragdoll_shortgun_back_1,ragdoll_shortgun_back_2,ragdoll_shortgun_back_3,ragdoll_shortgun_back_4,ragdoll_shortgun_back_5,ragdoll_shortgun_back_6/ragdoll_shortgun_left_0,ragdoll_shortgun_left_1,ragdoll_shortgun_left_2/ragdoll_shortgun_right_0,ragdoll_shortgun_right_1
+kill_shortgun	        = ragdoll_shortgun_front_0,ragdoll_shortgun_front_1,ragdoll_shortgun_front_2,ragdoll_shortgun_front_3,ragdoll_shortgun_front_4,ragdoll_shortgun_front_5,ragdoll_shortgun_front_6,ragdoll_shortgun_front_7,ragdoll_shortgun_front_8/ragdoll_shortgun_back_0,ragdoll_shortgun_back_1,ragdoll_shortgun_back_2,ragdoll_shortgun_back_3,ragdoll_shortgun_back_4,ragdoll_shortgun_back_5,ragdoll_shortgun_back_6/ragdoll_shortgun_left_0,ragdoll_shortgun_left_1,ragdoll_shortgun_left_2/ragdoll_shortgun_right_0,ragdoll_shortgun_right_1
 
 
-;kill_headshot		= ragdoll_headshot_front_0,ragdoll_headshot_front_1,ragdoll_headshot_front_2,ragdoll_headshot_front_3,ragdoll_headshot_front_4,ragdoll_headshot_front_5,ragdoll_headshot_front_6,ragdoll_headshot_front_7,ragdoll_headshot_front_8,ragdoll_headshot_front_9,ragdoll_headshot_front_10/ragdoll_headshot_back_0,ragdoll_headshot_back_1,ragdoll_headshot_back_2,ragdoll_headshot_back_3,ragdoll_headshot_back_4,ragdoll_headshot_back_5/ragdoll_headshot_left_0,ragdoll_headshot_left_1,ragdoll_headshot_left_2,ragdoll_headshot_left_3,ragdoll_headshot_left_4,ragdoll_headshot_left_5,ragdoll_headshot_left_6,ragdoll_headshot_left_7/ragdoll_headshot_right_0,ragdoll_headshot_right_1,ragdoll_headshot_right_2,ragdoll_headshot_right_3,ragdoll_headshot_right_4,ragdoll_headshot_right_5,ragdoll_headshot_right_6
+kill_headshot		= ragdoll_headshot_front_0,ragdoll_headshot_front_1,ragdoll_headshot_front_2,ragdoll_headshot_front_3,ragdoll_headshot_front_4,ragdoll_headshot_front_5,ragdoll_headshot_front_6,ragdoll_headshot_front_7,ragdoll_headshot_front_8,ragdoll_headshot_front_9,ragdoll_headshot_front_10/ragdoll_headshot_back_0,ragdoll_headshot_back_1,ragdoll_headshot_back_2,ragdoll_headshot_back_3,ragdoll_headshot_back_4,ragdoll_headshot_back_5/ragdoll_headshot_left_0,ragdoll_headshot_left_1,ragdoll_headshot_left_2,ragdoll_headshot_left_3,ragdoll_headshot_left_4,ragdoll_headshot_left_5,ragdoll_headshot_left_6,ragdoll_headshot_left_7/ragdoll_headshot_right_0,ragdoll_headshot_right_1,ragdoll_headshot_right_2,ragdoll_headshot_right_3,ragdoll_headshot_right_4,ragdoll_headshot_right_5,ragdoll_headshot_right_6
 
 
-;kill_sniper_headshot	= ragdoll_sniper_headshot_front_0,ragdoll_sniper_headshot_front_1,ragdoll_sniper_headshot_front_2/ragdoll_sniper_headshot_back_0/ragdoll_sniper_headshot_left_0/ragdoll_sniper_headshot_right_0
+kill_sniper_headshot	= ragdoll_sniper_headshot_front_0,ragdoll_sniper_headshot_front_1,ragdoll_sniper_headshot_front_2/ragdoll_sniper_headshot_back_0/ragdoll_sniper_headshot_left_0/ragdoll_sniper_headshot_right_0
 
 
-;kill_sniper_body	= ragdoll_sniper_body_front_0,ragdoll_sniper_body_front_1,ragdoll_sniper_body_front_2/ragdoll_sniper_body_back_0,ragdoll_sniper_body_back_1,ragdoll_sniper_body_back_2,ragdoll_sniper_body_back_3/ragdoll_sniper_body_left_0/ragdoll_sniper_body_right_0
+kill_sniper_body	= ragdoll_sniper_body_front_0,ragdoll_sniper_body_front_1,ragdoll_sniper_body_front_2/ragdoll_sniper_body_back_0,ragdoll_sniper_body_back_1,ragdoll_sniper_body_back_2,ragdoll_sniper_body_back_3/ragdoll_sniper_body_left_0/ragdoll_sniper_body_right_0
 
 
-;kill_grenade            = ragdoll_grenade_front_0/ragdoll_grenade_back_0/ragdoll_grenade_left_0/ragdoll_grenade_right_0
+kill_grenade            = ragdoll_grenade_front_0/ragdoll_grenade_back_0/ragdoll_grenade_left_0/ragdoll_grenade_right_0
 
 ;front-norm_2_rag_doll_front_0,norm_2_rag_doll_front_1,norm_2_rag_doll_front_2/back-norm_2_rag_doll_back_0,norm_2_rag_doll_back_1,norm_2_rag_doll_back_2/right-norm_2_rag_doll_right_0/left-norm_2_rag_doll_left_0
 

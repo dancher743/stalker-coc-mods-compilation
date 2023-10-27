@@ -99,3 +99,4 @@ Mods
 61. De-eyesore grass 1.0 (VodkaChicken)
 62. Red Forest = Red Grass (IaDagon)
 63. Azazel Fixes: Keep Tasks and much more (RenanMsV, strelocc, sariskhan, Roll-and, Aruhito_0)
+64. Stalker Tweaks (SarisKhan)
