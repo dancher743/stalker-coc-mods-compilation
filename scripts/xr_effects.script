@@ -21,7 +21,7 @@ local function give_hunt_target_talk_message(target_id)
 		local level_id = alife():level_name(game_graph():vertex(se_obj.m_game_vertex_id):level_id())
 		local location_name = string.format("%s: %s", game.translate_string("st_mm_pda_location"), game.translate_string(level_id))
 		
-		local news_caption = string.format("%s:",  game.translate_string("st_target"))
+		local news_caption = string.format("%s",  game.translate_string("st_target"))
 		local news_text = string.format("%s\\n %s\\n %s", character_name, faction_name, location_name)
 		db.actor:give_talk_message2(news_caption, news_text, se_obj:character_icon(), "iconed_answer_item")
 	end
