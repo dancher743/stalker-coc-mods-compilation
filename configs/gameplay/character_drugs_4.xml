@@ -6,4 +6,4 @@ drug_coagulant = 1, prob=0.025 \n
 drug_antidot = 1, prob=0.02 \n
 drug_radioprotector = 1, prob=0.02 \n
 drug_psy_blockade = 1, prob=0.01 \n
-drug_anabiotic = 1, prob=0.01 \n
+drug_anabiotic = 1, prob=0.005 \n
