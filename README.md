@@ -3,7 +3,13 @@ My mods compilation for S.T.A.L.K.E.R.: Call of Chernobyl 1.4.22 (ENG/RUS)
 
 Install
 ---
-Place all files to an empty `gamedata` folder.
+1. Install [release](https://www.moddb.com/mods/call-of-chernobyl/downloads/call-of-chernobyl-1412-full) CoC 1.4.12
+2. Install [patch](https://www.moddb.com/mods/call-of-chernobyl/downloads/coc-1422-patch) to make CoC 1.4.22
+3. Dowload [the latest version](https://github.com/dancher743/stalker-coc-mods-compilation/releases/latest) of compilation
+4. Create `gamedata` folder in the root directory
+5. Place files into `gamedata` folder -
+
+[![2023-10-29-14-32-22.png](https://i.postimg.cc/fTcfVVYX/2023-10-29-14-32-22.png)](https://postimg.cc/sv2h8D6D)
 
 Settings
 ---
