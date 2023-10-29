@@ -5,11 +5,11 @@ local ble1 = 0
 local ble2 = false
 
 local function bleedcondition()
-    if db.actor.health < 0.20 and isactcondset ~= true then
+    if db.actor.health < 0.2 and isactcondset ~= true then
         level.add_pp_effector("cherno.ppe", 2012, true)
         isactcondset = true
     end
-    if db.actor.health > 0.20 and isactcondset ~= false then
+    if db.actor.health > 0.2 and isactcondset ~= false then
         level.remove_pp_effector(2012)
         isactcondset = false
     end
