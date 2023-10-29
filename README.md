@@ -89,7 +89,7 @@ Mods
 45. Bar room as safe-house (Dancher)
 46. Outfit loot CoC 1 4 22 v2 with reworking (av661194, Dancher)
 47. CoC Extended Offline (EOC) Lite 1.7.6 + dynamic faction relations (xr_Sanya)
-48. Clear Sky's graphics presets from CoP and CS atmosphere for CoC v1.1 [CoC 1.4.22] (Sanctuary)
+48. Stalker Tweaks (SarisKhan)
 49. Pre-Blowout Murder Addon [CoC 1.4.22] (Ethylia, adapted by Misery)
 50. Flashlight sound for vanilla CoC (Grelka)
 51. Classic SoC Flashlight for CoC with Dancher's changes (default white light) (Shovelled, Dancher)
@@ -105,4 +105,3 @@ Mods
 61. De-eyesore grass 1.0 (VodkaChicken)
 62. Red Forest = Red Grass (IaDagon)
 63. Azazel Fixes: Keep Tasks and much more (RenanMsV, strelocc, sariskhan, Roll-and, Aruhito_0)
-64. Stalker Tweaks (SarisKhan)
