@@ -46,9 +46,12 @@
 			<text r="150" g="150" b="150" font="letterica16">st_mm_new_game_points_left</text>
 		</cap_points_left>
 		
-		<check_random_name x="405" y="312" width="35" height="23" stretch="1">
+		<check_random_first_name x="383" y="312" width="35" height="23" stretch="1">
 			<texture>ui_new_game_btn_checkbox</texture>
-		</check_random_name>
+		</check_random_first_name>
+		<check_random_last_name x="405" y="312" width="35" height="23" stretch="1">
+			<texture>ui_new_game_btn_checkbox</texture>
+		</check_random_last_name>
 		
 		<!-- Interactive Text -->
 		<input_name x="259" y="285" width="164" height="17">
