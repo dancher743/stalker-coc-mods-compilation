@@ -91,7 +91,13 @@ function actor_on_before_death(whoID,flags)
 				if (axr_companions.companion_squads[se_obj.group_id]) then
 					table.insert(squad_mates,se_obj.id)
 				elseif azazel_customizable_config["faction_spawn"] then
-					if (se_obj:community() == db.actor:character_community():sub(7)) then
+					local actor_faction
+					if (disguise and disguise.has_actor_disguised()) then
+						actor_faction = disguise.get_actor_default_faction()
+					else
+						actor_faction = utils.get_actor_community()
+					end
+					if (se_obj:community() == actor_faction) then
 						table.insert(faction_mates,se_obj.id)					
 					else
 					table.insert(avail_entities,se_obj.id)
