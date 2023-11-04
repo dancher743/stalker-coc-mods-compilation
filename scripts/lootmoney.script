@@ -81,7 +81,7 @@ function lootmoney(npc) -- player character is looting a npc or creature
 
 	if lootmoney_message then -- send message in PDA
 		local news_caption = strformat("%s, %s", npc_name, game.translate_string("st_lootmoney_dead_stalker"))
-		local news_text = strformat("%s %c[0,204,102,0]%s%c[default] RU", game.translate_string("st_lootmoney_found_money"), game.translate_string(math.floor(calculated_money)))
+		local news_text = strformat("%s %c[0,179,90,0]%s%c[default] RU", game.translate_string("st_lootmoney_found_money"), game.translate_string(math.floor(calculated_money)))
 		player_char:give_game_news(news_caption, news_text, "ui_iconsTotal_found_money", 0, 10000)
 		--xr_sound.set_sound_play(player_char:id(), "pda_news")
 	end
