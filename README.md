@@ -8,10 +8,13 @@ Install
 1. Install [release](https://www.moddb.com/mods/call-of-chernobyl/downloads/call-of-chernobyl-1412-full) CoC 1.4.12
 2. Install [patch](https://www.moddb.com/mods/call-of-chernobyl/downloads/coc-1422-patch) to make CoC 1.4.22
 3. Dowload [the latest version](https://github.com/dancher743/stalker-coc-mods-compilation/releases/latest) of compilation
-4. Create `gamedata` folder in the root directory
-5. Place files into `gamedata` folder -
+4. Dowload [installer](https://github.com/dancher743/stalker-coc-mods-compilation-installer/releases/latest)
+5. Place compilation and installer into the root folder -
 
-[![2023-10-29-14-32-22.png](https://i.postimg.cc/fTcfVVYX/2023-10-29-14-32-22.png)](https://postimg.cc/sv2h8D6D)
+[![1.png](https://i.postimg.cc/5028Zy5t/1.png)](https://postimg.cc/Z9X9NTMk)
+
+6. Run `installer.bat` and wait until it's done
+7. Good hunting, stalker!
 
 Settings
 ---
