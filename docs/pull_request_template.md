@@ -1,11 +1,8 @@
-## CHANGELOG
+## Description
 
-### Added mods
-- Mod 1
-- Mod 2
-- Mod 3
+## What's new
 
+## Screenshots
 <details>
- <summary>Spoiler</summary>
- Some text or screenshot here.
+<summary>Spoiler</summary>
 </details>

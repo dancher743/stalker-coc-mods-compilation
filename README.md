@@ -1,5 +1,7 @@
 # stalker-coc-mods-compilation
-My mods compilation for S.T.A.L.K.E.R.: Call of Chernobyl 1.4.22 (ENG/RUS)
+Mods compilation for S.T.A.L.K.E.R.: Call of Chernobyl 1.4.22 (ENG/RUS)
+
+[![preview-1.jpg](https://i.postimg.cc/t4DKK7h1/preview-1.jpg)](https://postimg.cc/5XYKv4K1)
 
 Install
 ---
