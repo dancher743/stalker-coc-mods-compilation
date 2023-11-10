@@ -364,6 +364,12 @@ mutants_tier_by_lvl = {
 	},
 }
 
+mutants_for_survival_mode = {
+    "simulation_zombie",
+    "simulation_fracture",
+    "simulation_snork",
+}
+
 sender_icons = {
 	stalker = {
 		"ui_icon_news_neutral",
