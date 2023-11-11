@@ -69,6 +69,7 @@ function se_smart_terrain:__init(section) super(section)
 	self.npc_info  = {}
 	self.arriving_npc  = {}
 	self.__campfire_check_time = game.get_game_time()
+	self.can_respawn = true
 	--if (USE_MARSHAL) then 
 	--	RegisterScriptCallback("save_state",self)
 	--end
@@ -1566,7 +1567,7 @@ end
 
 local available_sects = {}
 function se_smart_terrain:try_respawn()
-	if (self.disabled) then
+	if (not self.can_respawn or self.disabled) then
 		return
 	end
 	if (has_alife_info("actor_made_wish_for_peace")) then 
