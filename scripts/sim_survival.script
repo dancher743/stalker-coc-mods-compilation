@@ -50,7 +50,7 @@ end
 function try_replace_mutant_by_zombies(section)
 	local result_section = section
 
-	if (not (utils.contains(zombie_mutants,section)) and math.random(100) <= get_chance_by_elapsed_hours(12, 40)) then
+	if (not (utils.contains(zombie_mutants,section)) and math.random(100) <= get_chance_by_elapsed_hours(24, 90)) then
 		result_section = zombie_mutants[math.random(#zombie_mutants)]
 		print_dbg("MUTANT: %s -> %s", section, zombie_section)
 		result = true
