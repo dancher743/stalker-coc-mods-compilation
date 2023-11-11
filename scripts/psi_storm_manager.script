@@ -32,7 +32,7 @@ class "CPsiStormManager"
 function CPsiStormManager:__init()
 	self.humanParticles = {}
 	self.vortexes 		= {}
-	self.blowout_sounds = {
+	self.crows_sounds = {
 						crow0		=sound_object("ambient\\blowout\\cut\\close"),
 						crow1		=sound_object("ambient\\blowout\\cut\\closemedium"),
 						crow2		=sound_object("ambient\\blowout\\cut\\medium"),
@@ -280,37 +280,37 @@ function CPsiStormManager:update()
 		--Plays sound before a blowout
         if(math.abs(self._delta - g_time:diffSec(self.last_surge_time)) < presurge_time) then
             if(presurge_played[1] ~= true) then
-                --self.blowout_sounds["presurge"]:play(db.actor)
-                play_sound_radius(self.blowout_sounds["crow5"], 1000, 140, 220)
-                play_sound_radius(self.blowout_sounds["crow4"], 1000, 140, 220)
+                --self.crows_sounds["presurge"]:play(db.actor)
+                play_sound_radius(self.crows_sounds["crow5"], 1000, 140, 220)
+                play_sound_radius(self.crows_sounds["crow4"], 1000, 140, 220)
                 --printf("Played far crows")
                 presurge_played[1] = true
             end
             if(math.abs(self._delta - g_time:diffSec(self.last_surge_time)) < (presurge_time - 60) and presurge_played[2] ~= true) then
-                --self.blowout_sounds["presurge"]:play(db.actor)
-                play_sound_radius(self.blowout_sounds["crow3"], 1000, 100, 260)
-                play_sound_radius(self.blowout_sounds["crow2"], 1000, 100, 260)
+                --self.crows_sounds["presurge"]:play(db.actor)
+                play_sound_radius(self.crows_sounds["crow3"], 1000, 100, 260)
+                play_sound_radius(self.crows_sounds["crow2"], 1000, 100, 260)
                 --printf("Played medium crows")
                 presurge_played[2] = true
             end
             if(math.abs(self._delta - g_time:diffSec(self.last_surge_time)) < (presurge_time - 120) and presurge_played[3] ~= true) then
-                --self.blowout_sounds["presurge"]:play(db.actor)
-                play_sound_radius(self.blowout_sounds["crow1"], 1000, 0, 360)
-                play_sound_radius(self.blowout_sounds["crow0"], 1000, 0, 360)
+                --self.crows_sounds["presurge"]:play(db.actor)
+                play_sound_radius(self.crows_sounds["crow1"], 1000, 0, 360)
+                play_sound_radius(self.crows_sounds["crow0"], 1000, 0, 360)
                 --printf("Played close crows")
                 presurge_played[3] = true
             end
             if(math.abs(self._delta - g_time:diffSec(self.last_surge_time)) < (presurge_time - 180) and presurge_played[4] ~= true) then
-                --self.blowout_sounds["presurge"]:play(db.actor)
-                play_sound_radius(self.blowout_sounds["crow2"], 1000, 280, 440)
-                play_sound_radius(self.blowout_sounds["crow3"], 1000, 280, 440)
+                --self.crows_sounds["presurge"]:play(db.actor)
+                play_sound_radius(self.crows_sounds["crow2"], 1000, 280, 440)
+                play_sound_radius(self.crows_sounds["crow3"], 1000, 280, 440)
                 --printf("Played medium crows")
                 presurge_played[4] = true
             end
             if(math.abs(self._delta - g_time:diffSec(self.last_surge_time)) < (presurge_time - 240) and presurge_played[5] ~= true) then
-                --self.blowout_sounds["presurge"]:play(db.actor)
-                play_sound_radius(self.blowout_sounds["crow4"], 1000, 320, 400)
-                play_sound_radius(self.blowout_sounds["crow5"], 1000, 320, 400)
+                --self.crows_sounds["presurge"]:play(db.actor)
+                play_sound_radius(self.crows_sounds["crow4"], 1000, 320, 400)
+                play_sound_radius(self.crows_sounds["crow5"], 1000, 320, 400)
                 --printf("Played far crows")
                 presurge_played[5] = true
             end
