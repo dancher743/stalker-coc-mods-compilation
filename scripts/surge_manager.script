@@ -270,6 +270,7 @@ function CSurgeManager:skip_surge()
 
 	self.started 			= false
 	self.finished 			= true
+	self.stages = empty_table(self.stages)
 
 	--[[
 	self.levels_respawn = empty_table(self.levels_respawn)
@@ -316,6 +317,7 @@ function CSurgeManager:end_surge(manual)
 	self.last_surge_time 	= game.get_game_time()
 	self.started 			= false
 	self.finished 			= true
+	self.stages = empty_table(self.stages)
 
 	self:new_surge_time(false)
 

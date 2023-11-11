@@ -12,7 +12,6 @@ function PdaNoiseWnd:__init() super()
 	self.Element1 = xml:InitStatic("background_static", self)
 end
 
-local hud
 local window
 
 local function process_pda(info_id)
@@ -20,16 +19,15 @@ local function process_pda(info_id)
 		return
 	end
 
-	local surge_or_psi_storm = surge_manager.has_stage("impact") or psi_storm_manager.has_stage("vortexes")
-
-	if (info_id == "ui_pda" and surge_or_psi_storm) then
-		hud = get_hud()
+	local has_surge_or_psi_storm_stage = surge_manager.has_stage("quake20") or psi_storm_manager.has_stage("1stvortex")
+	local hud = get_hud()
+	
+	if (info_id == "ui_pda" and has_surge_or_psi_storm_stage and window == nil) then
 		window = PdaNoiseWnd()
 		hud:AddDialogToRender(window)
-	elseif (info_id == "ui_pda_hide" and surge_or_psi_storm) then
+	elseif (info_id == "ui_pda_hide" and window ~= nil) then
 		hud:RemoveDialogToRender(window)
 		window = nil
-		hud = nil
 	end
 end
 
