@@ -45,7 +45,7 @@ function try_replace_mutant_by_zombies(section)
 	local result_section = section
 	local mutants_for_survival_mode = sim_tables.mutants_for_survival_mode
 
-	if (not (utils.contains(mutants_for_survival_mode,section)) and math.random(100) <= get_chance_by_elapsed_hours(12, 40)) then
+	if (not (utils.contains(mutants_for_survival_mode,section)) and math.random(100) <= get_chance_by_elapsed_hours(24, 90)) then
 		result_section = mutants_for_survival_mode[math.random(#mutants_for_survival_mode)]
 		print_dbg("MUTANT: %s -> %s", section, zombie_section)
 		result = true
