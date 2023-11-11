@@ -71,6 +71,15 @@ function squad_control(squad)
 end
 
 function create_squad(smart, faction, target, type, number, param)
+	
+	if (has_alife_info("actor_made_wish_for_peace")) then 
+		return 
+	end
+	
+	if (has_alife_info("actor_made_wish_for_control")) then 
+		SIMBOARD:create_squad(smart, "simulation_controller_psy")
+		return 
+	end
 
     local squad
 
