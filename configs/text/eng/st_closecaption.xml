@@ -2609,4 +2609,13 @@
 	<string id="esc_fanat_greeting_4">
 		<text>Hey.</text>
 	</string>
+	
+	<!-- Bar Guard -->
+	
+	<string id="bar_guard_pass_1">
+		<text>Come on in.</text>
+	</string>
+	<string id="bar_guard_nodoor_1">
+		<text>Come on in, come on in!</text>
+	</string>
 </string_table>

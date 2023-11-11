@@ -2609,4 +2609,13 @@
 	<string id="esc_fanat_greeting_4">
 		<text>Здарова!</text>
 	</string>
+	
+	<!-- Bar Guard -->
+	
+	<string id="bar_guard_pass_1">
+		<text>Проходи.</text>
+	</string>
+	<string id="bar_guard_nodoor_1">
+		<text>Проходи-проходи!</text>
+	</string>
 </string_table>
