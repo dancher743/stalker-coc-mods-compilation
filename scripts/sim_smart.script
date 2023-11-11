@@ -101,10 +101,6 @@ end
 
 function try_to_respawn_faction(smart)
 		 
-	if (has_alife_info("actor_made_wish_for_peace")) then 
-		return 
-	end
-	
 	if not (respawn_timers[smart.id]) or (game.get_game_time():diffSec(respawn_timers[smart.id]) > (respawn_next_update[smart.id]*60)) then
 		respawn_timers[smart.id] = game.get_game_time()
 		respawn_next_update[smart.id] = 200
@@ -323,10 +319,6 @@ end
 
 function spawn_defense_squad(smart)
 
-	if (has_alife_info("actor_made_wish_for_peace")) then 
-		return 
-	end
-	
 	if not (defense_timers[smart.id]) or (game.get_game_time():diffSec(defense_timers[smart.id]) > (defense_next_update[smart.id]*60)) then
 		defense_timers[smart.id] = game.get_game_time()
 		defense_next_update[smart.id] = sim_factions.faction_information[smart.owning_faction].respawn_defend
@@ -351,10 +343,6 @@ end
 
 function spawn_attack_squad(smart)
 
-	if (has_alife_info("actor_made_wish_for_peace")) then 
-		return 
-	end
-	
 	if not (attack_timers[smart.id]) or (game.get_game_time():diffSec(attack_timers[smart.id]) > (attack_next_update[smart.id]*60)) then
 		attack_timers[smart.id] = game.get_game_time()
 		attack_next_update[smart.id] = sim_factions.faction_information[smart.owning_faction].respawn_attack
@@ -411,10 +399,6 @@ end
 
 function spawn_mutants(smart)
 
-	if (has_alife_info("actor_made_wish_for_peace")) then 
-		return 
-	end
-	
 	if not (mutant_timers[smart.id]) or (game.get_game_time():diffSec(mutant_timers[smart.id]) > (mutant_next_update[smart.id]*60)) then
 		mutant_timers[smart.id] = game.get_game_time()
 		mutant_next_update[smart.id] = 70
