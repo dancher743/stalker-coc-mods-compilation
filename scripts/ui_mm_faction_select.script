@@ -1903,12 +1903,14 @@ function faction_ui:OnStartGame()
 	axr_main.config:w_value("character_creation","new_game_money",self.selected_money or nil)
 	
 	-- write defaults of population into config
-	--[[axr_main.config:w_value("mm_options","alife_mutant_pop",0.5)
-	axr_main.config:w_value("mm_options","alife_stalker_pop",0.5)--]]
+	--[[
+	axr_main.config:w_value("mm_options","alife_mutant_pop",0.5)
+	axr_main.config:w_value("mm_options","alife_stalker_pop",0.5)
 	
 	if (self.ck_eoc:GetCheck()) then
 		sim_options.write_defaults_to_config()
 	end
+	--]]
 	--
 	
 	axr_main.config:save() -- Store info in temp file
