@@ -3380,3 +3380,11 @@ end
 function is_eoc_mode_enabled(actor,npc)
 	return IsEocMode()
 end
+
+function is_hours_ge(actor,npc,p)
+	return level.get_time_hours() >= tonumber(p[1])
+end
+
+function is_hours_l(actor,npc,p)
+	return level.get_time_hours() < tonumber(p[1])
+end
