@@ -40,6 +40,8 @@ local function opt_menu_on_init(menu)
 			warfare_control.very_high
 		}
 	}
+	
+    menu.gameplay_options["eoc_faction_warfare_unpc_respawn"] = {default=false, debug_only=false, typ="check"}
 end
 
 function on_game_start()
@@ -69,6 +71,10 @@ function get_warfare_control_option_factor()
 	end
 	
 	return option_factor
+end
+
+function get_unpc_respawn_option()
+	return axr_main.config:r_string_ex("mm_options","eoc_faction_warfare_unpc_respawn")
 end
 
 function write_defaults_to_config()

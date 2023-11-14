@@ -559,4 +559,7 @@
 	<string id="kb_quick_load">
 		<text>Quick load</text>
 	</string>
+	<string id="ui_mm_eoc_faction_warfare_unpc_respawn">
+		<text>Unique NPC respawn</text>
+	</string>
 </string_table>

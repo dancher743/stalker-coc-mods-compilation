@@ -182,9 +182,11 @@
 			\n
 			\nMutants will guard their territories during the day, and at night they will gather and attack the camps of stalkers. Stalkers will begin to explore the Zone and collect resources for themselves and their faction. Factions are trying to strengthen their region and capture the neighboring one.
 			\n
-			\n%c[200,50,200,50]• %c[0,150,150,150]Extended population mode is compatible with all modes, however, some characters that don't take part in the 'Mysteries of the Zone' storyline and factions leaders may die.
+			\n%c[200,50,200,50]• %c[0,150,150,150]Compatible with all modes.
 			\n%c[200,50,200,50]• %c[0,150,150,150]You can change extended population in your playthrough at any time.
 			\nSee "Options" -> "Game". Then "Population spawn frequency" and "Population update frequency".
+			\n%c[200,50,200,50]• %c[0,150,150,150]Some characters that don't take part in the 'Mysteries of the Zone' storyline may die. To enable their respawn 
+			\nSee "Options" -> "Game". Then "Unique NPC respawn".
 			\n
 			\n%c[0,255,255,255]Recommended for: advanced players who are familiar with Story mode or have played without it.
 		</text>

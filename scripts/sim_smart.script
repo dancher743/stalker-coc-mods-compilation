@@ -194,13 +194,19 @@ function check_npc(smart)
 
 	    if (smart_limit < smart.max_population) then	
 			
-			local smart_tbl = sim_tables.unique_squads[smart:name()]
-			local faction_tbl = smart_tbl and smart_tbl[faction]
+			local unique_trader = nil
+			local unique_mechanic = nil
+			local unique_barmen = nil
+			local unique_medik = nil
 			
-			local unique_trader = faction_tbl and faction_tbl[1]
-			local unique_mechanic = faction_tbl and faction_tbl[2]
-			local unique_barmen = faction_tbl and faction_tbl[3]
-			local unique_medik = faction_tbl and faction_tbl[4]
+			if (sim_smart.get_unpc_respawn_option()) then
+				local smart_tbl = sim_tables.unique_squads[smart:name()]
+				local faction_tbl = smart_tbl and smart_tbl[faction]
+				unique_trader = faction_tbl and faction_tbl[1]
+				unique_mechanic = faction_tbl and faction_tbl[2]
+				unique_barmen = faction_tbl and faction_tbl[3]
+				unique_medik = faction_tbl and faction_tbl[4]
+			end
 	
 		    while mechanic_in_smart < mechanic_pop do	
 				sim_squad.create_squad(smart, faction, nil, unique_mechanic or mechanic, nil, 1)

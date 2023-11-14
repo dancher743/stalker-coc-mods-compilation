@@ -562,4 +562,7 @@
 	<string id="kb_quick_load">
 		<text>Быстрая загрузка</text>
 	</string>
+	<string id="ui_mm_eoc_faction_warfare_unpc_respawn">
+		<text>Респавн важных НПС</text>
+	</string>
 </string_table>
