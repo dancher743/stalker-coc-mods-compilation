@@ -1626,23 +1626,10 @@ function se_smart_terrain:try_respawn()
 				
 					max_respawn_count = tonumber(xr_logic.pick_section_from_condlist(db.actor, self,v.num) or 0)
 				
-					local pop_factor
 					if (string.find(k,"sim_squad")) then 
-						pop_factor = stalker_pop_factor
+						max_respawn_count = math.floor(max_respawn_count*stalker_pop_factor)
 					elseif (string.find(k,"simulation")) then
-						pop_factor = monster_pop_factor
-					end
-					
-					if (pop_factor ~= nil) then
-						local count = max_respawn_count*pop_factor
-						if (count == 0.25) then 
-							count = math.random() <= 0.25 and 1 or 0
-						elseif (count == 0.5) then -- just randomly 0 or 1 instead of always rounding to 1
-							count = math.random(0,1)
-						else 
-							count = utils.round(count)
-						end
-						max_respawn_count = count
+						max_respawn_count = math.floor(max_respawn_count*monster_pop_factor)
 					end
 					
 					if max_respawn_count > self.already_spawned[k].num then
