@@ -199,7 +199,7 @@ function check_npc(smart)
 			local unique_barmen = nil
 			local unique_medik = nil
 			
-			if (sim_smart.get_unpc_respawn_option()) then
+			if (sim_options.get_unpc_respawn_option()) then
 				local smart_tbl = sim_tables.unique_squads[smart:name()]
 				local faction_tbl = smart_tbl and smart_tbl[faction]
 				unique_trader = faction_tbl and faction_tbl[1]
