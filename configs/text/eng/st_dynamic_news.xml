@@ -7338,4 +7338,9 @@
 		<text>very</text>
 	</string>
 
+<!----------------------------- Added by Dancher ----------------------------->
+	
+	<string id="st_dyn_news_names_anonymous">
+		<text>Anonymous</text>
+	</string>
 </string_table>

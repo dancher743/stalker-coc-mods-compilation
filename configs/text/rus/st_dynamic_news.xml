@@ -7286,4 +7286,10 @@
 	<string id="st_dyn_news_very">
 		<text>очень</text>
 	</string>
+	
+<!----------------------------- Added by Dancher ----------------------------->
+	
+	<string id="st_dyn_news_names_anonymous">
+		<text>Анонимно</text>
+	</string>
 </string_table>
