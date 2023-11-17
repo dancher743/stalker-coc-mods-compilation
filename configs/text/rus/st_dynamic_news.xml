@@ -505,7 +505,7 @@
 		<text>сталкер</text>
 	</string>
 	<string id="st_dyn_news_comm_actor_6">
-		<text>Общий канал:</text>
+		<text>Одиночки:</text>
 	</string>
 	<string id="st_dyn_news_comm_actor_7">
 		<text>сталкер</text>
@@ -7291,5 +7291,8 @@
 	
 	<string id="st_dyn_news_names_anonymous">
 		<text>Анонимно</text>
+	</string>
+	<string id="st_dyn_news_general_channel">
+		<text>Общий канал</text>
 	</string>
 </string_table>

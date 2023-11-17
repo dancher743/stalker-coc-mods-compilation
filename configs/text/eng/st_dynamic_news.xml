@@ -7343,4 +7343,7 @@
 	<string id="st_dyn_news_names_anonymous">
 		<text>Anonymous</text>
 	</string>
+	<string id="st_dyn_news_general_channel">
+		<text>Public Channel</text>
+	</string>
 </string_table>
