@@ -1412,11 +1412,11 @@ function DynamicNewsManager:FoundStash(has_spot) -- reaction of angry stash owne
 	local It
 	
 	if (math.random(0,100) < AnonymousMessageChance) then
-		Se = strformat("%s, %s", game.translate_string("st_dyn_news_names_anonymous"), game.translate_string("st_dyn_news_general_сhannel"))
+		Se = strformat("%s, %s", game.translate_string("st_dyn_news_names_anonymous"), game.translate_string("st_dyn_news_general_channel"))
 		Ic = "common"
 		It = "gr"
 	else
-		Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_сhannel"))
+		Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_channel"))
 		Ic = nil
 		It="rnd_char_icon"
 	end
@@ -1524,7 +1524,7 @@ function DynamicNewsManager:ReportNextEmission() --  news about expected surge's
 				return false
 			end
 			comm = "common"
-			Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_сhannel"))
+			Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_channel"))
 			It="rnd_char_icon"
 			Tbl_msg = self:ReadTextList("st_dyn_news_surge_template_")
 			if (not Tbl_msg) then return false end
@@ -1704,11 +1704,11 @@ function DynamicNewsManager:FoundDead() -- report dead body findings
 	local It
 	
 	if (math.random(0,100) < AnonymousMessageChance) then
-		Se = strformat("%s, %s", game.translate_string("st_dyn_news_names_anonymous"), game.translate_string("st_dyn_news_general_сhannel"))
+		Se = strformat("%s, %s", game.translate_string("st_dyn_news_names_anonymous"), game.translate_string("st_dyn_news_general_channel"))
 		Ic = "common"
 		It = "gr"
 	else
-		Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_сhannel"))
+		Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_channel"))
 		Ic = nil
 		It= "rnd_char_icon"
 	end
@@ -2107,11 +2107,11 @@ function DynamicNewsManager:ResponseOnFoundStash() -- react to people who lost t
 	local It
 	
 	if (math.random(0,100) < AnonymousMessageChance) then
-		Se = strformat("%s, %s", game.translate_string("st_dyn_news_names_anonymous"), game.translate_string("st_dyn_news_general_сhannel"))
+		Se = strformat("%s, %s", game.translate_string("st_dyn_news_names_anonymous"), game.translate_string("st_dyn_news_general_channel"))
 		Ic = "common"
 		It = "gr"
 	else
-		Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_сhannel"))
+		Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_channel"))
 		Ic = nil
 		It= "rnd_char_icon"
 	end
@@ -2251,11 +2251,11 @@ function DynamicNewsManager:ResponseOnDeathByStalker_Fake()	-- react to stalker'
 	local It
 	
 	if (math.random(0,100) < AnonymousMessageChance) then
-		Se = strformat("%s, %s", game.translate_string("st_dyn_news_names_anonymous"), game.translate_string("st_dyn_news_general_сhannel"))
+		Se = strformat("%s, %s", game.translate_string("st_dyn_news_names_anonymous"), game.translate_string("st_dyn_news_general_channel"))
 		Ic = "common"
 		It = "gr"
 	else
-		Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_сhannel"))
+		Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_channel"))
 		Ic = nil
 		It= "rnd_char_icon"
 	end
@@ -2281,11 +2281,11 @@ function DynamicNewsManager:ResponseOnDeathByMutant_Fake() -- react to stalker's
 	local It
 	
 	if (math.random(0,100) < AnonymousMessageChance) then
-		Se = strformat("%s, %s", game.translate_string("st_dyn_news_names_anonymous"), game.translate_string("st_dyn_news_general_сhannel"))
+		Se = strformat("%s, %s", game.translate_string("st_dyn_news_names_anonymous"), game.translate_string("st_dyn_news_general_channel"))
 		Ic = "common"
 		It = "gr"
 	else
-		Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_сhannel"))
+		Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_channel"))
 		Ic = nil
 		It= "rnd_char_icon"
 	end
@@ -2311,11 +2311,11 @@ function DynamicNewsManager:ResponseOnDeathBySurges_Fake() -- react to stalker's
 	local It
 	
 	if (math.random(0,100) < AnonymousMessageChance) then
-		Se = strformat("%s, %s", game.translate_string("st_dyn_news_names_anonymous"), game.translate_string("st_dyn_news_general_сhannel"))
+		Se = strformat("%s, %s", game.translate_string("st_dyn_news_names_anonymous"), game.translate_string("st_dyn_news_general_channel"))
 		Ic = "common"
 		It = "gr"
 	else
-		Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_сhannel"))
+		Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_channel"))
 		Ic = nil
 		It= "rnd_char_icon"
 	end
