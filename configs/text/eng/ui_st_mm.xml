@@ -527,13 +527,13 @@
 		<text>Low</text>
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_activity_opt_very_low">
-		<text>Minimal</text>
+		<text>Very low</text>
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_control">
 		<text>Population update frequency</text>
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_control_opt_very_high">
-		<text>Maximum</text>
+		<text>Very high</text>
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_control_opt_high">
 		<text>High</text>
