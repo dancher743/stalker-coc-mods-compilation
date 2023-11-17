@@ -301,7 +301,7 @@
 		<text>Received coordinates of a stash that has already been discovered.</text>
 	</string>
 	<string id="st_got_treasure">
-		<text>Stash found</text>
+		<text>Stash found!</text>
 	</string>
 	<string id="st_found_new_treasure">
 		<text>Stash coordinates received</text>

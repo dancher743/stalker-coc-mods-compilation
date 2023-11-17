@@ -289,7 +289,7 @@
 		<text>Получены координаты ранее найденного тайника</text>
 	</string>
 	<string id="st_got_treasure">
-		<text>Найден тайник</text>
+		<text>Найден тайник!</text>
 	</string>
 	<string id="st_found_new_treasure">
 		<text>Получены координаты тайника</text>
