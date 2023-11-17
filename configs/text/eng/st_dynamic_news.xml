@@ -7279,7 +7279,7 @@
 
 	<!-- misc -->
 	<string id="st_dyn_news_ch_died">
-		<text>Died:</text>
+		<text>Died</text>
 	</string>
 	<string id="st_dyn_news_ch_found">
 		<text>Found</text>

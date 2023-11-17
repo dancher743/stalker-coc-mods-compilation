@@ -505,7 +505,7 @@
 		<text>сталкер</text>
 	</string>
 	<string id="st_dyn_news_comm_actor_6">
-		<text>Одиночки:</text>
+		<text>Одиночки</text>
 	</string>
 	<string id="st_dyn_news_comm_actor_7">
 		<text>сталкер</text>
@@ -547,7 +547,7 @@
 		<text>боец монолита</text>
 	</string>
 	<string id="st_dyn_news_comm_monolith_6">
-		<text>Монолит:</text>
+		<text>Монолит</text>
 	</string>
 	<string id="st_dyn_news_comm_monolith_7">
 		<text>монолитовец</text>
@@ -589,7 +589,7 @@
 		<text>бандит</text>
 	</string>
 	<string id="st_dyn_news_comm_bandit_6">
-		<text>Бандиты:</text>
+		<text>Бандиты</text>
 	</string>
 	<string id="st_dyn_news_comm_bandit_7">
 		<text>бандит</text>
@@ -631,7 +631,7 @@
 		<text>долговец</text>
 	</string>
 	<string id="st_dyn_news_comm_dolg_6">
-		<text>Долг:</text>
+		<text>Долг</text>
 	</string>
 	<string id="st_dyn_news_comm_dolg_7">
 		<text>долговец</text>
@@ -673,7 +673,7 @@
 		<text>учёный</text>
 	</string>
 	<string id="st_dyn_news_comm_ecolog_6">
-		<text>Учёные:</text>
+		<text>Учёные</text>
 	</string>
 	<string id="st_dyn_news_comm_ecolog_7">
 		<text>учёный</text>
@@ -715,7 +715,7 @@
 		<text>чистонебовец</text>
 	</string>
 	<string id="st_dyn_news_comm_csky_6">
-		<text>Чистое Небо:</text>
+		<text>Чистое Небо</text>
 	</string>
 	<string id="st_dyn_news_comm_csky_7">
 		<text>чистонебовец</text>
@@ -757,7 +757,7 @@
 		<text>военный</text>
 	</string>
 	<string id="st_dyn_news_comm_army_6">
-		<text>Военные:</text>
+		<text>Военные</text>
 	</string>
 	<string id="st_dyn_news_comm_army_7">
 		<text>военный</text>
@@ -799,7 +799,7 @@
 		<text>наёмник</text>
 	</string>
 	<string id="st_dyn_news_comm_killer_6">
-		<text>Наёмники:</text>
+		<text>Наёмники</text>
 	</string>
 	<string id="st_dyn_news_comm_killer_7">
 		<text>наёмник</text>
@@ -841,7 +841,7 @@
 		<text>сталкер</text>
 	</string>
 	<string id="st_dyn_news_comm_stalker_6">
-		<text>Общий канал:</text>
+		<text>Одиночки</text>
 	</string>
 	<string id="st_dyn_news_comm_stalker_7">
 		<text>сталкер</text>
@@ -883,7 +883,7 @@
 		<text>зомби</text>
 	</string>
 	<string id="st_dyn_news_comm_zombied_6">
-		<text>Зомбированные:</text>
+		<text>Зомбированные</text>
 	</string>
 	<string id="st_dyn_news_comm_zombied_7">
 		<text>зомбированный</text>
@@ -925,7 +925,7 @@
 		<text>свободовец</text>
 	</string>
 	<string id="st_dyn_news_comm_freedom_6">
-		<text>Свобода:</text>
+		<text>Свобода</text>
 	</string>
 	<string id="st_dyn_news_comm_freedom_7">
 		<text>свободовец</text>
@@ -2256,7 +2256,7 @@
 		<text>Видел, как</text>
 	</string>
 	<string id="st_dyn_news_builder_sight_2">
-		<text>Вот это кино:</text>
+		<text>Вот это кино</text>
 	</string>
 	<string id="st_dyn_news_builder_sight_3">
 		<text>Пару минут назад видел, как</text>
@@ -7228,7 +7228,7 @@
 
 	<!-- misc -->
 	<string id="st_dyn_news_ch_died">
-		<text>Некролог:</text>
+		<text>Некролог</text>
 	</string>
 	<string id="st_dyn_news_ch_found">
 		<text>Погиб</text>
