@@ -34,7 +34,6 @@
 		<command id="kb_func"						  	exe="wpn_func"/>
 		<command id="kb_firemode_next"					exe="wpn_firemode_next"/>
 		<command id="kb_firemode_prev"					exe="wpn_firemode_prev"/>		
-		<command id="kb_unload_all_weapons"				exe="custom12"/> <!-- Unload All Weapons -->		
 	</group>
 	<group name="kb_grp_inventory">
 		<command id="kb_inventory"						exe="inventory"/>
@@ -48,6 +47,7 @@
 		<command id="kb_quick_use_4"					exe="quick_use_4"/>
 		<command id="kb_drop"						  	exe="drop"/>		
 		<command id="kb_custom_spot"					exe="custom14"/> <!-- Put spot on Map -->
+		<command id="kb_unload_all_weapons"				exe="custom12"/> <!-- Unload All Weapons -->
 	</group>
 	<group name="kb_grp_companions">
 		<command id="kb_companions_wheel"				exe="custom11"/>
