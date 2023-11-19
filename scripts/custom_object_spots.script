@@ -1,0 +1,58 @@
+--
+-- Custom object spots
+-- By Dancher
+--
+
+local function map_spot_menu_add_property(property_ui,id,level_name)
+	local se_obj = alife_object(id)
+	
+	if not (se_obj) then
+		return
+	end
+	
+	if (se_obj:section_name() == "custom_spot_dummy_object") then
+		property_ui:AddItem(game.translate_string("ui_st_custom_spot_remove"))
+	end
+end
+
+local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
+	local se_obj = alife_object(id)
+	
+	if not (se_obj) then
+		return
+	end
+	
+	if (prop == game.translate_string("ui_st_custom_spot_remove")) then
+		level.map_remove_object_spot(se_obj.id, "custom_treasure")
+		alife():release(se_obj)
+	end
+end
+
+local function on_ok_button_clicked(text)
+	if (text == "") then
+		return
+	end
+	
+	local se_obj = alife():create("custom_spot_dummy_object",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id())
+	local description = strformat("%c[132,199,231,255]%s\\n%c[default]%s", game.translate_string("ui_st_custom_spot_title"), text)
+	level.map_add_object_spot_ser(se_obj.id, "custom_treasure", description)
+end
+
+local function show_input_dialog()
+	local hud = get_hud()
+	ui_generic_dialogs.input_dialog_ui(hud, true, on_ok_button_clicked)
+end
+
+
+local function on_key_press(dik)
+	local bind = dik_to_bind(dik)
+	if (bind == key_bindings.kCUSTOM14) then
+		show_input_dialog()
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("map_spot_menu_add_property",map_spot_menu_add_property)
+	RegisterScriptCallback("map_spot_menu_property_clicked",map_spot_menu_property_clicked)
+	RegisterScriptCallback("on_key_press",on_key_press)
+end

@@ -105,3 +105,4 @@ Mods
 61. Azazel Fixes: Keep Tasks and much more (RenanMsV, strelocc, sariskhan, Roll-and, Aruhito_0)
 62. New crosshair (based on Dot crosshair by Kib) (Dancher)
 63. Grass from Advanced Vegetation mix 1.5r7 (Cromm Cruac, brainscorcher, gridgt, burguois, Anomaly and Dead Air creators)
+64. Put spot on Map (Dancher)

@@ -47,6 +47,7 @@
 		<command id="kb_quick_use_3"					exe="quick_use_3"/>
 		<command id="kb_quick_use_4"					exe="quick_use_4"/>
 		<command id="kb_drop"						  	exe="drop"/>		
+		<command id="kb_custom_spot"					exe="custom14"/> <!-- Put spot on Map -->
 	</group>
 	<group name="kb_grp_companions">
 		<command id="kb_companions_wheel"				exe="custom11"/>

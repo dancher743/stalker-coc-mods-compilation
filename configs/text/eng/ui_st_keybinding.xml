@@ -282,4 +282,7 @@
 	<string id="kb_unload_all_weapons">
 		<text>Unload all weapons</text>
 	</string>
+	<string id="kb_custom_spot">
+		<text>Put spot on Map</text>
+	</string>
 </string_table>
