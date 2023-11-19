@@ -159,7 +159,6 @@ function CPsiStormManager:skip_psi_storm()
 
 	self.started 			= false
 	self.finished 			= true
-	self.stages = empty_table(self.stages)
 
 	self.psi_storm_message 		= ""
 	self.psi_storm_task_sect 	= ""
@@ -178,7 +177,6 @@ function CPsiStormManager:finish(manual)
 	
 	self.started 			= false
 	self.finished 			= true
-	self.stages = empty_table(self.stages)
 	self.last_psi_storm_time 	= game.get_game_time()
 
 	self:new_psi_storm_time(false)
