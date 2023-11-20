@@ -55,8 +55,9 @@ function backpack_ui:OnOk()
 	end
 
 	local se_obj = alife_object(self.box_id)
-	if (se_obj and txt ~= "") then
-		level.map_add_object_spot_ser(se_obj.id, self.box_spot, txt)
+	if (se_obj and txt and txt ~= "") then
+		local spot_txt =  "%c[255,255,225,0]" .. game.translate_string("st_custom_stash_title") .. "\\n%c[default]" .. txt
+		level.map_add_object_spot_ser(se_obj.id, self.box_spot, spot_txt)
 	end
 
 	self.on_ok_clicked()

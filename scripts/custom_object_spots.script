@@ -23,7 +23,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 	end
 	
 	if (prop == game.translate_string("ui_st_custom_spot_remove")) then
-		level.map_remove_object_spot(se_obj.id, "custom_treasure")
+		level.map_remove_object_spot(se_obj.id, "custom_spot")
 		alife():release(se_obj)
 	end
 end
@@ -35,7 +35,7 @@ local function on_ok_button_clicked(text)
 	
 	local se_obj = alife():create("custom_spot_dummy_object",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id())
 	local description = strformat("%c[132,199,231,255]%s\\n%c[default]%s", game.translate_string("ui_st_custom_spot_title"), text)
-	level.map_add_object_spot_ser(se_obj.id, "custom_treasure", description)
+	level.map_add_object_spot_ser(se_obj.id, "custom_spot", description)
 end
 
 local function show_input_dialog()
