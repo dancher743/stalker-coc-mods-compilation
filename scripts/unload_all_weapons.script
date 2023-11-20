@@ -7,60 +7,55 @@
 local bgl,bsi,bsc
 local weapon_empty_sound = sound_object([[weapons\gen_empty]])
 
-local function on_key_press(key)
-	if (key_bindings.kCUSTOM12 == dik_to_bind(key)) then
-		local inventory = ActorMenu.get_actor_menu()
-		if not (inventory and inventory:IsShown()) then 
-			return 
-		end
+function unload_weapons()
+	local inventory = ActorMenu.get_actor_menu()
 	
-		local ta, tb, ts, ini = {}, {}, {}, system_ini()
-		local i, k, v
-		ts["wpn_knife"] = true
-		ts["wpn_binoc"] = true
-		for i=1,12 do
-			k = db.actor:item_in_slot(i)
-			if (k) then
-				ts[k:id()] = true
-			end
+	if not (inventory and inventory:IsShown()) then 
+		return 
+	end
+	
+	local ta, tb, ts, ini = {}, {}, {}, system_ini()
+	local i, k, v
+	ts["wpn_knife"] = true
+	ts["wpn_binoc"] = true
+	for i=1,12 do
+		k = db.actor:item_in_slot(i)
+		if (k) then
+			ts[k:id()] = true
 		end
-		
-		if (string.find(GAME_VERSION,"1.4")) then
-			local function itr(npc,itm)
-				if (IsWeapon(itm) and not ts[itm:id()] and not ts[itm:section()]) then
-					i = itm:get_ammo_in_magazine()
-					if (i > 0) then
-						k = itm and alife():object(itm:id())
-						v = k and stpk_utils.get_weapon_data(k)
-						if (v) then
-							k = ini:r_string_ex(itm:section(),"ammo_class","")
-							if (k and k ~= "") then
-								k = alun_utils.str_explode(k,",")
-								if (k) then
-									k = k[v.ammo_type + 1]
-									if (k and k ~= "") then
-										if not (ta[k]) then
-											ta[k] = i
-										else
-											ta[k] = ta[k] + i
-										end
-										itm:unload_magazine()
+	end
+	
+	if (string.find(GAME_VERSION,"1.4")) then
+		local function itr(npc,itm)
+			if (IsWeapon(itm) and not ts[itm:id()] and not ts[itm:section()]) then
+				i = itm:get_ammo_in_magazine()
+				if (i > 0) then
+					k = itm and alife():object(itm:id())
+					v = k and stpk_utils.get_weapon_data(k)
+					if (v) then
+						k = ini:r_string_ex(itm:section(),"ammo_class","")
+						if (k and k ~= "") then
+							k = alun_utils.str_explode(k,",")
+							if (k) then
+								k = k[v.ammo_type + 1]
+								if (k and k ~= "") then
+									if not (ta[k]) then
+										ta[k] = i
+									else
+										ta[k] = ta[k] + i
 									end
+									itm:unload_magazine()
 								end
 							end
 						end
 					end
 				end
 			end
-			db.actor:iterate_inventory(itr,db.actor)
 		end
-		for k,v in pairs(ta) do
-			create_ammo(k,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id(),v)
-		end
-		weapon_empty_sound:play(db.actor,0,sound_object.s2d)
+		db.actor:iterate_inventory(itr,db.actor)
 	end
-end
-
-function on_game_start()
-	RegisterScriptCallback("on_key_press",on_key_press)
+	for k,v in pairs(ta) do
+		create_ammo(k,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id(),v)
+	end
+	weapon_empty_sound:play(db.actor,0,sound_object.s2d)
 end

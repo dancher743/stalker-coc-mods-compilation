@@ -18,6 +18,10 @@ keybinds = {
 					["pda_stats"]					= "kCUSTOM9",
 					["pda_logs"]					= "kCUSTOM10",
 					
+					-- Added by Dancher
+					["companions_wheel"] 			= "kCUSTOM11",
+					["inventory_unload_weapons"] 	= "kCUSTOM12",
+					["common_slow_save"]			= "kCUSTOM13",
 					["inventory_custom_spot"]		= "kCUSTOM14",
 					
 					["debug_demo_record"]			= "DIK_NUMPAD0",
@@ -130,6 +134,27 @@ function action.pda_logs(p)
 		pda_menu:ShowDialog(true)
 		pda_menu:SetActiveSubdialog("eptLogs")
 	end
+end
+
+function action.companions_wheel(p)
+	if not (p==1) then
+		return 
+	end
+	ui_addon_companion_quick_menu.show_quick_menu()
+end
+
+function action.inventory_unload_weapons(p)
+	if not (p==1) then
+		return 
+	end
+	unload_all_weapons.unload_weapons()
+end
+
+function action.common_slow_save(p)
+	if not (p==1) then
+		return 
+	end
+	level_input.action_slow_save()
 end
 
 function action.inventory_custom_spot(p)

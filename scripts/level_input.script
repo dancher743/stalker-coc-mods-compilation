@@ -6,8 +6,6 @@ function on_key_press(dik,bind)
 			return action_quick_save()
 		elseif (bind == key_bindings.kQUICK_LOAD) then 
 			return action_quick_load()
-		elseif (dik_to_bind(dik) == key_bindings.kCUSTOM13) then 
-			return action_slow_save()
 		end
 		
 		SendScriptCallback("level_input_on_key_press",dik,bind)

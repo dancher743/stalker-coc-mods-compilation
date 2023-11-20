@@ -1,23 +1,16 @@
-function on_game_start()
-	RegisterScriptCallback("on_key_press",on_key_press)
-end
-
 local addonMenu=nil
-function on_key_press(key)
-	local bind = dik_to_bind(key)
-	if (bind == key_bindings.kCUSTOM11) then
-		if not(addonMenu) then
-			local i,v = next(axr_companions.companion_squads,nil) 
-			if not(v) or db.actor:is_talking() or not db.actor:alive() then 
-				return
-			end
-			addonMenu = addonCompanionsContextMenu(v)
-			addonMenu:ShowDialog(true)
-			show_all_ui(true)
-		else
-			addonMenu:CloseTheMenu()
-		end
 
+function show_quick_menu()
+	if not(addonMenu) then
+		local i,v = next(axr_companions.companion_squads,nil) 
+		if not(v) or db.actor:is_talking() or not db.actor:alive() then 
+			return
+		end
+		addonMenu = addonCompanionsContextMenu(v)
+		addonMenu:ShowDialog(true)
+		show_all_ui(true)
+	else
+		addonMenu:CloseTheMenu()
 	end
 end
 
