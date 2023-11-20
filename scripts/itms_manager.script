@@ -357,6 +357,7 @@ function actor_on_item_use(obj)
 					if (ui) then
 						SetHudMsg("",0)
 						ui:ShowDialog(true)
+						axr_keybind.enabled = false
 					end
 				end
 			end
