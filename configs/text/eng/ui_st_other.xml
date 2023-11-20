@@ -580,7 +580,10 @@
 	<string id="ui_st_custom_spot_title">
 		<text>Custom spot</text>
 	</string>
-	<string id="ui_st_custom_spot_remove">
+	<string id="ui_st_custom_spot_pda_remove">
 		<text>Remove spot</text>
+	</string>
+	<string id="ui_st_custom_spot_map_added">
+		<text>Spot has added</text>
 	</string>
 </string_table>

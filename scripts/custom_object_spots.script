@@ -11,7 +11,7 @@ local function map_spot_menu_add_property(property_ui,id,level_name)
 	end
 	
 	if (se_obj:section_name() == "custom_spot_dummy_object") then
-		property_ui:AddItem(game.translate_string("ui_st_custom_spot_remove"))
+		property_ui:AddItem(game.translate_string("ui_st_custom_spot_pda_remove"))
 	end
 end
 
@@ -22,7 +22,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 		return
 	end
 	
-	if (prop == game.translate_string("ui_st_custom_spot_remove")) then
+	if (prop == game.translate_string("ui_st_custom_spot_pda_remove")) then
 		level.map_remove_object_spot(se_obj.id, "custom_spot")
 		alife():release(se_obj)
 	end
@@ -33,9 +33,11 @@ local function on_ok_button_clicked(text)
 		return
 	end
 	
-	local se_obj = alife():create("custom_spot_dummy_object",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id())
+	local actor = db.actor
+	local se_obj = alife():create("custom_spot_dummy_object",actor:position(),actor:level_vertex_id(),actor:game_vertex_id())
 	local description = strformat("%c[255,255,160,0]%s\\n%c[default]%s", game.translate_string("ui_st_custom_spot_title"), text)
 	level.map_add_object_spot_ser(se_obj.id, "custom_spot", description)
+	news_manager.send_tip(actor, game.translate_string("ui_st_custom_spot_map_added"), nil, nil, 5000)
 end
 
 -- Called from axr_keybind.script as kCUSTOM14 action - inventory_custom_spot

@@ -580,7 +580,10 @@
 	<string id="ui_st_custom_spot_title">
 		<text>Своя метка</text>
 	</string>
-	<string id="ui_st_custom_spot_remove">
+	<string id="ui_st_custom_spot_pda_remove">
 		<text>Убрать метку</text>
+	</string>
+	<string id="ui_st_custom_spot_map_added">
+		<text>Метка добавлена</text>
 	</string>
 </string_table>
