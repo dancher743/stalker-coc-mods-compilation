@@ -42,6 +42,10 @@ end
 
 -- Called from axr_keybind.script as kCUSTOM14 action - inventory_custom_spot
 function show_input_dialog()
+	if (db.actor:is_talking()) then
+		return
+	end
+
 	local hud = get_hud()
 	ui_generic_dialogs.input_dialog_ui(hud, true, on_ok_button_clicked)
 end
