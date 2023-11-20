@@ -38,21 +38,13 @@ local function on_ok_button_clicked(text)
 	level.map_add_object_spot_ser(se_obj.id, "custom_spot", description)
 end
 
-local function show_input_dialog()
+-- Called from axr_keybind.script as kCUSTOM14 action - inventory_custom_spot
+function show_input_dialog()
 	local hud = get_hud()
 	ui_generic_dialogs.input_dialog_ui(hud, true, on_ok_button_clicked)
-end
-
-
-local function on_key_press(dik)
-	local bind = dik_to_bind(dik)
-	if (bind == key_bindings.kCUSTOM14) then
-		show_input_dialog()
-	end
 end
 
 function on_game_start()
 	RegisterScriptCallback("map_spot_menu_add_property",map_spot_menu_add_property)
 	RegisterScriptCallback("map_spot_menu_property_clicked",map_spot_menu_property_clicked)
-	RegisterScriptCallback("on_key_press",on_key_press)
 end

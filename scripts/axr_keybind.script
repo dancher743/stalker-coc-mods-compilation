@@ -18,6 +18,8 @@ keybinds = {
 					["pda_stats"]					= "kCUSTOM9",
 					["pda_logs"]					= "kCUSTOM10",
 					
+					["inventory_custom_spot"]		= "kCUSTOM14",
+					
 					["debug_demo_record"]			= "DIK_NUMPAD0",
 					--["debug_select_object"] 		= "DIK_NUMPAD9",
 					--["debug_attachment_ui"] 		= "DIK_INSERT",
@@ -25,6 +27,8 @@ keybinds = {
 					--["debug_reload_game"]			= "DIK_END",
 					--["debug_hold_action"]			= "DIK_NUMPAD8"
 }
+
+enabled = true
 
 action = {}
 ------------------------------------------------------------------
@@ -126,6 +130,13 @@ function action.pda_logs(p)
 		pda_menu:ShowDialog(true)
 		pda_menu:SetActiveSubdialog("eptLogs")
 	end
+end
+
+function action.inventory_custom_spot(p)
+	if not (p==1) then
+		return 
+	end
+	custom_object_spots.show_input_dialog()
 end
 
 function action.debug_demo_record(p)
@@ -328,6 +339,10 @@ end
 -- callbacks
 -------------------------------------------
 function on_key_release(key)
+	if (not enabled) then
+		return
+	end
+	
 	for k,v in pairs(keybinds) do 
 		if (action[k]) then 
 			if (key_bindings[v]) then 
@@ -342,6 +357,10 @@ function on_key_release(key)
 end
 
 function on_key_press(key)
+	if (not enabled) then
+		return
+	end
+	
 	--printf("kCUSTOM1=%s key=%s dik_to_bind=%s",key_bindings.kCUSTOM1,key,dik_to_bind(key))
 	for k,v in pairs(keybinds) do 
 		if (action[k]) then 
@@ -357,6 +376,10 @@ function on_key_press(key)
 end
 
 function on_key_hold(key)
+	if (not enabled) then
+		return
+	end
+	
 	for k,v in pairs(keybinds) do 
 		if (action[k]) then 
 			if (key_bindings[v]) then 
