@@ -5,7 +5,7 @@
 -- adapted: Dancher
 --------------------------------------------
 local bgl,bsi,bsc
-local weapon_empty_sound = sound_object([[weapons\gen_empty]])
+local weapon_empty_sound
 
 function unload_weapons()
 	local inventory = ActorMenu.get_actor_menu()
@@ -56,6 +56,10 @@ function unload_weapons()
 	end
 	for k,v in pairs(ta) do
 		create_ammo(k,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id(),v)
+	end
+	
+	if (weapon_empty_sound == nil) then
+		weapon_empty_sound = sound_object([[weapons\gen_empty]])
 	end
 	weapon_empty_sound:play(db.actor,0,sound_object.s2d)
 end
