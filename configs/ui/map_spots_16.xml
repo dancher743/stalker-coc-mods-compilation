@@ -202,10 +202,10 @@
                 <mini_map  spot="treasure_spot_mini"/>
         </treasure>
         <treasure_spot width="15" height="15" alignment="c" stretch="1"><!-- scale="1" scale_min="1.1" scale_max="3.1" light_anim="map_spot_secrets" la_cyclic="0" la_texture="1" la_text="0" la_alpha="1"-->
-                <texture r="0" g="223" b="8" a="255">ui_inGame2_PDA_icon_secret</texture>
+                <texture r="137" g="120" b="208" a="255">ui_inGame2_PDA_icon_secret</texture>
         </treasure_spot>
         <treasure_spot_mini width="10" height="10" alignment="c" stretch="1">
-                <texture r="0" g="223" b="8" a="255">ui_inGame2_PDA_icon_secret</texture>
+                <texture r="137" g="120" b="208" a="255">ui_inGame2_PDA_icon_secret</texture>
         </treasure_spot_mini>
 		
 		<custom_treasure hint="st_ui_pda_secret">
@@ -213,10 +213,10 @@
                 <mini_map spot="custom_treasure_spot_mini"/>
         </custom_treasure>
         <custom_treasure_spot width="15" height="15" alignment="c" stretch="1">
-                <texture r="255" g="255" b="0" a="255">ui_inGame2_PDA_icon_secret</texture>
+                <texture r="0" g="223" b="8" a="255">ui_inGame2_PDA_icon_secret</texture>
         </custom_treasure_spot>
         <custom_treasure_spot_mini width="10" height="10" alignment="c" stretch="1">
-                <texture r="255" g="255" b="0" a="255">ui_inGame2_PDA_icon_secret</texture>
+                <texture r="0" g="223" b="8" a="255">ui_inGame2_PDA_icon_secret</texture>
         </custom_treasure_spot_mini>
 		
 		<custom_spot hint="st_ui_pda_secret">
