@@ -6930,6 +6930,9 @@
 	<string id="st_dyn_news_companion_level_l10_radar_12">
 		<text>I can hear voices inside my head...</text>
 	</string>
+	<string id="st_dyn_news_companion_level_l10_radar_13">
+		<text>Are you also hearing someone whispering? Just listen...</text>
+	</string>
 
 	<string id="st_dyn_news_companion_level_l12_stancia_2_1">
 		<text>I... I can't believe my eyes... we made it to the center!</text>

@@ -6882,6 +6882,9 @@
 	<string id="st_dyn_news_companion_level_l10_radar_12">
 		<text>я слышу голоса в голове...</text>
 	</string>
+	<string id="st_dyn_news_companion_level_l10_radar_13">
+		<text>¬ы тоже слышите чей-то шЄпот? ѕрислушайтесь...</text>
+	</string>
 	
 	<string id="st_dyn_news_companion_level_l12_stancia_2_1">
 		<text>я... € не могу поверить своим глазам... мы добрались до центра!</text>
