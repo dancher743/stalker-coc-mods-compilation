@@ -36,7 +36,7 @@ local function on_ok_button_clicked(text)
 	local actor = db.actor
 	local se_obj = alife():create("custom_spot_dummy_object",actor:position(),actor:level_vertex_id(),actor:game_vertex_id())
 	local description = strformat("%c[160,0,255,255]%s\\n%c[default]%s", game.translate_string("ui_st_custom_spot_title"), text)
-	level.map_add_object_spot_ser(se_obj.id, "secondary_task_location", description)
+	level.map_add_object_spot_ser(se_obj.id, "custom_spot", description)
 	news_manager.send_tip(actor, game.translate_string("ui_st_custom_spot_map_added"), nil, nil, 5000)
 end
 
