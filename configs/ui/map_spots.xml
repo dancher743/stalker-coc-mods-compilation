@@ -228,7 +228,7 @@
 				<texture_below>secondary_task_spot_below</texture_below>
 				<texture_above>secondary_task_spot_above</texture_above>
         </custom_spot_map_global>
-        <custom_spot_map_mini width="19" height="19" alignment="c" stretch="1">
+        <custom_spot_map_mini width="15" height="15" alignment="c" stretch="1">
                 <texture>ui_inGame2_PDA_icon_Secondary_mission</texture>
 				<texture_below>secondary_task_spot_below</texture_below>
 				<texture_above>secondary_task_spot_above</texture_above>
