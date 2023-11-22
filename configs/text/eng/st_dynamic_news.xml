@@ -6513,6 +6513,9 @@
 	<string id="st_dyn_news_companion_level_l11_pripyat_10">
 		<text>Why did I agree on coming along with you...</text>
 	</string>
+	<string id="st_dyn_news_companion_level_l11_pripyat_11">
+		<text>Are you also hearing whispering? Ghosts of Pripyat are trying to tell us something. Just listen...</text>
+	</string>
 
 
 	<string id="st_dyn_news_companion_level_l01_escape_1">
@@ -6929,9 +6932,6 @@
 	</string>
 	<string id="st_dyn_news_companion_level_l10_radar_12">
 		<text>I can hear voices inside my head...</text>
-	</string>
-	<string id="st_dyn_news_companion_level_l10_radar_13">
-		<text>Are you also hearing someone whispering? Just listen...</text>
 	</string>
 
 	<string id="st_dyn_news_companion_level_l12_stancia_2_1">
