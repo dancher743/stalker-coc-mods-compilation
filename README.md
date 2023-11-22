@@ -106,3 +106,4 @@ Mods
 62. New crosshair (based on Dot crosshair by Kib) (Dancher)
 63. Grass from Advanced Vegetation mix 1.5r7 (Cromm Cruac, brainscorcher, gridgt, burguois, Anomaly and Dead Air creators)
 64. Put spot on Map (Dancher)
+65. Radio music from Legend Returns 0.9.2 (selectively) (Genies of the Zone Team)
