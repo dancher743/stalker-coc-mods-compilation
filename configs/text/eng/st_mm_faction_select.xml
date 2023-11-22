@@ -48,7 +48,7 @@
 		<text>Monolith</text>
 	</string>
 	<string id="st_faction_monolith_desc">
-		<text>%c[0,150,150,150]Monolith are a fanatical religious cult hostile to all but their own.\n \nDespite the destruction of the C-Conciousness they have since re-emerged as a resurgent force, retaking many of their former territories.\n \n%c[0,255,255,255]Recommended for: advanced players.</text>
+		<text>%c[0,150,150,150]"The Monolith is light and knowledge, knowledge and light. The time will come - chosen ones will be saved".\n \nMonolith are a fanatical religious cult hostile to all but their own.\n \nDespite the destruction of the C-Conciousness they have since re-emerged as a resurgent force, retaking many of their former territories.\n \n%c[0,255,255,255]Recommended for: advanced players.</text>
 	</string>
 	<string id="st_faction_csky">
 		<text>Clear Sky</text>
