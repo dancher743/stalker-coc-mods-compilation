@@ -1,7 +1,11 @@
 --
--- Combat mode for Actor
+-- Alternative combat mode for Actor
 -- Added by Dancher
 --
+-- Original way to check if Actor has combat -
+-- not (is_empty(xr_combat_ignore.fighting_with_actor_npcs))
+--
+
 local combat_length = 10000
 local combat_last_time = 0
 
