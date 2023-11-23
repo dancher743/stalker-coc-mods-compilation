@@ -149,6 +149,10 @@ function actor_on_update()
 		UnregisterScriptCallback("actor_on_update", actor_on_update)
 		return
 	end
+	
+	if (actor_combat.has_combat()) then
+		return
+	end
 
 	local tg = time_global()
 	
@@ -391,6 +395,10 @@ function smart_terrain_on_update(smart)
 		UnregisterScriptCallback("smart_terrain_on_update", smart_terrain_on_update)
 		return
 	end
+	
+	if (actor_combat.has_combat()) then
+		return
+	end
 
 	sim_smart.smart_terrain_on_update(smart)
 end
@@ -398,6 +406,10 @@ end
 function squad_on_update(squad)
 	if (not IsEocMode()) then
 		UnregisterScriptCallback("squad_on_update", squad_on_update)
+		return
+	end
+	
+	if (actor_combat.has_combat()) then
 		return
 	end
 

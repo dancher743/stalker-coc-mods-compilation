@@ -1,0 +1,47 @@
+--
+-- Combat mode for Actor
+-- Added by Dancher
+--
+
+local last_combat_time = 0
+
+function has_combat()
+	return last_combat_time + 10000 > time_global()
+end
+
+local function actor_on_hit_callback(obj, amount, local_direction, who, bone_index)
+	if (IsStalker(who) or IsMonster(who)) then
+		last_combat_time = time_global()
+	end
+end
+
+local function npc_on_hit_callback(obj, amount, local_direction, who, bone_index)
+	if (IsActor(who)) then
+		last_combat_time = time_global()
+	end
+end
+
+local function monster_on_hit_callback(obj, amount, local_direction, who, bone_index)
+	if (IsActor(who)) then
+		last_combat_time = time_global()
+	end
+end
+
+local function save_state(m_data)
+	if (m_data.actor_combat == nil) then
+		m_data.actor_combat = {}
+	end
+	m_data.actor_combat.last_combat_time = last_combat_time or 0
+end
+
+local function load_state(m_data)
+	last_combat_time = m_data.actor_combat and m_data.actor_combat.last_combat_time or 0
+end
+
+function on_game_start()
+	RegisterScriptCallback("actor_on_hit_callback", actor_on_hit_callback)
+	RegisterScriptCallback("npc_on_hit_callback", npc_on_hit_callback)
+	RegisterScriptCallback("monster_on_hit_callback", monster_on_hit_callback)
+	RegisterScriptCallback("save_state", save_state)
+	RegisterScriptCallback("load_state", load_state)
+end
