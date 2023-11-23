@@ -6,7 +6,7 @@
 local last_combat_time = 0
 
 function has_combat()
-	return last_combat_time + 10000 > time_global()
+	return db.actor:alive() and (last_combat_time + 10000 > time_global())
 end
 
 local function actor_on_hit_callback(obj, amount, local_direction, who, bone_index)
