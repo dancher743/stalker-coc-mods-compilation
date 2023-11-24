@@ -22,24 +22,10 @@ local prev_game_sec 		= -1
 local diff_sec 				= -1
 local diff_game_sec			= -1
 
-local presurge_played        = {0, 0, 0, 0, 0, 0}
-
---[[Amount of time before a surge in in-game seconds (6x real life seconds)
-    Note that the script updates events only once per real life second]]--
-local presurge_time            = 360
-
 class "CPsiStormManager"
 function CPsiStormManager:__init()
 	self.humanParticles = {}
 	self.vortexes 		= {}
-	self.blowout_sounds = {
-						crow0		=sound_object("ambient\\blowout\\cut\\close"),
-						crow1		=sound_object("ambient\\blowout\\cut\\closemedium"),
-						crow2		=sound_object("ambient\\blowout\\cut\\medium"),
-						crow3		=sound_object("ambient\\blowout\\cut\\prettyfar"),
-						crow4		=sound_object("ambient\\blowout\\cut\\far"),
-						crow5		=sound_object("ambient\\blowout\\cut\\veryfar")
-					}
 end
 
 function CPsiStormManager:initialize()
@@ -51,7 +37,6 @@ function CPsiStormManager:initialize()
 		self.started = false
 		self.finished = true
 		self.task_given = nil
-		presurge_played = {0, 0, 0, 0, 0}
 	end 
 	
 	if not (self._delta) then 
@@ -274,48 +259,6 @@ function CPsiStormManager:update()
 			end
 			self.time_forwarded = false
 		end
-		
-		--Plays sound before a blowout
-        if(math.abs(self._delta - g_time:diffSec(self.last_surge_time)) < presurge_time) then
-            if(presurge_played[1] ~= true) then
-                --self.blowout_sounds["presurge"]:play(db.actor)
-                play_sound_radius(self.blowout_sounds["crow5"], 1000, 140, 220)
-                play_sound_radius(self.blowout_sounds["crow4"], 1000, 140, 220)
-                --printf("Played far crows")
-                presurge_played[1] = true
-            end
-            if(math.abs(self._delta - g_time:diffSec(self.last_surge_time)) < (presurge_time - 60) and presurge_played[2] ~= true) then
-                --self.blowout_sounds["presurge"]:play(db.actor)
-                play_sound_radius(self.blowout_sounds["crow3"], 1000, 100, 260)
-                play_sound_radius(self.blowout_sounds["crow2"], 1000, 100, 260)
-                --printf("Played medium crows")
-                presurge_played[2] = true
-            end
-            if(math.abs(self._delta - g_time:diffSec(self.last_surge_time)) < (presurge_time - 120) and presurge_played[3] ~= true) then
-                --self.blowout_sounds["presurge"]:play(db.actor)
-                play_sound_radius(self.blowout_sounds["crow1"], 1000, 0, 360)
-                play_sound_radius(self.blowout_sounds["crow0"], 1000, 0, 360)
-                --printf("Played close crows")
-                presurge_played[3] = true
-            end
-            if(math.abs(self._delta - g_time:diffSec(self.last_surge_time)) < (presurge_time - 180) and presurge_played[4] ~= true) then
-                --self.blowout_sounds["presurge"]:play(db.actor)
-                play_sound_radius(self.blowout_sounds["crow2"], 1000, 280, 440)
-                play_sound_radius(self.blowout_sounds["crow3"], 1000, 280, 440)
-                --printf("Played medium crows")
-                presurge_played[4] = true
-            end
-            if(math.abs(self._delta - g_time:diffSec(self.last_surge_time)) < (presurge_time - 240) and presurge_played[5] ~= true) then
-                --self.blowout_sounds["presurge"]:play(db.actor)
-                play_sound_radius(self.blowout_sounds["crow4"], 1000, 320, 400)
-                play_sound_radius(self.blowout_sounds["crow5"], 1000, 320, 400)
-                --printf("Played far crows")
-                presurge_played[5] = true
-            end
-        end
-        --DEBUG
-        --printf("until blowout: %s", math.abs(self._delta - g_time:diffSec(self.last_surge_time)))
-		
 		if(g_time:diffSec(self.last_psi_storm_time) < self._delta) then
 			return
 		end
@@ -613,18 +556,6 @@ function CPsiStormManager:launch_rockets()
 			v:launch()
 		end
 	end
-end
-
-function play_sound_radius(sndobj, radius, min, max)
-	local rnd_pos = db.actor:position()
-	local rnd_angle = math.random(min, max)
-	rnd_pos.x = rnd_pos.x + (math.cos(rnd_angle) * radius)
-	rnd_pos.z = rnd_pos.z + (math.sin(rnd_angle) * radius)
-	if(sndobj:playing()) then
-		sndobj:stop()
-	end
-	sndobj:play_at_pos(db.actor, rnd_pos)
-	--printf("played sound at x=%s z=%s", rnd_pos.x, rnd_pos.z)
 end
 
 function save_state(m_data)
