@@ -28,6 +28,7 @@ end
 function on_game_load()
 	if (IsEocMode()) then
 		override_combat_ignore()
+		sim_actor_combat.init()
 		_G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = false
 		_G.ProcessEventQueueState = function() return end
 		printf("### EOC: started ###")
@@ -150,7 +151,7 @@ function actor_on_update()
 		return
 	end
 	
-	if (actor_combat.has_combat()) then
+	if (sim_actor_combat.has_combat()) then
 		return
 	end
 
@@ -396,7 +397,7 @@ function smart_terrain_on_update(smart)
 		return
 	end
 	
-	if (actor_combat.has_combat()) then
+	if (sim_actor_combat.has_combat()) then
 		return
 	end
 
@@ -409,7 +410,7 @@ function squad_on_update(squad)
 		return
 	end
 	
-	if (actor_combat.has_combat()) then
+	if (sim_actor_combat.has_combat()) then
 		return
 	end
 
