@@ -90,7 +90,7 @@ Mods
 46. Outfit loot CoC 1 4 22 v2 with reworking (av661194, Dancher)
 47. CoC Extended Offline (EOC) Lite 1.7.6 + dynamic faction relations (xr_Sanya)
 48. Stalker Tweaks (SarisKhan)
-49. Pre-Blowout Murder Addon [CoC 1.4.22] (Ethylia, adapted by Misery)
+49. Radio music from Legend Returns 0.9.2 (selectively) (Genies of the Zone Team)
 50. Flashlight sound for vanilla CoC (Grelka)
 51. Classic SoC Flashlight for CoC with Dancher's changes (default white light) (Shovelled, Dancher)
 52. Clear weather from All AtmosFear 3 cycles for CoC (owdred)
@@ -106,4 +106,3 @@ Mods
 62. New crosshair (based on Dot crosshair by Kib) (Dancher)
 63. Grass from Advanced Vegetation mix 1.5r7 (Cromm Cruac, brainscorcher, gridgt, burguois, Anomaly and Dead Air creators)
 64. Put spot on Map (Dancher)
-65. Radio music from Legend Returns 0.9.2 (selectively) (Genies of the Zone Team)
