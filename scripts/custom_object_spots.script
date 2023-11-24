@@ -3,6 +3,14 @@
 -- By Dancher
 --
 
+local function send_tip()
+	local news_caption = game.translate_string("st_tip")
+	local news_text = game.translate_string("ui_st_custom_spot_map_added")
+	local news_icon = "ui_iconsTotal_locations"
+	db.actor:give_game_news(news_caption, news_text, news_icon, 0, 5000)
+	xr_sound.set_sound_play(db.actor:id(), "pda_tips")
+end
+
 local function map_spot_menu_add_property(property_ui,id,level_name)
 	local se_obj = alife_object(id)
 	
@@ -37,7 +45,8 @@ local function on_ok_button_clicked(text)
 	local se_obj = alife():create("custom_spot_dummy_object",actor:position(),actor:level_vertex_id(),actor:game_vertex_id())
 	local description = strformat("%c[160,0,255,255]%s\\n%c[default]%s", game.translate_string("ui_st_custom_spot_title"), text)
 	level.map_add_object_spot_ser(se_obj.id, "custom_spot", description)
-	news_manager.send_tip(actor, game.translate_string("ui_st_custom_spot_map_added"), nil, nil, 5000)
+	
+	send_tip()
 end
 
 -- Called from axr_keybind.script as kCUSTOM14 action - inventory_custom_spot
