@@ -530,13 +530,13 @@
 		<text>низкая</text>
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_activity_opt_very_low">
-		<text>очень низкая</text>
+		<text>очень_низкая</text>
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_control">
 		<text>Популяция: частота обновления</text>
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_control_opt_very_high">
-		<text>очень высокая</text>
+		<text>очень_высокая</text>
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_control_opt_high">
 		<text>высокая</text>
