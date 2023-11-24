@@ -200,6 +200,7 @@ end
 function send_treasure(param, has_spot)
 	local news_caption = game.translate_string("st_tip")
 	local news_text = ""
+	local news_icon = "ui_iconsTotal_found_thing"
 	
 	if(param==0) then
 		news_text = game.translate_string("st_found_new_treasure")
@@ -211,9 +212,9 @@ function send_treasure(param, has_spot)
 	end
 
 	if db.actor:is_talking() then
-		db.actor:give_talk_message2(news_caption, news_text, "ui_inGame2_Polucheni_koordinaty_taynika", "iconed_answer_item")
+		db.actor:give_talk_message2(news_caption, news_text, news_icon, "iconed_answer_item")
 	else
-		db.actor:give_game_news(news_caption, news_text, "ui_inGame2_Polucheni_koordinaty_taynika", 0, 3000)
+		db.actor:give_game_news(news_caption, news_text, news_icon, 0, 3000)
 	end
 	
 	xr_sound.set_sound_play(db.actor:id(), "pda_tips")
