@@ -1,3 +1,8 @@
+--
+-- Actor health effector
+-- From SpecHUD mod
+--
+
 local seldom_upd_time
 local isactcondset = false
 local radeffect = false
