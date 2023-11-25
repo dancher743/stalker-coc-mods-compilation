@@ -97,6 +97,7 @@ function repair_ui:InitControls()
 	self.xml:ParseFile			("ui_itm_main.xml")
 
 	ctrl					= CUIWindow()
+	ctrl:SetAutoDelete(true)
 	self.xml:InitWindow			("itm_repair:file_item:main",0,ctrl)
 	
 	self.file_item_main_sz	= vector2():set(ctrl:GetWidth(),ctrl:GetHeight())

@@ -145,6 +145,8 @@ function on_item_drag_dropped(itm1,itm2,from_slot,to_slot)
 		if not (IsWeapon(itm2) or IsOutfit(itm2) or IsHeadgear(itm2)) then
 			return
 		end
+	else 
+		return
 	end
 	
 	local cur_condition = itm2:condition()
