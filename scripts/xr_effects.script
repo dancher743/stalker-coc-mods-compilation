@@ -112,8 +112,14 @@ function drx_sl_meet_random_honcho( actor, npc, p )
 
 			-- Check if the honcho surrounding factions are not enemy of player:
 			local is_enemy = false
+			local actor_community
+            if (disguise and disguise.has_actor_disguised()) then
+                actor_community = disguise.get_actor_default_faction()
+            else
+                actor_community = alife():actor():community()
+            end
 			for j = 2, #drx_sl_honchos_table[i] do
-				if ( relation_registry.community_relation( drx_sl_honchos_table[i][j], alife( ):actor( ):community( ) ) <= -1000 ) then
+				if ( relation_registry.community_relation( drx_sl_honchos_table[i][j], actor_community ) <= -1000 ) then
 					is_enemy = true
 				end
 			end
