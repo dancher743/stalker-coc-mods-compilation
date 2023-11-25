@@ -243,8 +243,7 @@ function smart_control(smart)
 		return
 	end
 	
-	local option_factor = sim_options.get_warfare_control_option_factor()
-	smart.last_npc_check = tg + 30000 * option_factor
+	smart.last_npc_check = tg + 30000
 
 	local squads = SIMBOARD.smarts[smart.id].squads
 
