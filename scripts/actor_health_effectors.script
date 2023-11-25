@@ -36,9 +36,7 @@ local function bleedcondition()
     end
     if db.actor.radiation > 0.3 and radeffect ~= true then
         level.add_pp_effector("cherno.ppe", 2013, true)
-		if (math.random() < 0.5) then
-			play_reaction_sound(radiation_reaction_sounds[math.random(#radiation_reaction_sounds)])
-		end
+		play_reaction_sound(radiation_reaction_sounds[math.random(#radiation_reaction_sounds)])
         radeffect = true
     end
     if db.actor.radiation == 0 and radeffect ~= false then
