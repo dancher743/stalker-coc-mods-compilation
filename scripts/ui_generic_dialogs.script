@@ -3,7 +3,9 @@
 -- Added by Dancher
 --
 
+--================ Input Dialog ================
 -- Based on "backpack_ui" window (Alundaio)
+
 class "input_dialog_ui" (CUIScriptWnd)
 function input_dialog_ui:__init(owner, show_after_init, on_ok_clicked, on_cancel_clicked) super()
 	self.owner = owner
@@ -94,4 +96,54 @@ function input_dialog_ui:OnCancel()
 	end
 	
 	self:Hide()
+end
+
+--================ Confirm Dialog ================
+-- Based on "quick_load_dlg" window (av661194)
+
+class "confirm_dialog_ui" (CUIScriptWnd)
+function confirm_dialog_ui:__init(message, on_yes_clicked, on_no_clicked) super()
+	self.mbox_mode = 0
+	self.message = game.translate_string(message)
+	self.on_yes_clicked = on_yes_clicked
+	self.on_no_clicked = on_no_clicked
+	
+	self:InitControls()
+	self:InitCallBacks()
+	
+	self.mbox_mode = 1
+	self.message_box:ShowDialog(true)
+end
+
+function confirm_dialog_ui:__finalize()
+end
+
+function confirm_dialog_ui:InitControls()
+	local xml = CScriptXmlInit()
+	xml:ParseFile("ui_mm_main.xml")
+	self.message_box = CUIMessageBoxEx()
+	self.message_box:InitMessageBox("message_box_confirm_load_save")
+	self.message_box:SetText(self.message)
+	self:Register(self.message_box, "msg_box")
+end
+
+function confirm_dialog_ui:InitCallBacks()
+	self:AddCallback("msg_box", ui_events.MESSAGE_BOX_OK_CLICKED, self.OnMsgYes, self)
+	self:AddCallback("msg_box", ui_events.MESSAGE_BOX_YES_CLICKED, self.OnMsgYes, self)
+	self:AddCallback("msg_box", ui_events.MESSAGE_BOX_NO_CLICKED, self.OnMsgNo, self)
+	self:Register(self, "self")
+end
+
+function confirm_dialog_ui:OnMsgYes()
+	self.mbox_mode = 0
+	if (self.on_yes_clicked) then
+		self.on_yes_clicked()
+	end
+end
+
+function confirm_dialog_ui:OnMsgNo()
+	self.mbox_mode = 0
+	if (self.on_no_clicked) then
+		self.on_no_clicked()
+	end
 end
