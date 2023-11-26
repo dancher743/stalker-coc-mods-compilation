@@ -514,8 +514,9 @@
 	<string id="ui_mm_bases_defense">
 		<text>Bases defense quests</text>
 	</string>
+	
 	<string id="ui_mm_eoc_faction_warfare_activity">
-		<text>Population spawn frequency</text>
+		<text>Population squades activity</text>
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_activity_opt_high">
 		<text>High</text>
@@ -526,24 +527,7 @@
 	<string id="ui_mm_eoc_faction_warfare_activity_opt_low">
 		<text>Low</text>
 	</string>
-	<string id="ui_mm_eoc_faction_warfare_activity_opt_very_low">
-		<text>Very_low</text>
-	</string>
-	<string id="ui_mm_eoc_faction_warfare_control">
-		<text>Population update frequency</text>
-	</string>
-	<string id="ui_mm_eoc_faction_warfare_control_opt_very_high">
-		<text>Very_high</text>
-	</string>
-	<string id="ui_mm_eoc_faction_warfare_control_opt_high">
-		<text>High</text>
-	</string>
-	<string id="ui_mm_eoc_faction_warfare_control_opt_medium">
-		<text>Medium</text>
-	</string>
-	<string id="ui_mm_eoc_faction_warfare_control_opt_low">
-		<text>Low</text>
-	</string>
+
 	<string id="ui_mm_show_monsters_on_map">
 		<text>Show monsters on map</text>
 	</string>

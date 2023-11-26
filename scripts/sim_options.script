@@ -1,18 +1,23 @@
 warfare_activity = 
 {
-	very_low 	= game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_very_low"),
-	low 		= game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_low"),
-	medium 		= game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_medium"),
-	high 		= game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_high")
+	low 	= game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_low"),
+	medium 	= game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_medium"),
+	high 	= game.translate_string("ui_mm_eoc_faction_warfare_activity_opt_high")
 }
 
-warfare_control = 
-{
-	low 		= game.translate_string("ui_mm_eoc_faction_warfare_control_opt_low"),
-	medium 		= game.translate_string("ui_mm_eoc_faction_warfare_control_opt_medium"),
-	high 		= game.translate_string("ui_mm_eoc_faction_warfare_control_opt_high"),
-	very_high 	= game.translate_string("ui_mm_eoc_faction_warfare_control_opt_very_high")
-}
+
+function get_warfare_activity_option()
+	return axr_main.config:r_string_ex("mm_options","eoc_faction_warfare_activity")
+end
+
+function get_unpc_respawn_option()
+	return axr_main.config:r_string_ex("mm_options","eoc_faction_warfare_unpc_respawn")
+end
+
+function write_defaults_to_config()
+	axr_main.config:w_value("mm_options","eoc_faction_warfare_activity",warfare_activity.medium)
+	axr_main.config:w_value("mm_options","eoc_faction_warfare_unpc_respawn",false)
+end
 
 local function opt_menu_on_init(menu)
 	if (not db.actor or not IsEocMode()) then
@@ -23,21 +28,9 @@ local function opt_menu_on_init(menu)
 	{
 		default=warfare_activity.medium, debug_only=false, typ="list", list=
 		{
-			warfare_activity.very_low,
 			warfare_activity.low,
 			warfare_activity.medium,
 			warfare_activity.high
-		}
-	}
-	
-	menu.gameplay_options["eoc_faction_warfare_control"] = 
-	{
-		default=warfare_control.medium, debug_only=false, typ="list", list=
-		{
-			warfare_control.low,
-			warfare_control.medium,
-			warfare_control.high,
-			warfare_control.very_high
 		}
 	}
 	
@@ -46,38 +39,4 @@ end
 
 function on_game_start()
 	RegisterScriptCallback("opt_menu_on_init",opt_menu_on_init)
-end
-
-function get_warfare_activity_option()
-	return axr_main.config:r_string_ex("mm_options","eoc_faction_warfare_activity")
-end
-
-local function get_warfare_control_option()
-	return axr_main.config:r_string_ex("mm_options","eoc_faction_warfare_control")
-end
-
-function get_warfare_control_option_factor()
-	local option_factor = 1
-	local option = get_warfare_control_option()
-
-	if (option == warfare_control.low) then
-		option_factor = 1.5
-	elseif (option == warfare_control.medium) then
-		option_factor = 1
-	elseif (option == warfare_control.high) then
-		option_factor = 0.5
-	elseif (option == warfare_control.very_high) then
-		option_factor = 0.25
-	end
-	
-	return option_factor
-end
-
-function get_unpc_respawn_option()
-	return axr_main.config:r_string_ex("mm_options","eoc_faction_warfare_unpc_respawn")
-end
-
-function write_defaults_to_config()
-	axr_main.config:w_value("mm_options","eoc_faction_warfare_activity",warfare_activity.medium)
-	axr_main.config:w_value("mm_options","eoc_faction_warfare_control",warfare_control.medium)
 end
