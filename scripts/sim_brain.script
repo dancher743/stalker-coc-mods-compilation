@@ -5,7 +5,6 @@ local default_process_event_queue_state = nil
 
 local function override_disguise_rates()
 	disguise.actor_update_rate = 2000
-	disguise.npc_update_rate = 3000
 	printf("### EOC: disguise rates overrided ###")
 end
 

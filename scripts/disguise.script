@@ -8,7 +8,7 @@
 
 -- update rates in milliseconds
 actor_update_rate = 1000
-npc_update_rate = 2000
+npc_update_rate = 0
 
 -- update timers
 local actor_update_timer = time_global()
@@ -27,12 +27,12 @@ local min_condition_h = 0.25
 
 --distance within npc will start doubting the disguise (if they are seeing you)
 --5 = 1 wood box width
-local discovery_distance = 25
+local discovery_distance = 100
 
 --how much time it takes to be discovered when in view, 100 is roughly 1 minute with uncovered face
-local suspicion_limit = 100
-local warning_limit = suspicion_limit * 2 / 3
-local dewarn_limit = suspicion_limit * 1 / 3
+local suspicion_limit = 50
+local warning_limit = suspicion_limit / 2
+local dewarn_limit = suspicion_limit / 3
 
 local last_seen = {}
 local suspicion = {}
