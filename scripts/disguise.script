@@ -8,11 +8,11 @@
 
 -- update rates in milliseconds
 actor_update_rate = 1000
-npc_update_rate = 0
+npc_update_rate = 1000
 
 -- update timers
 local actor_update_timer = time_global()
-local npc_update_timer = time_global()
+local npc_update_timers = {}
 
 --time you need to be hidden (not seen by any npc) before changing outfit to make the disguise effective, 100 means roughly 10 seconds
 local time_to_forget = 100
@@ -27,10 +27,10 @@ local min_condition_h = 0.25
 
 --distance within npc will start doubting the disguise (if they are seeing you)
 --5 = 1 wood box width
-local discovery_distance = 100
+local discovery_distance = 25
 
 --how much time it takes to be discovered when in view, 100 is roughly 1 minute with uncovered face
-local suspicion_limit = 50
+local suspicion_limit = 60
 local warning_limit = suspicion_limit / 2
 local dewarn_limit = suspicion_limit / 3
 
@@ -61,6 +61,7 @@ function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
 	RegisterScriptCallback("actor_on_update",actor_on_update)
 	RegisterScriptCallback("npc_on_update",npc_on_update)
+	RegisterScriptCallback("npc_on_net_destroy",npc_on_net_destroy)
 	
 	RegisterScriptCallback("on_game_load",on_game_load)
 	
@@ -186,18 +187,19 @@ end
 function npc_on_update(npc)
 	if not default_faction or not db.actor then return end
 	
+	local id = npc:id()
+	
 	local time_global = time_global()
-	if npc_update_timer >= time_global then
+	if (npc_update_timers[id] and npc_update_timers[id] > time_global) then
 		return
 	else
-		npc_update_timer = time_global + npc_update_rate
-	end
+        npc_update_timers[id] = time_global + npc_update_rate
+    end
 	
 	local npc_is_enemy = game_relations.is_factions_enemies(default_faction, npc:character_community()) or npc:relation(db.actor) == game_object.enemy
 
 	local current = utils.get_actor_community()
 	if current ~= default_faction and npc:see(db.actor) and npc_is_enemy then
-		local id = npc:id()
 		last_seen[id] = game.get_game_time()
 		
 		if suspicion[id] then
@@ -221,7 +223,6 @@ function npc_on_update(npc)
 			suspicion[id] = 1
 		end
 	else
-		local id = npc:id()
 		if suspicion[id] then
 			suspicion[id] = suspicion[id] - 1
 			if (suspicion[id] <= 0) then
@@ -243,6 +244,11 @@ function npc_on_update(npc)
 			warned = false
 		end
 	end
+end
+
+function npc_on_net_destroy(npc)
+	local id = npc:id()
+	table.remove(npc_update_timers,id)
 end
 
 function suspicion_increase(distance)

@@ -3,11 +3,6 @@
 local default_sim_on_non_linked_levels = nil
 local default_process_event_queue_state = nil
 
-local function override_disguise_rates()
-	disguise.actor_update_rate = 2000
-	printf("### EOC: disguise rates overrided ###")
-end
-
 local function override_combat_ignore()
 	xr_combat_ignore.ignored_zone = xr_combat_ignore_eoc.ignored_zone
 	xr_combat_ignore.is_enemy = xr_combat_ignore_eoc.is_enemy
@@ -34,7 +29,6 @@ function on_game_load()
 	if (IsEocMode()) then
 		sim_actor_combat.init()
 		override_combat_ignore()
-		override_disguise_rates()
 		_G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = false
 		_G.ProcessEventQueueState = function() return end
 		printf("### EOC: started ###")
