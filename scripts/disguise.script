@@ -7,8 +7,8 @@
 ----------------------
 
 -- update rates in milliseconds
-local actor_update_rate = 1000
-local npc_update_rate = 2000
+actor_update_rate = 1000
+npc_update_rate = 2000
 
 -- update timers
 local actor_update_timer = time_global()

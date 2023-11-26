@@ -27,7 +27,7 @@ function update_faction(faction)
 	if (not faction_information[faction].timer or game.get_game_time():diffSec(faction_information[faction].timer) >= (faction_information[faction].next_update*60)) then	
 		faction_information[faction] = {}
         faction_information[faction].timer = game.get_game_time()
-		faction_information[faction].next_update = math.random(5, 10) * sim_options.get_warfare_control_option_factor()
+		faction_information[faction].next_update = math.ceil(20 * sim_options.get_warfare_control_option_factor())
 		faction_information[faction].base_count = 0
 		faction_information[faction].resource_count = 0
 		faction_information[faction].total_power = 0		
