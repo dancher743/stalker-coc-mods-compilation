@@ -8,6 +8,13 @@ local diff_sec = 0
 local last_amb = {}
 valid_levels = {}
 bLevelUnderground = false
+
+levels_behind_stancia = {
+	l12_stancia 	= true,
+	l12_stancia_2 	= true,
+	l13_generators	= true
+}
+
 function atmosfear_init()
 	if not (is_empty(valid_levels)) then 
 		return 
@@ -469,6 +476,13 @@ function WeatherManager:select_weather(now)
 		if st.current_state=="clear" or st.current_state=="partly" then
 			weather_section_name = weather_section_name.."_"..self:get_moon_phase()
 		end
+		
+		if (st.current_state=="clear" and levels_behind_stancia[level.name()] == true) then
+			if (level.get_time_hours() >= 4 and level.get_time_minutes() >= 30 or level.get_time_hours() <= 21 and level.get_time_minutes() <= 30) then
+				weather_section_name="level_behind_stancia\\af3_day_clear"
+			end
+		end
+		
 		--atmosfear.debugMessages[6]:SetText("weather_section_name= "..tostring(weather_section_name))
 		if now then
 			self.curr_weather=st.current_state
