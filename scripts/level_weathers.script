@@ -10,6 +10,7 @@ valid_levels = {}
 bLevelUnderground = false
 
 local levels_without_panorama = {
+	l11_pripyat		= true,
 	l12_stancia 	= true,
 	l12_stancia_2 	= true,
 	l13_generators	= true
