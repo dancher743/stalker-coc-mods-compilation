@@ -9,7 +9,7 @@ local last_amb = {}
 valid_levels = {}
 bLevelUnderground = false
 
-levels_behind_stancia = {
+local levels_without_panorama = {
 	l12_stancia 	= true,
 	l12_stancia_2 	= true,
 	l13_generators	= true
@@ -477,9 +477,9 @@ function WeatherManager:select_weather(now)
 			weather_section_name = weather_section_name.."_"..self:get_moon_phase()
 		end
 		
-		if (st.current_state=="clear" and levels_behind_stancia[level.name()] == true) then
+		if (st.current_state=="clear" and levels_without_panorama[level.name()] == true) then
 			if (level.get_time_hours() >= 4 and level.get_time_minutes() >= 30 or level.get_time_hours() <= 21 and level.get_time_minutes() <= 30) then
-				weather_section_name="level_behind_stancia\\af3_day_clear"
+				weather_section_name="without_panorama\\af3_day_clear"
 			end
 		end
 		
