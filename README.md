@@ -106,4 +106,4 @@ Mods
 62. New crosshair (based on Dot crosshair by Kib) (Dancher)
 63. Grass from Advanced Vegetation mix 1.5r7 (Cromm Cruac, brainscorcher, gridgt, burguois, Anomaly and Dead Air creators)
 64. Put spot on Map (Dancher)
-65. Leave the Zone (Dancher)
+65. Leave the Zone (UI based on New saves by av661194) (Dancher)
