@@ -29,6 +29,7 @@ function on_game_load()
 	if (IsEocMode()) then
 		sim_actor_combat.init()
 		override_combat_ignore()
+		smart_terrain.is_respawn_allowed = false
 		_G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = false
 		_G.ProcessEventQueueState = function() return end
 		printf("### EOC: started ###")
@@ -37,6 +38,7 @@ end
 
 function on_game_unload()
 	if (IsEocMode()) then
+		smart_terrain.is_respawn_allowed = true
 		_G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = default_sim_on_non_linked_levels
 		_G.ProcessEventQueueState = default_process_event_queue_state
 		printf("### EOC: stopped ###")
