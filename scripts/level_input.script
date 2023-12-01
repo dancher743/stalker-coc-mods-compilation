@@ -147,5 +147,10 @@ function action_slow_save()
 		savegame_timer.timer_reset() -- reset timer
 	end
 	
+	printf("collectgarbage before=%sKb",collectgarbage("count")*1024)
+	collectgarbage("collect")
+	collectgarbage("collect")
+	printf("collectgarbage after=%sKb",collectgarbage("count")*1024)
+	
 	return true
 end
