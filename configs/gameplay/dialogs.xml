@@ -381,7 +381,7 @@
         <init_func>travel_manager.init_traveler_dialog</init_func>
     </dialog>
     <dialog id="dm_universal_dialog">
-		<precondition>dialogs_axr_companion.is_not_actor_companion</precondition>
+		<!--<precondition>dialogs_axr_companion.is_not_actor_companion</precondition>-->
         <precondition>dialog_manager.uni_dialog_precond</precondition>
         <init_func>dialog_manager.init_new_dialog</init_func>
     </dialog>
