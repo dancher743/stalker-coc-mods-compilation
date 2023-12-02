@@ -84,12 +84,9 @@
 			%c[0,150,150,150]Сброс снаряжения.
 		</text>
 	</string>
-	<string id="st_mm_list_economy_desc">
+	<string id="st_mm_list_companions_desc">
 		<text>
-			%c[0,150,150,150]Сложность Прогрессии оказывает большое влияние на экономику Зоны и ее различные аспекты, что влияет на прогресс игрока в его игре.:
-			\n%c[200,50,50,200]• %c[0,150,150,150]Цены на предметы и ремонтные услуги.
-			\n%c[200,50,50,200]• %c[0,150,150,150]размер наград.
-			\n%c[200,50,50,200]• %c[0,150,150,150]Редкость и состояние лута.
+			%c[0,245,245,220]Выберите, будут ли Вас с самого начала игры сопровождать компаньоны.
 		</text>
 	</string>
 	<string id="st_mm_list_difficulty_desc">
@@ -280,23 +277,23 @@
 	<string id="st_cap_list_hardcore_regen">
 		<text>Дней доп. жизни</text>
 	</string>
-	<string id="st_cap_list_economy">
-		<text>Сложность экономики</text>
+	<string id="st_cap_list_companions">
+		<text>Компаньоны</text>
 	</string>
 	<string id="st_cap_list_difficulty">
 		<text>Сложность игры</text>
 	</string>
-	<string id="st_econ_1">
-		<text>Быстрая</text>
+	<string id="st_companions_0">
+		<text>нет</text>
 	</string>
-	<string id="st_econ_2">
-		<text>Умеренная</text>
+	<string id="st_companions_1">
+		<text>один</text>
 	</string>
-	<string id="st_econ_3">
-		<text>Медленная</text>
+	<string id="st_companions_2">
+		<text>два</text>
 	</string>
-	<string id="st_econ_4">
-		<text>Очень медленная</text>
+	<string id="st_companions_3">
+		<text>три</text>
 	</string>
 	<string id="st_cap_check_eoc">
 		<text>Продвинутая популяция</text>
