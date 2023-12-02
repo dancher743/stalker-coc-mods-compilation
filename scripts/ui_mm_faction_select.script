@@ -343,17 +343,8 @@ local function actor_on_first_update(binder,delta)
 					setup_squad_for_obj(se_obj, k.id)
 				end
 				
-				local faction_npc
-				if (faction == "army") then
-					faction_npc = "military"
-				elseif (faction == "dolg") then
-					faction_npc = "duty"
-				else
-					faction_npc = faction
-				end
-				
 				for i = start_companions_count, 1, -1 do
-					local squad_member_sect = (IsSurvivalMode() and  "companion_survival_"..faction_npc) or "companion_start_"..faction_npc
+					local squad_member_sect = (IsSurvivalMode() and  "companion_survival_"..faction) or "companion_start_"..faction
 					local squad_member_id = squad:add_squad_member(squad_member_sect, start_pos[3], start_pos[1], start_pos[2])
 					local se_obj = squad_member_id and alife_object(squad_member_id)
 					setup_squad_for_obj(se_obj, squad_member_id)
