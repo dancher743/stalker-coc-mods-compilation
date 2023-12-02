@@ -845,6 +845,8 @@ function UICompanionList:InitControls()
 		self.companion_info[i].background        = xml:InitStatic("companion_list:slot:background", self.companion_info[i].base)
 		self.companion_info[i].icon        		 = xml:InitStatic("companion_list:slot:icon", self.companion_info[i].base)
 		self.companion_info[i].danger_indicator  = xml:InitStatic("companion_list:slot:danger_indicator", self.companion_info[i].base)
+		self.companion_info[i].invulnerable_shadow = xml:InitStatic("companion_list:slot:invulnerable", self.companion_info[i].base)
+		self.companion_info[i].invulnerable      = xml:InitStatic("companion_list:slot:invulnerable", self.companion_info[i].base)
 		self.companion_info[i].team_role_shadow  = xml:InitStatic("companion_list:slot:team_role", self.companion_info[i].base)
 		self.companion_info[i].team_role         = xml:InitStatic("companion_list:slot:team_role", self.companion_info[i].base)
 		self.companion_info[i].distance          = xml:InitTextWnd("companion_list:slot:distance", self.companion_info[i].base)
@@ -861,6 +863,10 @@ function UICompanionList:InitControls()
 		local pos = self.companion_info[i].team_role:GetWndPos()
 		self.companion_info[i].team_role_shadow:SetWndPos( vector2():set( pos.x + 1 , pos.y + 2 ) )
 		self.companion_info[i].team_role_shadow:SetTextureColor( GetARGB(255, 0, 0, 0) )
+		
+		pos = self.companion_info[i].invulnerable:GetWndPos()
+		self.companion_info[i].invulnerable_shadow:SetWndPos( vector2():set( pos.x + 1 , pos.y + 2 ) )
+		self.companion_info[i].invulnerable_shadow:SetTextureColor( GetARGB(255, 0, 0, 0) )
 	end
 end
 
@@ -907,6 +913,13 @@ function UICompanionList:Update(force)
 			local community = npc and npc:character_community()
 			local clr = community and self.clr_list[community] or self.clr_list["def"]
 			ele.team_role:SetTextureColor(clr)
+			
+			-- Invulnerable
+			if (is_invulnerable(se_obj)) then
+				ele.invulnerable:InitTexture("ui_hud_icon_shield")
+				ele.invulnerable:SetTextureColor(clr)
+				ele.invulnerable_shadow:InitTexture("ui_hud_icon_shield")
+			end
 			
 			-- Health
 			if (npc) then 
