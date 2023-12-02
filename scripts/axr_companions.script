@@ -946,9 +946,9 @@ function has_companion()
     
 	for id,squad in pairs(companion_squads) do
 		if (squad) then
-			for member in squad:squad_members() do
-				local se_obj = member.object or alife():object(member.id)
-				if (not is_hostage(se_obj)) then
+			for k in squad:squad_members() do
+				local npc = (db.storage[k.id] and db.storage[k.id].object) or level.object_by_id(k.id)
+				if (is_companion(npc)) then
 					result = true
 					break
 				end
@@ -965,7 +965,7 @@ function is_companion(npc)
 	local se_obj = alife():object(npc:id())
 	local is_npc_hostage = se_obj and is_hostage(se_obj) or false
 
-	if (has_companion() and not is_npc_hostage) then
+	if (not is_npc_hostage) then
 		result = npc:has_info("npcx_is_companion")
 		if (not result) then
 			local clist = list_actor_squad_by_id()
