@@ -284,7 +284,7 @@ local function opt_menu_on_accept()
 end
 
 local function opt_menu_on_init(menu)
-	menu.gameplay_options["fast_travel"] = {default=game.translate_string("ui_mm_show_all_travel"), debug_only=false, typ="list", list={game.translate_string("ui_mm_disable_travel"),game.translate_string("ui_mm_visited_only_travel"),game.translate_string("ui_mm_show_all_travel")}}
+	menu.gameplay_options["fast_travel"] = {default=game.translate_string("ui_mm_visited_only_travel"), debug_only=false, typ="list", list={game.translate_string("ui_mm_disable_travel"),game.translate_string("ui_mm_visited_only_travel"),game.translate_string("ui_mm_show_all_travel")}}
 	menu.gameplay_options["combat_travel"] = {default=false, debug_only=false, typ="check"}
 	menu.gameplay_options["weight_travel"] = {default=false, debug_only=false, typ="check"}
 	menu.gameplay_options["damage_travel"] = {default=false, debug_only=false, typ="check"}
