@@ -837,8 +837,9 @@ function UICompanionList:InitControls()
 	self.dialog = xml:InitStatic("companion_list", self)
 	--utils_xml.correct_ratio(self.dialog, true)
 	
+	local max_size = max_actor_squad_size + (has_alife_info("achieved_patriarch") and 2 or 0)
 	self.companion_info = {}
-	for i=1,8 do
+	for i=1,max_size do
 		self.companion_info[i]                   = {}
 		self.companion_info[i].base              = xml:InitStatic("companion_list:slot", self.dialog)
 		self.companion_info[i].background        = xml:InitStatic("companion_list:slot:background", self.companion_info[i].base)
@@ -855,7 +856,7 @@ function UICompanionList:InitControls()
 		
 		local h = self.companion_info[i].background:GetHeight()
 		self.companion_info[i].distance:SetFont(GetFontSmall())
-		self.companion_info[i].base:SetWndPos( vector2():set( 0 , (8-i)*(h+10) ) )
+		self.companion_info[i].base:SetWndPos( vector2():set( 0 , (i)*(h+10) ) )
 		
 		local pos = self.companion_info[i].team_role:GetWndPos()
 		self.companion_info[i].team_role_shadow:SetWndPos( vector2():set( pos.x + 1 , pos.y + 2 ) )
@@ -878,7 +879,7 @@ function UICompanionList:Update(force)
 	local companions_hud = axr_main.config:r_bool_ex("mm_options","enable_companions_hud",true)
 	local to_show = main_hud_shown() 
 	local clist = list_actor_squad_by_id()
-	for i=1,8 do
+	for i=1,#self.companion_info do
 		local se_obj = clist[i] and alife_object(clist[i])
 		if companions_hud and to_show and (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and not is_hostage(se_obj)) then
 			local st = db.storage[se_obj.id]
