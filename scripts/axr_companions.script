@@ -79,10 +79,20 @@ local function squad_on_update(squad)
 	if (companion_squads[squad.id]) then
 		squad.scripted_target = "actor"
 		for k in squad:squad_members() do
-			if (db.storage[k.id]) then
-				db.storage[k.id].heli_enemy_flag = utils.load_var(db.actor,"heli_enemy_flag")
+			local member = db.storage[k.id]
+			if (member) then
+				member.heli_enemy_flag = utils.load_var(db.actor,"heli_enemy_flag")
 			end
 		end
+	end
+end
+
+local function npc_on_hit_callback(npc)
+	if (is_companion(npc) and is_invulnerable_obj(npc)) then
+		npc.health = 1
+		npc.bleeding = 1
+		npc.psy_health = 1
+		npc.radiation = -1
 	end
 end
 
@@ -185,6 +195,7 @@ function on_game_start()
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
 	RegisterScriptCallback("on_game_load",on_game_load)
+	RegisterScriptCallback("npc_on_hit_callback",npc_on_hit_callback)
 
 	allow_neutrals_as_companions = ini:r_bool_ex("main","allow_neutrals_as_companions",false)
 	allow_friends_as_companions = ini:r_bool_ex("main","allow_friends_as_companions",false)
@@ -293,6 +304,7 @@ function remove_from_actor_squad(npc)
 	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion",nil)
 	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss",nil)
 	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_teleport",nil)
+	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_invulnerable",nil)
 end
 
 function remove_all_from_actor_squad()
@@ -304,6 +316,7 @@ function remove_all_from_actor_squad()
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion",nil)
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss",nil)
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_teleport",nil)		
+					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_invulnerable",nil)
 						
 					local member = db.storage[se_obj.id] and db.storage[se_obj.id].object or level.object_by_id(se_obj.id)
 					if (member) then 
@@ -934,4 +947,13 @@ end
 
 function is_hostage(se_obj)
 	return utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_is_hostage") == true
+end
+
+function is_invulnerable_obj(obj)
+	local se_obj = alife_object(obj:id())
+	return se_obj and is_invulnerable(se_obj) or false
+end
+
+function is_invulnerable(se_obj)
+	return utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_is_invulnerable") == true
 end
