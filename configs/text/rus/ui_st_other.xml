@@ -590,4 +590,8 @@
 	<string id="ui_st_leave_zone_confirm">
 		<text>Вы собираетесь покинуть Зону, игра будет окончена. Желаете продолжить?</text>
 	</string>
+	
+	<string id="st_companion_died_tip_caption">
+		<text>Погиб напарник</text>
+	</string>
 </string_table>

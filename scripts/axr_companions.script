@@ -47,7 +47,22 @@ local function on_fighting_actor(npc)
 	end
 end
 
+local function send_companion_died_tip(npc)
+	local caption = game.translate_string("st_companion_died_tip_caption")
+	local text = npc:character_name()
+	local icon = npc:character_icon()
+	
+	local actor = db.actor
+	actor:give_game_news(caption, text, icon, 0, 10000)
+	xr_sound.set_sound_play(actor:id(), "pda_sos")
+end
+
 local function squad_on_npc_death(squad,se_npc)
+	local npc = level.object_by_id(se_npc.id)
+	if (npc and is_companion(npc)) then
+		send_companion_died_tip(npc)
+	end
+	
 	--alun_utils.debug_write(strformat("axr_companions.squad_on_npc_death"))
 	non_task_companions[se_npc.id] = nil
 	if (squad:npc_count() == 0) then 

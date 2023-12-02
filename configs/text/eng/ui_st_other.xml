@@ -590,4 +590,8 @@
 	<string id="ui_st_leave_zone_confirm">
 		<text>You are about to leave the Zone, the game will be over. Proceed?</text>
 	</string>
+	
+	<string id="st_companion_died_tip_caption">
+		<text>Companion died</text>
+	</string>
 </string_table>
