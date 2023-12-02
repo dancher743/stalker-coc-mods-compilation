@@ -314,7 +314,7 @@ local function actor_on_first_update(binder,delta)
 	local start_companions_count = tonumber(alife_storage_manager.get_state().start_companions_count) or 0
 	if (start_companions_count > 0) then
 		local faction = character_community(db.actor):sub(7)
-		local squad_section = IsSurvivalMode() and "survival_squad_"..faction or "start_squad_"..faction
+		local squad_section = (IsSurvivalMode() and "survival_squad_"..faction) or "start_squad_"..faction
 		
 		if (ini:section_exist(squad_section) and start_pos) then
 			local sim = alife()
@@ -348,10 +348,12 @@ local function actor_on_first_update(binder,delta)
 					faction_npc = "military"
 				elseif (faction == "dolg") then
 					faction_npc = "duty"
+				else
+					faction_npc = faction
 				end
 				
 				for i = start_companions_count, 1, -1 do
-					local squad_member_sect = (IsSurvivalMode() and  "companion_survival_"..faction_npc) or "sim_default_"..faction_npc.."_0"
+					local squad_member_sect = (IsSurvivalMode() and  "companion_survival_"..faction_npc) or "companion_start_"..faction_npc
 					local squad_member_id = squad:add_squad_member(squad_member_sect, start_pos[3], start_pos[1], start_pos[2])
 					local se_obj = squad_member_id and alife_object(squad_member_id)
 					setup_squad_for_obj(se_obj, squad_member_id)

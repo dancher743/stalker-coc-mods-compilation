@@ -634,6 +634,8 @@ character_profile     	= sim_default_bandit_0
 spec_rank 				= novice
 community 				= bandit
 
+;***** survival mode *****
+
 [companion_survival_stalker]:stalker_die_hard
 $spawn                = "respawn\companion_survival_stalker"
 character_profile     = sim_default_stalker_4
@@ -692,4 +694,66 @@ community = dolg
 $spawn                = "respawn\companion_survival_zombied"
 character_profile     = sim_default_zombied_4
 spec_rank = master
+community = zombied
+
+;***** start companions *****
+
+[companion_start_stalker]:stalker_die_hard
+$spawn                     = "respawn\sim_default_stalker_0"
+character_profile     = sim_default_stalker_0
+spec_rank = novice
+community = stalker
+
+[companion_start_bandit]:stalker_die_hard
+$spawn                     = "respawn\sim_default_bandit_0"
+character_profile     = sim_default_bandit_0
+spec_rank = novice
+community = bandit
+
+[companion_start_killer]:stalker_die_hard
+$spawn                     = "respawn\sim_default_killer_0"
+character_profile     = sim_default_killer_0
+spec_rank = novice
+community = killer
+
+[companion_start_duty]:stalker_die_hard
+$spawn                     = "respawn\sim_default_duty_0"
+character_profile     = sim_default_duty_0
+spec_rank = novice
+community = dolg
+
+[companion_start_freedom]:stalker_die_hard
+$spawn                     = "respawn\sim_default_freedom_0"
+character_profile     = sim_default_freedom_0
+spec_rank = novice
+community = freedom
+
+[companion_start_military]:stalker_die_hard
+$spawn                     = "respawn\sim_default_military_0"
+character_profile     = sim_default_military_0
+spec_rank = novice
+community = army
+
+[companion_start_ecolog]:stalker_die_hard
+$spawn                     = "respawn\sim_default_ecolog_0"
+character_profile     = sim_default_ecolog_0
+spec_rank = novice
+community = ecolog
+
+[companion_start_csky]:stalker_die_hard
+$spawn                     = "respawn\sim_default_csky_0"
+character_profile     = sim_default_csky_0
+spec_rank = novice
+community = csky
+
+[companion_start_monolith]:stalker_die_hard
+$spawn                     = "respawn\sim_default_monolith_0"
+character_profile     = sim_default_monolith_0
+spec_rank = novice
+community = monolith
+
+[companion_start_zombied]:stalker_die_hard
+$spawn                     = "respawn\sim_default_zombied_1"
+character_profile     = sim_default_zombied_1
+spec_rank = novice
 community = zombied
