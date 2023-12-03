@@ -1132,6 +1132,9 @@
 	<string id="axr_phrase_actor_acknowledge_1">
 		<text>Да.</text>
 	</string>
+	<string id="axr_phrase_actor_acknowledge_with_custom_spot">
+		<text>Да, я поставлю на тебя метку. Увидимся.</text>
+	</string>
 	<string id="axr_phrase_actor_give_command_wait">
 		<text>Жди здесь и охраняй точку.</text>
 	</string>

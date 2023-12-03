@@ -558,6 +558,15 @@ function remove_companions_from_squad(actor,npc)
 	alun_utils.execute_script_on_squad(npc,axr_companions.remove_from_actor_squad)
 end
 
+function remove_companions_from_squad_and_add_spot(actor,npc)
+	local npc = dialogs.who_is_npc(actor,npc)
+	
+	local text = game.translate_string("ui_st_companion_custom_spot_text")
+	custom_object_spots.add_spot(npc:id(), string.format(text, npc:character_name()))
+	
+	remove_companions_from_squad(actor,npc)
+end
+
 function set_companion_hide_in_cover(actor,npc)
 	local npc = dialogs.who_is_npc(actor,npc)
 	alun_utils.execute_script_on_squad(npc,axr_companions.set_companion_hide_in_cover)
