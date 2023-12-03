@@ -200,7 +200,7 @@ end
 function send_treasure(param, has_spot)
 	local news_caption = game.translate_string("st_tip")
 	local news_text = ""
-	local news_icon = "ui_iconsTotal_found_thing"
+	local news_icon = "ui_iconsTotal_lost_thing"
 	
 	if(param==0) then
 		news_text = game.translate_string("st_found_new_treasure")
