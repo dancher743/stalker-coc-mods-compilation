@@ -237,7 +237,11 @@ function is_non_story(actor,npc)
 	if not (squad) then
 		return false
 	end
-	if (get_object_story_id(squad.id)) then
+	local story_id = get_object_story_id(squad.id)
+	if (story_id == "start_squad" or story_id == "survival_squad") then
+		return true
+	end
+	if (story_id) then
 		return false
 	end
 	return true
