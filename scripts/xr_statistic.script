@@ -499,8 +499,6 @@ end
 function inc_actor_rank(rank)
 	-- Update the player rank.
 	rank = rank or 0
-	rank = axr_companions.inc_companions_statistic(rank, 0)
-	
 	db.actor:change_character_rank(rank)
 	
 	-- Impose restrictions at double the minimum and maximum rank values.
@@ -540,8 +538,6 @@ end
 function inc_actor_reputation(reputation)
 	-- Update the player reputation.
 	reputation = reputation or 0
-	reputation = axr_companions.inc_companions_statistic(reputation, 1)
-	
 	db.actor:change_character_reputation(reputation)
 	
 	-- Impose restrictions at double the minimum and maximum reputation values.
