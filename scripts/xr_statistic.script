@@ -251,7 +251,6 @@ end
 
 function npc_on_death_callback(victim,who)
 	if not (who and victim) then return end
-	if (axr_companions.is_companion(who)) then npc_on_death_by_companion_callback(victim,who) return end
 	if not (who:id() == db.actor:id()) then return end
 	
 	-- Increment kill stalkers stat.
@@ -283,33 +282,6 @@ function npc_on_death_callback(victim,who)
 --		printf("killed neutral")
 	end
 	
-end
-
-function npc_on_death_by_companion_callback(victim,who)
-	-- Increment kill stalkers stat.
-	inc_counter("killed_stalkers")
-	
-	local npc_faction = character_community(victim)
-	local companion_faction = character_community(who)
-	
-	-- Kiled a friendly NPC.
-	if (xr_conditions.is_factions_friends(nil, nil, { npc_faction, companion_faction })) then
-		inc_actor_rank(rank_rep.killed_friend.rnk)
-		inc_actor_reputation(rank_rep.killed_friend.rpt)
---		printf("killed friendly")
-	
-	-- Killed an enemy NPC.
-	elseif (xr_conditions.is_factions_enemies(nil, nil, { npc_faction, companion_faction })) then
-		inc_actor_rank(rank_rep.killed_enemy.rnk)
-		inc_actor_reputation(rank_rep.killed_enemy.rpt)
---		printf("killed enemy")
-	
-	-- Killed a neutral NPC.
-	else
-		inc_actor_rank(rank_rep.killed_neutral.rnk)
-		inc_actor_reputation(rank_rep.killed_neutral.rpt)
---		printf("killed neutral")
-	end
 end
 
 function set_best_weapon(hit_amount)
