@@ -986,3 +986,26 @@ end
 function is_invulnerable(se_obj)
 	return utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_is_invulnerable") == true
 end
+
+function inc_companions_statistic(value, type)
+	if (not has_companion()) then
+		return
+	end
+	
+	local clist = list_actor_squad_by_id()
+	local companions_count = #clist
+	local actor_itself = 1
+	
+	local new_value = math.ceil(value / (companions_count + actor_itself))
+	
+	for _,id in pairs(clist) do
+		local npc = (db.storage[id] and db.storage[id].object) or level.object_by_id(id)
+		if (type == 0) then
+			npc:change_character_rank(new_value)
+		elseif (type == 1) then
+			npc:change_character_reputation(new_value)
+		end
+	end
+	
+	return new_value
+end
