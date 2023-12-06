@@ -1091,7 +1091,7 @@
 		<text>Чего тебе?</text>
 	</string>
 	<string id="axr_phrase_actor_give_command">
-		<text>[Отдать команду]</text>
+		<text>Слушай мою команду!</text>
 	</string>
 	<string id="axr_phrase_actor_give_command_combat">
 		<text>Давай обсудим тактику...</text>

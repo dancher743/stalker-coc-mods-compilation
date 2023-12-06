@@ -1096,7 +1096,7 @@
 		<text>What do you need?</text>
 	</string>
 	<string id="axr_phrase_actor_give_command">
-		<text>[Issue Command]</text>
+		<text>Listen to my order!</text>
 	</string>
 	<string id="axr_phrase_actor_give_command_combat">
 		<text>Let's talk about tactics...</text>
