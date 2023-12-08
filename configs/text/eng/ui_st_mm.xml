@@ -514,9 +514,6 @@
 	<string id="ui_mm_bases_defense">
 		<text>Bases defense quests</text>
 	</string>
-	<string id="ui_mm_companions_invulner">
-		<text>Companions invulnerability</text>
-	</string>
 	
 	<string id="ui_mm_eoc_faction_warfare_activity">
 		<text>Population squades activity</text>
