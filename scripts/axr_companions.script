@@ -913,11 +913,12 @@ function UICompanionList:Update(force)
 			ele.team_role:SetTextureColor(clr)
 			
 			-- Invulnerable
-			if (is_invulnerable(se_obj)) then
-				ele.invulnerable:InitTexture("ui_hud_icon_shield")
-				ele.invulnerable:SetTextureColor(clr)
-				ele.invulnerable_shadow:InitTexture("ui_hud_icon_shield")
-			end
+			ele.invulnerable:InitTexture("ui_hud_icon_shield")
+			ele.invulnerable:SetTextureColor(clr)
+			ele.invulnerable_shadow:InitTexture("ui_hud_icon_shield")
+			local is_invulnerable = is_invulnerable(se_obj)
+			ele.invulnerable:Show(is_invulnerable)
+			ele.invulnerable_shadow:Show(is_invulnerable)
 			
 			-- Health
 			if (npc) then 
@@ -984,5 +985,6 @@ function is_invulnerable_obj(obj)
 end
 
 function is_invulnerable(se_obj)
-	return utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_is_invulnerable") == true
+	local option = axr_main.config:r_value("mm_options","enable_companions_invulner",1,true)
+	return option and utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_is_invulnerable") == true
 end

@@ -517,6 +517,9 @@
 	<string id="ui_mm_bases_defense">
 		<text>Задания по защите лагерей</text>
 	</string>
+	<string id="ui_mm_companions_invulner">
+		<text>Повыш. защита напарников</text>
+	</string>
 	
 	<string id="ui_mm_eoc_faction_warfare_activity">
 		<text>Популяция: активность отрядов</text>
