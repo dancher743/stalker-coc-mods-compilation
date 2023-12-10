@@ -869,7 +869,7 @@ function UICompanionList:InitControls()
 		
 		local h = self.companion_info[i].background:GetHeight()
 		self.companion_info[i].distance:SetFont(GetFontSmall())
-		self.companion_info[i].base:SetWndPos( vector2():set( 0 , (i)*(h+10) ) )
+		self.companion_info[i].base:SetWndPos( vector2():set( 0 , (i)*(h+5) ) )
 		
 		local pos = self.companion_info[i].team_role:GetWndPos()
 		self.companion_info[i].team_role_shadow:SetWndPos( vector2():set( pos.x + 1 , pos.y + 2 ) )
