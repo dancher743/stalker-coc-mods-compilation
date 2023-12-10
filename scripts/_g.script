@@ -750,6 +750,7 @@ end
 local monster_classes
 local weapon_classes
 local artefact_classes
+local anomaly_classes
 
 function IsOutfit(o,c)
 	if not c then
@@ -1783,4 +1784,32 @@ function IsActor(o,c)
 		c = o and o:clsid()
 	end
 	return c and (c == clsid.script_actor) or false
+end
+
+function IsAnomaly(o,c)
+	if not (c) then
+		c = o and o:clsid()
+	end
+	if not (anomaly_classes) then
+		anomaly_classes = {
+		[clsid.zone]				= true,
+		[clsid.zone_acid_fog]		= true,
+		[clsid.zone_bfuzz]			= true,
+		[clsid.zone_campfire]		= true,
+		[clsid.zone_dead]			= true,
+		[clsid.zone_galantine]		= true,
+		[clsid.zone_mincer]			= true,
+		[clsid.zone_mosquito_bald]	= true,
+		[clsid.zone_radioactive]	= true,
+		[clsid.zone_rusty_hair]		= true,
+		[clsid.zone_bfuzz_s]		= true,
+		[clsid.zone_mbald_s]		= true,
+		[clsid.zone_galant_s]		= true,
+		[clsid.zone_mincer_s]		= true,
+		[clsid.zone_radio_s]		= true,
+		[clsid.zone_torrid_s]		= true,
+		[clsid.zone_nograv_s]		= true,
+		}
+	end
+	return c and anomaly_classes[c] or false
 end

@@ -594,6 +594,25 @@
 	<string id="st_companion_died_tip_caption">
 		<text>Companion died</text>
 	</string>
+	<string id="st_companion_died_tip_descr">
+		<text>%s, %s.</text>
+	</string>
+	<string id="st_companion_died_tip_reason_0">
+		<text>cause of death was unknown</text>
+	</string>
+	<string id="st_companion_died_tip_reason_1">
+		<text>killed by stalker</text>
+	</string>
+	<string id="st_companion_died_tip_reason_2">
+		<text>killed by monster</text>
+	</string>
+	<string id="st_companion_died_tip_reason_3">
+		<text>fell into anomaly</text>
+	</string>
+	<string id="st_companion_died_tip_reason_4">
+		<text>killed by helicopter</text>
+	</string>
+	
 	<string id="ui_st_companion_custom_spot_text">
 		<text>%s, was previously a companion.</text>
 	</string>

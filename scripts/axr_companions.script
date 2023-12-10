@@ -47,20 +47,33 @@ local function on_fighting_actor(npc)
 	end
 end
 
-local function send_companion_died_tip(npc)
-	local caption = game.translate_string("st_companion_died_tip_caption")
-	local text = npc:character_name()
-	local icon = npc:character_icon()
+local function send_companion_died_tip(npc, killer)
+	local reason_index = 0
+	if IsStalker(killer) then
+		reason_index = 1
+	elseif IsMonster(killer) then
+		reason_index = 2
+	elseif IsAnomaly(killer) then
+		reason_index = 3
+	elseif IsHelicopter(killer) then
+		reason_index = 4
+	end
 	
+	local caption = game.translate_string("st_companion_died_tip_caption")
+	local desc = game.translate_string("st_companion_died_tip_descr")
+	local reason = game.translate_string("st_companion_died_tip_reason_"..reason_index)
+	local text = string.format(desc, npc:character_name(), reason)
+	local icon = npc:character_icon()
 	local actor = db.actor
+	
 	actor:give_game_news(caption, text, icon, 0, 10000)
 	xr_sound.set_sound_play(actor:id(), "pda_sos")
 end
 
-local function squad_on_npc_death(squad,se_npc)
+local function squad_on_npc_death(squad,se_npc,killer)
 	local npc = level.object_by_id(se_npc.id)
 	if (npc and is_companion(npc)) then
-		send_companion_died_tip(npc)
+		send_companion_died_tip(npc, killer)
 	end
 	
 	--alun_utils.debug_write(strformat("axr_companions.squad_on_npc_death"))
