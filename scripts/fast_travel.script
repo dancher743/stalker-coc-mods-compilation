@@ -215,7 +215,7 @@ local function check_visit(id,level_name)
 end
 
 local function on_game_load()
-	local stxt = axr_main.config:r_string_ex("mm_options","fast_travel")
+	local stxt = axr_main.config:r_string_ex("mm_options","fast_travel") or game.translate_string("ui_mm_visited_only_travel")
 	if (stxt == game.translate_string("ui_mm_visited_only_travel")) then
 		enabled = 1
 	elseif (stxt == game.translate_string("ui_mm_show_all_travel")) or (stxt == nil) then
