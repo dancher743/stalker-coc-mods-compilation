@@ -229,7 +229,7 @@ local function on_game_load()
 	stormtravel = axr_main.config:r_bool_ex("mm_options","enable_storm_travel",false)
 	guidertravel = axr_main.config:r_bool_ex("mm_options","enable_guider_travel",true)
 	longnames = axr_main.config:r_bool_ex("mm_options","enable_long_names",false)
-	markermessage = axr_main.config:r_bool_ex("mm_options","enable_visited_message",false)
+	markermessage = axr_main.config:r_bool_ex("mm_options","enable_visited_message",true)
 	notime = axr_main.config:r_bool_ex("mm_options","enable_no_time_travel",false)
 
 	local faction = character_community(db.actor):sub(7)
@@ -291,7 +291,7 @@ local function opt_menu_on_init(menu)
 	menu.gameplay_options["storm_travel"] = {default=false, debug_only=false, typ="check"}
 	menu.gameplay_options["guider_travel"] = {default=true, debug_only=false, typ="check"}
 	menu.gameplay_options["long_names"]	= {default=false, debug_only=false, typ="check"}
-	menu.gameplay_options["visited_message"] = {default=false, debug_only=false, typ="check"}
+	menu.gameplay_options["visited_message"] = {default=true, debug_only=false, typ="check"}
 	menu.gameplay_options["no_time_travel"]	= {default=false, debug_only=false, typ="check"}
 end
 
