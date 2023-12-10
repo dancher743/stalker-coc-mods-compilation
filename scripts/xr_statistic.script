@@ -87,49 +87,49 @@ monster_classes = {
 
 rank_rep = {
 			-- Gameplay mechanics.
-			achievements		=	{rnk=0,		rpt=0},
-			arena_battles		=	{rnk=25,	rpt=100},
-			artefacts_found		=	{rnk=5,		rpt=0},
-			artefacts_detected	=	{rnk=5,		rpt=0},
-			surges				=	{rnk=5,		rpt=0},
-			field_dressings		=	{rnk=1,		rpt=0},
-			boxes_smashed		=	{rnk=1,		rpt=0},
-			enemies_surrendered	=	{rnk=10,	rpt=0},
-			level_changes		=	{rnk=0,		rpt=0},
-			storms				=	{rnk=5,		rpt=0},
-			tasks_completed		=	{rnk=25,	rpt=100},
-			tasks_failed		=	{rnk=0,		rpt=-100},
-			tasks_cancelled		=	{rnk=0,		rpt=-100},
-			killed_monsters		=	{rnk=5,		rpt=0},
-			killed_stalkers		=	{rnk=0,		rpt=0}, -- Not used in vanilla CoC, see below.
-			stashes_found		=	{rnk=10,	rpt=0},
-			pdas_delivered		=	{rnk=10,	rpt=20},
-			heli_kills			=	{rnk=100,	rpt=50},
-			heli_rocket_kills	=	{rnk=50,	rpt=50},
-			help_wounded		=	{rnk=10,	rpt=50},
+			achievements		=	{rnk=0,		rpt=0,		comps = false},
+			arena_battles		=	{rnk=25,	rpt=100,	comps = false},
+			artefacts_found		=	{rnk=5,		rpt=0,		comps = false},
+			artefacts_detected	=	{rnk=5,		rpt=0,     	comps = false},
+			surges				=	{rnk=5,		rpt=0,     	comps = false},
+			field_dressings		=	{rnk=1,		rpt=0,     	comps = false},
+			boxes_smashed		=	{rnk=1,		rpt=0,     	comps = false},
+			enemies_surrendered	=	{rnk=10,	rpt=0,     	comps = false},
+			level_changes		=	{rnk=0,		rpt=0,     	comps = false},
+			storms				=	{rnk=5,		rpt=0,     	comps = false},
+			tasks_completed		=	{rnk=25,	rpt=100,   	comps = true},
+			tasks_failed		=	{rnk=0,		rpt=-100,  	comps = true},
+			tasks_cancelled		=	{rnk=0,		rpt=-100,  	comps = true},
+			killed_monsters		=	{rnk=5,		rpt=0,     	comps = false},
+			killed_stalkers		=	{rnk=0,		rpt=0, 		comps = false}, -- Not used in vanilla CoC, see below.
+			stashes_found		=	{rnk=10,	rpt=0,     	comps = false},
+			pdas_delivered		=	{rnk=10,	rpt=20,    	comps = false},
+			heli_kills			=	{rnk=100,	rpt=50,    	comps = false},
+			heli_rocket_kills	=	{rnk=50,	rpt=50,    	comps = false},
+			help_wounded		=	{rnk=10,	rpt=50,		comps = false},
 			
 			-- Gained or lost reputation based on player's faction's relations.
 			-- Rank is instead handled in 'rank_kill_points' in game_relations.ltx.
-			killed_enemy		=	{rnk=0,		rpt=20},
-			killed_friend		=	{rnk=0,		rpt=-150},
-			killed_neutral		=	{rnk=0,		rpt=-100},
+			killed_enemy		=	{rnk=0,		rpt=20,		comps = false},
+			killed_friend		=	{rnk=0,		rpt=-150,	comps = false},
+			killed_neutral		=	{rnk=0,		rpt=-100,	comps = false},
 			
 			-- Achievements. (Individual)
 			-- Global value can be defined above.
-			completionist 		=	{rnk=50,	rpt=0},
-			down_to_earth		=	{rnk=25,	rpt=0},
-			duga_free			=	{rnk=25,	rpt=0},
-			geologist			=	{rnk=25,	rpt=0},
-			heavy_pockets		=	{rnk=25,	rpt=0},
-			infopreneur			=	{rnk=25,	rpt=0},
-			mechanized_warfare	=	{rnk=25,	rpt=0},
-			patriarch			=	{rnk=25,	rpt=0},
-			radiotherapy		=	{rnk=25,	rpt=0},
-			rag_and_bone		=	{rnk=25,	rpt=0},
-			silver_or_lead		=	{rnk=25,	rpt=0},
-			tourist				=	{rnk=25,	rpt=0},
-			well_dressed		=	{rnk=25,	rpt=0},
-			wishful_thinking	=	{rnk=25,	rpt=0},
+			completionist 		=	{rnk=50,	rpt=0,		comps = false},
+			down_to_earth		=	{rnk=25,	rpt=0,		comps = false},
+			duga_free			=	{rnk=25,	rpt=0,		comps = false},
+			geologist			=	{rnk=25,	rpt=0,		comps = false},
+			heavy_pockets		=	{rnk=25,	rpt=0,		comps = false},
+			infopreneur			=	{rnk=25,	rpt=0,		comps = false},
+			mechanized_warfare	=	{rnk=25,	rpt=0,		comps = false},
+			patriarch			=	{rnk=25,	rpt=0,		comps = false},
+			radiotherapy		=	{rnk=25,	rpt=0,		comps = false},
+			rag_and_bone		=	{rnk=25,	rpt=0,		comps = false},
+			silver_or_lead		=	{rnk=25,	rpt=0,		comps = false},
+			tourist				=	{rnk=25,	rpt=0,		comps = false},
+			well_dressed		=	{rnk=25,	rpt=0,		comps = false},
+			wishful_thinking	=	{rnk=25,	rpt=0,		comps = false},
 }
 
 weapons_table = {}
@@ -228,14 +228,14 @@ end
 
 function inc_achievement(achievement)
 	inc_counter("achievements")
-	inc_actor_rank(rank_rep[achievement].rnk)
-	inc_actor_rank(rank_rep[achievement].rpt)
+	inc_actor_rank(rank_rep[achievement].rnk, rank_rep[achievement].comps)
+	inc_actor_rank(rank_rep[achievement].rpt, rank_rep[achievement].comps)
 end
 
 function inc_counter(statistic)
 	actor_statistic[statistic] = actor_statistic[statistic] + 1
-	inc_actor_rank(rank_rep[statistic].rnk)
-	inc_actor_rank(rank_rep[statistic].rpt)
+	inc_actor_rank(rank_rep[statistic].rnk, rank_rep[statistic].comps)
+	inc_actor_rank(rank_rep[statistic].rpt, rank_rep[statistic].comps)
 end
 
 function inc_counter_artefacts(art_id)
@@ -265,20 +265,20 @@ function npc_on_death_callback(victim,who)
 	
 	-- Kiled a friendly NPC.
 	if (xr_conditions.is_factions_friends(nil, nil, { npc_faction, actor_faction })) then
-		inc_actor_rank(rank_rep.killed_friend.rnk)
-		inc_actor_reputation(rank_rep.killed_friend.rpt)
+		inc_actor_rank(rank_rep.killed_friend.rnk, rank_rep.killed_friend.comps)
+		inc_actor_reputation(rank_rep.killed_friend.rpt, rank_rep.killed_friend.comps)
 --		printf("killed friendly")
 	
 	-- Killed an enemy NPC.
 	elseif (xr_conditions.is_factions_enemies(nil, nil, { npc_faction, actor_faction })) then
-		inc_actor_rank(rank_rep.killed_enemy.rnk)
-		inc_actor_reputation(rank_rep.killed_enemy.rpt)
+		inc_actor_rank(rank_rep.killed_enemy.rnk, rank_rep.killed_enemy.comps)
+		inc_actor_reputation(rank_rep.killed_enemy.rpt, rank_rep.killed_enemy.comps)
 --		printf("killed enemy")
 	
 	-- Killed a neutral NPC.
 	else
-		inc_actor_rank(rank_rep.killed_neutral.rnk)
-		inc_actor_reputation(rank_rep.killed_neutral.rpt)
+		inc_actor_rank(rank_rep.killed_neutral.rnk, rank_rep.killed_neutral.comps)
+		inc_actor_reputation(rank_rep.killed_neutral.rpt, rank_rep.killed_neutral.comps)
 --		printf("killed neutral")
 	end
 	
@@ -496,10 +496,14 @@ function init_ranks_reps()
 end
 
 -- Increment the actor rank.
-function inc_actor_rank(rank)
+function inc_actor_rank(rank, can_inc_companions)
 	-- Update the player rank.
 	rank = rank or 0
 	db.actor:change_character_rank(rank)
+	
+	if (can_inc_companions) then
+		inc_companions_statistic(rank, 0)
+	end
 	
 	-- Impose restrictions at double the minimum and maximum rank values.
 	if (db.actor:character_rank() < 0) then db.actor:set_character_rank(0) end
@@ -535,10 +539,14 @@ function check_actor_rank_change()
 end
 
 -- Increment the actor reputation.
-function inc_actor_reputation(reputation)
+function inc_actor_reputation(reputation, can_inc_companions)
 	-- Update the player reputation.
 	reputation = reputation or 0
 	db.actor:change_character_reputation(reputation)
+	
+	if (can_inc_companions) then
+		inc_companions_statistic(reputation, 1)
+	end
 	
 	-- Impose restrictions at double the minimum and maximum reputation values.
 	if (db.actor:character_reputation() < -5000) then db.actor:set_character_reputation(-5000) end
@@ -572,3 +580,23 @@ function check_actor_reputation_change()
 	end
 	actor_statistic.actual_reputation = current_reputation
  end
+ 
+ function inc_companions_statistic(value, type)
+    if (not axr_companions.has_companion()) then
+        return
+    end
+    
+    local clist = axr_companions.list_actor_squad_by_id()    
+    for _,id in pairs(clist) do
+        local npc = (db.storage[id] and db.storage[id].object) or level.object_by_id(id)
+        if (type == 0) then
+            npc:change_character_rank(value)
+			if (npc:character_rank() < 0) then npc:set_character_rank(0) end
+			if (npc:character_rank() > 28000) then npc:set_character_rank(28000) end
+        elseif (type == 1) then
+            npc:change_character_reputation(value)
+			if (npc:character_reputation() < -5000) then npc:set_character_reputation(-5000) end
+			if (npc:character_reputation() > 5000) then npc:set_character_reputation(5000) end
+        end
+    end
+end
