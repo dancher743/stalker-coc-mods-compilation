@@ -224,7 +224,13 @@ function opt_menu_on_set_values(menu,optMgr)
 				elseif (type(v.default) == "number") then 
 					v.ctrl:SetText(axr_main.config:r_value("mm_options",name,2,v.default))
 				else 
-					v.ctrl:SetText(axr_main.config:r_value("mm_options",name,0,v.default))
+					-- Dancher: Workaround fix for "char_portrait" option to restore portraits on a different characters.
+					-- "outfit_portrait" option still doesn't work :(
+					if (name == "char_portrait") then
+						v.ctrl:SetText(db.actor_binder.character_icon)
+					else
+						v.ctrl:SetText(axr_main.config:r_value("mm_options",name,0,v.default))
+					end
 				end
 			end
 			if (v.on_set_values) then 
