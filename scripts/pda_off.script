@@ -14,7 +14,13 @@ end
 
 local window
 
-local function process_pda(info_id)
+local function actor_on_info_callback(npc,info_id)
+	if (info_id == "ui_pda" or info_id == "ui_pda_hide") then
+		process_pda(info_id)
+	end
+end
+
+function process_pda(info_id)
 	if db.actor == nil then
 		return
 	end
@@ -33,12 +39,6 @@ local function process_pda(info_id)
 	elseif (info_id == "ui_pda_hide" and window ~= nil) then
 		hud:RemoveDialogToRender(window)
 		window = nil
-	end
-end
-
-local function actor_on_info_callback(npc,info_id)
-	if (info_id == "ui_pda" or info_id == "ui_pda_hide") then
-		process_pda(info_id)
 	end
 end
 

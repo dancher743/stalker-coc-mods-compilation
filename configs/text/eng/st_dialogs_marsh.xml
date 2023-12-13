@@ -119,4 +119,7 @@
 	<string id="mar_base_stalker_tech_pda_off_upgrade_3">
 		<text>Later.</text>
 	</string>
+	<string id="mar_base_stalker_tech_pda_off_upgrade_4">
+		<text>Done! Take your PDA. Now it will no longer crash during surges and psi-storms.</text>
+	</string>
 </string_table>

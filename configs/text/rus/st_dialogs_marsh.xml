@@ -106,4 +106,7 @@
 	<string id="mar_base_stalker_tech_pda_off_upgrade_3">
 		<text>Я передумал.</text>
 	</string>
+	<string id="mar_base_stalker_tech_pda_off_upgrade_4">
+		<text>Готово! Забирай свой КПК. Теперь он больше не будет сбоить во время выбросов и пси-штормов.</text>
+	</string>
 </string_table>

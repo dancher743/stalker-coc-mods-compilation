@@ -348,9 +348,13 @@
                 <text>mar_base_stalker_tech_pda_off_upgrade_2</text>
 				<give_info>pda_off_upgrade</give_info>
 				<action>dialogs_marsh.install_pda_off_upgrade</action>
+				<next>4</next>
             </phrase>
 			<phrase id="3">
                 <text>mar_base_stalker_tech_pda_off_upgrade_3</text>
+            </phrase>
+			<phrase id="4">
+                <text>mar_base_stalker_tech_pda_off_upgrade_4</text>
             </phrase>
         </phrase_list>
     </dialog>
