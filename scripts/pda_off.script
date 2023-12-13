@@ -18,6 +18,11 @@ local function process_pda(info_id)
 	if db.actor == nil then
 		return
 	end
+	
+	if (db.actor:has_info("pda_off_upgrade")) then
+		UnregisterScriptCallback("actor_on_info_callback",actor_on_info_callback)
+		return
+	end
 
 	local has_surge_or_storm = (surge_manager.is_started() and surge_manager.has_stage("quake20")) or (psi_storm_manager.is_started() and psi_storm_manager.has_stage("1stvortex"))
 	local hud = get_hud()

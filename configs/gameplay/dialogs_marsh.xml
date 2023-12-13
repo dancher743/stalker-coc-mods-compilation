@@ -330,5 +330,29 @@
 
 	<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ -->
 
+	<!-- Added by Dancher -->
+	    <dialog id="mar_base_stalker_tech_pda_off_upgrade_dialog">
+        <dont_has_info>pda_off_upgrade</dont_has_info>
+        <phrase_list>
+            <phrase id="0">
+                <text>mar_base_stalker_tech_pda_off_upgrade_0</text>
+				<next>1</next>
+            </phrase>
+			<phrase id="1">
+                <text>mar_base_stalker_tech_pda_off_upgrade_1</text>
+				<next>2</next>
+				<next>3</next>
+            </phrase>
+			<phrase id="2">
+				<precondition>dialogs_marsh.is_actor_have_money_for_pda_off_upgrade</precondition>
+                <text>mar_base_stalker_tech_pda_off_upgrade_2</text>
+				<give_info>pda_off_upgrade</give_info>
+				<action>dialogs_marsh.install_pda_off_upgrade</action>
+            </phrase>
+			<phrase id="3">
+                <text>mar_base_stalker_tech_pda_off_upgrade_3</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
 
 </game_dialogs>

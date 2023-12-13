@@ -107,4 +107,16 @@
 			  After a few months of tit-for-tat raiding with the bandits we managed to smoke most of them out, but that didn't stop the army from feeling like they needed to move in and finish the job. Even now, they still have that bird of theirs watching the areas they took over.
 			  </text>
 	</string>
+	<string id="mar_base_stalker_tech_pda_off_upgrade_0">
+		<text>My PDA is acting up during surges and psi-storms.</text>
+	</string>
+	<string id="mar_base_stalker_tech_pda_off_upgrade_1">
+		<text>I can install a special coating that protects your PDA from external energy influences. That'll be 10000 rubles for materials and labor.</text>
+	</string>
+	<string id="mar_base_stalker_tech_pda_off_upgrade_2">
+		<text>Here you go.</text>
+	</string>
+	<string id="mar_base_stalker_tech_pda_off_upgrade_3">
+		<text>Later.</text>
+	</string>
 </string_table>
