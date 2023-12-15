@@ -27,7 +27,7 @@ local min_condition_h = 0.25
 
 --distance within npc will start doubting the disguise (if they are seeing you)
 --5 = 1 wood box width
-local discovery_distance = 100
+local discovery_distance = 25
 
 --how much time it takes to be discovered when in view, 100 is roughly 1 minute with uncovered face
 local suspicion_limit = 60
