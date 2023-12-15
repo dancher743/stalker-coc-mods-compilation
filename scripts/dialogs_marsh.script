@@ -83,15 +83,3 @@ function take_key( first_speaker, second_speaker )
 end
 
 -- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
--- Added by Dancher
-
-local upgrade_pda_cost = 10000
-
-function is_actor_have_money_for_pda_off_upgrade(actor, npc)
-	return actor:money() >= upgrade_pda_cost
-end
-
-function install_pda_off_upgrade(actor, npc)
-	dialogs.relocate_money_from_actor(actor, npc, upgrade_pda_cost)
-end

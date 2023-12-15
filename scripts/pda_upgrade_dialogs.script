@@ -1,0 +1,19 @@
+--
+-- Dialogs for PDA Upgrade
+-- Added by Dancher
+--
+
+local no_off_pda_upgrade_cost = 10000
+
+function not_has_no_off_pda_upgrade(actor, npc)
+	return not pda_upgrade_manager.has_no_off_upgrade()
+end
+
+function is_actor_have_money_for_no_off_pda_upgrade(actor, npc)
+	return actor:money() >= no_off_pda_upgrade_cost
+end
+
+function give_no_off_pda_upgrade(actor, npc)
+	dialogs.relocate_money_from_actor(actor, npc, no_off_pda_upgrade_cost)
+	pda_upgrade_manager.give_no_off_upgrade()
+end

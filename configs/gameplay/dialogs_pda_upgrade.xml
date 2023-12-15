@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+
+<!-- 
+	Dialogs for PDA Upgrade
+	Added by Dancher
+-->
+
+<game_dialogs>
+	<dialog id="mar_base_stalker_tech_pda_no_off_upgrade_dialog">
+        <precondition>pda_upgrade_dialogs.not_has_no_off_pda_upgrade</precondition>
+        <phrase_list>
+            <phrase id="0">
+                <text>mar_base_stalker_tech_pda_no_off_upgrade_0</text>
+				<next>1</next>
+            </phrase>
+			<phrase id="1">
+                <text>mar_base_stalker_tech_pda_no_off_upgrade_1</text>
+				<next>2</next>
+				<next>3</next>
+            </phrase>
+			<phrase id="2">
+				<precondition>pda_upgrade_dialogs.is_actor_have_money_for_no_off_pda_upgrade</precondition>
+                <text>mar_base_stalker_tech_pda_no_off_upgrade_2</text>
+				<action>pda_upgrade_dialogs.give_no_off_pda_upgrade</action>
+				<next>4</next>
+            </phrase>
+			<phrase id="3">
+                <text>mar_base_stalker_tech_pda_no_off_upgrade_3</text>
+            </phrase>
+			<phrase id="4">
+                <text>mar_base_stalker_tech_pda_no_off_upgrade_4</text>
+            </phrase>
+        </phrase_list>
+	</dialog>
+</game_dialogs>

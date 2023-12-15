@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="mar_base_stalker_tech_pda_no_off_upgrade_0">
+		<text>My PDA is acting up during surges and psi-storms.</text>
+	</string>
+	<string id="mar_base_stalker_tech_pda_no_off_upgrade_1">
+		<text>I can install a special coating that protects your PDA from external energy influences. That'll be 10000 rubles for materials and labor.</text>
+	</string>
+	<string id="mar_base_stalker_tech_pda_no_off_upgrade_2">
+		<text>Here you go.</text>
+	</string>
+	<string id="mar_base_stalker_tech_pda_no_off_upgrade_3">
+		<text>Later.</text>
+	</string>
+	<string id="mar_base_stalker_tech_pda_no_off_upgrade_4">
+		<text>Done! Take your PDA. Now it will no longer crash during surges and psi-storms.</text>
+	</string>
+</string_table>

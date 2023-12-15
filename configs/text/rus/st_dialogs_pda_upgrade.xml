@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="mar_base_stalker_tech_pda_no_off_upgrade_0">
+		<text>У меня КПК брахлит во время выбросов и пси-штормов.</text>
+	</string>
+	<string id="mar_base_stalker_tech_pda_no_off_upgrade_1">
+		<text>Могу установить специальное покрытие, защищающее КПК от внешних энергетических воздействий. С тебя 10000 рублей за материалы и работу.</text>
+	</string>
+	<string id="mar_base_stalker_tech_pda_no_off_upgrade_2">
+		<text>Держи.</text>
+	</string>
+	<string id="mar_base_stalker_tech_pda_no_off_upgrade_3">
+		<text>Я передумал.</text>
+	</string>
+	<string id="mar_base_stalker_tech_pda_no_off_upgrade_4">
+		<text>Готово! Забирай свой КПК. Теперь он больше не будет сбоить во время выбросов и пси-штормов.</text>
+	</string>
+</string_table>

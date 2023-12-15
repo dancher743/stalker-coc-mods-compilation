@@ -25,7 +25,7 @@ function process_pda(info_id)
 		return
 	end
 	
-	if (db.actor:has_info("pda_off_upgrade")) then
+	if (pda_upgrade_manager.has_no_off_upgrade()) then
 		UnregisterScriptCallback("actor_on_info_callback",actor_on_info_callback)
 		return
 	end
