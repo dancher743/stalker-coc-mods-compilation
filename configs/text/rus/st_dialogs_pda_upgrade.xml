@@ -15,4 +15,20 @@
 	<string id="mar_base_stalker_tech_pda_no_off_upgrade_4">
 		<text>Готово! Забирай свой КПК. Теперь он больше не будет сбоить во время выбросов и пси-штормов.</text>
 	</string>
+	
+	<string id="jup_scientist_bunker_tech_squads_on_map_upgrade_0">
+		<text>Я слышал, Вы достигли успехов в регистрации объектов в аномалиях. А с живыми объектами можно сделать также?</text>
+	</string>
+	<string id="jup_scientist_bunker_tech_squads_on_map_upgrade_1">
+		<text>Можно. Вы хотите, чтобы Ваш КПК регистрировал активность отрядов на глобальной карте? Сделайте вклад в науку в размере 10000 рублей, и я настрою его.</text>
+	</string>
+	<string id="jup_scientist_bunker_tech_squads_on_map_upgrade_2">
+		<text>Держите деньги.</text>
+	</string>
+	<string id="jup_scientist_bunker_tech_squads_on_map_upgrade_3">
+		<text>В другой раз.</text>
+	</string>
+	<string id="jup_scientist_bunker_tech_squads_on_map_upgrade_4">
+		<text>Хорошо. Дайте мне свой КПК. Ага.. так.. нажимаем "Принять"... Готово! Забирайте КПК, я всё сделал.</text>
+	</string>
 </string_table>

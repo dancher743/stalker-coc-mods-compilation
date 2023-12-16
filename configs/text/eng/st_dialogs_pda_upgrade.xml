@@ -15,4 +15,20 @@
 	<string id="mar_base_stalker_tech_pda_no_off_upgrade_4">
 		<text>Done! Take your PDA. Now it will no longer crash during surges and psi-storms.</text>
 	</string>
+	
+	<string id="jup_scientist_bunker_tech_squads_on_map_upgrade_0">
+		<text>I heard that you have achieved success in registering objects in anomalies. Can you do the same with living objects?</text>
+	</string>
+	<string id="jup_scientist_bunker_tech_squads_on_map_upgrade_1">
+		<text>Can. Do you want your PDA to record the activity of squads on the global map? Make a contribution to science in the amount of 10000 rubles, and I will set it up.</text>
+	</string>
+	<string id="jup_scientist_bunker_tech_squads_on_map_upgrade_2">
+		<text>Keep the money.</text>
+	</string>
+	<string id="jup_scientist_bunker_tech_squads_on_map_upgrade_3">
+		<text>Next time.</text>
+	</string>
+	<string id="jup_scientist_bunker_tech_squads_on_map_upgrade_4">
+		<text>Fine. Give me your PDA. Yeah... so... click "Accept"... Done! Take your PDA, I did it all.</text>
+	</string>
 </string_table>

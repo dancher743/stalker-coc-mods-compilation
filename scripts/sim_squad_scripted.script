@@ -1143,6 +1143,10 @@ function sim_squad_scripted:show()
 -------------------------------------av661194--end---------------
 		end
 	end
+	
+	if (not pda_upgrade_manager.has_squads_on_map_upgrade()) then
+		spot = ""
+	end
 
 	if (spot~="") then
 		if spot == self.spot_section then
