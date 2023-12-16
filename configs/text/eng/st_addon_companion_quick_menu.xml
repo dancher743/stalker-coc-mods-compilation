@@ -48,4 +48,8 @@
 		<text>LOOT CORPSES</text>
 	</string>
 	
+	<string id="st_addon_companion_quick_menu_moveToPoint">
+		<text>MOVE TO POINT</text>
+	</string>
+	
 </string_table>
