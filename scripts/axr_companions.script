@@ -104,6 +104,11 @@ end
 
 local function squad_on_update(squad)
 	--alun_utils.debug_write(strformat("axr_companions.squad_on_update - heli_enemy_flag"))
+	if (db.actor and not db.actor:alive()) then
+		remove_all_from_actor_squad()
+		return
+	end
+	
 	if (companion_squads[squad.id]) then
 		squad.scripted_target = "actor"
 		for k in squad:squad_members() do
