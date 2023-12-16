@@ -31,4 +31,11 @@
 	<string id="jup_scientist_bunker_tech_squads_on_map_upgrade_4">
 		<text>Хорошо. Дайте мне свой КПК. Ага.. так.. нажимаем "Принять"... Готово! Забирайте КПК, я всё сделал.</text>
 	</string>
+	
+	<string id="ui_st_news_no_off_pda_upgrade">
+		<text>Установлено специальное покрытие, защищающее КПК от внешних энергетических воздействий</text>
+	</string>
+	<string id="ui_st_news_squads_on_map_pda_upgrade">
+		<text>КПК настроен на показ отрядов на глобальной карте</text>
+	</string>
 </string_table>

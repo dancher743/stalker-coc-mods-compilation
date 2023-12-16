@@ -20,6 +20,10 @@ function give_no_off_pda_upgrade(actor, npc)
 	pda_upgrade_manager.give_no_off_upgrade()
 end
 
+function send_tip_no_off_upgrade(actor, npc)
+	pda_upgrade_news.send_tip_no_off_upgrade()
+end
+
 -- Squads on map upgrade
 
 function not_has_squads_on_map_upgrade(actor, npc)
@@ -33,4 +37,8 @@ end
 function give_squads_on_map_upgrade(actor, npc)
 	dialogs.relocate_money_from_actor(actor, npc, any_upgrade_cost)
 	pda_upgrade_manager.give_squads_on_map_upgrade()
+end
+
+function send_tip_squads_on_map_upgrade(actor, npc)
+	pda_upgrade_news.send_tip_squads_on_map_upgrade()
 end

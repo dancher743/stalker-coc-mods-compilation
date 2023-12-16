@@ -1,0 +1,27 @@
+--
+-- News for PDA Upgrade
+-- Added by Dancher
+--
+
+local function send_tip(upgrade_info)
+	local news_caption = game.translate_string("st_tip")
+	local news_text = game.translate_string("ui_st_news_"..upgrade_info)
+	local news_icon = "ui_inGame2_Istoriya_dolga"
+	local actor = db.actor
+	
+	if actor:is_talking() then
+		actor:give_talk_message2(news_caption, news_text, news_icon, "iconed_answer_item")
+	else
+		actor:give_game_news(news_caption, news_text, news_icon, 0, 5000)
+	end
+	
+	xr_sound.set_sound_play(actor:id(), "pda_tips")
+end
+
+function send_tip_no_off_upgrade()
+	send_tip("no_off_pda_upgrade")
+end
+
+function send_tip_squads_on_map_upgrade()
+	send_tip("squads_on_map_pda_upgrade")
+end
