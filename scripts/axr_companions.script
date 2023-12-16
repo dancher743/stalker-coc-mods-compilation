@@ -574,78 +574,81 @@ function get_test_member()
 	end
 end
 
-function move_to_point(p)
-	if (p==1) then 
-		SetHudMsg(game.translate_string("st_hold_then_release"),8)
-		_particle_valid = particles_object("_samples_particles_\\flash_light")
-		_particle_invalid = particles_object("_samples_particles_\\flash_light_red")
-	elseif (p==2) then
-		if (_particle_valid) then
-			local r = level.get_target_dist and level.get_target_dist()
-			if (r) then
-				local pos = vector():set(device().cam_pos)
-				pos:add(device().cam_dir:mul(r))
-				
-				local lvid = level.vertex_id(pos)
-				local npc = lvid and lvid < 4294967295 and get_test_member()
-				if (npc and npc:accessible(pos)) then 
-					if (_particle_invalid:playing()) then 
-						_particle_invalid:stop()
-					end
-					_particle_valid:play_at_pos(vector():set(pos.x,pos.y-0.5,pos.z))
-				else 
-					if (_particle_valid:playing()) then
-						_particle_valid:stop()
-					end
-					_particle_invalid:play_at_pos(vector():set(pos.x,pos.y-0.5,pos.z))
-				end
-			end
-		end	
-	else
-		if (_particle_valid:playing()) then
-			_particle_valid:stop()
-		end
-		_particle_valid = nil
-		
-		if (_particle_invalid:playing()) then 
-			_particle_invalid:stop()
-		end 
-		_particle_invalid = nil
-		
+local function create_flash_particles()
+	_particle_valid = particles_object("_samples_particles_\\flash_light")
+	_particle_invalid = particles_object("_samples_particles_\\flash_light_red")
+end
+
+local function play_flash_particles()
+	if (_particle_valid) then
 		local r = level.get_target_dist and level.get_target_dist()
 		if (r) then
 			local pos = vector():set(device().cam_pos)
 			pos:add(device().cam_dir:mul(r))
-		
+			
 			local lvid = level.vertex_id(pos)
-				
-			_current_move_mode = 1
-			SetHudMsg(game.translate_string("st_move_to_point"),8)
-			for id,squad in pairs(companion_squads) do 
-				if (squad and squad.commander_id) then
-					if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
-						for k in squad:squad_members() do
-							st = db.storage[k.id]
-							local member = st and st.object
-							if (member and member:alive()) then
-								set_companion_to_follow_state(member)
-								if (lvid and lvid >= 4294967295) then
-									lvid = nil
-								end
-								utils.save_var(member,"fight_from_point",lvid)
+			local npc = lvid and lvid < 4294967295 and get_test_member()
+			if (npc and npc:accessible(pos)) then 
+				if (_particle_invalid:playing()) then 
+					_particle_invalid:stop()
+				end
+				_particle_valid:play_at_pos(vector():set(pos.x,pos.y-0.5,pos.z))
+			else 
+				if (_particle_valid:playing()) then
+					_particle_valid:stop()
+				end
+				_particle_invalid:play_at_pos(vector():set(pos.x,pos.y-0.5,pos.z))
+			end
+		end
+	end	
+end
+
+local function remove_flash_particles()
+	if (_particle_valid and _particle_valid:playing()) then
+		_particle_valid:stop()
+	end
+	_particle_valid = nil
+	
+	if (_particle_invalid and _particle_invalid:playing()) then 
+		_particle_invalid:stop()
+	end 
+	_particle_invalid = nil
+end
+
+local function move_companions_to_point()
+	local r = level.get_target_dist and level.get_target_dist()
+	
+	if (r) then
+		local pos = vector():set(device().cam_pos)
+		pos:add(device().cam_dir:mul(r))
+	
+		local lvid = level.vertex_id(pos)
+			
+		_current_move_mode = 1
+		for id,squad in pairs(companion_squads) do 
+			if (squad and squad.commander_id) then
+				if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
+					for k in squad:squad_members() do
+						st = db.storage[k.id]
+						local member = st and st.object
+						if (member and member:alive()) then
+							set_companion_to_follow_state(member)
+							if (lvid and lvid >= 4294967295) then
+								lvid = nil
 							end
-							if (k.id == squad:commander_id()) then
-								if (st and st.beh) then
-									if (lvid) then 
-										if (lvid >= 4294967295) then
-											lvid = nil
-										end
-										if not (member:accessible(lvid)) then
-											lvid = member:accessible_nearest(level.vertex_position(lvid),vector())
-										end
+							utils.save_var(member,"fight_from_point",lvid)
+						end
+						if (k.id == squad:commander_id()) then
+							if (st and st.beh) then
+								if (lvid) then 
+									if (lvid >= 4294967295) then
+										lvid = nil
 									end
-									st.beh.rally_lvid = lvid
+									if not (member:accessible(lvid)) then
+										lvid = member:accessible_nearest(level.vertex_position(lvid),vector())
+									end
 								end
+								st.beh.rally_lvid = lvid
 							end
 						end
 					end
@@ -653,6 +656,43 @@ function move_to_point(p)
 			end
 		end
 	end
+	
+	return r
+end
+
+function move_to_point(p)
+	if (p==1) then 
+		SetHudMsg(game.translate_string("st_hold_then_release"),8)
+		create_flash_particles()
+	elseif (p==2) then
+		play_flash_particles()
+	else
+		remove_flash_particles()
+		local r = move_companions_to_point()
+		if (r) then
+			SetHudMsg(game.translate_string("st_move_to_point"),8)
+		end
+	end
+end
+
+function move_to_point_non_keybind()
+	local function play_particles_event()
+		if (not _particle_valid) then
+			create_flash_particles()
+		else
+			play_flash_particles()
+		end
+	end
+	
+	local function remove_particles_event()
+		remove_flash_particles()
+		RemoveTimeEvent("axr_companions","play_particles_event")
+		RemoveTimeEvent("axr_companions","remove_particles_event")
+	end
+
+	CreateTimeEvent("axr_companions","play_particles_event",0,play_particles_event)
+	CreateTimeEvent("axr_companions","remove_particles_event",0.15,remove_particles_event)
+	move_companions_to_point()
 end
 
 function set_companion_squad_move_mode(mode,npc,squad)
