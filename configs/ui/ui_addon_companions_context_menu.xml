@@ -1,5 +1,5 @@
 <w>
-<move_wait x="622" y="383" width="180" height="43" stretch="1">
+<move_wait x="617" y="383" width="180" height="43" stretch="1">
 	<text align="c" font="letterica18">OK</text>
 	<text_color>
 		<e r="255" g="255" b="255" a="150"/>
@@ -10,7 +10,7 @@
 	</auto_static>
 </move_wait>
 
-<stealth_stopStealth x="222" y="383" width="180" height="43" stretch="1">
+<stealth_stopStealth x="227" y="383" width="180" height="43" stretch="1">
 	<text align="c" font="letterica18">OK</text>
 	<text_color>
 		<e r="255" g="255" b="255" a="150"/>
@@ -34,7 +34,7 @@
 	</far_close>
 	
 
-	<aggressive_ignoreCombatButHelpActor x="622" y="333" width="180" height="43" stretch="1">
+	<aggressive_ignoreCombatButHelpActor x="617" y="333" width="180" height="43" stretch="1">
 		<text align="c" font="letterica18">OK</text>
 		<text_color>
 			<e r="255" g="255" b="255" a="150"/>
@@ -45,7 +45,7 @@
 		</auto_static>
 	</aggressive_ignoreCombatButHelpActor>
 	
-	<ignoreCombat_ignoreCombatButHelpActor x="222" y="333" width="180" height="43" stretch="1">
+	<ignoreCombat_ignoreCombatButHelpActor x="227" y="333" width="180" height="43" stretch="1">
 		<text align="c" font="letterica18">OK</text>
 		<text_color>
 			<e r="255" g="255" b="255" a="150"/>
