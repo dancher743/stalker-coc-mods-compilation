@@ -1,5 +1,5 @@
 <w>
-<move_wait x="572" y="383" width="180" height="43" stretch="1">
+<move_wait x="622" y="383" width="180" height="43" stretch="1">
 	<text align="c" font="letterica18">OK</text>
 	<text_color>
 		<e r="255" g="255" b="255" a="150"/>
@@ -10,7 +10,7 @@
 	</auto_static>
 </move_wait>
 
-<stealth_stopStealth x="272" y="383" width="180" height="43" stretch="1">
+<stealth_stopStealth x="222" y="383" width="180" height="43" stretch="1">
 	<text align="c" font="letterica18">OK</text>
 	<text_color>
 		<e r="255" g="255" b="255" a="150"/>
@@ -22,7 +22,7 @@
 </stealth_stopStealth>
 
 		
-	<far_close x="422" y="433" width="180" height="43" stretch="1">
+	<far_close x="422" y="408" width="180" height="43" stretch="1">
 		<text align="c" font="letterica18">OK</text>
 		<text_color>
 			<e r="255" g="255" b="255" a="150"/>
@@ -34,7 +34,7 @@
 	</far_close>
 	
 
-	<aggressive_ignoreCombatButHelpActor x="572" y="333" width="180" height="43" stretch="1">
+	<aggressive_ignoreCombatButHelpActor x="622" y="333" width="180" height="43" stretch="1">
 		<text align="c" font="letterica18">OK</text>
 		<text_color>
 			<e r="255" g="255" b="255" a="150"/>
@@ -45,7 +45,7 @@
 		</auto_static>
 	</aggressive_ignoreCombatButHelpActor>
 	
-	<ignoreCombat_ignoreCombatButHelpActor x="272" y="333" width="180" height="43" stretch="1">
+	<ignoreCombat_ignoreCombatButHelpActor x="222" y="333" width="180" height="43" stretch="1">
 		<text align="c" font="letterica18">OK</text>
 		<text_color>
 			<e r="255" g="255" b="255" a="150"/>
@@ -57,7 +57,7 @@
 	</ignoreCombat_ignoreCombatButHelpActor>
 	
 	
-	<lootCorpses_ignoreCorpses x="422" y="283" width="180" height="43" stretch="1">
+	<lootCorpses_ignoreCorpses x="422" y="308" width="180" height="43" stretch="1">
 		<text align="c" font="letterica18">OK</text>
 		<text_color>
 			<e r="255" g="255" b="255" a="150"/>
@@ -68,7 +68,7 @@
 		</auto_static>
 	</lootCorpses_ignoreCorpses>
 	
-	<move_to_point x="422" y="333" width="180" height="43" stretch="1">
+	<move_to_point x="422" y="358" width="180" height="43" stretch="1">
 		<text align="c" font="letterica18">OK</text>
 		<text_color>
 			<e r="255" g="255" b="255" a="150"/>
