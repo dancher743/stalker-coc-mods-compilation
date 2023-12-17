@@ -855,6 +855,7 @@ end
 class "UICompanionList" (CUIScriptWnd)
 
 function UICompanionList:__init() super()
+	self.max_size = 5
 	self.companion_info = {}
 	self._tmr 			= time_global()
 	self.update_rate	= 1000 --[ms]
@@ -883,9 +884,8 @@ function UICompanionList:InitControls()
 	self.dialog = xml:InitStatic("companion_list", self)
 	--utils_xml.correct_ratio(self.dialog, true)
 	
-	local max_size = max_actor_squad_size + (has_alife_info("achieved_patriarch") and 2 or 0)
 	self.companion_info = {}
-	for i=1,max_size do
+	for i=1,self.max_size do
 		self.companion_info[i]                   = {}
 		self.companion_info[i].base              = xml:InitStatic("companion_list:slot", self.dialog)
 		self.companion_info[i].background        = xml:InitStatic("companion_list:slot:background", self.companion_info[i].base)
