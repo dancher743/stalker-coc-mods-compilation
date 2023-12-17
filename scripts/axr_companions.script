@@ -674,9 +674,8 @@ function move_to_point_non_keybind()
 	local function play_particles_event()
 		if (not _particle_valid) then
 			create_flash_particles()
-		else
-			play_flash_particles()
 		end
+		play_flash_particles()
 	end
 	
 	local function remove_particles_event()
