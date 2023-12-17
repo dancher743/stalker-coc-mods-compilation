@@ -6,13 +6,9 @@
 -- Reworked due to patch dressing feature: Dancher
 ----------------------
 
--- update rates in milliseconds
-actor_update_rate = 1000
-npc_update_rate = 1000
-
--- update timers
-local actor_update_timer = time_global()
-local npc_update_timers = {}
+-- update rates in seconds
+actor_update_rate = 1
+npc_update_rate = 1
 
 --time you need to be hidden (not seen by any npc) before changing outfit to make the disguise effective, 100 means roughly 10 seconds
 local time_to_forget = 100
@@ -59,9 +55,9 @@ local patch_sections = {
 
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
-	RegisterScriptCallback("actor_on_update",actor_on_update)
-	RegisterScriptCallback("npc_on_update",npc_on_update)
-	RegisterScriptCallback("npc_on_net_destroy",npc_on_net_destroy)
+	
+	CreateTimeEvent("disguise","actor_update",actor_update_rate,actor_update)
+	CreateTimeEvent("disguise","npc_update",npc_update_rate,npc_update)
 	
 	RegisterScriptCallback("on_game_load",on_game_load)
 	
@@ -89,18 +85,13 @@ function actor_on_first_update()
     prev_patch_in_slot = db.actor:item_in_slot(patch_slot_number)
 end
 
-function actor_on_update()
+function actor_update()
+	ResetTimeEvent("disguise","actor_update",actor_update_rate)
+	
 	local actor = db.actor
 	
 	if not actor:alive() then
 		return
-	end
-	
-	local time_global = time_global()
-	if actor_update_timer >= time_global then
-		return
-	else
-		actor_update_timer = time_global + actor_update_rate
 	end
 
 	local actor_community = utils.get_actor_community()
@@ -184,71 +175,67 @@ function change_actor_community(community)
 	db.actor:set_character_community( ("actor_" .. community), 0, 0 )
 end
 
-function npc_on_update(npc)
+function npc_update()
+	ResetTimeEvent("disguise","npc_update",npc_update_rate)
+	
 	if not default_faction or not db.actor then return end
 	
-	local id = npc:id()
-	
-	local time_global = time_global()
-	if (npc_update_timers[id] and npc_update_timers[id] > time_global) then
-		return
-	else
-        npc_update_timers[id] = time_global + npc_update_rate
-    end
-	
-	local npc_is_enemy = game_relations.is_factions_enemies(default_faction, npc:character_community()) or npc:relation(db.actor) == game_object.enemy
-
-	local current = utils.get_actor_community()
-	if current ~= default_faction and npc:see(db.actor) and npc_is_enemy then
-		last_seen[id] = game.get_game_time()
+	for i=1, #db.OnlineStalkers do
+		local st = db.storage[db.OnlineStalkers[i]]
+		local npc = st and st.object or level.object_by_id(db.OnlineStalkers[i])
 		
-		if suspicion[id] then
-			local distance = npc:position():distance_to_sqr(db.actor:position())
-			suspicion[id] = suspicion[id] + suspicion_increase(distance)
+		if (npc and IsStalker(npc) and npc:alive()) then
+			local id = npc:id()
+			local npc_is_enemy = game_relations.is_factions_enemies(default_faction, npc:character_community()) or npc:relation(db.actor) == game_object.enemy
 			
-			if (suspicion[id] > suspicion_limit) then
-				if not callout then
-					disguise_news.send_tip(game.translate_string("st_disguise_exposure_discovered"))
-					--printf("discovered at %s",os.date("%X"))
+			local current = utils.get_actor_community()
+			if current ~= default_faction and npc:see(db.actor) and npc_is_enemy then
+				last_seen[id] = game.get_game_time()
+				
+				if suspicion[id] then
+					local distance = npc:position():distance_to_sqr(db.actor:position())
+					suspicion[id] = suspicion[id] + suspicion_increase(distance)
+					
+					if (suspicion[id] > suspicion_limit) then
+						if not callout then
+							disguise_news.send_tip(game.translate_string("st_disguise_exposure_discovered"))
+							--printf("discovered at %s",os.date("%X"))
+						end
+						change_actor_community(default_faction)
+						current = default_faction
+						disguise_news.reset_once_disguise_tips()
+					elseif not warned and suspicion[id] > warning_limit then
+						disguise_news.send_suspicious_tip(npc) 
+						warned = true
+					end
+				else
+					--printf("saw at %s",os.date("%X"))
+					suspicion[id] = 1
 				end
-				change_actor_community(default_faction)
-				current = default_faction
-				disguise_news.reset_once_disguise_tips()
-			elseif not warned and suspicion[id] > warning_limit then
-				disguise_news.send_suspicious_tip(npc) 
-				warned = true
+			else
+				if suspicion[id] then
+					suspicion[id] = suspicion[id] - 1
+					if (suspicion[id] <= 0) then
+						suspicion[id] = nil
+					end
+				end
 			end
-		else
-			--printf("saw at %s",os.date("%X"))
-			suspicion[id] = 1
-		end
-	else
-		if suspicion[id] then
-			suspicion[id] = suspicion[id] - 1
-			if (suspicion[id] <= 0) then
-				suspicion[id] = nil
+			
+			if warned and current ~= default_faction then
+				local suspicious = false
+				for k,v in pairs(suspicion) do
+					if v and v > dewarn_limit then
+						suspicious = true
+						break
+					end
+				end
+				if not suspicious then
+					disguise_news.send_tip(game.translate_string("st_disguise_exposure_avoided"))
+					warned = false
+				end
 			end
 		end
 	end
-
-	if warned and current ~= default_faction then
-		local suspicious = false
-		for k,v in pairs(suspicion) do
-			if v and v > dewarn_limit then
-				suspicious = true
-				break
-			end
-		end
-		if not suspicious then
-			disguise_news.send_tip(game.translate_string("st_disguise_exposure_avoided"))
-			warned = false
-		end
-	end
-end
-
-function npc_on_net_destroy(npc)
-	local id = npc:id()
-	table.remove(npc_update_timers,id)
 end
 
 function suspicion_increase(distance)
