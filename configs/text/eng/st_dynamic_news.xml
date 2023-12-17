@@ -4099,6 +4099,12 @@
     <string id="st_dyn_news_spam_faction_stalker_1">
         <text>They say that the mercenaries have some kind of lottery for patches, or something related to them. Damn, it turns out that now they can slam you for no reason!</text>
     </string>
+	<string id="st_dyn_news_spam_faction_stalker_2">
+        <text>Novikov from Clear Sky can improve your PDA so that it works during emissions and psi-storms. Don't be lazy, put it up! I'm sure this will save your butt more than once.</text>
+    </string>
+	<string id="st_dyn_news_spam_faction_stalker_3">
+		<text>Remember how once upon a time the PDA squads were shown on the global map? So Garin from the scientists' bunker on Yanov can do a couple of tricks with the PDA and they'll appear again!</text>
+	</string>
 
 	<string id="st_dyn_news_spam_faction_dolg_1">
 		<text>Attention, all squads: upon your arrival at the base, immediately report to the command post for instructions on the use of our new equipment models.</text>
