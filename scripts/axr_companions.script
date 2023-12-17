@@ -120,15 +120,6 @@ local function squad_on_update(squad)
 	end
 end
 
-local function npc_on_hit_callback(npc)
-	if (is_companion(npc) and is_invulnerable_obj(npc)) then
-		npc.health = 1
-		npc.bleeding = 1
-		npc.psy_health = 1
-		npc.radiation = -1
-	end
-end
-
 local function on_level_changing()
 	local sim = alife()
 	local se_actor = sim:actor()
@@ -228,7 +219,6 @@ function on_game_start()
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
 	RegisterScriptCallback("on_game_load",on_game_load)
-	RegisterScriptCallback("npc_on_hit_callback",npc_on_hit_callback)
 
 	allow_neutrals_as_companions = ini:r_bool_ex("main","allow_neutrals_as_companions",false)
 	allow_friends_as_companions = ini:r_bool_ex("main","allow_friends_as_companions",false)

@@ -3388,3 +3388,7 @@ end
 function is_hours_l(actor,npc,p)
 	return level.get_time_hours() < tonumber(p[1])
 end
+
+function is_companion_invulnerable(actor,npc,p)
+	return axr_companions.is_invulnerable_obj(npc)
+end
