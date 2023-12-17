@@ -118,7 +118,6 @@ function addonCompanionsContextMenu:Onbtn_lootCorpses_ignoreCorpses()
 end 
 
 function addonCompanionsContextMenu:Onbtn_move_to_point()
-	printf("123")
 	axr_companions.move_to_point_non_keybind()
 	addonMenu:CloseTheMenu()
 end
