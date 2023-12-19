@@ -3,22 +3,38 @@
 -- Added by Dancher
 --
 
+local function has_upgrade(info_id)
+	local actor = db.actor
+	return actor and actor:has_info(info_id) or false
+end
+
+local function give_upgrade(info_id)
+	local actor = db.actor
+	if (actor) then
+		actor:give_info_portion(info_id)
+	end
+end
+
+
+
 -- No off upgrade
 
 function has_no_off_upgrade()
-	return db.actor:has_info("no_off_pda_upgrade")
+	return has_upgrade("no_off_pda_upgrade")
 end
 
 function give_no_off_upgrade()
-	db.actor:give_info_portion("no_off_pda_upgrade")
+	give_upgrade("no_off_pda_upgrade")
 end
+
+
 
 -- Squads on map upgrade
 
 function has_squads_on_map_upgrade()
-	return db.actor:has_info("squads_on_map_pda_upgrade")
+	return has_upgrade("squads_on_map_pda_upgrade")
 end
 
 function give_squads_on_map_upgrade()
-	db.actor:give_info_portion("squads_on_map_pda_upgrade")
+	give_upgrade("squads_on_map_pda_upgrade")
 end
