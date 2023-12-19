@@ -1057,6 +1057,8 @@ function is_trust_actor(obj)
 		local seconds = (game.time() - companion_start_time) / 10000
 		hours = math.floor(seconds/60/60)
 		-- printf("DANCHER | axr_companions.is_trust_actor(...) -> total elapsed: ".. hours .."h ".. math.floor(seconds/60) .. "m ".. seconds .. "s")
+	else
+		utils.se_obj_save_var(id,obj:name(),"companion_start_time",game.time())
 	end
 	
 	return hours > 3
