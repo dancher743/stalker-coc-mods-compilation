@@ -70,6 +70,19 @@ local function send_companion_died_tip(npc, killer)
 	xr_sound.set_sound_play(actor:id(), "pda_sos")
 end
 
+local function migrate_data(squad)
+	for k in squad:squad_members() do 
+		local se_obj = k.object or alife():object(k.id)
+		if (se_obj and utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion")) then
+			-- Migrate "companion_start_time" var
+			local companion_start_time = utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_start_time")
+			if (not companion_start_time) then
+				utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_start_time",game.time())
+			end
+		end
+	end
+end
+
 local function squad_on_npc_death(squad,se_npc,killer)
 	local npc = level.object_by_id(se_npc.id)
 	if (npc and is_companion(npc)) then
@@ -87,6 +100,7 @@ local function squad_on_register(squad)
 	if (companion_squads[squad.id] ~= nil) then 
 		companion_squads[squad.id] = squad
 		squad.scripted_target = "actor"
+		migrate_data(squad)
 	end
 	
 	-- backward save compatiblity. remove later
@@ -1056,9 +1070,7 @@ function is_trust_actor(obj)
 	if (companion_start_time) then
 		local seconds = (game.time() - companion_start_time) / 10000
 		hours = math.floor(seconds/60/60)
-		-- printf("DANCHER | axr_companions.is_trust_actor(...) -> total elapsed: ".. hours .."h ".. math.floor(seconds/60) .. "m ".. seconds .. "s")
-	else
-		utils.se_obj_save_var(id,obj:name(),"companion_start_time",game.time())
+		-- printf("DANCHER | axr_companions.is_trust_actor(...) -> total elapsed time: ".. hours .."h, ".. math.floor(seconds/60) .. "m, ".. math.floor(seconds) .. "s.")
 	end
 	
 	return hours > 3
