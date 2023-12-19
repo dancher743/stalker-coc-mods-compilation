@@ -91,7 +91,8 @@ function configure_schemes(npc, ini, ini_filename, stype, section_logic, gulag_n
 	-- Инициализация торговли
 	if (stype == modules.stype_trader or stype == modules.stype_stalker) then
 		if (npc:alive()) then
-			local trade_ini = actual_ini:r_string_ex(section_logic,"trade") or "misc\\trade\\trade_generic.ltx"
+			local condlist = xr_logic.parse_condlist(npc, section_logic, "trade", actual_ini:r_string_ex(section_logic,"trade") or "misc\\trade\\trade_generic.ltx")
+			local trade_ini = xr_logic.pick_section_from_condlist(db.actor, npc, condlist)
 			trade_manager.trade_init(npc, trade_ini)
 			spawner.spawn_items(npc, st)
 		end

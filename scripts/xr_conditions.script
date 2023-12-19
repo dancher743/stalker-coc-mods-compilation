@@ -3392,3 +3392,7 @@ end
 function is_companion_invulnerable(actor,npc,p)
 	return axr_companions.is_invulnerable_obj(npc)
 end
+
+function is_companion_trust_actor(actor,npc,p)
+	return axr_companions.is_trust_actor(npc)
+end

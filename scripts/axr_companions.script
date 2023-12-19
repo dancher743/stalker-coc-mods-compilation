@@ -303,6 +303,7 @@ function add_to_actor_squad(npc)
 	local id = npc:id()
 	non_task_companions[id] = true
 	utils.se_obj_save_var(id,npc:name(),"companion",true)
+	utils.se_obj_save_var(id,npc:name(),"companion_start_time",game.time())
 	npc:inactualize_patrol_path()
 	setup_companion_logic(npc,db.storage[id],false)
 end
@@ -328,6 +329,7 @@ function remove_from_actor_squad(npc)
 	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss",nil)
 	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_teleport",nil)
 	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_hostage",nil)
+	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_start_time",nil)
 end
 
 function remove_all_from_actor_squad()
@@ -340,6 +342,7 @@ function remove_all_from_actor_squad()
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss",nil)
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_teleport",nil)		
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_hostage",nil)
+					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_start_time",nil)
 						
 					local member = db.storage[se_obj.id] and db.storage[se_obj.id].object or level.object_by_id(se_obj.id)
 					if (member) then 
@@ -1042,4 +1045,19 @@ end
 
 function is_invulnerable(se_obj)
 	return utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_is_invulnerable") == true
+end
+
+function is_trust_actor(obj)
+	local id = obj:id()
+	
+	local hours = 0
+	local companion_start_time = utils.se_obj_load_var(id,obj:name(),"companion_start_time")
+	
+	if (companion_start_time) then
+		local seconds = (game.time() - companion_start_time) / 10000
+		hours = math.floor(seconds/60/60)
+		-- printf("DANCHER | axr_companions.is_trust_actor(...) -> total elapsed: ".. hours .."h ".. math.floor(seconds/60) .. "m ".. seconds .. "s")
+	end
+	
+	return hours > 3
 end
