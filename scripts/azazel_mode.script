@@ -160,7 +160,7 @@ function actor_on_before_death(whoID,flags)
 			if (k.id ~= se_obj.id) then
 				axr_companions.non_task_companions[k.id] = true
 				utils.se_obj_save_var(k.id,k.object:name(),"companion",true)
-				utils.se_obj_save_var(k.id,k.object:name(),"companion_start_time",game.time())
+				utils.se_obj_save_var(k.id,k.object:name(),"companion_start_time",math.random(0,1) == 1 and game.time() or 0)
 				local member = db.storage[k.id] and db.storage[k.id].object
 				if (member) then
 					axr_companions.setup_companion_logic(member,db.storage[k.id],false)
