@@ -1107,6 +1107,7 @@ function sim_squad_scripted:show()
 		return
 	end
 	local spot = ""
+	local non_commander_spot = ""
 
 	if (DEV_DEBUG and axr_main.config:r_value("mm_options","enable_debug_hud",1,false) == true) then
 		if (DEV_DEBUG_HOLD_ACTION_1) then 
@@ -1117,7 +1118,7 @@ function sim_squad_scripted:show()
 			spot = "storyline_task_location"
 		end
 	elseif not(is_squad_monster[self.player_id]) then
-		if (axr_main.config:r_value("mm_options","enable_show_stalkers_on_map",1,false) == true) then
+		if (axr_main.config:r_value("mm_options","enable_show_stalkers_on_map",1,false) == true and pda_upgrade_manager.has_squads_on_map_upgrade()) then
 -------------------------------------av661194--start---------------
 			local relation = self:get_squad_relation()
 			if (relation == "friends") then
@@ -1127,6 +1128,11 @@ function sim_squad_scripted:show()
 			else
 				spot = "alife_presentation_squad_enemy_1"
 			end
+			
+			if (self.scripted_target == "actor") then
+				spot = "alife_presentation_squad_companion_1"
+				non_commander_spot = "alife_presentation_squad_companion_non_commander"
+			end
 -------------------------------------av661194--end---------------
 		else
 			local relation = game_relations.get_squad_relation_to_actor_by_id(self.id)
@@ -1135,17 +1141,18 @@ function sim_squad_scripted:show()
 			elseif(relation=="neutral") then
 				spot = "alife_presentation_squad_neutral"
 			end
+			
+			if (self.scripted_target == "actor") then
+				spot = "alife_presentation_squad_companion"
+				non_commander_spot = "alife_presentation_squad_companion_non_commander"
+			end
 		end
 	else
-		if (axr_main.config:r_value("mm_options","enable_show_monsters_on_map",1,false) == true) then
+		if (axr_main.config:r_value("mm_options","enable_show_monsters_on_map",1,false) == true and pda_upgrade_manager.has_squads_on_map_upgrade()) then
 -------------------------------------av661194--start---------------
 			spot = "alife_presentation_squad_monster_1"
 -------------------------------------av661194--end---------------
 		end
-	end
-	
-	if (not pda_upgrade_manager.has_squads_on_map_upgrade()) then
-		spot = ""
 	end
 
 	if (spot~="") then
@@ -1163,6 +1170,19 @@ function sim_squad_scripted:show()
 	elseif (self.spot_section~=nil) then
 		level.map_remove_object_spot(self.current_spot_id, self.spot_section)
 		self.spot_section = nil
+	end
+	
+	local squad = alife_object(self.id)
+	for k in squad:squad_members() do
+		if (k.id ~= squad:commander_id()) then
+			if (non_commander_spot~="" and level.map_has_object_spot(k.id, non_commander_spot) == 0) then
+				level.map_add_object_spot(k.id, non_commander_spot, self:get_squad_props())
+				self.non_commander_spot_section = non_commander_spot
+			elseif (non_commander_spot=="" and self.non_commander_spot_section and level.map_has_object_spot(k.id, self.non_commander_spot_section) == 1) then
+				level.map_remove_object_spot(k.id, self.non_commander_spot_section)
+				self.non_commander_spot_section = nil
+			end
+		end
 	end
 end
 
