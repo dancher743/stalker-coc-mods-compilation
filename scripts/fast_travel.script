@@ -162,6 +162,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 
 	if (se_obj.online) then
 		db.actor:set_actor_position(se_obj.position)
+		axr_companions.teleport_companions_to_actor()
 		get_hud():HidePdaMenu()
 	else
 		ChangeLevel(se_obj.position,se_obj.m_level_vertex_id,se_obj.m_game_vertex_id,vector():set(0,0,0))

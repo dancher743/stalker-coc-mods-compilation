@@ -135,23 +135,7 @@ local function squad_on_update(squad)
 end
 
 local function on_level_changing()
-	local sim = alife()
-	local se_actor = sim:actor()
-	
-	local gg = game_graph()
-	local gvid = se_actor.m_game_vertex_id
-	local vert = gg:vertex(gvid)
-	local lvid = vert:level_vertex_id()
-	local pos = vert:level_point()
-	
-	for id,v in pairs(companion_squads) do 
-		local squad = sim:object(id)
-		if (squad and squad.commander_id) then 
-			if (companion_squad_can_teleport(squad)) then
-				TeleportSquad(squad,pos,lvid,gvid)
-			end
-		end
-	end
+	teleport_companions_to_actor()
 end
 
 local function actor_on_item_drop(item)
@@ -255,6 +239,24 @@ function companion_squad_can_teleport(squad)
 	end
 	return true
 end 
+
+function teleport_companions_to_actor()
+	local sim = alife()
+	local se_actor = sim:actor()
+	
+	local gg = game_graph()
+	local gvid = se_actor.m_game_vertex_id
+	local vert = gg:vertex(gvid)
+	local lvid = vert:level_vertex_id()
+	local pos = vert:level_point()
+	
+	for id,v in pairs(companion_squads) do 
+		local squad = sim:object(id)
+		if (squad and squad.commander_id) then 
+			TeleportSquad(squad,pos,lvid,gvid)
+		end
+	end
+end
 
 -- doesn't include task companions
 function get_companion_count()
