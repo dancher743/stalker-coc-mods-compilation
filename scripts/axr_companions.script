@@ -446,19 +446,25 @@ function switch_companion_patrol_mode(npc)
 	end
 end
 
-function switch_companion_gather_items(npc)
+function switch_companion_gather_items(npc, has_msg)
+	has_msg = has_msg == nil and true or has_msg
+	local msg_text = ""
+	
 	if ( npc:has_info("npcx_beh_gather_items") ) then
-		SetHudMsg(game.translate_string("st_disable_looting"),8)
+		msg_text = "st_disable_looting"
 		npc:disable_info_portion("npcx_beh_gather_items")
 	else
-		SetHudMsg(game.translate_string("st_enable_looting"),8)
+		msg_text = "st_enable_looting"
 		npc:give_info_portion("npcx_beh_gather_items")
+	end
+	
+	if (has_msg) then
+		SetHudMsg(game.translate_string(msg_text),8)
 	end
 end
 
 function switch_companion_gather_items_no_message(npc)
-	switch_companion_gather_items(npc)
-	SetHudMsg("",0)
+	switch_companion_gather_items(npc, false)
 end
 
 function switch_companion_loot_corpses(npc)
