@@ -456,6 +456,11 @@ function switch_companion_gather_items(npc)
 	end
 end
 
+function switch_companion_gather_items_no_message(npc)
+	switch_companion_gather_items(npc)
+	SetHudMsg("",0)
+end
+
 function switch_companion_loot_corpses(npc)
 	if ( npc:has_info("npcx_beh_loot_corpses") ) then
 		npc:disable_info_portion("npcx_beh_loot_corpses")

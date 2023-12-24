@@ -115,8 +115,8 @@ function addonCompanionsContextMenu:Onbtn_lootCorpses_ignoreCorpses()
 								axr_companions.switch_companion_loot_corpses)
 								
 	self:ExecuteScriptByCondition("npcx_beh_gather_items",
-								axr_companions.switch_companion_gather_items, 
-								axr_companions.switch_companion_gather_items)
+								axr_companions.switch_companion_gather_items_no_message,
+								axr_companions.switch_companion_gather_items_no_message)
 
 	addonMenu:CloseTheMenu()
 end 
