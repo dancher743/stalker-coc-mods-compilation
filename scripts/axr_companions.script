@@ -475,6 +475,18 @@ function switch_companion_loot_corpses(npc)
 	end
 end
 
+function switch_companion_loot_corpses_and_gather_items(npc)
+	if (npc:has_info("npcx_beh_loot_corpses_and_gather_items")) then
+		npc:disable_info_portion("npcx_beh_loot_corpses")
+		npc:disable_info_portion("npcx_beh_gather_items")
+		npc:disable_info_portion("npcx_beh_loot_corpses_and_gather_items")
+	else
+		npc:give_info_portion("npcx_beh_loot_corpses")
+		npc:give_info_portion("npcx_beh_gather_items")
+		npc:give_info_portion("npcx_beh_loot_corpses_and_gather_items")
+	end
+end
+
 function companion_remove_waypoints(npc)
 	npc:disable_info_portion("npcx_beh_patrol_mode")
 	local i = 1

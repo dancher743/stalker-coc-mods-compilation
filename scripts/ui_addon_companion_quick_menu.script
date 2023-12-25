@@ -27,7 +27,7 @@ function addonCompanionsContextMenu:__init(companionSquad) super()
 	self:SetTextByCondition("btn_far_close",						     "npcx_beh_distance_far",  game.translate_string("st_addon_companion_quick_menu_stayClose"),game.translate_string("st_addon_companion_quick_menu_stayFar"))
 	self:SetTextByCondition("btn_aggressive_ignoreCombatButHelpActor",   "npcx_beh_ignore_combat", game.translate_string("st_addon_companion_quick_menu_fireAtWill"),game.translate_string("st_addon_companion_quick_menu_ignoreCombatButHelpMe"))
 	self:SetTextByCondition("btn_ignoreCombat_ignoreCombatButHelpActor", "npcx_beh_ignore_actor_enemies", game.translate_string("st_addon_companion_quick_menu_ignoreCombatButHelpMe"),game.translate_string("st_addon_companion_quick_menu_ignoreCombat"))
-	self:SetTextByCondition("btn_lootCorpses_ignoreCorpses",             "npcx_beh_loot_corpses", game.translate_string("st_addon_companion_quick_menu_doNotLootCorpses"),game.translate_string("st_addon_companion_quick_menu_lootCorpses"))
+	self:SetTextByCondition("btn_lootCorpses_ignoreCorpses",             "npcx_beh_loot_corpses_and_gather_items", game.translate_string("st_addon_companion_quick_menu_doNotLootCorpses"),game.translate_string("st_addon_companion_quick_menu_lootCorpses"))
 	self:SetText("btn_move_to_point", game.translate_string("st_addon_companion_quick_menu_moveToPoint"))
 
 end
@@ -110,13 +110,9 @@ function addonCompanionsContextMenu:Onbtn_ignoreCombat_ignoreCombatButHelpActor(
 end 
 
 function addonCompanionsContextMenu:Onbtn_lootCorpses_ignoreCorpses()
-	self:ExecuteScriptByCondition("npcx_beh_loot_corpses",
-								axr_companions.switch_companion_loot_corpses, 
-								axr_companions.switch_companion_loot_corpses)
-								
-	self:ExecuteScriptByCondition("npcx_beh_gather_items",
-								axr_companions.switch_companion_gather_items_no_message,
-								axr_companions.switch_companion_gather_items_no_message)
+	self:ExecuteScriptByCondition("npcx_beh_loot_corpses_and_gather_items",
+								axr_companions.switch_companion_loot_corpses_and_gather_items,
+								axr_companions.switch_companion_loot_corpses_and_gather_items)
 
 	addonMenu:CloseTheMenu()
 end 
