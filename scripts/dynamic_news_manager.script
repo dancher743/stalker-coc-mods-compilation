@@ -1053,7 +1053,12 @@ function DynamicNewsManager:ReportDeathByMutant(victim,who) -- Death Report by m
 	--printf(">>> Dyn News: ReportDeathByMutant - call")
 	local clr_1 = "%" .. "%c[255,160,160,190]"
 	local clr_2 = "%" .. "%c[255,220,220,220]"
-	local a = string.gsub(dynamic_news_helper.GetMonsterDescription(who,1),"(%l)?",string.upper("%1"),1)
+	local a
+	if (system_ini():r_string_ex("string_table","language") == "rus") then
+		a = dynamic_news_helper.GetMonsterDescription(who,7)
+	else
+		a = string.gsub(dynamic_news_helper.GetMonsterDescription(who,1),"(%l)?",string.upper("%1"),1)
+	end
 	local b = game.translate_string(victim:character_community())
 	local c = dynamic_news_helper.GetPointDescription(victim)
 	
