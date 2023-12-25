@@ -595,22 +595,25 @@
 		<text>Companion died</text>
 	</string>
 	<string id="st_companion_died_tip_descr">
-		<text>%s, %s.</text>
+		<text>%s, %s</text>
 	</string>
 	<string id="st_companion_died_tip_reason_0">
-		<text>cause of death was unknown</text>
+		<text>cause of death was unknown.</text>
 	</string>
 	<string id="st_companion_died_tip_reason_1">
-		<text>killed by stalker</text>
+		<text>killed by stalker.</text>
 	</string>
 	<string id="st_companion_died_tip_reason_2">
-		<text>killed by monster</text>
+		<text>killed by monster.</text>
 	</string>
 	<string id="st_companion_died_tip_reason_3">
-		<text>fell into anomaly</text>
+		<text>fell into anomaly.</text>
 	</string>
 	<string id="st_companion_died_tip_reason_4">
-		<text>killed by helicopter</text>
+		<text>killed by helicopter.</text>
+	</string>
+	<string id="st_companion_died_tip_reason_5">
+		<text>killed by you!</text>
 	</string>
 	
 	<string id="ui_st_companion_custom_spot_text">
