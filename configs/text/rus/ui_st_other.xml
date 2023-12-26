@@ -595,22 +595,22 @@
 		<text>Погиб напарник</text>
 	</string>
 	<string id="st_companion_died_tip_descr">
-		<text>%s, %s</text>
+		<text>%s, %s.</text>
 	</string>
 	<string id="st_companion_died_tip_reason_0">
-		<text>причина смерти не установлена.</text>
+		<text>причина смерти не установлена</text>
 	</string>
 	<string id="st_companion_died_tip_reason_1">
-		<text>убит сталкером.</text>
+		<text>убит сталкером</text>
 	</string>
 	<string id="st_companion_died_tip_reason_2">
-		<text>убит монстром.</text>
+		<text>убит монстром</text>
 	</string>
 	<string id="st_companion_died_tip_reason_3">
-		<text>попал в аномалию.</text>
+		<text>попал в аномалию</text>
 	</string>
 	<string id="st_companion_died_tip_reason_4">
-		<text>убит вертолётом.</text>
+		<text>убит вертолётом</text>
 	</string>
 	<string id="st_companion_died_tip_reason_5">
 		<text>убит вами!</text>

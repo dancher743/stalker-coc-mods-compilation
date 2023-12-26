@@ -71,6 +71,8 @@ local function send_companion_died_tip(npc, killer)
 	local icon = npc:character_icon()
 	local actor = db.actor
 	
+	text = text:gsub("!.", "!")
+	
 	actor:give_game_news(caption, text, icon, 0, 10000)
 	xr_sound.set_sound_play(actor:id(), "pda_sos")
 end
