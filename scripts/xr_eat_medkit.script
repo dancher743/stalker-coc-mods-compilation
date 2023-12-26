@@ -82,6 +82,12 @@ function eat_medkit:update(npc)
 				if (medkit) then
 					local d_min = eating.medkit_delay[self.rank][1] or 10000
 					local d_max = eating.medkit_delay[self.rank][2] or 15000
+					
+					if (axr_companions.is_companion(npc)) then
+						d_min = math.floor(d_min / 2)
+						d_max = math.floor(d_max / 2)
+					end
+					
 					self.timer = time_global()+math.random(d_min,d_max)
 					self.item = eating.medkits[i]
 					self.stage = 1
@@ -95,6 +101,12 @@ function eat_medkit:update(npc)
 				if (bandage) then
 					local d_min = eating.bandage_delay[self.rank][1] or 10000
 					local d_max = eating.bandage_delay[self.rank][2] or 15000
+					
+					if (axr_companions.is_companion(npc)) then
+						d_min = math.floor(d_min / 2)
+						d_max = math.floor(d_max / 2)
+					end
+					
 					self.timer = time_global()+math.random(d_min,d_max)
 					self.item = eating.bandages[i]
 					self.stage = 1
