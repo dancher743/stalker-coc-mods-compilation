@@ -595,7 +595,7 @@
 		<text>Companion died</text>
 	</string>
 	<string id="st_companion_died_tip_descr">
-		<text>%s, %s.</text>
+		<text>%s %s.</text>
 	</string>
 	<string id="st_companion_died_tip_reason_0">
 		<text>cause of death was unknown</text>
