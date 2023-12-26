@@ -1129,7 +1129,7 @@ function sim_squad_scripted:show()
 				spot = "alife_presentation_squad_enemy_1"
 			end
 			
-			if (self.scripted_target == "actor") then
+			if (axr_companions.companion_squads[self.id]) then
 				spot = "alife_presentation_squad_companion_1"
 				non_commander_spot = "alife_presentation_squad_companion_non_commander"
 			end
@@ -1142,7 +1142,7 @@ function sim_squad_scripted:show()
 				spot = "alife_presentation_squad_neutral"
 			end
 			
-			if (self.scripted_target == "actor") then
+			if (axr_companions.companion_squads[self.id]) then
 				spot = "alife_presentation_squad_companion"
 				non_commander_spot = "alife_presentation_squad_companion_non_commander"
 			end
