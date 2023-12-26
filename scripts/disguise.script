@@ -184,9 +184,13 @@ function npc_update()
 		local st = db.storage[db.OnlineStalkers[i]]
 		local npc = st and st.object or level.object_by_id(db.OnlineStalkers[i])
 		
-		if (npc and IsStalker(npc) and npc:alive()) then
+		if (npc and IsStalker(npc)) then
 			local id = npc:id()
 			local npc_is_enemy = game_relations.is_factions_enemies(default_faction, npc:character_community()) or npc:relation(db.actor) == game_object.enemy
+			
+			if (not npc:alive()) then
+				last_seen[id] = nil
+			end
 			
 			local current = utils.get_actor_community()
 			if current ~= default_faction and npc:see(db.actor) and npc_is_enemy then
