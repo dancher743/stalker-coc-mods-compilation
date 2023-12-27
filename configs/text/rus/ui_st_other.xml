@@ -598,7 +598,7 @@
 		<text>%s %s.</text>
 	</string>
 	<string id="st_companion_died_tip_reason_0">
-		<text>причина смерти не установлена</text>
+		<text>умер по неизвестной причине</text>
 	</string>
 	<string id="st_companion_died_tip_reason_1">
 		<text>убит сталкером</text>
@@ -607,7 +607,7 @@
 		<text>убит монстром</text>
 	</string>
 	<string id="st_companion_died_tip_reason_3">
-		<text>попал в аномалию</text>
+		<text>убит аномалией</text>
 	</string>
 	<string id="st_companion_died_tip_reason_4">
 		<text>убит вертолётом</text>
