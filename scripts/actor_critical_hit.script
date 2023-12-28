@@ -5,14 +5,14 @@
 
 local hit_chance_by_rank = 
 {
-	["novice"] 			= 1,
-	["trainee"] 		= 1,
-	["experienced"]		= 1,
-	["professional"]    = 1,
-	["veteran"]         = 1,
-	["expert"]          = 1,
-	["master"]          = 1,
-	["legend"]          = 1,
+	["novice"] 			= 0.10,
+	["trainee"] 		= 0.12,
+	["experienced"]		= 0.14,
+	["professional"]    = 0.16,
+	["veteran"]         = 0.18,
+	["expert"]          = 0.20,
+	["master"]          = 0.22,
+	["legend"]          = 0.24,
 }
 local hit_damage = 3.0
 
