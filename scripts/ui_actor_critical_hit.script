@@ -1,17 +1,40 @@
 --
--- UI of Critical hit from Actor
+-- UI for Critical hit from Actor
 -- Added by Dancher
 --
 
+local duration = 0.35
+
 local critical_hit_mark_ui
 
-function show()
+local function hide_mark()
+	RemoveTimeEvent("ui_actor_critical_hit", "hide_mark")
+	critical_hit_mark_ui:SetVisible(false)
+end
+
+function show_mark()
 	if (critical_hit_mark_ui == nil) then
 		critical_hit_mark_ui = critical_hit_mark()
 		get_hud():AddDialogToRender(critical_hit_mark_ui)
 	end
+	
+	if (critical_hit_mark_ui:IsVisible()) then
+		hide_mark()
+	end
+	
+	critical_hit_mark_ui:SetVisible(true)
+	CreateTimeEvent("ui_actor_critical_hit", "hide_mark", duration, hide_mark)
 end
 
+local function actor_on_net_destroy()
+	if (critical_hit_mark_ui) then
+		get_hud():RemoveDialogToRender(critical_hit_mark_ui)
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("actor_on_net_destroy",actor_on_net_destroy)
+end
 
 --- UI class ---
 
@@ -26,9 +49,13 @@ end
 function critical_hit_mark:InitControls()
 	local xml = CScriptXmlInit()
 	xml:ParseFile("ui_actor_critical_hit.xml")
-	
-	self.critical_hit = xml:InitStatic("critical_hit", self)	
-	self.mark = xml:InitStatic("critical_hit:mark", self.critical_hit)
-	
-	self.critical_hit:Show(true)
+	self.mark = xml:InitStatic("critical_hit_mark", self)
+end
+
+function critical_hit_mark:SetVisible(value)
+	self.mark:Show(value)
+end
+
+function critical_hit_mark:IsVisible()
+	return self.mark:IsShown()
 end

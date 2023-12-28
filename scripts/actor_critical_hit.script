@@ -48,7 +48,7 @@ local function obj_on_hit_callback(obj, amount, local_direction, who, bone_index
 	obj:hit(crit_hit)
 	-- printf(string.format("DANCHER | Critical hit on %s. Orignal damage is %s.", math.floor(crit_hit.power), math.floor(amount)))
 	
-	ui_actor_critical_hit.show()
+	ui_actor_critical_hit.show_mark()
 end
 
 function on_game_start()
