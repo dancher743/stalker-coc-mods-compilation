@@ -108,3 +108,4 @@ Mods
 64. Put spot on Map (Dancher)
 65. Leave the Zone (UI based on New saves by av661194) (Dancher)
 66. TRX: Global Weather (2.2) (Tronex)
+67. Critical Hit (Dancher)

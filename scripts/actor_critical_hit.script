@@ -1,0 +1,55 @@
+--
+-- Critical hit from Actor
+-- Added by Dancher
+--
+
+local hit_chance_by_rank = 
+{
+	["novice"] 			= 0.10,
+	["trainee"] 		= 0.12,
+	["experienced"]		= 0.14,
+	["professional"]    = 0.16,
+	["veteran"]         = 0.18,
+	["expert"]          = 0.20,
+	["master"]          = 0.22,
+	["legend"]          = 0.24,
+}
+local hit_damage = 3.0
+
+local function get_hit_chance()
+	local actor_rank = ranks.get_obj_rank_name(db.actor)
+	return hit_chance_by_rank[actor_rank]
+end
+
+local function calculate_hit_power(amount)
+	local hit_chance = get_hit_chance()
+	local a = amount * (1 - hit_chance)
+	local b = amount * hit_damage * hit_chance
+	return (a + b) - amount
+end
+
+local function can_hit(who, obj, amount)
+	return IsActor(who) and obj:alive() and obj.health*100 - amount > 0 and math.random() <= get_hit_chance()
+end
+
+local function obj_on_hit_callback(obj, amount, local_direction, who, bone_index)	
+	if (not can_hit(who, obj, amount)) then
+		return
+	end
+
+	local crit_hit = hit()
+	crit_hit.type = hit.fire_wound
+	crit_hit.bone = bone_index
+	crit_hit.power = calculate_hit_power(amount)
+	crit_hit.impulse = 0.0
+	crit_hit.direction = local_direction
+	crit_hit.draftsman = who
+	
+	obj:hit(crit_hit)
+	-- printf(string.format("DANCHER | Critical hit on %s. Orignal damage is %s.", math.floor(crit_hit.power), math.floor(amount)))
+end
+
+function on_game_start()
+	RegisterScriptCallback("npc_on_hit_callback", obj_on_hit_callback)
+	RegisterScriptCallback("monster_on_hit_callback", obj_on_hit_callback)
+end
