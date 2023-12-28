@@ -1,0 +1,34 @@
+--
+-- UI of Critical hit from Actor
+-- Added by Dancher
+--
+
+local critical_hit_mark_ui
+
+function show()
+	if (critical_hit_mark_ui == nil) then
+		critical_hit_mark_ui = critical_hit_mark()
+		get_hud():AddDialogToRender(critical_hit_mark_ui)
+	end
+end
+
+
+--- UI class ---
+
+class "critical_hit_mark" (CUIScriptWnd)
+function critical_hit_mark:__init() super()
+	self:InitControls()
+end
+ 
+function critical_hit_mark:__finalize()
+end
+ 
+function critical_hit_mark:InitControls()
+	local xml = CScriptXmlInit()
+	xml:ParseFile("ui_actor_critical_hit.xml")
+	
+	self.critical_hit = xml:InitStatic("critical_hit", self)	
+	self.mark = xml:InitStatic("critical_hit:mark", self.critical_hit)
+	
+	self.critical_hit:Show(true)
+end

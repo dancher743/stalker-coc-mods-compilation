@@ -1,0 +1,7 @@
+<w>
+	<critical_hit x="505" y="376">
+		<mark width="16" height="16" stretch="1" heading_angle="45">
+			<texture r="255" g="0" b="0">ui_mmap_common_actor</texture>
+		</mark>
+	</critical_hit>
+</w>

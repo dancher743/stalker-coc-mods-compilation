@@ -5,14 +5,14 @@
 
 local hit_chance_by_rank = 
 {
-	["novice"] 			= 0.10,
-	["trainee"] 		= 0.12,
-	["experienced"]		= 0.14,
-	["professional"]    = 0.16,
-	["veteran"]         = 0.18,
-	["expert"]          = 0.20,
-	["master"]          = 0.22,
-	["legend"]          = 0.24,
+	["novice"] 			= 1,
+	["trainee"] 		= 1,
+	["experienced"]		= 1,
+	["professional"]    = 1,
+	["veteran"]         = 1,
+	["expert"]          = 1,
+	["master"]          = 1,
+	["legend"]          = 1,
 }
 local hit_damage = 3.0
 
@@ -47,6 +47,8 @@ local function obj_on_hit_callback(obj, amount, local_direction, who, bone_index
 	
 	obj:hit(crit_hit)
 	-- printf(string.format("DANCHER | Critical hit on %s. Orignal damage is %s.", math.floor(crit_hit.power), math.floor(amount)))
+	
+	ui_actor_critical_hit.show()
 end
 
 function on_game_start()
