@@ -234,10 +234,10 @@
 		<text>Деньги:</text>
 	</string>
 	<string id="st_mm_new_game_points_left">
-		<text>Очков осталось:</text>
+		<text>Осталось:</text>
 	</string>
 	<string id="st_mm_new_game_points_used">
-		<text>Очков вложено:</text>
+		<text>Вложено:</text>
 	</string>
 	<string id="ui_st_random_location">
 		<text>Произвольное место старта</text>
