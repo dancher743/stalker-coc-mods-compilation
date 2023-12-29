@@ -46,6 +46,14 @@ function reset_settings(level_name, ambient)
 		return false
 	end
 	
+	if (IsSurvivalMode()) then
+		local ini_surv = ini_file("environment\\ambients\\survival.ltx")
+		local channels_surv = alun_utils.parse_list(ini_surv,ambient,"sound_channels_dynamic")
+		for i=1,#channels_surv do
+			table.insert(channels,channels_surv[i]);
+		end
+	end
+	
 	local cached = {}
 	local ini_snd = ini_file("environment\\sound_channels.ltx")
 	for i=1,#channels do
