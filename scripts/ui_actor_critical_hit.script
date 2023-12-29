@@ -13,6 +13,10 @@ local function hide_mark()
 end
 
 function show_mark()
+	if (get_console():get_bool("hud_draw") == false) then
+		return
+	end
+	
 	if (critical_hit_mark_ui == nil) then
 		critical_hit_mark_ui = critical_hit_mark()
 		get_hud():AddDialogToRender(critical_hit_mark_ui)
