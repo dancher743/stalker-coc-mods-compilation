@@ -1595,11 +1595,13 @@ function faction_ui:UpdateMap()
 	local selected_map = self.selected_map;
 	if selected_map == "random_location" then
 		self.box_map:InitTexture("")
+		self.box_map:Show(false)
 	else
 		local map = alun_utils.read_from_ini(ini_map, self.selected_faction .. "_start_locations", selected_map, "string")
 		self.box_map:InitTexture("ui_new_game_map_" .. map)
 		self.box_map:SetStretchTexture(true)
 		self.box_map:SetWndSize(vector2():set(self.box_map:GetWidth(),self.box_map:GetHeight()))
+		self.box_map:Show(true)
 	end
 end
 
