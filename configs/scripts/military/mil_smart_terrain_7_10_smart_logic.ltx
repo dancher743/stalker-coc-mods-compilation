@@ -12,7 +12,7 @@ cover_name = mil_smart_terrain_7_10_freedom_trader_smart_cover
 avail_animations = animpoint_stay_table
 use_camp = false
 meet = meet@mechanic
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 gather_items_enabled = false
 help_wounded_enabled = false

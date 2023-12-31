@@ -9,7 +9,7 @@ reach_movement = walk_noweap
 use_camp = false
 meet = meet@bar_visitors_animpoint_meet
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 gather_items_enabled = false
 help_wounded_enabled = false
 corpse_detection_enabled = false
@@ -112,7 +112,7 @@ prior = 65
 [beh@general]
 meet = meet@bar_visitors_animpoint_meet
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 gather_items_enabled = false
 help_wounded_enabled = false
 corpse_detection_enabled = false
@@ -441,7 +441,7 @@ reach_movement = sprint
 cover_name = bar_visitors_animp_arena_1
 avail_animations = hello_wpn
 meet = no_meet
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 combat_ignore_keep_when_attacked = false
 invulnerable = true
 on_info = %=play_sound(arena_public)%
@@ -457,7 +457,7 @@ reach_movement = sprint
 cover_name = bar_visitors_animp_arena_2
 avail_animations = hello_wpn
 meet = no_meet
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 combat_ignore_keep_when_attacked = false
 invulnerable = true
 on_info = %=play_sound(arena_public)%
@@ -473,7 +473,7 @@ reach_movement = sprint
 cover_name = bar_visitors_animp_arena_3
 avail_animations = hello_wpn
 meet = no_meet
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 combat_ignore_keep_when_attacked = false
 invulnerable = true
 on_info = %=play_sound(arena_public)%
@@ -489,7 +489,7 @@ reach_movement = sprint
 cover_name = bar_visitors_animp_arena_4
 avail_animations = hello_wpn
 meet = no_meet
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 combat_ignore_keep_when_attacked = false
 invulnerable = true
 on_info = %=play_sound(arena_public)%
@@ -505,7 +505,7 @@ reach_movement = sprint
 cover_name = bar_visitors_animp_arena_5
 avail_animations = hello_wpn
 meet = no_meet
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 combat_ignore_keep_when_attacked = false
 invulnerable = true
 on_info = %=play_sound(arena_public)%
@@ -521,7 +521,7 @@ reach_movement = sprint
 cover_name = bar_visitors_animp_arena_6
 avail_animations = hello_wpn
 meet = no_meet
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 combat_ignore_keep_when_attacked = false
 invulnerable = true
 on_info = %=play_sound(arena_public)%
@@ -537,7 +537,7 @@ reach_movement = sprint
 cover_name = bar_visitors_animp_arena_7
 avail_animations = hello_wpn
 meet = no_meet
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 combat_ignore_keep_when_attacked = false
 invulnerable = true
 on_info = %=play_sound(arena_public)%
@@ -553,7 +553,7 @@ reach_movement = sprint
 cover_name = bar_visitors_animp_arena_8
 avail_animations = hello_wpn
 meet = no_meet
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 combat_ignore_keep_when_attacked = false
 invulnerable = true
 on_info = %=play_sound(arena_public)%
@@ -569,7 +569,7 @@ reach_movement = sprint
 cover_name = bar_visitors_animp_arena_9
 avail_animations = hello_wpn
 meet = no_meet
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 combat_ignore_keep_when_attacked = false
 invulnerable = true
 on_info = %=play_sound(arena_public)%
@@ -585,7 +585,7 @@ reach_movement = sprint
 cover_name = bar_visitors_animp_arena_10
 avail_animations = hello_wpn
 meet = no_meet
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 combat_ignore_keep_when_attacked = false
 invulnerable = true
 on_info = %=play_sound(arena_public)%

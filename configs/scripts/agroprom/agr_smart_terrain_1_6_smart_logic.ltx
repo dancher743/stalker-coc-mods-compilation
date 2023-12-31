@@ -109,7 +109,7 @@ cover_name = agr_smart_terrain_1_6_smart_cover_trader
 reach_movement = walk_noweap
 avail_animations = jup_b41_novikov_stand
 reach_distance = 10
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 gather_items_enabled = false
 help_wounded_enabled = false
 corpse_detection_enabled = false
@@ -138,7 +138,7 @@ cover_name = agr_smart_terrain_1_6_smart_cover_mechanic
 avail_animations = jup_b41_novikov_stand
 use_camp = false
 meet = meet@mechanic
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 reach_distance = 10
 gather_items_enabled = false

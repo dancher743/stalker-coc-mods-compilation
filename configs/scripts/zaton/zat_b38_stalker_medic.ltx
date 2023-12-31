@@ -10,7 +10,7 @@ dont_keep_items = true
 cover_name = zat_a2_sc_medic
 use_camp = false
 meet = meet
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 out_restr = zat_a2_sr_noweap
 gather_items_enabled = false

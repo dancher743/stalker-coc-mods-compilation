@@ -3396,3 +3396,8 @@ end
 function is_companion_trust_actor(actor,npc,p)
 	return axr_companions.is_trust_actor(npc)
 end
+
+function is_survival_mode_enabled(actor,npc)
+	return IsSurvivalMode()
+end
+

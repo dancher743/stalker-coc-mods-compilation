@@ -13,7 +13,7 @@ meet = meet
 on_info = {+bar_visitors_tech_out =dist_to_actor_ge(20)} animpoint@sleep, {+bar_visitors_tech_drinking +bar_visitors_tech_out} animpoint@drinking %-bar_visitors_tech_drinked_out%, {+bar_visitors_tech_drinking +bar_visitors_tech_have_couple_dose} animpoint@drinking %-bar_visitors_tech_drinked_out%, {+bar_visitors_tech_drinking +bar_visitors_tech_have_one_dose} animpoint@drinking %-bar_visitors_tech_drinked_out%
 on_info3 = {=dist_to_actor_ge(20)} %+bar_visitors_tech_waked_up +bar_visitors_tech_drinked_out%
 on_game_timer = 100 | %+bar_visitors_tech_waked_up +bar_visitors_tech_drinked_out% 
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 gather_items_enabled = false
 help_wounded_enabled = false
@@ -47,7 +47,7 @@ use_camp = false
 on_game_timer = 37 | {-bar_visitors_tech_take_dose +bar_visitors_tech_out} %=play_sound(zat_b3_tech_take_third_dose) +bar_visitors_tech_take_dose%
 on_game_timer2 = 42 | {+bar_visitors_tech_out} animpoint@sleep %-bar_visitors_tech_drinking -bar_visitors_tech_take_dose -bar_visitors_tech_waked_up%, animpoint@base %-bar_visitors_tech_drinking -bar_visitors_tech_take_dose%
 meet = no_meet
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 combat_ignore_keep_when_attacked = true
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 gather_items_enabled = false
@@ -63,7 +63,7 @@ on_game_timer = 220 | %+zat_a2_mech_sleep_sound%
 on_info = {-bar_visitors_tech_out} animpoint@base  %-zat_a2_mech_sleep_sound%
 on_info2 = {=dist_to_actor_ge(20)} %-bar_visitors_tech_sleeping%, {=see_actor =dist_to_actor_le(4) -bar_visitors_tech_sleeping +zat_a2_mech_sleep_sound} %=play_sound(zat_b3_tech_sleep_) +bar_visitors_tech_sleeping -bar_visitors_tech_out -bar_visitors_tech_have_couple_dose -bar_visitors_tech_have_one_dose%
 meet = meet@sleep
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 combat_ignore_keep_when_attacked = true
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true
 gather_items_enabled = false

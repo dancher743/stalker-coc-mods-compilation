@@ -12,7 +12,7 @@ cover_name = mar_base_sc_trader
 avail_animations = animpoint_sit_normal
 meet = meet@trade
 use_camp = false
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 gather_items_enabled = false
 help_wounded_enabled = false

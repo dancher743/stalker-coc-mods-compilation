@@ -16,7 +16,7 @@ on_info2 = {+zat_b3_tech_see_produce_62 -zat_b3_tech_has_awaken -zat_b3_tech_sho
 on_info3 = {=dist_to_actor_ge(75)} %-zat_b3_mech_greetings%, {+zat_b3_tech_see_produce_62 =see_actor =dist_to_actor_le(3) -zat_b3_mech_greetings} %=play_sound(zat_b3_tech_drink_no_more) +zat_b3_mech_greetings%, {+zat_b3_tech_have_couple_dose +zat_b3_tech_discount_1 =see_actor =dist_to_actor_le(3) -zat_b3_mech_greetings} %=play_sound(zat_b3_tech_realy_drunk_discount) +zat_b3_mech_greetings%, {+zat_b3_tech_have_couple_dose -zat_b3_tech_discount_1 =see_actor =dist_to_actor_le(3) -zat_b3_mech_greetings}  %=play_sound(zat_b3_tech_realy_drunk) +zat_b3_mech_greetings%, {+zat_b3_tech_have_one_dose +zat_b3_tech_discount_1 =see_actor =dist_to_actor_le(3) -zat_b3_mech_greetings} %=play_sound(zat_b3_tech_drunk_discount) +zat_b3_mech_greetings%, {+zat_b3_tech_have_one_dose -zat_b3_tech_discount_1 =see_actor =dist_to_actor_le(3) -zat_b3_mech_greetings} %=play_sound(zat_b3_tech_drunk) +zat_b3_mech_greetings%, {-zat_b3_tech_have_one_dose =see_actor =dist_to_actor_le(3) -zat_b3_mech_greetings} %=play_sound(zat_b3_tech_sober) +zat_b3_mech_greetings% 
 on_info4 = {=dist_to_actor_ge(20)} %+zat_b3_tech_waked_up +zat_b3_tech_drinked_out%
 on_game_timer = 100 | %+zat_b3_tech_waked_up +zat_b3_tech_drinked_out% 
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 gather_items_enabled = false
 help_wounded_enabled = false
@@ -50,7 +50,7 @@ out_restr = zat_a2_sr_noweap
 on_game_timer = 37 | {-zat_b3_tech_take_dose +zat_b3_tech_out} %=play_sound(zat_b3_tech_take_third_dose) +zat_b3_tech_take_dose%, {-zat_b3_tech_take_dose +zat_b3_tech_have_couple_dose} %=play_sound(zat_b3_tech_take_second_dose) +zat_b3_tech_take_dose%, {-zat_b3_tech_take_dose +zat_b3_tech_have_one_dose} %=play_sound(zat_b3_tech_take_first_dose) +zat_b3_tech_take_dose%
 on_game_timer2 = 42 | {+zat_b3_tech_out} animpoint@sleep %-zat_b3_tech_drinking -zat_b3_tech_take_dose -zat_b3_tech_waked_up%, animpoint@base %-zat_b3_tech_drinking -zat_b3_tech_take_dose%
 meet = no_meet
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 combat_ignore_keep_when_attacked = true
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 gather_items_enabled = false
@@ -67,7 +67,7 @@ on_info = {-zat_b3_tech_out} animpoint@base  %-zat_a2_mech_sleep_sound%
 on_info2 = {=dist_to_actor_ge(20)} %-zat_b3_mech_sleeping%, {=see_actor =dist_to_actor_le(4) -zat_b3_mech_sleeping +zat_a2_mech_sleep_sound} %=play_sound(zat_b3_tech_sleep_) +zat_b3_mech_sleeping%
 meet = meet@sleep
 out_restr = zat_a2_sr_noweap
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 combat_ignore_keep_when_attacked = true
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 gather_items_enabled = false
