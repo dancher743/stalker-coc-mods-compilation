@@ -3,13 +3,13 @@
 -- Added by Dancher
 --
 
-local duration = 0.35
+local duration = 0.30
 
 local critical_hit_mark_ui
 
 local function hide_mark()
 	RemoveTimeEvent("ui_actor_critical_hit", "hide_mark")
-	critical_hit_mark_ui:SetVisible(false)
+	critical_hit_mark_ui:Show(false)
 end
 
 function show_mark()
@@ -20,13 +20,15 @@ function show_mark()
 	if (critical_hit_mark_ui == nil) then
 		critical_hit_mark_ui = critical_hit_mark()
 		get_hud():AddDialogToRender(critical_hit_mark_ui)
+		critical_hit_mark_ui:Show(false)
 	end
 	
-	if (critical_hit_mark_ui:IsVisible()) then
-		hide_mark()
+	if (critical_hit_mark_ui:IsShown()) then
+		ResetTimeEvent("ui_actor_critical_hit", "hide_mark", duration)
+		return
 	end
 	
-	critical_hit_mark_ui:SetVisible(true)
+	critical_hit_mark_ui:Show(true)
 	CreateTimeEvent("ui_actor_critical_hit", "hide_mark", duration, hide_mark)
 end
 
@@ -54,12 +56,4 @@ function critical_hit_mark:InitControls()
 	local xml = CScriptXmlInit()
 	xml:ParseFile("ui_actor_critical_hit.xml")
 	self.mark = xml:InitStatic("critical_hit_mark", self)
-end
-
-function critical_hit_mark:SetVisible(value)
-	self.mark:Show(value)
-end
-
-function critical_hit_mark:IsVisible()
-	return self.mark:IsShown()
 end
