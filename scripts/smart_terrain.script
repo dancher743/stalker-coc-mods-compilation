@@ -894,17 +894,13 @@ end
 --*******************************************************
 function se_smart_terrain:STATE_Write(packet)
 	cse_alife_smart_zone.STATE_Write(self, packet)
-	--if (USE_MARSHAL) then 
-	--	return 
-	--end
+	-- if (USE_MARSHAL) then 
+		-- return 
+	-- end
 	--set_save_marker(packet, "save", false, "se_smart_terrain")
 
 	-- Информацию о НПС, идущих в смарт
-	local n = 0
-	for k,v in pairs(self.arriving_npc) do
-		n = n + 1
-	end
-
+	local n = table.size(self.arriving_npc)
 	alun_utils.w_stpk(packet,"u8",n,"arriving_npc count")
 	for k,v in pairs(self.arriving_npc) do
 		alun_utils.w_stpk(packet,"u16",k,"arriving_npc id")
@@ -912,11 +908,7 @@ function se_smart_terrain:STATE_Write(packet)
 
 
 	-- Информацию о НПС в смарте
-	n = 0
-	for k,v in pairs(self.npc_info) do
-		n = n + 1
-	end
-
+	n = table.size(self.npc_info)
 	--printf("%s:STATE_Write   JobCount=%s",self:name(),n)
 	alun_utils.w_stpk(packet,"u8",n,"npc_info count")
 	for id,info in pairs(self.npc_info) do
@@ -926,25 +918,9 @@ function se_smart_terrain:STATE_Write(packet)
 		alun_utils.w_stpk(packet,"stringZ",tostring(info.need_job),"npc_info.need_job")
 	end
 
-	--[[
-	n = 0
-	for k,v in pairs(self.dead_time) do
-		n = n + 1
-	end
-
-	alun_utils.w_stpk(packet,"u8",n,"dead_time count")
-	for k,v in pairs(self.dead_time) do
-		alun_utils.w_stpk(packet,"stringZ",k,"dead_time job_section")
-		alun_utils.w_stpk(packet,"CTime",v,"dead_time CTime")
-	end
-	--]]
-
 	if self.respawn_point then
 		alun_utils.w_stpk(packet,"bool",true,"respawn_point")
-		local n = 0
-		for k,v in pairs(self.already_spawned) do
-			n = n + 1
-		end
+		local n = table.size(self.already_spawned)
 
 		alun_utils.w_stpk(packet,"u8",n,"already_spawned count")
 		for k,v in pairs(self.already_spawned) do
@@ -956,6 +932,8 @@ function se_smart_terrain:STATE_Write(packet)
 		alun_utils.w_stpk(packet,"bool",false,"respawn_point")
 	end
 
+	alun_utils.w_stpk(packet,"s32",(self.smart_alarm_time or time_global()) - time_global(),"smart_alarm_time")
+	
 	--set_save_marker(packet, "save", true, "se_smart_terrain")
 end
 
@@ -963,15 +941,12 @@ function se_smart_terrain:STATE_Read(packet, size)
 	--alun_utils.debug_write(strformat("%s:STATE_READ start",self:name()))
 	cse_alife_smart_zone.STATE_Read(self, packet, size)
 	self:read_params()
-	--if (USE_MARSHAL) then
-	--	self:load_state(alife_storage_manager.get_state())
-	--	return
-	--end
-	-- под LevelEditor не пытаться читать из пакета ничего
-	if editor() then
-		return
-	end
 	
+	-- if (USE_MARSHAL) then
+		-- self:load_state(alife_storage_manager.get_state())
+		-- return
+	-- end
+
 	self.need_init_npc = true
 	--set_save_marker(packet, "load", false, "se_smart_terrain")
 
@@ -1023,7 +998,7 @@ function se_smart_terrain:STATE_Read(packet, size)
 		for i = 1, n do
 			local id = packet:r_stringZ()
 			local num = packet:r_u8()
-			if (id and id ~= "nil" and id ~= "") then
+			if (self.already_spawned and id and id ~= "nil" and id ~= "") then
 				-- technically it's an error but it's makes save compatible if change respawn
 				if not (self.already_spawned[id]) then 
 					self.already_spawned[id] = {}
