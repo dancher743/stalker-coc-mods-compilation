@@ -23,18 +23,20 @@ function show_mark()
 		critical_hit_mark_ui:Show(false)
 	end
 	
-	if (critical_hit_mark_ui:IsShown()) then
+	if (critical_hit_mark_ui:IsShown() and HasTimeEvent("ui_actor_critical_hit", "hide_mark")) then
 		ResetTimeEvent("ui_actor_critical_hit", "hide_mark", duration)
 		return
 	end
 	
 	critical_hit_mark_ui:Show(true)
+	RemoveTimeEvent("ui_actor_critical_hit", "hide_mark")
 	CreateTimeEvent("ui_actor_critical_hit", "hide_mark", duration, hide_mark)
 end
 
 local function actor_on_net_destroy()
 	if (critical_hit_mark_ui) then
 		get_hud():RemoveDialogToRender(critical_hit_mark_ui)
+		critical_hit_mark_ui = nil
 	end
 end
 

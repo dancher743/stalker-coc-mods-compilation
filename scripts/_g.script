@@ -166,6 +166,10 @@ function ResetTimeEvent(ev_id,act_id,timer)
 	end
 end
 
+function HasTimeEvent(ev_id,act_id)
+	return ev_queue[ev_id] and ev_queue[ev_id][act_id]
+end
+
 function ProcessEventQueue(force)
 	-- if (has_alife_info("sleep_active")) then
 		-- return false
