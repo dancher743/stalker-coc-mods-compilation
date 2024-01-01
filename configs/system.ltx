@@ -813,9 +813,11 @@ custom_data             = scripts\ph_sleepbag.ltx
 parent_section			= sleeping_place
 custom_data 			= scripts\bar\bar_room\bar_room_sofa_sleeping_place.ltx
 
-[custom_spot_dummy_object]:script_object
-visual                  = dynamics\decor\sleeping_decor_inviz.ogf 
-script_binding			= bind_physic_object.init
+[custom_spot_dummy_object]
+GroupControlSection                      =
+$spawn                                   = "ai\script zone"
+;$prefetch    = 4
+class                                    = SCRIPTZN
 
 [leave_zone_object]:script_object
 visual					= dynamics\decor\sleeping_decor_inviz.ogf
