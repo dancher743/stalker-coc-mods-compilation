@@ -38,7 +38,7 @@
 	</string>
 	
 	<string id="ls_tip_8">
-		<text>Backpacks can be bought or found and then used to create a custom stash. Stashes created by the player are never de-spawned nor are they ever looted by other stalkers. They are permanent until all items are removed.</text>
+		<text>Backpacks can be bought or found and then used to create a custom stash. Stashes created by the player are permanent until all items are removed.</text>
 	</string>
 	
 	<string id="ls_tip_9">
