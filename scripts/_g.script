@@ -755,6 +755,7 @@ local monster_classes
 local weapon_classes
 local artefact_classes
 local anomaly_classes
+local underground_levels
 
 function IsOutfit(o,c)
 	if not c then
@@ -1816,4 +1817,21 @@ function IsAnomaly(o,c)
 		}
 	end
 	return c and anomaly_classes[c] or false
+end
+
+function IsUndergroundLevel()
+	if not (underground_levels) then
+		underground_levels = {
+		["jupiter_underground"] 	= true,
+		["labx8"] 					= true,
+		["l03u_agr_underground"] 	= true,
+		["l04u_labx18"] 			= true,
+		["l08u_brainlab"] 			= true,
+		["l10u_bunker"] 			= true,
+		["l12u_control_monolith"] 	= true,
+		["l12u_sarcofag"] 			= true,
+		["l13u_warlab"] 			= true,
+		}
+	end	
+	return underground_levels[level.name()]
 end
