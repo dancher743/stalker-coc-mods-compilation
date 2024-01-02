@@ -245,7 +245,7 @@ local function can_help_actor(squad)
 end
 
 local function get_help_target_id(squad)
-	if (IsSurvivalMode() and squad.dist_to_actor <= 300) then
+	if (IsSurvivalMode() and not IsEocMode() and squad.dist_to_actor <= 300) then
 		if (squad.player_id == "zombied" or is_squad_monster[squad.player_id]) then
 			return 0
 		end
@@ -963,7 +963,7 @@ function sim_squad_scripted:can_switch_offline()
 	end
 	--]]
 	
-	if (IsSurvivalMode()) then
+	if (IsSurvivalMode() and not IsEocMode()) then
 		return false
 	end
 	
@@ -988,7 +988,7 @@ function sim_squad_scripted:can_switch_online()
 		return true
 	end
 	
-	if (IsSurvivalMode()) then
+	if (IsSurvivalMode() and not IsEocMode()) then
 		return true
 	end
 	
