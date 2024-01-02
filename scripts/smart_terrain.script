@@ -1019,6 +1019,12 @@ function se_smart_terrain:STATE_Read(packet, size)
 		self.last_respawn_update = utils.r_CTime(packet)
 	end
 
+	if (packet:r_elapsed() ~= 0) then
+		local tmr = packet:r_s32()
+		if (tmr > 0) then
+			self.smart_alarm_time = time_global() + tmr
+		end
+	end
 	--set_save_marker(packet, "load", true, "se_smart_terrain")
 	--alun_utils.debug_write(strformat("%s:STATE_READ end",self:name()))
 end
