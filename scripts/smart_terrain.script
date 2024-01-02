@@ -932,6 +932,8 @@ function se_smart_terrain:STATE_Write(packet)
 		alun_utils.w_stpk(packet,"bool",false,"respawn_point")
 	end
 
+	alun_utils.w_stpk(packet,"s32",(self.smart_alarm_time or time_global()) - time_global(),"smart_alarm_time")
+	
 	--set_save_marker(packet, "save", true, "se_smart_terrain")
 end
 
