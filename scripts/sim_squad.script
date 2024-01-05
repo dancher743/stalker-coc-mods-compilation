@@ -112,9 +112,8 @@ function create_squad(smart, faction, target, type, number, param)
 	    end  
 	else
 		if (IsSurvivalMode()) then
-			if (sim_survival.should_faction_replace_by_zombied(faction)) then
-				faction = "zombied"
-			elseif (sim_survival.should_dont_create_squad(faction)) then
+			faction = sim_survival.replace_faction(faction)
+			if (faction == nil) then
 				return
 			end
 		end

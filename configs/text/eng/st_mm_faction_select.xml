@@ -126,7 +126,7 @@
 			%c[0,150,150,150]Survival mode is a feature that replaces most of spawns with Zombies.\n
 			\nThese hordes will make their way to your location - be prepared! See how long you can survive!
 			\n
-			\n%c[200,200,200,50]• %c[0,150,150,150]If Extended population mode is active, then you will have relatively safe only the first 24 hours, as the activity of Zombies in the Zone will increase every hour. Use your time wisely!
+			\n%c[200,200,200,50]• %c[0,150,150,150]If Extended population mode is active, then you will have relatively safe only the first 24 hours, because the activity of Zombies' spawn will increase every hour. Use your time wisely!
 		</text>
 	</string>
 	<string id="st_mm_ck_azazel_mode_desc">

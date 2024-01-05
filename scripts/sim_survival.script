@@ -1,5 +1,5 @@
 --
---	Function-helpers for the simulation of EOC's survival mode
+--	Function-helpers for a simulation of EOC's survival mode
 --	Added by Dancher
 --
 
@@ -8,7 +8,7 @@ local enable_debug = false
 -- From Anomaly 1.5.1.2 mod
 local function print_dbg(fmt, ...)
 	if enable_debug then
-		printf("DANCHER: sim_survival.script | " .. fmt, ...)
+		printf("DANCHER | sim_survival.script : " .. fmt, ...)
 	end
 end
 
@@ -20,36 +20,36 @@ local function get_chance_by_elapsed_hours(max_hours, max_chance)
 	return chance
 end
 
-function should_faction_replace_by_zombied(faction)
-	local result = false
+function replace_faction(faction)
+	local result_faction = nil
 
-	if (faction ~= "zombied" and math.random(100) <= get_chance_by_elapsed_hours(24, 90)) then
+	if (faction ~= "zombied" and math.random(100) < get_chance_by_elapsed_hours(24, 90)) then
+		result_faction = "zombied"
 		print_dbg("FACTION: %s -> %s", faction, "zombied")
-		result = true
 	end
 
-	return result
+	return result_faction
 end
 
-function should_dont_create_squad(faction)
-	local result = false
-
-	if (faction ~= "zombied" and math.random(100) > 10) then
-		result = true
-	end
-
-	return result
-end
-
-function try_replace_mutant_by_zombies(section)
-	local result_section = section
+function replace_mutant(section)
+	local result_section = nil
+	
 	local mutants_for_survival_mode = sim_tables.mutants_for_survival_mode
-
-	if (not (utils.contains(mutants_for_survival_mode,section)) and math.random(100) <= get_chance_by_elapsed_hours(24, 90)) then
+	if (not (utils.contains(mutants_for_survival_mode,section)) and math.random(100) < get_chance_by_elapsed_hours(24, 90)) then
 		result_section = mutants_for_survival_mode[math.random(#mutants_for_survival_mode)]
-		print_dbg("MUTANT: %s -> %s", section, zombie_section)
-		result = true
+		print_dbg("MUTANT: %s -> %s", section, result_section)
 	end
 
 	return result_section
+end
+
+function replace_faction_resource_count(faction, count)
+	local result_count = count
+
+	if (faction == "zombied") then
+		result_count = count * 3
+		print_dbg("ZOMBIED RESOURCE COUNT: %s -> %s", count, result_count)
+	end
+
+	return result_count
 end
