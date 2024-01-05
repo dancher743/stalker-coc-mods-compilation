@@ -106,7 +106,9 @@ end
 -- Мой прекондишн.
 function se_actor:target_precondition(squad)
 	if (IsSurvivalMode() and not IsEocMode()) then 
-		return true 
+		if (squad.player_id == "zombied" or is_squad_monster[squad.player_id]) then
+			return true
+		end
 	end
 	return false
 end
