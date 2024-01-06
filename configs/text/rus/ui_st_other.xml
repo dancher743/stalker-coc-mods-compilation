@@ -604,7 +604,7 @@
 		<text>убит в перестрелке</text>
 	</string>
 	<string id="st_companion_died_tip_reason_2">
-		<text>растерзан монстром</text>
+		<text>растерзан мутантом</text>
 	</string>
 	<string id="st_companion_died_tip_reason_3">
 		<text>утилизирован аномалией</text>
