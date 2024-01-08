@@ -7,7 +7,7 @@ Install
 ---
 1. Install [release](https://www.moddb.com/mods/call-of-chernobyl/downloads/call-of-chernobyl-1412-full) CoC 1.4.12
 2. Install [patch](https://www.moddb.com/mods/call-of-chernobyl/downloads/coc-1422-patch) to make CoC 1.4.22
-3. Install [Open X-Ray](https://github.com/atsb/xray-coc-64bit/releases/latest) for CoC 1.4.22
+3. *(optional)* Install [64bit XRay Engine](https://github.com/atsb/xray-coc-64bit/releases/latest) for CoC 1.4.22 with [Visual C++ Redistributable Packages (2013)](https://www.microsoft.com/en-US/download/details.aspx?id=40784)
 4. Dowload [compilation](https://github.com/dancher743/stalker-coc-mods-compilation/releases/latest) 
 5. Dowload [installer](https://github.com/dancher743/stalker-coc-mods-compilation-installer/releases/latest)
 6. Place compilation and installer into the root folder -
