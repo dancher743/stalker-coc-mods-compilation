@@ -549,4 +549,7 @@
 	<string id="ui_mm_eoc_faction_warfare_unpc_respawn">
 		<text>Респавн важных НПС</text>
 	</string>
+	<string id="ui_mm_show_crit_hit_mark">
+		<text>Показывать крит. удар</text>
+	</string>
 </string_table>

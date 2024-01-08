@@ -48,7 +48,9 @@ local function obj_on_hit_callback(obj, amount, local_direction, who, bone_index
 	obj:hit(crit_hit)
 	-- printf(string.format("DANCHER | Critical hit on %s. Orignal damage is %s.", math.floor(crit_hit.power), math.floor(amount)))
 	
-	ui_actor_critical_hit.show_mark()
+	if (axr_main.config:r_value("mm_options","enable_show_crit_hit_mark",1,false) == true) then
+		ui_actor_critical_hit.show_mark()
+	end
 end
 
 function on_game_start()
