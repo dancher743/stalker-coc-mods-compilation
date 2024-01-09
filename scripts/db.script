@@ -5,6 +5,7 @@
 
 used_level_vertex_ids = {}
 OnlineStalkers		= {}
+OnlineMonsters		= {}
 campfire_by_name	= nil
 campfire_table_by_smart_names = {}
 zone_by_name        = {}
@@ -52,12 +53,18 @@ function add_obj( obj )
 	if (obj:clsid() == clsid.script_stalker) then 
 		add_stalker(obj)
 	end
+	if (IsMonster(obj)) then 
+		add_monster(obj)
+	end
 end
 
 function del_obj( obj )
 	storage[obj:id()] = nil
 	if (obj:clsid() == clsid.script_stalker) then 
 		del_stalker(obj)
+	end
+	if (IsMonster(obj)) then 
+		del_monster(obj)
 	end
 end
 
@@ -140,4 +147,28 @@ function del_stalker(npc)
 	end
 
 	table.remove(db.OnlineStalkers,index)
+end
+
+function add_monster(npc)
+	for i=#db.OnlineMonsters,1,-1 do
+		if (npc:id() == db.OnlineMonsters[i]) then
+			return
+		end
+	end
+	table.insert(db.OnlineMonsters,npc:id())
+end
+
+function del_monster(npc)
+	if not (db.OnlineMonsters) then
+		return
+	end
+	local index
+	for i=#db.OnlineMonsters,1,-1 do
+		if (npc:id() == db.OnlineMonsters[i]) then
+			index = i
+			break
+		end
+	end
+
+	table.remove(db.OnlineMonsters,index)
 end
