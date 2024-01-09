@@ -963,12 +963,6 @@ function sim_squad_scripted:can_switch_offline()
 	end
 	--]]
 	
-	if (IsSurvivalMode() and not IsEocMode()) then
-		if ((self.player_id == "zombied" and #db.OnlineStalkers <= 10) or (is_squad_monster[self.player_id] and #db.OnlineMonsters <= 10)) then
-			return false
-		end
-	end
-	
 	-- companions
 	if (axr_companions.companion_squads[self.id]) then 
 		return false 
@@ -990,8 +984,8 @@ function sim_squad_scripted:can_switch_online()
 		return true
 	end
 	
-	if (IsSurvivalMode() and not IsEocMode()) then
-		if ((self.player_id == "zombied" and #db.OnlineStalkers <= 10) or (is_squad_monster[self.player_id] and #db.OnlineMonsters <= 10)) then
+	if (IsSurvivalMode()) then
+		if (self.player_id == "zombied" or is_squad_monster[self.player_id]) then
 			return true
 		end
 	end
