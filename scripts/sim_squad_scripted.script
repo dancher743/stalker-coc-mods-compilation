@@ -991,7 +991,7 @@ function sim_squad_scripted:can_switch_online()
 	end
 	
 	if (IsSurvivalMode() and not IsEocMode()) then
-		if (self.player_id == "zombied" or is_squad_monster[self.player_id]) then
+		if ((self.player_id == "zombied" and #db.OnlineStalkers <= 10) or (is_squad_monster[self.player_id] and #db.OnlineMonsters <= 10)) then
 			return true
 		end
 	end
