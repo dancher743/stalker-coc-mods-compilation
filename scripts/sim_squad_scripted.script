@@ -984,12 +984,6 @@ function sim_squad_scripted:can_switch_online()
 		return true
 	end
 	
-	if (IsSurvivalMode()) then
-		if (self.player_id == "zombied" or is_squad_monster[self.player_id]) then
-			return true
-		end
-	end
-	
 	-- companions
 	if (axr_companions.companion_squads[self.id]) then 
 		return true 
@@ -1016,27 +1010,32 @@ function sim_squad_scripted:can_switch_online()
 				return false
 			end
 			
-			local hour = level.get_time_hours()
-			if (self.player_id == "monster_predatory_day") then 
-				-- Monster will not come online during the hours of (9PM till 5AM)
-				if (hour <= 5 or hour >= 22) then
-					return false 
+			-- Monsters will come online with the hours ONLY when Survival mode is disabled
+			if (not IsSurvivalMode()) then
+				
+				local hour = level.get_time_hours()
+				if (self.player_id == "monster_predatory_day") then 
+					-- Monster will not come online during the hours of (9PM till 5AM)
+					if (hour <= 5 or hour >= 22) then
+						return false 
+					end
+				elseif (self.player_id == "monster_zombied_day") then 
+					-- Monster will not come online during the hours of (7PM till 5AM)
+					if (hour <= 5 or hour >= 19) then
+						return false 
+					end
+				elseif (self.player_id == "monster_predatory_night") then 
+					-- Monster will not come online during the hours of (5AM till 7PM)
+					if (hour >= 5 and hour <= 19) then
+						return false 
+					end
+				elseif (self.player_id == "monster_zombied_night") then 
+					-- Monster will not come online during the hours of (5AM till 7PM)
+					if (hour >= 5 and hour <= 19) then
+						return false 
+					end
 				end
-			elseif (self.player_id == "monster_zombied_day") then 
-				-- Monster will not come online during the hours of (7PM till 5AM)
-				if (hour <= 5 or hour >= 19) then
-					return false 
-				end
-			elseif (self.player_id == "monster_predatory_night") then 
-				-- Monster will not come online during the hours of (5AM till 7PM)
-				if (hour >= 5 and hour <= 19) then
-					return false 
-				end
-			elseif (self.player_id == "monster_zombied_night") then 
-				-- Monster will not come online during the hours of (5AM till 7PM)
-				if (hour >= 5 and hour <= 19) then
-					return false 
-				end
+				
 			end
 		end
 		
