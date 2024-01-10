@@ -252,12 +252,7 @@ function fill_start_position()
 	
 	SIMBOARD.start_position_filled = true
 	
-	local setting_ini
-	if (IsSurvivalMode()) then 
-		setting_ini = ini_file("misc\\simulation_survival_mode.ltx")
-	else 
-		setting_ini = ini_file("misc\\simulation_eoc_mode.ltx")
-	end
+	local setting_ini = ini_file("misc\\simulation_eoc_mode.ltx")
 	
 	local stalker_pop_factor = (axr_main.config:r_value("mm_options","alife_stalker_pop",2) or 1)
 	local monster_pop_factor = (axr_main.config:r_value("mm_options","alife_mutant_pop",2) or 1)

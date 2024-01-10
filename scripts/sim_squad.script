@@ -112,9 +112,9 @@ function create_squad(smart, faction, target, type, number, param)
 	    end  
 	else
 		if (IsSurvivalMode()) then
-			faction = sim_survival.replace_faction(faction)
-			if (faction == nil) then
-				return
+			local survival_faction = sim_survival.replace_faction(faction)
+			if (survival_faction ~= nil) then
+				faction = survival_faction
 			end
 		end
 	
