@@ -6,12 +6,10 @@
 local duration = 0.20
 
 local mark_ui
-local is_mark_shown
 
 local function hide_mark()
 	RemoveTimeEvent("ui_actor_critical_hit", "hide_mark")
 	mark_ui:Show(false)
-	is_mark_shown = false
 end
 
 function show_mark()
@@ -22,16 +20,9 @@ function show_mark()
 	if (mark_ui == nil) then
 		mark_ui = critical_hit_mark()
 		get_hud():AddDialogToRender(mark_ui)
-		mark_ui:Show(false)
-	end
-	
-	if (is_mark_shown and HasTimeEvent("ui_actor_critical_hit", "hide_mark")) then
-		ResetTimeEvent("ui_actor_critical_hit", "hide_mark", duration)
-		return
 	end
 	
 	mark_ui:Show(true)
-	is_mark_shown = true
 	RemoveTimeEvent("ui_actor_critical_hit", "hide_mark")
 	CreateTimeEvent("ui_actor_critical_hit", "hide_mark", duration, hide_mark)
 end
