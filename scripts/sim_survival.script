@@ -44,9 +44,9 @@ function try_replace_mutant(section)
 end
 
 
-function are_squads_enemies(squad1, squad2)
-	local is_squad1_zombied_or_monster = squad1.player_id == "zombied" or is_squad_monster[squad1.player_id]
-	local is_squad2_zombied_or_monster = squad2.player_id == "zombied" or is_squad_monster[squad2.player_id]
+function are_factions_zombied_or_monster(faction1, faction2)
+	local is_faction1_zombied_or_monster = faction1 == "zombied" or faction1 == "monster"
+	local is_faction2_zombied_or_monster = faction2 == "zombied" or faction2 == "monster"
 	
-	return is_squad1_zombied_or_monster ~= is_squad2_zombied_or_monster
+	return is_faction1_zombied_or_monster == is_faction2_zombied_or_monster
 end
