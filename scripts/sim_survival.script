@@ -43,16 +43,6 @@ function try_replace_mutant(section)
 	return result_section
 end
 
-function replace_faction_resource_count(faction, count)
-	local result_count = count
-
-	if (faction == "zombied") then
-		result_count = count * 3
-		print_dbg("ZOMBIED RESOURCE COUNT: %s -> %s", count, result_count)
-	end
-
-	return result_count
-end
 
 function are_squads_enemies(squad1, squad2)
 	local is_squad1_zombied_or_monster = squad1.player_id == "zombied" or is_squad_monster[squad1.player_id]
