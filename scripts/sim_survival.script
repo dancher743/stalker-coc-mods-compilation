@@ -20,12 +20,12 @@ local function get_chance_by_elapsed_hours(max_hours, max_chance)
 	return chance
 end
 
-function replace_faction(faction)
+function replace_stalker(faction)
 	local result_faction = nil
 
 	if (faction ~= "zombied" and math.random(100) < get_chance_by_elapsed_hours(24, 90)) then
 		result_faction = "zombied"
-		print_dbg("FACTION: %s -> %s", faction, "zombied")
+		print_dbg("FACTION: %s -> %s", faction, result_faction)
 	end
 
 	return result_faction
@@ -33,10 +33,10 @@ end
 
 function replace_mutant(section)
 	local result_section = nil
+	local survival_mutants = sim_tables.mutants_for_survival_mode
 	
-	local mutants_for_survival_mode = sim_tables.mutants_for_survival_mode
-	if (not (utils.contains(mutants_for_survival_mode,section)) and math.random(100) < get_chance_by_elapsed_hours(24, 90)) then
-		result_section = mutants_for_survival_mode[math.random(#mutants_for_survival_mode)]
+	if (not (utils.contains(survival_mutants, section)) and math.random(100) < get_chance_by_elapsed_hours(24, 90)) then
+		result_section = survival_mutants[math.random(#survival_mutants)]
 		print_dbg("MUTANT: %s -> %s", section, result_section)
 	end
 
@@ -57,5 +57,6 @@ end
 function are_squads_enemies(squad1, squad2)
 	local is_squad1_zombied_or_monster = squad1.player_id == "zombied" or is_squad_monster[squad1.player_id]
 	local is_squad2_zombied_or_monster = squad2.player_id == "zombied" or is_squad_monster[squad2.player_id]
+	
 	return is_squad1_zombied_or_monster ~= is_squad2_zombied_or_monster
 end

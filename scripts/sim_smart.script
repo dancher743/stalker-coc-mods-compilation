@@ -428,10 +428,7 @@ function spawn_mutants(smart)
 			
 			    if section then
 					if (IsSurvivalMode()) then
-						local survival_section = sim_survival.replace_mutant(section)
-						if (survival_section ~= nil) then
-							section = survival_section
-						end
+						section = sim_survival.replace_mutant(section) or section
 					end
                    sim_squad.create_squad(smart, nil, nil, section, nil, 1)
 			    end
