@@ -20,8 +20,8 @@ local function get_chance_by_elapsed_hours(max_hours, max_chance)
 	return chance
 end
 
-function replace_stalker(faction)
-	local result_faction = nil
+function try_replace_stalker(faction)
+	local result_faction = faction
 
 	if (faction ~= "zombied" and math.random(100) < get_chance_by_elapsed_hours(24, 90)) then
 		result_faction = "zombied"
@@ -31,8 +31,8 @@ function replace_stalker(faction)
 	return result_faction
 end
 
-function replace_mutant(section)
-	local result_section = nil
+function try_replace_mutant(section)
+	local result_section = section
 	local survival_mutants = sim_tables.mutants_for_survival_mode
 	
 	if (not (utils.contains(survival_mutants, section)) and math.random(100) < get_chance_by_elapsed_hours(24, 90)) then
