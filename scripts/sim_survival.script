@@ -21,23 +21,33 @@ local function get_chance_by_elapsed_hours(max_hours, max_chance)
 end
 
 function try_replace_stalker(faction)
-	local result_faction = faction
+	local result_faction = nil
 
-	if (faction ~= "zombied" and math.random(100) < get_chance_by_elapsed_hours(24, 90)) then
-		result_faction = "zombied"
-		print_dbg("FACTION: %s -> %s", faction, result_faction)
+	if (faction ~= "zombied") then
+		local chance = math.random(100)
+		if (chance < get_chance_by_elapsed_hours(24, 90)) then
+			result_faction = "zombied"
+			print_dbg("FACTION: %s -> %s", faction, result_faction)
+		elseif (chance > 90) then
+			result_faction = faction
+		end
 	end
 
 	return result_faction
 end
 
 function try_replace_mutant(section)
-	local result_section = section
+	local result_section = nil
 	local survival_mutants = sim_tables.mutants_for_survival_mode
 	
-	if (not (utils.contains(survival_mutants, section)) and math.random(100) < get_chance_by_elapsed_hours(24, 90)) then
-		result_section = survival_mutants[math.random(#survival_mutants)]
-		print_dbg("MUTANT: %s -> %s", section, result_section)
+	if (not (utils.contains(survival_mutants, section))) then
+		local chance = math.random(100)
+		if (chance < get_chance_by_elapsed_hours(24, 90)) then
+			result_section = survival_mutants[math.random(#survival_mutants)]
+			print_dbg("MUTANT: %s -> %s", section, result_section)
+		elseif (chance > 90) then
+			result_section = section
+		end
 	end
 
 	return result_section

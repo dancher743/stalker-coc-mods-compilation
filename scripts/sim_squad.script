@@ -113,6 +113,9 @@ function create_squad(smart, faction, target, type, number, param)
 	else
 		if (IsSurvivalMode()) then
 			faction = sim_survival.try_replace_stalker(faction)
+			if (faction == nil) then
+				return
+			end
 		end
 	
 	    local random = math.random(30) + sim_factions.faction_information[faction].resource_count
