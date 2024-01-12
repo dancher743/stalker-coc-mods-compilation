@@ -7,7 +7,7 @@ move	= temp
 function get_smart_cover_loophole_lesnik()
 	return {
 			loopholes = {
-				smart_covers_loophole_lesnik.get_smart_cover_loophole_lesnik("lesnik_sit",	vector():set(0,0,0), vector():set(1,0,0),	vector():set(1,0,0))
+				smart_covers_loophole_lesnik.get_smart_cover_loophole_lesnik("lesnik_sit",	VEC_ZERO, vector():set(1,0,0),	vector():set(1,0,0))
 			},
 
 	
@@ -24,7 +24,7 @@ function get_smart_cover_loophole_lesnik()
                                 actions =	{
 											{
 												animation = "sit",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -45,7 +45,7 @@ function get_smart_cover_loophole_lesnik()
                                 actions =	{
 											{
 												animation = "sit",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.standing, movement_type = move.run,
 											},
 											},

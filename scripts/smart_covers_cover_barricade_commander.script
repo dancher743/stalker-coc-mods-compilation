@@ -4,39 +4,36 @@ if (move ~= nil) then
 end
 move	= temp
 
-function get_smart_cover()
+function get_smart_cover_cover_barricade_commander()
 	return {
-			need_weapon = false,
 			loopholes = {
-				smart_covers_loophole_animpoint_sit_ass.get_loophole("animpoint_sit_ass",	VEC_ZERO, vector():set(0,0,-1),	vector():set(0,0,-1))
+				smart_covers_loophole_barricade_commander.get_barricade_commander("br_com",	VEC_ZERO,	vector():set(-1,0,0),	vector():set(-1,0,0))
 			},
 
-	
 			transitions = {
 			--' Анимации входа в бойницы
 			{
 				vertex0 = "",
-				vertex1 = "animpoint_sit_ass",
+				vertex1 = "br_com",
 				weight = 1.0,
-				actions =	{
+                actions =	{
 							{
-								precondition_functor = "smart_covers.script_functor_true",
+                                precondition_functor = "smart_covers.script_functor_true",
 								precondition_params = "",
                                 actions =	{
 											{
-												animation = "idle_0_to_sit_2",
+												animation = "",
 												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
-							}
+                            }
 							}
 			},
-
-
+						
 			--' Анимации выхода из бойниц.
 			{
-				vertex0 = "animpoint_sit_ass",
+				vertex0 = "br_com",
 				vertex1 = "",
 				weight = 1.1,
 				actions =	{
@@ -45,14 +42,14 @@ function get_smart_cover()
 								precondition_params = "",
                                 actions =	{
 											{
-												animation = "sit_2_to_idle_0_",
+												animation = "",
 												position = VEC_ZERO,
-												body_state = move.standing, movement_type = move.run,
+												body_state = move.crouch, movement_type = move.run,
 											},
 											},
 							}
 							}
 			}
-			}
+		}
 	}
 end

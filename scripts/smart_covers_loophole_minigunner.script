@@ -1,16 +1,14 @@
-function get_loophole(id, fov_direction, position, enter_direction)
+function get_loophole_minigunner(id, fov_direction, position, enter_direction)
 	local pos = position or VEC_ZERO
 	local enter_dir = enter_direction or vector():set(-1,0,0)
 	return {	id = id,
 				fov_position = pos,
 				fov_direction = fov_direction,
-				danger_fov_direction  = vector():set(-1,0,0),
 				enter_direction = enter_dir,
 				enterable = true,
 				exitable = true,
 				usable = true,
 				fov	= 60.0,
-				danger_fov = 90.0,
 				range = 70.0,
 				actions = {
 					idle = {
@@ -30,10 +28,9 @@ function get_loophole(id, fov_direction, position, enter_direction)
 					fire = {
 						animations = {
 							idle = {
-								"loophole_9_attack_idle_0",
+								"loophole_9_attack_shoot_1",
 							},
 							shoot = {
-								"loophole_9_attack_shoot_0",
 								"loophole_9_attack_shoot_1",
 							},
 						},
@@ -41,10 +38,9 @@ function get_loophole(id, fov_direction, position, enter_direction)
 					fire_no_lookout = {
 						animations = {
 							idle = {
-								"loophole_9_attack_idle_0",
+								"loophole_9_attack_shoot_1",
 							},
 							shoot = {
-								"loophole_9_attack_shoot_0",
 								"loophole_9_attack_shoot_1",
 							},
 						},

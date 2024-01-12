@@ -1,58 +1,52 @@
-function get_loophole(id, fov_direction, position, enter_direction)
-	local pos = position or VEC_ZERO
-	local enter_dir = enter_direction or vector():set(-1,0,0)
+function get_barricade_0(id, position, fov_direction, enter_direction)
 	return {	id = id,
-				fov_position = pos,
+				fov_position = position,
 				fov_direction = fov_direction,
-				danger_fov_direction  = vector():set(-1,0,0),
-				enter_direction = enter_dir,
+				enter_direction = enter_direction,
 				enterable = true,
 				exitable = true,
 				usable = true,
-				fov	= 60.0,
-				danger_fov = 90.0,
+				fov	= 45.0,
 				range = 70.0,
 				actions = {
 					idle = {
 						animations = {
 							idle = {
-								"loophole_9_idle_0",
+								"barricade_0_idle_0",
 							},
 						},
 					},
 					lookout = {
 						animations = {
 							idle = {
-								"loophole_9_look_idle_0",
+								"barricade_0_look_idle_0",
 							},
 						},
 					},
 					fire = {
 						animations = {
 							idle = {
-								"loophole_9_attack_idle_0",
+								"barricade_0_attack_idle_0",
 							},
 							shoot = {
-								"loophole_9_attack_shoot_0",
-								"loophole_9_attack_shoot_1",
+								"barricade_0_attack_shoot_0",
 							},
 						},
 					},
 					fire_no_lookout = {
 						animations = {
 							idle = {
-								"loophole_9_attack_idle_0",
+								"barricade_0_attack_idle_0",
 							},
 							shoot = {
-								"loophole_9_attack_shoot_0",
-								"loophole_9_attack_shoot_1",
+								"barricade_0_attack_shoot_0",
 							},
 						},
 					},
 					reload = {
 						animations = {
 							idle = {
-								"loophole_9_reload_0",
+								"barricade_0_reload_0",
 							},
 						},
 					},
@@ -63,7 +57,7 @@ function get_loophole(id, fov_direction, position, enter_direction)
 						action_to = "lookout",
 						weight = 1.2,
 						animations = {
-							"loophole_9_look_in_0",
+							"barricade_0_look_in_0",
 						},
 					},
 					{
@@ -71,7 +65,7 @@ function get_loophole(id, fov_direction, position, enter_direction)
 						action_to = "idle",
 						weight = 1.2,
 						animations = {
-							"loophole_9_look_out_0",
+							"barricade_0_look_out_0",
 						},
 					},
 					{
@@ -79,7 +73,7 @@ function get_loophole(id, fov_direction, position, enter_direction)
 						action_to = "fire",
 						weight = 1.2,
 						animations = {
-							"loophole_9_attack_in_0",
+							"barricade_0_attack_in_0",
 						},
 					},
 					{
@@ -87,7 +81,7 @@ function get_loophole(id, fov_direction, position, enter_direction)
 						action_to = "idle",
 						weight = 1.2,
 						animations = {
-							"loophole_9_attack_out_0",
+							"barricade_0_attack_out_0",
 						},
 					},
 					{
@@ -95,7 +89,7 @@ function get_loophole(id, fov_direction, position, enter_direction)
 						action_to = "fire_no_lookout",
 						weight = 1.2,
 						animations = {
-							"loophole_9_attack_in_0",
+							"barricade_0_attack_in_0",
 						},
 					},
 					{
@@ -103,7 +97,7 @@ function get_loophole(id, fov_direction, position, enter_direction)
 						action_to = "idle",
 						weight = 1.2,
 						animations = {
-							"loophole_9_attack_out_0",
+							"barricade_0_attack_out_0",
 						},
 					},
 				},

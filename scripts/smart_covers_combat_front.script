@@ -34,7 +34,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "loophole_crouch_in_front_left_0",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -52,7 +52,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "loophole_crouch_in_front_0",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -70,7 +70,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "loophole_crouch_in_front_right_0",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -89,7 +89,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "loophole_stand_in_front_left_0",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -107,7 +107,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "loophole_stand_in_front_right_0",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -128,7 +128,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "crouch_front_to_crouch_front_left",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -146,7 +146,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "crouch_front_to_crouch_front_right",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -164,7 +164,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "crouch_front_to_stand_front_left",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -182,7 +182,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "crouch_front_to_stand_front_right",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -200,7 +200,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "crouch_front_right_to_crouch_front",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -218,7 +218,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "crouch_front_right_to_crouch_front_left",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -236,7 +236,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "crouch_front_right_to_stand_front_left",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -254,7 +254,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "crouch_front_right_to_stand_front_right",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -272,7 +272,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "crouch_front_left_to_crouch_front",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -290,7 +290,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "crouch_front_left_to_crouch_front_right",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -308,7 +308,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "crouch_front_left_to_stand_front_left",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -326,7 +326,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "crouch_front_left_to_stand_front_right",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -344,7 +344,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "stand_front_left_to_crouch_front",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -362,7 +362,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "stand_front_left_to_crouch_front_left",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -380,7 +380,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "stand_front_left_to_crouch_front_right",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -398,7 +398,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "stand_front_left_to_stand_front_right",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -416,7 +416,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "stand_front_right_to_crouch_front",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -434,7 +434,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "stand_front_right_to_crouch_front_left",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -452,7 +452,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "stand_front_right_to_crouch_front_right",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -470,7 +470,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "stand_front_right_to_stand_front_left",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -502,7 +502,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -531,7 +531,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -560,7 +560,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -579,7 +579,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -597,7 +597,7 @@ function get_smart_cover()
 								actions =	{
 											{
 												animation = "",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},

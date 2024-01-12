@@ -1779,6 +1779,19 @@ function main_hud_shown()
 	return false
 end
 
+--
+-- Added by Dancher
+--
+
+-- From CoC 1.5
+-----------------------------------------
+-- Constants
+-----------------------------------------
+VEC_ZERO 	= vector():set(0,0,0)
+VEC_X 		= vector():set(1,0,0)
+VEC_Y 		= vector():set(0,1,0)
+VEC_Z 		= vector():set(0,0,1)
+
 function IsEocMode()
 	return alife_storage_manager.get_state().enable_eoc_mode == true or 
 		axr_main.config and axr_main.config:r_value("character_creation","new_game_eoc_mode",1) == true

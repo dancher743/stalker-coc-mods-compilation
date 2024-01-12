@@ -7,8 +7,8 @@ move	= temp
 function get_smart_cover_cover_loophole_lead_forester_idle_talk()
 	return {
 			loopholes = {
-				smart_covers_loophole_lead_forester_idle.get_loophole_lead_forester_idle ("forester_idle",	vector():set(0,0,0), vector():set(1,0,0),	vector():set(1,0,0)),
-				smart_covers_loophole_lead_forester_talk.get_loophole_lead_forester_talk ("forester_talk",	vector():set(0,0,0), vector():set(1,0,0),	vector():set(1,0,0))
+				smart_covers_loophole_lead_forester_idle.get_loophole_lead_forester_idle ("forester_idle",	VEC_ZERO, vector():set(1,0,0),	vector():set(1,0,0)),
+				smart_covers_loophole_lead_forester_talk.get_loophole_lead_forester_talk ("forester_talk",	VEC_ZERO, vector():set(1,0,0),	vector():set(1,0,0))
 			},
 
 	
@@ -25,7 +25,7 @@ function get_smart_cover_cover_loophole_lead_forester_idle_talk()
                                 actions =	{
 											{
 												animation = "sit",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -43,7 +43,7 @@ function get_smart_cover_cover_loophole_lead_forester_idle_talk()
                                 actions =	{
 											{
 												animation = "sit",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -64,7 +64,7 @@ function get_smart_cover_cover_loophole_lead_forester_idle_talk()
                                 actions =	{
 											{
 												animation = "sit",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -82,7 +82,7 @@ function get_smart_cover_cover_loophole_lead_forester_idle_talk()
                                 actions =	{
 											{
 												animation = "sit",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -102,7 +102,7 @@ function get_smart_cover_cover_loophole_lead_forester_idle_talk()
                                 actions =	{
 											{
 												animation = "sit",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.standing, movement_type = move.run,
 											},
 											},
@@ -120,7 +120,7 @@ function get_smart_cover_cover_loophole_lead_forester_idle_talk()
                                 actions =	{
 											{
 												animation = "sit",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.standing, movement_type = move.run,
 											},
 											},

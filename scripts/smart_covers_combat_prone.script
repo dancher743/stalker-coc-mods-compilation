@@ -23,7 +23,7 @@ function get_smart_cover()
                                 actions =	{
 											{
 												animation = "loophole_9_in_front_0",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
@@ -43,7 +43,7 @@ function get_smart_cover()
                                 actions =	{
 											{
 												animation = "loophole_9_jump_1",
-												position = vector():set(0,0,0),
+												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
 											},
