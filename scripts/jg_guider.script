@@ -169,7 +169,7 @@ end
 function prec_1(actor, npc)
 	local npc = dialogs.who_is_npc(actor,npc)
 	local squad = get_object_squad(npc)
-	return squad and not axr_companions.is_companion(npc) and (squad.id == guid['squad_id'] or squad.id == curr_guid['squad_id'])
+	return squad and (squad.id == guid['squad_id'] or squad.id == curr_guid['squad_id'])
 end
 
 function prec_2()
