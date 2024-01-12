@@ -286,6 +286,8 @@ function monster_on_actor_use_callback(obj,who)
 	local st = db.storage[obj:id()]
 	if (st and st.death_time and game.get_game_time():diffSec(st.death_time) > MutantLootDecayTime) then
 		SetHudMsg(game.translate_string("st_body_decayed"),4)
+		utils.save_var(obj,"looted",true)
+		xr_corpse_detection.set_valuable_loot(obj:id(),false)
 	else
 		local hud = get_hud()
 		if (hud) then

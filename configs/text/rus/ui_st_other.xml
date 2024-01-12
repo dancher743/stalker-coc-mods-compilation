@@ -544,7 +544,7 @@
 	
 	<!-- Miscellaneous -->
 	<string id="st_body_decayed">
-		<text>Тело слишком повреждено</text>
+		<text>Тело сильно разложилось</text>
 	</string>
 	<string id="st_invalid_position">
 		<text>Позиция вне AI-сетки</text>
