@@ -151,6 +151,7 @@ function loot_ui:FillList()
 	end
 
 	if (not is_empty(self.loot)) then
+		SetHudMsg("",0)
 		self:ShowDialog(true)
 	else		
 		if self:IsShown() then
