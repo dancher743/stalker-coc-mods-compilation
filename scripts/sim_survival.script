@@ -3,6 +3,9 @@
 --	Added by Dancher
 --
 
+local max_delay_hours = 24
+local max_spawn_chance = 90
+
 local enable_debug = false
 
 -- From Anomaly 1.5.1.2 mod
@@ -12,10 +15,10 @@ local function print_dbg(fmt, ...)
 	end
 end
 
-local function get_chance_by_elapsed_hours(max_hours, max_chance)
+local function get_chance_by_elapsed_hours()
 	local hours_elapses = utils.get_hours_elapsed()
-	local chance_factor = utils.inverse_lerp(0, max_hours, hours_elapses)
-	local chance = utils.lerp(0 , max_chance, chance_factor)
+	local chance_factor = utils.inverse_lerp(0, max_delay_hours, hours_elapses)
+	local chance = utils.lerp(0 , max_spawn_chance, chance_factor)
 	print_dbg("get_chance_by_elapsed_hours! Factor: %s, chance: %s", chance_factor, chance)
 	return chance
 end
@@ -25,10 +28,10 @@ function try_replace_stalker(faction)
 
 	if (faction ~= "zombied") then
 		local chance = math.random(100)
-		if (chance < get_chance_by_elapsed_hours(24, 90)) then
+		if (chance < get_chance_by_elapsed_hours()) then
 			result_faction = "zombied"
 			print_dbg("FACTION: %s -> %s", faction, result_faction)
-		elseif (chance > 90) then
+		elseif (chance > max_spawn_chance) then
 			result_faction = faction
 		end
 	end
@@ -42,17 +45,16 @@ function try_replace_mutant(section)
 	
 	if (not (utils.contains(survival_mutants, section))) then
 		local chance = math.random(100)
-		if (chance < get_chance_by_elapsed_hours(24, 90)) then
+		if (chance < get_chance_by_elapsed_hours()) then
 			result_section = survival_mutants[math.random(#survival_mutants)]
 			print_dbg("MUTANT: %s -> %s", section, result_section)
-		elseif (chance > 90) then
+		elseif (chance > max_spawn_chance) then
 			result_section = section
 		end
 	end
 
 	return result_section
 end
-
 
 function are_factions_zombied_or_monster(faction1, faction2)
 	local is_faction1_zombied_or_monster = faction1 == "zombied" or faction1 == "monster"
