@@ -29,7 +29,7 @@ local function calculate_hit_power(amount)
 end
 
 local function can_hit(who, obj, amount)
-	return IsActor(who) and obj:alive() and obj.health*100 - amount > 0 and math.random() <= get_hit_chance()
+	return IsActor(who) and obj:alive() and amount > 0 and (obj.health*100 - amount) > 0 and math.random() <= get_hit_chance()
 end
 
 local function obj_on_hit_callback(obj, amount, local_direction, who, bone_index)	
