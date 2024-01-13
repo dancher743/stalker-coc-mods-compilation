@@ -39,8 +39,7 @@ function configure_schemes(npc, ini, ini_filename, stype, section_logic, gulag_n
 		else
 			actual_ini_filename = ini_filename
 			actual_ini = ini
--- 			printf("ERROR: xr_logic.configure_schemes: object '%s': unable to find section '%s' in '%s' gulag_name=%s", npc:name(), section_logic, ini_filename,gulag_name)
-			printf( "ERROR: xr_logic.configure_schemes: object '%s': unable to find section" )
+			printf(strformat("ERROR: xr_logic.configure_schemes: object '%s': unable to find section '%s' in '%s' gulag_name=%s", npc:name(), section_logic, ini_filename,gulag_name))
 		end
 	else
 		local filename = ini:r_string_ex(section_logic,"cfg")
