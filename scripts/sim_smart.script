@@ -111,7 +111,7 @@ function try_to_respawn_faction(smart)
 		if faction ~= "monster" then
 		   if (sim_factions.faction_information[faction].base_count) and sim_factions.faction_information[faction].base_count < 1 then
 			  sim_factions.faction_information[faction].base_count = 1
-			  sim_squad.create_squad(smart, faction, nil, nil, nil, 1)	
+			  sim_squad.create_squad(smart, faction, nil, nil, nil, 1, true)
 			  printf("### EOC: -- try_to_respawn_faction -- ".. faction .." - ".. smart:name() .." ###")
 		   end
 		end
