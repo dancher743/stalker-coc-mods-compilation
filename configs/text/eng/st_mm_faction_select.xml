@@ -123,11 +123,13 @@
 	</string>
 	<string id="st_mm_ck_survival_desc">
 		<text>
-			%c[0,150,150,150]Survival mode is a feature that replaces most of spawns with Zombified stalkers and Zombies.
+			%c[0,150,150,150]Remember Jill Valentine from Resident Evil - there are only hordes of zombies around, ready to tear you to pieces!
+			\n
+			\nSurvival mode replaces most spawns with Zombified stalkers and zombies.
 			\n
 			\nSee how long you can survive!
 			\n
-			\n%c[200,200,200,50]• %c[0,150,150,150]If Extended population mode is active, then you will have relatively safe only the first 24 hours, because the activity of Zombies' spawn will increase every hour. Use your time wisely!
+			\n%c[200,200,200,50]• %c[0,150,150,150]If Extended population mode is active, then you will have relatively safe only the first 24 hours, because the spawn activity of the living dead will increase every hour. Use your time wisely!
 		</text>
 	</string>
 	<string id="st_mm_ck_azazel_mode_desc">
