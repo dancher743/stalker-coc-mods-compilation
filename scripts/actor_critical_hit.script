@@ -28,12 +28,12 @@ local function calculate_hit_power(amount)
 	return (a + b) - amount
 end
 
-local function can_hit(who, obj, amount)
-	return IsActor(who) and obj:alive() and amount > 0 and (obj.health*100 - amount) > 0 and math.random() <= get_hit_chance()
+local function can_hit(obj, amount, who, bone_index)
+	return IsActor(who) and obj:alive() and type(bone_index) == "number" and bone_index > 0 and math.random() <= get_hit_chance()
 end
 
-local function obj_on_hit_callback(obj, amount, local_direction, who, bone_index)	
-	if (not can_hit(who, obj, amount)) then
+local function obj_on_hit_callback(obj, amount, local_direction, who, bone_index)
+	if (not can_hit(obj, amount, who, bone_index)) then
 		return
 	end
 
@@ -46,7 +46,7 @@ local function obj_on_hit_callback(obj, amount, local_direction, who, bone_index
 	crit_hit.draftsman = who
 	
 	obj:hit(crit_hit)
-	-- printf(string.format("DANCHER | Critical hit on %s. Orignal damage is %s.", math.floor(crit_hit.power), math.floor(amount)))
+	-- printf(string.format("DANCHER | Critical hit on %0.2f Orignal damage is %0.2f.", crit_hit.power, amount))
 	
 	if (axr_main.config:r_value("mm_options","enable_show_crit_hit_mark",1,false) == true) then
 		ui_actor_critical_hit.show_mark()
