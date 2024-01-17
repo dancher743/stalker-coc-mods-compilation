@@ -18,11 +18,8 @@ function show_mark()
 	end
 	
 	mark_ui:Show(true)
-	if (HasTimeEvent("ui_actor_critical_hit", "hide_mark")) then
-        ResetTimeEvent("ui_actor_critical_hit", "hide_mark", duration)
-    else
-		CreateTimeEvent("ui_actor_critical_hit", "hide_mark", duration, hide_mark)
-	end
+	RemoveTimeEvent("ui_actor_critical_hit", "hide_mark")
+	CreateTimeEvent("ui_actor_critical_hit", "hide_mark", duration, hide_mark)
 end
 
 local function on_game_load()
