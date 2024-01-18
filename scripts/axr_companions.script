@@ -1083,10 +1083,15 @@ function is_invulnerable(se_obj)
 end
 
 function is_trust_actor(obj)
-	local id = obj:id()
+	local squad = get_object_squad(obj)
+	local story_id = get_object_story_id(squad.id)
+	
+	if (story_id == "start_squad" or story_id == "survival_squad") then
+		return true
+	end
 	
 	local hours = 0
-	local companion_start_time = utils.se_obj_load_var(id,obj:name(),"companion_start_time")
+	local companion_start_time = utils.se_obj_load_var(obj:id(),obj:name(),"companion_start_time")
 	
 	if (companion_start_time) then
 		local seconds = (game.time() - companion_start_time) / 10000
