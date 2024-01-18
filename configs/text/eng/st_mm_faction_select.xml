@@ -88,8 +88,8 @@
 		<text>
 			%c[0,150,150,150]Choose whether you will be accompanied by companions from the very beginning of the game.
 			\n
-			\n%c[200,50,200,50]• %c[0,150,150,150]Such companions are invulnerable to any damage than companions who joined you while traveling through the Zone.
-			\n%c[200,50,200,50]• %c[0,150,150,150]This will be indicated by the shield icon in the upper left corner of the companion interface.
+			\n%c[200,50,200,50]• %c[0,150,150,150]Such companions are invulnerable to any type of damage than companions who joined you during the game.
+			\n%c[200,50,200,50]• %c[0,150,150,150]Invulnerability will be indicated by the shield icon located on their interfaces in the upper left corner.
 		</text>
 	</string>
 	<string id="st_mm_list_difficulty_desc">
