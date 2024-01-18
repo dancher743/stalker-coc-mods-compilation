@@ -370,6 +370,18 @@ mutants_for_survival_mode = {
     "simulation_snork",
 }
 
+factions_to_zombied_props = {
+	["stalker"] 	= true,
+	["bandit"]		= true,
+	["csky"]		= true,
+	["army"]		= true,
+	["freedom"]		= true,
+	["dolg"]		= true,
+	["ecolog"]		= true,
+	["killer"]		= true,
+	["monolith"] 	= true,
+}
+
 sender_icons = {
 	stalker = {
 		"ui_icon_news_neutral",

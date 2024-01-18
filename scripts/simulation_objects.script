@@ -96,7 +96,11 @@ function simulation_objects_registry:get_props(obj)
 		if prop_name == "sim_avail" then
 			obj.sim_avail = xr_logic.parse_condlist(nil, "simulation_object", "sim_avail", prop_condlist)
 		else
-			obj.props[prop_name] = tonumber(prop_condlist)
+			local prop_count = tonumber(prop_condlist)
+			obj.props[prop_name] = prop_count
+			if (IsSurvivalMode() and IsEocMode() and sim_survival.contains_faction_prop(prop_name, prop_count)) then
+				obj.props["zombied"] = 1
+			end
 		end
 	end
 	if obj.sim_avail == nil then
