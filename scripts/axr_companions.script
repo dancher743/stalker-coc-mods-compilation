@@ -1107,7 +1107,7 @@ function get_hours_with_companion(obj)
 	if (companion_start_time) then
 		local seconds = (game.time() - companion_start_time) / 10000
 		hours = math.floor(seconds/60/60)
-		-- printf("DANCHER | axr_companions.is_trust_actor(...) -> total elapsed time: ".. hours .."h, ".. math.floor(seconds/60) .. "m, ".. math.floor(seconds) .. "s.")
+		-- printf(string.format("DANCHER | axr_companions.get_hours_with_companion(...) -> total elapsed time: %sh; %sm; %ss.", hours, math.floor(seconds/60), math.floor(seconds)))
 	end
 	
 	return hours
