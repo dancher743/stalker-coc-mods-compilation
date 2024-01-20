@@ -1081,11 +1081,11 @@ end
 
 function is_invulnerable(obj)
 	local option = axr_main.config:r_value("mm_options","enable_companions_invulnerability",1,false)
-	return option and (is_in_start_or_survival_squad(obj) or get_hours_with_companion(obj) > 3)
+	return option and (is_in_start_or_survival_squad(obj) or get_hours_with_companion(obj) >= 3)
 end
 
 function is_barter_avaliable(obj)
-	return is_in_start_or_survival_squad(obj) or get_hours_with_companion(obj) > 3
+	return is_in_start_or_survival_squad(obj) or get_hours_with_companion(obj) >= 3
 end
 
 function is_in_start_or_survival_squad(obj)
