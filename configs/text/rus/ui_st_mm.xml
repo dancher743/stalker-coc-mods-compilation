@@ -552,4 +552,7 @@
 	<string id="ui_mm_show_crit_hit_mark">
 		<text>Показывать крит. удар</text>
 	</string>
+	<string id="ui_mm_companions_invulnerability">
+		<text>Неуязвимые напарники</text>
+	</string>
 </string_table>

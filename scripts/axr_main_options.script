@@ -117,6 +117,8 @@ function opt_menu_on_init(menu)
 	menu.gameplay_options["show_stalkers_on_map"]	= {default=true, 	debug_only=false, 	typ="check"}
 	
 	menu.gameplay_options["show_crit_hit_mark"]		= {default=true, 	debug_only=false, 	typ="check"}
+	
+	menu.gameplay_options["companions_invulnerability"]		= {default=true, 	debug_only=false, 	typ="check"}
 	--
 	
 	if (db.actor) then -- Options will only show while in-game
