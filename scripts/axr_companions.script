@@ -364,7 +364,6 @@ function remove_from_actor_squad(npc)
 	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_teleport",nil)
 	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_hostage",nil)
 	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_start_time",nil)
-	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_barter_avaliable",nil)
 end
 
 function remove_all_from_actor_squad()
@@ -378,7 +377,6 @@ function remove_all_from_actor_squad()
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_teleport",nil)		
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_hostage",nil)
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_start_time",nil)
-					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_barter_avaliable",nil)
 						
 					local member = db.storage[se_obj.id] and db.storage[se_obj.id].object or level.object_by_id(se_obj.id)
 					if (member) then 
