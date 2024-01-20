@@ -17,8 +17,11 @@ function show_mark()
 		return
 	end
 	
+    if (mark_ui:IsShown()) then
+        return
+    end
+	
 	mark_ui:Show(true)
-	RemoveTimeEvent("ui_actor_critical_hit", "hide_mark")
 	CreateTimeEvent("ui_actor_critical_hit", "hide_mark", duration, hide_mark)
 end
 
