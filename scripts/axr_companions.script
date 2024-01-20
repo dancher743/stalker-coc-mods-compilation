@@ -136,13 +136,12 @@ local function squad_on_update(squad)
 			local member = db.storage[k.id]
 			if (member) then
 				member.heli_enemy_flag = utils.load_var(db.actor,"heli_enemy_flag")
-				local se_obj = alife():object(k.id)
-				local npc = member.object
-				if (get_hours_with_companion(npc) > 3) then
+				local obj = member.object
+				if (get_hours_with_companion(obj) > 3) then
+					local se_obj = alife():object(k.id)
 					if (not is_invulnerable(se_obj)) then
 						utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_invulnerable",true)
 					end
-					
 					if (not is_barter_avaliable(se_obj)) then
 						utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_barter_avaliable",true)
 					end
