@@ -101,4 +101,14 @@
 	<string id="yan_merc_guards_start_4">
 		<text>Get lost, buddy. Do that, and we'll keep it peaceful.</text>
 	</string>
+<!------------------- added by Dancher -------->
+	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_0">
+		<text>Can you tell me when the next surge and psi-storm will happen?</text>
+	</string>
+	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_0">
+		<text>According to the equipment measurements: surge after %s h., psi-storm after %s h., where the "h" stands for "hours" or "hour".</text>
+	</string>
+	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_1">
+		<text>It's not possible to take measurements at this time. Wait a bit.</text>
+	</string>
 </string_table>

@@ -118,3 +118,24 @@ end
 function actor_dont_has_good_psi_helmet_task_completed(a,b)
 	return not actor_has_good_psi_helmet_task_completed(a,b)
 end
+
+function get_next_surge_or_psi_storm_phrase_1()	
+	local phase = ""
+	
+	if (surge_manager.is_started() or psi_storm_manager.is_started()) then
+		phase = game.translate_string("yan_stalker_sakharov_next_surge_or_psi_storm_1_1")
+	else
+		local SurgeManager = surge_manager.get_surge_manager()
+		local last_surge_time = SurgeManager.last_surge_time or game.get_game_time()
+		local next_surge_hours = math.floor((SurgeManager._delta - game.get_game_time():diffSec(last_surge_time)) / 3600)
+		
+		local PsiStormManager = psi_storm_manager.get_psi_storm_manager()
+		local last_psi_storm_time = PsiStormManager.last_psi_storm_time or game.get_game_time()
+		local next_psi_storm_hours = math.floor((PsiStormManager._delta - game.get_game_time():diffSec(last_psi_storm_time)) / 3600)
+	
+		phase = game.translate_string("yan_stalker_sakharov_next_surge_or_psi_storm_1_0")
+		phase = string.format(phase, next_surge_hours, next_psi_storm_hours)
+	end
+
+	return phase
+end

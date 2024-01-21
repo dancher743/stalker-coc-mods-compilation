@@ -261,4 +261,16 @@
             </phrase>
         </phrase_list>
     </dialog>
+<!------------------- added by Dancher -------->	
+	<dialog id="yan_stalker_sakharov_next_surge_or_psi_storm">
+        <phrase_list>
+            <phrase id="0">
+                <text>yan_stalker_sakharov_next_surge_or_psi_storm_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <script_text>dialogs_yantar.get_next_surge_or_psi_storm_phrase_1</script_text>
+            </phrase>
+        </phrase_list>
+    </dialog>
 </game_dialogs>

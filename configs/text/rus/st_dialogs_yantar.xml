@@ -101,4 +101,14 @@
 	<string id="yan_merc_guards_start_4">
 		<text>Потеряйся, пока я тебе пулю в лоб не всадил!</text>
 	</string>
+<!------------------- added by Dancher -------->
+	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_0">
+		<text>Не подскажите, когда будет ближайший выброс и пси-шторм?</text>
+	</string>
+	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_0">
+		<text>Аппаратура выдаёт приблизительную оценку: выброс через %s ч., пси-шторм через %s ч., где "ч" - "часов" или "час".</text>
+	</string>
+	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_1">
+		<text>В данный момент произвести замеры невозможно. Подождите немного.</text>
+	</string>
 </string_table>
