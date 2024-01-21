@@ -105,10 +105,18 @@
 	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_0">
 		<text>Can you tell me when the next surge and psi-storm will happen?</text>
 	</string>
+
 	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_0">
-		<text>According to the equipment measurements: surge after %s h., psi-storm after %s h., where the "h" stands for "hours" or "hour".</text>
+		<text>According to the equipment measurements:</text>
 	</string>
+	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_0_1">
+		<text>surge after %s h.</text>
+	</string>
+	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_0_2">
+		<text>psi-storm after %s h.</text>
+	</string>
+	
 	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_1">
-		<text>It's not possible to take measurements at this time. Wait a bit.</text>
+		<text>It's not possible to take measurements at this time.</text>
 	</string>
 </string_table>
