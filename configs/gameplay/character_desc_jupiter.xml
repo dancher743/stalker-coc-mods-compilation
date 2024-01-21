@@ -1441,6 +1441,7 @@
 		<actor_dialog>dm_ordered_task_completed_dialog</actor_dialog>
 		<actor_dialog>drx_sl_jup_b6_scientist_tech_meet_dialog</actor_dialog>
 		<actor_dialog>jup_scientist_bunker_tech_squads_on_map_upgrade_dialog</actor_dialog>
+		<actor_dialog>yan_stalker_sakharov_next_surge_or_psi_storm</actor_dialog>
 		<actor_dialog>dm_ordered_task_dialog</actor_dialog>
 		<actor_dialog>dm_tech_repair</actor_dialog>
 		<actor_dialog>actor_break_dialog</actor_dialog>
