@@ -101,8 +101,8 @@ function opt_menu_on_init(menu)
 	menu.gameplay_options["bases_defense"]		= {default=true, 	debug_only=false, 	typ="check"}
 	
 	-- I do not recommend allowing a factor greater than 1.5 because there are not enough smart terrain jobs
-	menu.gameplay_options["alife_mutant_pop"]			= {default=0.5, 	debug_only=false, 	typ="list", list={0.25,0.50,1.0,1.5}}
-	menu.gameplay_options["alife_stalker_pop"]			= {default=0.5, 	debug_only=false, 	typ="list", list={0.25,0.50,1.0,1.5}}
+	menu.gameplay_options["alife_mutant_pop"]			= {default=0.5, 	debug_only=false, 	typ="list", list={0.10,0.25,0.50,1.0,1.5}}
+	menu.gameplay_options["alife_stalker_pop"]			= {default=0.5, 	debug_only=false, 	typ="list", list={0.10,0.25,0.50,1.0,1.5}}
 	
 	-- excl_dist
 	-- note: shouldn't be greater than switch distance or no simulation squads will come online. Instead it should create a border zone between excl_dist and switch_distance where stuff can come online

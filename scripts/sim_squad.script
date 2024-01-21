@@ -83,8 +83,8 @@ function create_squad(smart, faction, target, type, number, param, is_survival_i
 
     local squad
 	local original_spawn_chance = 50
-	local stalker_pop_factor = (axr_main.config:r_value("mm_options","alife_stalker_pop",2) or 1)
-	local monster_pop_factor = (axr_main.config:r_value("mm_options","alife_mutant_pop",2) or 1)
+	local stalker_pop_factor = (axr_main.config:r_value("mm_options","alife_stalker_pop",3) or 1)
+	local monster_pop_factor = (axr_main.config:r_value("mm_options","alife_mutant_pop",3) or 1)
 
 	if type then
 		local faction
