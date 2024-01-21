@@ -72,6 +72,24 @@
 	<string id="monster">
 		<text>Mutant</text>
 	</string>
+	<string id="monster_special">
+		<text>Mutant</text>
+	</string>
+	<string id="monster_zombied_night">
+		<text>Night Zombie</text>
+	</string>
+	<string id="monster_zombied_day">
+		<text>Day Zombie</text>
+	</string>
+	<string id="monster_predatory_night">
+		<text>Night Predatory</text>
+	</string>
+	<string id="monster_predatory_day">
+		<text>Day Predatory</text>
+	</string>
+	<string id="monster_vegetarian">
+		<text>Vegetarian Mutant</text>
+	</string>
 	<string id="zombied">
 		<text>Zombified</text>
 	</string>

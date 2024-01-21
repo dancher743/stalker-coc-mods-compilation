@@ -68,6 +68,24 @@
 	<string id="monster">
 		<text>Мутант</text>
 	</string>
+	<string id="monster_special">
+		<text>Мутант</text>
+	</string>
+	<string id="monster_zombied_night">
+		<text>Ночной зомби</text>
+	</string>
+	<string id="monster_zombied_day">
+		<text>Дневной зомби</text>
+	</string>
+	<string id="monster_predatory_night">
+		<text>Ночной хищник</text>
+	</string>
+	<string id="monster_predatory_day">
+		<text>Дневной хищник</text>
+	</string>
+	<string id="monster_vegetarian">
+		<text>Травоядный мутант</text>
+	</string>
 	<string id="zombied">
 		<text>Зомбированный</text>
 	</string>
