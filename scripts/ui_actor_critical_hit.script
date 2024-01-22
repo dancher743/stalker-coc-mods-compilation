@@ -3,7 +3,7 @@
 -- Added by Dancher
 --
 
-local duration = 0.25
+local duration = 0.225
 
 local mark_ui
 
