@@ -247,7 +247,7 @@ function companion_squad_can_teleport(squad)
 	return true
 end 
 
-function teleport_companions_to_actor()
+local function teleport_companion_squad_to_actor(squad)
 	local sim = alife()
 	local se_actor = sim:actor()
 	
@@ -257,10 +257,37 @@ function teleport_companions_to_actor()
 	local lvid = vert:level_vertex_id()
 	local pos = vert:level_point()
 	
+	TeleportSquad(squad,pos,lvid,gvid)
+end
+
+function teleport_companions_to_actor()
+	local sim = alife()
+	
 	for id,v in pairs(companion_squads) do 
 		local squad = sim:object(id)
 		if (squad and squad.commander_id) then 
-			TeleportSquad(squad,pos,lvid,gvid)
+			teleport_companion_squad_to_actor(squad)
+		end
+	end
+end
+
+function teleport_companions_to_actor_in_online()
+	local sim = alife()
+	
+	local function telepor_squad(squad)
+		if (squad.online) then
+			return
+		end
+		RemoveTimeEvent("axr_companions", "teleport_squad_to_actor_"..squad.id)
+		teleport_companion_squad_to_actor(squad)
+		squad.force_offline = false
+	end
+	
+	for id,v in pairs(companion_squads) do 
+		local squad = sim:object(id)
+		if (squad and squad.commander_id) then
+			squad.force_offline = true
+			CreateTimeEvent("axr_companions", "teleport_squad_to_actor_"..squad.id, 1, telepor_squad, squad)
 		end
 	end
 end
