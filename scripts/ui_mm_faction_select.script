@@ -336,6 +336,8 @@ local function actor_on_first_update(binder,delta)
 						utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion",true)
 						--utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss",true)
 						utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_start_time",game.time())
+						utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_invulnerable",true)
+						utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_barter_avaliable",true)
 					end
 				end
 				
