@@ -1793,7 +1793,7 @@ function faction_ui:OnRandomize()
 	self:UpdateAll(true, self.selected_faction)
 	
 	-- Difficulty
-	self:LoadDifficulty(true)
+	-- self:LoadDifficulty(true)
 	
 	-- Companions
 	--self:LoadCompanions(true)
