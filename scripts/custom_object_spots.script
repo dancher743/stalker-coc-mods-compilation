@@ -31,12 +31,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 		return
 	end
 	
-	level.map_remove_object_spot(id, "custom_spot")
-	
-	local se_obj = alife_object(id)
-	if (se_obj and se_obj:section_name() == "custom_spot_dummy_object") then
-		alife():release(se_obj)
-	end
+	remove_spot(id)
 end
 
 local function on_ok_button_clicked(text)
@@ -65,6 +60,19 @@ function add_spot(id, text)
 	level.map_add_object_spot_ser(id, "custom_spot", description)
 	
 	send_tip()
+end
+
+function remove_spot(id)
+	if (not has_spot(id)) then
+		return
+	end
+	
+	level.map_remove_object_spot(id, "custom_spot")
+	
+	local se_obj = alife_object(id)
+	if (se_obj and se_obj:section_name() == "custom_spot_dummy_object") then
+		alife():release(se_obj)
+	end
 end
 
 function has_spot(id)

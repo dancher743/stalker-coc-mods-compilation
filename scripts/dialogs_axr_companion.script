@@ -342,6 +342,7 @@ function become_actor_companion(actor,npc)
 
 		if ( member and member:alive() ) then
 			axr_companions.add_to_actor_squad(member)
+			custom_object_spots.remove_spot(k.id)
 		end
 	end
 end
