@@ -91,13 +91,13 @@
 			\n%c[200,50,200,50]• %c[0,150,150,150]After 3 hours of real time, companions will become invulnerable to any type of damage and will be able to exchange items for free.
 			\n%c[200,50,200,50]• %c[0,150,150,150]Companions who accompany you from the very beginning of the game have these bonuses initially.
 			\n%c[200,50,200,50]• %c[0,150,150,150]Invulnerability will be indicated by the shield icon located in the upper left corner of the companion's interface.
-			\n%c[200,50,200,50]• %c[0,150,150,150]You can make your companions vulnerable at any time in the game.
+			\n%c[200,50,200,50]• %c[0,150,150,150]You can make your companions vulnerable at any time during the game.
 			\nSee "Options" -> "Game" -> "Companions invulnerability"
 		</text>
 	</string>
 	<string id="st_mm_list_difficulty_desc">
 		<text>
-			%c[0,150,150,150]Gameplay difficulty affects player's protection and the accuracy of weapons in general. It applies to the player and other stalkers alike.\n \n%c[200,50,200,50]• %c[0,150,150,150]You can change gameplay difficulty in your playthrough at any time.
+			%c[0,150,150,150]Gameplay difficulty affects player's protection and the accuracy of weapons in general. It applies to the player and other stalkers alike.\n \n%c[200,50,200,50]• %c[0,150,150,150]You can change gameplay difficulty in your playthrough at any time during the game.
 			\nSee "Options" -> "Game" -> "Difficulty"
 		</text>
 	</string>
@@ -152,14 +152,14 @@
 	<string id="st_mm_ck_conditions_desc">
 		<text>
 			%c[0,150,150,150]Agony mode will prevent you from saving your progress if you're:
-			\n%c[200,200,200,50]• %c[0,150,150,150]Injured
-			\n%c[200,200,200,50]• %c[0,150,150,150]Bleeding
-			\n%c[200,200,200,50]• %c[0,150,150,150]Irradiated
-			\n%c[200,200,200,50]• %c[0,150,150,150]In combat with enemies
+			\n%c[200,200,50,50]• %c[0,150,150,150]Injured
+			\n%c[200,200,50,50]• %c[0,150,150,150]Bleeding
+			\n%c[200,200,50,50]• %c[0,150,150,150]Irradiated
+			\n%c[200,200,50,50]• %c[0,150,150,150]In combat with enemies
 			\n%c[200,200,200,50]• %c[0,150,150,150]Under circumstances of an emission or psi-storm
             \n
 			\n%c[200,50,200,50]• %c[0,150,150,150]All hardcore save modes are compatible with each other.
-			\n%c[200,50,200,50]• %c[0,150,150,150]You can add campfire saving to this mode at any time.
+			\n%c[200,50,200,50]• %c[0,150,150,150]You can add campfire saving to this mode at any time during the game.
 			\nSee "Options" -> "Game" -> "Campfire saving"
 		</text>
 	</string>
@@ -192,7 +192,7 @@
 			\nMutants will guard their territories during the day, and at night they will gather and attack the camps of stalkers. Stalkers will begin to explore the Zone and collect resources for themselves and their faction. Factions are trying to strengthen their region and capture the neighboring one.
 			\n
 			\n%c[200,50,200,50]• %c[0,150,150,150]Compatible with all modes.
-			\n%c[200,50,200,50]• %c[0,150,150,150]You can change population activity in your playthrough at any time.
+			\n%c[200,50,200,50]• %c[0,150,150,150]You can change population activity in your playthrough at any time during the game.
 			\nSee "Options" -> "Game". Then "Population squades activity".
 			\n%c[200,50,200,50]• %c[0,150,150,150]Some characters that don't take part in the 'Mysteries of the Zone' storyline may die. To enable their respawn 
 			\nSee "Options" -> "Game". Then "Unique NPC respawn".
