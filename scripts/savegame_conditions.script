@@ -66,11 +66,12 @@ function check_and_apply (text)
 	end
 	
 	if pass then
-		SetHudMsg(str,4)
+		SetHudMsg(str,5)
 		get_console():execute("main_menu off")
 		return true
 	end
 	
+	SetHudMsg("",0)
 	return false
 end
 
