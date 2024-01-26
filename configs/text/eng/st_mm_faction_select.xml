@@ -166,14 +166,17 @@
 	<string id="st_mm_list_hardcore_lives_desc">
 		<text>
 			%c[0,150,150,150]An addition feature for Ironman mode that allows you to set how many lives you have at the beginning of your new game.
+			\n
 			\nEverytime you die, you will lose a life.
-			\nOnce you run out of lives, all the game saves of your related playthrough will be removed.\n
+			\nOnce you run out of lives, all the game saves of your related playthrough will be removed.
+			\n
 			\n%c[200,200,50,50]• %c[0,150,150,150]Ironman mode must be active.
 		</text>
 	</string>
 	<string id="st_mm_list_hardcore_regen_desc">
 		<text>
 			%c[0,150,150,150]An addition feature for Ironman mode that allows you to set how many days it will take to grant an extra life.
+			\n
 			\n%c[200,200,50,50]• %c[0,150,150,150]Sleeping will not help.
 			\n%c[200,200,50,50]• %c[0,150,150,150]Ironman mode must be active.
 		</text>
