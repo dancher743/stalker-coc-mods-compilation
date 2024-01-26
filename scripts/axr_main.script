@@ -281,3 +281,29 @@ end
 function actor_on_weapon_zoom_out()
 	weapon_is_zoomed = false
 end
+
+------------------------------------
+-- Added by Dancher
+------------------------------------
+
+function get_check_option_value(name)
+	return get_option_value(name, "check", nil)
+end
+
+function get_option_value(name, type, subtype)
+	local value = nil
+	
+	if (type == "check") then
+		value = config:r_value("mm_options","enable_"..name,1,false)
+	elseif (type == "list") then
+		if (subtype == "boolean") then
+			value = config:r_value("mm_options",name,1,false)
+		elseif (subtype == "number") then
+			value = config:r_value("mm_options",name,2,-1)
+		else
+			value = config:r_value("mm_options",name,0,"")
+		end
+	end
+	
+	return value
+end

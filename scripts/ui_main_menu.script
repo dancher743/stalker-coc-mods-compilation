@@ -277,14 +277,15 @@ end
 function main_menu:OnButton_save_clicked()
 
 	-- Campfire save mode check
-	if (alife_storage_manager.get_state().enable_campfire_mode) and (level_weathers.valid_levels[level.name()]) then
+	-- Replaced by "conditions_mode_campfire" option
+	--[[if (alife_storage_manager.get_state().enable_campfire_mode) and (level_weathers.valid_levels[level.name()]) then
 		if not (_G.ALLOW_SAVING) then
 			local str = strformat(game.translate_string("st_ui_no_save_campfire"),game.translate_string("st_ui_save"))
 			SetHudMsg(str,4)
 			get_console():execute("main_menu off")
 			return
 		end
-	end
+	end]]
 	
 	-- Agony save mode check
 	if savegame_conditions.check_and_apply("st_ui_save") then

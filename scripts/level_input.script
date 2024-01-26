@@ -19,12 +19,13 @@ function action_quick_save()
 		return false 
 	end
 	
-	if (alife_storage_manager.get_state().enable_campfire_mode) and (level_weathers.valid_levels[level.name()]) then -- return true to stop the function from working
+	-- Replaced by "conditions_mode_campfire" option
+	--[[if (alife_storage_manager.get_state().enable_campfire_mode) and (level_weathers.valid_levels[level.name()]) then -- return true to stop the function from working
 		if not (_G.ALLOW_SAVING) then
 			SetHudMsg("st_you_cant_save",4)
 			return true
 		end
-	end
+	end]]
 	
 	if savegame_conditions.check_and_apply("st_ui_save") then
 		return true
@@ -102,12 +103,13 @@ function action_slow_save()
 		return false
 	end
 	
-	if (alife_storage_manager.get_state().enable_campfire_mode) and (level_weathers.valid_levels[level.name()]) then -- return true to stop the function from working
+	-- Replaced by "conditions_mode_campfire" option
+	--[[if (alife_storage_manager.get_state().enable_campfire_mode) and (level_weathers.valid_levels[level.name()]) then -- return true to stop the function from working
 		if not (_G.ALLOW_SAVING) then
 			SetHudMsg("st_you_cant_save",4)
 			return true
 		end
-	end
+	end]]
 	
 	if savegame_conditions.check_and_apply("st_ui_save") then
 		return true

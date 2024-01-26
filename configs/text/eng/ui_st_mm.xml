@@ -552,4 +552,7 @@
 	<string id="ui_mm_companions_invulnerability">
 		<text>Companions invulnerability</text>
 	</string>
+	<string id="ui_mm_conditions_mode_campfire">
+		<text>Campfire saving</text>
+	</string>
 </string_table>
