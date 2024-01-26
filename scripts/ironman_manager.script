@@ -42,6 +42,8 @@ end
 local function save_state(m_data)
 	m_data.ironman_sleep_hrs = sleep_hrs
 	m_data.ironman_granted_lives = granted_lives
+	m_data.ironman_life_cycle = life_cycle
+	m_data.ironman_life_feature = life_feature
 end
 
 local function load_state(m_data)
