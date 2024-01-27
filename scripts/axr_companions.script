@@ -1161,6 +1161,11 @@ function get_hours_with_companion(se_obj)
 	return hours
 end
 
+function get_hours_with_companion_obj(obj)
+    local se_obj = simulation:object(obj:id())
+    return get_hours_with_companion(se_obj)
+end
+
 function is_invulnerable_obj(obj)
 	local se_obj = simulation:object(obj:id())
 	return is_invulnerable(se_obj)

@@ -485,4 +485,8 @@
 	<string id="st_distance_to">
 		<text>Distance to</text>
 	</string>
+	
+	<string id="st_mm_pda_start_time">
+		<text>Real hours together</text>
+	</string>
 </string_table>

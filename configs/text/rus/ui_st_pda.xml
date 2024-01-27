@@ -485,4 +485,8 @@
 	<string id="st_distance_to">
 		<text>Расстояние до</text>
 	</string>
+	
+	<string id="st_mm_pda_start_time">
+		<text>Реальных часов вместе</text>
+	</string>
 </string_table>

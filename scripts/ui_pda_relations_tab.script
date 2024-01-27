@@ -258,6 +258,7 @@ function pda_relations_tab:autoupdate()
 			%c[255,160,160,160]st_mm_pda_stalkers_killed:%c[default] %s \n
 			%c[255,160,160,160]st_mm_pda_mutants_killed:%c[default] %s \n
 			%c[255,160,160,160]st_mm_pda_artes_found:%c[default] %s \n
+			%c[255,160,160,160]st_mm_pda_start_time:%c[default] %s \n
 			]]
 
 			if (alife():has_info(se_obj.id,"npcx_beh_wait")) then
@@ -310,7 +311,9 @@ function pda_relations_tab:autoupdate()
 				state_str = string.gsub(state_str,s,game.translate_string(s))
 			end
 
-			state_str = strformat(state_str,full_name,s_location,s_move,s_combat,s_gather,s_loot,s_dist,s_stealth,s_dismiss,s_tele,s_stalker,s_mutant,s_arte)
+			local s_start_time = axr_companions.get_hours_with_companion_obj(npc)
+
+			state_str = strformat(state_str,full_name,s_location,s_move,s_combat,s_gather,s_loot,s_dist,s_stealth,s_dismiss,s_tele,s_stalker,s_mutant,s_arte,s_start_time)
 			self.companion_info[i].hint = state_str
 		else
 			self.companion_info[i].id = nil
@@ -757,7 +760,7 @@ function ui_companion_row:__init(owner,row,xml) super(owner,row,xml)
 	local x = is_widescreen and 20 or 35
 	local y = 0
 
-	for i=1,6 do
+	for i=1,15 do
 		local n = i+(6*(row-1))
 
 		owner.companion_info[n] = {
