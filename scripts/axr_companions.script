@@ -1144,7 +1144,7 @@ end
 function get_hours_with_companion(se_obj)
 	local hours = 0
 	
-	if (se_obj.companion_start_time) then
+	if (se_obj.companion_start_time == nil) then
 		se_obj.companion_start_time = utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_start_time")
 	end
 	
