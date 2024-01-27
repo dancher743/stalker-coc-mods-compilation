@@ -121,7 +121,6 @@ function eat_medkit:update(npc)
 				local med = npc:object(self.item)
 				if med then
 					consume_medkit(npc,med)
-					--printf("%s[%s]: Used medical supplies",npc:name(),npc:character_name())
 				end
 				self.item = nil
 			end
@@ -137,10 +136,12 @@ function consume_medkit(npc,medkit)
 	local time = ini:r_float_ex(ms,"boost_time") or 1
 	local health_restore = ini:r_float_ex(ms,"boost_health_restore") or 0
 	local bleeding_restore = ini:r_float_ex(ms,"boost_bleeding_restore") or 0
-	if (health_restore and eating.medkits[ms]) then
+	if (health_restore > 0) then
 		npc.health = health_restore*time*10
+		-- printf("%s[%s]: Used %s supplies for health restore",npc:name(),npc:character_name(),tostring(ms))
 	end
-	if (bleeding_restore and eating.bandages[ms]) then
+	if (bleeding_restore > 0) then
 		npc.bleeding = bleeding_restore*time*10
+		-- printf("%s[%s]: Used %s supplies for bleeding restore",npc:name(),npc:character_name(),tostring(ms))
 	end
 end
