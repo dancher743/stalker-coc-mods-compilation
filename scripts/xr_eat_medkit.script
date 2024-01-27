@@ -4,11 +4,12 @@
 by Alundaio original by Rulix
 ************************************************************
 --]]
+local enabled = nil
 local eating = {}
 
 function on_game_start()
 	local ini = ini_file("ai_tweaks\\xr_eat_medkit.ltx")
-	local enabled = ini:r_bool_ex("plugin","enable",false)
+	enabled = ini:r_bool_ex("plugin","enable",false)
 	if not (enabled) then ini = nil return end
 	RegisterScriptCallback("npc_on_update",npc_update)
 
