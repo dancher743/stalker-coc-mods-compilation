@@ -137,10 +137,10 @@ function consume_medkit(npc,medkit)
 	local time = ini:r_float_ex(ms,"boost_time") or 1
 	local health_restore = ini:r_float_ex(ms,"boost_health_restore") or 0
 	local bleeding_restore = ini:r_float_ex(ms,"boost_bleeding_restore") or 0
-	if (health_restore) then
+	if (health_restore and eating.medkits[ms]) then
 		npc.health = health_restore*time*10
 	end
-	if (bleeding_restore) then
+	if (bleeding_restore and eating.bandages[ms]) then
 		npc.bleeding = bleeding_restore*time*10
 	end
 end
