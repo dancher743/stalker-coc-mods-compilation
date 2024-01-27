@@ -10,7 +10,7 @@
 	</string>
 	
 	<string id="st_ui_no_save_campfire">
-		<text>Можно %s только возле костров.</text>
+		<text>Можно %s только возле горящих костров.</text>
 	</string>
 	
 	<string id="st_ui_no_save_combat">

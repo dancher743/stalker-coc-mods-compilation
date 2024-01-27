@@ -10,7 +10,7 @@
 	</string>
 	
 	<string id="st_ui_no_save_campfire">
-		<text>You can only %s near campfires.</text>
+		<text>You can only %s near burning campfires.</text>
 	</string>
 	
 	<string id="st_ui_no_save_combat">
