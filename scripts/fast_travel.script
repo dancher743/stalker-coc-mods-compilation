@@ -154,7 +154,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 	-- forward time when traveling
 	if not (notime) then
 		local dist = db.actor:position():distance_to(se_obj.position)
-		level.change_game_time(0,math.floor(dist/1000)+math.random(0,2),math.random(1,59))
+		level.change_game_time(0,math.floor(dist/1000)+math.random(1,2),math.random(1,59))
 		surge_manager.get_surge_manager().time_forwarded = true
 		psi_storm_manager.get_psi_storm_manager().time_forwarded = true
 		level_weathers.get_weather_manager():forced_weather_change()
