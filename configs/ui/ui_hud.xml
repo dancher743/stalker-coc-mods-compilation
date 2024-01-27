@@ -11,6 +11,9 @@
 			<icon x="5" y="4" width="80" height="51" stretch="1"/>
 			<invulnerable x="4" y="4" width="11" height="11" stretch="1"/>
 			<team_role x="74" y="4" width="11" height="11" stretch="1"/>
+			<start_time x="5" y="4" width="80" height="51" stretch="1">
+				<text complex_mode="1" r="200" g="200" b="200" align="l" vert_align="b" font="letterica16"/>
+			</start_time>
 			<distance x="5" y="4" width="80" height="51" stretch="1">
 				<text complex_mode="1" r="200" g="200" b="200" align="r" vert_align="b" font="letterica16"/>
 			</distance>
