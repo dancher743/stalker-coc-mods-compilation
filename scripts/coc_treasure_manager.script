@@ -19,6 +19,7 @@ within the .scoc as a string. When the cache is opened, the loot is spawned.
 
 A list of all valid item sections is generated automatically by parsing all of system_ini(). From this list, loot can be obtained. If you do not 
 want a certain section from being spawned, put it in 'plugins\coc_treasure_manager.ltx' 'ignore_sections'.
+If you need to exclude inventory boxes from random stashes, put them 'story_id' in 'plugins\coc_treasure_manager.ltx' 'ignore_boxes'.
 
 A valid item section is determined by several factors:
 1. It must have can_trade = true
@@ -150,8 +151,9 @@ function create_random_stash(no_spot,hint,bonus_items)
 	-- create a temporary table to use math.random
 	local t = {}
 	for id,v in pairs(caches) do
+		local story_id = get_object_story_id(id)
 		-- false means box is available
-		if (v == false) then
+		if (v == false and not ltx:line_exist("ignore_boxes",story_id)) then
 			table.insert(t,id)
 		end
 	end
