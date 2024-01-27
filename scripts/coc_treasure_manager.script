@@ -349,8 +349,9 @@ function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery )
 	local t = {}
 	for id, v in pairs( caches ) do
 
+		local story_id = get_object_story_id(id)
 		-- False means box is available:
-		if ( v == false ) then
+		if ( v == false and not ltx:line_exist("ignore_boxes", story_id) ) then
 			if ( bonus_items ) then
 
 				-- This feature only works with inventory boxes:
