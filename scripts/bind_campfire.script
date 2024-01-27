@@ -120,7 +120,8 @@ function on_game_start()
 			return false
 		end
 		
-		if (db.actor:active_item()) then
+		-- Should actor to be without active item to ignite/extinguish campfire
+		--[[if (db.actor:active_item()) then
 			if (tutorial_ran > 0) then
 				tutorial_ran = 0
 				if (game.has_active_tutorial()) then
@@ -128,7 +129,7 @@ function on_game_start()
 				end
 			end
 			return false 
-		end
+		end]]
 		
 		local pos = db.actor:position()
 		for id,binder in pairs(campfires_all) do
