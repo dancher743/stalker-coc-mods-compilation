@@ -31,17 +31,16 @@ function pda_relations_tab:__init() super()
 	}
 
 	self.color_codes = {
-		GetARGB(255,255,255,255),
-		GetARGB(255,255,128,0),
-		GetARGB(255,0,255,255),
-		GetARGB(255,0,255,128),
-		GetARGB(255,0,128,255),
-		GetARGB(255,255,0,128),
-		GetARGB(255,128,255,0),
-		GetARGB(255,255,0,0),
-		GetARGB(255,0,255,0),
-		GetARGB(255,0,0,255),
-		GetARGB(255,128,0,255),
+		["def"]     	= GetARGB(255,255,255,255),
+		["stalker"] 	= GetARGB(255,255,255,100),
+		["bandit"]  	= GetARGB(255,120,201,79),
+		["ecolog"]  	= GetARGB(255,255,128,100),
+		["csky"]    	= GetARGB(255,100,200,255),
+		["dolg"]    	= GetARGB(255,255,100,100),
+		["freedom"] 	= GetARGB(255,100,255,100),
+		["killer"]  	= GetARGB(255,100,100,255),
+		["army"]    	= GetARGB(255,100,128,255),
+		["monolith"]	= GetARGB(255,120,201,79),
 	}
 
 	self.companion_info = {}
@@ -217,14 +216,10 @@ function pda_relations_tab:autoupdate()
 			end
 
 			-- Set color code
-			if not (id_to_code[se_obj.group_id]) then
-				local n = 1
-				for k,v in pairs(id_to_code) do
-					n = n + 1
-				end
-				id_to_code[se_obj.group_id] = self.color_codes[n] or self.color_codes[1]
-			end
-			self.companion_info[i].leader_wnd:SetTextureColor(id_to_code[se_obj.group_id])
+			local community = se_obj:community()
+			local colors = self.color_codes
+			local color = community and colors[community] or colors["def"]
+			self.companion_info[i].leader_wnd:SetTextureColor(color)
 
 
 			-- health status
