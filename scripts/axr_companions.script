@@ -936,6 +936,7 @@ function UICompanionList:__init() super()
 		["killer"]  = GetARGB(255,100,100,255),
 		["army"]    = GetARGB(255,100,128,255),
 		["monolith"]= GetARGB(255,120,201,79),
+		["zombied"] = GetARGB(168,168,168,255),
 	}
 
 	self:InitControls()
