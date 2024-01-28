@@ -214,12 +214,17 @@ function pda_relations_tab:autoupdate()
 				self.companion_info[i].leader_wnd:Show(true)
 				self.companion_info[i].leader_wnd:InitTexture("ui_minimap_point")
 			end
+			
+			-- invulnerability status
+			local is_invulnerable = axr_companions.is_invulnerable(se_obj)
+			self.companion_info[i].invulner_wnd:Show(is_invulnerable)
 
 			-- Set color code
 			local community = se_obj:community()
 			local colors = self.color_codes
 			local color = community and colors[community] or colors["def"]
 			self.companion_info[i].leader_wnd:SetTextureColor(color)
+			self.companion_info[i].invulner_wnd:SetTextureColor(color)
 
 
 			-- health status
@@ -314,6 +319,7 @@ function pda_relations_tab:autoupdate()
 			self.companion_info[i].id = nil
 			self.companion_info[i].icon_wnd:Show(false)
 			self.companion_info[i].leader_wnd:Show(false)
+			self.companion_info[i].invulner_wnd:Show(false)
 			self.companion_info[i].health_wnd:SetText("")
 			self.companion_info[i].name_wnd:SetText("")
 			self.companion_info[i].comm_wnd:SetText("")
@@ -762,6 +768,7 @@ function ui_companion_row:__init(owner,row,xml) super(owner,row,xml)
 			["id"]				= nil,
 			["icon_wnd"] 		= self:AddIconField(1),
 			["leader_wnd"] 		= self:AddIconField(1),
+			["invulner_wnd"]	= self:AddIconField(1),
 			["name_wnd"]		= self:AddTextField("",1),
 			["comm_wnd"]		= self:AddTextField("",1),
 			["rank_wnd"]		= self:AddTextField("",1),
@@ -779,6 +786,11 @@ function ui_companion_row:__init(owner,row,xml) super(owner,row,xml)
 		owner.companion_info[n].leader_wnd:SetStretchTexture(true)
 		owner.companion_info[n].leader_wnd:SetWndSize(vector2():set(is_widescreen and 8 or 10,10))
 		owner.companion_info[n].leader_wnd:SetWndPos(vector2():set(x,y))
+		
+		owner.companion_info[n].invulner_wnd:InitTexture("ui_hud_icon_shield")
+		owner.companion_info[n].invulner_wnd:SetStretchTexture(true)
+		owner.companion_info[n].invulner_wnd:SetWndSize(vector2():set(is_widescreen and 8 or 10,10))
+		owner.companion_info[n].invulner_wnd:SetWndPos(vector2():set(x+55,y))
 
 		owner.companion_info[n].name_wnd:SetFont(GetFontLetterica18Russian())
 		owner.companion_info[n].name_wnd:SetWndSize(vector2():set(120,22))
