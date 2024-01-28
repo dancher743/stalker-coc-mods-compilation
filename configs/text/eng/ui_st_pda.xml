@@ -489,4 +489,10 @@
 	<string id="st_mm_pda_start_time">
 		<text>Real hours together</text>
 	</string>
+	<string id="st_mm_pda_invulnerability">
+		<text>Invulnerability</text>
+	</string>
+	<string id="st_mm_pda_free_trading">
+		<text>Free trading</text>
+	</string>
 </string_table>

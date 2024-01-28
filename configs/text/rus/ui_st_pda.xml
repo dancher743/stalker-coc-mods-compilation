@@ -489,4 +489,10 @@
 	<string id="st_mm_pda_start_time">
 		<text>Реальных часов вместе</text>
 	</string>
+	<string id="st_mm_pda_invulnerability">
+		<text>Неуязвимость</text>
+	</string>
+	<string id="st_mm_pda_free_trading">
+		<text>Бесплатная торговля</text>
+	</string>
 </string_table>
