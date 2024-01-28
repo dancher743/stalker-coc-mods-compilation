@@ -492,7 +492,7 @@
 	<string id="st_mm_pda_invulnerability">
 		<text>Неуязвимость</text>
 	</string>
-	<string id="st_mm_pda_free_trading">
+	<string id="st_mm_pda_barter">
 		<text>Бесплатная торговля</text>
 	</string>
 </string_table>

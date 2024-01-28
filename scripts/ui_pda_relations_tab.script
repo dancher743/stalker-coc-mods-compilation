@@ -255,7 +255,7 @@ function pda_relations_tab:autoupdate()
 			%c[255,160,160,160]st_mm_pda_dismissable:%c[default] %s \n
 			%c[255,160,160,160]st_mm_pda_level_travel:%c[default] %s \n
 			%c[255,160,160,160]st_mm_pda_invulnerability:%c[default] %s \n
-			%c[255,160,160,160]st_mm_pda_free_trading:%c[default] %s \n
+			%c[255,160,160,160]st_mm_pda_barter:%c[default] %s \n
 			\n%c[255,215,215,215]st_mm_pda_statistics:%c[default] \n
 			%c[255,160,160,160]st_mm_pda_stalkers_killed:%c[default] %s \n
 			%c[255,160,160,160]st_mm_pda_mutants_killed:%c[default] %s \n
@@ -314,7 +314,7 @@ function pda_relations_tab:autoupdate()
 			end
 
 			local s_invulnerability = axr_companions.is_invulnerable_obj(npc) and game.translate_string("st_pda_mode_true") or game.translate_string("st_pda_mode_false")
-			local s_free_trading = axr_companions.is_barter_avaliable_obj(npc) and game.translate_string("st_pda_mode_true") or game.translate_string("st_pda_mode_false")
+			local s_barter = axr_companions.is_barter_avaliable_obj(npc) and game.translate_string("st_pda_mode_true") or game.translate_string("st_pda_mode_false")
 			local s_start_time = axr_companions.get_hours_with_companion_obj(npc)
 
 			state_str = strformat(state_str,
@@ -328,7 +328,7 @@ function pda_relations_tab:autoupdate()
 				s_stealth,
 				s_dismiss,
 				s_tele,
-				s_free_trading,
+				s_barter,
 				s_invulnerability,
 				s_stalker,
 				s_mutant,
