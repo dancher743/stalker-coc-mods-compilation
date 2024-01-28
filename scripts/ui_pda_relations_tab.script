@@ -782,7 +782,7 @@ function ui_companion_row:__init(owner,row,xml) super(owner,row,xml)
 	local x = is_widescreen and 20 or 35
 	local y = 0
 
-	for i=1,15 do
+	for i=1,6 do
 		local n = i+(6*(row-1))
 
 		owner.companion_info[n] = {
@@ -811,7 +811,7 @@ function ui_companion_row:__init(owner,row,xml) super(owner,row,xml)
 		owner.companion_info[n].invulner_wnd:InitTexture("ui_hud_icon_shield")
 		owner.companion_info[n].invulner_wnd:SetStretchTexture(true)
 		owner.companion_info[n].invulner_wnd:SetWndSize(vector2():set(is_widescreen and 8 or 10,10))
-		owner.companion_info[n].invulner_wnd:SetWndPos(vector2():set(x+55,y))
+		owner.companion_info[n].invulner_wnd:SetWndPos(vector2():set(x+56,y))
 
 		owner.companion_info[n].name_wnd:SetFont(GetFontLetterica18Russian())
 		owner.companion_info[n].name_wnd:SetWndSize(vector2():set(120,22))
