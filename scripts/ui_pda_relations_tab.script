@@ -499,6 +499,12 @@ function pda_relations_tab:CreateContextMenu(npc,id)
 	end
 
 	action_1__1 = function()
+		local distance = npc:position():distance_to_sqr(db.actor:position())
+		if (distance > 100) then
+			self:SetMsg(game.translate_string("st_pda_cant_trade_of_distance"),3)
+			return
+		end
+		
 		if not (utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss")) then
 			npc:use(db.actor)
 			--npc:start_trade(db.actor)

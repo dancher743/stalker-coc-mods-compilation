@@ -352,6 +352,9 @@
     <string id="st_pda_cant_trade">
         <text>Task-related stalkers can't trade</text>
     </string>
+	<string id="st_pda_cant_trade_of_distance">
+        <text>Companion is too far</text>
+    </string>
 	<!-- PDA Relations Action list -->
 	<string id="st_pda_action_back">
 		<text>Back</text>
