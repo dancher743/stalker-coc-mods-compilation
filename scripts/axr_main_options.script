@@ -267,3 +267,30 @@ function get_character_icon_list()
 
 	return t
 end
+
+------------------------------------
+-- Added by Dancher
+------------------------------------
+
+function get_check_option(name)
+	return get_option(name, "check", nil)
+end
+
+function get_option(name, type, subtype)
+	local config = axr_main.config
+	local value = nil
+	
+	if (type == "check") then
+		value = config:r_value("mm_options","enable_"..name,1,false)
+	elseif (type == "list") then
+		if (subtype == "boolean") then
+			value = config:r_value("mm_options",name,1,false)
+		elseif (subtype == "number") then
+			value = config:r_value("mm_options",name,2,-1)
+		else
+			value = config:r_value("mm_options",name,0,"")
+		end
+	end
+	
+	return value
+end

@@ -57,7 +57,7 @@ function check_and_apply (text)
 		end 
 		
 		-- Prevent saving if no campfire near.
-		if (axr_main.get_check_option_value("conditions_mode_campfire")) and (level_weathers.valid_levels[level.name()]) then
+		if (axr_main_options.get_check_option("conditions_mode_campfire")) and (level_weathers.valid_levels[level.name()]) then
 			if not (has_burning_campfire_nearby()) then
 				str = strformat(game.translate_string("st_ui_no_save_campfire"),game.translate_string(text))
 				pass = true
