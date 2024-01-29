@@ -170,6 +170,11 @@ function opt_menu_on_init(menu)
 			end
 		}
 		
+		-- Added by Dancher
+		if (not IsEocMode()) then
+			menu.gameplay_options["living_zone"]			= {default=false, 	debug_only=false, 	typ="check"}
+		end
+		--
 	end
 	
     -- axr option default config

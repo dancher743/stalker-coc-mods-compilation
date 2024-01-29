@@ -115,3 +115,4 @@ Mods
 66. TRX: Global Weather (2.2) (Tronex)
 67. Critical Hit (Dancher)
 68. Animated detectors (selectively) (Alex_91zA)
+69. Living Zone by Skelja [1.4.22] (Skelja)

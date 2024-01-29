@@ -62,7 +62,11 @@ function simulation_objects_registry:get_props(obj)
 		if (IsEocMode()) then
 			props_ini = ini_file("misc\\simulation_objects_props_eoc_mode.ltx")
 		else
-			props_ini = ini_file("misc\\simulation_objects_props.ltx")
+			if (axr_main.get_check_option_value("living_zone")) then
+				props_ini = ini_file("misc\\simulation_objects_props_living_zone.ltx")
+			else
+				props_ini = ini_file("misc\\simulation_objects_props.ltx")
+			end
 		end
 	end
 	

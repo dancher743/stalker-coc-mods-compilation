@@ -558,4 +558,7 @@
 	<string id="ui_mm_conditions_mode_campfire">
 		<text>Cохранения у костров</text>
 	</string>
+	<string id="ui_mm_living_zone">
+		<text>Более активный A-life</text>
+	</string>
 </string_table>
