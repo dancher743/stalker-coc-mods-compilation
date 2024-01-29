@@ -3362,7 +3362,7 @@ function get_start_time_elapsed_ge(actor,npc,p)
 end
 
 function is_arx_check_option_enabled(actor,npc,p)
-	return p[1] and axr_main.config:r_value("mm_options","enable_"..p[1],1,false)
+	return p[1] and axr_main_options.get_check_option(p[1])
 end
 
 function is_yan_base_defense_quest_enabled(actor,npc)
