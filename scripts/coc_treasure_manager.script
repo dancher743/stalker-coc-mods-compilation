@@ -151,7 +151,7 @@ function create_random_stash(no_spot,hint,bonus_items)
 	-- create a temporary table to use math.random
 	local t = {}
 	for id,v in pairs(caches) do
-		local story_id = get_object_story_id(id)
+		local story_id = get_object_story_id(id) or ""
 		-- false means box is available
 		if (v == false and not ltx:line_exist("ignore_boxes",story_id)) then
 			table.insert(t,id)
@@ -349,7 +349,7 @@ function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery )
 	local t = {}
 	for id, v in pairs( caches ) do
 
-		local story_id = get_object_story_id(id)
+		local story_id = get_object_story_id(id) or ""
 		-- False means box is available:
 		if ( v == false and not ltx:line_exist("ignore_boxes", story_id) ) then
 			if ( bonus_items ) then
