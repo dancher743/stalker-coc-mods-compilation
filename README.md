@@ -26,6 +26,7 @@ Optimization
 ---
 * Type `vid_restart` at the console if you are faced with _"Too many occlusion queries were issued"_ warnings. This command restarts the renderer
 * Add `-no_staging` to the end of a shortcut as a launch parameter. In DirectX 10/11, it will load textures directly into video memory without copying them to RAM, thus keeping it free
+* Add `-noprefetch` to the end of a shortcut as a launch parameter to forces the game to clear RAM
 * Disable "Sun shadow" in "Options" in "Video" to reduce the load on a video card
 
 Screenshots
