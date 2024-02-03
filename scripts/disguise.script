@@ -6,9 +6,8 @@
 -- Reworked due to patch dressing feature: Dancher
 ----------------------
 
--- update rates in seconds
-actor_update_rate = 1
-npc_update_rate = 1
+-- update rate in seconds (where 1 is 1 second)
+local update_rate = 1
 
 --time you need to be hidden (not seen by any npc) before changing outfit to make the disguise effective, 100 means roughly 10 seconds
 local time_to_forget = 100
@@ -56,8 +55,12 @@ local patch_sections = {
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
 	
-	CreateTimeEvent("disguise","actor_update",actor_update_rate,actor_update)
-	CreateTimeEvent("disguise","npc_update",npc_update_rate,npc_update)
+	local function update()
+		actor_update()
+		npc_update()
+		ResetTimeEvent("disguise","update",update_rate)
+	end
+	CreateTimeEvent("disguise","update",update_rate,update)
 	
 	RegisterScriptCallback("on_game_load",on_game_load)
 	
@@ -86,7 +89,6 @@ function actor_on_first_update()
 end
 
 function actor_update()
-	ResetTimeEvent("disguise","actor_update",actor_update_rate)
 	
 	local actor = db.actor
 	
@@ -176,7 +178,6 @@ function change_actor_community(community)
 end
 
 function npc_update()
-	ResetTimeEvent("disguise","npc_update",npc_update_rate)
 	
 	if not default_faction or not db.actor then return end
 	
