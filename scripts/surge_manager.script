@@ -658,6 +658,11 @@ function CSurgeManager:update()
 			self.stages['1stwave']=true
 			--self.debugMessages[2]:SetText("1st wave at: "..tostring(diff_sec))
 		end
+		-- campfires -----------------------------------------------------------------------------------------------------------------------------------------
+		if (diff_sec>=130) and (self.stages['campfires_turned_off']==nil) then
+			bind_campfire.turn_off_all_campfires()
+			self.stages['campfires_turned_off']=true
+		end
 		-- 2nd wave sound -----------------------------------------------------------------------------------------------------------------------------------------
 		if(diff_sec>=156) and (self.stages['2ndwavesnd']==nil)  then
 			--xr_sound.set_sound_play(db.actor:id(), "blowout_wave_1")
