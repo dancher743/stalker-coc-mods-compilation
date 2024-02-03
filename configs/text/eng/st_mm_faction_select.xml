@@ -97,7 +97,7 @@
 	</string>
 	<string id="st_mm_list_difficulty_desc">
 		<text>
-			%c[0,150,150,150]Gameplay difficulty affects player's protection and the accuracy of weapons in general. It applies to the player and other stalkers alike.\n \n%c[200,50,200,50]• %c[0,150,150,150]You can change gameplay difficulty in your playthrough at any time.
+			%c[0,150,150,150]Gameplay difficulty affects showing wound effects, player's protection and the accuracy of weapons in general. It applies to the player and other stalkers alike.\n \n%c[200,50,200,50]• %c[0,150,150,150]You can change gameplay difficulty in your playthrough at any time.
 			\nSee "Options" -> "Game" -> "Difficulty"
 		</text>
 	</string>

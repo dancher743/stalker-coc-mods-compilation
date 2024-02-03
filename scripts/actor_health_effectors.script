@@ -25,6 +25,10 @@ local function play_reaction_sound(snd_obj)
 	last_reaction_sound = snd_obj
 end
 
+local function is_master_difficulty()
+	return level.get_game_difficulty() == 3
+end
+
 local function bleedcondition()
     if db.actor.health < 0.3 and isactcondset ~= true then
         level.add_pp_effector("cherno.ppe", 2012, true)
@@ -34,7 +38,8 @@ local function bleedcondition()
         level.remove_pp_effector(2012)
         isactcondset = false
     end
-    if db.actor.radiation > 0.3 and radeffect ~= true then
+    
+	if db.actor.radiation > 0.3 and radeffect ~= true then
         level.add_pp_effector("cherno.ppe", 2013, true)
 		play_reaction_sound(radiation_reaction_sounds[math.random(#radiation_reaction_sounds)])
         radeffect = true
@@ -43,11 +48,15 @@ local function bleedcondition()
         level.remove_pp_effector(2013)
         radeffect = false
     end
-    if db.actor.bleeding > 0.5 and db.actor.health < 0.4 and ble1 < time_global() then
+	
+	local is_master_difficulty = is_master_difficulty()
+	
+	if is_master_difficulty and db.actor.bleeding > 0.5 and db.actor.health < 0.4 and ble1 < time_global() then
         level.add_pp_effector("deimos1.ppe", 2014, false)
         ble1 = time_global() + math.random(4000, 10000)
     end
-    if db.actor.bleeding > 0.4 and db.actor.power < 0.35 and ble2 ~= true then
+    
+	if is_master_difficulty and db.actor.bleeding > 0.4 and db.actor.power < 0.35 and ble2 ~= true then
         level.add_cam_effector("camera_effects\\pripyat_horror.anm", 1001, false, "")
         level.add_pp_effector("snd_shock.ppe", 2015, true)
         ble2 = true
