@@ -187,12 +187,14 @@ function npc_update()
 		
 		if (npc and IsStalker(npc)) then
 			local id = npc:id()
-			local npc_is_enemy = game_relations.is_factions_enemies(default_faction, npc:character_community()) or npc:relation(db.actor) == game_object.enemy
 			
 			if (not npc:alive()) then
 				last_seen[id] = nil
+				suspicion[id] = nil
+				return
 			end
 			
+			local npc_is_enemy = game_relations.is_factions_enemies(default_faction, npc:character_community()) or npc:relation(db.actor) == game_object.enemy
 			local current = utils.get_actor_community()
 			if current ~= default_faction and npc:see(db.actor) and npc_is_enemy then
 				last_seen[id] = game.get_game_time()
