@@ -26,7 +26,7 @@ local discovery_distance = 100
 
 --how much time it takes to be discovered when in view, 100 is roughly 1 minute with uncovered face
 local suspicion_limit = 60
-local warning_limit = suspicion_limit / 2
+local warning_limit = suspicion_limit / 3
 local dewarn_limit = suspicion_limit / 3
 
 local last_seen = {}
