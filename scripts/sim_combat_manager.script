@@ -52,7 +52,11 @@ function sim_combat_manager:find_enemy(squad)
 				if (IsSurvivalMode() and sim_survival.are_factions_zombied_or_monster(faction, faction2)) then
 					are_enemies = false
 				else
-					are_enemies = game_relations.is_factions_enemies(faction, faction2)
+					if (faction == "monster" and faction2 == "monster") then
+						are_enemies = false
+					else
+						are_enemies = game_relations.is_factions_enemies(faction, faction2)
+					end
 				end
 				
 				if squad2_power and squad2_power > 0 and are_enemies then
@@ -82,7 +86,11 @@ function sim_combat_manager:is_valid()
 					if (IsSurvivalMode() and sim_survival.are_factions_zombied_or_monster(faction, faction2)) then
 						are_enemies = false
 					else
-						are_enemies = game_relations.is_factions_enemies(faction, faction2)
+						if (faction == "monster" and faction2 == "monster") then
+							are_enemies = false
+						else
+							are_enemies = game_relations.is_factions_enemies(faction, faction2)
+						end
 					end
 					
 					if squad2_power and squad2_power > 0 and are_enemies then
