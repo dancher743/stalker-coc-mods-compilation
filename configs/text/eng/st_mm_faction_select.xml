@@ -132,7 +132,7 @@
 			\n
 			\nSee how long you can survive!
 			\n
-			\n%c[200,200,200,50]• %c[0,150,150,150]If Extended population mode is active, then you will have relatively safe only the first 24 hours, because the spawn activity of the living dead will increase every hour. Use your time wisely!
+			\n%c[200,200,200,50]• %c[0,150,150,150]If Extended population mode is active, then you will have relatively safe only the first 24 hours, because the spawn activity of the living dead in the Zone will increase every hour. Use your time wisely!
 		</text>
 	</string>
 	<string id="st_mm_ck_azazel_mode_desc">
