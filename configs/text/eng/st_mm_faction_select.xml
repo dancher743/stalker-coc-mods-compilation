@@ -157,7 +157,8 @@
 			\n%c[200,200,200,50]• %c[0,150,150,150]Irradiated
 			\n%c[200,200,200,50]• %c[0,150,150,150]In combat with enemies
 			\n%c[200,200,200,50]• %c[0,150,150,150]Under circumstances of an emission or psi-storm
-            \n
+            \n%c[200,200,200,50]• %c[0,150,150,150]Near campfire (optional)
+			\n
 			\n%c[200,50,200,50]• %c[0,150,150,150]All hardcore save modes are compatible with each other.
 			\n%c[200,50,200,50]• %c[0,150,150,150]You can add campfire saving to this mode in your playthrough at any time.
 			\nSee "Options" -> "Game" -> "Campfire saving"
