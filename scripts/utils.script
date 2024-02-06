@@ -955,3 +955,10 @@ function get_hours_elapsed()
 	local hours = math.floor(seconds/60/60)
 	return hours
 end
+
+function collect_garbage()
+    printf("collectgarbage before=%sKb",collectgarbage("count")*1024)
+    collectgarbage("collect")
+    collectgarbage("collect")
+    printf("collectgarbage after=%sKb",collectgarbage("count")*1024)
+end
