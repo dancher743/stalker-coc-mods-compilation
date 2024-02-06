@@ -28,7 +28,9 @@ function update(item)
 		patch_in_slot_ui:UpdateIcon(item)
 		patch_in_slot_ui:ShowIcon(true)
 	else
-		patch_in_slot_ui:ShowIcon(false)
+		if (patch_in_slot_ui) then
+			patch_in_slot_ui:ShowIcon(false)
+		end
 	end
 end
 
