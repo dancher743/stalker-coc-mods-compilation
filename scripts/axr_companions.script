@@ -101,6 +101,10 @@ local function squad_on_npc_death(squad,se_npc,killer)
 	if (squad:npc_count() == 0) then 
 		companion_squads[squad.id] = nil
 	end
+	
+	if (not has_companion()) then
+		ui_axr_companions.deactivate_hud()
+	end
 end
 
 local function squad_on_register(squad)
@@ -346,6 +350,7 @@ function add_to_actor_squad(npc)
 	utils.se_obj_save_var(id,npc:name(),"companion_start_time",game.time())
 	npc:inactualize_patrol_path()
 	setup_companion_logic(npc,db.storage[id],false)
+	ui_axr_companions.activate_hud()
 end
 
 function remove_from_actor_squad(npc)
@@ -371,6 +376,10 @@ function remove_from_actor_squad(npc)
 	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_hostage",nil)
 	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_start_time",nil)
 	se_obj.companion_start_time = nil
+	
+	if (not has_companion()) then
+		ui_axr_companions.deactivate_hud()
+	end
 end
 
 function remove_all_from_actor_squad()
@@ -402,6 +411,8 @@ function remove_all_from_actor_squad()
 	for id,b in pairs(non_task_companions) do
 		non_task_companions[id] = nil
 	end
+	
+	ui_axr_companions.deactivate_hud()
 end
 
 function set_companion_allow_teleport(npc)

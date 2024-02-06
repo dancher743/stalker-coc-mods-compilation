@@ -4,14 +4,14 @@
 --------------------------------------------------
 local HUD = nil
 
-local function activate_hud()
+function activate_hud()
 	if HUD == nil then
 		HUD = UICompanionList()
 		get_hud():AddDialogToRender(HUD)
 	end
 end
 
-local function deactivate_hud()
+function deactivate_hud()
 	if HUD ~= nil then
 		get_hud():RemoveDialogToRender(HUD)
 		HUD = nil
@@ -19,7 +19,9 @@ local function deactivate_hud()
 end
 
 local function actor_on_first_update()
-	activate_hud()
+	if (axr_companions.has_companion()) then
+		ui_axr_companions.activate_hud()
+	end
 end
 
 local function actor_on_net_destroy()
