@@ -58,6 +58,7 @@ function on_game_start()
 	local function update()
 		actor_update()
 		npc_update()
+		ui_disguise.show(main_hud_shown())
 		ResetTimeEvent("disguise","update",update_rate)
 	end
 	CreateTimeEvent("disguise","update",update_rate,update)
@@ -117,6 +118,7 @@ function disguise_by_patch(actor_community)
 	
 	if disguise_helper.has_patch_changed(patch_in_slot, prev_patch_in_slot) then
 		disguise_news.reset_once_disguise_tips()
+		ui_disguise.update(patch_in_slot)
 	end
 	
 	if not patch_in_slot and has_actor_disguised then
