@@ -1,5 +1,5 @@
 --
--- UI for Critical hit from Actor
+-- UI for critical hit from Actor
 -- Added by Dancher
 --
 
@@ -7,22 +7,14 @@ local duration = 0.2125
 
 local mark_ui
 
-local function hide_mark()
-	RemoveTimeEvent("ui_actor_critical_hit", "hide_mark")
-	mark_ui:Show(false)
-end
-
 function show_mark()
 	if (get_console():get_bool("hud_draw") == false) then
 		return
 	end
 	
-    if (mark_ui:IsShown()) then
-        return
-    end
-	
-	mark_ui:Show(true)
-	CreateTimeEvent("ui_actor_critical_hit", "hide_mark", duration, hide_mark)
+	if (mark_ui) then
+		mark_ui:Start()
+	end
 end
 
 local function on_game_load()
@@ -59,4 +51,27 @@ function critical_hit_mark:InitControls()
 	local xml = CScriptXmlInit()
 	xml:ParseFile("ui_actor_critical_hit.xml")
 	self.mark = xml:InitStatic("critical_hit_mark", self)
+end
+
+function critical_hit_mark:Start()
+	-- printf("started!")
+	self.finish_time = time_global() + duration * 1000
+	self:Show(true)
+end
+
+function critical_hit_mark:Update()
+	-- printf("update!")
+	local finish_time = self.finish_time
+	
+	if (not finish_time or time_global() <= finish_time) then
+		return
+	end
+	
+	self:Finish()
+end
+
+function critical_hit_mark:Finish()
+	-- printf("finished!")
+	self.finish_time = nil
+	self:Show(false)
 end
