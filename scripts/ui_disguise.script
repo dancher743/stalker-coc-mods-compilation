@@ -53,12 +53,6 @@ function on_game_start()
 	RegisterScriptCallback("actor_on_weapon_zoom_out",actor_on_weapon_zoom_out)
 end
 
-function on_game_unload()
-	UnregisterScriptCallback("actor_on_net_destroy",actor_on_net_destroy)
-	UnregisterScriptCallback("actor_on_weapon_zoom_in",actor_on_weapon_zoom_in)
-	UnregisterScriptCallback("actor_on_weapon_zoom_out",actor_on_weapon_zoom_out)
-end
-
 --- UI class ---
 
 class "patch_in_slot" (CUIScriptWnd)
