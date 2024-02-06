@@ -498,7 +498,7 @@ function faction_ui:Main_Controls()
 	
 	self.character_name = xml:InitEditBox("main_dialog:input_name",self.dialog)
 	self:Register(self.character_name,"input_name")
-	self.character_name:SetText(gs("pri_b305_strelok_name")) -- Set Default Name
+	self.character_name:SetText(gs("st_actor_generic_name")) -- Set Default Name
 	
 	self.text_relations = xml:InitTextWnd("main_dialog:text_relations",self.dialog)
 	self.text_money = xml:InitTextWnd("main_dialog:text_money",self.dialog)
