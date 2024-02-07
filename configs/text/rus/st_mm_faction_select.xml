@@ -357,4 +357,9 @@
 		<text>Случайно</text>
 	</string>
 	
+	<!-- Other -->
+	<string id="st_mm_character_default_name">
+		<text>Неизвестный сталкер</text>
+	</string>
+	
 </string_table>

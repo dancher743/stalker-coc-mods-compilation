@@ -343,4 +343,9 @@
 		<text>Randomize</text>
 	</string>
 	
+	<!-- Other -->
+	<string id="st_mm_character_default_name">
+		<text>Unknown stalker</text>
+	</string>
+	
 </string_table>
