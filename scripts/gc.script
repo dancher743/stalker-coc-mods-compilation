@@ -3,7 +3,7 @@
 -- Added by Dancher
 --
 
-rate = 45 -- seconds
+rate = 30 -- seconds
 
 function collect(reason)
     if (reason) then
