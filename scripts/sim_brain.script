@@ -46,7 +46,6 @@ function on_game_unload()
 end
 
 squad_community_by_behaviour["trader"] = "trader"
-actor_faction = nil
 base_count = 0
 resource_count = 0
 
@@ -160,10 +159,6 @@ function actor_on_update()
 	end
 
 	local tg = time_global()
-	
-	if not actor_faction then
-		actor_faction = alife():actor():community():sub(7)
-	end
 
 	if (not last_update) then
 		last_update = tg + 20000
@@ -173,14 +168,10 @@ function actor_on_update()
 		return
 	end
 
-	actor_faction = alife():actor():community():sub(7)
-
 	last_update = tg + 10000
 	
 	if (not initialized) then
 		initialize()
-		sim_levels.update()		
-		sim_factions.update()
 	end
 
 	sim_levels.update()
