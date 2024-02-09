@@ -3,7 +3,8 @@
 -- Added by Dancher
 --
 
-rate = 60 -- seconds
+local rate = 30 -- seconds
+local memory_threshold = 35000
 
 function collect(reason)
     if (reason) then
@@ -17,7 +18,9 @@ end
 
 local function start_auto_collect()
 	local function update()
-		collect("Automatic garbage collection")
+		if (collectgarbage("count") >= memory_threshold) then
+			collect("Automatic garbage collection")
+		end
 		ResetTimeEvent("gc","update",rate)
 	end
 	CreateTimeEvent("gc","update",rate,update)
