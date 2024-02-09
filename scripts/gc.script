@@ -17,7 +17,7 @@ end
 
 local function start_auto_collect()
 	local function update()
-		collect("Automatic garbage collection")
+		collectgarbage("collect")
 		ResetTimeEvent("gc","update",rate)
 	end
 	CreateTimeEvent("gc","update",rate,update)
