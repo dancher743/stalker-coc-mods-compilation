@@ -146,6 +146,8 @@ function squad_on_npc_creation(squad,se_obj,spawn_smart)
 end
 
 local last_update
+local updates_count = 0
+local updates_count_threshold = 9 -- every 1.5 minutes
 
 function actor_on_update()
 	if (not IsEocMode()) then
@@ -183,6 +185,12 @@ function actor_on_update()
 
 	sim_levels.update()
 	sim_factions.update()
+	
+	if (updates_count % updates_count_threshold == 0) then
+		utils.collect_garbage("EOC update")
+	end
+	
+	updates_count = updates_count + 1
 end
 
 function initialize()
