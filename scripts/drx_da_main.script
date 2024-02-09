@@ -710,7 +710,7 @@ function drx_da_refresh_anomalies( )
 	utils.save_var( db.actor, "drx_da_anoms_need_refresh", false )
 	printf( "DRX DA: Dynamic anomalies refreshed for %s", level_name )
 
-	utils.collect_garbage()
+	gc.collect()
 
 	-- Set return value:
 	return true

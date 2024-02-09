@@ -1,0 +1,28 @@
+--
+-- Garbage Collection
+-- Added by Dancher
+--
+
+rate = 90 -- seconds
+
+function collect(reason)
+    if (reason) then
+		printf("collectgarbage reason: %s",reason)
+		reason = nil
+	end
+    printf("collectgarbage before=%sKb",collectgarbage("count")*1024)
+    collectgarbage("collect")
+    printf("collectgarbage after=%sKb",collectgarbage("count")*1024)
+end
+
+local function start_auto_collect()
+	local function update()
+		collect("Automatic garbage collection")
+		ResetTimeEvent("gc","update",rate)
+	end
+	CreateTimeEvent("gc","update",rate,update)
+end
+
+function on_game_start()
+	start_auto_collect()
+end

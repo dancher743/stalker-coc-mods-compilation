@@ -197,10 +197,7 @@ function main_menu:OnMessageQuitWin()
 end
 
 function main_menu:OnButton_return_game()
-	printf("collectgarbage before=%sKb",collectgarbage("count")*1024)
-	collectgarbage("collect")
-	collectgarbage("collect")
-	printf("collectgarbage after=%sKb",collectgarbage("count")*1024)
+	gc.collect()
 
 	local console = get_console()
 	console:execute("main_menu off")
