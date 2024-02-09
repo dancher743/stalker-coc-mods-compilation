@@ -27,5 +27,7 @@ local function start_auto_collect()
 end
 
 function on_game_start()
-	start_auto_collect()
+	if (axr_main_options.get_check_option("auto_garbage_collection")) then
+		start_auto_collect()
+	end
 end

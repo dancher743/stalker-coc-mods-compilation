@@ -555,4 +555,7 @@
 	<string id="ui_mm_conditions_mode_campfire">
 		<text>Campfire saving</text>
 	</string>
+	<string id="ui_mm_auto_garbage_collection">
+		<text>Auto garbage collection</text>
+	</string>
 </string_table>
