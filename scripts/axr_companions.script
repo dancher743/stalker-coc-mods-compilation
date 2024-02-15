@@ -898,14 +898,16 @@ end
 function is_companion(npc)
 	local result = false
 	
-	local se_obj = simulation:object(npc:id())
-	local is_npc_hostage = se_obj and is_hostage(se_obj) or false
-
-	if (not is_npc_hostage) then
-		result = npc:has_info("npcx_is_companion")
-		if (not result) then
-			local clist = list_actor_squad_by_id()
-			result = clist[npc:id()] ~= nil
+	if (npc) then
+		local se_obj = simulation:object(npc:id())
+		local is_npc_hostage = se_obj and is_hostage(se_obj) or false
+	
+		if (not is_npc_hostage) then
+			result = npc:has_info("npcx_is_companion")
+			if (not result) then
+				local clist = list_actor_squad_by_id()
+				result = clist[npc:id()] ~= nil
+			end
 		end
 	end
     

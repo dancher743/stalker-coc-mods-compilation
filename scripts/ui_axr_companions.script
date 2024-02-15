@@ -18,7 +18,7 @@ function deactivate_hud()
 	end
 end
 
-local function actor_on_first_update()
+local function se_actor_on_register()
 	if (axr_companions.has_companion()) then
 		ui_axr_companions.activate_hud()
 	end
@@ -41,7 +41,7 @@ local function actor_on_weapon_zoom_out(item)
 end
 
 function on_game_start()
-	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
+	RegisterScriptCallback("actor_on_first_update",se_actor_on_register)
 	RegisterScriptCallback("actor_on_net_destroy",actor_on_net_destroy)
 	RegisterScriptCallback("actor_on_weapon_zoom_in",actor_on_weapon_zoom_in)
 	RegisterScriptCallback("actor_on_weapon_zoom_out",actor_on_weapon_zoom_out)
