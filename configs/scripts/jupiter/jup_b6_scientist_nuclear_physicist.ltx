@@ -19,6 +19,7 @@ out_restr = jup_b41_sr_light
 gather_items_enabled = false
 help_wounded_enabled = false
 corpse_detection_enabled = false
+on_actor_dist_le_nvis = 5 | remark@stand_still
 
 [meet@default]
 close_snd_hello = jup_b6_scientist_nuclear_physicist_greeting
@@ -34,3 +35,8 @@ use = {!actor_enemy +jup_b1_complete_end +jup_b6_ask -jup_b6_intro_end =dist_to_
 allow_break = false
 trade_enable = true
 meet_dialog	= {+jup_b1_complete_end +jup_b6_ask -jup_b6_intro_end} jup_b6_scientist_nuclear_physicist_b32_investigation_anomaly
+
+[remark@stand_still]:walker@meet
+target = story | actor
+anim = wait_trade
+on_actor_dist_ge_nvis = 6 | walker@meet
