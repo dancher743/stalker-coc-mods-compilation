@@ -658,10 +658,10 @@ function CSurgeManager:update()
 			self.stages['1stwave']=true
 			--self.debugMessages[2]:SetText("1st wave at: "..tostring(diff_sec))
 		end
-		-- campfires -----------------------------------------------------------------------------------------------------------------------------------------
-		if (diff_sec>=130) and (self.stages['campfires_turned_off']==nil) then
+		-- 1st wave campfires -----------------------------------------------------------------------------------------------------------------------------------------
+		if (diff_sec>=130) and (self.stages['1stwave_campfires_off']==nil) then
 			bind_campfire.turn_off_all_campfires()
-			self.stages['campfires_turned_off']=true
+			self.stages['1stwave_campfires_off']=true
 		end
 		-- 2nd wave sound -----------------------------------------------------------------------------------------------------------------------------------------
 		if(diff_sec>=156) and (self.stages['2ndwavesnd']==nil)  then
@@ -687,6 +687,11 @@ function CSurgeManager:update()
 			  self:get_objects_to_kill()
 			end
 			--self.debugMessages[2]:SetText("2nd wave at: "..tostring(diff_sec))
+		end
+		-- 2nd wave campfires -----------------------------------------------------------------------------------------------------------------------------------------
+		if (diff_sec>=178) and (self.stages['2ndwave_campfires_off']==nil) then
+			bind_campfire.turn_off_all_campfires()
+			self.stages['2ndwave_campfires_off']=true
 		end
 		-- earthquakes fade-----------------------------------------------------------------------------------------------------------------------------------------
 		if (diff_sec>=200) and (self.stages['quake100']==true) then

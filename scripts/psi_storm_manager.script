@@ -306,11 +306,6 @@ function CPsiStormManager:update()
 			end
 			self.task_given = true
 		end
-		-- campfires -----------------------------------------------------------------------------------------------------------------------------------------
-		if (diff_sec>=30) and (self.stages['campfires_turned_off']==nil) then
-			bind_campfire.turn_off_all_campfires()
-			self.stages['campfires_turned_off']=true
-		end
 		-- psi storm main phase -----------------------------------------------------------------------------------------------------------------------------------------
 		if (diff_sec>=40) and (diff_sec<=228) then
 			if self.next_vortex_at == nil then
