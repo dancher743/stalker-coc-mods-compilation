@@ -245,7 +245,7 @@ local function can_help_actor(squad)
 end
 
 local function get_help_target_id(squad)
-	if (IsSurvivalMode() and not IsEocMode() and squad.online and squad.dist_to_actor <= 300) then
+	if (IsSurvivalMode() and not IsEocMode() and squad.online and squad.dist_to_actor <= 250) then
 		if (squad.player_id == "zombied" or is_squad_monster[squad.player_id]) then
 			return 0
 		end
