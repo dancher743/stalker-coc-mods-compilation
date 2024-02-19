@@ -12,6 +12,13 @@ nearest_to_actor_smart = {id = nil , dist = math.huge}
 
 local smart_sect = "smart_terrain"
 
+local bar_smarts = {
+	["bar_dolg_general"] = true,
+	["bar_visitors"] = true,
+	["bar_zastava"] = true,
+	["bar_zastava_2"] = true
+}
+
 is_respawn_allowed = true
 
 local function job_avail_to_npc(npc_info, job, smart)
@@ -1621,7 +1628,7 @@ function se_smart_terrain:try_respawn()
 			
 			if (sect_to_spawn_params.squads) then
 				local squad
-				if (IsSurvivalMode() and math.random(1,100) < 90) then
+				if (IsSurvivalMode() and not bar_smarts[self:name()] and math.random(1,100) < 90) then
 					local t = {"simulation_zombie","simulation_zombie","simulation_zombie","simulation_zombie","simulation_zombie","zombied_sim_squad_novice","zombied_sim_squad_advanced","zombied_sim_squad_veteran","simulation_fracture","simulation_snork"}
 					squad = SIMBOARD:create_squad(self, t[math.random(#t)])
 				else 
