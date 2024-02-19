@@ -1020,7 +1020,8 @@ is_squad_monster = {
 		["monster_zombied_night"] 	= true,
 		["monster_special"] 		= true,
 		["monster"]					= true
-}squad_community_by_behaviour = {
+}
+squad_community_by_behaviour = {
 		["stalker"]							= "stalker",
 		["bandit"]							= "bandit",
         ["csky"]							= "csky",
