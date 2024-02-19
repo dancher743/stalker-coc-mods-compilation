@@ -13,7 +13,7 @@ if (jit == nil) then
 end
 
 GAME_VERSION = "1.4.22"
-MOD_VERSION = "Dancher's Compilation 1.4.0 RC 12"
+MOD_VERSION = "Dancher's Compilation 1.4.0 RC 13"
 
 if string.find(command_line(), "-dbg") then
 	DEV_DEBUG = true
