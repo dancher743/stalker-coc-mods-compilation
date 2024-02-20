@@ -1011,8 +1011,10 @@ function sim_squad_scripted:can_switch_online()
 		
 			-- monster doesn't have a target smart so just leave it offline
 			if (self.assigned_target_id == nil) then
+				self.force_hide = true
 				return false
 			end
+			self.force_hide = false
 			
 			-- Monsters will come online with the hours ONLY when Survival mode is disabled
 			if (not IsSurvivalMode()) then
@@ -1070,7 +1072,7 @@ end
 --***********************************************************************************************
 
 function sim_squad_scripted:refresh()
-	if(self:commander_id()==nil) then
+	if(self:commander_id()==nil or self.force_hide) then
 		self:hide()
 		return
 	end
