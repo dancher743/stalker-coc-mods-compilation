@@ -236,7 +236,7 @@ function send_treasure_with_level(stash_name, se_box)
 	if db.actor:is_talking() then
 		db.actor:give_talk_message2(news_caption, news_text, "ui_inGame2_Polucheni_koordinaty_taynika", "iconed_answer_item")
 	else
-		db.actor:give_game_news(news_caption, news_text, "ui_inGame2_Polucheni_koordinaty_taynika", 0, 5000)
+		db.actor:give_game_news(news_caption, news_text, "ui_inGame2_Polucheni_koordinaty_taynika", 0, 6000)
 	end
 	
 	xr_sound.set_sound_play(db.actor:id(), "pda_news")
