@@ -1227,6 +1227,9 @@
 	<string id="st_dyn_news_l08_yantar">
 		<text>на Янтаре,</text>
 	</string>
+	<string id="st_dyn_news_l08u_brainlab">
+		<text>в Х-16,</text>
+	</string>
 	<string id="st_dyn_news_l09_deadcity">
 		<text>в Мёртвом Городе,</text>
 	</string>

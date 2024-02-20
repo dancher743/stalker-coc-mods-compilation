@@ -1227,6 +1227,9 @@
 	<string id="st_dyn_news_l08_yantar">
 		<text>in Yantar,</text>
 	</string>
+	<string id="st_dyn_news_l08u_brainlab">
+		<text>in Lab X-16,</text>
+	</string>
 	<string id="st_dyn_news_l09_deadcity">
 		<text>in Dead City,</text>
 	</string>
