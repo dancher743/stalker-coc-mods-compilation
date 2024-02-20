@@ -229,6 +229,7 @@ function send_treasure_with_level(stash_name, se_box)
 	else
 		level_point = dynamic_news_helper.GetPointDescription(se_box)
 	end
+	level_point = string.gsub(level_point, "%.", "")
 	
 	local news_caption = game.translate_string("st_found_new_treasure")
 	local news_text = string.format("%s %s", stash_name, level_point)
