@@ -1070,7 +1070,7 @@ end
 --***********************************************************************************************
 
 function sim_squad_scripted:refresh()
-	if(self:commander_id()==nil) then
+	if(self:commander_id()==nil) or (self.assigned_target_id==nil) then
 		self:hide()
 		return
 	end
