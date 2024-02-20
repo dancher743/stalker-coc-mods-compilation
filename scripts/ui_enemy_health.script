@@ -101,6 +101,12 @@ function on_hit(obj,power,dir,who,bi)
 		elseif (IsMonster(nil,cls)) then 
 			local monster_name = monster_classes[cls]
 			if (monster_name ~= nil) then
+				if (monster_name == "zombie") then
+					local monster_section = "zombie_ghost"
+					if (monster_section == obj:section()) then
+						monster_name = monster_section
+					end
+				end
 				text = game.translate_string("ui_st_enemy_health_"..monster_name)
 			else
 				text = game.translate_string("monster")
