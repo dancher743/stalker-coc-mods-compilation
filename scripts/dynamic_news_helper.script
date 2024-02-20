@@ -540,6 +540,18 @@ function GetPointDescription(obj)
 	return strformat("%s %s %s",m_s,game.translate_string("st_dyn_news_close"),m_str)
 end
 
+function GetShortPointDescription(obj)
+	local level_name = get_object_levelname(obj)
+	if not (level_name) then 
+		return 
+	end 
+	
+	local m_s = game.translate_string("st_dyn_news_"..level_name)
+	m_s = string.gsub(m_s, "%p", "")
+	
+	return m_s
+end
+
 local tips_icons = {
 	dolg     	= "ui_icon_news_news_dolg",
 	freedom  	= "ui_icon_news_news_svoboda",

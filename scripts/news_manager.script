@@ -221,8 +221,14 @@ function send_treasure(param, has_spot)
 end
 
 function send_treasure_with_level(stash_name, se_box)
-	local level_id = alife():level_name(game_graph():vertex(se_box.m_game_vertex_id):level_id())
-	local level_point = dynamic_news_helper.GetPointDescription(se_box)
+	local level_name = alife():level_name(game_graph():vertex(se_box.m_game_vertex_id):level_id())
+	
+	local level_point
+	if (IsUndergroundLevel(level_name)) then
+		level_point = dynamic_news_helper.GetShortPointDescription(se_box)
+	else
+		level_point = dynamic_news_helper.GetPointDescription(se_box)
+	end
 	
 	local news_caption = game.translate_string("st_found_new_treasure")
 	local news_text = string.format("%s %s", stash_name, level_point)

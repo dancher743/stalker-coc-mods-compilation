@@ -1833,7 +1833,10 @@ function IsAnomaly(o,c)
 	return c and anomaly_classes[c] or false
 end
 
-function IsUndergroundLevel()
+function IsUndergroundLevel(level_name)
+	if not (level_name) then
+		level_name = level.name()
+	end
 	if not (underground_levels) then
 		underground_levels = {
 		["jupiter_underground"] 	= true,
@@ -1847,5 +1850,5 @@ function IsUndergroundLevel()
 		["l13u_warlab"] 			= true,
 		}
 	end	
-	return underground_levels[level.name()]
+	return underground_levels[level_name]
 end
