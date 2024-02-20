@@ -1010,9 +1010,9 @@ function sim_squad_scripted:can_switch_online()
 		if (is_squad_monster[self.player_id]) then
 		
 			-- monster doesn't have a target smart so just leave it offline
-			--[[if (self.assigned_target_id == nil) then
+			if (self.assigned_target_id == nil) then
 				return false
-			end]]
+			end
 			
 			-- Monsters will come online with the hours ONLY when Survival mode is disabled
 			if (not IsSurvivalMode()) then
