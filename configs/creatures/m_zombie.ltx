@@ -582,19 +582,33 @@ stand_attack_3                 = 0.30, 0.35, 180, 0.0, 1.0, 0.0, -1.0, 0.3, -0.6
 
 [zombie_normal]:zombie_weak
 visual				= monsters\zombi\zombi_trup_2
-FakeDeathCount			= 5		              ;-- max count of fake death
-StartFakeDeathHealthThreshold	= 0.6
+immunities_sect			= zombie_immunities_normal
+FakeDeathCount			= 3		              ;-- max count of fake death
+StartFakeDeathHealthThreshold	= 0.5
 rank = 6
 spec_rank = normal
 
+[zombie_immunities_normal]:zombie_immunities_weak
+fire_wound_immunity		= 3.0
+
 [zombie_strong]:zombie_weak
 visual				= monsters\zombi\zombi_3
+immunities_sect			= zombie_immunities_strong
+FakeDeathCount			= 2
+StartFakeDeathHealthThreshold	= 0.4
 rank = 9
 spec_rank = strong
+
+[zombie_immunities_strong]:zombie_immunities_weak
+fire_wound_immunity		= 2.0
 
 [zombie_ghost]:zombie_weak
 visual                  = monsters\zombi\zombi_1_ghost
 immunities_sect			= zombie_immunities_ghost
+FakeDeathCount			= 1
+StartFakeDeathHealthThreshold	= 0.3
+rank = 12
+spec_rank = strong
 
 sound_idle				= ;NO SOUND
 sound_eat				= ;NO SOUND
