@@ -594,6 +594,7 @@ spec_rank = strong
 
 [zombie_ghost]:zombie_weak
 visual                          = monsters\zombi\zombi_1_ghost
+immunities_sect			= zombie_immunities_ghost
 
 sound_idle				= ;NO SOUND
 sound_eat				= ;NO SOUND
@@ -604,8 +605,16 @@ sound_panic				= ;NO SOUND
 sound_die_in_anomaly	= ;NO SOUND
 sound_distant_idle		= ;NO SOUND
 
-wound_immunity			= 1.0
-explosion_immunity		= 1.0
+[zombie_immunities_ghost]
+burn_immunity			= 1.0
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 0.20
+radiation_immunity		= 0.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 0.55
+fire_wound_immunity		= 0.75
 
 [zombie_fake]:zombie_weak
 visual				= monsters\zombi\zombi_4
