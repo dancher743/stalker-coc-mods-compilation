@@ -17,10 +17,10 @@
 	</string>
 	
 	<string id="jup_scientist_bunker_tech_squads_on_map_upgrade_0">
-		<text>I heard that you have achieved success in registering objects in anomalies. Can you do the same with living objects?</text>
+		<text>I wanna see squads on the global map in my PDA.</text>
 	</string>
 	<string id="jup_scientist_bunker_tech_squads_on_map_upgrade_1">
-		<text>Can. Do you want your PDA to record the activity of squads on the global map? Make a contribution to science in the amount of 10000 rubles, and I will set it up.</text>
+		<text>For this to happen, you need to connect the PDA to another satellite. I will do this, but you will make a contribution to science in the amount of 10000 rubles.</text>
 	</string>
 	<string id="jup_scientist_bunker_tech_squads_on_map_upgrade_2">
 		<text>Keep the money.</text>
@@ -29,7 +29,7 @@
 		<text>Next time.</text>
 	</string>
 	<string id="jup_scientist_bunker_tech_squads_on_map_upgrade_4">
-		<text>Fine. Give me your PDA. Okay... so... click "Accept"... And here are two points... Done! Take your PDA, I did it all.</text>
+		<text>Fine. Give me your PDA. Okay... so... click "Accept"... and finally here... Take your PDA, I did it all.</text>
 	</string>
 	
 	<string id="ui_st_news_no_off_pda_upgrade">
