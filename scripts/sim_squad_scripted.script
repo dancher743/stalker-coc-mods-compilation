@@ -1121,37 +1121,32 @@ function sim_squad_scripted:show()
 			spot = "storyline_task_location"
 		end
 	elseif not(is_squad_monster[self.player_id]) then
-		if (axr_main.config:r_value("mm_options","enable_show_stalkers_on_map",1,false) == true and pda_upgrade_manager.has_squads_on_map_upgrade()) then
+		if (axr_companions.companion_squads[self.id]) then
+			spot = "alife_presentation_squad_companion_1"
+			non_commander_spot = "alife_presentation_squad_companion_non_commander"
+		else	
+			if (pda_upgrade_manager.has_squads_on_map_upgrade() and axr_main.config:r_value("mm_options","enable_show_stalkers_on_map",1,false) == true) then
 -------------------------------------av661194--start---------------
-			local relation = self:get_squad_relation()
-			if (relation == "friends") then
-				spot = "alife_presentation_squad_friend_1"
-			elseif (relation == "neutral") then
-				spot = "alife_presentation_squad_neutral_1"
-			else
-				spot = "alife_presentation_squad_enemy_1"
-			end
-			
-			if (axr_companions.companion_squads[self.id]) then
-				spot = "alife_presentation_squad_companion_1"
-				non_commander_spot = "alife_presentation_squad_companion_non_commander"
-			end
+				local relation = self:get_squad_relation()
+				if (relation == "friends") then
+					spot = "alife_presentation_squad_friend_1"
+				elseif (relation == "neutral") then
+					spot = "alife_presentation_squad_neutral_1"
+				else
+					spot = "alife_presentation_squad_enemy_1"
+				end
 -------------------------------------av661194--end---------------
-		else
-			local relation = game_relations.get_squad_relation_to_actor_by_id(self.id)
-			if(relation=="friends") then
-				spot = "alife_presentation_squad_friend"
-			elseif(relation=="neutral") then
-				spot = "alife_presentation_squad_neutral"
-			end
-			
-			if (axr_companions.companion_squads[self.id]) then
-				spot = "alife_presentation_squad_companion"
-				non_commander_spot = "alife_presentation_squad_companion_non_commander"
+			else
+				local relation = game_relations.get_squad_relation_to_actor_by_id(self.id)
+				if(relation=="friends") then
+					spot = "alife_presentation_squad_friend"
+				elseif(relation=="neutral") then
+					spot = "alife_presentation_squad_neutral"
+				end
 			end
 		end
 	else
-		if (axr_main.config:r_value("mm_options","enable_show_monsters_on_map",1,false) == true and pda_upgrade_manager.has_squads_on_map_upgrade()) then
+		if (pda_upgrade_manager.has_squads_on_map_upgrade() and axr_main.config:r_value("mm_options","enable_show_monsters_on_map",1,false) == true) then
 -------------------------------------av661194--start---------------
 			spot = "alife_presentation_squad_monster_1"
 -------------------------------------av661194--end---------------
