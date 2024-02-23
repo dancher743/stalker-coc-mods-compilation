@@ -89,6 +89,9 @@
 	<string id="zombied">
 		<text>Зомбированный</text>
 	</string>
+	<string id="companion">
+		<text>Напарник</text>
+	</string>
 
 	<!-- Goodwill -->
 	<string id="ui_st_relation">

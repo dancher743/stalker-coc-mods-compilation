@@ -93,6 +93,9 @@
 	<string id="zombied">
 		<text>Zombified</text>
 	</string>
+	<string id="companion">
+		<text>Companion</text>
+	</string>
 
 	<!-- Goodwill -->
 	<string id="ui_st_relation">

@@ -914,6 +914,10 @@ function is_companion(npc)
     return result
 end
 
+function is_companion_squad(squad_id)
+    return companion_squads[squad_id] ~= nil
+end
+
 function is_hostage(se_obj)
 	return utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_is_hostage") == true
 end

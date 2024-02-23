@@ -1208,7 +1208,7 @@ function sim_squad_scripted:get_squad_props()
 
 		return t
 	else
-		return game.translate_string(axr_companions.companion_squads[self.id] and "pda_companions_header" or self.player_id)
+		return game.translate_string(axr_companions.is_companion_squad(self.id) and "companion" or self.player_id)
 	end
 end
 
