@@ -750,6 +750,7 @@ function move_to_point_non_keybind()
 		RemoveTimeEvent("axr_companions","stop_particles_event")
 	end
 
+	stop_particles_event()
 	CreateTimeEvent("axr_companions","play_particles_event",0,play_particles_event)
 	CreateTimeEvent("axr_companions","stop_particles_event",0.15,stop_particles_event)
 	move_companions_to_point()
