@@ -638,43 +638,45 @@ function get_test_member()
 end
 
 local function create_flash_particles()
-	_particle_valid = particles_object("_samples_particles_\\flash_light")
-	_particle_invalid = particles_object("_samples_particles_\\flash_light_red")
+	if (not _particle_valid) then
+		_particle_valid = particles_object("_samples_particles_\\flash_light")
+	end
+	if (not _particle_invalid) then
+		_particle_invalid = particles_object("_samples_particles_\\flash_light_red")
+	end
 end
 
 local function play_flash_particles()
-	if (_particle_valid) then
-		local r = level.get_target_dist and level.get_target_dist()
-		if (r) then
-			local pos = vector():set(device().cam_pos)
-			pos:add(device().cam_dir:mul(r))
-			
-			local lvid = level.vertex_id(pos)
-			local npc = lvid and lvid < 4294967295 and get_test_member()
-			if (npc and npc:accessible(pos)) then 
-				if (_particle_invalid:playing()) then 
-					_particle_invalid:stop()
-				end
-				_particle_valid:play_at_pos(vector():set(pos.x,pos.y-0.5,pos.z))
-			else 
-				if (_particle_valid:playing()) then
-					_particle_valid:stop()
-				end
-				_particle_invalid:play_at_pos(vector():set(pos.x,pos.y-0.5,pos.z))
+	create_flash_particles()
+	local r = level.get_target_dist and level.get_target_dist()
+	if (r) then
+		local pos = vector():set(device().cam_pos)
+		pos:add(device().cam_dir:mul(r))
+		
+		local lvid = level.vertex_id(pos)
+		local npc = lvid and lvid < 4294967295 and get_test_member()
+		if (npc and npc:accessible(pos)) then 
+			if (_particle_invalid:playing()) then 
+				_particle_invalid:stop()
 			end
+			_particle_valid:play_at_pos(vector():set(pos.x,pos.y-0.5,pos.z))
+		else 
+			if (_particle_valid:playing()) then
+				_particle_valid:stop()
+			end
+			_particle_invalid:play_at_pos(vector():set(pos.x,pos.y-0.5,pos.z))
 		end
-	end	
+	end
 end
 
-local function remove_flash_particles()
-	if (_particle_valid and _particle_valid:playing()) then
+local function stop_flash_particles()
+	if (_particle_valid) then
 		_particle_valid:stop()
 	end
-	_particle_valid = nil
-	
-	if (_particle_invalid and _particle_invalid:playing()) then 
+	if (_particle_invalid) then 
 		_particle_invalid:stop()
-	end 
+	end
+	_particle_valid = nil
 	_particle_invalid = nil
 end
 
@@ -726,11 +728,10 @@ end
 function move_to_point(p)
 	if (p==1) then 
 		SetHudMsg(game.translate_string("st_hold_then_release"),8)
-		create_flash_particles()
 	elseif (p==2) then
 		play_flash_particles()
 	else
-		remove_flash_particles()
+		stop_flash_particles()
 		local r = move_companions_to_point()
 		if (r) then
 			SetHudMsg(game.translate_string("st_move_to_point"),8)
@@ -740,20 +741,17 @@ end
 
 function move_to_point_non_keybind()
 	local function play_particles_event()
-		if (not _particle_valid) then
-			create_flash_particles()
-		end
 		play_flash_particles()
 	end
 	
-	local function remove_particles_event()
-		remove_flash_particles()
+	local function stop_particles_event()
+		stop_flash_particles()
 		RemoveTimeEvent("axr_companions","play_particles_event")
-		RemoveTimeEvent("axr_companions","remove_particles_event")
+		RemoveTimeEvent("axr_companions","stop_particles_event")
 	end
 
 	CreateTimeEvent("axr_companions","play_particles_event",0,play_particles_event)
-	CreateTimeEvent("axr_companions","remove_particles_event",0.15,remove_particles_event)
+	CreateTimeEvent("axr_companions","stop_particles_event",0.15,stop_particles_event)
 	move_companions_to_point()
 end
 
