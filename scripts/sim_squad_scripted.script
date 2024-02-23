@@ -1142,8 +1142,6 @@ function sim_squad_scripted:show()
 					spot = "alife_presentation_squad_friend"
 				elseif(relation=="neutral") then
 					spot = "alife_presentation_squad_neutral"
-				else
-					spot = "alife_presentation_squad_enemy"
 				end
 			end
 		end
