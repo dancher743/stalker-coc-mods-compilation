@@ -69,7 +69,7 @@
     <specific_character id="yan_ecolog_kruglov" team_default = "1">
     <name>yan_kruglov_name</name>
     <icon>ui_inGame2_ecolog_green</icon>
-    <map_icon x="0" y="6"></map_icon>
+    <map_icon x="1" y="0"></map_icon>
     <bio>yan_kruglov_bio</bio>
     <class>yan_ecolog_kruglov</class>
     <community>ecolog</community> <terrain_sect>stalker_terrain</terrain_sect>
