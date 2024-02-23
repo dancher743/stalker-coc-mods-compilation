@@ -27,6 +27,8 @@ local function give_hunt_target_talk_message(target_id)
 	end
 end
 
+local bounty_hunt_targets = {}
+--
 
 -- ////////////////////////////////////////////////////////////////////////////////////////////////
 --
@@ -849,6 +851,30 @@ end
 
 -- ////////////////////////////////////////////////////////////////////////////////////////////////
 --
+-- drx_sl_init_bounty_hunt
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Init bounty hunt with valid target 
+--
+-- ------------------------------------------------------------------------------------------------
+--	Added by Dancher
+--	for DoctorX Questlines 1.6
+-- ------------------------------------------------------------------------------------------------
+
+function drx_sl_init_bounty_hunt( actor, npc, p )
+	local target_id = bounty_hunt_targets[p[1]]
+	if (target_id) then
+		axr_task_manager.bounties_by_id[p[1]] = target_id
+		bounty_hunt_targets[p[1]] = nil
+	end
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
 -- drx_sl_setup_bounty_hunt function
 --
 -- ------------------------------------------------------------------------------------------------
@@ -897,6 +923,7 @@ function drx_sl_setup_bounty_hunt( actor, npc, p )
 
 	-- Reset bounty id storage:
 	axr_task_manager.bounties_by_id[p[1]] = nil
+	bounty_hunt_targets[p[1]] = nil
 
 	-- Build list of mutual enemy factions:
 	local enemy_faction_list = {}
@@ -967,8 +994,8 @@ function drx_sl_setup_bounty_hunt( actor, npc, p )
 		return
 	end
 
-	-- Add current target to bounty id storage:
-	axr_task_manager.bounties_by_id[p[1]] = target_id
+	-- Add current target to bounty id table:
+	bounty_hunt_targets[p[1]] = target_id
 	printf( "drx_sl_setup_bounty_hunt target: %s", target_id )
 
 	local function postpone_for_next_frame(target_id)
@@ -3160,10 +3187,19 @@ function set_smart_faction(actor,npc,p)
 	smart.faction = p[2]
 end
 
+function on_init_bounty_hunt(actor,npc,p)
+	local target_id = bounty_hunt_targets[p[1]]
+	if (target_id) then
+		axr_task_manager.bounties_by_id[p[1]] = target_id
+		bounty_hunt_targets[p[1]] = nil
+	end
+end
+
 --param 1 task_id
 --param 2+ factions that can be targetted; can be list
-function on_init_bounty_hunt(actor,npc,p)
+function on_setup_bounty_hunt(actor,npc,p)
 	axr_task_manager.bounties_by_id[p[1]] = nil
+	bounty_hunt_targets[p[1]] = nil
 
 	local valid_targets = {}
 	local sim = alife()
@@ -3197,7 +3233,7 @@ function on_init_bounty_hunt(actor,npc,p)
 		return
 	end
 
-	axr_task_manager.bounties_by_id[p[1]] = target_id
+	bounty_hunt_targets[p[1]] = target_id
 
 	--printf("on_init_bounty_hunt %s",target_id)
 
