@@ -80,9 +80,9 @@ function lootmoney(npc) -- player character is looting a npc or creature
 	--game_stats.money_quest_update(-npc_money)
 
 	if lootmoney_message then -- send message in PDA
-		local news_caption = game.translate_string("general_in_money")
+		local news_caption = game.translate_string("st_lootmoney_found_money")
 		local news_text = game.translate_string(math.floor(calculated_money))
-		player_char:give_game_news(news_caption, news_text, "ui_inGame2_Dengi_polucheni", 0, 10000)
+		player_char:give_game_news(news_caption, news_text, "ui_iconsTotal_found_money", 0, 10000)
 		--xr_sound.set_sound_play(player_char:id(), "pda_news")
 	end
 	if (math.random(1, 99) < lootmoney_stashchance and lootmoney_stash) then -- spawn random stash
