@@ -119,31 +119,20 @@ function action_slow_save()
 		return true
 	end
 	
-	local character_name = alife():actor():character_name()
-	local save_number = "#"
-	local flist = getFS():file_list_open_ex("$game_saves$",	bit_or(FS.FS_ListFiles,FS.FS_RootOnly),"*".. ui_load_dialog.saved_game_extension)
-	local f_cnt = flist and flist:Size() or 0
-	local inc = 0
-	if (f_cnt > 0) then
-		flist:Sort(FS.FS_sort_by_modif_down)
-		
-		for it=0, f_cnt-1 do
-			local file_name = flist:GetAt(it):NameFull()
-			
-			-- grab last modified quicksave increment count
-			local d = tonumber( file_name:match(character_name) and file_name:match(save_number.."(%d+)") )
-			if (d) then
-				inc = d
-				break 
-			end
-		end
+	local count = alife_storage_manager.get_state().slow_save_count
+	if (not count) then
+		count = 0
 	end
+	count = count + 1
 	
+	local character_name = alife():actor():character_name()
 	local level_name = game.translate_string(level.name())
 	local y,m,d,h,min = game.get_game_time():get()
 	local day_elapsed = pda.get_time_elapsed()
-	local long_save_command = string.format("save %s %s %s %02d.%02d %s%s", character_name, level_name, day_elapsed, h, min, save_number, inc + 1)
-	get_console():execute(long_save_command)
+	local command = string.format("save %s %s %s %02d.%02d #%s", character_name, level_name, day_elapsed, h, min, count)
+	get_console():execute(command)
+	
+	alife_storage_manager.get_state().slow_save_count = count
 	
 	if (alife_storage_manager.get_state().enable_timer_mode) then
 		savegame_timer.timer_reset() -- reset timer
