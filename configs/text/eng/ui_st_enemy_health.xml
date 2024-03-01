@@ -54,7 +54,4 @@
 	<string id="ui_st_enemy_health_zombie">
 		<text>Zombie</text>
 	</string>
-	<string id="ui_st_enemy_health_zombie_ghost">
-		<text>Zombie ghost</text>
-	</string>
 </string_table>
