@@ -169,7 +169,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 	end
 
 	if (se_obj.online) then
-		db.actor:set_actor_position(se_obj.position)
+		TeleportActorToSmart(se_obj)
 		axr_companions.teleport_companions_to_actor_in_online()
 		get_hud():HidePdaMenu()
 	else

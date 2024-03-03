@@ -1852,3 +1852,14 @@ function IsUndergroundLevel(level_name)
 	end	
 	return underground_levels[level_name]
 end
+
+function TeleportActorToSmart(smart)
+	db.actor:set_actor_position(smart.position)
+	for _,squad in pairs(SIMBOARD.squads) do
+		if (squad and simulation_objects.is_on_the_same_level(squad, smart) and squad.first_update) then
+			if (squad.smart_id and squad.smart_id == smart.id) then
+				squad.force_online = true
+			end
+		end
+	end
+end
