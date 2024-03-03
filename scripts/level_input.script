@@ -98,6 +98,21 @@ function action_quick_load()
 	return true
 end
 
+local function is_save_exists(save_name)
+	local result = false
+	
+	local path = getFS():update_path('$game_saves$', '')..save_name..".scoc"
+	printf(tostring(path))
+	local save = io.open(path,"r")
+	
+	if (save ~= nil) then
+		io.close(save)
+		result = true
+	end
+	
+	return result
+end
+
 function action_slow_save()
 	if not (db.actor and db.actor:alive()) then
 		return false
@@ -129,8 +144,22 @@ function action_slow_save()
 	local level_name = game.translate_string(level.name())
 	local y,m,d,h,min = game.get_game_time():get()
 	local day_elapsed = pda.get_time_elapsed()
-	local command = string.format("save %s %s %s %02d.%02d #%s", character_name, level_name, day_elapsed, h, min, count)
-	get_console():execute(command)
+	
+	local save_name = string.format("%s %s %s %02d.%02d #%s", character_name, level_name, day_elapsed, h, min, count)
+	
+	-- Handle name collisions
+	if (is_save_exists(save_name)) then
+		for i = 1, 100 do
+			local collided_save_name = string.format("%s %s", save_name, i)
+			if (not is_save_exists(collided_save_name)) then
+				save_name = collided_save_name
+				break
+			end
+		end
+	end
+	
+	local save_command = string.format("save %s", save_name)
+	get_console():execute(save_command)
 	
 	alife_storage_manager.get_state().slow_save_count = count
 	
