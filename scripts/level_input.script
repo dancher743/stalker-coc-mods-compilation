@@ -98,7 +98,7 @@ function action_quick_load()
 	return true
 end
 
-local function is_save_exists(save_name)
+local function is_collision_exists(save_name)
 	local result = false
 	
 	local path = getFS():update_path('$game_saves$', '')..save_name..".scoc"
@@ -147,12 +147,11 @@ function action_slow_save()
 	
 	local save_name = string.format("%s %s %s %02d.%02d #%s", character_name, level_name, day_elapsed, h, min, count)
 	
-	-- Handle name collisions
-	if (is_save_exists(save_name)) then
+	if (is_collision_exists(save_name)) then
 		for i = 1, 100 do
-			local collided_save_name = string.format("%s %s", save_name, i)
-			if (not is_save_exists(collided_save_name)) then
-				save_name = collided_save_name
+			local save_name_subnumber = string.format("%s %s", save_name, i)
+			if (not is_collision_exists(save_name_subnumber)) then
+				save_name = save_name_subnumber
 				break
 			end
 		end
