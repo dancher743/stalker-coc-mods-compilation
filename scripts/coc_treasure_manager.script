@@ -338,7 +338,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 -- Create random stash:
-function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery )
+function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery, custom_spot )
 
 	last_secret = nil
 
@@ -391,9 +391,10 @@ function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery )
 		if ( se_box:spawn_ini( ) and se_box:spawn_ini( ):section_exist( "drop_box" ) ) then
 
 			-- Create map spot:
-			if ( no_spot ~= true and level.map_has_object_spot( id, "treasure_quest" ) == 0 ) then
+			local spot = custom_spot or "treasure"
+			if ( no_spot ~= true and level.map_has_object_spot( id, spot ) == 0 ) then
 				hint,name = get_extended_hint(sim,se_box,hint,id)
-				level.map_add_object_spot_ser( id, "treasure_quest", hint or "" )
+				level.map_add_object_spot_ser( id, spot, hint or "" )
 				news_manager.send_treasure_with_level(name, se_box)
 			end
 
@@ -415,9 +416,10 @@ function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery )
 	caches[id] = true
 
 	-- Create map spot:
-	if ( no_spot ~= true and level.map_has_object_spot( id, "treasure_quest" ) == 0 ) then
+	local spot = custom_spot or "treasure"
+	if ( no_spot ~= true and level.map_has_object_spot( id, spot ) == 0 ) then
 		hint,name = get_extended_hint(sim,se_box,hint,id)
-		level.map_add_object_spot_ser( id, "treasure_quest", hint or "" )
+		level.map_add_object_spot_ser( id, spot, hint or "" )
 		news_manager.send_treasure_with_level(name, se_box)
 	end
 

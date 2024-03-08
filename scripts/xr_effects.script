@@ -748,7 +748,7 @@ end
 function drx_sl_create_quest_stash_1( actor, npc, p )
 
 	-- Create the stash:
-	local stash_id = coc_treasure_manager.drx_create_random_stash( nil, nil, {"drx_sl_quest_item_1", drx_sl_quest_stash_bonus( actor, npc, p )} )
+	local stash_id = coc_treasure_manager.drx_create_random_stash( nil, nil, {"drx_sl_quest_item_1", drx_sl_quest_stash_bonus( actor, npc, p )}, nil, "treasure_quest" )
 	if ( not stash_id ) then
 		printf( "DRX SL error: Unable to create quest stash 1 !!" )
 	end
@@ -792,7 +792,7 @@ end
 function drx_sl_create_quest_stash_2( actor, npc, p )
 
 	-- Create the stash:
-	local stash_id = coc_treasure_manager.drx_create_random_stash( nil, nil, {"drx_sl_quest_item_2", drx_sl_quest_stash_bonus( actor, npc, p )} )
+	local stash_id = coc_treasure_manager.drx_create_random_stash( nil, nil, {"drx_sl_quest_item_2", drx_sl_quest_stash_bonus( actor, npc, p )}, nil, "treasure_quest" )
 	if ( not stash_id ) then
 		printf( "DRX SL error: Unable to create quest stash 2 !!" )
 	end
@@ -836,7 +836,7 @@ end
 function drx_sl_create_quest_stash_3( actor, npc, p )
 
 	-- Create the stash:
-	local stash_id = coc_treasure_manager.drx_create_random_stash( nil, nil, {"drx_sl_quest_item_3", drx_sl_quest_stash_bonus( actor, npc, p )} )
+	local stash_id = coc_treasure_manager.drx_create_random_stash( nil, nil, {"drx_sl_quest_item_3", drx_sl_quest_stash_bonus( actor, npc, p )}, nil, "treasure_quest" )
 	if ( not stash_id ) then
 		printf( "DRX SL error: Unable to create quest stash 3 !!" )
 	end
