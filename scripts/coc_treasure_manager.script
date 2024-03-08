@@ -89,6 +89,11 @@ local function actor_on_item_take_from_box(box,itm)
 		if has_spot then
 			level.map_remove_object_spot(box:id(), "treasure")
 		end
+		
+		has_spot = level.map_has_object_spot(box:id(),"treasure_quest") == 1
+		if has_spot then
+			level.map_remove_object_spot(box:id(), "treasure_quest")
+		end
 	end
 end
 
