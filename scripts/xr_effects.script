@@ -3224,7 +3224,7 @@ function on_setup_bounty_hunt(actor,npc,p)
 
 	local size = #valid_targets
 	if (size <= 0) then
-		printf("on_init_bounty_hunt failed, no targets")
+		printf("on_setup_bounty_hunt failed, no targets")
 		return
 	end
 
@@ -3235,7 +3235,7 @@ function on_setup_bounty_hunt(actor,npc,p)
 
 	bounty_hunt_targets[p[1]] = target_id
 
-	--printf("on_init_bounty_hunt %s",target_id)
+	--printf("on_setup_bounty_hunt %s",target_id)
 
 	--utils.save_var(db.actor,p[1],target_id)
 	
@@ -3243,7 +3243,7 @@ function on_setup_bounty_hunt(actor,npc,p)
 		give_hunt_target_talk_message(target_id)
 		return true
 	end
-	CreateTimeEvent(0,"on_init_bounty_hunt",0,postpone_for_next_frame,target_id)
+	CreateTimeEvent(0,"on_setup_bounty_hunt",0,postpone_for_next_frame,target_id)
 end
 
 function fail_task_dec_goodwill(actor,npc,p)
