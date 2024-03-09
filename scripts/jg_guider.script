@@ -236,3 +236,11 @@ end
 function has_guiding_started()
     return db.actor:has_info('guider_start')
 end
+
+function try_clear_prepared_follower(npc)
+    local squad = get_object_squad(npc)
+	if (squad and squad.id == guid['squad_id']) then
+		guid = {}
+		jg_utils.d_v("guid")
+	end
+end

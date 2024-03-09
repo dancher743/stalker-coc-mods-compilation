@@ -345,6 +345,8 @@ function become_actor_companion(actor,npc)
 			custom_object_spots.remove_spot(k.id)
 		end
 	end
+	
+	jg_guider.try_clear_prepared_follower(npc)
 end
 
 
