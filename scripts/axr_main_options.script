@@ -6,15 +6,17 @@
 function opt_menu_on_init(menu)
 	-- simply add new line and a ui_mm_<name> in ui_st_mm.xml to create a new option. Script automatically does the rest for you
 	-- debug_hud
-	menu.gameplay_options["debug_hud"]			= {default=false, 	debug_only=true, 	typ="check", on_accept=function(handler,optMgr,ctrl)
-		if (level.present() and xrs_debug_tools) then
-			if (ctrl:GetCheck()) then
-				xrs_debug_tools.activate_feature()
-			else 
-				xrs_debug_tools.deactivate_feature()
+	if (DEV_DEBUG) then
+		menu.gameplay_options["debug_hud"]			= {default=false, 	debug_only=true, 	typ="check", on_accept=function(handler,optMgr,ctrl)
+			if (level.present() and xrs_debug_tools) then
+				if (ctrl:GetCheck()) then
+					xrs_debug_tools.activate_feature()
+				else 
+					xrs_debug_tools.deactivate_feature()
+				end
 			end
-		end
-	end}
+		end}
+	end
 	-- localization
 	menu.gameplay_options["localization"] = {default="eng", debug_only=false, typ="list", list={"eng","rus"}, on_accept=function(handler,optMgr,ctrl)
 		local language = ctrl:GetText()
