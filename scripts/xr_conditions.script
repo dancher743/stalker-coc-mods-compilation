@@ -3431,3 +3431,74 @@ function is_target_exists(actor,npc,p)
 	
 	return result
 end
+
+function drx_sl_is_target_exists(actor,npc,p)
+
+	-- List of all factions:
+	local factions_list = {
+		"stalker",
+		"dolg",
+		"freedom",
+		"csky",
+		"ecolog",
+		"killer",
+		"army",
+		"bandit",
+		"monolith"
+	}
+	
+	-- Build list of mutual enemy factions:
+	local enemy_faction_list = {}
+	for i = 1, #factions_list do
+		if ( (game_relations.is_factions_enemies( factions_list[i], p[1] )) and (relation_registry.community_relation( factions_list[i], alife( ):actor( ):community( ) ) <= -1000) ) then
+			table.insert( enemy_faction_list, factions_list[i] )
+		end
+	end
+
+	-- If no mutual enemies found then build list of NPC enemies:
+	if ( #enemy_faction_list < 1 ) then
+		for j = 1, #factions_list do
+			if ( game_relations.is_factions_enemies( factions_list[j], p[1] ) ) then
+				table.insert( enemy_faction_list, factions_list[j] )
+			end
+		end
+	end
+	
+	-- Ensure an enemy faction was found:
+	if ( #enemy_faction_list < 1 ) then
+		printf( "DRX SL Error: drx_sl_is_target_exists failed, no enemy factions found !!!" )
+		return false
+	end
+	
+	-- Analyze all NPCs for valid target:
+	local sfind = string.find
+	local se_obj
+	local sim = alife( )
+	local valid_targets = {}
+	for k = 1, 65534 do
+
+		-- Analyze current sim stalker:
+		se_obj = sim:object( k )
+		if ( (se_obj and IsStalker( nil, se_obj:clsid( ) ) and se_obj:alive( ) and sfind( se_obj:section_name( ), "sim_default" ) and get_object_story_id( k ) == nil) and (se_obj.group_id == nil or se_obj.group_id == 65535 or get_object_story_id( se_obj.group_id ) == nil) ) then
+
+			-- If sim stalker is enemy faction then add to list of valid targets:
+			local current_sim_faction = alife_character_community( se_obj )
+			for l = 1, #enemy_faction_list do
+				if ( current_sim_faction == enemy_faction_list[l] ) then
+					table.insert( valid_targets, k )
+					break
+				end
+			end
+
+		end
+
+	end
+
+	-- Ensure a valid target was found:
+	if ( #valid_targets < 1 ) then
+		printf( "DRX SL Error: drx_sl_is_target_exists failed, no targets !!!" )
+		return false
+	end
+	
+	return true
+end

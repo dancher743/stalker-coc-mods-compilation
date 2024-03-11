@@ -51,7 +51,7 @@ icon = ui_inGame2_Odin_vistrel
 storyline = true
 prior = 135
 repeat_timeout = 0
-precondition = {=random_chance(100)} true, false
+precondition = {=random_chance(100) =drx_sl_is_target_exists(army)} true, false
 
 title = drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_1_name
 descr = drx_sl_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_1_text
@@ -314,7 +314,7 @@ icon = ui_inGame2_Odin_vistrel
 storyline = false
 prior = 45
 repeat_timeout = 259200
-precondition = {=random_chance(100)} true, false
+precondition = {=random_chance(100) =drx_sl_is_target_exists(army)} true, false
 
 title = agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_3_name
 descr = agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_3_text
