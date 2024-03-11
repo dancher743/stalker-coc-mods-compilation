@@ -355,7 +355,7 @@ storyline = false
 prior = 45
 sim_communities = stalker
 repeat_timeout = 259200
-precondition = {=random_chance(100) =drx_sl_is_enemy(bandit)} true, false
+precondition = {=random_chance(100) =drx_sl_is_enemy(bandit) =is_target_exists(bandit)} true, false
 
 title = simulation_task_12_name
 descr = simulation_task_12_text
@@ -531,7 +531,7 @@ storyline = false
 prior = 45
 sim_communities = killer
 repeat_timeout = 259200
-precondition = {=random_chance(100)} true, false
+precondition = {=random_chance(100) =is_target_exists(stalker:army:dolg)} true, false
 
 title = simulation_task_18_name
 descr = simulation_task_18_text
@@ -1015,7 +1015,7 @@ storyline = false
 prior = 45
 sim_communities = bandit
 repeat_timeout = 259200
-precondition = {=random_chance(100)} true, false
+precondition = {=random_chance(100) =is_target_exists(stalker:army:dolg)} true, false
 
 title = simulation_task_35_name
 descr = simulation_task_35_text

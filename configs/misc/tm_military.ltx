@@ -237,7 +237,7 @@ icon = ui_inGame2_Vizhivshiy_monolit
 storyline = false
 prior = 45
 repeat_timeout = 259200
-precondition = {=random_chance(100) =drx_sl_is_enemy(monolith)} true, false
+precondition = {=random_chance(100) =drx_sl_is_enemy(monolith) =is_target_exists(monolith)} true, false
 
 title = mil_smart_terrain_7_7_freedom_leader_stalker_task_3_name
 descr = mil_smart_terrain_7_7_freedom_leader_stalker_task_3_text
@@ -264,7 +264,7 @@ icon = ui_inGame2_Odin_vistrel
 storyline = false
 prior = 45
 repeat_timeout = 259200
-precondition = {=random_chance(100) =drx_sl_is_enemy(dolg)} true, false
+precondition = {=random_chance(100) =drx_sl_is_enemy(dolg) =is_target_exists(dolg)} true, false
 
 title = mil_smart_terrain_7_7_freedom_leader_stalker_task_4_name
 descr = mil_smart_terrain_7_7_freedom_leader_stalker_task_4_text
