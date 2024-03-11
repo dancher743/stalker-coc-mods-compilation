@@ -157,10 +157,10 @@ function action_slow_save()
 		end
 	end
 	
+	alife_storage_manager.get_state().slow_save_count = count
+	
 	local save_command = string.format("save %s", save_name)
 	get_console():execute(save_command)
-	
-	alife_storage_manager.get_state().slow_save_count = count
 	
 	if (alife_storage_manager.get_state().enable_timer_mode) then
 		savegame_timer.timer_reset() -- reset timer
