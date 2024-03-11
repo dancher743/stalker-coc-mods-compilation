@@ -367,6 +367,10 @@ function drx_sl_setup_assault_local( actor, npc, p )
 		"bandit",
 		"monolith"
 	}
+	
+	if (IsSurvivalMode()) then
+		table.insert( factions_list, "zombied" )
+	end
 
 	-- Build list of mutual enemy factions:
 	local enemy_faction_list = {}
@@ -475,6 +479,10 @@ function drx_sl_setup_assault_remote( actor, npc, p )
 		"bandit",
 		"monolith"
 	}
+	
+	if (IsSurvivalMode()) then
+		table.insert( factions_list, "zombied" )
+	end
 
 	-- Build list of mutual enemy factions:
 	local enemy_faction_list = {}
