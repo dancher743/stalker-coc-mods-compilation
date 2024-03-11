@@ -920,6 +920,10 @@ function drx_sl_setup_bounty_hunt( actor, npc, p )
 		"bandit",
 		"monolith"
 	}
+	
+	if (IsSurvivalMode()) then
+		table.insert( factions_list, "zombied" )
+	end
 
 	-- Reset bounty id storage:
 	axr_task_manager.bounties_by_id[p[1]] = nil
