@@ -117,3 +117,5 @@ Mods
 66. TRX: Global Weather (2.2) (Tronex)
 67. Critical Hit (Dancher)
 68. Animated detectors (selectively) (Alex_91zA)
+69. PDA Upgrades (Dancher)
+70. Next surge and/or psi storm dialog for Sakharov (Dancher)
