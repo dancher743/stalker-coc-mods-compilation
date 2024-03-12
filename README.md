@@ -34,15 +34,16 @@ Screenshots
 <details>
 <summary>Spoiler</summary>
 
-[![1.jpg](https://i.postimg.cc/R0VBJvdW/1.jpg)](https://postimg.cc/9DSSv5v2)
-[![2.jpg](https://i.postimg.cc/MHR2JH6F/2.jpg)](https://postimg.cc/7JxQgxT3)
-[![3.jpg](https://i.postimg.cc/y6SzZQmy/3.jpg)](https://postimg.cc/CdYty46R)
-[![4.jpg](https://i.postimg.cc/J4VCcNKV/4.jpg)](https://postimg.cc/8sHYTrqt)
-[![5.jpg](https://i.postimg.cc/DZRkNLTG/5.jpg)](https://postimg.cc/FdbBdf1F)
-[![6.jpg](https://i.postimg.cc/765rXXpD/6.jpg)](https://postimg.cc/bDf5w0yF)
-[![7.jpg](https://i.postimg.cc/Gp71k6gq/7.jpg)](https://postimg.cc/bGtMPVht)
-[![8.jpg](https://i.postimg.cc/QdjLvjRf/8.jpg)](https://postimg.cc/fJqg9QWd)
-[![9.jpg](https://i.postimg.cc/rF1XhDYd/9.jpg)](https://postimg.cc/zVGcvGN5)
+[![1.jpg](https://i.postimg.cc/QCc5d2w0/1.jpg)](https://postimg.cc/hQPhC5Sd)
+[![2.jpg](https://i.postimg.cc/WpZ08Zzg/2.jpg)](https://postimg.cc/NLgyf51j)
+[![3.jpg](https://i.postimg.cc/4NTVS3HM/3.jpg)](https://postimg.cc/kDf2VqcF)
+[![4.jpg](https://i.postimg.cc/4yR7q8yt/4.jpg)](https://postimg.cc/Vr4kbWjL)
+[![5.jpg](https://i.postimg.cc/HLK74WC6/5.jpg)](https://postimg.cc/FfyRh4zS)
+[![6.jpg](https://i.postimg.cc/PrzYskmq/6.jpg)](https://postimg.cc/2VyVhM9p)
+[![7.jpg](https://i.postimg.cc/Pxwv6GXT/7.jpg)](https://postimg.cc/xJ9dC4N4)
+[![8.jpg](https://i.postimg.cc/cLF3CMky/8.jpg)](https://postimg.cc/LJZ50fMN)
+[![9.jpg](https://i.postimg.cc/q7g33hWt/9.jpg)](https://postimg.cc/GBwt02Lr)
+[![10.jpg](https://i.postimg.cc/dVsdJSBj/10.jpg)](https://postimg.cc/YhPj3RTv)
 
 </details>
 
