@@ -12,6 +12,15 @@ nearest_to_actor_smart = {id = nil , dist = math.huge}
 
 local smart_sect = "smart_terrain"
 
+local bar_smarts = {
+	["bar_dolg_general"] = true,
+	["bar_visitors"] = true,
+	["bar_zastava"] = true,
+	["bar_zastava_2"] = true
+}
+
+is_respawn_allowed = true
+
 local function job_avail_to_npc(npc_info, job, smart)
 	--[[
 	if (smart.dead_time[job.section]) then
@@ -892,17 +901,13 @@ end
 --*******************************************************
 function se_smart_terrain:STATE_Write(packet)
 	cse_alife_smart_zone.STATE_Write(self, packet)
-	--if (USE_MARSHAL) then 
-	--	return 
-	--end
+	-- if (USE_MARSHAL) then 
+		-- return 
+	-- end
 	--set_save_marker(packet, "save", false, "se_smart_terrain")
 
 	-- Информацию о НПС, идущих в смарт
-	local n = 0
-	for k,v in pairs(self.arriving_npc) do
-		n = n + 1
-	end
-
+	local n = table.size(self.arriving_npc)
 	alun_utils.w_stpk(packet,"u8",n,"arriving_npc count")
 	for k,v in pairs(self.arriving_npc) do
 		alun_utils.w_stpk(packet,"u16",k,"arriving_npc id")
@@ -910,11 +915,7 @@ function se_smart_terrain:STATE_Write(packet)
 
 
 	-- Информацию о НПС в смарте
-	n = 0
-	for k,v in pairs(self.npc_info) do
-		n = n + 1
-	end
-
+	n = table.size(self.npc_info)
 	--printf("%s:STATE_Write   JobCount=%s",self:name(),n)
 	alun_utils.w_stpk(packet,"u8",n,"npc_info count")
 	for id,info in pairs(self.npc_info) do
@@ -924,25 +925,9 @@ function se_smart_terrain:STATE_Write(packet)
 		alun_utils.w_stpk(packet,"stringZ",tostring(info.need_job),"npc_info.need_job")
 	end
 
-	--[[
-	n = 0
-	for k,v in pairs(self.dead_time) do
-		n = n + 1
-	end
-
-	alun_utils.w_stpk(packet,"u8",n,"dead_time count")
-	for k,v in pairs(self.dead_time) do
-		alun_utils.w_stpk(packet,"stringZ",k,"dead_time job_section")
-		alun_utils.w_stpk(packet,"CTime",v,"dead_time CTime")
-	end
-	--]]
-
 	if self.respawn_point then
 		alun_utils.w_stpk(packet,"bool",true,"respawn_point")
-		local n = 0
-		for k,v in pairs(self.already_spawned) do
-			n = n + 1
-		end
+		local n = table.size(self.already_spawned)
 
 		alun_utils.w_stpk(packet,"u8",n,"already_spawned count")
 		for k,v in pairs(self.already_spawned) do
@@ -961,15 +946,12 @@ function se_smart_terrain:STATE_Read(packet, size)
 	--alun_utils.debug_write(strformat("%s:STATE_READ start",self:name()))
 	cse_alife_smart_zone.STATE_Read(self, packet, size)
 	self:read_params()
-	--if (USE_MARSHAL) then
-	--	self:load_state(alife_storage_manager.get_state())
-	--	return
-	--end
-	-- под LevelEditor не пытаться читать из пакета ничего
-	if editor() then
-		return
-	end
 	
+	-- if (USE_MARSHAL) then
+		-- self:load_state(alife_storage_manager.get_state())
+		-- return
+	-- end
+
 	self.need_init_npc = true
 	--set_save_marker(packet, "load", false, "se_smart_terrain")
 
@@ -1021,7 +1003,7 @@ function se_smart_terrain:STATE_Read(packet, size)
 		for i = 1, n do
 			local id = packet:r_stringZ()
 			local num = packet:r_u8()
-			if (id and id ~= "nil" and id ~= "") then
+			if (self.already_spawned and id and id ~= "nil" and id ~= "") then
 				-- technically it's an error but it's makes save compatible if change respawn
 				if not (self.already_spawned[id]) then 
 					self.already_spawned[id] = {}
@@ -1566,7 +1548,7 @@ end
 
 local available_sects = {}
 function se_smart_terrain:try_respawn()
-	if (self.disabled) then
+	if (not is_respawn_allowed or self.disabled) then
 		return
 	end
 	if (has_alife_info("actor_made_wish_for_peace")) then 
@@ -1617,31 +1599,18 @@ function se_smart_terrain:try_respawn()
 		end
 				
 		local max_respawn_count
-		local stalker_pop_factor = (axr_main.config:r_value("mm_options","alife_stalker_pop",2) or 1)
-		local monster_pop_factor = (axr_main.config:r_value("mm_options","alife_mutant_pop",2) or 1)
+		local stalker_pop_factor = (axr_main.config:r_value("mm_options","alife_stalker_pop",3) or 1)
+		local monster_pop_factor = (axr_main.config:r_value("mm_options","alife_mutant_pop",3) or 1)
 		for k,v in pairs(self.respawn_params) do
 			if (v.num and self.already_spawned[k] and self.already_spawned[k].num) then
 				if (self.faction_controlled == nil) or (self.faction ~= nil and v.faction == self.faction) then
 				
 					max_respawn_count = tonumber(xr_logic.pick_section_from_condlist(db.actor, self,v.num) or 0)
 				
-					local pop_factor
 					if (string.find(k,"sim_squad")) then 
-						pop_factor = stalker_pop_factor
+						max_respawn_count = math.floor(max_respawn_count*stalker_pop_factor)
 					elseif (string.find(k,"simulation")) then
-						pop_factor = monster_pop_factor
-					end
-					
-					if (pop_factor ~= nil) then
-						local count = max_respawn_count*pop_factor
-						if (count == 0.25) then 
-							count = math.random() <= 0.25 and 1 or 0
-						elseif (count == 0.5) then -- just randomly 0 or 1 instead of always rounding to 1
-							count = math.random(0,1)
-						else 
-							count = utils.round(count)
-						end
-						max_respawn_count = count
+						max_respawn_count = math.floor(max_respawn_count*monster_pop_factor)
 					end
 					
 					if max_respawn_count > self.already_spawned[k].num then
@@ -1659,9 +1628,13 @@ function se_smart_terrain:try_respawn()
 			
 			if (sect_to_spawn_params.squads) then
 				local squad
-				if (IsSurvivalMode() and math.random(1,100) < 90) then
+				if (IsSurvivalMode() and not bar_smarts[self:name()] and math.random(1,100) < 90) then
 					local t = {"simulation_zombie","simulation_zombie","simulation_zombie","simulation_zombie","simulation_zombie","zombied_sim_squad_novice","zombied_sim_squad_advanced","zombied_sim_squad_veteran","simulation_fracture","simulation_snork"}
-					squad = SIMBOARD:create_squad(self, t[math.random(#t)])
+					local simulation_section = t[math.random(#t)]
+					if (simulation_section == "simulation_zombie" and math.random() <= 0.01) then
+						simulation_section = "simulation_zombie_ghost"
+					end
+					squad = SIMBOARD:create_squad(self, simulation_section)
 				else 
 					squad = has_alife_info("actor_made_wish_for_control") and SIMBOARD:create_squad(self, "simulation_controller_psy") or SIMBOARD:create_squad(self, sect_to_spawn_params.squads[math.random(1,#sect_to_spawn_params.squads)])
 				end

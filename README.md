@@ -7,7 +7,7 @@ Install
 ---
 1. Install [release](https://www.moddb.com/mods/call-of-chernobyl/downloads/call-of-chernobyl-1412-full) CoC 1.4.12
 2. Install [patch](https://www.moddb.com/mods/call-of-chernobyl/downloads/coc-1422-patch) to make CoC 1.4.22
-3. Dowload [the latest version](https://github.com/dancher743/stalker-coc-mods-compilation/releases/latest) of compilation
+3. Dowload [compilation](https://github.com/dancher743/stalker-coc-mods-compilation/releases/latest)
 4. Dowload [installer](https://github.com/dancher743/stalker-coc-mods-compilation-installer/releases/latest)
 5. Place compilation and installer into the root folder -
 
@@ -26,6 +26,7 @@ Optimization
 ---
 * Type `vid_restart` at the console if you are faced with _"Too many occlusion queries were issued"_ warnings. This command restarts the renderer
 * Add `-no_staging` to the end of a shortcut as a launch parameter. In DirectX 10/11, it will load textures directly into video memory without copying them to RAM, thus keeping it free
+* Add `-noprefetch` to the end of a shortcut as a launch parameter to forces the game to clear RAM
 * Disable "Sun shadow" in "Options" in "Video" to reduce the load on a video card
 
 Screenshots
@@ -33,15 +34,16 @@ Screenshots
 <details>
 <summary>Spoiler</summary>
 
-[![1.jpg](https://i.postimg.cc/R0VBJvdW/1.jpg)](https://postimg.cc/9DSSv5v2)
-[![2.jpg](https://i.postimg.cc/MHR2JH6F/2.jpg)](https://postimg.cc/7JxQgxT3)
-[![3.jpg](https://i.postimg.cc/y6SzZQmy/3.jpg)](https://postimg.cc/CdYty46R)
-[![4.jpg](https://i.postimg.cc/J4VCcNKV/4.jpg)](https://postimg.cc/8sHYTrqt)
-[![5.jpg](https://i.postimg.cc/DZRkNLTG/5.jpg)](https://postimg.cc/FdbBdf1F)
-[![6.jpg](https://i.postimg.cc/765rXXpD/6.jpg)](https://postimg.cc/bDf5w0yF)
-[![7.jpg](https://i.postimg.cc/Gp71k6gq/7.jpg)](https://postimg.cc/bGtMPVht)
-[![8.jpg](https://i.postimg.cc/QdjLvjRf/8.jpg)](https://postimg.cc/fJqg9QWd)
-[![9.jpg](https://i.postimg.cc/rF1XhDYd/9.jpg)](https://postimg.cc/zVGcvGN5)
+[![1.jpg](https://i.postimg.cc/QCc5d2w0/1.jpg)](https://postimg.cc/hQPhC5Sd)
+[![2.jpg](https://i.postimg.cc/WpZ08Zzg/2.jpg)](https://postimg.cc/NLgyf51j)
+[![3.jpg](https://i.postimg.cc/4NTVS3HM/3.jpg)](https://postimg.cc/kDf2VqcF)
+[![4.jpg](https://i.postimg.cc/4yR7q8yt/4.jpg)](https://postimg.cc/Vr4kbWjL)
+[![5.jpg](https://i.postimg.cc/HLK74WC6/5.jpg)](https://postimg.cc/FfyRh4zS)
+[![6.jpg](https://i.postimg.cc/PrzYskmq/6.jpg)](https://postimg.cc/2VyVhM9p)
+[![7.jpg](https://i.postimg.cc/Pxwv6GXT/7.jpg)](https://postimg.cc/xJ9dC4N4)
+[![8.jpg](https://i.postimg.cc/cLF3CMky/8.jpg)](https://postimg.cc/LJZ50fMN)
+[![9.jpg](https://i.postimg.cc/q7g33hWt/9.jpg)](https://postimg.cc/GBwt02Lr)
+[![10.jpg](https://i.postimg.cc/dVsdJSBj/10.jpg)](https://postimg.cc/YhPj3RTv)
 
 </details>
 
@@ -94,8 +96,26 @@ Mods
 45. Bar room as safe-house (Dancher)
 46. Outfit loot CoC 1 4 22 v2 with reworking (av661194, Dancher)
 47. CoC Extended Offline (EOC) Lite 1.7.6 + dynamic faction relations (xr_Sanya)
-48. Clear Sky's graphics presets from CoP and CS atmosphere for CoC v1.1 [CoC 1.4.22] (Sanctuary)
-49. Pre-Blowout Murder Addon [CoC 1.4.22] (Ethylia, adapted by Misery)
+48. Stalker Tweaks (SarisKhan)
+49. Radio music from Legend Returns 0.9.2 (selectively) (Genies of the Zone Team)
 50. Flashlight sound for vanilla CoC (Grelka)
 51. Classic SoC Flashlight for CoC with Dancher's changes (default white light) (Shovelled, Dancher)
 52. Clear weather from All AtmosFear 3 cycles for CoC (owdred)
+53. Target location for DrX Questlines (SpcDan)
+54. Unload All Weapons [1.4.22/1.5 R6] with adaptations (sLoPpYdOtBiGhOlE, Dancher)
+55. Rare Item Drops [CoC 1.4] (Fohom)
+56. SpecHUD – visual effect for low health with adaptations (Батька Ковцур, D_E_M_A_N, Dancher)
+57. PDA Off with reworking (FozeSt, Dancher)
+58. Slow saves (based on New saves by av661194) (Dancher)
+59. New voice for Fanatic [1.4.22/1.5b r6] (Kostov)
+60. AprilTaurus Fix for vanilla icons v3 (upgrade icons only) (AprilTaurus)
+61. Azazel Fixes: Keep Tasks and much more (RenanMsV, strelocc, sariskhan, Roll-and, Aruhito_0)
+62. New crosshair (based on Dot crosshair by Kib) (Dancher)
+63. Grass from Advanced Vegetation mix 1.5r7 (Cromm Cruac, brainscorcher, gridgt, burguois, Anomaly and Dead Air creators)
+64. Put spot on Map (Dancher)
+65. Leave the Zone (UI based on New saves by av661194) (Dancher)
+66. TRX: Global Weather (2.2) (Tronex)
+67. Critical Hit (Dancher)
+68. Animated detectors (selectively) (Alex_91zA)
+69. PDA Upgrades (Dancher)
+70. Next surge and/or psi storm dialog for Sakharov (Dancher)

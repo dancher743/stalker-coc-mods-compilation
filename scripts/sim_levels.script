@@ -44,9 +44,7 @@ end
 
 
 function update_level(lvl)
-	local option_factor = sim_options.get_warfare_control_option_factor()
-	
-	if (not level_timers[lvl] or game.get_game_time():diffSec(level_timers[lvl]) >= (level_information[lvl].next_update*60*option_factor)) then
+	if (not level_timers[lvl] or game.get_game_time():diffSec(level_timers[lvl]) >= (level_information[lvl].next_update*60)) then
         
 		level_timers[lvl] = game.get_game_time() 		
 		level_information[lvl].next_update = 20

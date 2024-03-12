@@ -22,7 +22,7 @@ use_camp = false
 reach_distance = 50
 meet = no_meet
 reach_movement = walk
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 out_restr = jup_factory_default_in_restrictor
 gather_items_enabled = false
@@ -68,7 +68,7 @@ avail_animations = jup_b219_azot_vano_monolith
 [remark@start_one]
 anim = jup_b219_azot_one
 target = path | jup_b219_azot_look,0
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 meet = no_meet
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 out_restr = jup_factory_default_in_restrictor
@@ -76,7 +76,7 @@ out_restr = jup_factory_default_in_restrictor
 [remark@start_one_vano]
 anim = jup_b219_azot_one_vano
 target = path | jup_b219_azot_look,0
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 meet = no_meet
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 out_restr = jup_factory_default_in_restrictor
@@ -84,7 +84,7 @@ out_restr = jup_factory_default_in_restrictor
 [remark@start_one_monolith]
 anim = jup_b219_azot_one_monolith
 target = path | jup_b219_azot_look,0
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 meet = no_meet
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 out_restr = jup_factory_default_in_restrictor
@@ -92,14 +92,14 @@ out_restr = jup_factory_default_in_restrictor
 [remark@start_one_soldier]
 anim = jup_b219_azot_one_soldier
 target = path | jup_b219_azot_look,0
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 meet = no_meet
 out_restr = jup_factory_default_in_restrictor
 
 [remark@start_all]
 anim = jup_b219_azot_all
 target = path | jup_b219_azot_look,0
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 meet = no_meet
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 out_restr = jup_factory_default_in_restrictor
@@ -107,7 +107,7 @@ out_restr = jup_factory_default_in_restrictor
 [remark@start_soldier_vano]
 anim = jup_b219_azot_soldier_vano
 ;target = path | jup_b219_actor_start_look,0
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 meet = no_meet
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 out_restr = jup_factory_default_in_restrictor
@@ -115,7 +115,7 @@ out_restr = jup_factory_default_in_restrictor
 [remark@start_soldier_monolith]
 anim = jup_b219_azot_soldier_monolith
 ;target = path | jup_b219_actor_start_look,0
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 meet = no_meet
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 out_restr = jup_factory_default_in_restrictor
@@ -123,7 +123,7 @@ out_restr = jup_factory_default_in_restrictor
 [remark@start_vano_monolith]
 anim = jup_b219_azot_vano_monolith
 ;target = path | jup_b219_actor_start_look,0
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 meet = no_meet
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 out_restr = jup_factory_default_in_restrictor

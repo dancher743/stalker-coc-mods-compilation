@@ -47,7 +47,7 @@ function ins_mass_onl()
 	local mass_onl = {}
 	for k, id in pairs(db.OnlineStalkers) do
 		local npc = level.object_by_id(id)
-		if npc and jg_utils.is_not_quest_npc(alife():object(id)) and not (id == get_comm_id(curr_guid['squad_id'])) and dialogs_axr_companion.is_not_actor_companion(db.actor, npc) and jg_utils.is_not_enemy(db.actor, npc) and dialogs_axr_companion.is_not_hostage_task_giver(db.actor, npc) and xr_conditions.is_squad_commander(db.actor, npc) then
+		if npc and jg_utils.is_not_quest_npc(alife():object(id)) and not (id == get_comm_id(curr_guid['squad_id'])) and dialogs_axr_companion.is_not_actor_companion(db.actor, npc) and jg_utils.is_not_enemy(db.actor, npc) and dialogs_axr_companion.is_not_hostage_task_giver(db.actor, npc) and xr_conditions.is_squad_commander(db.actor, npc) and not axr_companions.is_companion(npc) then
 			mass_onl[#mass_onl + 1] = npc
 		end
 	end
@@ -224,4 +224,12 @@ end
 
 function has_guiding_started()
     return db.actor:has_info('guider_start')
+end
+
+function try_clear_prepared_follower(npc)
+    local squad = get_object_squad(npc)
+	if (squad and squad.id == guid['squad_id']) then
+		guid = {}
+		jg_utils.d_v("guid")
+	end
 end

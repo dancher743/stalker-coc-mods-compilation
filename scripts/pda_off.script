@@ -1,0 +1,47 @@
+--
+-- PDA off
+-- Author: FozeSt
+-- Reworked: Dancher
+--
+
+class "PdaNoiseWnd" (CUIScriptWnd)
+function PdaNoiseWnd:__init() super()
+	local xml = CScriptXmlInit() 
+	self:SetWndRect(Frect():set(0,0,1024,768))
+	xml:ParseFile("pdaoff.xml")
+	self.Element1 = xml:InitStatic("background_static", self)
+end
+
+local window
+
+local function actor_on_info_callback(npc,info_id)
+	if (info_id == "ui_pda" or info_id == "ui_pda_hide") then
+		process_pda(info_id)
+	end
+end
+
+function process_pda(info_id)
+	if db.actor == nil then
+		return
+	end
+	
+	if (pda_upgrade_manager.has_no_off_upgrade()) then
+		UnregisterScriptCallback("actor_on_info_callback",actor_on_info_callback)
+		return
+	end
+
+	local has_surge_or_storm = (surge_manager.is_started() and surge_manager.has_stage("quake20")) or (psi_storm_manager.is_started() and psi_storm_manager.has_stage("1stvortex"))
+	local hud = get_hud()
+	
+	if (info_id == "ui_pda" and has_surge_or_storm and window == nil) then
+		window = PdaNoiseWnd()
+		hud:AddDialogToRender(window)
+	elseif (info_id == "ui_pda_hide" and window ~= nil) then
+		hud:RemoveDialogToRender(window)
+		window = nil
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("actor_on_info_callback",actor_on_info_callback)	 
+end

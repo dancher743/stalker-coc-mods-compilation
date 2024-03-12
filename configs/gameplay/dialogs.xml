@@ -381,7 +381,7 @@
         <init_func>travel_manager.init_traveler_dialog</init_func>
     </dialog>
     <dialog id="dm_universal_dialog">
-		<precondition>dialogs_axr_companion.is_not_actor_companion</precondition>
+		<!--<precondition>dialogs_axr_companion.is_not_actor_companion</precondition>-->
         <precondition>dialog_manager.uni_dialog_precond</precondition>
         <init_func>dialog_manager.init_new_dialog</init_func>
     </dialog>
@@ -585,11 +585,17 @@
             <phrase id="1">
                 <text>axr_phrase_companion_are_you_sure</text>
 				<next>2</next>
+				<next>21</next>
 				<next>3</next>
             </phrase>
             <phrase id="2">
-                <text>axr_phrase_actor_give_command_leave</text>
+                <text>axr_phrase_actor_acknowledge_1</text>
 				<action>dialogs_axr_companion.remove_companions_from_squad</action>
+            </phrase>
+			<phrase id="21">
+				<precondition>custom_object_spots.dialog_precondition_has_not_spot</precondition>
+                <text>axr_phrase_actor_acknowledge_with_custom_spot</text>
+				<action>dialogs_axr_companion.remove_companions_from_squad_and_add_spot</action>
             </phrase>
             <phrase id="3">
                 <text>axr_phrase_actor_give_command_nevermind</text>

@@ -270,8 +270,8 @@ function simulation_board:fill_start_position()
 		setting_ini = ini_file("misc\\simulation.ltx")
 	end 
 	
-	local stalker_pop_factor = (axr_main.config:r_value("mm_options","alife_stalker_pop",2) or 1)
-	local monster_pop_factor = (axr_main.config:r_value("mm_options","alife_mutant_pop",2) or 1)
+	local stalker_pop_factor = (axr_main.config:r_value("mm_options","alife_stalker_pop",3) or 1)
+	local monster_pop_factor = (axr_main.config:r_value("mm_options","alife_mutant_pop",3) or 1)
 		
 	local result, squad_section, count, li, lc
 	setting_ini:section_for_each(function(section)
@@ -284,8 +284,8 @@ function simulation_board:fill_start_position()
 				
 				if (string.find(squad_section,"sim_squad")) then
 					count = count*stalker_pop_factor
-					if (count == 0.25) then 
-						count = math.random() <= 0.25 and 1 or 0
+					if (count < 0.5) then
+						count = math.random() < count and 1 or 0
 					elseif (count == 0.5) then -- just randomly 0 or 1 instead of always rounding to 1
 						count = math.random(0,1)
 					else 
@@ -293,8 +293,8 @@ function simulation_board:fill_start_position()
 					end
 				elseif (string.find(squad_section,"simulation")) then
 					count = count*monster_pop_factor
-					if (count == 0.25) then 
-						count = math.random() <= 0.25 and 1 or 0
+					if (count < 0.5) then
+						count = math.random() < count and 1 or 0
 					elseif (count == 0.5) then 
 						count = math.random(0,1)
 					else 

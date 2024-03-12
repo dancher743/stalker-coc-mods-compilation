@@ -21,12 +21,14 @@ local function give_hunt_target_talk_message(target_id)
 		local level_id = alife():level_name(game_graph():vertex(se_obj.m_game_vertex_id):level_id())
 		local location_name = string.format("%s: %s", game.translate_string("st_mm_pda_location"), game.translate_string(level_id))
 		
-		local news_caption = string.format("%s:",  game.translate_string("st_target"))
+		local news_caption = string.format("%s",  game.translate_string("st_target"))
 		local news_text = string.format("%s\\n %s\\n %s", character_name, faction_name, location_name)
 		db.actor:give_talk_message2(news_caption, news_text, se_obj:character_icon(), "iconed_answer_item")
 	end
 end
 
+local bounty_hunt_targets = {}
+--
 
 -- ////////////////////////////////////////////////////////////////////////////////////////////////
 --
@@ -112,8 +114,14 @@ function drx_sl_meet_random_honcho( actor, npc, p )
 
 			-- Check if the honcho surrounding factions are not enemy of player:
 			local is_enemy = false
+			local actor_community
+            if (disguise and disguise.has_actor_disguised()) then
+                actor_community = disguise.get_actor_default_faction()
+            else
+                actor_community = alife():actor():community()
+            end
 			for j = 2, #drx_sl_honchos_table[i] do
-				if ( relation_registry.community_relation( drx_sl_honchos_table[i][j], alife( ):actor( ):community( ) ) <= -1000 ) then
+				if ( relation_registry.community_relation( drx_sl_honchos_table[i][j], actor_community ) <= -1000 ) then
 					is_enemy = true
 				end
 			end
@@ -359,6 +367,10 @@ function drx_sl_setup_assault_local( actor, npc, p )
 		"bandit",
 		"monolith"
 	}
+	
+	if (IsSurvivalMode()) then
+		table.insert( factions_list, "zombied" )
+	end
 
 	-- Build list of mutual enemy factions:
 	local enemy_faction_list = {}
@@ -467,6 +479,10 @@ function drx_sl_setup_assault_remote( actor, npc, p )
 		"bandit",
 		"monolith"
 	}
+	
+	if (IsSurvivalMode()) then
+		table.insert( factions_list, "zombied" )
+	end
 
 	-- Build list of mutual enemy factions:
 	local enemy_faction_list = {}
@@ -740,7 +756,7 @@ end
 function drx_sl_create_quest_stash_1( actor, npc, p )
 
 	-- Create the stash:
-	local stash_id = coc_treasure_manager.drx_create_random_stash( nil, nil, {"drx_sl_quest_item_1", drx_sl_quest_stash_bonus( actor, npc, p )} )
+	local stash_id = coc_treasure_manager.drx_create_random_stash( nil, nil, {"drx_sl_quest_item_1", drx_sl_quest_stash_bonus( actor, npc, p )}, nil, "treasure_quest" )
 	if ( not stash_id ) then
 		printf( "DRX SL error: Unable to create quest stash 1 !!" )
 	end
@@ -784,7 +800,7 @@ end
 function drx_sl_create_quest_stash_2( actor, npc, p )
 
 	-- Create the stash:
-	local stash_id = coc_treasure_manager.drx_create_random_stash( nil, nil, {"drx_sl_quest_item_2", drx_sl_quest_stash_bonus( actor, npc, p )} )
+	local stash_id = coc_treasure_manager.drx_create_random_stash( nil, nil, {"drx_sl_quest_item_2", drx_sl_quest_stash_bonus( actor, npc, p )}, nil, "treasure_quest" )
 	if ( not stash_id ) then
 		printf( "DRX SL error: Unable to create quest stash 2 !!" )
 	end
@@ -828,7 +844,7 @@ end
 function drx_sl_create_quest_stash_3( actor, npc, p )
 
 	-- Create the stash:
-	local stash_id = coc_treasure_manager.drx_create_random_stash( nil, nil, {"drx_sl_quest_item_3", drx_sl_quest_stash_bonus( actor, npc, p )} )
+	local stash_id = coc_treasure_manager.drx_create_random_stash( nil, nil, {"drx_sl_quest_item_3", drx_sl_quest_stash_bonus( actor, npc, p )}, nil, "treasure_quest" )
 	if ( not stash_id ) then
 		printf( "DRX SL error: Unable to create quest stash 3 !!" )
 	end
@@ -836,6 +852,30 @@ function drx_sl_create_quest_stash_3( actor, npc, p )
 	-- Save the stash id:
 	alun_utils.save_var( db.actor, "drx_sl_quest_stash_3_id", stash_id )
 
+end
+
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////
+--
+-- drx_sl_init_bounty_hunt
+-- ------------------------------------------------------------------------------------------------
+--
+--	Description:
+--		- Init bounty hunt with valid target 
+--
+-- ------------------------------------------------------------------------------------------------
+--	Added by Dancher
+--	for DoctorX Questlines 1.6
+-- ------------------------------------------------------------------------------------------------
+
+function drx_sl_init_bounty_hunt( actor, npc, p )
+	local target_id = bounty_hunt_targets[p[1]]
+	if (target_id) then
+		axr_task_manager.bounties_by_id[p[1]] = target_id
+		bounty_hunt_targets[p[1]] = nil
+	end
 end
 
 -- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -888,9 +928,14 @@ function drx_sl_setup_bounty_hunt( actor, npc, p )
 		"bandit",
 		"monolith"
 	}
+	
+	if (IsSurvivalMode()) then
+		table.insert( factions_list, "zombied" )
+	end
 
 	-- Reset bounty id storage:
 	axr_task_manager.bounties_by_id[p[1]] = nil
+	bounty_hunt_targets[p[1]] = nil
 
 	-- Build list of mutual enemy factions:
 	local enemy_faction_list = {}
@@ -961,8 +1006,8 @@ function drx_sl_setup_bounty_hunt( actor, npc, p )
 		return
 	end
 
-	-- Add current target to bounty id storage:
-	axr_task_manager.bounties_by_id[p[1]] = target_id
+	-- Add current target to bounty id table:
+	bounty_hunt_targets[p[1]] = target_id
 	printf( "drx_sl_setup_bounty_hunt target: %s", target_id )
 
 	local function postpone_for_next_frame(target_id)
@@ -3154,10 +3199,19 @@ function set_smart_faction(actor,npc,p)
 	smart.faction = p[2]
 end
 
+function on_init_bounty_hunt(actor,npc,p)
+	local target_id = bounty_hunt_targets[p[1]]
+	if (target_id) then
+		axr_task_manager.bounties_by_id[p[1]] = target_id
+		bounty_hunt_targets[p[1]] = nil
+	end
+end
+
 --param 1 task_id
 --param 2+ factions that can be targetted; can be list
-function on_init_bounty_hunt(actor,npc,p)
+function on_setup_bounty_hunt(actor,npc,p)
 	axr_task_manager.bounties_by_id[p[1]] = nil
+	bounty_hunt_targets[p[1]] = nil
 
 	local valid_targets = {}
 	local sim = alife()
@@ -3182,7 +3236,7 @@ function on_init_bounty_hunt(actor,npc,p)
 
 	local size = #valid_targets
 	if (size <= 0) then
-		printf("on_init_bounty_hunt failed, no targets")
+		printf("on_setup_bounty_hunt failed, no targets")
 		return
 	end
 
@@ -3191,9 +3245,9 @@ function on_init_bounty_hunt(actor,npc,p)
 		return
 	end
 
-	axr_task_manager.bounties_by_id[p[1]] = target_id
+	bounty_hunt_targets[p[1]] = target_id
 
-	--printf("on_init_bounty_hunt %s",target_id)
+	--printf("on_setup_bounty_hunt %s",target_id)
 
 	--utils.save_var(db.actor,p[1],target_id)
 	
@@ -3201,7 +3255,7 @@ function on_init_bounty_hunt(actor,npc,p)
 		give_hunt_target_talk_message(target_id)
 		return true
 	end
-	CreateTimeEvent(0,"on_init_bounty_hunt",0,postpone_for_next_frame,target_id)
+	CreateTimeEvent(0,"on_setup_bounty_hunt",0,postpone_for_next_frame,target_id)
 end
 
 function fail_task_dec_goodwill(actor,npc,p)

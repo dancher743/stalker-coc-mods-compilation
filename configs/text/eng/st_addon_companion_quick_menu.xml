@@ -41,11 +41,15 @@
 	</string>
 	
 	<string id="st_addon_companion_quick_menu_doNotLootCorpses">
-		<text>DO NOT LOOT CORPSES</text>
+		<text>DO NOT PICK UP LOOT</text>
 	</string>
 	
 	<string id="st_addon_companion_quick_menu_lootCorpses">
-		<text>LOOT CORPSES</text>
+		<text>PICK UP LOOT</text>
+	</string>
+	
+	<string id="st_addon_companion_quick_menu_moveToPoint">
+		<text>MOVE TO POINT</text>
 	</string>
 	
 </string_table>

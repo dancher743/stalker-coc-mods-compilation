@@ -146,27 +146,20 @@ function loot_ui:FillList()
 		utils.save_var(self.obj,"looting_tbl",self.loot)
 	end
 
-	local is_there_loot
 	for sec,t in pairs(self.loot) do
 		self:AddItemToList(sec,t.count)
-		is_there_loot = true
 	end
 
-	if (is_there_loot) then
+	if (not is_empty(self.loot)) then
+		SetHudMsg("",0)
 		self:ShowDialog(true)
 	else		
 		if self:IsShown() then
 			self:HideDialog()
-		else
-			local hud = get_hud()
-			if (hud) then
-				hud:AddCustomStatic("can_use_weapon_now", true)
-				hud:GetCustomStatic("can_use_weapon_now"):wnd():TextControl():SetTextST("st_nothing_useful")
-			end
-			itms_manager.ShowMessage = true
-			itms_manager.ShowMessageInit = game.get_game_time()
-			itms_manager.ShowMessageTime = 20
 		end
+		SetHudMsg("st_nothing_useful",4)
+		utils.save_var(self.obj,"looted",true)
+		xr_corpse_detection.set_valuable_loot(self.id,false)
 	end
 end
 
@@ -220,8 +213,7 @@ function loot_ui:OnListItemDbClicked()
 	if is_empty(self.loot) then
 	utils.save_var(self.obj,"looted",true)
 	xr_corpse_detection.set_valuable_loot(self.id,false)
-	--self:HideDialog()
-	self:FillList()
+	self:HideDialog()
 	else
 	utils.save_var(self.obj,"looting_tbl",self.loot)
 	self:FillList()
@@ -244,8 +236,7 @@ function loot_ui:OnButton_ok()
 	end
 	utils.save_var(self.obj,"looted",true)
 	xr_corpse_detection.set_valuable_loot(self.id,false)
-	self:FillList()
-	--self:HideDialog()
+	self:HideDialog()
 end
 
 function loot_ui:OnButton_quit()

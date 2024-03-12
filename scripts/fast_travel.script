@@ -153,15 +153,24 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 
 	-- forward time when traveling
 	if not (notime) then
-		local dist = db.actor:position():distance_to(se_obj.position)
-		level.change_game_time(0,math.floor(dist/1000)+math.random(0,2),math.random(1,59))
+		local hours
+		
+		if (se_obj.online) then
+			hours = 0
+		else
+			local dist = db.actor:position():distance_to(se_obj.position)
+			hours = math.floor(dist/1000)+math.random(1,2)
+		end
+		
+		level.change_game_time(0,hours,math.random(1,59))
 		surge_manager.get_surge_manager().time_forwarded = true
 		psi_storm_manager.get_psi_storm_manager().time_forwarded = true
 		level_weathers.get_weather_manager():forced_weather_change()
 	end
 
 	if (se_obj.online) then
-		db.actor:set_actor_position(se_obj.position)
+		TeleportActorToSmart(se_obj)
+		axr_companions.teleport_companions_to_actor_in_online()
 		get_hud():HidePdaMenu()
 	else
 		ChangeLevel(se_obj.position,se_obj.m_level_vertex_id,se_obj.m_game_vertex_id,vector():set(0,0,0))
@@ -215,7 +224,7 @@ local function check_visit(id,level_name)
 end
 
 local function on_game_load()
-	local stxt = axr_main.config:r_string_ex("mm_options","fast_travel")
+	local stxt = axr_main.config:r_string_ex("mm_options","fast_travel") or game.translate_string("ui_mm_visited_only_travel")
 	if (stxt == game.translate_string("ui_mm_visited_only_travel")) then
 		enabled = 1
 	elseif (stxt == game.translate_string("ui_mm_show_all_travel")) or (stxt == nil) then
@@ -229,7 +238,7 @@ local function on_game_load()
 	stormtravel = axr_main.config:r_bool_ex("mm_options","enable_storm_travel",false)
 	guidertravel = axr_main.config:r_bool_ex("mm_options","enable_guider_travel",true)
 	longnames = axr_main.config:r_bool_ex("mm_options","enable_long_names",false)
-	markermessage = axr_main.config:r_bool_ex("mm_options","enable_visited_message",false)
+	markermessage = axr_main.config:r_bool_ex("mm_options","enable_visited_message",true)
 	notime = axr_main.config:r_bool_ex("mm_options","enable_no_time_travel",false)
 
 	local faction = character_community(db.actor):sub(7)
@@ -284,14 +293,14 @@ local function opt_menu_on_accept()
 end
 
 local function opt_menu_on_init(menu)
-	menu.gameplay_options["fast_travel"] = {default=game.translate_string("ui_mm_show_all_travel"), debug_only=false, typ="list", list={game.translate_string("ui_mm_disable_travel"),game.translate_string("ui_mm_visited_only_travel"),game.translate_string("ui_mm_show_all_travel")}}
+	menu.gameplay_options["fast_travel"] = {default=game.translate_string("ui_mm_visited_only_travel"), debug_only=false, typ="list", list={game.translate_string("ui_mm_disable_travel"),game.translate_string("ui_mm_visited_only_travel"),game.translate_string("ui_mm_show_all_travel")}}
 	menu.gameplay_options["combat_travel"] = {default=false, debug_only=false, typ="check"}
 	menu.gameplay_options["weight_travel"] = {default=false, debug_only=false, typ="check"}
 	menu.gameplay_options["damage_travel"] = {default=false, debug_only=false, typ="check"}
 	menu.gameplay_options["storm_travel"] = {default=false, debug_only=false, typ="check"}
 	menu.gameplay_options["guider_travel"] = {default=true, debug_only=false, typ="check"}
 	menu.gameplay_options["long_names"]	= {default=false, debug_only=false, typ="check"}
-	menu.gameplay_options["visited_message"] = {default=false, debug_only=false, typ="check"}
+	menu.gameplay_options["visited_message"] = {default=true, debug_only=false, typ="check"}
 	menu.gameplay_options["no_time_travel"]	= {default=false, debug_only=false, typ="check"}
 end
 

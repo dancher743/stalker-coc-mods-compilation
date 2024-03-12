@@ -514,8 +514,9 @@
 	<string id="ui_mm_bases_defense">
 		<text>Bases defense quests</text>
 	</string>
+	
 	<string id="ui_mm_eoc_faction_warfare_activity">
-		<text>Population spawn frequency</text>
+		<text>Population squades activity</text>
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_activity_opt_high">
 		<text>High</text>
@@ -526,28 +527,35 @@
 	<string id="ui_mm_eoc_faction_warfare_activity_opt_low">
 		<text>Low</text>
 	</string>
-	<string id="ui_mm_eoc_faction_warfare_activity_opt_very_low">
-		<text>Minimal</text>
-	</string>
-	<string id="ui_mm_eoc_faction_warfare_control">
-		<text>Population update frequency</text>
-	</string>
-	<string id="ui_mm_eoc_faction_warfare_control_opt_very_high">
-		<text>Maximum</text>
-	</string>
-	<string id="ui_mm_eoc_faction_warfare_control_opt_high">
-		<text>High</text>
-	</string>
-	<string id="ui_mm_eoc_faction_warfare_control_opt_medium">
-		<text>Medium</text>
-	</string>
-	<string id="ui_mm_eoc_faction_warfare_control_opt_low">
-		<text>Low</text>
-	</string>
+
 	<string id="ui_mm_show_monsters_on_map">
-		<text>Show monsters on map</text>
+		<text>Show mutants on map</text>
 	</string>
 	<string id="ui_mm_show_stalkers_on_map">
 		<text>Show stalkers on map</text>
+	</string>
+	<string id="kb_slow_save">
+		<text>Slow save</text>
+	</string>
+	<string id="kb_quick_save">
+		<text>Quick save</text>
+	</string>
+	<string id="kb_quick_load">
+		<text>Quick load</text>
+	</string>
+	<string id="ui_mm_eoc_faction_warfare_unpc_respawn">
+		<text>Unique NPC respawn</text>
+	</string>
+	<string id="ui_mm_show_crit_hit_mark">
+		<text>Show crit hit mark</text>
+	</string>
+	<string id="ui_mm_companions_invulnerability">
+		<text>Companions invulnerability</text>
+	</string>
+	<string id="ui_mm_conditions_mode_campfire">
+		<text>Campfire saving</text>
+	</string>
+	<string id="ui_mm_auto_garbage_collection">
+		<text>Auto garbage collection</text>
 	</string>
 </string_table>

@@ -245,7 +245,7 @@ local function can_help_actor(squad)
 end
 
 local function get_help_target_id(squad)
-	if (IsSurvivalMode() and squad.dist_to_actor <= 300) then
+	if (IsSurvivalMode() and not IsEocMode() and squad.online) then
 		if (squad.player_id == "zombied" or is_squad_monster[squad.player_id]) then
 			return 0
 		end
@@ -963,8 +963,8 @@ function sim_squad_scripted:can_switch_offline()
 	end
 	--]]
 	
-	if (IsSurvivalMode()) then
-		return false
+	if (self.force_offline) then 
+		return true 
 	end
 	
 	-- companions
@@ -985,10 +985,6 @@ function sim_squad_scripted:can_switch_online()
 	
 	-- squad already online
 	if (self.online) then 
-		return true
-	end
-	
-	if (IsSurvivalMode()) then
 		return true
 	end
 	
@@ -1015,30 +1011,37 @@ function sim_squad_scripted:can_switch_online()
 		
 			-- monster doesn't have a target smart so just leave it offline
 			if (self.assigned_target_id == nil) then
+				self.force_hide = true
 				return false
 			end
+			self.force_hide = false
 			
-			local hour = level.get_time_hours()
-			if (self.player_id == "monster_predatory_day") then 
-				-- Monster will not come online during the hours of (9PM till 5AM)
-				if (hour <= 5 or hour >= 22) then
-					return false 
+			-- Monsters will come online with the hours ONLY when Survival mode is disabled
+			if (not IsSurvivalMode()) then
+				
+				local hour = level.get_time_hours()
+				if (self.player_id == "monster_predatory_day") then 
+					-- Monster will not come online during the hours of (9PM till 5AM)
+					if (hour <= 5 or hour >= 22) then
+						return false 
+					end
+				elseif (self.player_id == "monster_zombied_day") then 
+					-- Monster will not come online during the hours of (7PM till 5AM)
+					if (hour <= 5 or hour >= 19) then
+						return false 
+					end
+				elseif (self.player_id == "monster_predatory_night") then 
+					-- Monster will not come online during the hours of (5AM till 7PM)
+					if (hour >= 5 and hour <= 19) then
+						return false 
+					end
+				elseif (self.player_id == "monster_zombied_night") then 
+					-- Monster will not come online during the hours of (5AM till 7PM)
+					if (hour >= 5 and hour <= 19) then
+						return false 
+					end
 				end
-			elseif (self.player_id == "monster_zombied_day") then 
-				-- Monster will not come online during the hours of (7PM till 5AM)
-				if (hour <= 5 or hour >= 19) then
-					return false 
-				end
-			elseif (self.player_id == "monster_predatory_night") then 
-				-- Monster will not come online during the hours of (5AM till 7PM)
-				if (hour >= 5 and hour <= 19) then
-					return false 
-				end
-			elseif (self.player_id == "monster_zombied_night") then 
-				-- Monster will not come online during the hours of (5AM till 7PM)
-				if (hour >= 5 and hour <= 19) then
-					return false 
-				end
+				
 			end
 		end
 		
@@ -1069,7 +1072,7 @@ end
 --***********************************************************************************************
 
 function sim_squad_scripted:refresh()
-	if(self:commander_id()==nil) then
+	if(self:commander_id()==nil or self.force_hide) then
 		self:hide()
 		return
 	end
@@ -1107,6 +1110,7 @@ function sim_squad_scripted:show()
 		return
 	end
 	local spot = ""
+	local non_commander_spot = ""
 
 	if (DEV_DEBUG and axr_main.config:r_value("mm_options","enable_debug_hud",1,false) == true) then
 		if (DEV_DEBUG_HOLD_ACTION_1) then 
@@ -1117,27 +1121,32 @@ function sim_squad_scripted:show()
 			spot = "storyline_task_location"
 		end
 	elseif not(is_squad_monster[self.player_id]) then
-		if (axr_main.config:r_value("mm_options","enable_show_stalkers_on_map",1,false) == true) then
+		if (axr_companions.companion_squads[self.id]) then
+			spot = "alife_presentation_squad_companion_1"
+			non_commander_spot = "alife_presentation_squad_companion_non_commander"
+		else	
+			if (pda_upgrade_manager.has_squads_on_map_upgrade() and axr_main.config:r_value("mm_options","enable_show_stalkers_on_map",1,false) == true) then
 -------------------------------------av661194--start---------------
-			local relation = self:get_squad_relation()
-			if (relation == "friends") then
-				spot = "alife_presentation_squad_friend_1"
-			elseif (relation == "neutral") then
-				spot = "alife_presentation_squad_neutral_1"
-			else
-				spot = "alife_presentation_squad_enemy_1"
-			end
+				local relation = self:get_squad_relation()
+				if (relation == "friends") then
+					spot = "alife_presentation_squad_friend_1"
+				elseif (relation == "neutral") then
+					spot = "alife_presentation_squad_neutral_1"
+				else
+					spot = "alife_presentation_squad_enemy_1"
+				end
 -------------------------------------av661194--end---------------
-		else
-			local relation = game_relations.get_squad_relation_to_actor_by_id(self.id)
-			if(relation=="friends") then
-				spot = "alife_presentation_squad_friend"
-			elseif(relation=="neutral") then
-				spot = "alife_presentation_squad_neutral"
+			else
+				local relation = game_relations.get_squad_relation_to_actor_by_id(self.id)
+				if(relation=="friends") then
+					spot = "alife_presentation_squad_friend"
+				elseif(relation=="neutral") then
+					spot = "alife_presentation_squad_neutral"
+				end
 			end
 		end
 	else
-		if (axr_main.config:r_value("mm_options","enable_show_monsters_on_map",1,false) == true) then
+		if (pda_upgrade_manager.has_squads_on_map_upgrade() and axr_main.config:r_value("mm_options","enable_show_monsters_on_map",1,false) == true) then
 -------------------------------------av661194--start---------------
 			spot = "alife_presentation_squad_monster_1"
 -------------------------------------av661194--end---------------
@@ -1159,6 +1168,19 @@ function sim_squad_scripted:show()
 	elseif (self.spot_section~=nil) then
 		level.map_remove_object_spot(self.current_spot_id, self.spot_section)
 		self.spot_section = nil
+	end
+	
+	local squad = alife_object(self.id)
+	for k in squad:squad_members() do
+		if (k.id ~= squad:commander_id()) then
+			if (non_commander_spot~="" and level.map_has_object_spot(k.id, non_commander_spot) == 0) then
+				level.map_add_object_spot(k.id, non_commander_spot, self:get_squad_props())
+				self.non_commander_spot_section = non_commander_spot
+			elseif (non_commander_spot=="" and self.non_commander_spot_section and level.map_has_object_spot(k.id, self.non_commander_spot_section) == 1) then
+				level.map_remove_object_spot(k.id, self.non_commander_spot_section)
+				self.non_commander_spot_section = nil
+			end
+		end
 	end
 end
 
@@ -1184,7 +1206,7 @@ function sim_squad_scripted:get_squad_props()
 
 		return t
 	else
-		return game.translate_string(self.player_id)
+		return game.translate_string(axr_companions.is_companion_squad(self.id) and "companion" or self.player_id)
 	end
 end
 

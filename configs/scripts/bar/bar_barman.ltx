@@ -8,7 +8,7 @@ level_spot = trader
 dont_keep_items = true
 
 [walker@general]
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 combat_ignore_keep_when_attacked = true
 use_camp = false
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, {=is_eoc_mode_enabled} true, false

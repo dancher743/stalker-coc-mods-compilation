@@ -279,4 +279,10 @@
 	<string id="kb_custom10">
 		<text>Сообщения</text>
 	</string>
+	<string id="kb_unload_all_weapons">
+		<text>Разрядить всё оружие</text>
+	</string>
+	<string id="kb_custom_spot">
+		<text>Поставить метку на карту</text>
+	</string>
 </string_table>

@@ -29,11 +29,11 @@
 	</string>
 	
 	<string id="st_addon_companion_quick_menu_fireAtWill">
-		<text>нцнмэ он фекюмхч</text>
+		<text>нцнмэ он ябнелс фекюмхч</text>
 	</string>
 	
 	<string id="st_addon_companion_quick_menu_ignoreCombatButHelpMe">
-		<text>ме ярпекърэ, мн онлнцюрэ лме</text>
+		<text>ярпекърэ оняке лемъ</text>
 	</string>
 	
 	<string id="st_addon_companion_quick_menu_ignoreCombat">
@@ -41,11 +41,15 @@
 	</string>
 	
 	<string id="st_addon_companion_quick_menu_doNotLootCorpses">
-		<text>ме нашяйхбюрэ рпсош</text>
+		<text>ме ондахпюрэ днашвс</text>
 	</string>
 	
 	<string id="st_addon_companion_quick_menu_lootCorpses">
-		<text>нашяйхбюрэ рпсош</text>
+		<text>ондахпюрэ днашвс</text>
+	</string>
+	
+	<string id="st_addon_companion_quick_menu_moveToPoint">
+		<text>нропюбхрэ й рнвйе</text>
 	</string>
 	
 </string_table>

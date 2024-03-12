@@ -318,8 +318,19 @@ function drx_sl_text_honcho_has_storyline_task_to_give( a, b )
 	local npc = who_is_npc( a, b )
 	local task_section = axr_task_manager and axr_task_manager.drx_sl_generate_random_sl_task( npc )
 	last_task_id = task_section
-	return game.translate_string( task_section and axr_task_manager.get_task_job_description( task_section ) or "st_no_available_task" )
-
+	
+	--1.5 FIXES BEGIN
+	local on_job_descr = task_section and task_manager.task_ini:r_string_ex(task_section,"on_job_descr")
+	if (on_job_descr) then 
+		local cond = xr_logic.parse_condlist(db.actor,"task_manager","condlist",on_job_descr)
+		if (cond) then 
+			xr_logic.pick_section_from_condlist(db.actor,db.actor,cond)
+		end
+	end
+	--return game.translate_string( task_section and axr_task_manager.get_task_job_description( task_section ) or "st_no_available_task" )
+	return game.translate_string(task_section and task_manager.task_ini:r_string_ex(task_section,"job_descr") or "st_no_available_task")
+	-- 1.5 FIXES END
+	
 end
 
 -- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -749,7 +760,18 @@ function text_npc_has_ordered_task_to_give( a, b )
 	local npc = who_is_npc( a, b )
 	local task_section = axr_task_manager and axr_task_manager.get_first_available_task( npc )
 	last_task_id = task_section
-	return game.translate_string( task_section and axr_task_manager.get_task_job_description( task_section ) or "st_no_available_task" )
+	
+	--1.5 FIXES BEGIN
+	local on_job_descr = task_section and task_manager.task_ini:r_string_ex(task_section,"on_job_descr")
+	if (on_job_descr) then 
+		local cond = xr_logic.parse_condlist(db.actor,"task_manager","condlist",on_job_descr)
+		if (cond) then 
+			xr_logic.pick_section_from_condlist(db.actor,db.actor,cond)
+		end
+	end
+	--return game.translate_string( task_section and axr_task_manager.get_task_job_description( task_section ) or "st_no_available_task" )
+	return game.translate_string(task_section and task_manager.task_ini:r_string_ex(task_section,"job_descr") or "st_no_available_task")
+	-- 1.5 FIXES END
 
 end
 
@@ -786,7 +808,18 @@ function text_sim_npc_has_ordered_task_to_give( a, b )
 	local npc = who_is_npc( a, b )
 	local task_section = axr_task_manager and axr_task_manager.get_first_available_task( npc, nil, true )
 	last_task_id = task_section
-	return game.translate_string( task_section and axr_task_manager.get_task_job_description( task_section ) or "st_no_available_task" )
+	
+	--1.5 FIXES BEGIN
+	local on_job_descr = task_section and task_manager.task_ini:r_string_ex(task_section,"on_job_descr")
+	if (on_job_descr) then 
+		local cond = xr_logic.parse_condlist(db.actor,"task_manager","condlist",on_job_descr)
+		if (cond) then 
+			xr_logic.pick_section_from_condlist(db.actor,db.actor,cond)
+		end
+	end
+	--return game.translate_string( task_section and axr_task_manager.get_task_job_description( task_section ) or "st_no_available_task" )
+	return game.translate_string(task_section and task_manager.task_ini:r_string_ex(task_section,"job_descr") or "st_no_available_task")
+	-- 1.5 FIXES END
 
 end
 
@@ -1602,7 +1635,7 @@ function text_npc_has_task(a,b)
 	local npc = who_is_npc(a, b)
 	local task_id = axr_task_manager.available_tasks[npc:id()] and axr_task_manager.available_tasks[npc:id()][1]
 	--printf("text_npc_has_task %s",task_id)
-	
+	--1.5 FIXES BEGIN
 	local on_job_descr = task_id and task_manager.task_ini:r_string_ex(task_id,"on_job_descr")
 	if (on_job_descr) then 
 		local cond = xr_logic.parse_condlist(db.actor,"task_manager","condlist",on_job_descr)
@@ -1610,7 +1643,10 @@ function text_npc_has_task(a,b)
 			xr_logic.pick_section_from_condlist(db.actor,db.actor,cond)
 		end
 	end
-
+	
+	-- fetch
+	-- TODO: Refactor for on_job_descr?
+	-- 1.5 FIXES END
 	local fetch = task_id and task_manager.task_ini:r_string_ex(task_id,"fetch_descr")
 	if (fetch) then
 		axr_task_manager.trigger_fetch_func(task_id)

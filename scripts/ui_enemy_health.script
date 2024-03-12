@@ -99,11 +99,15 @@ function on_hit(obj,power,dir,who,bi)
 		elseif (IsStalker(nil,cls)) then 
 			text = obj:character_name()
 		elseif (IsMonster(nil,cls)) then 
-			local monster_name = monster_classes[cls]
-			if (monster_name ~= nil) then
-				text = game.translate_string("ui_st_enemy_health_"..monster_name)
-			else
-				text = game.translate_string("monster")
+			local monster_section = obj:section()
+			text = game.translate_string(monster_section)
+			if (text == monster_section) then
+				local monster_name = monster_classes[cls]
+				if (monster_name ~= nil) then
+					text = game.translate_string("ui_st_enemy_health_"..monster_name)
+				else
+					text = game.translate_string("monster")
+				end
 			end
 		else 
 			local sid = get_object_story_id(obj:id())

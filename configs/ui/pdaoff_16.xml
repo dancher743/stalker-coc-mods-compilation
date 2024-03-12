@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="windows-1251"?> 
+<pdaoff> 
+	<background_static x="102" y="0" width="819" height="768" stretch="1">
+		<texture>pdaconnection</texture>
+	    <auto_static x="818" y="0" width="104" height="768" stretch="1">
+		    <texture>ui_inGame2_widescreen_sidepanels_right</texture>
+	    </auto_static>
+	    <auto_static x="-102" y="0" width="104" height="768" stretch="1">
+		    <texture>ui_inGame2_widescreen_sidepanels_left</texture>
+	    </auto_static>
+	    <auto_static x="0" y="27" width="790" height="695" stretch="1">
+		    <texture a="70">ui_pda2_noice</texture>
+	    </auto_static>		
+	</background_static>
+</pdaoff>

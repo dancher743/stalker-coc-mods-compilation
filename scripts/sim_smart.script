@@ -111,7 +111,7 @@ function try_to_respawn_faction(smart)
 		if faction ~= "monster" then
 		   if (sim_factions.faction_information[faction].base_count) and sim_factions.faction_information[faction].base_count < 1 then
 			  sim_factions.faction_information[faction].base_count = 1
-			  sim_squad.create_squad(smart, faction, nil, nil, nil, 1)	
+			  sim_squad.create_squad(smart, faction, nil, nil, nil, 1, true)
 			  printf("### EOC: -- try_to_respawn_faction -- ".. faction .." - ".. smart:name() .." ###")
 		   end
 		end
@@ -193,13 +193,19 @@ function check_npc(smart)
 
 	    if (smart_limit < smart.max_population) then	
 			
-			local smart_tbl = sim_tables.unique_squads[smart:name()]
-			local faction_tbl = smart_tbl and smart_tbl[faction]
+			local unique_trader = nil
+			local unique_mechanic = nil
+			local unique_barmen = nil
+			local unique_medik = nil
 			
-			local unique_trader = faction_tbl and faction_tbl[1]
-			local unique_mechanic = faction_tbl and faction_tbl[2]
-			local unique_barmen = faction_tbl and faction_tbl[3]
-			local unique_medik = faction_tbl and faction_tbl[4]
+			if (sim_options.get_unpc_respawn_option()) then
+				local smart_tbl = sim_tables.unique_squads[smart:name()]
+				local faction_tbl = smart_tbl and smart_tbl[faction]
+				unique_trader = faction_tbl and faction_tbl[1]
+				unique_mechanic = faction_tbl and faction_tbl[2]
+				unique_barmen = faction_tbl and faction_tbl[3]
+				unique_medik = faction_tbl and faction_tbl[4]
+			end
 	
 		    while mechanic_in_smart < mechanic_pop do	
 				sim_squad.create_squad(smart, faction, nil, unique_mechanic or mechanic, nil, 1)
@@ -236,8 +242,7 @@ function smart_control(smart)
 		return
 	end
 	
-	local option_factor = sim_options.get_warfare_control_option_factor()
-	smart.last_npc_check = tg + 30000 * option_factor
+	smart.last_npc_check = tg + 30000
 
 	local squads = SIMBOARD.smarts[smart.id].squads
 
@@ -423,7 +428,10 @@ function spawn_mutants(smart)
 			
 			    if section then
 					if (IsSurvivalMode()) then
-						section = sim_survival.try_replace_mutant_by_zombies(section)
+						section = sim_survival.try_replace_mutant(section)
+						if (section == nil) then
+							return
+						end
 					end
                    sim_squad.create_squad(smart, nil, nil, section, nil, 1)
 			    end

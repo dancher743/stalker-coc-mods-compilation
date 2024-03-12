@@ -1,0 +1,42 @@
+; Azazel Customizable by RenanMsV changes and addons by Aruhito_0 for CoC 1.4.22 may work with other
+[azazel_config]
+	;use true or false
+
+	fix_bleeding = true 		; default = false This will fix the bleeding, radiation, hunger glitch from default Azazel
+	disable_animation = true 	; default = false This will remove the animation between the transition to a new person. Instant transition.
+	invul_time = 10 			; default = 10 This will set the invulnerable_time in seconds between the transition to a new person. (so you dont get shot again instantly, lower values increase the risk of carying over bleed and animation)
+	faction_spawn = true 		; default = false With this option turned true your azazel mod will search for faction mates if no squad mate is left. (may cause problems)
+	stay_on_map = false 		; NOT WORKING default = false This should ensure that you stay in the same location. 
+	debugMessages = false 		; debug
+	
+[azazel_tasks]
+	;ONLY USE ONE OPTION
+
+	keep_tasks_squad = true 	; default = false With this option you will only fail tasks if whole squad is dead (recommended).
+	keep_tasks_faction = false 	; default = false With this option you will keep your tasks as long as you spawn as faction mate.
+	keep_tasks_always = false 	; default = false Never lose tasks on death (not recommended).
+	fail_tasks = false 			; default = true  Fail tasks on death like vanilla azazel mode.
+
+[azazel_money]
+	;use true FOR ONE option and false for OTHERS
+	;Gain Money system will have a higher priority in case one or more are enabled at the same time.
+	;function handle_actor_money
+
+	gain_money = false	 		; Enable default system that you get about 2000 RU when you die.
+	lose_all_money = false 		; Enable new system that you lose all your money when you die and respawn with about 500 RU (as a new game does). You cant get the money back
+	stalker_money = true		; Enable new system that you will respawn with the NPC's money.
+	keep_money_squad = false	; The squad leader passes the money on. Only lose money if your squad is erased.
+	never_loose_money = false	; Never lose any money Azazel has gained.
+	
+[azazel_extra_supplies]
+		;this grants you some extra supplies after deat when entering a new character
+	
+	activate_supplies = false	;activate the system to receive extra supplies for the new character
+	
+		;Enter number between 0 and 100 to set the chance (0= never get item, 100 always get item, 50 = 50% chance, fliping a coin)
+	
+	give_medkit = 75		; default = 75
+	give_bandage = 97		; default = 97
+	give_vinca = true		; when no bandage is given you can receive vinca if you like
+	give_bread = 90			; default = 90
+	give_vodka = 95			; default = 95

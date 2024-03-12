@@ -1,23 +1,16 @@
-function on_game_start()
-	RegisterScriptCallback("on_key_press",on_key_press)
-end
-
 local addonMenu=nil
-function on_key_press(key)
-	local bind = dik_to_bind(key)
-	if (bind == key_bindings.kCUSTOM11) then
-		if not(addonMenu) then
-			local i,v = next(axr_companions.companion_squads,nil) 
-			if not(v) or db.actor:is_talking() or not db.actor:alive() then 
-				return
-			end
-			addonMenu = addonCompanionsContextMenu(v)
-			addonMenu:ShowDialog(true)
-			show_all_ui(true)
-		else
-			addonMenu:CloseTheMenu()
-		end
 
+function show_quick_menu()
+	if not(addonMenu) then
+		local i,v = next(axr_companions.companion_squads,nil) 
+		if not(v) or db.actor:is_talking() or not db.actor:alive() then 
+			return
+		end
+		addonMenu = addonCompanionsContextMenu(v)
+		addonMenu:ShowDialog(true)
+		show_all_ui(true)
+	else
+		addonMenu:CloseTheMenu()
 	end
 end
 
@@ -34,7 +27,8 @@ function addonCompanionsContextMenu:__init(companionSquad) super()
 	self:SetTextByCondition("btn_far_close",						     "npcx_beh_distance_far",  game.translate_string("st_addon_companion_quick_menu_stayClose"),game.translate_string("st_addon_companion_quick_menu_stayFar"))
 	self:SetTextByCondition("btn_aggressive_ignoreCombatButHelpActor",   "npcx_beh_ignore_combat", game.translate_string("st_addon_companion_quick_menu_fireAtWill"),game.translate_string("st_addon_companion_quick_menu_ignoreCombatButHelpMe"))
 	self:SetTextByCondition("btn_ignoreCombat_ignoreCombatButHelpActor", "npcx_beh_ignore_actor_enemies", game.translate_string("st_addon_companion_quick_menu_ignoreCombatButHelpMe"),game.translate_string("st_addon_companion_quick_menu_ignoreCombat"))
-	self:SetTextByCondition("btn_lootCorpses_ignoreCorpses",             "npcx_beh_loot_corpses", game.translate_string("st_addon_companion_quick_menu_doNotLootCorpses"),game.translate_string("st_addon_companion_quick_menu_lootCorpses"))
+	self:SetTextByCondition("btn_lootCorpses_ignoreCorpses",             "npcx_beh_loot_corpses_and_gather_items", game.translate_string("st_addon_companion_quick_menu_doNotLootCorpses"),game.translate_string("st_addon_companion_quick_menu_lootCorpses"))
+	self:SetText("btn_move_to_point", game.translate_string("st_addon_companion_quick_menu_moveToPoint"))
 
 end
  
@@ -52,6 +46,7 @@ function addonCompanionsContextMenu:InitControls()
 	self:RegisterButton("aggressive_ignoreCombatButHelpActor",xml)
 	self:RegisterButton("ignoreCombat_ignoreCombatButHelpActor",xml)
 	self:RegisterButton("lootCorpses_ignoreCorpses",xml)
+	self:RegisterButton("move_to_point",xml)
 end
  
 function addonCompanionsContextMenu:InitCallBacks()
@@ -62,6 +57,7 @@ function addonCompanionsContextMenu:InitCallBacks()
 	self:AddCallback("btn_aggressive_ignoreCombatButHelpActor_select", ui_events.BUTTON_CLICKED, self["Onbtn_aggressive_ignoreCombatButHelpActor"], self)
 	self:AddCallback("btn_ignoreCombat_ignoreCombatButHelpActor_select", ui_events.BUTTON_CLICKED, self["Onbtn_ignoreCombat_ignoreCombatButHelpActor"], self)
 	self:AddCallback("btn_lootCorpses_ignoreCorpses_select", ui_events.BUTTON_CLICKED, self["Onbtn_lootCorpses_ignoreCorpses"], self)
+	self:AddCallback("btn_move_to_point_select", ui_events.BUTTON_CLICKED, self["Onbtn_move_to_point"], self)
 end
 
 function addonCompanionsContextMenu:Update()
@@ -114,12 +110,17 @@ function addonCompanionsContextMenu:Onbtn_ignoreCombat_ignoreCombatButHelpActor(
 end 
 
 function addonCompanionsContextMenu:Onbtn_lootCorpses_ignoreCorpses()
-	self:ExecuteScriptByCondition("npcx_beh_loot_corpses",
-								axr_companions.switch_companion_loot_corpses, 
-								axr_companions.switch_companion_loot_corpses)
+	self:ExecuteScriptByCondition("npcx_beh_loot_corpses_and_gather_items",
+								axr_companions.switch_companion_loot_corpses_and_gather_items,
+								axr_companions.switch_companion_loot_corpses_and_gather_items)
 
 	addonMenu:CloseTheMenu()
 end 
+
+function addonCompanionsContextMenu:Onbtn_move_to_point()
+	axr_companions.move_to_point_non_keybind()
+	addonMenu:CloseTheMenu()
+end
 
 
 function addonCompanionsContextMenu:DoesSquadHaveInfo(info)
@@ -135,6 +136,10 @@ function addonCompanionsContextMenu:SetTextByCondition(but_name, info , true_tex
 	else
 		self[but_name]:TextControl():SetText(false_text)
 	end
+end
+
+function addonCompanionsContextMenu:SetText(but_name, text)
+	self[but_name]:TextControl():SetText(text)
 end
 
 function addonCompanionsContextMenu:ExecuteScriptByCondition(info , true_script, false_script)

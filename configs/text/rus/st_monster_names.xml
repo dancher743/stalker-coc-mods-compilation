@@ -39,4 +39,7 @@
 		<text>Снорк</text>
 	</string>
 
+	<string id="zombie_ghost">
+		<text>Зомби-призрак</text>
+	</string>
 </string_table>

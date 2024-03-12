@@ -427,7 +427,8 @@ status_functor = bounty_task
 condlist_0 = {!task_giver_alive(jup_b220_trapper_task_2)} fail
 ;condlist_1 = {=drx_sl_is_enemy(stalker)} fail
 
-on_init = %=drx_sl_setup_bounty_hunt(jup_b220_trapper_task_2:stalker)%
+on_init = %=drx_sl_init_bounty_hunt(jup_b220_trapper_task_2:stalker)%
+on_job_descr = %=drx_sl_setup_bounty_hunt(jup_b220_trapper_task_2:stalker)%
 on_complete = %=drx_sl_reward_random_money(4500:7000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(jup_b220_trapper_task_2) =drx_sl_unregister_task_giver(jup_b220_trapper_task_2) =drx_sl_reset_stored_task(jup_b220_trapper_task_2)%
 on_fail = %=fail_task_dec_goodwill(25:stalker) =drx_sl_unregister_task_giver(jup_b220_trapper_task_2) =drx_sl_reset_stored_task(jup_b220_trapper_task_2)%
 

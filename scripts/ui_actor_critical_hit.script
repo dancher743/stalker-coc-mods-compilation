@@ -1,0 +1,77 @@
+--
+-- UI for critical hit from Actor
+-- Added by Dancher
+--
+
+local duration = 0.2125
+
+local mark_ui
+
+function show_mark()
+	if (get_console():get_bool("hud_draw") == false) then
+		return
+	end
+	
+	if (mark_ui) then
+		mark_ui:Start()
+	end
+end
+
+local function on_game_load()
+	if (mark_ui == nil) then
+		mark_ui = critical_hit_mark()
+		get_hud():AddDialogToRender(mark_ui)
+		mark_ui:Show(false)
+	end
+end
+
+local function actor_on_net_destroy()
+	if (mark_ui) then
+		get_hud():RemoveDialogToRender(mark_ui)
+		mark_ui = nil
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("on_game_load",on_game_load)
+	RegisterScriptCallback("actor_on_net_destroy",actor_on_net_destroy)
+end
+
+--- UI class ---
+
+class "critical_hit_mark" (CUIScriptWnd)
+function critical_hit_mark:__init() super()
+	self:InitControls()
+end
+ 
+function critical_hit_mark:__finalize()
+end
+ 
+function critical_hit_mark:InitControls()
+	local xml = CScriptXmlInit()
+	xml:ParseFile("ui_actor_critical_hit.xml")
+	self.mark = xml:InitStatic("critical_hit_mark", self)
+end
+
+function critical_hit_mark:Start()
+	-- printf("started!")
+	self.finish_time = time_global() + duration * 1000
+	self:Show(true)
+end
+
+function critical_hit_mark:Update()
+	-- printf("update!")
+	local finish_time = self.finish_time
+	
+	if (not finish_time or time_global() <= finish_time) then
+		return
+	end
+	
+	self:Finish()
+end
+
+function critical_hit_mark:Finish()
+	-- printf("finished!")
+	self.finish_time = nil
+	self:Show(false)
+end

@@ -14,7 +14,7 @@ out_restr = zat_a2_sr_noweap
 on_info = {!npc_in_zone(zat_a2_sr_trader)} %=teleport_npc(zat_stalker_base_smart_zat_b30_owl_stalker_trader_walk)%
 use_camp = false
 reach_distance = 1
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 gather_items_enabled = false
 help_wounded_enabled = false

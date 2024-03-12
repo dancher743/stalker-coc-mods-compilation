@@ -237,7 +237,11 @@ function is_non_story(actor,npc)
 	if not (squad) then
 		return false
 	end
-	if (get_object_story_id(squad.id)) then
+	local story_id = get_object_story_id(squad.id)
+	if (story_id == "start_squad" or story_id == "survival_squad") then
+		return true
+	end
+	if (story_id) then
 		return false
 	end
 	return true
@@ -338,8 +342,11 @@ function become_actor_companion(actor,npc)
 
 		if ( member and member:alive() ) then
 			axr_companions.add_to_actor_squad(member)
+			custom_object_spots.remove_spot(k.id)
 		end
 	end
+	
+	jg_guider.try_clear_prepared_follower(npc)
 end
 
 
@@ -552,6 +559,15 @@ end
 function remove_companions_from_squad(actor,npc)
 	local npc = dialogs.who_is_npc(actor,npc)
 	alun_utils.execute_script_on_squad(npc,axr_companions.remove_from_actor_squad)
+end
+
+function remove_companions_from_squad_and_add_spot(actor,npc)
+	local npc = dialogs.who_is_npc(actor,npc)
+	
+	local text = game.translate_string("ui_st_companion_custom_spot_text")
+	custom_object_spots.add_spot(npc:id(), string.format(text, npc:character_name()))
+	
+	remove_companions_from_squad(actor,npc)
 end
 
 function set_companion_hide_in_cover(actor,npc)

@@ -55,12 +55,14 @@ function backpack_ui:OnOk()
 	end
 
 	local se_obj = alife_object(self.box_id)
-	if (se_obj and txt ~= "") then
-		level.map_add_object_spot_ser(se_obj.id, self.box_spot, txt)
+	if (se_obj and txt and txt ~= "") then
+		local spot_txt =  "%c[255,255,160,0]" .. game.translate_string("st_custom_stash_title") .. "\\n%c[default]" .. txt
+		level.map_add_object_spot_ser(se_obj.id, self.box_spot, spot_txt)
 	end
 
 	self.on_ok_clicked()
 	self:HideDialog()
+	axr_keybind.enabled = true
 end
 
 function backpack_ui:OnCancel()
@@ -68,6 +70,7 @@ function backpack_ui:OnCancel()
 	alife():create("itm_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
 	alife():release( alife_object(self.box_id) ,true)
 	self:HideDialog()
+	axr_keybind.enabled = true
 end
 
 

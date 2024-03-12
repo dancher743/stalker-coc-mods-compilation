@@ -1,0 +1,39 @@
+--
+-- Alternative combat mode for Actor
+-- Added by Dancher
+--
+-- Original way to check if Actor has combat -
+-- not (is_empty(xr_combat_ignore.fighting_with_actor_npcs))
+--
+
+local combat_length = 10000
+local combat_last_time = 0
+
+function has_combat()
+	return (combat_last_time + combat_length) > time_global()
+end
+
+local function actor_on_hit_callback(obj, amount, local_direction, who, bone_index)
+	if (IsStalker(who) or IsMonster(who)) then
+		combat_last_time = time_global()
+	end
+end
+
+local function npc_on_hit_callback(obj, amount, local_direction, who, bone_index)
+	if (IsActor(who)) then
+		combat_last_time = time_global()
+	end
+end
+
+local function monster_on_hit_callback(obj, amount, local_direction, who, bone_index)
+	if (IsActor(who)) then
+		combat_last_time = time_global()
+	end
+end
+
+function init()
+	RegisterScriptCallback("actor_on_hit_callback", actor_on_hit_callback)
+	RegisterScriptCallback("npc_on_hit_callback", npc_on_hit_callback)
+	RegisterScriptCallback("monster_on_hit_callback", monster_on_hit_callback)
+	printf("### EOC: actor combat initialized ###")
+end

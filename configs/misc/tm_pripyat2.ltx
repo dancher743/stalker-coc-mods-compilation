@@ -329,7 +329,8 @@ status_functor = bounty_task
 condlist_0 = {!task_giver_alive(pri_monolith_monolith_trader_stalker_task_2)} fail
 ;condlist_1 = {=drx_sl_is_enemy(monolith)} fail
 
-on_init = %=drx_sl_setup_bounty_hunt(pri_monolith_monolith_trader_stalker_task_2:monolith)%
+on_init = %=drx_sl_init_bounty_hunt(pri_monolith_monolith_trader_stalker_task_2:monolith)%
+on_job_descr = %=drx_sl_setup_bounty_hunt(pri_monolith_monolith_trader_stalker_task_2:monolith)%
 on_complete = %=drx_sl_reward_random(2000:4000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:monolith) =inc_task_stage(pri_monolith_monolith_trader_stalker_task_2) =drx_sl_unregister_task_giver(pri_monolith_monolith_trader_stalker_task_2) =drx_sl_reset_stored_task(pri_monolith_monolith_trader_stalker_task_2)%
 on_fail = %=fail_task_dec_goodwill(25:monolith) =drx_sl_unregister_task_giver(pri_monolith_monolith_trader_stalker_task_2) =drx_sl_reset_stored_task(pri_monolith_monolith_trader_stalker_task_2)%
 

@@ -9,6 +9,8 @@
 --=================================================< Controls >=================================================
 local TimeFactor = 1	-- value depends on _G.GAME_VERSION, don't touch
 
+local AnonymousMessageChance = 30
+
 local shw_death_stalker, shw_death_mutant, shw_death_generic, shw_kill_wounded, shw_death_report, shw_found_artifact, shw_heli_call, shw_loot, shw_stash
 local shw_reaction
 local shw_weather, shw_time, shw_nearby_activity, shw_zombie
@@ -1051,7 +1053,12 @@ function DynamicNewsManager:ReportDeathByMutant(victim,who) -- Death Report by m
 	--printf(">>> Dyn News: ReportDeathByMutant - call")
 	local clr_1 = "%" .. "%c[255,160,160,190]"
 	local clr_2 = "%" .. "%c[255,220,220,220]"
-	local a = string.gsub(dynamic_news_helper.GetMonsterDescription(who,1),"(%l)?",string.upper("%1"),1)
+	local a
+	if (system_ini():r_string_ex("string_table","language") == "rus") then
+		a = dynamic_news_helper.GetMonsterDescription(who,7)
+	else
+		a = string.gsub(dynamic_news_helper.GetMonsterDescription(who,1),"(%l)?",string.upper("%1"),1)
+	end
 	local b = game.translate_string(victim:character_community())
 	local c = dynamic_news_helper.GetPointDescription(victim)
 	
@@ -1395,7 +1402,14 @@ function DynamicNewsManager:FoundStash(has_spot) -- reaction of angry stash owne
 		return false
 	end
 	
-	local chance_to_ignore = (has_spot and 80) or 40
+	local chance_to_ignore = 0
+	
+	if (IsSurvivalMode()) then
+		chance_to_ignore = 80
+	else
+		chance_to_ignore = (has_spot and 80) or 40
+	end
+	
 	if (math.random(100) < chance_to_ignore) then
 		return false
 	end
@@ -1405,9 +1419,21 @@ function DynamicNewsManager:FoundStash(has_spot) -- reaction of angry stash owne
 		return false
 	end
 	
-	local Se = strformat("%s %s" , self.sentences_fnames[math.random(#self.sentences_fnames)] , self.sentences_snames[math.random(#self.sentences_snames)])
+	local Se
+	local Ic
+	local It
 	
-	self:PushToChannel("general",{Mg=tbl[math.random(#tbl)],Ic="common",Snd="beep_2",Se=Se,It="gr",Ty="found_stash"})
+	if (math.random(0,100) < AnonymousMessageChance) then
+		Se = strformat("%s, %s", game.translate_string("st_dyn_news_names_anonymous"), game.translate_string("st_dyn_news_general_channel"))
+		Ic = "common"
+		It = "gr"
+	else
+		Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_channel"))
+		Ic = nil
+		It="rnd_char_icon"
+	end
+	
+	self:PushToChannel("general",{Mg=tbl[math.random(#tbl)],Ic=Ic,Snd="beep_2",Se=Se,It=It,Ty="found_stash"})
 
 	return true
 end
@@ -1479,7 +1505,7 @@ end
 --< Random News >--
 function DynamicNewsManager:ReportNextEmission() --  news about expected surge's date
 	--printf(">>> Dyn News: ReportNextEmission - call")
-	local SM, SurgeType, last_surge_time, AccuracyTier, comm, Se, clr, msg, a, b, c, d, Tbl_msg
+	local SM, SurgeType, last_surge_time, AccuracyTier, comm, Se, It, clr, msg, a, b, c, d, Tbl_msg
 	local IsEmission, IsPsiStorm = false, false
 	
 	-- %50 chance to pick blowout or psi-storm
@@ -1510,7 +1536,8 @@ function DynamicNewsManager:ReportNextEmission() --  news about expected surge's
 				return false
 			end
 			comm = "common"
-			Se = strformat("%s %s", self.sentences_fnames[math.random(#self.sentences_fnames)] , self.sentences_snames[math.random(#self.sentences_snames)] )
+			Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_channel"))
+			It="rnd_char_icon"
 			Tbl_msg = self:ReadTextList("st_dyn_news_surge_template_")
 			if (not Tbl_msg) then return false end
 			a = Tbl_msg[math.random(#Tbl_msg)]
@@ -1521,6 +1548,7 @@ function DynamicNewsManager:ReportNextEmission() --  news about expected surge's
 		else
 			comm = dynamic_news_helper.PickFaction(true)
 			Se = strformat("%s, %s" , game.translate_string("st_faction_" .. comm) , game.translate_string("st_dyn_news_sender_private_ch"))
+			It="gr"
 			if ((comm == "ecolog") or (comm == "csky") or (comm == "dolg") or (comm == "army")) then 
 				AccuracyTier = 5
 			else 
@@ -1550,7 +1578,7 @@ function DynamicNewsManager:ReportNextEmission() --  news about expected surge's
 		return false
 	end
 	
-	dynamic_news_helper.send_tip(msg,Se, nil, msg_duration,comm,"beep_1","gr")
+	dynamic_news_helper.send_tip(msg,Se, nil, msg_duration,comm,"beep_1",It)
 	
 	return true
 end
@@ -1683,10 +1711,23 @@ function DynamicNewsManager:FoundDead() -- report dead body findings
 	local z2 = tostring(math.random(9))
 	local z3 = tostring(math.random(9))
 	
-	local Se = strformat("%s %s",a1,b1)
+	local Se
+	local Ic
+	local It
+	
+	if (math.random(0,100) < AnonymousMessageChance) then
+		Se = strformat("%s, %s", game.translate_string("st_dyn_news_names_anonymous"), game.translate_string("st_dyn_news_general_channel"))
+		Ic = "common"
+		It = "gr"
+	else
+		Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_channel"))
+		Ic = nil
+		It= "rnd_char_icon"
+	end
+	
 	local msg = self:ReadTextKeyList( "$clr_1$death_report -$clr_2 $fname $sname, $map, $death_reason, $y1$y2-$z1$z2$z3" , {["clr_1"]=clr_1 , ["clr_2"]=clr_2 , ["death_report"]=game.translate_string("st_dyn_news_spc_death_report") , ["fname"]=a2 , ["sname"]=b2 , ["map"]=c , ["death_reason"]=tbl[math.random(#tbl)] , ["y1"]=y1 , ["y2"]=y2 , ["z1"]=z1 , ["z2"]=z2 , ["z3"]=z3})
 	
-	dynamic_news_helper.send_tip(msg,Se, nil, msg_duration,"common","no_sound","gr")
+	dynamic_news_helper.send_tip(msg,Se, Ic, msg_duration,nil,"no_sound",It)
 	
 	return true
 end
@@ -2073,9 +2114,21 @@ function DynamicNewsManager:ResponseOnFoundStash() -- react to people who lost t
 		return false
 	end
 	
-	local Se = strformat("%s %s" , self.sentences_fnames[math.random(#self.sentences_fnames)] , self.sentences_snames[math.random(#self.sentences_snames)])
+	local Se
+	local Ic
+	local It
 	
-	self.response["message"] = {Mg=tbl[math.random(#tbl)],Ic="common",Snd="no_sound",Se=Se,It="gr",To=false,St=msg_duration}
+	if (math.random(0,100) < AnonymousMessageChance) then
+		Se = strformat("%s, %s", game.translate_string("st_dyn_news_names_anonymous"), game.translate_string("st_dyn_news_general_channel"))
+		Ic = "common"
+		It = "gr"
+	else
+		Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_channel"))
+		Ic = nil
+		It= "rnd_char_icon"
+	end
+	
+	self.response["message"] = {Mg=tbl[math.random(#tbl)],Ic=Ic,Snd="no_sound",Se=Se,It=It,To=false,St=msg_duration}
 
 	return true
 end
@@ -2205,9 +2258,21 @@ function DynamicNewsManager:ResponseOnDeathByStalker_Fake()	-- react to stalker'
 		return false
 	end
 	
-	local Se = strformat("%s %s" , self.sentences_fnames[math.random(#self.sentences_fnames)] , self.sentences_snames[math.random(#self.sentences_snames)])
+	local Se
+	local Ic
+	local It
 	
-	self.response["message"] = {Mg=tbl[math.random(#tbl)],Ic="common",Snd="no_sound",Se=Se,It="gr",To=false,St=msg_duration}
+	if (math.random(0,100) < AnonymousMessageChance) then
+		Se = strformat("%s, %s", game.translate_string("st_dyn_news_names_anonymous"), game.translate_string("st_dyn_news_general_channel"))
+		Ic = "common"
+		It = "gr"
+	else
+		Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_channel"))
+		Ic = nil
+		It= "rnd_char_icon"
+	end
+	
+	self.response["message"] = {Mg=tbl[math.random(#tbl)],Ic=Ic,Snd="no_sound",Se=Se,It=It,To=false,St=msg_duration}
 
 	return true
 end
@@ -2223,9 +2288,21 @@ function DynamicNewsManager:ResponseOnDeathByMutant_Fake() -- react to stalker's
 		return false
 	end
 	
-	local Se = strformat("%s %s" , self.sentences_fnames[math.random(#self.sentences_fnames)] , self.sentences_snames[math.random(#self.sentences_snames)])
+	local Se
+	local Ic
+	local It
 	
-	self.response["message"] = {Mg=tbl[math.random(#tbl)],Ic="common",Snd="no_sound",Se=Se,It="gr",To=false,St=msg_duration}
+	if (math.random(0,100) < AnonymousMessageChance) then
+		Se = strformat("%s, %s", game.translate_string("st_dyn_news_names_anonymous"), game.translate_string("st_dyn_news_general_channel"))
+		Ic = "common"
+		It = "gr"
+	else
+		Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_channel"))
+		Ic = nil
+		It= "rnd_char_icon"
+	end
+	
+	self.response["message"] = {Mg=tbl[math.random(#tbl)],Ic=Ic,Snd="no_sound",Se=Se,It=It,To=false,St=msg_duration}
 
 	return true
 end
@@ -2241,9 +2318,21 @@ function DynamicNewsManager:ResponseOnDeathBySurges_Fake() -- react to stalker's
 		return false 
 	end
 	
-	local Se = strformat("%s %s" , self.sentences_fnames[math.random(#self.sentences_fnames)] , self.sentences_snames[math.random(#self.sentences_snames)])
+	local Se
+	local Ic
+	local It
 	
-	self.response["message"] = {Mg=tbl[math.random(#tbl)],Ic="common",Snd="no_sound",Se=Se,It="gr",To=30,St=msg_duration}
+	if (math.random(0,100) < AnonymousMessageChance) then
+		Se = strformat("%s, %s", game.translate_string("st_dyn_news_names_anonymous"), game.translate_string("st_dyn_news_general_channel"))
+		Ic = "common"
+		It = "gr"
+	else
+		Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_channel"))
+		Ic = nil
+		It= "rnd_char_icon"
+	end
+	
+	self.response["message"] = {Mg=tbl[math.random(#tbl)],Ic=Ic,Snd="no_sound",Se=Se,It=It,To=30,St=msg_duration}
 
 	return true
 end

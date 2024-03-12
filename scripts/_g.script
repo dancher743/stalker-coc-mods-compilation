@@ -13,7 +13,7 @@ if (jit == nil) then
 end
 
 GAME_VERSION = "1.4.22"
-MOD_VERSION = "Dancher's CoC Compilation 1.3.1"
+MOD_VERSION = "Dancher's Compilation 1.4.0"
 
 if string.find(command_line(), "-dbg") then
 	DEV_DEBUG = true
@@ -164,6 +164,10 @@ function ResetTimeEvent(ev_id,act_id,timer)
 	if (ev_queue[ev_id] and ev_queue[ev_id][act_id]) then
 		ev_queue[ev_id][act_id].timer = time_global() + timer*1000
 	end
+end
+
+function HasTimeEvent(ev_id,act_id)
+	return ev_queue[ev_id] and ev_queue[ev_id][act_id]
 end
 
 function ProcessEventQueue(force)
@@ -750,6 +754,8 @@ end
 local monster_classes
 local weapon_classes
 local artefact_classes
+local anomaly_classes
+local underground_levels
 
 function IsOutfit(o,c)
 	if not c then
@@ -1014,7 +1020,8 @@ is_squad_monster = {
 		["monster_zombied_night"] 	= true,
 		["monster_special"] 		= true,
 		["monster"]					= true
-}squad_community_by_behaviour = {
+}
+squad_community_by_behaviour = {
 		["stalker"]							= "stalker",
 		["bandit"]							= "bandit",
         ["csky"]							= "csky",
@@ -1762,7 +1769,7 @@ end
 
 function main_hud_shown()
 	local actor = db.actor
-	if get_console_cmd(1,"hud_draw") 
+	if get_console():get_bool("hud_draw") 
 	and (not axr_main.weapon_is_zoomed) 
 	and (not actor:is_talking())
 	and (actor:alive())
@@ -1773,7 +1780,86 @@ function main_hud_shown()
 	return false
 end
 
+--
+-- Added by Dancher
+--
+
+-- From CoC 1.5
+-----------------------------------------
+-- Constants
+-----------------------------------------
+VEC_ZERO 	= vector():set(0,0,0)
+VEC_X 		= vector():set(1,0,0)
+VEC_Y 		= vector():set(0,1,0)
+VEC_Z 		= vector():set(0,0,1)
+
 function IsEocMode()
 	return alife_storage_manager.get_state().enable_eoc_mode == true or 
 		axr_main.config and axr_main.config:r_value("character_creation","new_game_eoc_mode",1) == true
+end
+
+function IsActor(o,c)
+	if not (c) then
+		c = o and o:clsid()
+	end
+	return c and (c == clsid.script_actor) or false
+end
+
+function IsAnomaly(o,c)
+	if not (c) then
+		c = o and o:clsid()
+	end
+	if not (anomaly_classes) then
+		anomaly_classes = {
+		[clsid.zone]				= true,
+		[clsid.zone_acid_fog]		= true,
+		[clsid.zone_bfuzz]			= true,
+		[clsid.zone_campfire]		= true,
+		[clsid.zone_dead]			= true,
+		[clsid.zone_galantine]		= true,
+		[clsid.zone_mincer]			= true,
+		[clsid.zone_mosquito_bald]	= true,
+		[clsid.zone_radioactive]	= true,
+		[clsid.zone_rusty_hair]		= true,
+		[clsid.zone_bfuzz_s]		= true,
+		[clsid.zone_mbald_s]		= true,
+		[clsid.zone_galant_s]		= true,
+		[clsid.zone_mincer_s]		= true,
+		[clsid.zone_radio_s]		= true,
+		[clsid.zone_torrid_s]		= true,
+		[clsid.zone_nograv_s]		= true,
+		}
+	end
+	return c and anomaly_classes[c] or false
+end
+
+function IsUndergroundLevel(level_name)
+	if not (level_name) then
+		level_name = level.name()
+	end
+	if not (underground_levels) then
+		underground_levels = {
+		["jupiter_underground"] 	= true,
+		["labx8"] 					= true,
+		["l03u_agr_underground"] 	= true,
+		["l04u_labx18"] 			= true,
+		["l08u_brainlab"] 			= true,
+		["l10u_bunker"] 			= true,
+		["l12u_control_monolith"] 	= true,
+		["l12u_sarcofag"] 			= true,
+		["l13u_warlab"] 			= true,
+		}
+	end	
+	return underground_levels[level_name]
+end
+
+function TeleportActorToSmart(smart)
+	db.actor:set_actor_position(smart.position)
+	for _,squad in pairs(SIMBOARD.squads) do
+		if (squad and simulation_objects.is_on_the_same_level(squad, smart) and squad.first_update) then
+			if (squad.smart_id and squad.smart_id == smart.id) then
+				squad.force_online = true
+			end
+		end
+	end
 end

@@ -544,7 +544,7 @@
 	
 	<!-- Miscellaneous -->
 	<string id="st_body_decayed">
-		<text>Тело слишком повреждено</text>
+		<text>Тело сильно разложилось</text>
 	</string>
 	<string id="st_invalid_position">
 		<text>Позиция вне AI-сетки</text>
@@ -575,5 +575,48 @@
 
 	<string id="st_stash_removed">
 		<text>Тайник убран</text>
+	</string>
+	
+	<string id="ui_st_custom_spot_title">
+		<text>Своя метка</text>
+	</string>
+	<string id="ui_st_custom_spot_pda_remove">
+		<text>Убрать метку</text>
+	</string>
+	<string id="ui_st_custom_spot_map_added">
+		<text>Метка добавлена</text>
+	</string>
+	
+	<string id="ui_st_leave_zone_confirm">
+		<text>Вы собираетесь покинуть Зону, игра будет окончена. Желаете продолжить?</text>
+	</string>
+	
+	<string id="st_companion_died_tip_caption">
+		<text>Погиб напарник</text>
+	</string>
+	<string id="st_companion_died_tip_descr">
+		<text>%s %s.</text>
+	</string>
+	<string id="st_companion_died_tip_reason_0">
+		<text>умер по неизвестной причине</text>
+	</string>
+	<string id="st_companion_died_tip_reason_1">
+		<text>убит в перестрелке</text>
+	</string>
+	<string id="st_companion_died_tip_reason_2">
+		<text>растерзан мутантом</text>
+	</string>
+	<string id="st_companion_died_tip_reason_3">
+		<text>утилизирован аномалией</text>
+	</string>
+	<string id="st_companion_died_tip_reason_4">
+		<text>ликвидирован вертолётом</text>
+	</string>
+	<string id="st_companion_died_tip_reason_5">
+		<text>убит вами!</text>
+	</string>
+	
+	<string id="ui_st_companion_custom_spot_text">
+		<text>%s, ранее был напарником.</text>
 	</string>
 </string_table>

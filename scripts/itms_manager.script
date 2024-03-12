@@ -145,6 +145,8 @@ function on_item_drag_dropped(itm1,itm2,from_slot,to_slot)
 		if not (IsWeapon(itm2) or IsOutfit(itm2) or IsHeadgear(itm2)) then
 			return
 		end
+	else 
+		return
 	end
 	
 	local cur_condition = itm2:condition()
@@ -284,6 +286,8 @@ function monster_on_actor_use_callback(obj,who)
 	local st = db.storage[obj:id()]
 	if (st and st.death_time and game.get_game_time():diffSec(st.death_time) > MutantLootDecayTime) then
 		SetHudMsg(game.translate_string("st_body_decayed"),4)
+		utils.save_var(obj,"looted",true)
+		xr_corpse_detection.set_valuable_loot(obj:id(),false)
 	else
 		local hud = get_hud()
 		if (hud) then
@@ -357,6 +361,7 @@ function actor_on_item_use(obj)
 					if (ui) then
 						SetHudMsg("",0)
 						ui:ShowDialog(true)
+						axr_keybind.enabled = false
 					end
 				end
 			end

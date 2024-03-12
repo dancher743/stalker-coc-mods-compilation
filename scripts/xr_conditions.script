@@ -3362,7 +3362,7 @@ function get_start_time_elapsed_ge(actor,npc,p)
 end
 
 function is_arx_check_option_enabled(actor,npc,p)
-	return p[1] and axr_main.config:r_value("mm_options","enable_"..p[1],1,false)
+	return p[1] and axr_main_options.get_check_option(p[1])
 end
 
 function is_yan_base_defense_quest_enabled(actor,npc)
@@ -3379,4 +3379,53 @@ end
 
 function is_eoc_mode_enabled(actor,npc)
 	return IsEocMode()
+end
+
+function is_hours_ge(actor,npc,p)
+	return level.get_time_hours() >= tonumber(p[1])
+end
+
+function is_hours_l(actor,npc,p)
+	return level.get_time_hours() < tonumber(p[1])
+end
+
+function is_companion_invulnerable(actor,npc,p)
+	return axr_companions.is_invulnerable_obj(npc)
+end
+
+function is_companion_barter_avaliable(actor,npc,p)
+	return axr_companions.is_barter_avaliable_obj(npc)
+end
+
+function is_survival_mode_enabled(actor,npc)
+	return IsSurvivalMode()
+end
+
+function is_target_exists(actor,npc,p)
+	local result = false
+	
+	local sim = alife()
+	local target_section = "sim_default"
+	local target_communities = {}
+	
+	for i=1,#p do
+		target_communities[p[i]] = true
+	end
+	
+	for i=1,65534 do
+		local se_obj = sim:object(i)
+		if (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and 
+			string.find(se_obj:section_name(),target_section) and get_object_story_id(i) == nil) 
+			and 
+			(se_obj.group_id == nil or se_obj.group_id == 65535 or get_object_story_id(se_obj.group_id) == nil) 
+		then
+			local community = alife_character_community(se_obj)
+			if (target_communities[community] == true) then
+				result = true
+				break
+			end
+		end
+	end
+	
+	return result
 end

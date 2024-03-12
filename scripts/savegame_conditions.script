@@ -7,6 +7,12 @@
 ----------------------------------------------------------------------------------
  -- Disable save menu while in combat, if bleeding and/or irradiated or if an emission or psi-storm currently ongoing
  
+local function has_burning_campfire_nearby()
+	local range = 4
+	local campfire = bind_campfire.get_nearest_campfire(db.actor, range)
+	return campfire ~= nil and campfire:is_on()
+end
+
 function check_and_apply (text)
 	local str, pass
 	if (alife_storage_manager.get_state().enable_conditions_mode) and (db.actor) and (db.actor:alive()) and (level.present()) then
@@ -49,13 +55,34 @@ function check_and_apply (text)
 			str = strformat(game.translate_string("st_ui_no_save_combat"),game.translate_string(text))
 			pass = true
 		end 
+		
+		-- Prevent saving if no campfire near.
+		if (axr_main_options.get_check_option("conditions_mode_campfire")) and (level_weathers.valid_levels[level.name()]) then
+			if not (has_burning_campfire_nearby()) then
+				str = strformat(game.translate_string("st_ui_no_save_campfire"),game.translate_string(text))
+				pass = true
+			end
+		end
 	end
 	
 	if pass then
-		SetHudMsg(str,4)
+		SetHudMsg(str,5)
 		get_console():execute("main_menu off")
 		return true
 	end
 	
+	SetHudMsg("",0)
 	return false
+end
+
+local function opt_menu_on_init(menu)
+	if (db.actor) then
+		if (alife_storage_manager.get_state().enable_conditions_mode) then
+			menu.gameplay_options["conditions_mode_campfire"] = {default=false, debug_only=false, typ="check"}
+		end
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("opt_menu_on_init",opt_menu_on_init)
 end

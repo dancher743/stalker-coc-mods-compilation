@@ -106,7 +106,7 @@ files                                    = ui_npc_unique, ui_npc_unique_2, ui_np
 files                                    = info_portions, info_upgrades, info_alife_switch, info_yantar, info_katacomb, info_escape, info_zaton, info_jupiter, info_pripyat, info_deadcity, info_safe_houses_bar_room
 
 [dialogs]
-files                                    = dialogs, dialogs_yantar, dialogs_marsh, dialogs_redforest, dialogs_katacomb, dialogs_escape, dialogs_bar, dialogs_zaton, dialogs_jupiter, dialogs_pripyat, dialogs_darkvalley, dialogs_warlab, jg_dialogs, dialogs_deadcity, dialogs_safe_houses_bar_room
+files                                    = dialogs, dialogs_yantar, dialogs_marsh, dialogs_redforest, dialogs_katacomb, dialogs_escape, dialogs_bar, dialogs_zaton, dialogs_jupiter, dialogs_pripyat, dialogs_darkvalley, dialogs_warlab, jg_dialogs, dialogs_deadcity, dialogs_safe_houses_bar_room, dialogs_pda_upgrade
 
 [profiles]
 files                                    = npc_profile
@@ -218,9 +218,9 @@ min_burn_time                            = 10000	                               
 
 [hud_cursor]
 ;все размерv в процентах от длинv экрана
-cross_length                             = 0.015	                                       ;длина "палочки" прицела
+cross_length                             = 0.0010	                                       ;длина "палочки" прицела
 min_radius                               = 0.0	                                       ;минимальнvй радиус прицела (при нулевой дисперсии)
-max_radius                               = 1.0	                                       ;максимальнvй радиус
+max_radius                               = 0.25	                                       ;максимальнvй радиус
 radius_lerp_speed                        = 0.08	                                       ;скорость интерполљции положений прицела
 cross_color                              = 0.7,0.7,0.7,0.5	                                       ;цвет прицела
 disp_scale                               = 0.08	                                       ;масштаб прицела (относительно радиан)
@@ -812,6 +812,17 @@ custom_data             = scripts\ph_sleepbag.ltx
 [bar_room_sofa]:sleeping_place
 parent_section			= sleeping_place
 custom_data 			= scripts\bar\bar_room\bar_room_sofa_sleeping_place.ltx
+
+[custom_spot_dummy_object]
+GroupControlSection                      =
+$spawn                                   = "ai\script zone"
+;$prefetch    = 4
+class                                    = SCRIPTZN
+
+[leave_zone_object]:script_object
+visual					= dynamics\decor\sleeping_decor_inviz.ogf
+script_binding			= bind_physic_object.init
+custom_data				= scripts\ph_leave_zone_object.ltx
 
 [ph_capture_visuals]
 ;Список объектов которvе можно таскать.

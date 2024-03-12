@@ -70,13 +70,36 @@ function squad_control(squad)
 	end
 end
 
-function create_squad(smart, faction, target, type, number, param)
+function create_squad(smart, faction, target, type, number, param, is_survival_ignored)
+	
+	if (has_alife_info("actor_made_wish_for_peace")) then 
+		return 
+	end
+	
+	if (has_alife_info("actor_made_wish_for_control")) then 
+		SIMBOARD:create_squad(smart, "simulation_controller_psy")
+		return 
+	end
 
     local squad
+	local original_spawn_chance = 50
+	local stalker_pop_factor = (axr_main.config:r_value("mm_options","alife_stalker_pop",3) or 1)
+	local monster_pop_factor = (axr_main.config:r_value("mm_options","alife_mutant_pop",3) or 1)
 
 	if type then
-	   squad = SIMBOARD:create_squad(smart, type)
-	   local faction = squad:get_squad_community()
+		local faction
+		local spawn_chance
+		
+		if (string.find(type,"sim_squad")) then
+			spawn_chance = math.floor(original_spawn_chance*stalker_pop_factor)
+		elseif (string.find(type,"simulation")) then
+			spawn_chance = math.floor(original_spawn_chance*monster_pop_factor)
+		end
+	
+		if (math.random(100) < spawn_chance) then
+			squad = SIMBOARD:create_squad(smart, type)
+			faction = squad:get_squad_community()
+		end
 	   
 	    if faction == "monster" then
 			local lvl = game_graph():vertex(squad.m_game_vertex_id):level_id()	
@@ -88,10 +111,9 @@ function create_squad(smart, faction, target, type, number, param)
 			sim_offline_control.squads_by_level[lvl][squad.id] = true
 	    end  
 	else
-		if (IsSurvivalMode()) then
-			if (sim_survival.should_faction_replace_by_zombied(faction)) then
-				faction = "zombied"
-			elseif (sim_survival.should_dont_create_squad(faction)) then
+		if (IsSurvivalMode() and not is_survival_ignored) then
+			faction = sim_survival.try_replace_stalker(faction)
+			if (faction == nil) then
 				return
 			end
 		end
@@ -105,10 +127,14 @@ function create_squad(smart, faction, target, type, number, param)
 		   section = "veteran"
 	    end
 		
-		if (not(number) or number < 3) then
-		   squad = SIMBOARD:create_squad(smart, faction .."_sim_squad_".. section)
-		else
-		   squad = SIMBOARD:create_squad(smart, faction .."_sim_squad_".. section .."_"..number)
+		local spawn_chance = math.floor(original_spawn_chance*stalker_pop_factor)
+		
+		if (math.random(100) < spawn_chance) then
+			if (not(number) or number < 3) then
+				squad = SIMBOARD:create_squad(smart, faction .."_sim_squad_".. section)
+			else
+				squad = SIMBOARD:create_squad(smart, faction .."_sim_squad_".. section .."_"..number)
+			end
 		end
 	end
 	

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="windows-1251"?> 
+<pdaoff> 
+	<background_static x="0" y="0" width="1024" height="768">
+		<texture>pdaconnection</texture>
+	</background_static>
+	<auto_static x="25" y="33" width="973" height="683">
+		<texture a="70">ui_pda2_noice</texture>
+	</auto_static>	
+</pdaoff>

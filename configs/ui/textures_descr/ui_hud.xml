@@ -170,6 +170,7 @@
 
     <texture id="ui_hud_shk_stamina_new"		x="789" y="862" width="68" height="14" />
 
-
+	<texture id="ui_hud_icon_shield"		x="508" y="813" width="14" height="14" />
+	
     </file>
 </w>

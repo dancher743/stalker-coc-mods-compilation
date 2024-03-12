@@ -46,9 +46,12 @@
 			<text r="150" g="150" b="150" font="letterica16">st_mm_new_game_points_left</text>
 		</cap_points_left>
 		
-		<check_random_name x="324" y="312" width="28" height="23" stretch="1">
+		<check_random_first_name x="305" y="312" width="28" height="23" stretch="1">
 			<texture>ui_new_game_btn_checkbox</texture>
-		</check_random_name>
+		</check_random_first_name>
+		<check_random_last_name x="324" y="312" width="28" height="23" stretch="1">
+			<texture>ui_new_game_btn_checkbox</texture>
+		</check_random_last_name>
 		
 		<!-- Interactive Text -->
 		<input_name x="207" y="285" width="131" height="17">
@@ -160,16 +163,16 @@
 			</text_color>
 		</list_difficulty>
 		
-		<list_economy_cap x="545" y="400" width="121" height="27">
-			<text r="245" g="245" b="245" font="letterica18" align="l" vert_align="c">st_cap_list_economy</text>
-		</list_economy_cap>
-		<list_economy x="453" y="403" width="88" height="27">
+		<list_companions_cap x="545" y="400" width="121" height="27">
+			<text r="245" g="245" b="245" font="letterica18" align="l" vert_align="c">st_cap_list_companions</text>
+		</list_companions_cap>
+		<list_companions x="453" y="403" width="88" height="27">
 			<list_font r="245" g="245" b="245" font="letterica16"/>
 			<text_color>
 				<e r="245" g="245" b="245"/>
 				<d r="70" g="70" b="70"/>
 			</text_color>
-		</list_economy>
+		</list_companions>
 		
 		<options> <!-- start for x=0 y=0--> <!-- ui_inGame2_checkbox -->
 			<cap_check_story x="80" y="30" width="38" height="20" stretch="1">

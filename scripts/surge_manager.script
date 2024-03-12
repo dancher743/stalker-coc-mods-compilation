@@ -33,13 +33,6 @@ local prev_game_sec 		= -1
 local currentPPEfactor 		= 0.001
 local _tmr
 
-local presurge_played		= {0, 0, 0, 0, 0, 0}
-
---[[Amount of time before a surge in in-game seconds (6x real life seconds)
-	Note that the script updates events only once per real life second]]--
-local presurge_time			= 360
-
-
 local function main_loop()
 	local tg = time_global()
 	if (_tmr and tg < _tmr) then 
@@ -84,13 +77,7 @@ function CSurgeManager:__init()
 						wave03		=sound_object("ambient\\blowout\\blowout_wave_03_short"),
 						wave04		=sound_object("ambient\\blowout\\blowout_wave_04"),
 						body_tear	=sound_object("anomaly\\anomaly_body_tear_1"),
-						siren		=sound_object("ambient\\blowout\\blowout_siren"),
-						crow0		=sound_object("ambient\\blowout\\cut\\close"),
-						crow1		=sound_object("ambient\\blowout\\cut\\closemedium"),
-						crow2		=sound_object("ambient\\blowout\\cut\\medium"),
-						crow3		=sound_object("ambient\\blowout\\cut\\prettyfar"),
-						crow4		=sound_object("ambient\\blowout\\cut\\far"),
-						crow5		=sound_object("ambient\\blowout\\cut\\veryfar")
+						siren		=sound_object("ambient\\blowout\\blowout_siren")
 					}
 	self.blowout_waves 	= {}
 	self.body_tears 	= {}
@@ -322,8 +309,7 @@ function CSurgeManager:end_surge(manual)
 	self.surge_message 		= ""
 	self.surge_task_sect 	= ""
 	self.task_given 		= nil
-	presurge_played = {0, 0, 0, 0, 0}
-	
+
 	if(self.blowout_sound) then
 		xr_sound.stop_sound_looped(db.actor:id(), "blowout_rumble")
 	end
@@ -498,48 +484,6 @@ function CSurgeManager:update()
 			end
 			self.time_forwarded = false
 		end
-		
-		--Plays sound before a blowout
-		if(math.abs(self._delta - g_time:diffSec(self.last_surge_time)) < presurge_time) then
-			if(presurge_played[1] ~= true) then
-				--self.blowout_sounds["presurge"]:play(db.actor)
-				play_sound_radius(self.blowout_sounds["crow5"], 1000, 140, 220)
-				play_sound_radius(self.blowout_sounds["crow4"], 1000, 140, 220)
-				--printf("Played far crows")
-				presurge_played[1] = true
-			end
-			if(math.abs(self._delta - g_time:diffSec(self.last_surge_time)) < (presurge_time - 60) and presurge_played[2] ~= true) then
-				--self.blowout_sounds["presurge"]:play(db.actor)
-				play_sound_radius(self.blowout_sounds["crow3"], 1000, 100, 260)
-				play_sound_radius(self.blowout_sounds["crow2"], 1000, 100, 260)
-				--printf("Played medium crows")
-				presurge_played[2] = true
-			end
-			if(math.abs(self._delta - g_time:diffSec(self.last_surge_time)) < (presurge_time - 120) and presurge_played[3] ~= true) then
-				--self.blowout_sounds["presurge"]:play(db.actor)
-				play_sound_radius(self.blowout_sounds["crow1"], 1000, 0, 360)
-				play_sound_radius(self.blowout_sounds["crow0"], 1000, 0, 360)
-				--printf("Played close crows")
-				presurge_played[3] = true
-			end
-			if(math.abs(self._delta - g_time:diffSec(self.last_surge_time)) < (presurge_time - 180) and presurge_played[4] ~= true) then
-				--self.blowout_sounds["presurge"]:play(db.actor)
-				play_sound_radius(self.blowout_sounds["crow2"], 1000, 280, 440)
-				play_sound_radius(self.blowout_sounds["crow3"], 1000, 280, 440)
-				--printf("Played medium crows")
-				presurge_played[4] = true
-			end
-			if(math.abs(self._delta - g_time:diffSec(self.last_surge_time)) < (presurge_time - 240) and presurge_played[5] ~= true) then
-				--self.blowout_sounds["presurge"]:play(db.actor)
-				play_sound_radius(self.blowout_sounds["crow4"], 1000, 320, 400)
-				play_sound_radius(self.blowout_sounds["crow5"], 1000, 320, 400)
-				--printf("Played far crows")
-				presurge_played[5] = true
-			end
-		end
-		--DEBUG
-		--printf("until blowout: %s", math.abs(self._delta - g_time:diffSec(self.last_surge_time)))
-		
 		if(g_time:diffSec(self.last_surge_time) < self._delta) then
 			return
 		end
@@ -714,6 +658,11 @@ function CSurgeManager:update()
 			self.stages['1stwave']=true
 			--self.debugMessages[2]:SetText("1st wave at: "..tostring(diff_sec))
 		end
+		-- 1st wave campfires -----------------------------------------------------------------------------------------------------------------------------------------
+		if (diff_sec>=130) and (self.stages['1stwave_campfires_off']==nil) then
+			bind_campfire.turn_off_all_campfires()
+			self.stages['1stwave_campfires_off']=true
+		end
 		-- 2nd wave sound -----------------------------------------------------------------------------------------------------------------------------------------
 		if(diff_sec>=156) and (self.stages['2ndwavesnd']==nil)  then
 			--xr_sound.set_sound_play(db.actor:id(), "blowout_wave_1")
@@ -738,6 +687,11 @@ function CSurgeManager:update()
 			  self:get_objects_to_kill()
 			end
 			--self.debugMessages[2]:SetText("2nd wave at: "..tostring(diff_sec))
+		end
+		-- 2nd wave campfires -----------------------------------------------------------------------------------------------------------------------------------------
+		if (diff_sec>=178) and (self.stages['2ndwave_campfires_off']==nil) then
+			bind_campfire.turn_off_all_campfires()
+			self.stages['2ndwave_campfires_off']=true
 		end
 		-- earthquakes fade-----------------------------------------------------------------------------------------------------------------------------------------
 		if (diff_sec>=200) and (self.stages['quake100']==true) then
@@ -1102,18 +1056,6 @@ function CSurgeManager:kill_wave(num)
 		self.blowout_waves[num].effect:stop_deffered()
 		self.blowout_waves[num]=nil
 	end
-end
-
-function play_sound_radius(sndobj, radius, min, max)
-	local rnd_pos = db.actor:position()
-	local rnd_angle = math.random(min, max)
-	rnd_pos.x = rnd_pos.x + (math.cos(rnd_angle) * radius)
-	rnd_pos.z = rnd_pos.z + (math.sin(rnd_angle) * radius)
-	if(sndobj:playing()) then
-		sndobj:stop()
-	end
-	sndobj:play_at_pos(db.actor, rnd_pos)
-	--printf("played sound at x=%s z=%s", rnd_pos.x, rnd_pos.z)
 end
 
 function fade(currentTime,startTime,endTime,startValue,endValue)
@@ -1888,4 +1830,9 @@ function is_actor_immune()
 		end
 	end
 	return false
+end
+
+function has_stage(name)
+	local surge_manager = get_surge_manager()
+	return surge_manager.stages and surge_manager.stages[name] ~= nil
 end

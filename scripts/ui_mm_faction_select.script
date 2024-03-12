@@ -13,7 +13,6 @@ local ini_ico = ini_file("plugins\\faction_portraits.ltx")
 local ini_itm = ini_file("plugins\\new_game_loadouts.ltx")
 local ini_map = ini_file("plugins\\new_game_start_locations.ltx")
 local ini_opt = ini_file("plugins\\new_game_options.ltx")
--->>local ini_eco = ini_file("misc\\economy_difficulty.ltx")
 local gs = game.translate_string
 
 
@@ -79,28 +78,6 @@ local function on_game_load(binder)
 			config:w_value("character_creation","new_game_difficulty")
 			need_save = true
 		end
-		--[[
-		if (config:r_value("character_creation","new_game_economy_goodwill",2)) then
-			alife_storage_manager.get_state().economy_goodwill = config:r_value("character_creation","new_game_economy_goodwill",2)
-			config:w_value("character_creation","new_game_economy_goodwill")
-			need_save = true
-		end
-		if (config:r_value("character_creation","new_game_economy_money",2)) then
-			alife_storage_manager.get_state().economy_money = config:r_value("character_creation","new_game_economy_money",2)
-			config:w_value("character_creation","new_game_economy_money")
-			need_save = true
-		end
-		if (config:r_value("character_creation","new_game_economy_wpn",2)) then
-			alife_storage_manager.get_state().economy_wpn = config:r_value("character_creation","new_game_economy_wpn",2)
-			config:w_value("character_creation","new_game_economy_wpn")
-			need_save = true
-		end
-		if (config:r_value("character_creation","new_game_economy_loot",2)) then
-			alife_storage_manager.get_state().economy_loot = config:r_value("character_creation","new_game_economy_loot",2)
-			config:w_value("character_creation","new_game_economy_loot")
-			need_save = true
-		end
-		--]]
 	end
 	
 	-- Name
@@ -312,13 +289,14 @@ local function on_game_load(binder)
 		
 		se_actor:set_profile_name("actor_"..faction)
 	end
-	--[[
-	-- Loading economy values from save file
-	axr_main.config:w_value("mm_options","multi_rewards_goodwill", utils.round(alife_storage_manager.get_state().economy_goodwill,2))
-	axr_main.config:w_value("mm_options","multi_rewards_money", utils.round(alife_storage_manager.get_state().economy_money,2))
-	axr_main.config:w_value("mm_options","multi_wpn_conditions", utils.round(alife_storage_manager.get_state().economy_wpn,2))
-	axr_main.config:w_value("mm_options","multi_loot", utils.round(alife_storage_manager.get_state().economy_loot,2))
-	--]]
+
+	-- Companions
+	if (config:r_value("character_creation","new_game_companions",3)) then
+		alife_storage_manager.get_state().start_companions_count = config:r_value("character_creation","new_game_companions",3) or "0"
+		config:w_value("character_creation","new_game_companions")
+		need_save = true
+	end
+
 	if (need_save) then
 		config:save()
 	end
@@ -332,31 +310,56 @@ local function actor_on_first_update(binder,delta)
 		start_pos[3] = spawn_path:point(0)
 	end
 	
+	-- Start companions
+	local start_companions_count = tonumber(alife_storage_manager.get_state().start_companions_count) or 0
+	if (start_companions_count > 0) then
+		local faction = character_community(db.actor):sub(7)
+		local squad_section = (IsSurvivalMode() and "survival_squad_"..faction) or "start_squad_"..faction
+		
+		if (ini:section_exist(squad_section) and start_pos) then
+			local sim = alife()
+			local squad = sim:create(squad_section,start_pos[3],start_pos[1],start_pos[2])
+			if (squad) then
+				axr_companions.companion_squads[squad.id] = squad
+				squad:create_npc(nil,start_pos[3],start_pos[1],start_pos[2])
+				start_companions_count = start_companions_count - 1
+				local as
+				
+				local function setup_squad_for_obj(se_obj, squad_member_id)
+					if (se_obj) then
+						if (IsSurvivalMode()) then
+							game_relations.change_factions_community_num("zombied",squad_member_id,-5000)
+						end
+						
+						SIMBOARD:setup_squad_and_group(se_obj)
+						
+						utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion",true)
+						--utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss",true)
+						utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_start_time",game.time())
+						utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_invulnerable",true)
+						utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_barter_avaliable",true)
+					end
+				end
+				
+				for k in squad:squad_members() do
+					local se_obj = k.object or k.id and sim:object(k.id)
+					setup_squad_for_obj(se_obj, k.id)
+				end
+				
+				for i = start_companions_count, 1, -1 do
+					local squad_member_sect = (IsSurvivalMode() and  "companion_survival_"..faction) or "companion_start_"..faction
+					local squad_member_id = squad:add_squad_member(squad_member_sect, start_pos[3], start_pos[1], start_pos[2])
+					local se_obj = squad_member_id and alife_object(squad_member_id)
+					setup_squad_for_obj(se_obj, squad_member_id)
+				end
+			end
+		end
+	end
+	
 	-- Survival mode
 	if (IsSurvivalMode()) then
 		game_relations.change_factions_community_num("zombied",0,-5000)
 		game_relations.change_factions_community_num("monolith",0,-5000)
-
-		local faction = character_community(db.actor):sub(7)
-		if (ini:section_exist("survival_squad_"..faction) and start_pos) then
-			local sim = alife()
-			local squad = sim:create("survival_squad_"..faction,start_pos[3],start_pos[1],start_pos[2])
-			if (squad) then
-				axr_companions.companion_squads[squad.id] = squad
-				squad:create_npc(nil,start_pos[3],start_pos[1],start_pos[2])
-				local as
-				for k in squad:squad_members() do
-					local se_obj = k.object or k.id and sim:object(k.id)
-					if (se_obj) then
-						game_relations.change_factions_community_num("zombied",k.id,-5000)
-						SIMBOARD:setup_squad_and_group(se_obj)
-						
-						utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion",true)
-						utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss",true)
-					end
-				end
-			end
-		end
 	end
 
 	if start_pos and #start_pos == 3 then
@@ -364,56 +367,8 @@ local function actor_on_first_update(binder,delta)
 	end
 end
 
-local function actor_on_before_death() -- Ironman: second wind
-	if not (USE_MARSHAL) then
-		return
-	end
-	
-	local uuid = alife_storage_manager.get_state().uuid
-	if not (uuid) then
-		return -- not in hardcore mode
-	end
-	
-	local fs = getFS()
-	local flist = fs:file_list_open_ex("$game_saves$",bit_or(FS.FS_ListFiles,FS.FS_RootOnly),"*.scoc")
-	local f_cnt = flist:Size()
-
-	for	it=0, f_cnt-1 	do
-		local file = flist:GetAt(it)
-		local file_name = string.sub(file:NameFull(), 0, (string.len(file:NameFull()) - string.len(".scoc")))
-
-		--printf("file_name = %s",file_name)
-		local path = fs:update_path('$game_saves$', '')..file_name..".scoc"
-		local f = io.open(path,"rb")
-		if (f) then
-			local data = f:read("*all")
-			f:close()
-			if (data) then
-				local decoded = alife_storage_manager.decode(data)
-				if (decoded and decoded.uuid == uuid) then
-					decoded.death_limit = decoded.death_limit or 3
-					decoded.death_count = (decoded.death_count or 0) + 1
-					if (decoded.death_count >= decoded.death_limit) then
-						ui_load_dialog.delete_save_game(file_name)	
-					else
-						local f = io.open(path,"wb")
-						if (f) then
-							local encoded = marshal.encode(decoded)
-							if (encoded) then 
-								f:write(encoded)
-							end
-							f:close()
-						end
-					end
-				end
-			end
-		end
-	end
-end
-
 function on_game_start()
 	RegisterScriptCallback("on_game_load",on_game_load)
-	RegisterScriptCallback("actor_on_before_death",actor_on_before_death)
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
 end
 
@@ -433,7 +388,7 @@ function faction_ui:__init(owner) super()
 	self.table_loadout = {}
 	self.table_inv = {}
 	self.table_difficulty = {"novice","stalker","veteran","master"}
-	self.table_economy = {"st_econ_1","st_econ_2","st_econ_3","st_econ_4"}
+	self.table_companions = {"0","1","2","3"}
 	
 	self.table_hardcore_lives = {}
 	local n = ini_opt:line_count("new_game_hardcore_lives") or 0
@@ -474,12 +429,14 @@ function faction_ui:__init(owner) super()
 	self.selected_map = nil
 	self.selected_money = nil
 	self.selected_difficulty = self.table_difficulty[2]
-	self.selected_economy = self.table_economy[2]
+	self.selected_companions = self.table_companions[1]
 	self.selected_hardcore_lives = self.table_hardcore_lives[1]
 	self.selected_hardcore_regen = self.table_hardcore_regen[1]
 	self.selected_timer = self.table_timer[1]
 	self.points_left = ini_itm:r_float_ex("points","total_points") or 1000
 	self.points_used = 0
+	self.first_name = ""
+	self.last_name = ""
 	
 	-- Utility
 	self.access	= true
@@ -541,7 +498,7 @@ function faction_ui:Main_Controls()
 	
 	self.character_name = xml:InitEditBox("main_dialog:input_name",self.dialog)
 	self:Register(self.character_name,"input_name")
-	self.character_name:SetText(gs("pri_b305_strelok_name")) -- Set Default Name
+	self.character_name:SetText(gs("st_mm_character_default_name")) -- Set Default Name
 	
 	self.text_relations = xml:InitTextWnd("main_dialog:text_relations",self.dialog)
 	self.text_money = xml:InitTextWnd("main_dialog:text_money",self.dialog)
@@ -585,8 +542,11 @@ function faction_ui:Main_Controls()
 	btn = xml:Init3tButton("main_dialog:btn_icon", self.dialog)
 	self:Register(btn,"btn_icon")
 		
-	self.ck_random_name = xml:Init3tButton("main_dialog:check_random_name", self.dialog)
-	self:Register(self.ck_random_name,"check_random_name")
+	self.ck_random_first_name = xml:Init3tButton("main_dialog:check_random_first_name", self.dialog)
+	self:Register(self.ck_random_first_name,"check_random_first_name")
+	
+	self.ck_check_random_last_name = xml:Init3tButton("main_dialog:check_random_last_name", self.dialog)
+	self:Register(self.ck_check_random_last_name,"check_random_last_name")
 	
 	self.list_map = xml:InitComboBox("main_dialog:list_map", self.dialog)
 	self.list_map:SetAutoDelete(true)
@@ -622,13 +582,13 @@ function faction_ui:Main_Controls()
 		self.list_difficulty:SetAutoDelete(true)
 		self:Register(self.list_difficulty, "list_difficulty")
 		self:LoadDifficulty()
-		--[[
-		self.list_economy_cap = xml:InitStatic("main_dialog:list_economy_cap",self.dialog)
-		self.list_economy = xml:InitComboBox("main_dialog:list_economy", self.dialog)
-		self.list_economy:SetAutoDelete(true)
-		self:Register(self.list_economy, "list_economy")
-		self:LoadEconomy()
-		--]]
+
+		self.list_companions_cap = xml:InitStatic("main_dialog:list_companions_cap",self.dialog)
+		self.list_companions = xml:InitComboBox("main_dialog:list_companions", self.dialog)
+		self.list_companions:SetAutoDelete(true)
+		self:Register(self.list_companions, "list_companions")
+		self:LoadCompanions()
+
 		self.ck_story_cap = xml:InitStatic("main_dialog:options:cap_check_story",self.templ_options)
 		self.ck_story = xml:InitCheck("main_dialog:options:check_story",	self.templ_options)
 		self:Register(self.ck_story,"check_story")
@@ -690,7 +650,7 @@ function faction_ui:Main_Controls()
 							["ck_eoc"] = false,
 							
 							["list_difficulty"] = false,
-							["list_economy"] = false,
+							["list_companions"] = false,
 							["list_hardcore_lives"] = false,
 							["list_hardcore_regen"] = false,
 							["list_timer"] = false
@@ -726,7 +686,8 @@ function faction_ui:Main_CallBacks()
 	self:AddCallback("btn_faction", ui_events.BUTTON_CLICKED, self.OnFactionClicked, self)
 	self:AddCallback("btn_icon", ui_events.BUTTON_CLICKED, self.OnIconClicked, self)
 	
-	self:AddCallback("check_random_name", ui_events.BUTTON_CLICKED, self.OnCheckRandomName, self)
+	self:AddCallback("check_random_first_name", ui_events.BUTTON_CLICKED, self.OnCheckRandomFirstName, self)
+	self:AddCallback("check_random_last_name", ui_events.BUTTON_CLICKED, self.OnCheckRandomLastName, self)
 	
 	self:AddCallback("list_map", ui_events.LIST_ITEM_SELECT, self.OnSelectMap, self)
 	self:AddCallback("check_reset", ui_events.BUTTON_CLICKED, self.OnCheckResetList, self)
@@ -740,7 +701,7 @@ function faction_ui:Main_CallBacks()
 	self:AddCallback("check_story", ui_events.BUTTON_CLICKED, self.OnCheckSetStory, self)
 	self:AddCallback("check_azazel_mode", ui_events.BUTTON_CLICKED, self.OnCheckSetAzazel, self)
 	self:AddCallback("list_difficulty", ui_events.LIST_ITEM_SELECT, self.OnSelectDifficulty, self)
-	self:AddCallback("list_economy", ui_events.LIST_ITEM_SELECT, self.OnSelectEconomy, self)
+	self:AddCallback("list_companions", ui_events.LIST_ITEM_SELECT, self.OnSelectCompanions, self)
 	self:AddCallback("list_hardcore_lives", ui_events.LIST_ITEM_SELECT, self.OnSelectHardcoreLives, self)
 	self:AddCallback("list_hardcore_regen", ui_events.LIST_ITEM_SELECT, self.OnSelectHardcoreRegen, self)
 	self:AddCallback("list_timer", ui_events.LIST_ITEM_SELECT, self.OnSelectTimer, self)
@@ -1271,17 +1232,17 @@ function faction_ui:LoadDifficulty (rand)
 	self.list_difficulty:SetText(gs("gd_" .. pick))
 	self.selected_difficulty = pick
 end
---[[
-function faction_ui:LoadEconomy (rand)
-	self.list_economy:ClearList()
-	for i=1,#self.table_economy do
-		self.list_economy:AddItem(gs(self.table_economy[i]), i)
+
+function faction_ui:LoadCompanions (rand)
+	self.list_companions:ClearList()
+	for i=1,#self.table_companions do
+		self.list_companions:AddItem(gs("st_companions_"..self.table_companions[i]), i)
 	end
-	local pick = rand and self.table_economy[math.random(#self.table_economy)] or self.table_economy[2]
-	self.list_economy:SetText(gs(pick))
-	self.selected_economy = pick
+	local pick = rand and self.table_companions[math.random(#self.table_companions)] or self.table_companions[1]
+	self.list_companions:SetText(gs("st_companions_"..pick))
+	self.selected_companions = pick
 end
---]]
+
 function faction_ui:LoadHardcoreLives (rand)
 	local str
 	self.list_hardcore_lives:ClearList()
@@ -1321,18 +1282,64 @@ function faction_ui:LoadTimer (rand)
 	self.selected_timer = pick
 end
 
-function faction_ui:RandomizeName()
+
+--=======================================< Name randomization >=======================================-
+function faction_ui:GetNameSubset()
 	local subset
 	if (self.selected_faction == "army" or self.selected_faction == "dolg") then 
 		subset = random_choice("private","sergeant","senior_sergeant","lieutenant","captain")
 	else 
 		subset = random_choice("stalker","bandit","science")
 	end
+	return subset
+end
+
+function faction_ui:GetFirstNameRandomly()
+	local subset = self:GetNameSubset()
 	local name_cnt = ini:r_float_ex("stalker_names_"..subset,"name_cnt")
-	local last_name_cnt = ini:r_float_ex("stalker_names_"..subset,"last_name_cnt")
 	local first_name = gs( strformat("name_%s_%s",subset,math.random(0,name_cnt-1)) )
+	return first_name
+end
+
+function faction_ui:GetLastNameRandomly()
+	local subset = self:GetNameSubset()
+	local last_name_cnt = ini:r_float_ex("stalker_names_"..subset,"last_name_cnt")
 	local last_name = gs( strformat("lname_%s_%s",subset,math.random(0,last_name_cnt-1)) )
+	return last_name
+end
+
+function faction_ui:RandomizeName()
+	local first_name = self:GetFirstNameRandomly()
+	local last_name = self:GetLastNameRandomly()
 	self.character_name:SetText(first_name .. " " .. last_name)
+	self.first_name = first_name
+	self.last_name = last_name
+end
+
+function faction_ui:RandomizeFirstName()
+	local first_name = self:GetFirstNameRandomly()
+	local last_name = self.last_name
+	
+	if (last_name == "") then
+		self.character_name:SetText(first_name)
+	else
+		self.character_name:SetText(first_name .. " " .. last_name)
+	end
+	
+	self.first_name = first_name
+end
+
+function faction_ui:RandomizeLastName()
+	local first_name = self.first_name
+	local last_name = self:GetLastNameRandomly()
+	
+	if (first_name == "") then
+		self.character_name:SetText(last_name)
+	else
+		self.character_name:SetText(first_name .. " " .. last_name)
+	end
+	
+	self.last_name = last_name
 end
 
 
@@ -1445,11 +1452,11 @@ end
 function faction_ui:OnSelectDifficulty()
 	self.selected_difficulty = self.table_difficulty[self.list_difficulty:CurrentID()]
 end
---[[
-function faction_ui:OnSelectEconomy()
-	self.selected_economy = self.table_economy[self.list_economy:CurrentID()]
+
+function faction_ui:OnSelectCompanions()
+	self.selected_companions = self.table_companions[self.list_companions:CurrentID()]
 end
---]]
+
 function faction_ui:OnSelectHardcoreLives()
 	self.selected_hardcore_lives = self.table_hardcore_lives[self.list_hardcore_lives:CurrentID()]
 end
@@ -1496,12 +1503,20 @@ function faction_ui:OnCheckRandomList()
 	self:LoadLoadout(true)
 end
 
-function faction_ui:OnCheckRandomName()
+function faction_ui:OnCheckRandomFirstName()
 	if (not self.access) then
 		return
 	end
 	
-	self:RandomizeName()
+	self:RandomizeFirstName()
+end
+
+function faction_ui:OnCheckRandomLastName()
+	if (not self.access) then
+		return
+	end
+	
+	self:RandomizeLastName()
 end
 
 
@@ -1533,11 +1548,13 @@ function faction_ui:UpdateMap()
 	local selected_map = self.selected_map;
 	if selected_map == "random_location" then
 		self.box_map:InitTexture("")
+		self.box_map:Show(false)
 	else
 		local map = alun_utils.read_from_ini(ini_map, self.selected_faction .. "_start_locations", selected_map, "string")
 		self.box_map:InitTexture("ui_new_game_map_" .. map)
 		self.box_map:SetStretchTexture(true)
 		self.box_map:SetWndSize(vector2():set(self.box_map:GetWidth(),self.box_map:GetHeight()))
+		self.box_map:Show(true)
 	end
 end
 
@@ -1727,9 +1744,11 @@ function faction_ui:OnRandomize()
 	-- Everything else
 	self:UpdateAll(true, self.selected_faction)
 	
-	-- Difficulty and Economy
-	self:LoadDifficulty(true)
-	--self:LoadEconomy(true)
+	-- Difficulty
+	-- self:LoadDifficulty(true)
+	
+	-- Companions
+	--self:LoadCompanions(true)
 end
 
 function faction_ui:OnKeyboard(dik, keyboard_action)
@@ -1807,23 +1826,13 @@ function faction_ui:OnStartGame()
 	local console = get_console()
 	console:execute("g_game_difficulty gd_" .. selected_difficulty)
 	
-	--[[
-	-- preparing economy values
-	if (self.selected_economy == nil or self.selected_economy == "") then
-		self.selected_economy = self.table_economy[2]
+	-- preparing companions
+	if (self.selected_companions == nil or self.selected_companions == "") then
+		self.selected_companions = self.table_companions[1]
 	end
-	local econ = self.selected_economy:gsub("st_","")
-	local goodwill = ini_eco:r_float_ex(econ, "multi_goodwill") or axr_main.config:r_value("mm_options","multi_rewards_goodwill",2,1)
-	local money = ini_eco:r_float_ex(econ, "multi_money") or axr_main.config:r_value("mm_options","multi_rewards_money",2,1)
-	local wpn = ini_eco:r_float_ex(econ, "multi_wpn_condition") or axr_main.config:r_value("mm_options","multi_wpn_conditions",2,1)
-	local loot = ini_eco:r_float_ex(econ, "multi_loot") or axr_main.config:r_value("mm_options","multi_loot",2,1)
 	
-	axr_main.config:w_value("character_creation","new_game_difficulty",self.selected_difficulty)
-	axr_main.config:w_value("character_creation","new_game_economy_goodwill",utils.round(goodwill,2))
-	axr_main.config:w_value("character_creation","new_game_economy_money",utils.round(money,2))
-	axr_main.config:w_value("character_creation","new_game_economy_wpn",utils.round(wpn,2))
-	axr_main.config:w_value("character_creation","new_game_economy_loot",utils.round(loot,2))
-	--]]
+	axr_main.config:w_value("character_creation","new_game_companions",self.selected_companions)
+
 	axr_main.config:w_value("character_creation","new_game_hardcore_mode",self.ck_hardcore and self.ck_hardcore:GetCheck() and true or nil)
 	axr_main.config:w_value("character_creation","new_game_hardcore_mode_lives",self.ck_hardcore and self.selected_hardcore_lives[1] or nil)
 	axr_main.config:w_value("character_creation","new_game_hardcore_mode_regenerate",self.ck_hardcore and hardcore_regen or nil)
@@ -1843,12 +1852,14 @@ function faction_ui:OnStartGame()
 	axr_main.config:w_value("character_creation","new_game_money",self.selected_money or nil)
 	
 	-- write defaults of population into config
-	--[[axr_main.config:w_value("mm_options","alife_mutant_pop",0.5)
-	axr_main.config:w_value("mm_options","alife_stalker_pop",0.5)--]]
+	--[[
+	axr_main.config:w_value("mm_options","alife_mutant_pop",0.5)
+	axr_main.config:w_value("mm_options","alife_stalker_pop",0.5)
 	
 	if (self.ck_eoc:GetCheck()) then
 		sim_options.write_defaults_to_config()
 	end
+	--]]
 	--
 	
 	axr_main.config:save() -- Store info in temp file

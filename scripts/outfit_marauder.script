@@ -52,7 +52,7 @@ function update_outfit()
 		for k,v in pairs(curent_outfit) do
 		local outfit_obj = level.object_by_id(k)
 			if outfit_obj then
-			outfit_obj:set_condition(mean_random(10,45,v,1)/100)
+			outfit_obj:set_condition(mean_random(5,55,v,1)/100)
 			curent_outfit[k] = nil
 			param = true
 			elseif param == true then
@@ -70,7 +70,7 @@ function update_helmet()
 		for k,v in pairs(curent_helmet) do
 		local helmet_obj = level.object_by_id(k)
 			if helmet_obj then
-			helmet_obj:set_condition(mean_random(10,35,v,1)/100)
+			helmet_obj:set_condition(mean_random(5,55,v,1)/100)
 			curent_helmet[k] = nil
 			param = true
 			elseif param == true then

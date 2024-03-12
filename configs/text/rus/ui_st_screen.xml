@@ -441,4 +441,8 @@
 	<string id="st_sleep_bar_room_sofa">
 		<text>Отдохнуть ($$ACTION_USE$$)</text>
 	</string>
+	
+	<string id="st_leave_zone_object">
+		<text>Покинуть Зону ($$ACTION_USE$$)</text>
+	</string>
 </string_table>

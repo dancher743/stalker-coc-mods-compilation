@@ -27,7 +27,7 @@ function update_faction(faction)
 	if (not faction_information[faction].timer or game.get_game_time():diffSec(faction_information[faction].timer) >= (faction_information[faction].next_update*60)) then	
 		faction_information[faction] = {}
         faction_information[faction].timer = game.get_game_time()
-		faction_information[faction].next_update = math.random(5, 10)		
+		faction_information[faction].next_update = math.random(5, 10)
 		faction_information[faction].base_count = 0
 		faction_information[faction].resource_count = 0
 		faction_information[faction].total_power = 0		
@@ -65,17 +65,12 @@ function update_faction(faction)
 		
 		local option = sim_options.get_warfare_activity_option()
 		
-		if (option == sim_options.warfare_activity.very_low) then
-			respawn_defend_min_value, respawn_defend_max_value = 250, 300
-			respawn_attack_min_value, respawn_attack_max_value = 200, 250
-			respawn_patrol_min_value, respawn_patrol_max_value = 120, 170 
-			resource_count_value = 1
-		elseif (option == sim_options.warfare_activity.low) then
-			respawn_defend_min_value, respawn_defend_max_value = 200, 250
-			respawn_attack_min_value, respawn_attack_max_value = 150, 200
+		if (option == sim_options.warfare_activity.low) then
+			respawn_defend_min_value, respawn_defend_max_value = 300, 350
+			respawn_attack_min_value, respawn_attack_max_value = 250, 300
 			respawn_patrol_min_value, respawn_patrol_max_value = 70, 120 
-			resource_count_value = 2
-		elseif (option == sim_options.warfare_activity.very_high) then
+			resource_count_value = 1
+		elseif (option == sim_options.warfare_activity.high) then
 			respawn_defend_min_value, respawn_defend_max_value = 100, 150
 			respawn_attack_min_value, respawn_attack_max_value = 50, 100
 			respawn_patrol_min_value, respawn_patrol_max_value = 70, 120
@@ -84,7 +79,7 @@ function update_faction(faction)
 			respawn_defend_min_value, respawn_defend_max_value = 200, 250
 			respawn_attack_min_value, respawn_attack_max_value = 150, 200
 			respawn_patrol_min_value, respawn_patrol_max_value = 70, 120
-			resource_count_value = 3
+			resource_count_value = 2
 		end
 		
 		faction_information[faction].respawn_defend = utils.round(math.random(respawn_defend_min_value, respawn_defend_max_value) - (faction_information[faction].resource_count * resource_count_value))
@@ -92,13 +87,15 @@ function update_faction(faction)
 		faction_information[faction].respawn_attack = utils.round(math.random(respawn_attack_min_value, respawn_attack_max_value) - (faction_information[faction].resource_count * resource_count_value))
 		
 		faction_information[faction].respawn_patrol = utils.round(math.random(respawn_patrol_min_value, respawn_patrol_max_value) - (faction_information[faction].resource_count * resource_count_value))
-
-		if faction_information[faction].respawn_attack < 50 then
-			faction_information[faction].respawn_attack = 50
-		end
 		
-		if faction_information[faction].respawn_defend < 50 then
-			faction_information[faction].respawn_defend = 50
+		if (option ~= sim_options.warfare_activity.high) then
+			if faction_information[faction].respawn_attack < 50 then
+				faction_information[faction].respawn_attack = 50
+			end
+			
+			if faction_information[faction].respawn_defend < 50 then
+				faction_information[faction].respawn_defend = 50
+			end
 		end
 		
 		if faction_information[faction].base_count <= 3 then

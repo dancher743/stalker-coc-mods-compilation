@@ -107,13 +107,13 @@ function msg_box_ui:OnMsgOk()
 		db.actor:set_actor_position(pos or point and point:point(0) or db.actor:position())
 	end
 ----------------------------------------------------------------hours and minutes
---Время перехода с локации на локацию (по умолчанию - от 1 до 3ч)
+--Время перехода с локации на локацию (по умолчанию - от 30м до 3ч)
 --Более тонко можно настроить в sr_teleport_sections.ltx для каждого перехода.
 
 
-	local hours_min = tonumber(ini:r_string_ex(self.name,"hours_min") or 1)
+	local hours_min = tonumber(ini:r_string_ex(self.name,"hours_min") or 0)
 	local hours_max = tonumber(ini:r_string_ex(self.name,"hours_max") or 2)
-	local minutes_min = tonumber(ini:r_string_ex(self.name,"minutes_min") or 1)
+	local minutes_min = tonumber(ini:r_string_ex(self.name,"minutes_min") or 30)
 	local minutes_max = tonumber(ini:r_string_ex(self.name,"minutes_max") or 59)
 
 	level.change_game_time(0, math.random(hours_min, hours_max), math.random(minutes_min,minutes_max))

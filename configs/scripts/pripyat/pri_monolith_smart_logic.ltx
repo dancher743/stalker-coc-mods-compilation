@@ -1,26 +1,31 @@
 [logic@prayer_1]
 active = walker@prayer_1
+suitable = {=npc_community(monolith) !check_npc_name(pri_monolith_monolith_trader_stalker) !check_npc_name(pri_monolith_monolith_mechanic_stalker) =is_hours_ge(10) =is_hours_l(12)} true, {=npc_community(monolith) !check_npc_name(pri_monolith_monolith_trader_stalker) !check_npc_name(pri_monolith_monolith_mechanic_stalker) =is_hours_ge(20) =is_hours_l(22)} true
 prior = 300
 
 [logic@prayer_2]
 active = walker@prayer_2
+suitable = {=npc_community(monolith) !check_npc_name(pri_monolith_monolith_trader_stalker) !check_npc_name(pri_monolith_monolith_mechanic_stalker) =is_hours_ge(10) =is_hours_l(12)} true, {=npc_community(monolith) !check_npc_name(pri_monolith_monolith_trader_stalker) !check_npc_name(pri_monolith_monolith_mechanic_stalker) =is_hours_ge(20) =is_hours_l(22)} true
 prior = 300
 
 [logic@prayer_3]
 active = walker@prayer_3
-suitable = {=surge_started} true
+suitable = {=npc_community(monolith) !check_npc_name(pri_monolith_monolith_trader_stalker) !check_npc_name(pri_monolith_monolith_mechanic_stalker) =is_hours_ge(10) =is_hours_l(12)} true, {=npc_community(monolith) !check_npc_name(pri_monolith_monolith_trader_stalker) !check_npc_name(pri_monolith_monolith_mechanic_stalker) =is_hours_ge(20) =is_hours_l(22)} true
 prior = 300
 
 [logic@prayer_4]
 active = walker@prayer_4
+suitable = {=npc_community(monolith) !check_npc_name(pri_monolith_monolith_trader_stalker) !check_npc_name(pri_monolith_monolith_mechanic_stalker) =is_hours_ge(10) =is_hours_l(12)} true, {=npc_community(monolith) !check_npc_name(pri_monolith_monolith_trader_stalker) !check_npc_name(pri_monolith_monolith_mechanic_stalker) =is_hours_ge(20) =is_hours_l(22)} true
 prior = 300
 
 [logic@prayer_5]
 active = walker@prayer_5
+suitable = {=npc_community(monolith) !check_npc_name(pri_monolith_monolith_trader_stalker) !check_npc_name(pri_monolith_monolith_mechanic_stalker) =is_hours_ge(10) =is_hours_l(12)} true, {=npc_community(monolith) !check_npc_name(pri_monolith_monolith_trader_stalker) !check_npc_name(pri_monolith_monolith_mechanic_stalker) =is_hours_ge(20) =is_hours_l(22)} true
 prior = 300
 
 [logic@prayer_6]
 active = walker@prayer_6
+suitable = {=npc_community(monolith) !check_npc_name(pri_monolith_monolith_trader_stalker) !check_npc_name(pri_monolith_monolith_mechanic_stalker) =is_hours_ge(10) =is_hours_l(12)} true, {=npc_community(monolith) !check_npc_name(pri_monolith_monolith_trader_stalker) !check_npc_name(pri_monolith_monolith_mechanic_stalker) =is_hours_ge(20) =is_hours_l(22)} true
 prior = 300
 
 [walker@prayer_1]
@@ -122,7 +127,7 @@ far_victim 		= nil
 close_distance  = 0
 far_distance 	= 0
 close_snd_distance = 3
-use = {=actor_enemy} false, true
+use = true
 
 ;monolith mechanic
 [logic@pri_monolith_monolith_mechanic]

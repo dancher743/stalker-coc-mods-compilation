@@ -27,7 +27,9 @@ end
 
 function on_game_load()
 	if (IsEocMode()) then
+		sim_actor_combat.init()
 		override_combat_ignore()
+		smart_terrain.is_respawn_allowed = false
 		_G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = false
 		_G.ProcessEventQueueState = function() return end
 		printf("### EOC: started ###")
@@ -36,6 +38,7 @@ end
 
 function on_game_unload()
 	if (IsEocMode()) then
+		smart_terrain.is_respawn_allowed = true
 		_G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = default_sim_on_non_linked_levels
 		_G.ProcessEventQueueState = default_process_event_queue_state
 		printf("### EOC: stopped ###")
@@ -43,7 +46,6 @@ function on_game_unload()
 end
 
 squad_community_by_behaviour["trader"] = "trader"
-actor_faction = nil
 base_count = 0
 resource_count = 0
 
@@ -149,12 +151,12 @@ function actor_on_update()
 		UnregisterScriptCallback("actor_on_update", actor_on_update)
 		return
 	end
+	
+	if (sim_actor_combat.has_combat()) then
+		return
+	end
 
 	local tg = time_global()
-	
-	if not actor_faction then
-		actor_faction = alife():actor():community():sub(7)
-	end
 
 	if (not last_update) then
 		last_update = tg + 20000
@@ -164,14 +166,10 @@ function actor_on_update()
 		return
 	end
 
-	actor_faction = alife():actor():community():sub(7)
-
 	last_update = tg + 10000
 	
 	if (not initialized) then
 		initialize()
-		sim_levels.update()		
-		sim_factions.update()
 	end
 
 	sim_levels.update()
@@ -245,15 +243,10 @@ function fill_start_position()
 	
 	SIMBOARD.start_position_filled = true
 	
-	local setting_ini
-	if (IsSurvivalMode()) then 
-		setting_ini = ini_file("misc\\simulation_survival_mode.ltx")
-	else 
-		setting_ini = ini_file("misc\\simulation_eoc_mode.ltx")
-	end
+	local setting_ini = ini_file("misc\\simulation_eoc_mode.ltx")
 	
-	local stalker_pop_factor = (axr_main.config:r_value("mm_options","alife_stalker_pop",2) or 1)
-	local monster_pop_factor = (axr_main.config:r_value("mm_options","alife_mutant_pop",2) or 1)
+	local stalker_pop_factor = (axr_main.config:r_value("mm_options","alife_stalker_pop",3) or 1)
+	local monster_pop_factor = (axr_main.config:r_value("mm_options","alife_mutant_pop",3) or 1)
 		
 	local result, squad_section, count, li, lc
 	setting_ini:section_for_each(function(section)
@@ -266,8 +259,8 @@ function fill_start_position()
 				
 				if string.find(squad_section,"sim_squad_novice") or string.find(squad_section,"sim_squad_advanced") or string.find(squad_section,"sim_squad_veteran") or string.find(squad_section,"sim_squad_sniper") then
 					count = count*stalker_pop_factor
-					if (count == 0.25) then 
-						count = math.random() <= 0.25 and 1 or 0
+					if (count < 0.5) then
+						count = math.random() < count and 1 or 0
 					elseif (count == 0.5) then 
 						count = math.random(0,1)
 					else 
@@ -275,8 +268,8 @@ function fill_start_position()
 					end
 				elseif (string.find(squad_section,"simulation")) then
 					count = count*monster_pop_factor
-					if (count == 0.25) then 
-						count = math.random() <= 0.25 and 1 or 0
+					if (count < 0.5) then
+						count = math.random() < count and 1 or 0
 					elseif (count == 0.5) then 
 						count = math.random(0,1)
 					else 
@@ -405,6 +398,10 @@ function smart_terrain_on_update(smart)
 		UnregisterScriptCallback("smart_terrain_on_update", smart_terrain_on_update)
 		return
 	end
+	
+	if (sim_actor_combat.has_combat()) then
+		return
+	end
 
 	sim_smart.smart_terrain_on_update(smart)
 end
@@ -412,6 +409,10 @@ end
 function squad_on_update(squad)
 	if (not IsEocMode()) then
 		UnregisterScriptCallback("squad_on_update", squad_on_update)
+		return
+	end
+	
+	if (sim_actor_combat.has_combat()) then
 		return
 	end
 

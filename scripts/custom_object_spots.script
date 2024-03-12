@@ -1,0 +1,94 @@
+--
+-- Custom object spots
+-- By Dancher
+--
+
+local function send_tip()
+	local news_caption = game.translate_string("st_tip")
+	local news_text = game.translate_string("ui_st_custom_spot_map_added")
+	local news_icon = "ui_iconsTotal_locations"
+	local actor = db.actor
+	
+	if actor:is_talking() then
+		actor:give_talk_message2(news_caption, news_text, news_icon, "iconed_answer_item")
+	else
+		actor:give_game_news(news_caption, news_text, news_icon, 0, 5000)
+	end
+	
+	xr_sound.set_sound_play(actor:id(), "pda_tips")
+end
+
+local function map_spot_menu_add_property(property_ui,id,level_name)
+	if (not has_spot(id)) then
+		return
+	end
+	
+	property_ui:AddItem(game.translate_string("ui_st_custom_spot_pda_remove"))
+end
+
+local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
+	if (prop ~= game.translate_string("ui_st_custom_spot_pda_remove")) then
+		return
+	end
+	
+	remove_spot(id)
+end
+
+local function on_ok_button_clicked(text)
+	if (text == "") then
+		return
+	end
+	
+	local actor = db.actor
+	local se_obj = alife():create("custom_spot_dummy_object",actor:position(),actor:level_vertex_id(),actor:game_vertex_id())
+	
+	add_spot(se_obj.id, text)
+end
+
+-- Called from axr_keybind.script as kCUSTOM14 action - inventory_custom_spot
+function show_input_dialog()
+	if (db.actor:is_talking()) then
+		return
+	end
+
+	local hud = get_hud()
+	ui_generic_dialogs.input_dialog_ui(hud, true, on_ok_button_clicked)
+end
+
+function add_spot(id, text)
+	local description = strformat("%c[160,0,255,255]%s\\n%c[default]%s", game.translate_string("ui_st_custom_spot_title"), text)
+	level.map_add_object_spot_ser(id, "custom_spot", description)
+	
+	send_tip()
+end
+
+function remove_spot(id)
+	if (not has_spot(id)) then
+		return
+	end
+	
+	level.map_remove_object_spot(id, "custom_spot")
+	
+	local se_obj = alife_object(id)
+	if (se_obj and se_obj:section_name() == "custom_spot_dummy_object") then
+		alife():release(se_obj)
+	end
+end
+
+function has_spot(id)
+	return level.map_has_object_spot(id,"custom_spot") == 1
+end
+
+function dialog_precondition_has_spot(actor,npc)
+	local npc = dialogs.who_is_npc(actor,npc)
+	return has_spot(npc:id())
+end
+
+function dialog_precondition_has_not_spot(actor,npc)
+	return not dialog_precondition_has_spot(actor,npc)
+end
+
+function on_game_start()
+	RegisterScriptCallback("map_spot_menu_add_property",map_spot_menu_add_property)
+	RegisterScriptCallback("map_spot_menu_property_clicked",map_spot_menu_property_clicked)
+end

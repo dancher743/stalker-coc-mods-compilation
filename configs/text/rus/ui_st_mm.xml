@@ -517,8 +517,9 @@
 	<string id="ui_mm_bases_defense">
 		<text>Задания по защите лагерей</text>
 	</string>
+	
 	<string id="ui_mm_eoc_faction_warfare_activity">
-		<text>Популяция: частота спавна</text>
+		<text>Популяция: активность отрядов</text>
 	</string>
 	<string id="ui_mm_eoc_faction_warfare_activity_opt_high">
 		<text>высокая</text>
@@ -529,28 +530,35 @@
 	<string id="ui_mm_eoc_faction_warfare_activity_opt_low">
 		<text>низкая</text>
 	</string>
-	<string id="ui_mm_eoc_faction_warfare_activity_opt_very_low">
-		<text>минимальная</text>
-	</string>
-	<string id="ui_mm_eoc_faction_warfare_control">
-		<text>Популяция: частота обновления</text>
-	</string>
-	<string id="ui_mm_eoc_faction_warfare_control_opt_very_high">
-		<text>максимальная</text>
-	</string>
-	<string id="ui_mm_eoc_faction_warfare_control_opt_high">
-		<text>высокая</text>
-	</string>
-	<string id="ui_mm_eoc_faction_warfare_control_opt_medium">
-		<text>средняя</text>
-	</string>
-	<string id="ui_mm_eoc_faction_warfare_control_opt_low">
-		<text>низкая</text>
-	</string>
+	
 	<string id="ui_mm_show_monsters_on_map">
-		<text>Показ. монстров на карте</text>
+		<text>Показ. мутантов на карте</text>
 	</string>
 	<string id="ui_mm_show_stalkers_on_map">
 		<text>Показ. сталкеров на карте</text>
+	</string>
+	<string id="kb_slow_save">
+		<text>Медленное сохранение</text>
+	</string>
+	<string id="kb_quick_save">
+		<text>Быстрое сохранение</text>
+	</string>
+	<string id="kb_quick_load">
+		<text>Быстрая загрузка</text>
+	</string>
+	<string id="ui_mm_eoc_faction_warfare_unpc_respawn">
+		<text>Респавн важных НПС</text>
+	</string>
+	<string id="ui_mm_show_crit_hit_mark">
+		<text>Показывать крит. удар</text>
+	</string>
+	<string id="ui_mm_companions_invulnerability">
+		<text>Неуязвимые напарники</text>
+	</string>
+	<string id="ui_mm_conditions_mode_campfire">
+		<text>Cохранения у костров</text>
+	</string>
+	<string id="ui_mm_auto_garbage_collection">
+		<text>Автоочистка памяти</text>
 	</string>
 </string_table>

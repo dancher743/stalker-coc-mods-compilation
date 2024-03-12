@@ -923,6 +923,10 @@ function inverse_lerp(a, b, value)
 	return 0
 end
 
+function fmod(a, b)
+    return a - (math.floor(a/b)*b)
+end
+
 function is_actor_community_as(npc)
 	return (npc and IsStalker(npc) and npc:character_community() == get_actor_community()) or false
 end

@@ -313,6 +313,9 @@ function CPsiStormManager:update()
 			end
 			if self.next_vortex_at == diff_sec then
 				self:vortex()
+				if (self.stages['1stvortex'] == nil) then
+					self.stages['1stvortex'] = true
+				end
 				self.next_vortex_at = diff_sec + math.random(self.vortex_period_min, self.vortex_period_max)
 			end
 		end
@@ -744,3 +747,7 @@ function is_actor_immune()
 	return false
 end
 
+function has_stage(name)
+	local psi_storm_manager = get_psi_storm_manager()
+	return psi_storm_manager.stages and psi_storm_manager.stages[name] ~= nil
+end

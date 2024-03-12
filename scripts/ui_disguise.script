@@ -1,0 +1,87 @@
+--
+-- UI for disguise
+-- Displays patch in slot
+-- Added by Dancher
+--
+
+local patch_in_slot_ui
+
+local function create_patch_in_slot_ui()
+	if (patch_in_slot_ui == nil) then
+		patch_in_slot_ui = patch_in_slot()
+		get_hud():AddDialogToRender(patch_in_slot_ui)
+	end
+	return patch_in_slot_ui
+end
+
+function show(value)
+	if (patch_in_slot_ui) then
+		patch_in_slot_ui:Show(value)
+	end
+end
+
+function update(item)	
+	if (item) then
+		if (patch_in_slot_ui == nil) then
+			create_patch_in_slot_ui()
+		end
+		patch_in_slot_ui:UpdateIcon(item)
+		patch_in_slot_ui:ShowIcon(true)
+	else
+		if (patch_in_slot_ui) then
+			patch_in_slot_ui:ShowIcon(false)
+		end
+	end
+end
+
+local function actor_on_net_destroy()
+	if (patch_in_slot_ui) then
+		get_hud():RemoveDialogToRender(patch_in_slot_ui)
+		patch_in_slot_ui = nil
+	end
+end
+
+local function actor_on_weapon_zoom_in(item)
+	show(false)
+end 
+
+local function actor_on_weapon_zoom_out(item)
+	show(true)
+end
+
+function on_game_start()
+	RegisterScriptCallback("actor_on_net_destroy",actor_on_net_destroy)
+	RegisterScriptCallback("actor_on_weapon_zoom_in",actor_on_weapon_zoom_in)
+	RegisterScriptCallback("actor_on_weapon_zoom_out",actor_on_weapon_zoom_out)
+end
+
+--- UI class ---
+
+class "patch_in_slot" (CUIScriptWnd)
+function patch_in_slot:__init() super()
+	self:InitControls()
+end
+ 
+function patch_in_slot:__finalize()
+end
+ 
+function patch_in_slot:InitControls()
+	local xml = CScriptXmlInit()
+	xml:ParseFile("ui_disguise.xml")
+	self.icon = xml:InitStatic("patch_in_slot", self)
+	self.icon:InitTexture("ui\\ui_icon_equipment")
+end
+
+function patch_in_slot:ShowIcon(value)	
+	self.icon:Show(value)
+end
+
+function patch_in_slot:UpdateIcon(item)	
+	local ini = system_ini()
+	local section = item:section()
+	local x1 = (ini:r_float_ex(section,"inv_grid_x")or 0)*50
+	local y1 = (ini:r_float_ex(section,"inv_grid_y")or 0)*50
+	local x2 = x1 + 50
+	local y2 = y1 + 50
+	self.icon:SetTextureRect(Frect():set(x1,y1,x2,y2))
+end

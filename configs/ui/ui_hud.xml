@@ -1,6 +1,6 @@
 <w>
 <!--     From Anomaly 1.5.1.2     -->
-	<companion_list x="13" y="50" width="90" height="606" stretch="1">
+	<companion_list x="13" y="227" width="90" height="606" stretch="1">
 		<slot x="0" y="0" width="90" height="67" stretch="1">
 			<background x="0" y="0" width="90" height="67" stretch="1">
 				<texture a="150">ui_inGame2_companion_hud_slot</texture>
@@ -9,6 +9,7 @@
 				<texture a="100">ui_inGame2_companion_danger_indicator</texture>
 			</danger_indicator>
 			<icon x="5" y="4" width="80" height="51" stretch="1"/>
+			<invulnerable x="4" y="4" width="11" height="11" stretch="1"/>
 			<team_role x="74" y="4" width="11" height="11" stretch="1"/>
 			<distance x="5" y="4" width="80" height="51" stretch="1">
 				<text complex_mode="1" r="200" g="200" b="200" align="r" vert_align="b" font="letterica16"/>

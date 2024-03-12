@@ -262,64 +262,126 @@ npc_random = sim_default_killer_0
 npc_in_squad = 1
 story_id = hostage_companion_task_1
 
-;--------------------------------
+;--------------- survival mode squads -----------------------
 
 [survival_squad_stalker]:online_offline_group
 story_id = survival_squad
 relationship = friend
 faction = stalker
-npc = companion_survival_stalker, companion_survival_stalker, sim_default_stalker_3
+npc = companion_survival_stalker
 
 [survival_squad_bandit]:online_offline_group
 story_id = survival_squad
 relationship = friend
 faction = bandit
-npc = companion_survival_bandit, companion_survival_bandit, companion_survival_bandit
+npc = companion_survival_bandit
 
 [survival_squad_killer]:online_offline_group
 story_id = survival_squad
 relationship = friend
 faction = killer
-npc = companion_survival_killer, companion_survival_killer, companion_survival_killer
+npc = companion_survival_killer
 
 [survival_squad_dolg]:online_offline_group
 story_id = survival_squad
 relationship = friend
 faction = dolg
-npc = companion_survival_duty, companion_survival_duty, companion_survival_duty
+npc = companion_survival_dolg
 
 [survival_squad_freedom]:online_offline_group
 story_id = survival_squad
 relationship = friend
 faction = freedom
-npc = companion_survival_freedom, companion_survival_freedom, companion_survival_freedom
+npc = companion_survival_freedom
 
 [survival_squad_army]:online_offline_group
 story_id = survival_squad
 relationship = friend
 faction = army
-npc = companion_survival_army, companion_survival_army, companion_survival_army
+npc = companion_survival_army
 
 [survival_squad_ecolog]:online_offline_group
 story_id = survival_squad
 relationship = friend
 faction = ecolog
-npc = companion_survival_ecolog, companion_survival_ecolog, companion_survival_ecolog
+npc = companion_survival_ecolog
 
 [survival_squad_csky]:online_offline_group
 story_id = survival_squad
 relationship = friend
 faction = csky
-npc = companion_survival_csky, companion_survival_csky, companion_survival_csky
+npc = companion_survival_csky
 
 [survival_squad_monolith]:online_offline_group
 story_id = survival_squad
 relationship = friend
 faction = monolith
-npc = companion_survival_monolith, companion_survival_monolith, companion_survival_monolith
+npc = companion_survival_monolith
 
 [survival_squad_zombied]:online_offline_group
 story_id = survival_squad
 relationship = friend
+faction = zombied
+npc = companion_survival_zombied
+
+;--------------- start companions squads -----------------------
+
+[start_squad_stalker]:online_offline_group
+story_id = start_squad
+relationship = friend
+faction = stalker
+npc = companion_start_stalker
+
+[start_squad_bandit]:online_offline_group
+story_id = start_squad
+relationship = friend
+faction = bandit
+npc = companion_start_bandit
+
+[start_squad_killer]:online_offline_group
+story_id = start_squad
+relationship = friend
+faction = killer
+npc = companion_start_killer
+
+[start_squad_dolg]:online_offline_group
+story_id = start_squad
+relationship = friend
+faction = dolg
+npc = companion_start_dolg
+
+[start_squad_freedom]:online_offline_group
+story_id = start_squad
+relationship = friend
+faction = freedom
+npc = companion_start_freedom
+
+[start_squad_army]:online_offline_group
+story_id = start_squad
+relationship = friend
+faction = army
+npc = companion_start_army
+
+[start_squad_ecolog]:online_offline_group
+story_id = start_squad
+relationship = friend
+faction = ecolog
+npc = companion_start_ecolog
+
+[start_squad_csky]:online_offline_group
+story_id = start_squad
+relationship = friend
 faction = csky
-npc = sim_default_zombied_1, sim_default_zombied_2, sim_default_zombied_3
+npc = companion_start_csky
+
+[start_squad_monolith]:online_offline_group
+story_id = start_squad
+relationship = friend
+faction = monolith
+npc = companion_start_monolith
+
+[start_squad_zombied]:online_offline_group
+story_id = start_squad
+relationship = friend
+faction = csky
+npc = companion_start_zombied

@@ -505,7 +505,7 @@
 		<text>сталкер</text>
 	</string>
 	<string id="st_dyn_news_comm_actor_6">
-		<text>Общий канал:</text>
+		<text>Одиночки</text>
 	</string>
 	<string id="st_dyn_news_comm_actor_7">
 		<text>сталкер</text>
@@ -547,7 +547,7 @@
 		<text>боец монолита</text>
 	</string>
 	<string id="st_dyn_news_comm_monolith_6">
-		<text>Монолит:</text>
+		<text>Монолит</text>
 	</string>
 	<string id="st_dyn_news_comm_monolith_7">
 		<text>монолитовец</text>
@@ -589,7 +589,7 @@
 		<text>бандит</text>
 	</string>
 	<string id="st_dyn_news_comm_bandit_6">
-		<text>Бандиты:</text>
+		<text>Бандиты</text>
 	</string>
 	<string id="st_dyn_news_comm_bandit_7">
 		<text>бандит</text>
@@ -631,7 +631,7 @@
 		<text>долговец</text>
 	</string>
 	<string id="st_dyn_news_comm_dolg_6">
-		<text>Долг:</text>
+		<text>Долг</text>
 	</string>
 	<string id="st_dyn_news_comm_dolg_7">
 		<text>долговец</text>
@@ -673,7 +673,7 @@
 		<text>учёный</text>
 	</string>
 	<string id="st_dyn_news_comm_ecolog_6">
-		<text>Учёные:</text>
+		<text>Учёные</text>
 	</string>
 	<string id="st_dyn_news_comm_ecolog_7">
 		<text>учёный</text>
@@ -715,7 +715,7 @@
 		<text>чистонебовец</text>
 	</string>
 	<string id="st_dyn_news_comm_csky_6">
-		<text>Чистое Небо:</text>
+		<text>Чистое Небо</text>
 	</string>
 	<string id="st_dyn_news_comm_csky_7">
 		<text>чистонебовец</text>
@@ -757,7 +757,7 @@
 		<text>военный</text>
 	</string>
 	<string id="st_dyn_news_comm_army_6">
-		<text>Военные:</text>
+		<text>Военные</text>
 	</string>
 	<string id="st_dyn_news_comm_army_7">
 		<text>военный</text>
@@ -799,7 +799,7 @@
 		<text>наёмник</text>
 	</string>
 	<string id="st_dyn_news_comm_killer_6">
-		<text>Наёмники:</text>
+		<text>Наёмники</text>
 	</string>
 	<string id="st_dyn_news_comm_killer_7">
 		<text>наёмник</text>
@@ -841,7 +841,7 @@
 		<text>сталкер</text>
 	</string>
 	<string id="st_dyn_news_comm_stalker_6">
-		<text>Общий канал:</text>
+		<text>Одиночки</text>
 	</string>
 	<string id="st_dyn_news_comm_stalker_7">
 		<text>сталкер</text>
@@ -883,7 +883,7 @@
 		<text>зомби</text>
 	</string>
 	<string id="st_dyn_news_comm_zombied_6">
-		<text>Зомбированные:</text>
+		<text>Зомбированные</text>
 	</string>
 	<string id="st_dyn_news_comm_zombied_7">
 		<text>зомбированный</text>
@@ -925,7 +925,7 @@
 		<text>свободовец</text>
 	</string>
 	<string id="st_dyn_news_comm_freedom_6">
-		<text>Свобода:</text>
+		<text>Свобода</text>
 	</string>
 	<string id="st_dyn_news_comm_freedom_7">
 		<text>свободовец</text>
@@ -1226,6 +1226,9 @@
 	</string>
 	<string id="st_dyn_news_l08_yantar">
 		<text>на Янтаре,</text>
+	</string>
+	<string id="st_dyn_news_l08u_brainlab">
+		<text>в Х-16,</text>
 	</string>
 	<string id="st_dyn_news_l09_deadcity">
 		<text>в Мёртвом Городе,</text>
@@ -2256,7 +2259,7 @@
 		<text>Видел, как</text>
 	</string>
 	<string id="st_dyn_news_builder_sight_2">
-		<text>Вот это кино:</text>
+		<text>Вот это кино</text>
 	</string>
 	<string id="st_dyn_news_builder_sight_3">
 		<text>Пару минут назад видел, как</text>
@@ -4046,6 +4049,12 @@
 	<string id="st_dyn_news_spam_faction_stalker_1">
 		<text>Говорят, у наёмников какая-то лотерея на нашивки, или что-то такое с ними связанное. Блин, это ж получается, что теперь и за просто так прихлопнуть могут!</text>
 	</string>
+	<string id="st_dyn_news_spam_faction_stalker_2">
+		<text>Новиков из "Чистого Неба" может улучшить ваш ПДА, чтобы он работал во время выбросов и пси-штормов. Не поленитесь, поставте! Уверен, это ещё ни один раз спасёт вашу шкуру.</text>
+	</string>	
+	<string id="st_dyn_news_spam_faction_stalker_3">
+		<text>Помните как когда-то в КПК отряды на глобальной карте показывались? Так вот, Гарин, что в бункере учёных на Янове, чёта может похимичить с КПК, и они вновь появятся!</text>
+	</string>
 
 	<string id="st_dyn_news_spam_faction_dolg_1">
 		<text>Внимание бойцам всех отрядов: по прибытию на базу немедленно явиться в командный пункт для получения инструкций по эксплуатации новых моделей оборудования.</text>
@@ -5339,7 +5348,7 @@
 		<text>расплескался по земле - плешь</text>
 	</string>
 	<string id="st_dyn_news_death_reason_32">
-		<text>он и не знал, какую дрянь носит у себя в рюкзаке - радиоактивные артефакты - умер от облучения</text>
+		<text>он и не знал, какую дрянь носит у себя на поясе - радиоактивные артефакты - умер от облучения</text>
 	</string>
 	<string id="st_dyn_news_death_reason_33">
 		<text>костюм цел, внутри - месиво, не знаю, в чём дело</text>
@@ -6464,6 +6473,9 @@
 	<string id="st_dyn_news_companion_level_l11_pripyat_10">
 		<text>И зачем я только согласился идти сюда...</text>
 	</string>
+	<string id="st_dyn_news_companion_level_l11_pripyat_11">
+		<text>Вы тоже слышите шёпот? Призраки города пытаются что-то сказать нам. Прислушайтесь...</text>
+	</string>
 	
 	
 	<string id="st_dyn_news_companion_level_l01_escape_1">
@@ -7223,12 +7235,12 @@
 		<text>Напарник</text>
 	</string>
 	<string id="st_dyn_news_sender_private_ch">
-		<text>закрытый канал</text>
+		<text>Закрытый канал</text>
 	</string>
 
 	<!-- misc -->
 	<string id="st_dyn_news_ch_died">
-		<text>Некролог:</text>
+		<text>Некролог</text>
 	</string>
 	<string id="st_dyn_news_ch_found">
 		<text>Погиб</text>
@@ -7285,5 +7297,14 @@
 	</string>
 	<string id="st_dyn_news_very">
 		<text>очень</text>
+	</string>
+	
+<!----------------------------- Added by Dancher ----------------------------->
+	
+	<string id="st_dyn_news_names_anonymous">
+		<text>Анонимно</text>
+	</string>
+	<string id="st_dyn_news_general_channel">
+		<text>Общий канал</text>
 	</string>
 </string_table>

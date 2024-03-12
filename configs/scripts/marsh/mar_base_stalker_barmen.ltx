@@ -11,7 +11,7 @@ cover_name = mar_base_sc_barmen
 avail_animations = animpoint_stay_table_no_rnd
 use_camp = false
 meet = meet
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 gather_items_enabled = false
 help_wounded_enabled = false

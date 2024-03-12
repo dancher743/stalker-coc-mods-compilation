@@ -74,7 +74,7 @@
 	</string>
 
 	<string id="ui_st_hideout">
-		<text>Окраины (Центр Припяти)</text>
+		<text>Укромное место (Окраины Припяти)</text>
 	</string>
 
 	<string id="ui_st_power_station">
@@ -90,7 +90,7 @@
 	</string>
 	
 	<string id="ui_st_river_port">
-		<text>Речной порт (Центр Припяти)</text>
+		<text>Речной порт (Окраины Припяти)</text>
 	</string>
 
 	<string id="ui_st_rookie_village">

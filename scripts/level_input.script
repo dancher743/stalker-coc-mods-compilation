@@ -19,12 +19,13 @@ function action_quick_save()
 		return false 
 	end
 	
-	if (alife_storage_manager.get_state().enable_campfire_mode) and (level_weathers.valid_levels[level.name()]) then -- return true to stop the function from working
+	-- Replaced by "conditions_mode_campfire" option
+	--[[if (alife_storage_manager.get_state().enable_campfire_mode) and (level_weathers.valid_levels[level.name()]) then -- return true to stop the function from working
 		if not (_G.ALLOW_SAVING) then
 			SetHudMsg("st_you_cant_save",4)
 			return true
 		end
-	end
+	end]]
 	
 	if savegame_conditions.check_and_apply("st_ui_save") then
 		return true
@@ -92,6 +93,77 @@ function action_quick_load()
 				return true
 			end
 		end
+	end
+	
+	return true
+end
+
+local function is_collision_exists(save_name)
+	local result = false
+	
+	local path = getFS():update_path('$game_saves$', '')..save_name..".scoc"
+	printf(tostring(path))
+	local save = io.open(path,"r")
+	
+	if (save ~= nil) then
+		io.close(save)
+		result = true
+	end
+	
+	return result
+end
+
+function action_slow_save()
+	if not (db.actor and db.actor:alive()) then
+		return false
+	end
+	
+	-- Replaced by "conditions_mode_campfire" option
+	--[[if (alife_storage_manager.get_state().enable_campfire_mode) and (level_weathers.valid_levels[level.name()]) then -- return true to stop the function from working
+		if not (_G.ALLOW_SAVING) then
+			SetHudMsg("st_you_cant_save",4)
+			return true
+		end
+	end]]
+	
+	if savegame_conditions.check_and_apply("st_ui_save") then
+		return true
+	end
+	
+	if savegame_timer.check_and_apply("st_ui_save") then
+		return true
+	end
+	
+	local count = alife_storage_manager.get_state().slow_save_count
+	if (not count) then
+		count = 0
+	end
+	count = count + 1
+	
+	local character_name = alife():actor():character_name()
+	local level_name = game.translate_string(level.name())
+	local y,m,d,h,min = game.get_game_time():get()
+	local day_elapsed = pda.get_time_elapsed()
+	
+	local save_name = string.format("%s %s %s %02d.%02d #%s", character_name, level_name, day_elapsed, h, min, count)
+	
+	if (is_collision_exists(save_name)) then
+		for i = 1, 100 do
+			local save_name_subnumber = string.format("%s %s", save_name, i)
+			if (not is_collision_exists(save_name_subnumber)) then
+				save_name = save_name_subnumber
+				break
+			end
+		end
+	end
+	
+	alife_storage_manager.get_state().slow_save_count = count
+	
+	local save_command = string.format("save %s", save_name)
+	get_console():execute(save_command)
+	
+	if (alife_storage_manager.get_state().enable_timer_mode) then
+		savegame_timer.timer_reset() -- reset timer
 	end
 	
 	return true

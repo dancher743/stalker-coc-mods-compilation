@@ -9,7 +9,7 @@ level_spot = medic
 cover_name = mar_base_doctor_medic
 use_camp = false
 meet = meet
-combat_ignore_cond = true
+combat_ignore_cond = {=is_survival_mode_enabled} false, true
 invulnerable = {!is_eoc_mode_enabled !actor_enemy} true, false
 out_restr = mar_base_surge_hide_a2
 gather_items_enabled = false

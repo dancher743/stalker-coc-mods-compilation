@@ -31,17 +31,17 @@ function pda_relations_tab:__init() super()
 	}
 
 	self.color_codes = {
-		GetARGB(255,255,255,255),
-		GetARGB(255,255,128,0),
-		GetARGB(255,0,255,255),
-		GetARGB(255,0,255,128),
-		GetARGB(255,0,128,255),
-		GetARGB(255,255,0,128),
-		GetARGB(255,128,255,0),
-		GetARGB(255,255,0,0),
-		GetARGB(255,0,255,0),
-		GetARGB(255,0,0,255),
-		GetARGB(255,128,0,255),
+		["def"]     	= GetARGB(255,255,255,255),
+		["stalker"] 	= GetARGB(255,255,255,100),
+		["bandit"]  	= GetARGB(255,120,201,79),
+		["ecolog"]  	= GetARGB(255,255,128,100),
+		["csky"]    	= GetARGB(255,100,200,255),
+		["dolg"]    	= GetARGB(255,255,100,100),
+		["freedom"] 	= GetARGB(255,100,255,100),
+		["killer"]  	= GetARGB(255,100,100,255),
+		["army"]    	= GetARGB(255,100,128,255),
+		["monolith"]	= GetARGB(255,120,201,79),
+		["zombied"] 	= GetARGB(168,168,168,255),
 	}
 
 	self.companion_info = {}
@@ -51,7 +51,9 @@ function pda_relations_tab:__init() super()
 	self:InitControls()
 end
 
-function pda_relations_tab:__finalize() end
+function pda_relations_tab:__finalize() 
+    SINGLETON = nil
+end
 
 function pda_relations_tab:InitControls()
 	self:SetWndRect(Frect():set(0, 0, 1024, 768))
@@ -215,16 +217,17 @@ function pda_relations_tab:autoupdate()
 				self.companion_info[i].leader_wnd:Show(true)
 				self.companion_info[i].leader_wnd:InitTexture("ui_minimap_point")
 			end
+			
+			-- invulnerability status
+			local is_invulnerable = axr_companions.is_invulnerable(se_obj)
+			self.companion_info[i].invulner_wnd:Show(is_invulnerable)
 
 			-- Set color code
-			if not (id_to_code[se_obj.group_id]) then
-				local n = 1
-				for k,v in pairs(id_to_code) do
-					n = n + 1
-				end
-				id_to_code[se_obj.group_id] = self.color_codes[n] or self.color_codes[1]
-			end
-			self.companion_info[i].leader_wnd:SetTextureColor(id_to_code[se_obj.group_id])
+			local community = se_obj:community()
+			local colors = self.color_codes
+			local color = community and colors[community] or colors["def"]
+			self.companion_info[i].leader_wnd:SetTextureColor(color)
+			self.companion_info[i].invulner_wnd:SetTextureColor(color)
 
 
 			-- health status
@@ -254,10 +257,13 @@ function pda_relations_tab:autoupdate()
 			%c[255,160,160,160]st_mm_pda_stealth:%c[default] %s \n
 			%c[255,160,160,160]st_mm_pda_dismissable:%c[default] %s \n
 			%c[255,160,160,160]st_mm_pda_level_travel:%c[default] %s \n
+			%c[255,160,160,160]st_mm_pda_invulnerability:%c[default] %s \n
+			%c[255,160,160,160]st_mm_pda_barter:%c[default] %s \n
 			\n%c[255,215,215,215]st_mm_pda_statistics:%c[default] \n
 			%c[255,160,160,160]st_mm_pda_stalkers_killed:%c[default] %s \n
 			%c[255,160,160,160]st_mm_pda_mutants_killed:%c[default] %s \n
 			%c[255,160,160,160]st_mm_pda_artes_found:%c[default] %s \n
+			%c[255,160,160,160]st_mm_pda_start_time:%c[default] %s \n
 			]]
 
 			if (alife():has_info(se_obj.id,"npcx_beh_wait")) then
@@ -310,12 +316,34 @@ function pda_relations_tab:autoupdate()
 				state_str = string.gsub(state_str,s,game.translate_string(s))
 			end
 
-			state_str = strformat(state_str,full_name,s_location,s_move,s_combat,s_gather,s_loot,s_dist,s_stealth,s_dismiss,s_tele,s_stalker,s_mutant,s_arte)
+			local s_invulnerability = axr_companions.is_invulnerable_obj(npc) and game.translate_string("st_pda_mode_true") or game.translate_string("st_pda_mode_false")
+			local s_barter = axr_companions.is_barter_avaliable_obj(npc) and game.translate_string("st_pda_mode_true") or game.translate_string("st_pda_mode_false")
+			local s_start_time = axr_companions.get_hours_with_companion_obj(npc)
+
+			state_str = strformat(state_str,
+				full_name,
+				s_location,
+				s_move,
+				s_combat,
+				s_gather,
+				s_loot,
+				s_dist,
+				s_stealth,
+				s_dismiss,
+				s_tele,
+				s_invulnerability,
+				s_barter,
+				s_stalker,
+				s_mutant,
+				s_arte,
+				s_start_time
+			)
 			self.companion_info[i].hint = state_str
 		else
 			self.companion_info[i].id = nil
 			self.companion_info[i].icon_wnd:Show(false)
 			self.companion_info[i].leader_wnd:Show(false)
+			self.companion_info[i].invulner_wnd:Show(false)
 			self.companion_info[i].health_wnd:SetText("")
 			self.companion_info[i].name_wnd:SetText("")
 			self.companion_info[i].comm_wnd:SetText("")
@@ -473,6 +501,12 @@ function pda_relations_tab:CreateContextMenu(npc,id)
 	end
 
 	action_1__1 = function()
+		local distance = npc:position():distance_to_sqr(db.actor:position())
+		if (distance > 100) then
+			self:SetMsg(game.translate_string("st_pda_cant_trade_of_distance"),3)
+			return
+		end
+		
 		if not (utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss")) then
 			npc:use(db.actor)
 			--npc:start_trade(db.actor)
@@ -764,6 +798,7 @@ function ui_companion_row:__init(owner,row,xml) super(owner,row,xml)
 			["id"]				= nil,
 			["icon_wnd"] 		= self:AddIconField(1),
 			["leader_wnd"] 		= self:AddIconField(1),
+			["invulner_wnd"]	= self:AddIconField(1),
 			["name_wnd"]		= self:AddTextField("",1),
 			["comm_wnd"]		= self:AddTextField("",1),
 			["rank_wnd"]		= self:AddTextField("",1),
@@ -781,6 +816,11 @@ function ui_companion_row:__init(owner,row,xml) super(owner,row,xml)
 		owner.companion_info[n].leader_wnd:SetStretchTexture(true)
 		owner.companion_info[n].leader_wnd:SetWndSize(vector2():set(is_widescreen and 8 or 10,10))
 		owner.companion_info[n].leader_wnd:SetWndPos(vector2():set(x,y))
+		
+		owner.companion_info[n].invulner_wnd:InitTexture("ui_hud_icon_shield")
+		owner.companion_info[n].invulner_wnd:SetStretchTexture(true)
+		owner.companion_info[n].invulner_wnd:SetWndSize(vector2():set(is_widescreen and 8 or 10,10))
+		owner.companion_info[n].invulner_wnd:SetWndPos(vector2():set(x+56,y))
 
 		owner.companion_info[n].name_wnd:SetFont(GetFontLetterica18Russian())
 		owner.companion_info[n].name_wnd:SetWndSize(vector2():set(120,22))

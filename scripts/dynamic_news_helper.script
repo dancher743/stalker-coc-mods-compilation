@@ -419,6 +419,8 @@ local invalid_maps = { -- dynamic news are off in those maps
 
 local all_direction = {"near","east","north_east","north","north_west","west","south_west","south","south_east"}
 
+local random_character_icons = nil
+
 --=================================================< Helpers >=================================================
 local function PickRandomKey(t,is_key) -- Selects a random item from a table
     local keys = {}
@@ -536,6 +538,18 @@ function GetPointDescription(obj)
 	end
 		
 	return strformat("%s %s %s",m_s,game.translate_string("st_dyn_news_close"),m_str)
+end
+
+function GetShortPointDescription(obj)
+	local level_name = get_object_levelname(obj)
+	if not (level_name) then 
+		return 
+	end 
+	
+	local m_s = game.translate_string("st_dyn_news_"..level_name)
+	m_s = string.gsub(m_s, "%p", "")
+	
+	return m_s
 end
 
 local tips_icons = {
@@ -927,6 +941,8 @@ function send_tip(msg, header, timeout, showtime, sender, sound,icon_by) -- Send
 		ui_sender = news_manager.tips_icons[sender]
 	elseif  icon_by=="npc" then
 		ui_sender = sender
+	elseif icon_by=="rnd_char_icon" then
+		ui_sender = get_random_character_icon()
 	elseif icon_by==nil then
 		ui_sender = news_manager.tips_icons[sender]
 	end
@@ -940,4 +956,26 @@ function send_tip(msg, header, timeout, showtime, sender, sound,icon_by) -- Send
 	db.actor:give_game_news(header, msg, ui_sender, timeout*1000, showtime*1000)
 
 	return true
+end
+
+function get_random_character_icon()
+	local faction = random_choice("csky", "freedom", "stalker", "ecolog", "killer", "bandit")
+	local section = faction.."_portraits"
+	
+	if (random_character_icons == nil) then
+		local t = {}
+		local ini = ini_file("plugins\\faction_portraits.ltx")
+		local n = ini:section_exist(section) and ini:line_count(section) or 0
+		for i=0, n-1 do
+			local result, id, value = ini:r_line(section,i,"","")
+			if (id ~= "" and id ~= "default_portrait" and id ~= "ui_inGame2_degtyarev_ico" and 
+				id ~= "ui_inGame2_scar_ico" and id ~= "ui_inGame2_Strelok" and id ~= "ui_inGame2_strelok_ico")
+			then
+				table.insert(t,id)
+			end
+		end
+		random_character_icons = t
+	end
+
+	return random_character_icons[math.random(#random_character_icons)]
 end

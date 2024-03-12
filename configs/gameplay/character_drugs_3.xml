@@ -1,0 +1,7 @@
+medkit = 1, prob=0.15 \n
+bandage = 1, prob=0.25 \n
+antirad	= 1, prob=0.05 \n
+drug_booster = 1, prob=0.02 \n
+drug_coagulant = 1, prob=0.02 \n
+drug_antidot = 1, prob=0.015 \n
+drug_radioprotector = 1, prob=0.015 \n

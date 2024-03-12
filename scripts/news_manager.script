@@ -198,36 +198,46 @@ function send_task(actor, type, tsk)
 end
 
 function send_treasure(param, has_spot)
-	local news_caption = ""
+	local news_caption = game.translate_string("st_tip")
+	local news_text = ""
+	local news_icon = "ui_inGame2_Polucheni_koordinaty_taynika"
+	
 	if(param==0) then
-		news_caption = game.translate_string("st_found_new_treasure")
+		news_text = game.translate_string("st_found_new_treasure")
 	elseif(param==1) then
-		news_caption = game.translate_string("st_got_treasure")
+		news_text = game.translate_string("st_got_treasure")
 		dynamic_news_manager.get_dynamic_news():FoundStash(has_spot) -- send stash found news
 	elseif(param==2) then
-		news_caption = game.translate_string("st_found_old_treasure")
+		news_text = game.translate_string("st_found_old_treasure")
 	end
 
 	if db.actor:is_talking() then
-		db.actor:give_talk_message2(news_caption, "", "ui_inGame2_Polucheni_koordinaty_taynika", "iconed_answer_item")
+		db.actor:give_talk_message2(news_caption, news_text, news_icon, "iconed_answer_item")
 	else
-		db.actor:give_game_news(news_caption, "", "ui_inGame2_Polucheni_koordinaty_taynika", 0, 3000)
+		db.actor:give_game_news(news_caption, news_text, news_icon, 0, 3000)
 	end
 	
 	xr_sound.set_sound_play(db.actor:id(), "pda_tips")
 end
 
-function send_treasure_with_level(stash_name, stash_game_vertex_id)
-	local level_id = alife():level_name(game_graph():vertex(stash_game_vertex_id):level_id())
-	local level_name = game.translate_string(level_id)
+function send_treasure_with_level(stash_name, se_box)
+	local level_name = alife():level_name(game_graph():vertex(se_box.m_game_vertex_id):level_id())
+	
+	local level_point
+	if (IsUndergroundLevel(level_name)) then
+		level_point = dynamic_news_helper.GetShortPointDescription(se_box)
+	else
+		level_point = dynamic_news_helper.GetPointDescription(se_box)
+	end
+	level_point = string.gsub(level_point, "%.", "")
 	
 	local news_caption = game.translate_string("st_found_new_treasure")
-	local news_text = string.format("%s (%s)", stash_name, level_name)
+	local news_text = string.format("%s %s", stash_name, level_point)
 	
 	if db.actor:is_talking() then
 		db.actor:give_talk_message2(news_caption, news_text, "ui_inGame2_Polucheni_koordinaty_taynika", "iconed_answer_item")
 	else
-		db.actor:give_game_news(news_caption, news_text, "ui_inGame2_Polucheni_koordinaty_taynika", 0, 3000)
+		db.actor:give_game_news(news_caption, news_text, "ui_inGame2_Polucheni_koordinaty_taynika", 0, 6000)
 	end
 	
 	xr_sound.set_sound_play(db.actor:id(), "pda_news")
