@@ -9,7 +9,7 @@ Install
 2. Install [patch](https://www.moddb.com/mods/call-of-chernobyl/downloads/coc-1422-patch) to make CoC 1.4.22
 3. Dowload [compilation](https://github.com/dancher743/stalker-coc-mods-compilation/releases/latest)
 4. Dowload [installer](https://github.com/dancher743/stalker-coc-mods-compilation-installer/releases/latest)
-5. Place compilation and installer into the root folder -
+5. Place _compilation_ and _installer_ into the root folder -
 
 [![1.png](https://i.postimg.cc/5028Zy5t/1.png)](https://postimg.cc/Z9X9NTMk)
 
