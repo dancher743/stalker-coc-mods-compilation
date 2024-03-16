@@ -170,6 +170,9 @@
 	<string id="gen_smart_terrain_lab_entrance_2">
 		<text>Заброшенная подстанция</text>
 	</string>
+	<string id="gen_smart_terrain_military">
+		<text>КПП со шлагбаумом</text>
+	</string>
 
 	<string id="mar_smart_terrain_base">
 		<text>База «Чистого Неба»</text>

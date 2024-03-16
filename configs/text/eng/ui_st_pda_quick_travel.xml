@@ -170,6 +170,9 @@
 	<string id="gen_smart_terrain_lab_entrance_2">
 		<text>Abandoned Lab</text>
 	</string>
+	<string id="gen_smart_terrain_military">
+		<text>The Checkpoint With The Stop Sign</text>
+	</string>
 
 	<string id="mar_smart_terrain_base">
 		<text>Clear Sky Base</text>
