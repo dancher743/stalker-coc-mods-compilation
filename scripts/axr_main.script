@@ -162,7 +162,8 @@ local intercepts = {
 	
 	-- Callbacks added by Dancher
 	actor_on_awoke_after_sleeping	= {},
-	sound_on_ambient_playing		= {}
+	sound_on_ambient_playing		= {},
+	on_game_first_load				= {}
 }
 
 -----------------------------------------------------------

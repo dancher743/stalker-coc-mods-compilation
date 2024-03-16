@@ -65,6 +65,12 @@ function actor_on_net_spawn()
 		end
 	end
 	
+	local first_load_var_name = "game_first_load_callback"
+	if (not alun_utils.load_var(db.actor, first_load_var_name, false)) then
+		SendScriptCallback("on_game_first_load",binder)
+		alun_utils.save_var(db.actor, first_load_var_name, true)
+	end
+	
 	SendScriptCallback("on_game_load",binder)
 end
 
