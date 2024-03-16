@@ -65,10 +65,10 @@ function actor_on_net_spawn()
 		end
 	end
 	
-	local game_first_load_callback_var = "on_game_first_load_callback_was_sent"
-	if (not alun_utils.load_var(db.actor, game_first_load_callback_var, false)) then
+	local m_data = alife_storage_manager.get_state()
+	if (not m_data.was_on_game_first_load_callback_sent) then
 		SendScriptCallback("on_game_first_load",binder)
-		alun_utils.save_var(db.actor, game_first_load_callback_var, true)
+		m_data.was_on_game_first_load_callback_sent = true
 	end
 	
 	SendScriptCallback("on_game_load",binder)
