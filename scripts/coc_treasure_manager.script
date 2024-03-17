@@ -675,21 +675,17 @@ function get_valid_item_sections()
 	return t
 end
 
-local function get_fake_encrypted_string()
-	local chars = game.translate_string("st_stash_encrypt_descr_tmpl")
-	local result = ""
-
-	for i=1,math.random(25, 50) do
-		local char_index = math.random(1, #chars)
-		local char = string.sub(chars, char_index, char_index)
-		if math.random() <= 0.25 then
-			char = string.lower(char)
-		end
+local function encode_descr(stash_name)
+	local descr_st = string.format("st_%s_descr", stash_name)
+	local descr = game.translate_string(descr_st)
 	
-		result = result .. char
+	if (descr_st == descr) then
+		descr = game.translate_string("st_stash_no_descr")
 	end
 	
-	return result
+	descr = base64.encode(descr)
+	
+	return descr
 end
 
 function get_extended_hint(sim,stash,hint,id)
@@ -733,7 +729,7 @@ function get_extended_hint(sim,stash,hint,id)
 		descr = game.translate_string("st_stash_no_descr")
 	elseif descr_type == 2 then
 		name = game.translate_string("st_ui_pda_secret")
-		descr = game.translate_string("st_stash_encrypt_descr").."\\n"..get_fake_encrypted_string()
+		descr = game.translate_string("st_stash_encrypt_descr").."\\n"..encode_descr(stash_name)
 	end
 	
 	local extended_hint = "%c[255,255,160,0]" .. name .. "\\n%c[default]" .. descr .. "\\n%c[160,0,255,255]" .. (hint or "")
