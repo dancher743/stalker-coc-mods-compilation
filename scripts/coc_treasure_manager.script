@@ -675,17 +675,15 @@ function get_valid_item_sections()
 	return t
 end
 
-local function encode_descr(stash_name)
-	local descr_st = string.format("st_%s_descr", stash_name)
-	local descr = game.translate_string(descr_st)
+local function get_hint_part(stash_name, part_name, default)
+	local translate_string = string.format("st_%s_%s", stash_name, part_name)
+	local result_string = game.translate_string(translate_string)
 	
-	if (descr_st == descr) then
-		descr = game.translate_string("st_stash_no_descr")
+	if (result_string == translate_string) then
+		result_string = game.translate_string(default)
 	end
 	
-	descr = base64.encode(descr)
-	
-	return descr
+	return result_string
 end
 
 function get_extended_hint(sim,stash,hint,id)
@@ -713,15 +711,8 @@ function get_extended_hint(sim,stash,hint,id)
 	end
 	
 	if descr_type == 1 then
-		local name_st = "st_" .. stash_name .. "_name"
-		local descr_st = "st_" .. stash_name .. "_descr"
-		
-		name = game.translate_string(name_st)
-		descr = game.translate_string(descr_st)
-		
-		if name == name_st or descr == descr_st then
-			descr_type = 0
-		end
+		name = get_hint_part(stash_name, "name", "st_ui_pda_secret")
+		descr = get_hint_part(stash_name, "descr", "st_stash_no_descr")
 	end
 	
 	if descr_type == 0 then
@@ -729,7 +720,8 @@ function get_extended_hint(sim,stash,hint,id)
 		descr = game.translate_string("st_stash_no_descr")
 	elseif descr_type == 2 then
 		name = game.translate_string("st_ui_pda_secret")
-		descr = game.translate_string("st_stash_encrypt_descr").."\\n"..encode_descr(stash_name)
+		descr = get_hint_part(stash_name, "descr", "st_stash_no_descr")
+		descr = game.translate_string("st_stash_encrypt_descr").."\\n"..base64.encode(descr)
 	end
 	
 	local extended_hint = "%c[255,255,160,0]" .. name .. "\\n%c[default]" .. descr .. "\\n%c[160,0,255,255]" .. (hint or "")
