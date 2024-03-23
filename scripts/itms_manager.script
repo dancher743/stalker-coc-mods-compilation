@@ -307,6 +307,9 @@ function monster_on_actor_use_callback(obj,who)
 					end
 					news_manager.relocate_item(db.actor, "in", sec, v.count)
 				end
+				if (is_empty(t)) then
+					SetHudMsg("st_nothing_useful",4)
+				end
 			end
 		end
 	end
