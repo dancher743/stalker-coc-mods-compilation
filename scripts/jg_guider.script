@@ -43,6 +43,11 @@ function clear()
 	jg_timers.stop_g_timer('guid_fail')
 end 
 
+local function clear_guid()
+	guid = {}
+	jg_utils.d_v("guid")
+end 
+
 function ins_mass_onl()
 	local mass_onl = {}
 	for k, id in pairs(db.OnlineStalkers) do
@@ -60,6 +65,7 @@ end
 	Вызывается таймерами
 ]]
 function prepare_follower()
+	clear_guid()
 	local npc = ins_mass_onl()
 	if npc == nil then
 		if debug == true then printf('! Некого провожать | npc==nil') end
@@ -94,8 +100,7 @@ end
 
 function activate()
 	curr_guid = jg_utils.copy_tbl(guid)
-	guid = {}
-	jg_utils.d_v("guid")
+	clear_guid()
 	-- Старт таймера фэйла
 	jg_timers.g_start_timer('guid_fail',0,curr_guid['timer'],0,'jg_guider','fail_time')
 	-- level.map_add_object_spot_ser(guid.squad_id, 'storyline_task_location', 'Сталкеру необходимо попасть '..description)
@@ -229,7 +234,6 @@ end
 function try_clear_prepared_follower(npc)
     local squad = get_object_squad(npc)
 	if (squad and squad.id == guid['squad_id']) then
-		guid = {}
-		jg_utils.d_v("guid")
+		clear_guid()
 	end
 end

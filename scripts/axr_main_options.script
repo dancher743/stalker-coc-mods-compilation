@@ -60,7 +60,7 @@ function opt_menu_on_init(menu)
 	-- release dropped items 
 	menu.gameplay_options["release_dropped_items"]	= {default=true, 	debug_only=false, 	typ="check"}
 	-- show_enemy_health
-	menu.gameplay_options["show_enemy_health"]	= {default=false, 	debug_only=true, 	typ="check"}
+	menu.gameplay_options["show_enemy_health"]	= {default=false, 	debug_only=false, 	typ="check"}
 	-- radio_mod
 	menu.gameplay_options["radio_mod"]			= {default=true, 	debug_only=false, 	typ="check"}
 	-- mechanic_feature

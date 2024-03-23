@@ -1796,9 +1796,6 @@
 	<string id="st_stash_encrypt_descr">
 		<text>The description is encrypted.</text>
 	</string>
-	<string id="st_stash_encrypt_descr_tmpl">
-		<text>1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ</text>
-	</string>
 	<string id="st_custom_stash_title">
 		<text>Custom stash</text>
 	</string>

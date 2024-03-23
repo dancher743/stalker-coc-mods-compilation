@@ -134,10 +134,7 @@ function action_slow_save()
 		return true
 	end
 	
-	local count = alife_storage_manager.get_state().slow_save_count
-	if (not count) then
-		count = 0
-	end
+	local count = alife_storage_manager.get_state().slow_save_count or 0
 	count = count + 1
 	
 	local character_name = alife():actor():character_name()
