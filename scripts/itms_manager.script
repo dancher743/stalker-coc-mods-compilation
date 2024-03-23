@@ -33,7 +33,7 @@ local ini = ini_file("plugins\\itms_manager.ltx")
 
 	-- Loot Mutant mod
 	local MutantLootEnable = ini:r_bool_ex("mutant_loot_mod","enable",true)
-	local MutantLootEnableUI = true
+	local MutantLootEnableUI = ini:r_bool_ex("mutant_loot_mod","enable_ui",false)
 	local MutantLootDecayTime = ini:r_float_ex("mutant_loot_mod","decay_time") or 7200
 
 	-- Flashlight mod
@@ -282,6 +282,8 @@ function monster_on_actor_use_callback(obj,who)
 	if (looted) then
 		return
 	end
+	
+	local is_ui_enabled = axr_main_options.get_check_option("ui_mutant_loot") or MutantLootEnableUI
 
 	local st = db.storage[obj:id()]
 	if (st and st.death_time and game.get_game_time():diffSec(st.death_time) > MutantLootDecayTime) then
@@ -291,7 +293,7 @@ function monster_on_actor_use_callback(obj,who)
 	else
 		local hud = get_hud()
 		if (hud) then
-			if (MutantLootEnableUI and ui_mutant_loot) then
+			if (is_ui_enabled and ui_mutant_loot) then
 				ui_mutant_loot.loot_ui(get_hud(),obj,obj:id(),obj:section(),obj:clsid())
 			else
 				utils.save_var(obj,"looted",true)
