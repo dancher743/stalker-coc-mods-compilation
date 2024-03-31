@@ -4,7 +4,7 @@
 		<text>My PDA is acting up during surges and psi-storms.</text>
 	</string>
 	<string id="mar_base_stalker_tech_pda_no_off_upgrade_1">
-		<text>I can install a special coating that protects your PDA from external energy influences. That'll be 10000 rubles for materials and labor.</text>
+		<text>I can install a special coating that protects your PDA from external energy influences. That'll be 10,000 RU for materials and labor.</text>
 	</string>
 	<string id="mar_base_stalker_tech_pda_no_off_upgrade_2">
 		<text>Here you go.</text>
@@ -20,7 +20,7 @@
 		<text>I wanna see squads on the global map in my PDA.</text>
 	</string>
 	<string id="jup_scientist_bunker_tech_squads_on_map_upgrade_1">
-		<text>For this to happen, you need to connect the PDA to another satellite. I will do this, but you will make a contribution to science in the amount of 10000 rubles.</text>
+		<text>For this to happen, you need to connect the PDA to another satellite. I will do this, but you will make a contribution to science in the amount of 10,000 RU.</text>
 	</string>
 	<string id="jup_scientist_bunker_tech_squads_on_map_upgrade_2">
 		<text>Keep the money.</text>
