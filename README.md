@@ -119,3 +119,4 @@ Mods
 68. Animated detectors (selectively) (Alex_91zA)
 69. PDA Upgrades (Dancher)
 70. Next surge and/or psi storm dialog for Sakharov (Dancher)
+71. Controller Show Phantoms (naxac)
