@@ -6,6 +6,7 @@
 
 local monster_section_name = "psy_dog_weak"
 local psy_attack_distance_sqr = 5*5
+local psy_aura_distance_sqr = 10*10
 
 local DogTimer = 0
 local psy_affect_sound = nil
@@ -20,8 +21,8 @@ local function monster_on_update(npc, st)
 		local actor = db.actor
 		local distance_to_actor = npc:position():distance_to_sqr(actor:position())
 		
-		if (distance_to_actor < psy_attack_distance_sqr) then
-			level.add_pp_effector("psy_antenna.ppe",395,false)
+		if (distance_to_actor < psy_aura_distance_sqr) then
+			level.add_pp_effector("psy_antenna.ppe",395,true)
 		else
 			level.remove_pp_effector(395)
 		end
