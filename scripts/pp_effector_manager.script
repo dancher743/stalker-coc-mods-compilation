@@ -1,0 +1,31 @@
+--
+-- Post-process effectors manager
+-- Added by Dancher
+--
+
+local effectors = {}
+
+function try_add(name, id, is_cyclic)
+	local result = false
+	
+	if (not contains(id)) then
+		add(name, id, is_cyclic)
+		result = true
+	end
+	
+	return result
+end
+
+function add(name, id, is_cyclic)
+	level.add_pp_effector(name, id, is_cyclic)
+	effectors[id] = name
+end
+
+function remove(id)
+	level.remove_pp_effector(id)
+	effectors[id] = nil
+end
+
+function contains(id)
+	return effectors[id]
+end
