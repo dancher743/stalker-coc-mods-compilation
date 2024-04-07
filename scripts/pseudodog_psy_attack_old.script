@@ -1,0 +1,61 @@
+--
+-- Psy dog attack from Build 1935
+-- Author: Charsi, Ю Е Проскудин
+-- Added and reworked by Dancher
+--
+
+local monster_section_name = "psy_dog_weak"
+local psy_attack_distance_sqr = 5*5
+
+local DogTimer = 0
+local psy_affect_sound = nil
+
+local function monster_on_update(npc, st)
+	if (npc:clsid()==clsid.psy_dog_s and npc:section() == monster_section_name) then
+		if (not npc:alive()) then
+			level.remove_pp_effector(395)
+			return
+		end
+		
+		local actor = db.actor
+		local distance_to_actor = npc:position():distance_to_sqr(actor:position())
+		
+		if (distance_to_actor < psy_attack_distance_sqr) then
+			level.add_pp_effector("psy_antenna.ppe",395,false)
+		else
+			level.remove_pp_effector(395)
+		end
+		
+		local time_global = time_global()
+		
+		if (DogTimer < time_global) then
+			local oTarget = npc:get_enemy()
+			local v1 = npc:direction()
+			local v2 = actor:direction()
+			
+			if (oTarget and (oTarget:id()==0) and (v1.x*v2.x)+(v1.z*v2.z)<-0.6 and npc:see(actor) and distance_to_actor<psy_attack_distance_sqr) then
+				level.add_cam_effector("camera_effects\\pseudodog_effect.anm",396,false,"")
+				level.add_pp_effector("duality_circle.ppe",397,false)
+				
+				local h = hit()
+				h.draftsman = npc 
+				h.type = hit.telepatic
+				h.direction = vector():set(0,0,0)
+				h.power = 0.2 
+				h.impulse = 0.0 
+				actor:hit(h)
+				
+				if (psy_affect_sound == nil) then
+					psy_affect_sound = xr_sound.get_safe_sound_object("monsters\\pseudodog\\psy_affect_0",sound_object.s2d)
+				end
+				psy_affect_sound:play(actor,0,sound_object.s2d)
+				
+				DogTimer = time_global + 2500*(1+math.random(-0.2,0.2)) + 700
+			end
+		end
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("monster_on_update",monster_on_update)
+end
