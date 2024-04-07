@@ -11,7 +11,7 @@ local monster_section_name = "psy_dog_weak"
 local psy_affect_sound
 
 local function monster_on_update(npc, st)
-	if (npc:clsid()==clsid.pseudodog_s and npc:section() == monster_section_name) then
+	if (npc:clsid()==clsid.psy_dog_s and npc:section() == monster_section_name) then
 		local time_global = time_global()
 		
 		if (DogTimer < time_global) then
