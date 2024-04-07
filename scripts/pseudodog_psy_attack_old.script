@@ -4,27 +4,29 @@
 -- Added by Dancher
 --
 
-local DogNum
 local DogTimer = 0
-
 local monster_section_name = "psy_dog_weak"
-local psy_affect_sound
+local psy_affect_sound = nil
 
 local function monster_on_update(npc, st)
 	if (npc:clsid()==clsid.psy_dog_s and npc:section() == monster_section_name) then
+		local actor = db.actor
 		local time_global = time_global()
+		local distance_to_actor = npc:position():distance_to(actor:position())
+		
+		if (distance_to_actor < 10 and npc:alive()) then
+			level.add_pp_effector("psy_antenna.ppe",395,false)
+		else
+			level.remove_pp_effector(395)
+		end
 		
 		if (DogTimer < time_global) then
-			local actor = db.actor
 			local oTarget = npc:get_enemy()
 			local v1 = npc:direction()
 			local v2 = actor:direction()
 			
-			if (oTarget and (oTarget:id()==0) and (v1.x*v2.x)+(v1.z*v2.z)<-0.6 and npc:see(actor) and npc:position():distance_to(actor:position())<20) then
-				DogNum = 1
-				
+			if (oTarget and (oTarget:id()==0) and (v1.x*v2.x)+(v1.z*v2.z)<-0.6 and npc:see(actor) and distance_to_actor<5) then
 				level.add_cam_effector("camera_effects\\pseudodog_effect.anm",396,false,"")
-				level.add_pp_effector("psy_antenna.ppe",395,false)
 				level.add_pp_effector("duality_circle.ppe",397,false)
 				
 				local h = hit()
@@ -42,9 +44,6 @@ local function monster_on_update(npc, st)
 				
 				DogTimer = time_global + 2500*(1+math.random(-0.2,0.2)) + 700
 			end
-		elseif (DogNum and DogTimer < (time_global + 2500)) then
-			level.remove_pp_effector(395)
-			DogNum = nil
 		end
 	end
 end
