@@ -27,5 +27,5 @@ function remove(id)
 end
 
 function contains(id)
-	return effectors[id]
+	return effectors[id] ~= nil
 end
