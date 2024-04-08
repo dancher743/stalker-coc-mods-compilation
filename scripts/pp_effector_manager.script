@@ -22,8 +22,10 @@ function add(name, id, is_cyclic)
 end
 
 function remove(id)
-	level.remove_pp_effector(id)
-	effectors[id] = nil
+	if (contains(id)) then
+		level.remove_pp_effector(id)
+		effectors[id] = nil
+	end
 end
 
 function contains(id)
