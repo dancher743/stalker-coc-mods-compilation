@@ -2,6 +2,10 @@
 -- Critical hit from Actor
 -- Added by Dancher
 --
+-- See also:
+--  ui_actor_critical_hit.script
+--  sound_actor_critical_hit.script
+--
 
 local hit_chance_by_rank = {
 	["novice"] 			= 0.06,
@@ -15,23 +19,6 @@ local hit_chance_by_rank = {
 }
 
 local hit_damage = 3.0
-
-local hit_sound_paths = {
-	"actor\\hurt2",
-	"actor\\hurt3",
-	"actor\\hurt5",
-	"actor\\hurt6",
-	"actor\\hurt7"
-}
-
-local function play_hit_sound()
-	local hit_sound_path = hit_sound_paths[math.random(#hit_sound_paths)]
-	local hit_sound = xr_sound.get_safe_sound_object(hit_sound_path)
-	
-	if (hit_sound and not hit_sound:playing()) then
-		hit_sound:play(who,0,sound_object.s2d)
-	end
-end
 
 local function get_hit_chance()
 	local actor_rank = ranks.get_obj_rank_name(db.actor)
@@ -71,7 +58,7 @@ local function obj_on_hit_callback(obj, amount, local_direction, who, bone_index
 	end
 	
 	if (axr_main_options.get_check_option("play_crit_hit_sound")) then
-		play_hit_sound()
+		sound_actor_critical_hit.play_sound()
 	end
 end
 

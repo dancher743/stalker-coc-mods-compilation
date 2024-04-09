@@ -1,0 +1,21 @@
+--
+-- Sound for critical hit from Actor
+-- Added by Dancher
+--
+
+local hit_sound_paths = {
+	"actor\\hurt2",
+	"actor\\hurt3",
+	"actor\\hurt5",
+	"actor\\hurt6",
+	"actor\\hurt7"
+}
+
+function play_sound()
+	local hit_sound_path = hit_sound_paths[math.random(#hit_sound_paths)]
+	local hit_sound = xr_sound.get_safe_sound_object(hit_sound_path)
+	
+	if (hit_sound and not hit_sound:playing()) then
+		hit_sound:play(who,0,sound_object.s2d)
+	end
+end
