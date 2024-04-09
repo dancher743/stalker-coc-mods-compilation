@@ -547,7 +547,10 @@
 		<text>Unique NPC respawn</text>
 	</string>
 	<string id="ui_mm_show_crit_hit_mark">
-		<text>Show crit hit mark</text>
+		<text>Crit hit mark</text>
+	</string>
+	<string id="ui_mm_play_crit_hit_sound">
+		<text>Crit hit sound</text>
 	</string>
 	<string id="ui_mm_companions_invulnerability">
 		<text>Companions invulnerability</text>

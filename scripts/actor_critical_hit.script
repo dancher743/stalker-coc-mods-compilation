@@ -66,8 +66,11 @@ local function obj_on_hit_callback(obj, amount, local_direction, who, bone_index
 	
 	-- printf(string.format("DANCHER | Critical hit on %0.2f Orignal damage is %0.2f.", crit_hit.power, amount))
 	
-	if (axr_main.config:r_value("mm_options","enable_show_crit_hit_mark",1,false) == true) then
+	if (axr_main_options.get_check_option("show_crit_hit_mark")) then
 		ui_actor_critical_hit.show_mark()
+	end
+	
+	if (axr_main_options.get_check_option("play_crit_hit_sound")) then
 		play_hit_sound()
 	end
 end

@@ -550,7 +550,10 @@
 		<text>Респавн важных НПС</text>
 	</string>
 	<string id="ui_mm_show_crit_hit_mark">
-		<text>Показывать крит. удар</text>
+		<text>Крит. удар: показ. метку</text>
+	</string>
+	<string id="ui_mm_play_crit_hit_sound">
+		<text>Крит. удар: проигр. звук</text>
 	</string>
 	<string id="ui_mm_companions_invulnerability">
 		<text>Неуязвимые напарники</text>

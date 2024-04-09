@@ -122,6 +122,7 @@ function opt_menu_on_init(menu)
 	menu.gameplay_options["show_stalkers_on_map"]	= {default=true, 	debug_only=false, 	typ="check"}
 	
 	menu.gameplay_options["show_crit_hit_mark"]		= {default=true, 	debug_only=false, 	typ="check"}
+	menu.gameplay_options["play_crit_hit_sound"]	= {default=true, 	debug_only=false, 	typ="check"}
 	
 	menu.gameplay_options["auto_garbage_collection"]		= {default=true, 	debug_only=false, 	typ="check"}
 	--
