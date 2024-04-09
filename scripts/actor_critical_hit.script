@@ -32,6 +32,19 @@ local function calculate_hit_power(amount)
 	return (a + b) - amount
 end
 
+local function create_hit(amount, local_direction, who, bone_index)
+	local crit_hit = hit()
+	
+	crit_hit.type = hit.fire_wound
+	crit_hit.bone = bone_index
+	crit_hit.power = calculate_hit_power(amount)
+	crit_hit.impulse = 0.0
+	crit_hit.direction = local_direction
+	crit_hit.draftsman = who
+	
+	return crit_hit
+end
+
 local function can_hit(obj, amount, who, bone_index)
 	return IsActor(who) and obj:alive() and type(bone_index) == "number" and bone_index > 0 and math.random() <= get_hit_chance()
 end
@@ -41,14 +54,7 @@ local function obj_on_hit_callback(obj, amount, local_direction, who, bone_index
 		return
 	end
 
-	local crit_hit = hit()
-	crit_hit.type = hit.fire_wound
-	crit_hit.bone = bone_index
-	crit_hit.power = calculate_hit_power(amount)
-	crit_hit.impulse = 0.0
-	crit_hit.direction = local_direction
-	crit_hit.draftsman = who
-	
+	local crit_hit = create_hit(amount, local_direction, who, bone_index)
 	obj:hit(crit_hit)
 	
 	-- printf(string.format("DANCHER | Critical hit on %0.2f Orignal damage is %0.2f.", crit_hit.power, amount))
