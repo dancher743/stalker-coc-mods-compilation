@@ -57,13 +57,12 @@ local function obj_on_hit_callback(obj, amount, local_direction, who, bone_index
 	
 	obj:hit(crit_hit)
 	
-	hit_sound = sound_object(hit_sound_paths[math.random(#hit_sound_paths)])
-	hit_sound:play(who,0,sound_object.s2d)
-	
 	-- printf(string.format("DANCHER | Critical hit on %0.2f Orignal damage is %0.2f.", crit_hit.power, amount))
 	
 	if (axr_main.config:r_value("mm_options","enable_show_crit_hit_mark",1,false) == true) then
 		ui_actor_critical_hit.show_mark()
+		hit_sound = sound_object(hit_sound_paths[math.random(#hit_sound_paths)])
+		hit_sound:play(who,0,sound_object.s2d)
 	end
 end
 
