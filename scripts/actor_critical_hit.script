@@ -3,8 +3,7 @@
 -- Added by Dancher
 --
 
-local hit_chance_by_rank = 
-{
+local hit_chance_by_rank = {
 	["novice"] 			= 0.06,
 	["trainee"] 		= 0.08,
 	["experienced"]		= 0.10,
@@ -14,10 +13,10 @@ local hit_chance_by_rank =
 	["master"]          = 0.18,
 	["legend"]          = 0.20,
 }
+
 local hit_damage = 3.0
 
-local hit_sound_paths = 
-{
+local hit_sound_paths = {
 	"actor\\hurt2",
 	"actor\\hurt3",
 	"actor\\hurt5",
