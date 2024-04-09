@@ -24,7 +24,14 @@ local hit_sound_paths = {
 	"actor\\hurt7"
 }
 
-local hit_sound
+local function play_hit_sound()
+	local hit_sound_path = hit_sound_paths[math.random(#hit_sound_paths)]
+	local hit_sound = xr_sound.get_safe_sound_object(hit_sound_path)
+	
+	if (hit_sound and not hit_sound:playing()) then
+		hit_sound:play(who,0,sound_object.s2d)
+	end
+end
 
 local function get_hit_chance()
 	local actor_rank = ranks.get_obj_rank_name(db.actor)
@@ -61,11 +68,7 @@ local function obj_on_hit_callback(obj, amount, local_direction, who, bone_index
 	
 	if (axr_main.config:r_value("mm_options","enable_show_crit_hit_mark",1,false) == true) then
 		ui_actor_critical_hit.show_mark()
-		
-		if (not hit_sound or not hit_sound:playing()) then
-			hit_sound = sound_object(hit_sound_paths[math.random(#hit_sound_paths)])
-			hit_sound:play(who,0,sound_object.s2d)
-		end
+		play_hit_sound()
 	end
 end
 
