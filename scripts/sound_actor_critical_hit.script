@@ -16,6 +16,6 @@ function play_sound()
 	local hit_sound = xr_sound.get_safe_sound_object(hit_sound_path)
 	
 	if (hit_sound and not hit_sound:playing()) then
-		hit_sound:play(who,0,sound_object.s2d)
+		hit_sound:play_no_feedback(db.actor, sound_object.s2d, 0, vector():set(0, 0, 0), 0.25)
 	end
 end
