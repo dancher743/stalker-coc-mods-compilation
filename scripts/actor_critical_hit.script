@@ -15,7 +15,7 @@ local hit_chance_by_rank = {
 	["veteran"]         = 0.14,
 	["expert"]          = 0.16,
 	["master"]          = 0.18,
-	["legend"]          = 0.20,
+	["legend"]          = 0.20
 }
 
 local hit_damage = 3.0
@@ -57,7 +57,7 @@ local function obj_on_hit_callback(obj, amount, local_direction, who, bone_index
 	local crit_hit = create_hit(amount, local_direction, who, bone_index)
 	obj:hit(crit_hit)
 	
-	-- printf(string.format("DANCHER | Critical hit on %0.2f Orignal damage is %0.2f.", crit_hit.power, amount))
+	-- printf(string.format("DANCHER | actor_critical_hit.script -> Critical damage is %0.2f. Orignal damage is %0.2f.", crit_hit.power, amount))
 	
 	if (axr_main_options.get_check_option("show_crit_hit_mark")) then
 		ui_actor_critical_hit.show_mark()
