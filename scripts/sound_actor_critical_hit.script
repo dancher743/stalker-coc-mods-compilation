@@ -3,10 +3,8 @@
 -- Added by Dancher
 --
 
-local hit_sound_paths
-
-local function init_hit_sound_paths()
-	hit_sound_paths = {
+local function get_hit_sound_paths()
+	return {
 		"actor\\hurt2",
 		"actor\\hurt3",
 		"actor\\hurt5",
@@ -16,10 +14,7 @@ local function init_hit_sound_paths()
 end
 
 function play_sound()
-	if (not hit_sound_paths) then
-		init_hit_sound_paths()
-	end
-	
+	local hit_sound_paths = get_hit_sound_paths()
 	local hit_sound_path = hit_sound_paths[math.random(#hit_sound_paths)]
 	local hit_sound = xr_sound.get_safe_sound_object(hit_sound_path)
 	
