@@ -64,7 +64,7 @@ local function obj_on_hit_callback(obj, amount, local_direction, who, bone_index
 	end
 	
 	if (axr_main_options.get_check_option("play_crit_hit_sound")) then
-		sound_actor_critical_hit.play_sound()
+		sound_actor_critical_hit.play_sound_on_distance(obj:position())
 	end
 end
 
