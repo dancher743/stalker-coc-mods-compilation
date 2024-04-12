@@ -3,6 +3,27 @@
 -- Author: Dancher
 --
 
+local function make_finish_save()
+	local character_name = alife():actor():character_name()
+	local level_name = game.translate_string(level.name())
+	local finish_text = game.translate_string("ui_st_leave_zone_finish_save")
+	
+	local save_name = string.format("%s %s %s", character_name, level_name, finish_text)
+	local save_command = string.format("save %s", save_name)
+	get_console():execute(save_command)
+end
+
+local function finish_game()
+	xr_effects.game_credits()
+	
+	local function postpone_for_next_frame()
+		make_finish_save()
+		xr_effects.game_disconnect()
+	end
+	
+	CreateTimeEvent("leave_zone", "finish_game", 0, postpone_for_next_frame)
+end
+
 local function spawn_on_l13_generators()
 	local x = 81.86
 	local y = 26.80
@@ -18,8 +39,7 @@ local function physic_object_on_use_callback(obj,who)
 	end
 	
 	local function on_yes_button_clicked()
-		xr_effects.game_credits()
-		xr_effects.game_disconnect()
+		finish_game()
 	end
 	
 	ui_generic_dialogs.confirm_dialog_ui("ui_st_leave_zone_confirm", on_yes_button_clicked)
