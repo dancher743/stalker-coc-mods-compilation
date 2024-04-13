@@ -4711,7 +4711,7 @@ function turn_on_and_force(actor, npc, p)
 	end
 	if p[2] == nil then p[2] = 55 end
 	if p[3] == nil then p[3] = 14000 end
-	obj:set_const_force(VEC_Y, p[2], p[3])
+	obj:set_const_force(VEC_UP, p[2], p[3])
 	obj:start_particles("weapons\\light_signal", "link")
 	obj:get_hanging_lamp():turn_on()
 end
@@ -7146,7 +7146,7 @@ function force_obj(actor, npc, p)
 	end
 	if p[2] == nil then p[2] = 20 end
 	if p[3] == nil then p[3] = 100 end
-	obj:set_const_force(VEC_Y, p[2], p[3])
+	obj:set_const_force(VEC_UP, p[2], p[3])
 end
 
 function pri_a28_check_zones()

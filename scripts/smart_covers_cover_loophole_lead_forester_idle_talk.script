@@ -7,8 +7,8 @@ move	= temp
 function get_smart_cover_cover_loophole_lead_forester_idle_talk()
 	return {
 			loopholes = {
-				smart_covers_loophole_lead_forester_idle.get_loophole_lead_forester_idle ("forester_idle",	VEC_ZERO, VEC_X,	VEC_X),
-				smart_covers_loophole_lead_forester_talk.get_loophole_lead_forester_talk ("forester_talk",	VEC_ZERO, VEC_X,	VEC_X)
+				smart_covers_loophole_lead_forester_idle.get_loophole_lead_forester_idle ("forester_idle",	VEC_ZERO, VEC_RIGHT,	VEC_RIGHT),
+				smart_covers_loophole_lead_forester_talk.get_loophole_lead_forester_talk ("forester_talk",	VEC_ZERO, VEC_RIGHT,	VEC_RIGHT)
 			},
 
 	

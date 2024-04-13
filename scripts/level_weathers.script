@@ -633,7 +633,7 @@ function WeatherManager:meteorites()
 		else
 			local actor_pos = db.actor:position()
 			local particle_pos = vector():set(actor_pos.x, actor_pos.y + 500, actor_pos.z)
-			self.meteorites_particle:move_to(particle_pos,VEC_Z)
+			self.meteorites_particle:move_to(particle_pos,VEC_FORWARD)
 		end
 	else
 		self:stop_meteorites()

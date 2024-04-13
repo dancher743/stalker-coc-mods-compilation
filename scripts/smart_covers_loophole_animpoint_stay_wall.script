@@ -2,7 +2,7 @@ function get_loophole(id, position, fov_direction, enter_direction)
 	return {	id = id,
 				fov_position = position,
 				fov_direction = fov_direction,
-				danger_fov_direction  = VEC_X_NEG,
+				danger_fov_direction  = VEC_LEFT,
 				enter_direction = enter_direction,
 				usable = true,
 				fov	= 45.0,
