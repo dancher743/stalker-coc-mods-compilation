@@ -84,7 +84,9 @@ local sr_camp_states = {
 											end
 										end
 									end
-									return true
+									if(n>1) then
+										return true
+									end
 								end
 								return false
 							end
