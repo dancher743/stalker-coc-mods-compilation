@@ -816,7 +816,7 @@ function CSurgeManager:update()
 		            h.type = hit.telepatic
 		            h.power = self:hit_power(hitPower, h.type)
 		            h.impulse = 0.0
-		            h.direction = vector():set(0,0,1)
+		            h.direction = VEC_Z
 		            h.draftsman = db.actor
 					if(xr_logic.pick_section_from_condlist(db.actor, nil, self.survive)=="true") then
 						if(db.actor.health<=h.power) then
@@ -841,7 +841,7 @@ function CSurgeManager:update()
 			for k,wave in pairs(self.blowout_waves) do
 				if wave.effect:playing() then
 					local wave_pos= vector():set(actor_pos.x, actor_pos.y/2, wave.inited_pos.z-(diff_game_sec-wave.inited_time)*3)
-					wave.effect:move_to(wave_pos,vector():set(0,0,0))
+					wave.effect:move_to(wave_pos,VEC_ZERO)
 					local wavevoltemp=(250-math.abs(actor_pos.z-wave_pos.z))/250
 					if (wavevoltemp>wavevol) then
 						wavevol=wavevoltemp
@@ -872,7 +872,7 @@ function CSurgeManager:update()
 				            h.type = hit.telepatic
 				            h.power = self:hit_power(2, h.type)+0.5
 				            h.impulse = 0.0
-				            h.direction = vector():set(0,0,1)
+				            h.direction = VEC_Z
 				            h.draftsman = db.actor
 							if(xr_logic.pick_section_from_condlist(db.actor, nil, self.survive)=="true") then
 								if(db.actor.health<=h.power) then
@@ -1190,7 +1190,7 @@ function CSurgeManager:kill_crows_at_pos(pos)
 	h.type = hit.fire_wound
 	h.power = 0.9
 	h.impulse = 0.0
-	h.direction = vector():set(0,0,1)
+	h.direction = VEC_Z
 	h.draftsman = db.actor
 	for k,v in pairs(bind_crow.crow_storage) do
 		local crow = level.object_by_id(v)
@@ -1414,7 +1414,7 @@ function CSurgeManager:kill_all_unhided()
 	h.type = hit.fire_wound
 	h.power = 0.9
 	h.impulse = 0.0
-	h.direction = vector():set(0,0,1)
+	h.direction = VEC_Z
 	h.draftsman = db.actor
 	for k,id in pairs(bind_crow.crow_storage) do
 		self:delay_kill_crow(id,h)

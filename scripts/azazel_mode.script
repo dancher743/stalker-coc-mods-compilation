@@ -356,7 +356,7 @@ function actor_on_before_death(whoID,flags)
 		safe_release_manager.release(se_obj)
 		alife_storage_manager.get_state().azazel_death = true
 		local function tele_me_now(id)
-			ChangeLevel(pos,lvid,gvid,vector():set(0,0,0))
+			ChangeLevel(pos,lvid,gvid,VEC_ZERO)
 			return true
 		end
 		CreateTimeEvent(0,"tele",0,tele_me_now,se_obj.id)

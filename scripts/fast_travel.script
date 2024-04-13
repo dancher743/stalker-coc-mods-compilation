@@ -173,7 +173,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 		axr_companions.teleport_companions_to_actor_in_online()
 		get_hud():HidePdaMenu()
 	else
-		ChangeLevel(se_obj.position,se_obj.m_level_vertex_id,se_obj.m_game_vertex_id,vector():set(0,0,0))
+		ChangeLevel(se_obj.position,se_obj.m_level_vertex_id,se_obj.m_game_vertex_id,VEC_ZERO)
 	end
 end
 

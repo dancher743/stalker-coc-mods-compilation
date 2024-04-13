@@ -363,7 +363,7 @@ local function actor_on_first_update(binder,delta)
 	end
 
 	if start_pos and #start_pos == 3 then
-		ChangeLevel(start_pos[3],start_pos[1],start_pos[2],vector():set(0,0,0))
+		ChangeLevel(start_pos[3],start_pos[1],start_pos[2],VEC_ZERO)
 	end
 end
 

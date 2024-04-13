@@ -331,7 +331,7 @@ function motivator_binder:death_callback(victim, who)
 	end
 	
 	trade_manager.on_npc_death(self.object)
-	self:hit_callback(victim, 1, vector():set(0,0,0), who, "from_death_callback")
+	self:hit_callback(victim, 1, VEC_ZERO, who, "from_death_callback")
 
 	local id = victim:id()
 	xr_combat_ignore.fighting_with_actor_npcs[id] = nil

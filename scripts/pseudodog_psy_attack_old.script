@@ -43,7 +43,7 @@ local function monster_on_update(npc, st)
 				local h = hit()
 				h.draftsman = npc 
 				h.type = hit.telepatic
-				h.direction = vector():set(0,0,0)
+				h.direction = VEC_ZERO
 				h.power = 0.2 
 				h.impulse = 0.0 
 				actor:hit(h)

@@ -278,7 +278,7 @@ function JumpToLevel(new_level)
 	for id,smart in pairs(db.smart_terrain_by_id) do
 		cvertex = smart and gg:vertex(smart.m_game_vertex_id)
 		if (cvertex and sim:level_name(cvertex:level_id()) == new_level) then
-			ChangeLevel(cvertex:level_point(),cvertex:level_vertex_id(),smart.m_game_vertex_id,vector():set(0,0,0))
+			ChangeLevel(cvertex:level_point(),cvertex:level_vertex_id(),smart.m_game_vertex_id,VEC_ZERO)
 			return true
 		end
 	end
@@ -289,7 +289,7 @@ function JumpToLevel(new_level)
 			cvertex = gg:vertex(gvid)
 			lvl = sim:level_name(cvertex:level_id())
 			if (lvl == new_level) then
-				ChangeLevel(cvertex:level_point(),cvertex:level_vertex_id(),gvid,vector():set(0,0,0))
+				ChangeLevel(cvertex:level_point(),cvertex:level_vertex_id(),gvid,VEC_ZERO)
 				return true
 			end
 		else

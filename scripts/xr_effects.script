@@ -4487,7 +4487,7 @@ end
 
 function hit_actor(actor, npc, p)
 	local h = hit()
-	h.direction = vector():set(0,0,0)
+	h.direction = VEC_ZERO
 	h.draftsman = actor
 	h.type = hit.shock
 	h:bone("bip01_spine")
@@ -4711,7 +4711,7 @@ function turn_on_and_force(actor, npc, p)
 	end
 	if p[2] == nil then p[2] = 55 end
 	if p[3] == nil then p[3] = 14000 end
-	obj:set_const_force(vector():set(0,1,0), p[2], p[3])
+	obj:set_const_force(VEC_Y, p[2], p[3])
 	obj:start_particles("weapons\\light_signal", "link")
 	obj:get_hanging_lamp():turn_on()
 end
@@ -7146,7 +7146,7 @@ function force_obj(actor, npc, p)
 	end
 	if p[2] == nil then p[2] = 20 end
 	if p[3] == nil then p[3] = 100 end
-	obj:set_const_force(vector():set(0,1,0), p[2], p[3])
+	obj:set_const_force(VEC_Y, p[2], p[3])
 end
 
 function pri_a28_check_zones()
@@ -7349,7 +7349,7 @@ function make_a_wish(actor,npc,p)
 --			local gvid = spawn_path:game_vertex_id(0)
 --			local gg = game_graph()
 --			if (gvid and gg:valid_vertex_id(gvid)) then
---				ChangeLevel(pos,lvid,gvid,vector():set(0,0,0))
+--				ChangeLevel(pos,lvid,gvid,VEC_ZERO)
 --			end
 --		end
 
@@ -7357,7 +7357,7 @@ function make_a_wish(actor,npc,p)
 --		Goodwill is increased with the Monolith and Zombified faction to ensure they aren't hostile.
 		inc_faction_goodwill_to_actor(db.actor, nil, {"monolith", 5000})
 		inc_faction_goodwill_to_actor(db.actor, nil, {"zombied", 5000})
-		ChangeLevel(vector():set(266.99, 0.00, -131.07), 310937, 181, vector():set(0,0,0))
+		ChangeLevel(vector():set(266.99, 0.00, -131.07), 310937, 181, VEC_ZERO)
 		return
 	end
 
