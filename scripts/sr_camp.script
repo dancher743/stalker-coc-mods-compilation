@@ -21,21 +21,16 @@ local sr_camp_states = {
 							min_time = 30000,
 							max_time = 120000,
 							timeout = 0,
-							transitions = {"idle","guitar","story"},
+							transitions = {"idle","story"},
 							precondition = function (camp)
 								if(#harmonica_table>0) then
-									local n = 0
-									for k,v in pairs(camp.npc) do
-										n = n + 1
-									end
-									if(n>1) then
-										for k,v in pairs(camp.npc) do				
-											local scheme = db.storage[k] and db.storage[k].active_scheme and  db.storage[k][db.storage[k].active_scheme]
-											local npc = db.storage[k] and db.storage[k].object
-											if (npc) then
-												if(v.harmonica==npc_role.director) and (scheme ~= nil and scheme.base_action == scheme.description) and not xr_meet.is_meet(npc) then
-													return true
-												end
+									for id,v in pairs(camp.npc) do
+										local st = db.storage[id]
+										local npc = st and st.object
+										if (npc) then
+											local scheme = st and st.active_scheme and st[st.active_scheme]
+											if(v.harmonica==npc_role.director) and (scheme ~= nil and scheme.base_action == scheme.description) and not xr_meet.is_meet(npc) then
+												return true
 											end
 										end
 									end
@@ -49,21 +44,16 @@ local sr_camp_states = {
 							min_time = 30000,
 							max_time = 120000,
 							timeout = 0,
-							transitions = {"idle","guitar","story"},
+							transitions = {"idle","story"},
 							precondition = function (camp)
 								if(#guitar_table>0) then
-									local n = 0
-									for k,v in pairs(camp.npc) do
-										n = n + 1
-									end
-									if(n>1) then
-										for k,v in pairs(camp.npc) do
-											local scheme = db.storage[k] and db.storage[k].active_scheme and db.storage[k][db.storage[k].active_scheme]
-											local npc = db.storage[k] and db.storage[k].object
-											if (npc) then
-												if(v.guitar==npc_role.director) and (scheme ~= nil and scheme.base_action == scheme.description) and not xr_meet.is_meet(npc) then
-													return true
-												end
+									for id,v in pairs(camp.npc) do
+										local st = db.storage[id]
+										local npc = st and st.object
+										if (npc) then
+											local scheme = st and st.active_scheme and st[st.active_scheme]
+											if(v.guitar==npc_role.director) and (scheme ~= nil and scheme.base_action == scheme.description) and not xr_meet.is_meet(npc) then
+												return true
 											end
 										end
 									end
@@ -80,17 +70,21 @@ local sr_camp_states = {
 							transitions = {"idle","harmonica","guitar","story"},
 							precondition = function (camp)
 								if(#story_table>0) then
-									local n = 0
-									for k,v in pairs(camp.npc) do
-									
-										local npc = db.storage[k] and db.storage[k].object
-										if npc ~= nil and not xr_meet.is_meet(npc) then
-											n = n + 1
+									for id,v in pairs(camp.npc) do
+										local st = db.storage[id]
+										local npc = st and st.object
+										if (npc) then
+											local scheme = st and st.active_scheme and st[st.active_scheme]
+											if (v.story==npc_role.director) then
+												if (scheme == nil or scheme.base_action ~= scheme.description) or (xr_meet.is_meet(npc)) then 
+													return false
+												end
+											else
+												return true
+											end
 										end
 									end
-									if(n>1) then
-										return true
-									end
+									return true
 								end
 								return false
 							end
@@ -185,10 +179,10 @@ function CCampManager:update()
 		local talkers = {}
 		for k,v in pairs(self.npc) do
 			npc_count = npc_count + 1
-			table.insert(talkers, k)
+			talkers[npc_count] = k
 		end
-		if(npc_count~=0) then
-			self.idle_talker = talkers[math.random(#talkers)]
+		if(npc_count > 0) then
+			self.idle_talker = talkers[math.random(npc_count)]
 			xr_sound.set_sound_play(self.idle_talker, "state")
 		end
 	end
