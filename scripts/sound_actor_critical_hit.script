@@ -28,6 +28,6 @@ function play_sound_on_distance(obj_position)
 		
 		-- printf(string.format("DANCHER | sound_actor_critical_hit.script -> Distance: %0.0f, volume: %0.2f.", distance, volume))
 		
-		hit_sound:play_no_feedback(actor, sound_object.s2d, 0, vector():set(0, 0, 0), volume)
+		hit_sound:play_no_feedback(actor, sound_object.s2d, 0, VEC_ZERO, volume)
 	end
 end
