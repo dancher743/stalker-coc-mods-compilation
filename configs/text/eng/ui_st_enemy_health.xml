@@ -52,6 +52,6 @@
 		<text>Tushkano</text>
 	</string>
 	<string id="ui_st_enemy_health_zombie">
-		<text>Zombie</text>
+		<text>Civilian zombie</text>
 	</string>
 </string_table>
