@@ -4,14 +4,17 @@
 -- Added by Dancher
 --
 
-local upd_time = 0
+local upd_timers = {}
 
 local function monster_on_update(npc, st)
 	if (npc:clsid() == clsid.controller_s and npc:alive() == true) then
+		local npc_id = npc:id()
 		local time_global = time_global()
+		local timer = upd_timers[npc_id] or 0
 		
-		if (time_global > upd_time) then
-			upd_time = time_global + math.random(3000, 6000)
+		if (timer < time_global) then
+			timer = time_global + math.random(3000, 6000)
+			upd_timers[npc_id] = timer
 			local dist = npc:position():distance_to(db.actor:position())
 			
 			if (dist < 50) then
