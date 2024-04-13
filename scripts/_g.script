@@ -1790,8 +1790,10 @@ end
 -----------------------------------------
 VEC_ZERO 	= vector():set(0,0,0)
 VEC_X 		= vector():set(1,0,0)
+VEC_X_NEG 	= vector():set(-1,0,0)
 VEC_Y 		= vector():set(0,1,0)
 VEC_Z 		= vector():set(0,0,1)
+VEC_Z_NEG 	= vector():set(0,0,-1)
 
 function IsEocMode()
 	return alife_storage_manager.get_state().enable_eoc_mode == true or 

@@ -7,7 +7,7 @@ move	= temp
 function get_smart_cover()
 	return {
 			loopholes = {
-				smart_covers_loophole_prone.get_loophole("prone",	vector():set(-1,0,0))
+				smart_covers_loophole_prone.get_loophole("prone",	VEC_X_NEG)
 			},
 
 			transitions = {
