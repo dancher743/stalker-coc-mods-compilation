@@ -7,9 +7,8 @@ local sr_camp_states = {
 				idle = {
 							director_state = nil,
 							general_state = "idle",
-							min_time = 30000,
-							max_time = 30000,
-							timeout = 0,
+							min_time = 25000,
+							max_time = 120000,
 							transitions = {"harmonica","guitar","story"},
 							precondition = function(camp)
 								return true
@@ -18,10 +17,7 @@ local sr_camp_states = {
 				harmonica = {
 							director_state = "play_harmonica",
 							general_state = "listen",
-							min_time = 30000,
-							max_time = 120000,
-							timeout = 0,
-							transitions = {"idle","story"},
+							transitions = {"idle"},
 							precondition = function (camp)
 								if(#harmonica_table>0) then
 									for id,v in pairs(camp.npc) do
@@ -41,10 +37,7 @@ local sr_camp_states = {
 				guitar = {
 							director_state = "play_guitar",
 							general_state = "listen",
-							min_time = 30000,
-							max_time = 120000,
-							timeout = 0,
-							transitions = {"idle","story"},
+							transitions = {"idle"},
 							precondition = function (camp)
 								if(#guitar_table>0) then
 									for id,v in pairs(camp.npc) do
@@ -64,12 +57,10 @@ local sr_camp_states = {
 				story = {
 							director_state = "tell",
 							general_state = "listen",
-							min_time = 30000,
-							max_time = 120000,
-							timeout = 0,
-							transitions = {"idle","harmonica","guitar","story"},
+							timeout = 5000,
+							transitions = {"idle"},
 							precondition = function (camp)
-								if(#story_table>0) then
+								if (#story_table>0) then
 									for id,v in pairs(camp.npc) do
 										local st = db.storage[id]
 										local npc = st and st.object
@@ -88,7 +79,7 @@ local sr_camp_states = {
 								end
 								return false
 							end
-						},
+						}
 }
 
 --------------------------------------------------------------------------------
@@ -101,6 +92,8 @@ function CCampManager:__init(object)
 	self.object = object
 
 	self.npc = {}
+	self.npc_count = 0
+	
 	self.schemes = {}
 	-- Хранилище для режиссера лагеря. Режиссерем является сталкер, затеявший необычное поведение
 	self.director = nil
@@ -117,26 +110,29 @@ function CCampManager:__init(object)
 end
 -- Переключает состояния кемпа
 function CCampManager:update()
-
+	if (self.npc_count == 0) then
+		return
+	end
+	
 	-- Если саундменеджер говорит какую то историю - ждем окончания.
 	if not self.sound_manager:is_finished() then
 		self.sound_manager:update()
 		return
 	end
 
-	if self.sound_manager_started == false then
+	if (self.sound_manager_started == false) then
+	
+		if (self.timeout ~= 0 and time_global() > self.timeout) then
+			self:set_story()
+			self.timeout = 0
+		end
+		
 		return
 	end
 
-	-- To stop air guitar
-	if (self.active_state == "guitar" or self.active_state == "harmonica") then
-		self.director = nil
-		self.active_state_time = 0
-	end
-	
 	-- Если кто-то говорит айдловую фразу, ждем пока он договорит.
-	if(self.idle_talker~=nil) then
-		if(xr_sound.sound_table[self.idle_talker]) then
+	if (self.idle_talker ~= nil) then
+		if (xr_sound.sound_table[self.idle_talker]) then
 			return
 		else
 			self.idle_talker = nil
@@ -148,10 +144,7 @@ function CCampManager:update()
 	if (self.active_state_time < time_global()) then
 		self:set_next_state()
 		if not self:get_director() then
-			self.active_state = "idle"
-			for k,v in pairs(self.npc) do
-				v.state = self.active_state
-			end
+			self:set_next_state("idle")
 		end
 
 		self.sound_manager_started = false
@@ -165,16 +158,12 @@ function CCampManager:update()
 				meet.npc_is_camp_director = self.director == k
 			end
 		end
-	end
-
-	-- Выбираем новую тему для саундменеджера (Для гитары и гармошки нужно будет юзать другой метод, чтобы не начали играть звук до того, как достанут инструмент)
-	if(self.timeout~=0) and (self.timeout<=time_global()) then
-		self:set_story()
-		self.timeout = 0
+		
+		--printf("%s [%s]",self.object:name(),self.active_state)
 	end
 
 	-- Болтовня в айдле
-	if(self.active_state=="idle") then
+	if (self.active_state=="idle") then
 		local npc_count = 0
 		local talkers = {}
 		for k,v in pairs(self.npc) do
@@ -187,52 +176,45 @@ function CCampManager:update()
 		end
 	end
 end
-function CCampManager:set_next_state()
-
+function CCampManager:set_next_state(new_state)
 	-- altered to just be completely random choice, the old way just skews chance to whatever was first in table
 	local transitions = sr_camp_states[self.active_state].transitions
-	local new_state = transitions[math.random(#transitions)]
+	new_state = new_state or transitions[math.random(#transitions)]
 	
 	-- We could technically check precondition for each state before choosing, 
 	-- but it is very likely if one precondition fails the others will too (xr_meet) so it would be a waste
 	self.active_state = sr_camp_states[new_state].precondition(self) and new_state or "idle"
+	self.active_state_time = time_global()+math.random(sr_camp_states[self.active_state].min_time or 0, sr_camp_states[self.active_state].max_time or 1)
 	
-	for k,v in pairs(self.npc) do
-		v.state = self.active_state
-	end
-	
-	self.active_state_time = time_global()+math.random(sr_camp_states[self.active_state].min_time, sr_camp_states[self.active_state].max_time)
-	self.timeout = time_global()+sr_camp_states[self.active_state].timeout
+	local timeout = sr_camp_states[self.active_state].timeout or 0
+	self.timeout = time_global() + timeout
 end
 function CCampManager:get_director()
-	if(self.active_state=="idle") then
+	if (self.active_state=="idle") then
 		self.director = nil
 		return
 	end
 	local directors = {}
 	local npc_count = 0
 	for k,v in pairs(self.npc) do
-		npc_count = npc_count + 1
 		local storage = db.storage[k]
 		if storage ~= nil then
 			local scheme = storage.active_scheme and storage[storage.active_scheme]
 			local npc = storage.object
-			if(v[self.active_state]==npc_role.director) and (scheme ~= nil and scheme.base_action == scheme.description) and not xr_meet.is_meet(npc) then
-				table.insert(directors, k)
+			if not (xr_meet.is_meet(npc)) then
+				if (v[self.active_state]==npc_role.director) then
+					if (scheme and scheme.base_action == scheme.description) then
+						table.insert(directors, k)
+					end
+				end
 			end
 		end
 	end
-	if(npc_count==0) then
+	if (#directors == 0) then
 		self.director = nil
 		return
 	end
-	if(#directors<1) then
-		return
-	elseif(#directors==1) then
-		self.director = directors[1]
-	else
-		self.director = directors[math.random(#directors)]
-	end
+	self.director = directors[math.random(#directors)]
 	return self.director
 end
 function CCampManager:set_story()
@@ -240,6 +222,7 @@ function CCampManager:set_story()
 		self.sound_manager:set_storyteller(self.director)
 		self.sound_manager:set_story(story_table[math.random(#story_table)])
 		self.sound_manager_started = true
+		self.sound_manager:update()
 	elseif(self.active_state=="idle") then
 		self.sound_manager_started = true
 	end
@@ -252,20 +235,22 @@ function CCampManager:get_camp_action(npc_id)
 	if(self.npc[npc_id]==nil) then
 		return
 	end
-	return self.npc[npc_id].state, self.director==npc_id
+	return self.active_state, self.director==npc_id
 end
 -- Регистрит персонажа в кемп
 function CCampManager:register_npc(npc_id)
 --	local npc_id = npc:id()
 	--printf("Register NPC to camp %s", self.object:id())
-	self.npc[npc_id] = {state = self.active_state}
+	self.npc[npc_id] = {}
+	self.npc_count = self.npc_count + 1
 	db.storage[npc_id].registred_camp = self.object:id()
 
 	-- При регистрации персонажа, проверяем какие роли он может выполнять.
 	for k,v in pairs(sr_camp_states) do
 		local role = self:get_npc_role(npc_id, k)
 		if(role==npc_role.noone) then
-			printf("Wrong role for npc[%s] with id[%d] in camp [%s]!!!", npc:name(), npc_id, self.object:name())
+			local se_obj = npc_id and alife_object(npc_id)
+			printf("Wrong role for npc[%s] with id[%d] in camp [%s]!!!", se_obj and se_obj:name(), npc_id, self.object:name())
 		end
 		self.npc[npc_id][k] = role
 	end
@@ -282,14 +267,12 @@ function CCampManager:unregister_npc(npc_id)
 		self.director = nil
 		
 		self.active_state = "idle"
-		for k,v in pairs(self.npc) do
-			v.state = self.active_state
-		end		
 	end
 
 
 	db.storage[npc_id].registred_camp = nil
 	self.npc[npc_id] = nil
+	self.npc_count = self.npc_count - 1
 	self.sound_manager:unregister_npc(npc_id)
 end
 function CCampManager:get_npc_role(npc_id, state)
