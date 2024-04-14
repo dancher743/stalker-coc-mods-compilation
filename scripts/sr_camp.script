@@ -21,7 +21,7 @@ local sr_camp_states = {
 							min_time = 30000,
 							max_time = 120000,
 							timeout = 0,
-							transitions = {"idle","guitar","story"},
+							transitions = {"idle","story"},
 							precondition = function (camp)
 								if(#harmonica_table>0) then
 									local n = 0
@@ -49,7 +49,7 @@ local sr_camp_states = {
 							min_time = 30000,
 							max_time = 120000,
 							timeout = 0,
-							transitions = {"idle","guitar","story"},
+							transitions = {"idle","story"},
 							precondition = function (camp)
 								if(#guitar_table>0) then
 									local n = 0
