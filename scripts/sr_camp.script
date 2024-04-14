@@ -1,6 +1,7 @@
 local npc_role = {noone=0, listener=1, director=2}
 local camp_ini = ini_file("scripts\\camp.ltx")
 local story_table = parse_names(camp_ini:r_string_ex("camp", "stories") or "test_story")
+local story_communities_table = nil
 local guitar_table = parse_names(camp_ini:r_string_ex("camp", "guitar_themes") or "test_guitar")
 local harmonica_table = parse_names(camp_ini:r_string_ex("camp", "harmonica_themes") or "test_harmonica")
 local sr_camp_states = {
@@ -81,14 +82,29 @@ local sr_camp_states = {
 							precondition = function (camp)
 								if(#story_table>0) then
 									local n = 0
+									local all_communities_avail = true
 									for k,v in pairs(camp.npc) do
 									
 										local npc = db.storage[k] and db.storage[k].object
 										if npc ~= nil and not xr_meet.is_meet(npc) then
 											n = n + 1
 										end
+										
+										if (story_communities_table == nil) then
+											story_communities_table = {}
+											local temp_table = parse_names(camp_ini:r_string_ex("camp", "stories_avail_communities") or "")
+											for _,v in ipairs(temp_table) do
+												story_communities_table[v] = true
+											end
+										end
+
+										local npc_community = character_community(npc)
+										if (not story_communities_table[npc_community]) then
+											all_communities_avail = false
+											break
+										end
 									end
-									if(n>1) then
+									if(n>1 and all_communities_avail) then
 										return true
 									end
 								end
