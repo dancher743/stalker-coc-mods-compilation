@@ -73,7 +73,7 @@ local sr_camp_states = {
 						 },
 				story = {
 							director_state = "tell",
-							general_state = "listen",
+							general_state = "teller",
 							min_time = 30000,
 							max_time = 120000,
 							timeout = 0,

@@ -118,23 +118,14 @@ function sound_manager:update()
 
 	elseif next_phrase.who == "reaction" then
 		--' Фраза кого угодно, кроме рассказчика
-		local teller_id = 0
-		for k,v in pairs(self.npc) do
-			if v.npc_id == self.storyteller then
-				teller_id = k
-				break
+		local npc_ids = {}
+		for _,v in ipairs(self.npc) do
+			local npc_id = v.npc_id
+			if npc_id ~= self.storyteller then
+				table.insert(npc_ids, npc_id)
 			end
 		end
-
-		if tn >= 2 then
-			local id = math.random(1,tn-1)
-			if id >= teller_id then
-				id = id + 1
-			end
-			npc = self.npc[id].npc_id
-		else
-			npc = self.npc[1].npc_id
-		end
+		npc = utils.pick(npc_ids)
 	elseif next_phrase.who == "reaction_all" then
 		local npc_id = nil
 		for k,v in pairs(self.npc) do
