@@ -120,6 +120,7 @@ function CCampManager:__init(object)
 	self.active_state_time = 0
 	self.timeout = 0
 	self.idle_talker = nil
+	self.last_story = nil
 end
 -- Переключает состояния кемпа
 function CCampManager:update()
@@ -243,9 +244,11 @@ function CCampManager:get_director()
 end
 function CCampManager:set_story()
 	if(self.active_state=="story") then
+		local story = utils.pick_without(self.last_story, story_table)
 		self.sound_manager:set_storyteller(self.director)
-		self.sound_manager:set_story(story_table[math.random(#story_table)])
+		self.sound_manager:set_story(story)
 		self.sound_manager_started = true
+		self.last_story = story
 	elseif(self.active_state=="idle") then
 		self.sound_manager_started = true
 	end
