@@ -955,3 +955,23 @@ function get_hours_elapsed()
 	local hours = math.floor(seconds/60/60)
 	return hours
 end
+
+function pick_without(value_to_exclude, source_table)
+	if (#source_table == 1 and source_table[1] == value_to_exclude) then
+	    return nil
+    end
+	
+    local result = nil
+	
+    while result == nil or result == value_to_exclude do
+		result = pick(source_table)
+	end
+	
+	return result
+end
+
+function pick(source_table)
+	local count = #source_table
+	local index = count > 1 and math.random(count) or 1
+	return source_table[index]
+end
