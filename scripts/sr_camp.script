@@ -260,7 +260,14 @@ function CCampManager:get_director()
 end
 function CCampManager:set_story()
 	if(self.active_state=="story") then
-		local story = utils.pick_without(self.last_story, story_table)
+		local story = nil
+		if (#story_table == 0) then
+			story = "test_story"
+		elseif (#story_table == 1) then
+			story = story_table[1]
+		elseif (#story_table > 1) then
+			story = utils.pick_without(self.last_story, story_table)
+		end
 		self.sound_manager:set_storyteller(self.director)
 		self.sound_manager:set_story(story)
 		self.sound_manager_started = true
