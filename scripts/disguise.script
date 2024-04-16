@@ -52,6 +52,9 @@ local patch_sections = {
 	["merc_patch"] 			= "killer"
 }
 
+local can_update_npc = false
+local can_update_actor = false
+
 local actor
 
 function on_game_start()
@@ -99,10 +102,18 @@ function actor_update()
 		return
 	end
 
+	local patch_in_slot = get_patch_in_slot()
+	
+	if (not can_update_actor and not prev_patch_in_slot and not patch_in_slot) then
+		return
+	end
+	
+	can_update_actor = true
+
 	local actor_community = utils.get_actor_community()
 
 	update_default_faction(actor_community)
-	disguise_by_patch(actor_community)
+	disguise_by_patch(patch_in_slot, actor_community)
 end
 
 function get_patch_in_slot()
@@ -117,8 +128,7 @@ function update_default_faction(actor_community)
 	default_faction = actor_community
 end
 
-function disguise_by_patch(actor_community)
-	local patch_in_slot = get_patch_in_slot()
+function disguise_by_patch(patch_in_slot, actor_community)
 	local has_actor_disguised = has_actor_disguised(actor_community)
 	local disguise_tip_type = disguise_news.disguise_tip_type
 	
@@ -135,6 +145,7 @@ function disguise_by_patch(actor_community)
 			change_actor_community(default_faction)
 			actor_community = default_faction
 			has_actor_disguised = false
+			can_update_npc = true
 			disguise_news.send_disguise_tip(disguise_tip_type.returned, previous_community)
 		end
 	end
@@ -150,6 +161,7 @@ function disguise_by_patch(actor_community)
 				change_actor_community(patch_community)
 				actor_community = patch_community
 				has_actor_disguised = true
+				can_update_npc = true
 				if patch_community ~= default_faction then
 					disguise_news.send_disguise_tip(disguise_tip_type.changed, patch_community)
 				end
@@ -187,7 +199,9 @@ end
 
 function npc_update()
 	
-	if not default_faction or not actor then return end
+	if (not can_update_npc or not default_faction or not actor) then 
+		return
+	end
 	
 	for i=1, #db.OnlineStalkers do
 		local st = db.storage[db.OnlineStalkers[i]]
