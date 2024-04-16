@@ -52,19 +52,11 @@ local patch_sections = {
 	["merc_patch"] 			= "killer"
 }
 
+local actor
+
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
-	
-	local function update()
-		actor_update()
-		npc_update()
-		ui_disguise.show(main_hud_shown())
-		ResetTimeEvent("disguise","update",update_rate)
-	end
-	CreateTimeEvent("disguise","update",update_rate,update)
-	
 	RegisterScriptCallback("on_game_load",on_game_load)
-	
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
 end
@@ -73,7 +65,7 @@ function on_game_load()
 	--printf("DBG on_game_load")
 	local defaults = {
 		disguise_system = {
-			ds_default_faction = default_faction or character_community(db.actor):sub(7) or "stalker",
+			ds_default_faction = default_faction or character_community(actor):sub(7) or "stalker",
 			ds_last_seen = last_seen,
 			ds_suspicion = suspicion,
 			ds_callout = callout,
@@ -85,15 +77,25 @@ function on_game_load()
 	--printf("DBG default " .. (default_faction or "?"))
 end
 
+local function run_update()
+	local function update()
+		actor_update()
+		npc_update()
+		ui_disguise.show(main_hud_shown())
+		ResetTimeEvent("disguise","update",update_rate)
+	end
+	CreateTimeEvent("disguise","update",update_rate,update)
+end
+
 function actor_on_first_update()
-    prev_patch_in_slot = db.actor:item_in_slot(patch_slot_number)
+	actor = db.actor
+    prev_patch_in_slot = get_patch_in_slot()
+	run_update()
 end
 
 function actor_update()
-	
-	local actor = db.actor
-	
-	if not actor:alive() then
+
+	if (not actor:alive()) then
 		return
 	end
 
@@ -101,6 +103,10 @@ function actor_update()
 
 	update_default_faction(actor_community)
 	disguise_by_patch(actor_community)
+end
+
+function get_patch_in_slot()
+	return actor:item_in_slot(patch_slot_number)
 end
 
 function update_default_faction(actor_community)	
@@ -112,7 +118,7 @@ function update_default_faction(actor_community)
 end
 
 function disguise_by_patch(actor_community)
-	local patch_in_slot = db.actor:item_in_slot(patch_slot_number)
+	local patch_in_slot = get_patch_in_slot()
 	local has_actor_disguised = has_actor_disguised(actor_community)
 	local disguise_tip_type = disguise_news.disguise_tip_type
 	
@@ -176,12 +182,12 @@ function change_actor_community(community)
 		disguise_community = community
 	end
 	
-	db.actor:set_character_community( ("actor_" .. community), 0, 0 )
+	actor:set_character_community( ("actor_" .. community), 0, 0 )
 end
 
 function npc_update()
 	
-	if not default_faction or not db.actor then return end
+	if not default_faction or not actor then return end
 	
 	for i=1, #db.OnlineStalkers do
 		local st = db.storage[db.OnlineStalkers[i]]
@@ -196,13 +202,13 @@ function npc_update()
 				return
 			end
 			
-			local npc_is_enemy = game_relations.is_factions_enemies(default_faction, npc:character_community()) or npc:relation(db.actor) == game_object.enemy
+			local npc_is_enemy = game_relations.is_factions_enemies(default_faction, npc:character_community()) or npc:relation(actor) == game_object.enemy
 			local current = utils.get_actor_community()
-			if current ~= default_faction and npc:see(db.actor) and npc_is_enemy then
+			if current ~= default_faction and npc:see(actor) and npc_is_enemy then
 				last_seen[id] = game.get_game_time()
 				
 				if suspicion[id] then
-					local distance = npc:position():distance_to_sqr(db.actor:position())
+					local distance = npc:position():distance_to_sqr(actor:position())
 					suspicion[id] = suspicion[id] + suspicion_increase(distance)
 					
 					if (suspicion[id] > suspicion_limit) then
@@ -253,8 +259,8 @@ function suspicion_increase(distance)
 	if(distance > discovery_distance) then
 		increase = 0
 	else
-		local helm = db.actor:item_in_slot(12)
-		local outfit = db.actor:item_in_slot(7)
+		local helm = actor:item_in_slot(12)
+		local outfit = actor:item_in_slot(7)
 		local has_helm_hides = helm and (helm:condition() > min_condition_h)
 		local has_outfit_hides = outfit and (outfit:condition() > min_condition_o)
 		local actor_community = utils.get_actor_community()
@@ -302,7 +308,7 @@ function load_state(data)
 	disguise_community = data.disguise_system.ds_community 
 
 	if not default_faction or default_faction == "" then
-		default_faction = db.actor and character_community(db.actor):sub(7) or ""
+		default_faction = actor and character_community(actor):sub(7) or ""
 		printf("DBG loaded default " .. (default_faction or "?"))
 	end
 
