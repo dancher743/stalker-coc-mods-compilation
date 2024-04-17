@@ -52,8 +52,8 @@ local patch_sections = {
 	["merc_patch"] 			= "killer"
 }
 
-local can_update_npc = false
 local can_update_actor = false
+local can_update_npc = false
 
 local actor
 
