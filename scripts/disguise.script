@@ -109,6 +109,7 @@ function update_actor()
 	end
 	
 	can_update_actor = true
+	can_update_npc = true
 
 	local actor_community = utils.get_actor_community()
 
@@ -145,7 +146,6 @@ function disguise_by_patch(patch_in_slot, actor_community)
 			change_actor_community(default_faction)
 			actor_community = default_faction
 			has_actor_disguised = false
-			can_update_npc = true
 			disguise_news.send_disguise_tip(disguise_tip_type.returned, previous_community)
 		end
 	end
@@ -161,7 +161,6 @@ function disguise_by_patch(patch_in_slot, actor_community)
 				change_actor_community(patch_community)
 				actor_community = patch_community
 				has_actor_disguised = true
-				can_update_npc = true
 				if patch_community ~= default_faction then
 					disguise_news.send_disguise_tip(disguise_tip_type.changed, patch_community)
 				end
