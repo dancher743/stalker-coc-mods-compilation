@@ -80,23 +80,23 @@ function on_game_load()
 	--printf("DBG default " .. (default_faction or "?"))
 end
 
-local function run_update()
-	local function update()
-		actor_update()
-		npc_update()
+local function run_updates()
+	local function update_event()
+		update_actor()
+		update_npc()
 		ui_disguise.show(main_hud_shown())
 		ResetTimeEvent("disguise","update",update_rate)
 	end
-	CreateTimeEvent("disguise","update",update_rate,update)
+	CreateTimeEvent("disguise","update",update_rate,update_event)
 end
 
 function actor_on_first_update()
 	actor = db.actor
     prev_patch_in_slot = get_patch_in_slot()
-	run_update()
+	run_updates()
 end
 
-function actor_update()
+function update_actor()
 
 	if (not actor:alive()) then
 		return
@@ -197,7 +197,7 @@ function change_actor_community(community)
 	actor:set_character_community( ("actor_" .. community), 0, 0 )
 end
 
-function npc_update()
+function update_npc()
 	
 	if (not can_update_npc or not default_faction or not actor) then 
 		return
