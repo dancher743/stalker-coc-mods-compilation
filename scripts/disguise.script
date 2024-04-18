@@ -55,8 +55,6 @@ local patch_sections = {
 local can_update_actor = false
 local can_update_npc = false
 
-local actor
-
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
 	RegisterScriptCallback("on_game_load",on_game_load)
@@ -68,7 +66,7 @@ function on_game_load()
 	--printf("DBG on_game_load")
 	local defaults = {
 		disguise_system = {
-			ds_default_faction = default_faction or character_community(actor):sub(7) or "stalker",
+			ds_default_faction = default_faction or character_community(db.actor):sub(7) or "stalker",
 			ds_last_seen = last_seen,
 			ds_suspicion = suspicion,
 			ds_callout = callout,
@@ -91,14 +89,13 @@ local function run_updates()
 end
 
 function actor_on_first_update()
-	actor = db.actor
     prev_patch_in_slot = get_patch_in_slot()
 	run_updates()
 end
 
 function update_actor()
 
-	if (not actor:alive()) then
+	if (not db.actor:alive()) then
 		return
 	end
 
@@ -118,7 +115,7 @@ function update_actor()
 end
 
 function get_patch_in_slot()
-	return actor:item_in_slot(patch_slot_number)
+	return db.actor:item_in_slot(patch_slot_number)
 end
 
 function update_default_faction(actor_community)	
@@ -193,14 +190,15 @@ function change_actor_community(community)
 		disguise_community = community
 	end
 	
-	actor:set_character_community( ("actor_" .. community), 0, 0 )
+	db.actor:set_character_community( ("actor_" .. community), 0, 0 )
 end
 
 function update_npc()
-	
-	if (not can_update_npc or not default_faction or not actor) then 
+	if (not can_update_npc or not default_faction or not db.actor) then 
 		return
 	end
+	
+	local actor = db.actor
 	
 	for i=1, #db.OnlineStalkers do
 		local st = db.storage[db.OnlineStalkers[i]]
@@ -272,11 +270,11 @@ function suspicion_increase(distance)
 	if(distance > discovery_distance) then
 		increase = 0
 	else
+		local actor = db.actor
 		local helm = actor:item_in_slot(12)
 		local outfit = actor:item_in_slot(7)
 		local has_helm_hides = helm and (helm:condition() > min_condition_h)
 		local has_outfit_hides = outfit and (outfit:condition() > min_condition_o)
-		local actor_community = utils.get_actor_community()
 		
 		if not has_helm_hides and has_outfit_hides then
 			has_helm_hides = alun_utils.read_from_ini(nil,outfit:section(),"helmet_avaliable","bool",false)
@@ -288,6 +286,8 @@ function suspicion_increase(distance)
 		
 		if has_outfit_hides then
 			increase = increase - 0.25
+			
+			local actor_community = utils.get_actor_community()
 			
 			if disguise_helper.is_outfit_fits_community(actor_community, outfit:section()) then
 				increase = increase - 0.25
@@ -321,6 +321,7 @@ function load_state(data)
 	disguise_community = data.disguise_system.ds_community 
 
 	if not default_faction or default_faction == "" then
+		local actor = db.actor
 		default_faction = actor and character_community(actor):sub(7) or ""
 		printf("DBG loaded default " .. (default_faction or "?"))
 	end
