@@ -6,8 +6,8 @@
 -- Reworked due to patch dressing feature: Dancher
 ----------------------
 
--- update rate in seconds (where 1 is 1 second)
-local update_rate = 1
+-- main update rate in seconds (where 1 is 1 second)
+local main_update_rate = 1
 
 --time you need to be hidden (not seen by any npc) before changing outfit to make the disguise effective, 100 means roughly 10 seconds
 local time_to_forget = 100
@@ -52,8 +52,7 @@ local patch_sections = {
 	["merc_patch"] 			= "killer"
 }
 
-local can_update_actor = false
-local can_update_npc = false
+local can_update = false
 
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
@@ -79,34 +78,33 @@ function on_game_load()
 end
 
 local function run_updates()
-	local function update_event()
-		update_actor()
+	local function main_update()
+		local patch_in_slot = get_patch_in_slot()
+		
+		update_actor(patch_in_slot)
 		update_npc()
-		ui_disguise.show(main_hud_shown())
-		ResetTimeEvent("disguise","update",update_rate)
+		update_ui(patch_in_slot)
+		
+		prev_patch_in_slot = patch_in_slot
+		ResetTimeEvent("disguise","main_update",main_update_rate)
 	end
-	CreateTimeEvent("disguise","update",update_rate,update_event)
+	CreateTimeEvent("disguise","main_update",main_update_rate,main_update)
 end
 
 function actor_on_first_update()
-    prev_patch_in_slot = get_patch_in_slot()
 	run_updates()
 end
 
-function update_actor()
-
+function update_actor(patch_in_slot)
 	if (not db.actor:alive()) then
 		return
 	end
-
-	local patch_in_slot = get_patch_in_slot()
 	
-	if (not can_update_actor and not prev_patch_in_slot and not patch_in_slot) then
+	if (not can_update and not prev_patch_in_slot and not patch_in_slot) then
 		return
 	end
 	
-	can_update_actor = true
-	can_update_npc = true
+	can_update = true
 
 	local actor_community = utils.get_actor_community()
 
@@ -132,7 +130,6 @@ function disguise_by_patch(patch_in_slot, actor_community)
 	
 	if disguise_helper.has_patch_changed(patch_in_slot, prev_patch_in_slot) then
 		disguise_news.reset_once_disguise_tips()
-		ui_disguise.update(patch_in_slot)
 	end
 	
 	if not patch_in_slot and has_actor_disguised then
@@ -166,8 +163,6 @@ function disguise_by_patch(patch_in_slot, actor_community)
 			disguise_news.send_disguise_tip_once(disguise_tip_type.same)
 		end
 	end
-	
-	prev_patch_in_slot = patch_in_slot
 end
 
 function has_actor_disguised(actor_community)
@@ -194,7 +189,7 @@ function change_actor_community(community)
 end
 
 function update_npc()
-	if (not can_update_npc or not default_faction or not db.actor) then 
+	if (not can_update or not default_faction or not db.actor) then
 		return
 	end
 	
@@ -261,6 +256,20 @@ function update_npc()
 				end
 			end
 		end
+	end
+end
+
+function update_ui(patch_in_slot)
+	if (not can_update or not db.actor:alive()) then
+		return
+	end
+	
+	local is_main_hud_shown = main_hud_shown()
+	
+	ui_disguise.show(is_main_hud_shown)
+	
+	if (is_main_hud_shown and disguise_helper.has_patch_changed(patch_in_slot, prev_patch_in_slot)) then
+		ui_disguise.update(patch_in_slot)
 	end
 end
 
