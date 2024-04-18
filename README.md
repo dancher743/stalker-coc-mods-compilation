@@ -18,6 +18,7 @@ Install
 
 Settings
 ---
+* To change input language press Ctrl + Shift key combination
 * To access Dynamic News settings: load your game, then open the main menu and press Page-Up button
 * To ignite/extinguish a campfire holster your weapon first
 * To make the sky less bright type `r2_tonemap off` command at the console
