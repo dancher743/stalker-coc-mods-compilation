@@ -435,6 +435,8 @@
 		<text>Ничего полезного</text>
 	</string>
 	
+	<!-- Added by Dancher -->
+	
 	<string id="st_search_bar_room_safe">
 		<text>Обыскать сейф ($$ACTION_USE$$)</text>
 	</string>
@@ -444,5 +446,9 @@
 	
 	<string id="st_leave_zone_object">
 		<text>Покинуть Зону ($$ACTION_USE$$)</text>
+	</string>
+	
+	<string id="st_change_language">
+		<text>Сменить язык: CTRL+SHIFT</text>
 	</string>
 </string_table>
