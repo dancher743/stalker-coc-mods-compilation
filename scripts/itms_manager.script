@@ -361,13 +361,22 @@ function actor_on_item_use(obj)
 			else
 				local hud = get_hud()
 				if (hud) then
-					hud:HideActorMenu()
-					local ui = ui_itm_backpack and ui_itm_backpack.backpack_ui(hud,se_obj.id,BackPackStashSpot, show_back_pack_stash_tip)
-					if (ui) then
-						SetHudMsg("",0)
-						ui:ShowDialog(true)
-						axr_keybind.enabled = false
+					local function on_ok_button_clicked(text)
+						if (text ~= "") then
+							local spot_txt = strformat("%c[255,255,160,0]%s\\n%c[default]%s", game.translate_string("st_custom_stash_title"), text)
+							level.map_add_object_spot_ser(se_obj.id, BackPackStashSpot, spot_txt)
+						end
+						show_back_pack_stash_tip()
 					end
+					
+					local function on_cancel_button_clicked()
+						alife():create("itm_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
+						alife():release(alife_object(se_obj.id) ,true)
+					end
+					
+					hud:HideActorMenu()
+					SetHudMsg("",0)
+					ui_generic_dialogs.input_dialog_ui(hud, true, on_ok_button_clicked, on_cancel_button_clicked)
 				end
 			end
 		end
