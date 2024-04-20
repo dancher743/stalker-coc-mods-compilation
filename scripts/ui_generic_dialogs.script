@@ -34,18 +34,18 @@ function input_dialog_ui:InitControls()
 	self:Enable(true)
 
 	local xml					= CScriptXmlInit()
-	xml:ParseFile				("ui_itm_main.xml")
+	xml:ParseFile				("ui_generic_dialogs.xml")
 
-	self.back					= xml:InitStatic("itm_backpack:background", self)
+	self.back					= xml:InitStatic("input_dialog:background", self)
 
-	self.input = xml:InitEditBox("itm_backpack:input",self)
+	self.input = xml:InitEditBox("input_dialog:input",self)
 	self:Register(self.input,"fld_input")
 
-	local btn = xml:Init3tButton("itm_backpack:btn_cancel", self.back)
-	self:Register(btn,"btn_cancel")
-
-	btn = xml:Init3tButton("itm_backpack:btn_ok", self.back)
+	btn = xml:Init3tButton("input_dialog:btn_ok", self.back)
 	self:Register(btn,"btn_ok")
+
+	local btn = xml:Init3tButton("input_dialog:btn_cancel", self.back)
+	self:Register(btn,"btn_cancel")
 end
 
 function input_dialog_ui:SetCurrentValues()
