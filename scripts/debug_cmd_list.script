@@ -2073,3 +2073,29 @@ function cmd.pstor_test(me,txt,owner,p)
 
 	return "pstor_test:= successfully saved 2000 values to db.actor pstor"
 end
+
+-- Added by Dancher
+
+function cmd.coords(me,txt,owner,p)
+	local wrd = check_and_set_help(me,txt,owner,"[pos|dir]. Shows actor's position or direction.")
+	if (not wrd or string.find(txt,"help")) then
+		return
+	end
+	
+	local actor = db.actor
+	local result_txt
+	
+	if (wrd == "pos") then
+		local position = actor:position()
+		local lvid = actor:level_vertex_id()
+		local gvid = actor:game_vertex_id()
+		result_txt = strformat("X:%s, Y:%s, Z:%s, lvID:%s, gvID:%s", position.x, position.y, position.z, lvid, gvid)
+	elseif(wrd == "dir") then
+		local direction = actor:direction()
+		result_txt = strformat("X:%s, Y:%s, Z:%s", direction.x, direction.y, direction.z)
+	else
+		result_txt = strformat("Incorrect subcommand '%s'. Type 'coords help' for list of subcommands.", wrd)
+	end
+	
+	return result_txt
+end
