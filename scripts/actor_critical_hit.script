@@ -4,6 +4,10 @@
 --
 
 local function enemy_on_hit_callback(victim, damage, local_direction, who, bone_index)
+	if (not axr_main_options.get_check_option("can_crit_hit_enemy")) then
+		return
+	end
+	
 	local has_crit_hit = critical_hit_manager.try_hit(victim, who, damage, local_direction, bone_index)
 	
 	if (has_crit_hit) then

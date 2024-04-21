@@ -125,6 +125,7 @@ function opt_menu_on_init(menu)
 	menu.gameplay_options["play_crit_hit_sound"]	= {default=true, 	debug_only=false, 	typ="check"}
 	menu.gameplay_options["show_crit_hit_cam_vfx"]	= {default=true, 	debug_only=false, 	typ="check"}
 	menu.gameplay_options["can_crit_hit_actor"]		= {default=false, 	debug_only=false, 	typ="check"}
+	menu.gameplay_options["can_crit_hit_enemy"]		= {default=true, 	debug_only=false, 	typ="check"}
 	
 	menu.gameplay_options["auto_garbage_collection"]		= {default=true, 	debug_only=false, 	typ="check"}
 	

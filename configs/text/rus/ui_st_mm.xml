@@ -561,6 +561,9 @@
 	<string id="ui_mm_can_crit_hit_actor">
 		<text>Крит. удар: от НПС</text>
 	</string>
+	<string id="ui_mm_can_crit_hit_enemy">
+		<text>Крит. удар: от игрока</text>
+	</string>
 	<string id="ui_mm_companions_invulnerability">
 		<text>Неуязвимые напарники</text>
 	</string>
