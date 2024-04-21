@@ -18,7 +18,7 @@ function show_mark()
 end
 
 function show_cam_effector()
-	level.add_cam_effector("camera_effects\\pseudodog_effect.anm",396,false,"")
+	actor_health_effectors.show_crit_hit_effector()
 end
 
 local function on_game_load()

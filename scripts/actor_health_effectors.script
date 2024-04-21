@@ -17,6 +17,12 @@ local radiation_reaction_sounds = {
 
 local last_reaction_sound
 
+local option_name = "show_health_effectors"
+
+local function has_option()
+	return axr_main_options.get_check_option(option_name)
+end
+
 local function play_reaction_sound(snd_obj)
 	if (last_reaction_sound and last_reaction_sound:playing()) then
 		last_reaction_sound:stop()
@@ -45,8 +51,8 @@ local function bleedcondition()
         radeffect = false
     end
 	
-	local show_health_effectors = axr_main_options.get_check_option("show_health_effectors")
-	
+	local show_health_effectors = has_option()
+
 	if show_health_effectors and db.actor.bleeding > 0.5 and db.actor.health < 0.4 and ble1 < time_global() then
         level.add_pp_effector("deimos1.ppe", 2014, false)
         ble1 = time_global() + math.random(4000, 10000)
@@ -75,4 +81,10 @@ end
 
 function on_game_start()
     RegisterScriptCallback("actor_on_update", update)
+end
+
+function show_crit_hit_effector()
+	if (has_option()) then
+		level.add_cam_effector("camera_effects\\pseudodog_effect.anm",396,false,"")
+	end
 end
