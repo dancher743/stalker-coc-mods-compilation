@@ -1,0 +1,65 @@
+--
+-- Critical Hit Manager
+-- Added by Dancher
+--
+-- See also:
+--	actor_critical_hit.script
+--  ui_actor_critical_hit.script
+--  sound_actor_critical_hit.script
+--
+
+local hit_chance_by_rank = {
+	["novice"] 			= 0.06,
+	["trainee"] 		= 0.08,
+	["experienced"]		= 0.10,
+	["professional"]    = 0.12,
+	["veteran"]         = 0.14,
+	["expert"]          = 0.16,
+	["master"]          = 0.18,
+	["legend"]          = 0.20
+}
+
+local damage_factor = 3.0
+
+local function get_hit_chance(who)
+	local who_rank = ranks.get_obj_rank_name(who)
+	return hit_chance_by_rank[who_rank]
+end
+
+local function calculate_hit_power(who, damage, chance)
+	local a = damage * (1 - chance)
+	local b = damage * damage_factor * chance
+	return (a + b) - damage
+end
+
+local function create_hit(who, power, local_direction, bone_index)
+	local crit_hit = hit()
+	
+	crit_hit.type = hit.fire_wound
+	crit_hit.bone = bone_index
+	crit_hit.power = power
+	crit_hit.impulse = 0.0
+	crit_hit.direction = local_direction
+	crit_hit.draftsman = who
+	
+	return crit_hit
+end
+
+local function can_hit(victim, who, bone_index, chance)
+	return victim:alive() and type(bone_index) == "number" and bone_index > 0 and math.random() <= chance
+end
+
+function do_hit(victim, who, damage, local_direction, bone_index)
+	local hit_chance = get_hit_chance(who)
+	
+	if (not can_hit(victim, who, bone_index, hit_chance)) then
+		return
+	end
+
+	local hit_power = calculate_hit_power(who, damage, hit_chance)
+	local crit_hit = create_hit(who, hit_power, local_direction, bone_index)
+	
+	victim:hit(crit_hit)
+	
+	-- printf(string.format("DANCHER | actor_critical_hit.script -> Critical damage is %0.2f. Orignal damage is %0.2f.", crit_hit.power, damage))
+end
