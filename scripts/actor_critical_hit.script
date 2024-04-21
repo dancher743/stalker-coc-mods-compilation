@@ -3,27 +3,10 @@
 -- Added by Dancher
 --
 
-local function has_option(name)
-	return axr_main_options.get_check_option(name)
-end
-
-local function obj_on_hit_callback(obj, amount, local_direction, who, bone_index)
-	local victim = obj
-	local damage = amount
-	local is_actor_victim = IsActor(victim)
-	
-	if (is_actor_victim) then
-		printf("DANCHER | Actor has critical hit!")
-		-- check on option before execute
-	end
-
+local function enemy_on_hit_callback(victim, damage, local_direction, who, bone_index)
 	critical_hit_manager.do_hit(victim, who, damage, local_direction, bone_index)
 	
-	if (is_actor_victim) then
-		ui_actor_critical_hit.show_cam_effector()
-	end
-	
-	if (not is_actor_victim and has_option("show_crit_hit_mark")) then
+	if (axr_main_options.get_check_option("show_crit_hit_mark")) then
 		ui_actor_critical_hit.show_mark()
 	end
 	
@@ -32,8 +15,17 @@ local function obj_on_hit_callback(obj, amount, local_direction, who, bone_index
 	end
 end
 
+local function actor_on_hit_callback(victim, damage, local_direction, who, bone_index)
+	--[[if (not axr_main_options.get_check_option("can_crit_hit_actor")) then
+		return
+	end]]
+
+	critical_hit_manager.do_hit(victim, who, damage, local_direction, bone_index)
+	ui_actor_critical_hit.show_cam_effector()
+end
+
 function on_game_start()
-	RegisterScriptCallback("npc_on_hit_callback", obj_on_hit_callback)
-	RegisterScriptCallback("monster_on_hit_callback", obj_on_hit_callback)
-	RegisterScriptCallback("actor_on_hit_callback", obj_on_hit_callback)
+	RegisterScriptCallback("npc_on_hit_callback", enemy_on_hit_callback)
+	RegisterScriptCallback("monster_on_hit_callback", enemy_on_hit_callback)
+	RegisterScriptCallback("actor_on_hit_callback", actor_on_hit_callback)
 end
