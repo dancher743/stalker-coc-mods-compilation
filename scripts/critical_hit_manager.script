@@ -23,13 +23,17 @@ local damage_factor = 3.0
 
 local function get_hit_chance(who)
 	local who_rank = ranks.get_obj_rank_name(who)
-	return hit_chance_by_rank[who_rank]
+	local chance = hit_chance_by_rank[who_rank] or 0
+	
+	return chance
 end
 
 local function calculate_hit_power(who, damage, chance)
 	local a = damage * (1 - chance)
 	local b = damage * damage_factor * chance
-	return (a + b) - damage
+	local power = (a + b) - damage
+	
+	return power
 end
 
 local function create_hit(who, power, local_direction, bone_index)
