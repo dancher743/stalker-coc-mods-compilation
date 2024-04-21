@@ -564,4 +564,7 @@
 	<string id="ui_mm_auto_garbage_collection">
 		<text>Auto garbage collection</text>
 	</string>
+	<string id="ui_mm_show_health_effectors">
+		<text>Show wound effects</text>
+	</string>
 </string_table>
