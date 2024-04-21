@@ -1,74 +1,31 @@
 --
--- Critical hit from Actor
+-- Critical Hit to/from Actor
 -- Added by Dancher
 --
--- See also:
---  ui_actor_critical_hit.script
---  sound_actor_critical_hit.script
---
 
-local hit_chance_by_rank = {
-	["novice"] 			= 0.06,
-	["trainee"] 		= 0.08,
-	["experienced"]		= 0.10,
-	["professional"]    = 0.12,
-	["veteran"]         = 0.14,
-	["expert"]          = 0.16,
-	["master"]          = 0.18,
-	["legend"]          = 0.20
-}
-
-local hit_damage = 3.0
-
-local function get_hit_chance()
-	local actor_rank = ranks.get_obj_rank_name(db.actor)
-	return hit_chance_by_rank[actor_rank]
-end
-
-local function calculate_hit_power(amount)
-	local hit_chance = get_hit_chance()
-	local a = amount * (1 - hit_chance)
-	local b = amount * hit_damage * hit_chance
-	return (a + b) - amount
-end
-
-local function create_hit(amount, local_direction, who, bone_index)
-	local crit_hit = hit()
-	
-	crit_hit.type = hit.fire_wound
-	crit_hit.bone = bone_index
-	crit_hit.power = calculate_hit_power(amount)
-	crit_hit.impulse = 0.0
-	crit_hit.direction = local_direction
-	crit_hit.draftsman = who
-	
-	return crit_hit
-end
-
-local function can_hit(obj, amount, who, bone_index)
-	return IsActor(who) and obj:alive() and type(bone_index) == "number" and bone_index > 0 and math.random() <= get_hit_chance()
-end
-
-local function obj_on_hit_callback(obj, amount, local_direction, who, bone_index)
-	if (not can_hit(obj, amount, who, bone_index)) then
-		return
-	end
-
-	local crit_hit = create_hit(amount, local_direction, who, bone_index)
-	obj:hit(crit_hit)
-	
-	-- printf(string.format("DANCHER | actor_critical_hit.script -> Critical damage is %0.2f. Orignal damage is %0.2f.", crit_hit.power, amount))
+local function enemy_on_hit_callback(victim, damage, local_direction, who, bone_index)
+	critical_hit_manager.do_hit(victim, who, damage, local_direction, bone_index)
 	
 	if (axr_main_options.get_check_option("show_crit_hit_mark")) then
 		ui_actor_critical_hit.show_mark()
 	end
 	
 	if (axr_main_options.get_check_option("play_crit_hit_sound")) then
-		sound_actor_critical_hit.play_sound_on_distance(obj:position())
+		sound_actor_critical_hit.play_sound_on_distance(victim:position())
 	end
 end
 
+local function actor_on_hit_callback(victim, damage, local_direction, who, bone_index)
+	if (not axr_main_options.get_check_option("can_crit_hit_actor")) then
+		return
+	end
+
+	critical_hit_manager.do_hit(victim, who, damage, local_direction, bone_index)
+	ui_actor_critical_hit.show_cam_effector()
+end
+
 function on_game_start()
-	RegisterScriptCallback("npc_on_hit_callback", obj_on_hit_callback)
-	RegisterScriptCallback("monster_on_hit_callback", obj_on_hit_callback)
+	RegisterScriptCallback("npc_on_hit_callback", enemy_on_hit_callback)
+	RegisterScriptCallback("monster_on_hit_callback", enemy_on_hit_callback)
+	RegisterScriptCallback("actor_on_hit_callback", actor_on_hit_callback)
 end

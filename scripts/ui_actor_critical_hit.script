@@ -1,5 +1,5 @@
 --
--- UI for critical hit from Actor
+-- UI for Critical Hit from/to Actor
 -- Added by Dancher
 --
 
@@ -15,6 +15,10 @@ function show_mark()
 	if (mark_ui) then
 		mark_ui:Start()
 	end
+end
+
+function show_cam_effector()
+	level.add_cam_effector("camera_effects\\pseudodog_effect.anm",396,false,"")
 end
 
 local function on_game_load()
