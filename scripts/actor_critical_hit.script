@@ -4,14 +4,16 @@
 --
 
 local function enemy_on_hit_callback(victim, damage, local_direction, who, bone_index)
-	critical_hit_manager.do_hit(victim, who, damage, local_direction, bone_index)
+	local has_crit_hit = critical_hit_manager.try_hit(victim, who, damage, local_direction, bone_index)
 	
-	if (axr_main_options.get_check_option("show_crit_hit_mark")) then
-		ui_actor_critical_hit.show_mark()
-	end
-	
-	if (axr_main_options.get_check_option("play_crit_hit_sound")) then
-		sound_actor_critical_hit.play_sound_on_distance(victim:position())
+	if (has_crit_hit) then
+		if (axr_main_options.get_check_option("show_crit_hit_mark")) then
+			ui_actor_critical_hit.show_mark()
+		end
+		
+		if (axr_main_options.get_check_option("play_crit_hit_sound")) then
+			sound_actor_critical_hit.play_sound_on_distance(victim:position())
+		end
 	end
 end
 
@@ -20,8 +22,11 @@ local function actor_on_hit_callback(victim, damage, local_direction, who, bone_
 		return
 	end
 
-	critical_hit_manager.do_hit(victim, who, damage, local_direction, bone_index)
-	ui_actor_critical_hit.show_cam_effector()
+	local has_crit_hit = critical_hit_manager.try_hit(victim, who, damage, local_direction, bone_index)
+	
+	if (has_crit_hit) then
+		ui_actor_critical_hit.show_cam_effector()
+	end
 end
 
 function on_game_start()

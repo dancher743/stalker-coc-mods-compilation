@@ -49,17 +49,17 @@ local function can_hit(victim, who, bone_index, chance)
 	return victim:alive() and type(bone_index) == "number" and bone_index > 0 and math.random() <= chance
 end
 
-function do_hit(victim, who, damage, local_direction, bone_index)
+function try_hit(victim, who, damage, local_direction, bone_index)
 	local hit_chance = get_hit_chance(who)
+	local can_hit = can_hit(victim, who, bone_index, hit_chance)
 	
-	if (not can_hit(victim, who, bone_index, hit_chance)) then
-		return
+	if (can_hit) then
+		local hit_power = calculate_hit_power(who, damage, hit_chance)
+		local crit_hit = create_hit(who, hit_power, local_direction, bone_index)
+		
+		victim:hit(crit_hit)
+		-- printf(string.format("DANCHER | actor_critical_hit.script -> Critical damage is %0.2f. Orignal damage is %0.2f.", crit_hit.power, damage))
 	end
-
-	local hit_power = calculate_hit_power(who, damage, hit_chance)
-	local crit_hit = create_hit(who, hit_power, local_direction, bone_index)
 	
-	victim:hit(crit_hit)
-	
-	-- printf(string.format("DANCHER | actor_critical_hit.script -> Critical damage is %0.2f. Orignal damage is %0.2f.", crit_hit.power, damage))
+	return can_hit
 end
