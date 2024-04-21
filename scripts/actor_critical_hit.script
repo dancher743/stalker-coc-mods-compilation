@@ -16,9 +16,9 @@ local function enemy_on_hit_callback(victim, damage, local_direction, who, bone_
 end
 
 local function actor_on_hit_callback(victim, damage, local_direction, who, bone_index)
-	--[[if (not axr_main_options.get_check_option("can_crit_hit_actor")) then
+	if (not axr_main_options.get_check_option("can_crit_hit_actor")) then
 		return
-	end]]
+	end
 
 	critical_hit_manager.do_hit(victim, who, damage, local_direction, bone_index)
 	ui_actor_critical_hit.show_cam_effector()

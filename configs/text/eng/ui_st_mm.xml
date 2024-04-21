@@ -552,6 +552,9 @@
 	<string id="ui_mm_play_crit_hit_sound">
 		<text>Crit hit sound</text>
 	</string>
+	<string id="ui_mm_can_crit_hit_actor">
+		<text>Crit hit from NPC/mutant</text>
+	</string>
 	<string id="ui_mm_companions_invulnerability">
 		<text>Companions invulnerability</text>
 	</string>
