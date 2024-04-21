@@ -555,6 +555,9 @@
 	<string id="ui_mm_play_crit_hit_sound">
 		<text>Крит. удар: проигр. звук</text>
 	</string>
+	<string id="ui_mm_show_crit_hit_cam_vfx">
+		<text>Крит. удар: эффект камеры</text>
+	</string>
 	<string id="ui_mm_can_crit_hit_actor">
 		<text>Крит. удар: от НПС</text>
 	</string>

@@ -25,7 +25,9 @@ local function actor_on_hit_callback(victim, damage, local_direction, who, bone_
 	local has_crit_hit = critical_hit_manager.try_hit(victim, who, damage, local_direction, bone_index)
 	
 	if (has_crit_hit) then
-		ui_actor_critical_hit.show_cam_effector()
+		if (axr_main_options.get_check_option("show_crit_hit_cam_vfx")) then
+			ui_actor_critical_hit.show_cam_effector()
+		end
 	end
 end
 

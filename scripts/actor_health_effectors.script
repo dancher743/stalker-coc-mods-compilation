@@ -82,9 +82,3 @@ end
 function on_game_start()
     RegisterScriptCallback("actor_on_update", update)
 end
-
-function show_crit_hit_effector()
-	if (has_option()) then
-		level.add_cam_effector("camera_effects\\pseudodog_effect.anm",396,false,"")
-	end
-end

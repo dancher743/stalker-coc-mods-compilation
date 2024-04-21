@@ -552,6 +552,9 @@
 	<string id="ui_mm_play_crit_hit_sound">
 		<text>Crit hit sound</text>
 	</string>
+	<string id="ui_mm_show_crit_hit_cam_vfx">
+		<text>Crit hit cam effect</text>
+	</string>
 	<string id="ui_mm_can_crit_hit_actor">
 		<text>Crit hit from NPC</text>
 	</string>
