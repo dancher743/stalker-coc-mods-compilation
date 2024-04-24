@@ -52,8 +52,6 @@ local patch_sections = {
 	["merc_patch"] 			= "killer"
 }
 
-local can_update = false
-
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
 	RegisterScriptCallback("on_game_load",on_game_load)
@@ -79,6 +77,8 @@ end
 
 local function run_updates()
 	local is_first_update = true
+	local can_update = false
+	
 	local function main_update()
 		local patch_in_slot = get_patch_in_slot()
 		
@@ -86,12 +86,19 @@ local function run_updates()
 			prev_patch_in_slot = patch_in_slot
 		end
 		
+		if (not can_update and not prev_patch_in_slot and not patch_in_slot) then
+			return
+		end
+		
+		can_update = true
+		
 		update_actor(patch_in_slot)
 		update_npc()
 		update_ui(patch_in_slot)
 		
-		prev_patch_in_slot = patch_in_slot
 		is_first_update = false
+		prev_patch_in_slot = patch_in_slot
+		
 		ResetTimeEvent("disguise","main_update",main_update_rate)
 	end
 	CreateTimeEvent("disguise","main_update",main_update_rate,main_update)
@@ -105,12 +112,6 @@ function update_actor(patch_in_slot)
 	if (not db.actor:alive()) then
 		return
 	end
-	
-	if (not can_update and not prev_patch_in_slot and not patch_in_slot) then
-		return
-	end
-	
-	can_update = true
 
 	local actor_community = utils.get_actor_community()
 
@@ -195,7 +196,7 @@ function change_actor_community(community)
 end
 
 function update_npc()
-	if (not can_update or not default_faction or not db.actor) then
+	if (not default_faction or not db.actor) then
 		return
 	end
 	
@@ -266,7 +267,7 @@ function update_npc()
 end
 
 function update_ui(patch_in_slot)
-	if (not can_update or not db.actor:alive()) then
+	if (not db.actor:alive()) then
 		return
 	end
 	
