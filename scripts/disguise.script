@@ -78,14 +78,20 @@ function on_game_load()
 end
 
 local function run_updates()
+	local is_first_update = true
 	local function main_update()
 		local patch_in_slot = get_patch_in_slot()
+		
+		if (is_first_update) then
+			prev_patch_in_slot = patch_in_slot
+		end
 		
 		update_actor(patch_in_slot)
 		update_npc()
 		update_ui(patch_in_slot)
 		
 		prev_patch_in_slot = patch_in_slot
+		is_first_update = false
 		ResetTimeEvent("disguise","main_update",main_update_rate)
 	end
 	CreateTimeEvent("disguise","main_update",main_update_rate,main_update)
