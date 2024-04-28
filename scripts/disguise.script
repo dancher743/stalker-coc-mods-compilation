@@ -82,6 +82,9 @@ local function run_updates()
 	local is_first_update = true
 	local can_update = false
 	
+	local main_update_ev_id = "disguise"
+	local main_update_act_id = "main_update"
+	
 	local function main_update()
 		if (not db.actor:alive()) then
 			RemoveTimeEvent("disguise","main_update")
@@ -109,9 +112,9 @@ local function run_updates()
 		is_first_update = false
 		prev_patch_in_slot = patch_in_slot
 		
-		ResetTimeEvent("disguise","main_update",main_update_rate)
+		ResetTimeEvent(main_update_ev_id, main_update_act_id, main_update_rate)
 	end
-	CreateTimeEvent("disguise","main_update",main_update_rate,main_update)
+	CreateTimeEvent(main_update_ev_id, main_update_act_id, main_update_rate, main_update)
 end
 
 function actor_on_first_update()
