@@ -86,7 +86,7 @@ local function run_updates()
 			prev_patch_in_slot = patch_in_slot
 		end
 		
-		if (not can_update and not prev_patch_in_slot and not patch_in_slot) then
+		if (not can_update and not patch_in_slot and not has_actor_disguised()) then
 			return
 		end
 		
