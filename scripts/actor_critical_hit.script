@@ -22,7 +22,7 @@ local function npc_or_monster_on_hit_callback(victim, damage, local_direction, w
 end
 
 local function actor_on_hit_callback(victim, damage, local_direction, who, bone_index)
-	if (not axr_main_options.get_check_option("can_crit_hit_actor")) then
+	if (not axr_main_options.get_check_option("can_crit_hit_actor") or IsActor(who)) then
 		return
 	end
 
