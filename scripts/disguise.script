@@ -43,17 +43,24 @@ local default_faction
 local actor_community
 local disguise_community
 
-local patch_sections = {
-	["csky_patch"] 			= "csky",
-	["freedom_patch"] 		= "freedom",
-	["stalker_patch"] 		= "stalker",
-	["ecolog_patch"] 		= "ecolog",
-	["bandit_patch"] 		= "bandit",
-	["duty_patch"] 			= "dolg",
-	["monolith_patch"] 		= "monolith",
-	["army_patch"] 			= "army",
-	["merc_patch"] 			= "killer"
-}
+local patch_factions
+
+local function get_patch_faction(patch_section)
+	if (patch_factions == nil) then
+		patch_factions = {
+			["csky_patch"] 			= "csky",
+			["freedom_patch"] 		= "freedom",
+			["stalker_patch"] 		= "stalker",
+			["ecolog_patch"] 		= "ecolog",
+			["bandit_patch"] 		= "bandit",
+			["duty_patch"] 			= "dolg",
+			["monolith_patch"] 		= "monolith",
+			["army_patch"] 			= "army",
+			["merc_patch"] 			= "killer"
+		}
+	end
+	return patch_factions[patch_section]
+end
 
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
@@ -159,7 +166,7 @@ function update_actor_disguise_by_patch()
 	end
 	
 	if patch_in_slot then
-		local patch_community = patch_sections[patch_in_slot:section()]
+		local patch_community = get_patch_faction(patch_in_slot:section())
 		if actor_community ~= patch_community then
 			if axr_companions.has_companion() then
 				disguise_news.send_disguise_tip_once(disguise_tip_type.has_companion)
