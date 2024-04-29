@@ -3,29 +3,52 @@
 -- Added by Dancher
 --
 
-local function actor_on_update()
-	local smart_id = smart_terrain.nearest_to_actor_smart.id
-	local smart = smart_id and alife_object(smart_id)
+local timer_interval = 5000
+local rest_distance_sqr = 4*4
+
+local last_smart_id = nil
+local last_smart_name = nil
+
+local function get_smart_name(smart_id)
+	if (smart_id and smart_id ~= last_smart_id) then
+		local smart = smart_id and alife_object(smart_id)
+		last_smart_name = smart and smart:name()
+		last_smart_id = smart_id
+	end
 	
-	if (smart == nil) then
+	return last_smart_name
+end
+
+local function rest_near_campfire()
+	local actor = db.actor
+	
+	if (actor.health == 1 and actor.psy_health == 1) then
 		return
 	end
 	
-	local smart_campfires = db.campfire_table_by_smart_names[smart:name()]
+	local smart_id = smart_terrain.nearest_to_actor_smart.id
+	local smart_name = get_smart_name(smart_id)
+	local smart_campfires = db.campfire_table_by_smart_names[smart_name]
 	
-	if (smart_campfires ~= nil and not is_empty(smart_campfires)) then
-		local actor_position = db.actor:position()
+	if (smart_campfires ~= nil and not is_empty(smart_campfires)) then		
 		for id,binder in pairs (smart_campfires) do
 			if (binder.object and binder.campfire and binder.campfire:is_on()) then
 				local campfire_obj = level.object_by_id(id)
-				if (campfire_obj and campfire_obj:position():distance_to_sqr(actor_position) <= 7) then
-					printf("Campfire can heal actor!")
+				local campfire_distance_sqr = campfire_obj and campfire_obj:position():distance_to_sqr(actor:position()) 
+				if (campfire_distance_sqr <= rest_distance_sqr) then
+					actor.health = 0.025
+					actor.psy_health = 0.05
+					-- printf("Actor rests near campfire!")
 				end
 			end
 		end
 	end
 end
 
+local function actor_on_first_update()
+	StartTimer("rest_near_campfire", timer_interval, rest_near_campfire)
+end
+
 function on_game_start()
-	RegisterScriptCallback("actor_on_update", actor_on_update)
+	RegisterScriptCallback("actor_on_first_update", actor_on_first_update)
 end
