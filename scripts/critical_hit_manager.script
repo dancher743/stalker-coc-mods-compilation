@@ -22,8 +22,12 @@ local hit_chance_by_rank = {
 local damage_factor = 3.0
 
 local function get_hit_chance(who)
-	local who_rank = ranks.get_obj_rank_name(who)
-	local chance = hit_chance_by_rank[who_rank] or 0
+	local chance = 0
+	
+	if (IsStalker(who)) then
+		local who_rank = ranks.get_obj_rank_name(who)
+		chance = hit_chance_by_rank[who_rank]
+	end
 	
 	return chance
 end
@@ -50,7 +54,7 @@ local function create_hit(who, power, local_direction, bone_index)
 end
 
 local function can_hit(victim, who, bone_index, chance)
-	return victim:alive() and type(bone_index) == "number" and bone_index > 0 and math.random() <= chance
+	return chance > 0 and victim:alive() and type(bone_index) == "number" and bone_index > 0 and math.random() <= chance
 end
 
 function try_hit(victim, who, damage, local_direction, bone_index)
