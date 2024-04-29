@@ -10,7 +10,7 @@ local function npc_or_monster_on_hit_callback(victim, damage, local_direction, w
 	
 	local has_crit_hit = critical_hit_manager.try_hit(victim, who, damage, local_direction, bone_index)
 	
-	if (has_crit_hit) then
+	if (has_crit_hit and IsActor(who)) then
 		if (axr_main_options.get_check_option("show_crit_hit_mark")) then
 			ui_actor_critical_hit.show_mark()
 		end
