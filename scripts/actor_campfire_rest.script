@@ -1,0 +1,31 @@
+--
+-- Campfire rest
+-- Added by Dancher
+--
+
+local function actor_on_update()
+	local smart_id = smart_terrain.nearest_to_actor_smart.id
+	local smart = smart_id and alife_object(smart_id)
+	
+	if (smart == nil) then
+		return
+	end
+	
+	local smart_campfires = db.campfire_table_by_smart_names[smart:name()]
+	
+	if (smart_campfires ~= nil and not is_empty(smart_campfires)) then
+		local actor_position = db.actor:position()
+		for id,binder in pairs (smart_campfires) do
+			if (binder.object and binder.campfire and binder.campfire:is_on()) then
+				local campfire_obj = level.object_by_id(id)
+				if (campfire_obj and campfire_obj:position():distance_to_sqr(actor_position) <= 7) then
+					printf("Campfire can heal actor!")
+				end
+			end
+		end
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("actor_on_update", actor_on_update)
+end
