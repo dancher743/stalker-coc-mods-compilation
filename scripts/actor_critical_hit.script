@@ -3,7 +3,7 @@
 -- Added by Dancher
 --
 
-local function enemy_on_hit_callback(victim, damage, local_direction, who, bone_index)
+local function npc_or_monster_on_hit_callback(victim, damage, local_direction, who, bone_index)
 	if (not axr_main_options.get_check_option("can_crit_hit_enemy")) then
 		return
 	end
@@ -36,7 +36,7 @@ local function actor_on_hit_callback(victim, damage, local_direction, who, bone_
 end
 
 function on_game_start()
-	RegisterScriptCallback("npc_on_hit_callback", enemy_on_hit_callback)
-	RegisterScriptCallback("monster_on_hit_callback", enemy_on_hit_callback)
+	RegisterScriptCallback("npc_on_hit_callback", npc_or_monster_on_hit_callback)
+	RegisterScriptCallback("monster_on_hit_callback", npc_or_monster_on_hit_callback)
 	RegisterScriptCallback("actor_on_hit_callback", actor_on_hit_callback)
 end
