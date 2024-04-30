@@ -362,4 +362,9 @@
 	<string id="zat_b101">
 		<text>Sawmill Pipeline Campsite</text>
 	</string>
+	
+	<!-- Messages -->
+	<string id="discovered_message">
+		<text>Discovered: %s</text>
+	</string>
 </string_table>
