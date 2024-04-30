@@ -78,7 +78,7 @@ local sr_camp_states = {
 							min_time = 30000,
 							max_time = 120000,
 							timeout = 0,
-							transitions = {"idle"},
+							transitions = {"idle","harmonica","guitar","story"},
 							precondition = function (camp)
 								if(#story_table>0) then
 									local n = 0
