@@ -336,10 +336,10 @@ function setup_companion_logic(npc,st,loaded,cannot_dismiss)
 		end
 	end
 	
-	xr_logic.configure_schemes(npc, ltx, ltx_name, modules.stype_stalker, loaded and st.loaded_section_logic or "logic", "")
+	xr_logic.configure_schemes(npc, ltx, ltx_name, modules.stype_stalker, loaded and st.loaded_section_logic or "logic", STR_EMPTY)
 	
 	local section = loaded and st.loaded_active_section or xr_logic.determine_section_to_activate(npc, ltx, "logic", db.actor)
-	xr_logic.activate_by_section(npc, ltx, section, "", loaded)
+	xr_logic.activate_by_section(npc, ltx, section, STR_EMPTY, loaded)
 	--printf("setup complete")
 end 
 

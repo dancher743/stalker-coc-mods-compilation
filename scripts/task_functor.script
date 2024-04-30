@@ -292,22 +292,22 @@ end
 
 function general_fetch_task(task_id,field,p,tsk)
 	if (field == "title") then
-		local fetch = db.actor and alun_utils.get_inv_name(utils.load_var(db.actor,task_id.."_fetch",""))
+		local fetch = db.actor and alun_utils.get_inv_name(utils.load_var(db.actor,task_id.."_fetch",STR_EMPTY))
 		local count = fetch and utils.load_var(db.actor,task_id.."_fetch_count") or 1
 		if (count > 1) then
-			return strformat((game.translate_string(p) or ""),fetch .. " x" .. tostring(count))
+			return strformat((game.translate_string(p) or STR_EMPTY),fetch .. " x" .. tostring(count))
 		end
-		return strformat(game.translate_string(p) or "",fetch)
+		return strformat(game.translate_string(p) or STR_EMPTY,fetch)
 	elseif (field == "descr") then
 		if (tsk.stage == 1) then
 			return game.translate_string("st_return_for_reward")
 		end
-		local fetch = db.actor and alun_utils.get_inv_name(utils.load_var(db.actor,task_id.."_fetch",""))
+		local fetch = db.actor and alun_utils.get_inv_name(utils.load_var(db.actor,task_id.."_fetch",STR_EMPTY))
 		local count = fetch and utils.load_var(db.actor,task_id.."_fetch_count") or 1
 		if (count > 1) then
-			return strformat((game.translate_string(p) or ""),fetch .. " x" .. tostring(count))
+			return strformat((game.translate_string(p) or STR_EMPTY),fetch .. " x" .. tostring(count))
 		end
-		return strformat(game.translate_string(p) or "",fetch)
+		return strformat(game.translate_string(p) or STR_EMPTY,fetch)
 	elseif (field == "target") then
 		if (tsk.stage == 1) then
 			local id = db.actor and utils.load_var(db.actor,task_id.."_target_id") or tsk.task_giver_id
@@ -1103,11 +1103,11 @@ end
 --AtmosFear Fallout
 
 function fallout_task_title(id, field, p)
-	return fallout_manager and fallout_manager.get_task_title() or ""
+	return fallout_manager and fallout_manager.get_task_title() or STR_EMPTY
 end
 
 function fallout_task_descr(id, field, p)
-	return fallout_manager and fallout_manager.get_task_descr() or ""
+	return fallout_manager and fallout_manager.get_task_descr() or STR_EMPTY
 end
 
 function fallout_task_target(id, field, p)
@@ -1117,11 +1117,11 @@ end
 --AtmosFear Psi Storm
 
 function psi_storm_task_title(id, field, p)
-	return psi_storm_manager and psi_storm_manager.get_task_title() or ""
+	return psi_storm_manager and psi_storm_manager.get_task_title() or STR_EMPTY
 end
 
 function psi_storm_task_descr(id, field, p)
-	return psi_storm_manager and psi_storm_manager.get_task_descr() or ""
+	return psi_storm_manager and psi_storm_manager.get_task_descr() or STR_EMPTY
 end
 
 function psi_storm_task_target(id, field, p)

@@ -93,7 +93,7 @@ function on_hit(obj,power,dir,who,bi)
 	if (v > 0.005) then 
 		progress:Show(true)
 		progress:SetProgressPos(v*100)
-		local text = ""
+		local text = STR_EMPTY
 		if (is_heli) then 
 			text = game.translate_string("ui_st_helicopter")
 		elseif (IsStalker(nil,cls)) then 

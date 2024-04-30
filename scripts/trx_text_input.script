@@ -8,7 +8,7 @@
 local tbl, valid_tbl = {}, {}
 
 local function get_str(symbol)
-	return  lang_prm and (valid_tbl[symbol] or "") or tbl[symbol] or ""
+	return  lang_prm and (valid_tbl[symbol] or STR_EMPTY) or tbl[symbol] or STR_EMPTY
 end
 
 function translate(str)
@@ -20,8 +20,8 @@ function translate(str)
 			tbl[input] = output
 			valid_tbl[output] = output
 		end
-		tbl[""] = ""
-		valid_tbl[""] = ""
+		tbl[STR_EMPTY] = STR_EMPTY
+		valid_tbl[STR_EMPTY] = STR_EMPTY
 		translate = get_str
 	return  get_str(str)
 end

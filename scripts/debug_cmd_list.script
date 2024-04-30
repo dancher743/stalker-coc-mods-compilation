@@ -30,13 +30,13 @@ local function first_word(txt)
 	if (_strt and _end) then
 		return trim(string.lower(string.sub(txt,_strt, _end))),trim(string.sub(txt,_end+1))
 	end
-	return "",""
+	return STR_EMPTY,STR_EMPTY
 end 
 
 function check_and_set_help(caller,txt,owner,msg)
 	local wrd,rest = first_word(txt)
 	
-	if (wrd == "") then 
+	if (wrd == STR_EMPTY) then 
 		owner:SendOutput("For usage type %s help",caller)
 		return
 	end 
@@ -159,7 +159,7 @@ function cmd.print(me,txt,owner,p)
 	if (wrd == "_G" or wrd == "_g") then 
 		local list = { f={}, t={}, u={}, b={}, n={}, s={}, unknown={} }
 		
-		local msg = ""
+		local msg = STR_EMPTY
 		for k,v in pairs(_G) do 
 			if (type(v) == "userdata") then 
 				table.insert(list.u,k)
@@ -427,12 +427,12 @@ function cmd.collectgarbage(me,txt,owner,p)
 		local count = collectgarbage("count")
 		return "collectgarbage:= "..count
 	elseif (wrd == "step") then
-		wrd = ""
+		wrd = STR_EMPTY
 		local _strt, _end = string.find(txt,"%d+")
 		if (_strt and _end) then
 			wrd = string.sub(txt,_strt, _end)
 			wrd = string.lower(wrd)
-			local amt = wrd and wrd ~= "" and tonumber(wrd) or 0
+			local amt = wrd and wrd ~= STR_EMPTY and tonumber(wrd) or 0
 			if (amt) then
 				xrs_debug_tools.STEP = amt
 			end
@@ -542,19 +542,19 @@ local function parse_waypoint(pathname, wpflags, wpname, owner, tRet)
 		if par_num == 1 then
 			-- continue
 		else
-			if param == "" then
+			if param == STR_EMPTY then
 				owner:SendOutput("path '%s': waypoint '%s': syntax error in waypoint name", pathname, wpname)
 				printf("path '%s': waypoint '%s': syntax error in waypoint name", pathname, wpname)
 			else
 				local t_pos = string.find(param, "=", 1, true)
 				if (t_pos) then
 					fld = string.sub(param, 1,t_pos - 1)
-					if not (fld and fld ~= "") then
+					if not (fld and fld ~= STR_EMPTY) then
 						tRet[#tRet+1] = strformat("path '%s': waypoint '%s': syntax error while parsing the param '%s': no field specified",pathname, wpname, param)
 						printf("path '%s': waypoint '%s': syntax error while parsing the param '%s': no field specified",pathname, wpname, param)
 					else
 						val = string.sub(param, t_pos + 1)
-						if not (val and val ~= "") then
+						if not (val and val ~= STR_EMPTY) then
 							val = "true"
 						end
 
@@ -680,14 +680,14 @@ function cmd.waypoint(me,txt,owner,p)
 
 	if (checked) then
 		if (#t > 0) then
-			wrd = ""
+			wrd = STR_EMPTY
 			local _strt, _end = string.find(txt,"%d+")
 			if (_strt and _end) then
 				wrd = string.sub(txt,_strt, _end)
 				wrd = string.lower(wrd)
 			end
 
-			local page = wrd ~= "" and tonumber(wrd) or 1
+			local page = wrd ~= STR_EMPTY and tonumber(wrd) or 1
 
 			local sz = owner.console_size
 
@@ -835,7 +835,7 @@ function cmd.clear(me,txt,owner,p)
 	end
 
 	for i=1,owner.console_size do
-		owner.txt_console[i]:SetText("")
+		owner.txt_console[i]:SetText(STR_EMPTY)
 	end
 end
 
@@ -1060,14 +1060,14 @@ function cmd.var(me,txt,owner,p)
 	end
 
 	if (wrd == "list") then
-		wrd = ""
+		wrd = STR_EMPTY
 		local _strt, _end = string.find(txt,"%d+")
 		if (_strt and _end) then
 			wrd = string.sub(txt,_strt, _end)
 			wrd = string.lower(wrd)
 		end
 
-		local page = wrd ~= "" and tonumber(wrd) or 1
+		local page = wrd ~= STR_EMPTY and tonumber(wrd) or 1
 		local sz = owner.console_size-1
 
 		if not (sz) or (sz == 0) then return "var:= error" end
@@ -1365,7 +1365,7 @@ function cmd.heli(me,txt,owner,p)
 			end
 		end
 
-		if (str and str ~= "") then
+		if (str and str ~= STR_EMPTY) then
 			str = str_explode(str,",")
 			str.x = tonumber(str[1])
 			str.y = tonumber(str[2])
@@ -1412,14 +1412,14 @@ function cmd.weather(me,txt,owner,p)
 			flist:Free()
 		end
 
-		wrd = ""
+		wrd = STR_EMPTY
 		local _strt, _end = string.find(txt,"%d+")
 		if (_strt and _end) then
 			wrd = string.sub(txt,_strt, _end)
 			wrd = string.lower(wrd)
 		end
 
-		local page = wrd ~= "" and tonumber(wrd) or 1
+		local page = wrd ~= STR_EMPTY and tonumber(wrd) or 1
 
 		local sz = owner.console_size
 
@@ -1484,14 +1484,14 @@ function cmd.luabind(me,txt,owner,p)
 		local class_names = _G.class_names()
 		table.sort(class_names)
 		
-		wrd = ""
+		wrd = STR_EMPTY
 		local _strt, _end = string.find(txt,"%d+")
 		if (_strt and _end) then
 			wrd = string.sub(txt,_strt, _end)
 			wrd = string.lower(wrd)
 		end
 
-		local page = wrd ~= "" and tonumber(wrd) or 1
+		local page = wrd ~= STR_EMPTY and tonumber(wrd) or 1
 
 		local sz = owner.console_size
 
@@ -1527,14 +1527,14 @@ function cmd.luabind(me,txt,owner,p)
 			if not (c) then 
 				return "luabind:= error; no class info for userdata (not luabind class?)"
 			end
-			wrd = ""
+			wrd = STR_EMPTY
 			local _strt, _end = string.find(txt,"%d+")
 			if (_strt and _end) then
 				wrd = string.sub(txt,_strt, _end)
 				wrd = string.lower(wrd)
 			end
 
-			local page = wrd ~= "" and tonumber(wrd) or 1
+			local page = wrd ~= STR_EMPTY and tonumber(wrd) or 1
 
 			local sz = owner.console_size
 
@@ -1567,13 +1567,13 @@ function cmd.level(me,txt,owner,p)
 
 	if (wrd == "list") then
 
-		wrd = ""
+		wrd = STR_EMPTY
 		local _strt, _end = string.find(txt,"%d+")
 		if (_strt and _end) then
 			wrd = string.sub(txt,_strt, _end)
 			wrd = string.lower(wrd)
 		end
-		local page = wrd ~= "" and tonumber(wrd) or 1
+		local page = wrd ~= STR_EMPTY and tonumber(wrd) or 1
 
 		local levels = alun_utils.collect_section(game_ini(),"level_maps_single")
 
@@ -1754,13 +1754,13 @@ function cmd.game_graph(me,txt,owner,p)
 		end
 		return "game_graph:= nearest gvid = " .. near_gvid .. " [dist = " .. near_dist .. "] There are "..lgvid.." in "..level.name().." and "..gvid.." total."
 	elseif (wrd == "checkall") then
-		wrd = ""
+		wrd = STR_EMPTY
 		local _strt, _end = string.find(txt,"%d+")
 		if (_strt and _end) then
 			wrd = string.sub(txt,_strt, _end)
 			wrd = string.lower(wrd)
 		end
-		local page = wrd ~= "" and tonumber(wrd) or 1
+		local page = wrd ~= STR_EMPTY and tonumber(wrd) or 1
 		
 		local issues = {}
 		local gg = game_graph()
@@ -1801,14 +1801,14 @@ function cmd.item(me,txt,owner,p)
 			return "item:= error no registered_items list"
 		end
 
-		wrd = ""
+		wrd = STR_EMPTY
 		local _strt, _end = string.find(txt,"%d+")
 		if (_strt and _end) then
 			wrd = string.sub(txt,_strt, _end)
 			wrd = string.lower(wrd)
 		end
 
-		local page = wrd ~= "" and tonumber(wrd) or 1
+		local page = wrd ~= STR_EMPTY and tonumber(wrd) or 1
 		local sz = owner.console_size - 1
 
 		if not (sz) or (sz == 0) then return "item:= error" end
@@ -1905,14 +1905,14 @@ function cmd.info(me,txt,owner,p)
 			return "info:= actor_info empty"
 		end
 
-		wrd = ""
+		wrd = STR_EMPTY
 		local _strt, _end = string.find(rest,"%d+")
 		if (_strt and _end) then
 			wrd = string.sub(txt,_strt, _end)
 			wrd = string.lower(wrd)
 		end
 
-		local page = wrd ~= "" and tonumber(wrd) or 1
+		local page = wrd ~= STR_EMPTY and tonumber(wrd) or 1
 
 		local sz = owner.console_size-1
 
@@ -2025,7 +2025,7 @@ function cmd.antifreeze(me,txt,owner,p)
 			wrd = string.lower(wrd)
 		end
 
-		wrd = wrd ~= "" and tonumber(wrd) or 5
+		wrd = wrd ~= STR_EMPTY and tonumber(wrd) or 5
 
 		se_obj = alife():create("sim_default_stalker_0", db.actor:position(), db.actor:level_vertex_id(), db.actor:game_vertex_id())
 		if not (se_obj) then 

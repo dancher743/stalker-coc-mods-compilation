@@ -71,8 +71,8 @@ function WeatherManager:__init()
 	self.cycle = get_random_weather()
 	self.transition_period = false
 	self.pre_blowout_period = false
-	self.curr_weather = ""
-	self.next_weather = ""
+	self.curr_weather = STR_EMPTY
+	self.next_weather = STR_EMPTY
 	self.last_hour = 0
 	self.next_hour = 0
 	self.last_period_change_hour = level.get_time_hours()
@@ -82,7 +82,7 @@ function WeatherManager:__init()
 	self.weather_fx = nil
 	self.weatherType = "[default]"
 	self.update_time = 0
-	self.update_level = ""
+	self.update_level = STR_EMPTY
 	self.state = {}
 	self.graphs = {}
 	self.graphs_ini = ini_file("environment\\dynamic_weather_graphs.ltx")
@@ -176,7 +176,7 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
 			if cycle == "clear" or cycle == "partly" then
 				phase = "_0"
 			else
-				phase = ""
+				phase = STR_EMPTY
 			end
 			local cycle_ltx = ini_file(("environment\\weathers\\af3_dark_" .. cycle .. phase .. ".ltx"))
 			for h = 0, 23 do
@@ -326,7 +326,7 @@ function WeatherManager:select_weather(now)
 	--printf(">>> Tronex: select_weather | weather_cycle = " .. tostring(weather_cycle))
 	--printf(">>> Tronex: select_weather | self.levelWeather = " .. self.levelWeather)
 
-	local weather_section_name = ""
+	local weather_section_name = STR_EMPTY
 	if weather_valid then
 		weather_section_name = "af3_" .. atmosfear_options.config:r_value("atmosfear_current_parameters","opt_night_brightness") .. "_" .. weather_cycle
 		if (weather_cycle == "clear") or (weather_cycle == "partly") then
@@ -456,7 +456,7 @@ end
 
 
 function WeatherManager:get_hour_as_string(h)
-	local hour_str=""
+	local hour_str=STR_EMPTY
 	if h>23 then
 		h=h-24
 	end
@@ -505,7 +505,7 @@ function WeatherManager:get_curr_ambient()
     -- Read
     local ini = wthr and ini_file("environment\\weathers\\" .. wthr .. ".ltx")
     local hr_string = self:get_hour_as_string(hr)
-    local amb = ini and hr_string and ini:section_exist(hr_string) and ini:r_string_ex(hr_string,"ambient") or ""
+    local amb = ini and hr_string and ini:section_exist(hr_string) and ini:r_string_ex(hr_string,"ambient") or STR_EMPTY
     
     -- Cache
     last_amb.hr = hr
@@ -539,13 +539,13 @@ function WeatherManager:state_simulation(weather)
 end
 
 function WeatherManager:init_by_graph(graph, graph_name)
-	local cur_state = get_next_state(graph,"")
+	local cur_state = get_next_state(graph,STR_EMPTY)
 	local next_state = get_next_state(graph,cur_state)
 	return {current_state = cur_state, next_state = next_state, graph_name = graph_name, graph = graph}
 end
 
 function WeatherManager:set_state_as_string(ss)
-	if (not ss) or (ss == "") then -- just a lil fix
+	if (not ss) or (ss == STR_EMPTY) then -- just a lil fix
 		return
 	end
 
@@ -825,7 +825,7 @@ function WeatherManager:load(F)
 	self.next_period_change_hour = F:r_u32();
 	local state_string = F:r_stringZ();
 	-- printf("str = "..state_string)
-	if state_string == "" then
+	if state_string == STR_EMPTY then
 		--printf("str = empty string")
 	end
 	self:set_state_as_string(state_string)

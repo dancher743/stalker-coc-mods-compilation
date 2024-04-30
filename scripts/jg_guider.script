@@ -83,7 +83,7 @@ function prepare_follower()
 	end
 	guid.pos			= pos
 	guid.target_level	= level_name
-	guid.description	= strformat("%s %s", game.translate_string("st_dyn_news_"..level_name) or "", game.translate_string("st_dyn_"..level_name.."_blizko_"..rnd))
+	guid.description	= strformat("%s %s", game.translate_string("st_dyn_news_"..level_name) or STR_EMPTY, game.translate_string("st_dyn_"..level_name.."_blizko_"..rnd))
 	guid.squad_id		= get_object_squad(npc).id
 	guid.size			= size
 	guid.timer			= 2*(size + math.random(0, size))

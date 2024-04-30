@@ -20,7 +20,7 @@ function opt_menu_on_init(menu)
 	-- localization
 	menu.gameplay_options["localization"] = {default="eng", debug_only=false, typ="list", list={"eng","rus"}, on_accept=function(handler,optMgr,ctrl)
 		local language = ctrl:GetText()
-		if (language and language ~= "") then
+		if (language and language ~= STR_EMPTY) then
 			local loc_ini = ini_file_ex("localization.ltx",true)
 			if (loc_ini:r_value("string_table","language") ~= language) then
 				loc_ini:w_value("string_table","language",language)
@@ -265,8 +265,8 @@ function get_character_icon_list()
 	local def_icon = ini:r_string_ex(section, "default_portrait")
 	table.insert(t, def_icon)
 	for i=0, n-1 do
-		local result, id, value = ini:r_line(section,i,"","" )
-		if (id ~= "" and id ~= "default_portrait") then
+		local result, id, value = ini:r_line(section,i,STR_EMPTY,STR_EMPTY )
+		if (id ~= STR_EMPTY and id ~= "default_portrait") then
 			table.insert(t,id)
 		end
 	end
@@ -294,7 +294,7 @@ function get_option(name, type, subtype)
 		elseif (subtype == "number") then
 			value = config:r_value("mm_options",name,2,-1)
 		else
-			value = config:r_value("mm_options",name,0,"")
+			value = config:r_value("mm_options",name,0,STR_EMPTY)
 		end
 	end
 	

@@ -90,7 +90,7 @@ local function options_default_config()
 	options_btn = btn_tbl[axr_main.config:r_value("mm_dynamic_news_options","options_btn",0,"Page_Up")] or 201
 	local need_save
 	for k,v in pairs(options) do
-		local key = ((v.typ=="check" and "enable_") or "") .. k
+		local key = ((v.typ=="check" and "enable_") or STR_EMPTY) .. k
 		if not axr_main.config:line_exist("mm_dynamic_news_options", key) and v.typ~="text" then
 			axr_main.config:w_value("mm_dynamic_news_options", key, v.default)
 			need_save = true

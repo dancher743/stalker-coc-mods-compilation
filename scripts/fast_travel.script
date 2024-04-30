@@ -25,7 +25,7 @@ local function get_spotted_object_hint(se_obj_spot)
 	local spot_hint = objects_spots_hints[spot_id]
 	
 	if (spot_hint == nil) then
-		local object_name = se_obj_spot:name():gsub(spot_id, "")
+		local object_name = se_obj_spot:name():gsub(spot_id, STR_EMPTY)
 		spot_hint = spotted_objects[object_name]
 		objects_spots_hints[spot_id] = spot_hint
 	end

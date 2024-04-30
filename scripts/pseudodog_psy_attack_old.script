@@ -36,7 +36,7 @@ local function monster_on_update(npc, st)
 			local v2 = actor:direction()
 			
 			if (oTarget and (oTarget:id()==0) and (v1.x*v2.x)+(v1.z*v2.z)<-0.6 and npc:see(actor) and distance_to_actor<psy_attack_distance_sqr) then
-				level.add_cam_effector("camera_effects\\pseudodog_effect.anm",396,false,"")
+				level.add_cam_effector("camera_effects\\pseudodog_effect.anm",396,false,STR_EMPTY)
 				pp_effector_manager.add("duality_circle.ppe",397,false)
 				
 				local h = hit()

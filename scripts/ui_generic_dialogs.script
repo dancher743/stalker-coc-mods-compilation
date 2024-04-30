@@ -101,7 +101,7 @@ function input_dialog_ui:GetText()
 	local text = self.input:GetText()
 	
 	if (text == nil) then
-		text = ""
+		text = STR_EMPTY
 	end
 	
 	return text

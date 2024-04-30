@@ -15,13 +15,13 @@ function get_smart_cover_cover_loophole_lead_forester_idle_talk()
 			transitions = {
 			--' Анимации входа в бойницы
 			{
-				vertex0 = "",
+				vertex0 = STR_EMPTY,
 				vertex1 = "forester_idle",
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
                                 actions =	{
 											{
 												animation = "sit",
@@ -33,13 +33,13 @@ function get_smart_cover_cover_loophole_lead_forester_idle_talk()
 							}
 			},
 			{
-				vertex0 = "",
+				vertex0 = STR_EMPTY,
 				vertex1 = "forester_talk",
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
                                 actions =	{
 											{
 												animation = "sit",
@@ -60,7 +60,7 @@ function get_smart_cover_cover_loophole_lead_forester_idle_talk()
                 actions =	{
 							{
                                 precondition_functor = "smart_covers.script_functor_true",
-                                precondition_params = "",
+                                precondition_params = STR_EMPTY,
                                 actions =	{
 											{
 												animation = "sit",
@@ -78,7 +78,7 @@ function get_smart_cover_cover_loophole_lead_forester_idle_talk()
                 actions =	{
 							{
                                 precondition_functor = "smart_covers.script_functor_true",
-                                precondition_params = "",
+                                precondition_params = STR_EMPTY,
                                 actions =	{
 											{
 												animation = "sit",
@@ -93,12 +93,12 @@ function get_smart_cover_cover_loophole_lead_forester_idle_talk()
 			--' Анимации выхода из бойниц.
 			{
 				vertex0 = "forester_idle",
-				vertex1 = "",
+				vertex1 = STR_EMPTY,
 				weight = 1.1,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
                                 actions =	{
 											{
 												animation = "sit",
@@ -111,12 +111,12 @@ function get_smart_cover_cover_loophole_lead_forester_idle_talk()
 			},
 			{
 				vertex0 = "forester_talk",
-				vertex1 = "",
+				vertex1 = STR_EMPTY,
 				weight = 1.1,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
                                 actions =	{
 											{
 												animation = "sit",

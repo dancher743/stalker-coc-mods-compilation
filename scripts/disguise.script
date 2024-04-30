@@ -345,9 +345,9 @@ function load_state(data)
 	warned = data.disguise_system.ds_warned or callout
 	disguise_community = data.disguise_system.ds_community 
 
-	if not default_faction or default_faction == "" then
+	if not default_faction or default_faction == STR_EMPTY then
 		local actor = db.actor
-		default_faction = actor and utils.get_actor_community() or ""
+		default_faction = actor and utils.get_actor_community() or STR_EMPTY
 		printf("DBG loaded default " .. (default_faction or "?"))
 	end
 

@@ -474,7 +474,7 @@ function debug_sc(text, icon) -- debug function
 end
 
 function debug_vars() -- return config and extra vars as strings
-	if not azazel_customizable_config["debugMessages"] then return "" end
+	if not azazel_customizable_config["debugMessages"] then return STR_EMPTY end
 	return strformat("Configs: Fix Bleeding: %s , Disable Animation: %s , Gain Money: %s , Lose All Money: %s , Stalker Money: %s", azazel_customizable_config["fix_bleeding"], azazel_customizable_config["disable_animation"], azazel_customizable_config["gain_money"], azazel_customizable_config["lose_all_money"], azazel_customizable_config["stalker_money"])
 end
 

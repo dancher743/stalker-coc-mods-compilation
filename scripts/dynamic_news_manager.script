@@ -157,7 +157,7 @@ function DynamicNewsManager:__init()
 	self.companions_list = dynamic_news_helper.list_actor_squad_by_id()
 	self.news_toggle = xr_conditions.surge_complete()
 	self.surge_shift = not xr_conditions.surge_started()
-	self.surge_type = ""
+	self.surge_type = STR_EMPTY
 	
 	self.sentences_fnames = self:ReadTextList("name_stalker_")
 	self.sentences_snames = self:ReadTextList("lname_private_")
@@ -1337,7 +1337,7 @@ function DynamicNewsManager:FoundFood(sender,itm) -- stalker found food (Dead Ai
 		return false
 	end
 	
-	local inv_name = game.translate_string(system_ini():r_string_ex(itm:section(),"inv_name") or "")
+	local inv_name = game.translate_string(system_ini():r_string_ex(itm:section(),"inv_name") or STR_EMPTY)
 	local tbl = self:ReadTextList("st_dyn_news_gossip_food_")
 	if (not tbl) then
 		return false
@@ -1357,7 +1357,7 @@ function DynamicNewsManager:FoundMedicine(sender,itm) -- stalker found medicine 
 		return false
 	end
 	
-	local inv_name = game.translate_string(system_ini():r_string_ex(itm:section(),"inv_name") or "")
+	local inv_name = game.translate_string(system_ini():r_string_ex(itm:section(),"inv_name") or STR_EMPTY)
 	local tbl = self:ReadTextList("st_dyn_news_gossip_med_")
 	if (not tbl) then
 		return false
@@ -1377,7 +1377,7 @@ function DynamicNewsManager:FoundArtefact(sender,itm) -- stalker found an artifa
 		return false
 	end
 	
-	local inv_name = game.translate_string(system_ini():r_string_ex(itm:section(),"inv_name") or "")
+	local inv_name = game.translate_string(system_ini():r_string_ex(itm:section(),"inv_name") or STR_EMPTY)
 	local tbl = self:ReadTextList("st_dyn_news_gossip_arte_")
 	if (not tbl) then
 		return false
@@ -1445,7 +1445,7 @@ end
 function DynamicNewsManager:BoughtItems(sender,who,list) -- trading
 	--printf(">>> Dyn News: BoughtItems - call")
 	local sec = list[math.random(#list)]
-	local inv_name = game.translate_string(system_ini():r_string_ex(sec,"inv_name") or "")
+	local inv_name = game.translate_string(system_ini():r_string_ex(sec,"inv_name") or STR_EMPTY)
 	local tbl = self:ReadTextList("st_dyn_news_gossip_buy_")
 	if (not tbl) then
 		return false
@@ -1487,7 +1487,7 @@ function DynamicNewsManager:GossipLoot(sender,best_item,all_value) -- talk about
 		msg = tbl[math.random(#tbl)]
 		
 	elseif best_item then
-		local item_name = game.translate_string(system_ini():r_string_ex(best_item:section(),"inv_name") or "")
+		local item_name = game.translate_string(system_ini():r_string_ex(best_item:section(),"inv_name") or STR_EMPTY)
 		local tbl = self:ReadTextList("st_dyn_news_loot_item_")
 		if (not tbl) then
 			return false
@@ -1566,7 +1566,7 @@ function DynamicNewsManager:ReportNextEmission() --  news about expected surge's
 			c = dynamic_news_helper.GetTimeString(math.floor(surge_start/3600), AccuracyTier)
 			if (a and b and c and d and SurgeType) then
 				local msg_mid = self:ReadTextKeyList( b , {["what"]=SurgeType , ["when"]=c} )
-				if d ~= "" then
+				if d ~= STR_EMPTY then
 					d = d .. "."
 				end
 				msg = self:ReadTextKeyList( "$start $mid. $end" , {["start"]=a , ["mid"]=msg_mid , ["end"]=d} )
@@ -1654,7 +1654,7 @@ function DynamicNewsManager:ReportZoneActivity() -- report activity of squads in
 		end
 		target = game.translate_string("st_dyn_news_comm_" .. target_comm .. "_" .. math.random(7,8))
 	else -- others
-		target = ""
+		target = STR_EMPTY
 		target_type = "other"
 	end
 	
@@ -2079,7 +2079,7 @@ function DynamicNewsManager:GossipEmissionEnd(what) -- stalkers reacting about t
 	local msg = self:ReadTextKeyList( tbl[math.random(#tbl)] , { ["what"]=what_translated } )
 	
 	dynamic_news_helper.send_tip(msg,Se,math.random(10,15),msg_duration,sender:character_icon(),"beep_1","npc") -- no need for push to channel
-	self.surge_type	= "" -- reset
+	self.surge_type	= STR_EMPTY -- reset
 	
 	return true
 end
@@ -2409,7 +2409,7 @@ end
 
 function DynamicNewsManager:ReadTextKeyList(str_in,tbl) -- read translated strings -> replace included special keys/patterns with the ones from (tbl) -> return the modified strings. 
 	--printf(">>> Dyn News: help ReadTextKeyList")
-	local m_s = ""
+	local m_s = STR_EMPTY
 	local str = str_in
 	for k,v in pairs(tbl) do
 		m_s = string.gsub(str,"%$"..k,v)

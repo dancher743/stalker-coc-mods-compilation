@@ -71,7 +71,7 @@ function check_and_apply (text)
 		return true
 	end
 	
-	SetHudMsg("",0)
+	SetHudMsg(STR_EMPTY,0)
 	return false
 end
 

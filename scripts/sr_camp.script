@@ -91,7 +91,7 @@ local sr_camp_states = {
 										
 											if (story_communities_table == nil) then
 												story_communities_table = {}
-												local temp_table = parse_names(camp_ini:r_string_ex("camp", "stories_avail_communities") or "")
+												local temp_table = parse_names(camp_ini:r_string_ex("camp", "stories_avail_communities") or STR_EMPTY)
 												for _,v in ipairs(temp_table) do
 													story_communities_table[v] = true
 												end

@@ -146,8 +146,8 @@ function CSurgeManager:initialize()
 	end
 	self.survive = xr_logic.parse_condlist(nil, "surge_manager", "survive_condlist", cond_string)
 
-	self.surge_message = ""
-	self.surge_task_sect = ""
+	self.surge_message = STR_EMPTY
+	self.surge_task_sect = STR_EMPTY
 	
 	--printf("level=%s   artefact_respawn_levels=%s",level.name(),m_data.artefact_respawn_levels[level.name()])
 	
@@ -265,8 +265,8 @@ function CSurgeManager:skip_surge()
 	end
 	--]]
 
-	self.surge_message 		= ""
-	self.surge_task_sect 	= ""
+	self.surge_message 		= STR_EMPTY
+	self.surge_task_sect 	= STR_EMPTY
 	self.task_given 		= false
 
 	self.effector_set			= false
@@ -306,8 +306,8 @@ function CSurgeManager:end_surge(manual)
 
 	self:new_surge_time(false)
 
-	self.surge_message 		= ""
-	self.surge_task_sect 	= ""
+	self.surge_message 		= STR_EMPTY
+	self.surge_task_sect 	= STR_EMPTY
 	self.task_given 		= nil
 
 	if(self.blowout_sound) then
@@ -391,7 +391,7 @@ function CSurgeManager:init_surge_covers()
 	self.covers = {}
 	local ini = self.ini
 	for i = 0, ini:line_count("list")-1 do
-		temp1, id, temp2 = ini:r_line("list", i, "", "")
+		temp1, id, temp2 = ini:r_line("list", i, STR_EMPTY, STR_EMPTY)
 		self.covers[id] = ini:line_exist(id, "condlist") and xr_logic.parse_condlist(db.actor, id, "condlist", ini:r_string_ex(id, "condlist") or "true") or true
 	end
 end
@@ -592,7 +592,7 @@ function CSurgeManager:update()
 		-- 1st earthquake -----------------------------------------------------------------------------------------------------------------------------------------
 		if (diff_sec>=80) and (self.stages['quake20']==nil) then
 			--self.debugMessages[2]:SetText("eathquake started at: "..tostring(diff_sec))
-			level.add_cam_effector("camera_effects\\earthquake_20.anm", earthquake_cam_eff, true, "")
+			level.add_cam_effector("camera_effects\\earthquake_20.anm", earthquake_cam_eff, true, STR_EMPTY)
 			self.stages['quake20']=true
 			--self.debugMessages[2]:SetText("quake20 at: "..tostring(diff_sec))
 		end
@@ -615,25 +615,25 @@ function CSurgeManager:update()
 		if (diff_sec>=100) and (self.stages['quake40']==nil) then
 			xr_sound.play_sound_looped(db.actor:id(), "surge_earthquake_sound_looped")
 			level.remove_cam_effector(earthquake_cam_eff)
-			level.add_cam_effector("camera_effects\\earthquake_40.anm", earthquake_cam_eff, true, "")
+			level.add_cam_effector("camera_effects\\earthquake_40.anm", earthquake_cam_eff, true, STR_EMPTY)
 			self.stages['quake40']=true
 			--self.debugMessages[2]:SetText("quake40 at: "..tostring(diff_sec))
 		end
 		if (diff_sec>=102) and (self.stages['quake60']==nil) then
 			level.remove_cam_effector(earthquake_cam_eff)
-			level.add_cam_effector("camera_effects\\earthquake_60.anm", earthquake_cam_eff, true, "")
+			level.add_cam_effector("camera_effects\\earthquake_60.anm", earthquake_cam_eff, true, STR_EMPTY)
 			self.stages['quake60']=true
 			--self.debugMessages[2]:SetText("quake60 at: "..tostring(diff_sec))
 		end
 		if (diff_sec>=104) and (self.stages['quake80']==nil) then
 			level.remove_cam_effector(earthquake_cam_eff)
-			level.add_cam_effector("camera_effects\\earthquake_80.anm", earthquake_cam_eff, true, "")
+			level.add_cam_effector("camera_effects\\earthquake_80.anm", earthquake_cam_eff, true, STR_EMPTY)
 			self.stages['quake80']=true
 			--self.debugMessages[2]:SetText("quake80 at: "..tostring(diff_sec))
 		end
 		if (diff_sec>=106) and (self.stages['quake100']==nil) then
 			level.remove_cam_effector(earthquake_cam_eff)
-			level.add_cam_effector("camera_effects\\earthquake.anm", earthquake_cam_eff, true, "")
+			level.add_cam_effector("camera_effects\\earthquake.anm", earthquake_cam_eff, true, STR_EMPTY)
 			self.stages['quake100']=true
 			--self.debugMessages[2]:SetText("quake100 at: "..tostring(diff_sec))
 		end
@@ -696,25 +696,25 @@ function CSurgeManager:update()
 		-- earthquakes fade-----------------------------------------------------------------------------------------------------------------------------------------
 		if (diff_sec>=200) and (self.stages['quake100']==true) then
 			level.remove_cam_effector(earthquake_cam_eff)
-			level.add_cam_effector("camera_effects\\earthquake_80.anm", earthquake_cam_eff, true, "")
+			level.add_cam_effector("camera_effects\\earthquake_80.anm", earthquake_cam_eff, true, STR_EMPTY)
 			self.stages['quake100']=false
 			--self.debugMessages[2]:SetText("quake80 at: "..tostring(diff_sec))
 		end
 		if (diff_sec>=202) and (self.stages['quake80']==true) then
 			level.remove_cam_effector(earthquake_cam_eff)
-			level.add_cam_effector("camera_effects\\earthquake_60.anm", earthquake_cam_eff, true, "")
+			level.add_cam_effector("camera_effects\\earthquake_60.anm", earthquake_cam_eff, true, STR_EMPTY)
 			self.stages['quake80']=false
 			--self.debugMessages[2]:SetText("quake60 at: "..tostring(diff_sec))
 		end
 		if (diff_sec>=206) and (self.stages['quake60']==true) then
 			level.remove_cam_effector(earthquake_cam_eff)
-			level.add_cam_effector("camera_effects\\earthquake_40.anm", earthquake_cam_eff, true, "")
+			level.add_cam_effector("camera_effects\\earthquake_40.anm", earthquake_cam_eff, true, STR_EMPTY)
 			self.stages['quake60']=false
 			--self.debugMessages[2]:SetText("quake40 at: "..tostring(diff_sec))
 		end
 		if (diff_sec>=209) and (self.stages['quake40']==true) then
 			level.remove_cam_effector(earthquake_cam_eff)
-			level.add_cam_effector("camera_effects\\earthquake_20.anm", earthquake_cam_eff, true, "")
+			level.add_cam_effector("camera_effects\\earthquake_20.anm", earthquake_cam_eff, true, STR_EMPTY)
 			self.stages['quake40']=false
 			--self.debugMessages[2]:SetText("quake20 at: "..tostring(diff_sec))
 		end
@@ -988,7 +988,7 @@ function CSurgeManager:displayIndicators(power)
 	elseif power>=0.4 then indik="yellow"
 	elseif power>=0.1 then indik="green"
 	else indik=nil end
-	local aspectRatio=""
+	local aspectRatio=STR_EMPTY
 	if self.aspectRatio~=1 then
 		aspectRatio="_16"
 	end
@@ -1131,8 +1131,8 @@ end
 
 function CSurgeManager:give_surge_hide_task()
 	if(self.surge_message~="empty") then
-		local mess = ""
-		if(self.surge_message=="") then
+		local mess = STR_EMPTY
+		if(self.surge_message==STR_EMPTY) then
 			local time = 0
 			mess = game.translate_string("hide_from_surge_message")
 		else
@@ -1140,7 +1140,7 @@ function CSurgeManager:give_surge_hide_task()
 		end
 	end
 	if(self.surge_task_sect~="empty") then
-		if(self.surge_task_sect=="") then
+		if(self.surge_task_sect==STR_EMPTY) then
 			task_manager.get_task_manager():give_task("hide_from_surge")
 		else
 			task_manager.get_task_manager():give_task(self.surge_task_sect)
@@ -1724,7 +1724,7 @@ function stop_surge()
 end
 
 function get_task_descr()
-	local descr = ""
+	local descr = STR_EMPTY
 	if(get_surge_manager().actor_in_cover) then
 		descr = game.translate_string("hide_from_surge_descr_2_a")
 	else

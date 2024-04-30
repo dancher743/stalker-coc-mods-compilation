@@ -156,7 +156,7 @@ function create_random_stash(no_spot,hint,bonus_items)
 	-- create a temporary table to use math.random
 	local t = {}
 	for id,v in pairs(caches) do
-		local story_id = get_object_story_id(id) or ""
+		local story_id = get_object_story_id(id) or STR_EMPTY
 		-- false means box is available
 		if (v == false and not ltx:line_exist("ignore_boxes",story_id)) then
 			table.insert(t,id)
@@ -189,17 +189,17 @@ function create_random_stash(no_spot,hint,bonus_items)
 	
 	local ini = system_ini()
 	local function is_consumable(section)
-		local v = ini:r_string_ex(section,"class","")
+		local v = ini:r_string_ex(section,"class",STR_EMPTY)
 		return v == "S_FOOD" or v == "II_FOOD"
 	end
 	
 	local function is_outfit(section)
-		local v = ini:r_string_ex(section,"class","")
+		local v = ini:r_string_ex(section,"class",STR_EMPTY)
 		return v == "EQU_STLK" or v == "E_STLK" or v == "EQU_HLMET" or v == "E_HLMET"
 	end
 	
 	local function is_weapon(section)
-		local v = ini:r_string_ex(section,"class","")
+		local v = ini:r_string_ex(section,"class",STR_EMPTY)
 		return string.find(v,"WP_") ~= nil
 	end
 	
@@ -296,7 +296,7 @@ function create_random_stash(no_spot,hint,bonus_items)
 
 --------------------------------------------------Тайники из ЧН
 
-			level.map_add_object_spot_ser(id, "treasure", hint or "")
+			level.map_add_object_spot_ser(id, "treasure", hint or STR_EMPTY)
 			news_manager.send_treasure_with_level(name, se_box)
 		end
 		caches[id] = table.concat(spawned_item,",")
@@ -354,7 +354,7 @@ function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery, cus
 	local t = {}
 	for id, v in pairs( caches ) do
 
-		local story_id = get_object_story_id(id) or ""
+		local story_id = get_object_story_id(id) or STR_EMPTY
 		-- False means box is available:
 		if ( v == false and not ltx:line_exist("ignore_boxes", story_id) ) then
 			if ( bonus_items ) then
@@ -394,7 +394,7 @@ function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery, cus
 			local spot = custom_spot or "treasure"
 			if ( no_spot ~= true and level.map_has_object_spot( id, spot ) == 0 ) then
 				hint,name = get_extended_hint(sim,se_box,hint,id)
-				level.map_add_object_spot_ser( id, spot, hint or "" )
+				level.map_add_object_spot_ser( id, spot, hint or STR_EMPTY )
 				news_manager.send_treasure_with_level(name, se_box)
 			end
 
@@ -419,7 +419,7 @@ function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery, cus
 	local spot = custom_spot or "treasure"
 	if ( no_spot ~= true and level.map_has_object_spot( id, spot ) == 0 ) then
 		hint,name = get_extended_hint(sim,se_box,hint,id)
-		level.map_add_object_spot_ser( id, spot, hint or "" )
+		level.map_add_object_spot_ser( id, spot, hint or STR_EMPTY )
 		news_manager.send_treasure_with_level(name, se_box)
 	end
 
@@ -498,7 +498,7 @@ function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery, cus
 	for i = 1, #spawned_item do
 
 		sec = spawned_item[i]
-		if ( sec ~= "" and ini:section_exist( sec ) ) then
+		if ( sec ~= STR_EMPTY and ini:section_exist( sec ) ) then
 			se_obj = sim:create( sec, se_box.position, 0, 0, id )
 			if ( IsWeapon( nil, se_obj:clsid( ) ) ) then
 				data = stpk_utils.get_weapon_data( se_obj )
@@ -566,7 +566,7 @@ function try_spawn_treasure(box)
 	local sim = alife()
 	for i=1,#spawned_item do
 		sec = spawned_item[i]
-		if (sec ~= "" and ini:section_exist(sec)) then
+		if (sec ~= STR_EMPTY and ini:section_exist(sec)) then
 		
 			if (utils.is_ammo(sec)) then 
 				create_ammo(sec,box:position(),box:level_vertex_id(),box:game_vertex_id(),id,math.random(10,30))
@@ -650,7 +650,7 @@ function get_valid_item_sections()
 					if (ini:r_bool_ex(section,"quest_item",false) == false) then
 						if not (string.find(section,"mp_")) then
 							local name = ini:r_string_ex(section,"inv_name")
-							if (name and name ~= "" and name ~= "default") then
+							if (name and name ~= STR_EMPTY and name ~= "default") then
 								local cost = ini:r_float_ex(section,"cost") or 0
 								if (cost > 0) then
 									t[section] = cost
@@ -724,7 +724,7 @@ function get_extended_hint(sim,stash,hint,id)
 		descr = game.translate_string("st_stash_encrypt_descr").."\\n"..base64.encode(descr)
 	end
 	
-	local extended_hint = "%c[255,255,160,0]" .. name .. "\\n%c[default]" .. descr .. "\\n%c[160,0,255,255]" .. (hint or "")
+	local extended_hint = "%c[255,255,160,0]" .. name .. "\\n%c[default]" .. descr .. "\\n%c[160,0,255,255]" .. (hint or STR_EMPTY)
 
 	return extended_hint, name
 end

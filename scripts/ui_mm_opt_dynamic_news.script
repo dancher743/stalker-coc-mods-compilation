@@ -223,7 +223,7 @@ function DynamicNewsOptionsDialog:OnKeyboard(dik, keyboard_action)
 					self.edit_opt[k] = ctrl:GetText()
 				else
 					local txt = ctrl:GetText()
-					txt = t == "" and txt or string.sub(txt,string.len(t)+1,-1)
+					txt = t == STR_EMPTY and txt or string.sub(txt,string.len(t)+1,-1)
 					t = t .. trx_text_input.translate(txt)
 					ctrl:SetText(t)
 					self.edit_opt[k] = t

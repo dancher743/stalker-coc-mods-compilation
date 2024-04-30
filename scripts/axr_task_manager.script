@@ -198,7 +198,7 @@ function drx_sl_generate_random_sl_task( npc, skip, is_sim )
 		math.randomseed( device( ):time_global( ) )
 		return honcho_task_list[math.random( #honcho_task_list )]
 	else
-		return ("drx_sl_" .. alun_utils.load_var( db.actor, "drx_sl_current_honcho", "" ) .. "_default_task")
+		return ("drx_sl_" .. alun_utils.load_var( db.actor, "drx_sl_current_honcho", STR_EMPTY ) .. "_default_task")
 	end
 
 end
@@ -271,7 +271,7 @@ function drx_sl_generate_change_factions_task( npc, skip, is_sim )
 		math.randomseed( device( ):time_global( ) )
 		return task_list[math.random( #task_list )]
 	else
-		return ""
+		return STR_EMPTY
 	end
 
 end
@@ -513,8 +513,8 @@ function drx_sl_get_finished_task( npc, is_sim )
 	local st = db.storage[npc:id( )]
 
 	-- Check if player is on end game task:
-	local endgame_task = alun_utils.load_var( db.actor, "drx_sl_endgame_task", "" )
-	if ( endgame_task ~= "" ) then
+	local endgame_task = alun_utils.load_var( db.actor, "drx_sl_endgame_task", STR_EMPTY )
+	if ( endgame_task ~= STR_EMPTY ) then
 		if ( db.actor:get_task( endgame_task, true ) ~= nil and task_info[endgame_task] and task_info[endgame_task].stage ~= nil and task_info[endgame_task].stage == (task_manager.task_ini:r_float_ex( endgame_task, "stage_complete" ) or 254) ) then
 			if ( task_info[endgame_task].status ~= "fail" and task_info[endgame_task].status ~= "completed" ) then
 				return endgame_task
@@ -1161,7 +1161,7 @@ end
 
 function trigger_fetch_func(task_id)
 	--printf("triiger_fetch_func %s",task_id)
-	local fetch_func = xr_logic.parse_condlist(db.actor, "task_manager", "condlist", task_manager.task_ini:r_string_ex(task_id,"fetch_func") or "")
+	local fetch_func = xr_logic.parse_condlist(db.actor, "task_manager", "condlist", task_manager.task_ini:r_string_ex(task_id,"fetch_func") or STR_EMPTY)
 	if (fetch_func) then
 		xr_logic.pick_section_from_condlist(db.actor,db.actor,fetch_func)
 	end

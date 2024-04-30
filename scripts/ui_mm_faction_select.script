@@ -81,8 +81,8 @@ local function on_game_load(binder)
 	end
 	
 	-- Name
-	local new_character_name = config:r_value("character_creation","new_game_character_name",3) or ""
-	if (new_character_name and new_character_name ~= "") then
+	local new_character_name = config:r_value("character_creation","new_game_character_name",3) or STR_EMPTY
+	if (new_character_name and new_character_name ~= STR_EMPTY) then
 		config:w_value("character_creation","new_game_character_name")
 		need_save = true
 		
@@ -93,7 +93,7 @@ local function on_game_load(binder)
 	
 	-- Icon
 	local new_character_icon = config:r_value("character_creation","new_game_icon",3)
-	if (new_character_icon and new_character_icon ~= "") then
+	if (new_character_icon and new_character_icon ~= STR_EMPTY) then
 		db.actor_binder.character_icon = new_character_icon
 		db.actor:set_character_icon(db.actor_binder.character_icon)
 		config:w_value("character_creation","new_game_icon")
@@ -101,13 +101,13 @@ local function on_game_load(binder)
 	end
 	
 	-- Faction
-	local faction = config:r_value("character_creation","new_game_faction",3) or ""
+	local faction = config:r_value("character_creation","new_game_faction",3) or STR_EMPTY
 
 	-- Check if DRX Questlines addon is available
 	local drx_ini = ini_file("misc\\task_manager.ltx")
 	local drx = drx_ini:section_exist("drx_sl_find_wish_granter_task") and true or false
 	
-	if (faction and faction ~= "") then
+	if (faction and faction ~= STR_EMPTY) then
 		config:w_value("character_creation","new_game_faction")
 		need_save = true
 		
@@ -115,7 +115,7 @@ local function on_game_load(binder)
 		local start_location = config:r_value("character_creation","new_game_map")
 		config:w_value("character_creation","new_game_map")
 		
-		if start_location and start_location ~= "" then
+		if start_location and start_location ~= STR_EMPTY then
 			start_pos = {}
 			table.insert(start_pos,ini_map:r_float_ex(start_location, "lvid"))
 			table.insert(start_pos,ini_map:r_float_ex(start_location, "gvid"))
@@ -186,7 +186,7 @@ local function on_game_load(binder)
 				alun_utils.save_var( db.actor, "drx_sl_current_task_number", 1 )
 	
 				-- Determine first honcho to start at:
-				local start_game_honcho = ""
+				local start_game_honcho = STR_EMPTY
 				if ( faction == "stalker" ) then
 					start_game_honcho = "esc_m_trader"  -- Loner, Sidorovich
 				elseif ( faction == "dolg" ) then
@@ -212,7 +212,7 @@ local function on_game_load(binder)
 				-- Build list of available start game versions for start game honcho:
 				honcho_start_ltx_file = ini_file("misc\\task_manager.ltx")
 				local honcho_start_list = {}
-				local honcho_start_id = ""
+				local honcho_start_id = STR_EMPTY
 				local i = 1
 				while ( true ) do
 					honcho_start_id = ("drx_sl_" .. start_game_honcho .. "_start_game_" .. i)
@@ -251,7 +251,7 @@ local function on_game_load(binder)
 		
 		-- Money
 		local money = config:r_value("character_creation","new_game_money",2)
-		if money and money ~= "" then
+		if money and money ~= STR_EMPTY then
 			db.actor:give_money(-db.actor:money()+money)
 		end 
 		config:w_value("character_creation","new_game_money")
@@ -261,7 +261,7 @@ local function on_game_load(binder)
 		local sim = alife()
 		local loadout = config:r_value("character_creation","new_game_loadout",3)
 		local ammo_table = {}
-		if loadout and loadout ~= "" then
+		if loadout and loadout ~= STR_EMPTY then
 			local t = alun_utils.str_explode(loadout,",")
 			for i=1, #t do
 				if ini:section_exist(t[i]) then
@@ -393,7 +393,7 @@ function faction_ui:__init(owner) super()
 	self.table_hardcore_lives = {}
 	local n = ini_opt:line_count("new_game_hardcore_lives") or 0
 	for i=0, n-1 do
-		local result, id, value = ini_opt:r_line("new_game_hardcore_lives",i,"","" )
+		local result, id, value = ini_opt:r_line("new_game_hardcore_lives",i,STR_EMPTY,STR_EMPTY )
 		local t = alun_utils.str_explode(value,",")
 		local size = #self.table_hardcore_lives + 1
 		self.table_hardcore_lives[size] = {}
@@ -404,7 +404,7 @@ function faction_ui:__init(owner) super()
 	self.table_hardcore_regen = {{nil,"st_off"}}
 	local n = ini_opt:line_count("new_game_hardcore_regen") or 0
 	for i=0, n-1 do
-		local result, id, value = ini_opt:r_line("new_game_hardcore_regen",i,"","" )
+		local result, id, value = ini_opt:r_line("new_game_hardcore_regen",i,STR_EMPTY,STR_EMPTY )
 		local t = alun_utils.str_explode(value,",")
 		local size = #self.table_hardcore_regen + 1
 		self.table_hardcore_regen[size] = {}
@@ -415,7 +415,7 @@ function faction_ui:__init(owner) super()
 	self.table_timer = {{nil,"st_off"}}
 	local n = ini_opt:line_count("new_game_timer") or 0
 	for i=0, n-1 do
-		local result, id, value = ini_opt:r_line("new_game_timer",i,"","" )
+		local result, id, value = ini_opt:r_line("new_game_timer",i,STR_EMPTY,STR_EMPTY )
 		local t = alun_utils.str_explode(value,",")
 		local size = #self.table_timer + 1
 		self.table_timer[size] = {}
@@ -435,8 +435,8 @@ function faction_ui:__init(owner) super()
 	self.selected_timer = self.table_timer[1]
 	self.points_left = ini_itm:r_float_ex("points","total_points") or 1000
 	self.points_used = 0
-	self.first_name = ""
-	self.last_name = ""
+	self.first_name = STR_EMPTY
+	self.last_name = STR_EMPTY
 	
 	-- Utility
 	self.access	= true
@@ -723,7 +723,7 @@ function faction_ui:Update()
 	
 	for ck_name,v in pairs(self.ck_states) do 
 		if (self[ck_name] and self[ck_name]:IsCursorOverWindow()) then
-			local str = ""
+			local str = STR_EMPTY
 			if (ck_name == "box_faction") then
 				str = strformat( gs("st_mm_box_faction_desc") , gs("st_faction_" .. self.selected_faction))
 				if (self.selected_faction == "bandit") then
@@ -740,7 +740,7 @@ function faction_ui:Update()
 end 
 
 function faction_ui:SetMsg(text,tmr)
-	if (text == "") then 
+	if (text == STR_EMPTY) then 
 		return 
 	end
 	self.msg_wnd:Show(true)
@@ -756,7 +756,7 @@ function faction_ui:SetMsg(text,tmr)
 end
 
 function faction_ui:SetHint(text,pos)
-	if (text == "") then
+	if (text == STR_EMPTY) then
 		return
 	end
 	self.hint_wnd:Show(true)
@@ -1108,8 +1108,8 @@ function faction_ui:LoadIcon (rand)
 	local def_icon = ini_ico:r_string_ex(section, "default_portrait")
 	table.insert(self.table_icon, def_icon)	
 	for i=0 , n-1 do
-		local result, id, value = ini_ico:r_line(section,i,"","" )
-		if (id ~= "" and id ~= "default_portrait") then
+		local result, id, value = ini_ico:r_line(section,i,STR_EMPTY,STR_EMPTY )
+		if (id ~= STR_EMPTY and id ~= "default_portrait") then
 			table.insert(self.table_icon, id)
 		end
 	end
@@ -1126,7 +1126,7 @@ function faction_ui:LoadMap (rand)
 	
 	local n = ini_map:line_count(self.selected_faction .. "_start_locations") or 0
 	for i=0, n-1 do
-		local result, id, value = ini_map:r_line(self.selected_faction.."_start_locations",i,"","" )
+		local result, id, value = ini_map:r_line(self.selected_faction.."_start_locations",i,STR_EMPTY,STR_EMPTY )
 		table.insert(self.table_map, id)
 	end
 	
@@ -1173,7 +1173,7 @@ function faction_ui:LoadLoadout (rand)
 	self.table_loadout = {}
 	local n = ini_itm:line_count(self.selected_faction .. "_loadout") or 0
 	for i=0, n-1 do
-		local result, id, value = ini_itm:r_line(self.selected_faction .. "_loadout" , i , "", "")
+		local result, id, value = ini_itm:r_line(self.selected_faction .. "_loadout" , i , STR_EMPTY, STR_EMPTY)
 		if ini:section_exist(id) then
 			local t = alun_utils.str_explode(value,",")
 			if (t[1] == "false") then
@@ -1247,11 +1247,11 @@ function faction_ui:LoadHardcoreLives (rand)
 	local str
 	self.list_hardcore_lives:ClearList()
 	for i=1, #self.table_hardcore_lives do
-		str = self.table_hardcore_lives[i][1] or ""
+		str = self.table_hardcore_lives[i][1] or STR_EMPTY
 		self.list_hardcore_lives:AddItem(str .. " " .. gs(self.table_hardcore_lives[i][2]), i)
 	end
 	local pick = rand and self.table_hardcore_lives[math.random(#self.table_hardcore_lives)] or self.table_hardcore_lives[1]
-	str = pick[1] or ""
+	str = pick[1] or STR_EMPTY
 	self.list_hardcore_lives:SetText(str .. " " .. gs(pick[2])) 
 	self.selected_hardcore_lives = pick
 end
@@ -1260,11 +1260,11 @@ function faction_ui:LoadHardcoreRegen (rand)
 	local str
 	self.list_hardcore_regen:ClearList()
 	for i=1, #self.table_hardcore_regen do
-		str = self.table_hardcore_regen[i][1] and tostring(utils.round(self.table_hardcore_regen[i][1]/24)) or ""
+		str = self.table_hardcore_regen[i][1] and tostring(utils.round(self.table_hardcore_regen[i][1]/24)) or STR_EMPTY
 		self.list_hardcore_regen:AddItem(str .. " " .. gs(self.table_hardcore_regen[i][2]), i)
 	end
 	local pick = rand and self.table_hardcore_regen[math.random(#self.table_hardcore_regen)] or self.table_hardcore_regen[1]
-	str = pick[1] and tostring(utils.round(pick[1]/24)) or ""
+	str = pick[1] and tostring(utils.round(pick[1]/24)) or STR_EMPTY
 	self.list_hardcore_regen:SetText(str .. " " .. gs(pick[2])) 
 	self.selected_hardcore_regen = pick
 end
@@ -1273,11 +1273,11 @@ function faction_ui:LoadTimer (rand)
 	local str
 	self.list_timer:ClearList()
 	for i=1, #self.table_timer do
-		str = self.table_timer[i][1] or ""
+		str = self.table_timer[i][1] or STR_EMPTY
 		self.list_timer:AddItem(str .. " " .. gs(self.table_timer[i][2]), i)
 	end
 	local pick = rand and self.table_timer[math.random(#self.table_timer)] or self.table_timer[1]
-	str = pick[1] or ""
+	str = pick[1] or STR_EMPTY
 	self.list_timer:SetText(str .. " " .. gs(pick[2]))
 	self.selected_timer = pick
 end
@@ -1320,7 +1320,7 @@ function faction_ui:RandomizeFirstName()
 	local first_name = self:GetFirstNameRandomly()
 	local last_name = self.last_name
 	
-	if (last_name == "") then
+	if (last_name == STR_EMPTY) then
 		self.character_name:SetText(first_name)
 	else
 		self.character_name:SetText(first_name .. " " .. last_name)
@@ -1333,7 +1333,7 @@ function faction_ui:RandomizeLastName()
 	local first_name = self.first_name
 	local last_name = self:GetLastNameRandomly()
 	
-	if (first_name == "") then
+	if (first_name == STR_EMPTY) then
 		self.character_name:SetText(last_name)
 	else
 		self.character_name:SetText(first_name .. " " .. last_name)
@@ -1547,7 +1547,7 @@ end
 function faction_ui:UpdateMap()
 	local selected_map = self.selected_map;
 	if selected_map == "random_location" then
-		self.box_map:InitTexture("")
+		self.box_map:InitTexture(STR_EMPTY)
 		self.box_map:Show(false)
 	else
 		local map = alun_utils.read_from_ini(ini_map, self.selected_faction .. "_start_locations", selected_map, "string")
@@ -1612,7 +1612,7 @@ function faction_ui:UpdateItem (item, is_item_in_inventory)
 	self.text_item_descr:SetAutoDelete(false)
 	
 	-- name
-	self.text_item_name:SetText( "%c[0,150,150,50]• %c[0,150,150,150]" .. gs(ini:r_string_ex(item.name,"inv_name") or "") )
+	self.text_item_name:SetText( "%c[0,150,150,50]• %c[0,150,150,150]" .. gs(ini:r_string_ex(item.name,"inv_name") or STR_EMPTY) )
 	if (not is_item_in_inventory and item.points > self.points_left) then
 		self.text_item_points:SetText( "%c[200,200,50,50]• %c[0,175,50,50]" .. gs("st_mm_new_game_points") .. ": " .. tostring(item.points) )
 	else
@@ -1668,8 +1668,8 @@ function faction_ui:UpdateItem (item, is_item_in_inventory)
 end
 
 function faction_ui:ClearItem()
-	self.text_item_name:SetText("")
-	self.text_item_points:SetText("")
+	self.text_item_name:SetText(STR_EMPTY)
+	self.text_item_points:SetText(STR_EMPTY)
 	self.scroll_item_desc:Clear()
 	self.box_item:InitTexture("ui\\ui_icon_equipment")
 	self.box_item:SetTextureRect(Frect():set(0, 0, 0, 0))
@@ -1785,13 +1785,13 @@ function faction_ui:OnStartGame()
 	
 	-- check name
 	local character_name = self.character_name:GetText()
-	if (character_name == "") then
+	if (character_name == STR_EMPTY) then
 		-- Require a name to be entered.
 		return
 	end
 	
 	-- check location
-	if (self.selected_map == "random_location" or self.selected_map == nil or self.selected_map == "") then
+	if (self.selected_map == "random_location" or self.selected_map == nil or self.selected_map == STR_EMPTY) then
 		local index = math.random(2,#self.table_map)
 		self.selected_map = self.table_map[index]
 	end
@@ -1820,14 +1820,14 @@ function faction_ui:OnStartGame()
 	
 	-- set difficulty
 	local selected_difficulty = self.selected_difficulty
-	if (selected_difficulty == nil or selected_difficulty == "") then
+	if (selected_difficulty == nil or selected_difficulty == STR_EMPTY) then
 		selected_difficulty = self.table_difficulty[2]
 	end
 	local console = get_console()
 	console:execute("g_game_difficulty gd_" .. selected_difficulty)
 	
 	-- preparing companions
-	if (self.selected_companions == nil or self.selected_companions == "") then
+	if (self.selected_companions == nil or self.selected_companions == STR_EMPTY) then
 		self.selected_companions = self.table_companions[1]
 	end
 	
@@ -1882,7 +1882,7 @@ function set_list_text:__init(idx, name, points, allow) super(idx, name, points,
 	self.text:SetFont			(GetFontLetterica16Russian())
 	self.text:SetWndSize		(vector2():set(400,22))
 	self.text:SetEllipsis		(true)
-	self.text:SetText			(gs (ini:r_string_ex (self.string,"inv_name") or ""))
+	self.text:SetText			(gs (ini:r_string_ex (self.string,"inv_name") or STR_EMPTY))
 	
 end
 

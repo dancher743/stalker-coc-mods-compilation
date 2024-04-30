@@ -162,7 +162,7 @@ function drx_df_change_faction_relations( faction_1, faction_2, delta )
 	-- Check if faction war footing has changed from allied to neutral:
 	if ( (old_1_2_relations >= FRIENDS) and (get_factions_community( faction_1, faction_2 ) < FRIENDS) and (get_factions_community( faction_1, faction_2 ) > ENEMIES) ) then
 		printf( ("DRX DF: Relations between " .. faction_1 .. " and " .. faction_2 .. " are deteriorating") )
-		news_manager.send_tip( db.actor, (game.translate_string( faction_1 ) .. " - " .. game.translate_string( faction_2 ) .. "" .. game.translate_string("st_drx_relations_deteriorating")), nil, "silver_or_lead", nil, nil )
+		news_manager.send_tip( db.actor, (game.translate_string( faction_1 ) .. " - " .. game.translate_string( faction_2 ) .. STR_EMPTY .. game.translate_string("st_drx_relations_deteriorating")), nil, "silver_or_lead", nil, nil )
 		if ( character_community( db.actor ) == faction_1 or ("actor_" .. faction_1) ) then
 			relation_registry.set_community_goodwill( faction_2, db.actor:id( ), 0 )
 		elseif ( character_community( db.actor ) == faction_2 or ("actor_" .. faction_2) ) then

@@ -64,7 +64,7 @@ function action_quick_save()
 	
 	inc = inc >= axr_main.config:r_value("mm_options","quicksave_cnt",2,5) and 1 or inc + 1
 	
-	get_console():execute("save " .. (user_name() or "") .. " - quicksave" .. inc)
+	get_console():execute("save " .. (user_name() or STR_EMPTY) .. " - quicksave" .. inc)
 	
 	if (alife_storage_manager.get_state().enable_timer_mode) then
 		savegame_timer.timer_reset() -- reset timer

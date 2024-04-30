@@ -666,7 +666,7 @@ function print_table(table, subs)
 	if subs ~= nil then
 		sub = subs
 	else
-		sub = ""
+		sub = STR_EMPTY
 	end
 	for k,v in pairs(table) do
 		if type(v) == "table" then
@@ -708,7 +708,7 @@ function store_table(table, subs)
 	if subs ~= nil then
 		sub = subs
 	else
-		sub = ""
+		sub = STR_EMPTY
 	end
 	printf(sub.."{")
 	for k,v in pairs(table) do
@@ -1603,7 +1603,7 @@ if (USE_INI_MEMOIZE) then
 			end
 		end
 		
-		local a,b,c = ini:r_line(s,k,"","")
+		local a,b,c = ini:r_line(s,k,STR_EMPTY,STR_EMPTY)
 		
 		if (ini_cache[ini]) then
 			local key = s.."&"..k
@@ -1636,7 +1636,7 @@ else
 	end
 		function ini_file.r_line_ex(ini,s,k)
 		--callstack()
-		return ini:r_line(s,k,"","")
+		return ini:r_line(s,k,STR_EMPTY,STR_EMPTY)
 	end
 end
 
@@ -1679,7 +1679,7 @@ end
 
 function ini_file_ex:w_value(s,k,val,comment)
 	self.cache[s.."&"..k] = val
-	self.ini:w_string(s,k,val ~= nil and tostring(val) or "",comment ~= nil and tostring(comment) or "")
+	self.ini:w_string(s,k,val ~= nil and tostring(val) or STR_EMPTY,comment ~= nil and tostring(comment) or STR_EMPTY)
 end
 
 function ini_file_ex:collect_section(section)
@@ -1688,7 +1688,7 @@ function ini_file_ex:collect_section(section)
 	local n = self.ini:section_exist(section) and self.ini:line_count(section) or 0
 	if (n > 0) then
 		for i = 0,n-1 do
-			local res,id,val = self.ini:r_line(section,i,"","")
+			local res,id,val = self.ini:r_line(section,i,STR_EMPTY,STR_EMPTY)
 			_t[id] = val
 		end
 	end
@@ -1785,9 +1785,10 @@ end
 --
 
 -----------------------------------------
--- Constants for vectors from CoC 1.5
--- Renamed by Dancher
+-- Constants
 -----------------------------------------
+
+-- For vectors from CoC 1.5
 VEC_ZERO 		= vector():set(0,0,0)
 VEC_RIGHT 		= vector():set(1,0,0)
 VEC_LEFT 		= vector():set(-1,0,0)
@@ -1795,6 +1796,8 @@ VEC_UP 			= vector():set(0,1,0)
 VEC_DOWN 		= vector():set(0,-1,0)
 VEC_FORWARD 	= vector():set(0,0,1)
 VEC_BACK 		= vector():set(0,0,-1)
+
+STR_EMPTY		= ""
 -----------------------------------------
 
 function IsEocMode()

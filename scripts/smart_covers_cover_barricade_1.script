@@ -13,16 +13,16 @@ function get_smart_cover_cover_barricade_1()
 			transitions = {
 			--' Анимации входа в бойницы
 			{
-				vertex0 = "",
+				vertex0 = STR_EMPTY,
 				vertex1 = "br_1",
 				weight = 1.0,
                 actions =	{
 							{
                                 precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
                                 actions =	{
 											{
-												animation = "",
+												animation = STR_EMPTY,
 												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
@@ -34,12 +34,12 @@ function get_smart_cover_cover_barricade_1()
 			--' Анимации выхода из бойниц.
 			{
 				vertex0 = "br_1",
-				vertex1 = "",
+				vertex1 = STR_EMPTY,
 				weight = 1.1,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
                                 actions =	{
 											{
 												animation = "barricade_1_run_0",

@@ -362,7 +362,7 @@ function actor_on_item_use(obj)
 				local hud = get_hud()
 				if (hud) then
 					local function on_ok_button_clicked(text)
-						if (text ~= "") then
+						if (text ~= STR_EMPTY) then
 							local spot_txt = strformat("%c[255,255,160,0]%s\\n%c[default]%s", game.translate_string("st_custom_stash_title"), text)
 							level.map_add_object_spot_ser(se_obj.id, BackPackStashSpot, spot_txt)
 						end
@@ -375,7 +375,7 @@ function actor_on_item_use(obj)
 					end
 					
 					hud:HideActorMenu()
-					SetHudMsg("",0)
+					SetHudMsg(STR_EMPTY,0)
 					ui_generic_dialogs.input_dialog_ui(hud, true, on_ok_button_clicked, on_cancel_button_clicked)
 				end
 			end

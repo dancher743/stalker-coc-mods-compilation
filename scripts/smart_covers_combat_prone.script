@@ -13,13 +13,13 @@ function get_smart_cover()
 			transitions = {
 			--' Анимации входа в бойницы
 			{
-				vertex0 = "",
+				vertex0 = STR_EMPTY,
 				vertex1 = "prone",
 				weight = 1.0,
                 actions =	{
 							{
                                 precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
                                 actions =	{
 											{
 												animation = "loophole_9_in_front_0",
@@ -34,12 +34,12 @@ function get_smart_cover()
 			--' Анимации выхода из бойниц.
 			{
 				vertex0 = "prone",
-				vertex1 = "",
+				vertex1 = STR_EMPTY,
 				weight = 1.1,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
                                 actions =	{
 											{
 												animation = "loophole_9_jump_1",

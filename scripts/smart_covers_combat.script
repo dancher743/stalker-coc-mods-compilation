@@ -40,13 +40,13 @@ function get_smart_cover()
 			transitions = {
 			--' Анимации входа в бойницы
 			{
-				vertex0 = "",
+				vertex0 = STR_EMPTY,
 				vertex1 = "crouch_front_left",
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_crouch_in_front_left_0",
@@ -58,13 +58,13 @@ function get_smart_cover()
 							}
 			},
 			{
-				vertex0 = "",
+				vertex0 = STR_EMPTY,
 				vertex1 = "crouch_front",
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_crouch_in_front_0",
@@ -76,13 +76,13 @@ function get_smart_cover()
 							}
 			},
 			{
-				vertex0 = "",
+				vertex0 = STR_EMPTY,
 				vertex1 = "crouch_front_right",
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_crouch_in_front_right_0",
@@ -94,13 +94,13 @@ function get_smart_cover()
 							}
 			},
 			{
-				vertex0 = "",
+				vertex0 = STR_EMPTY,
 				vertex1 = "crouch_right",
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_crouch_in_right_0",
@@ -112,13 +112,13 @@ function get_smart_cover()
 							}
 			},
 			{
-				vertex0 = "",
+				vertex0 = STR_EMPTY,
 				vertex1 = "crouch_back",
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_crouch_in_back_0",
@@ -130,13 +130,13 @@ function get_smart_cover()
 							}
 			},
 			{
-				vertex0 = "",
+				vertex0 = STR_EMPTY,
 				vertex1 = "crouch_left",
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_crouch_in_left_0",
@@ -149,13 +149,13 @@ function get_smart_cover()
 			},
 
 			{
-				vertex0 = "",
+				vertex0 = STR_EMPTY,
 				vertex1 = "stand_front_left",
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_stand_in_front_left_0",
@@ -167,13 +167,13 @@ function get_smart_cover()
 							}
 			},
 			{
-				vertex0 = "",
+				vertex0 = STR_EMPTY,
 				vertex1 = "stand_front_right",
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_stand_in_front_right_0",
@@ -185,13 +185,13 @@ function get_smart_cover()
 							}
 			},
 			{
-				vertex0 = "",
+				vertex0 = STR_EMPTY,
 				vertex1 = "stand_right",
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_stand_in_right_0",
@@ -203,13 +203,13 @@ function get_smart_cover()
 							}
 			},
 			{
-				vertex0 = "",
+				vertex0 = STR_EMPTY,
 				vertex1 = "stand_back",
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_stand_in_back_0",
@@ -221,13 +221,13 @@ function get_smart_cover()
 							}
 			},
 			{
-				vertex0 = "",
+				vertex0 = STR_EMPTY,
 				vertex1 = "stand_left",
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_stand_in_left_0",
@@ -252,7 +252,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_crauch_transition_front_left_to_back",
@@ -270,7 +270,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_crouch_front_left_attack_idle_0",
@@ -288,7 +288,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_crauch_transition_front_right_to_back",
@@ -306,7 +306,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_crauch_transition_front_right_to_back",
@@ -324,7 +324,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_crauch_transition_left_to_back",
@@ -342,7 +342,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_crauch_transition_right_to_back",
@@ -361,7 +361,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_crauch_transition_back_to_front_left",
@@ -379,7 +379,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_crauch_transition_back_to_front_right",
@@ -397,7 +397,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_crauch_transition_back_to_front_right",
@@ -415,7 +415,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_crauch_transition_back_to_left",
@@ -433,7 +433,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_crauch_transition_back_to_right",
@@ -455,7 +455,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_stand_transition_front_left_to_back",
@@ -473,7 +473,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_stand_transition_front_right_to_back",
@@ -491,7 +491,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_stand_transition_left_to_back",
@@ -509,7 +509,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_stand_transition_right_to_back",
@@ -528,7 +528,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_stand_transition_back_to_front_left",
@@ -546,7 +546,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_stand_transition_back_to_front_right",
@@ -564,7 +564,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_stand_transition_back_to_left",
@@ -582,7 +582,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_stand_transition_back_to_right",
@@ -602,7 +602,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "stand_to_crauth",
@@ -620,7 +620,7 @@ function get_smart_cover()
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "crouch_to_stand",
@@ -640,13 +640,13 @@ function get_smart_cover()
 			--' Анимации выхода из бойниц.
 			{
 				vertex0 = "crouch_front_left",
-				vertex1 = "",
+				vertex1 = STR_EMPTY,
 				weight = 1.1,
 				actions =	{
 							{
 
 								precondition_functor = "smart_covers.script_functor_jump",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_1_jump_0",
@@ -657,10 +657,10 @@ function get_smart_cover()
 							},
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
-												animation = "",
+												animation = STR_EMPTY,
 												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
@@ -670,12 +670,12 @@ function get_smart_cover()
 			},
 			{
 				vertex0 = "crouch_front",
-				vertex1 = "",
+				vertex1 = STR_EMPTY,
 				weight = 1.1,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_jump",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_2_jump_0",
@@ -686,10 +686,10 @@ function get_smart_cover()
 							},
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
-												animation = "",
+												animation = STR_EMPTY,
 												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
@@ -699,12 +699,12 @@ function get_smart_cover()
 			},
 			{
 				vertex0 = "crouch_front_right",
-				vertex1 = "",
+				vertex1 = STR_EMPTY,
 				weight = 1.1,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_jump",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
 												animation = "loophole_3_jump_0",
@@ -715,10 +715,10 @@ function get_smart_cover()
 							},
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
-												animation = "",
+												animation = STR_EMPTY,
 												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
@@ -728,15 +728,15 @@ function get_smart_cover()
 			},
 			{
 				vertex0 = "crouch_right",
-				vertex1 = "",
+				vertex1 = STR_EMPTY,
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
-												animation = "",
+												animation = STR_EMPTY,
 												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
@@ -746,15 +746,15 @@ function get_smart_cover()
 			},
 			{
 				vertex0 = "crouch_back",
-				vertex1 = "",
+				vertex1 = STR_EMPTY,
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
-												animation = "",
+												animation = STR_EMPTY,
 												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
@@ -764,15 +764,15 @@ function get_smart_cover()
 			},
 			{
 				vertex0 = "crouch_left",
-				vertex1 = "",
+				vertex1 = STR_EMPTY,
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
-												animation = "",
+												animation = STR_EMPTY,
 												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
@@ -783,15 +783,15 @@ function get_smart_cover()
 
 			{
 				vertex0 = "stand_front_left",
-				vertex1 = "",
+				vertex1 = STR_EMPTY,
 				weight = 1.1,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
-												animation = "",
+												animation = STR_EMPTY,
 												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
@@ -801,15 +801,15 @@ function get_smart_cover()
 			},
 			{
 				vertex0 = "stand_front_right",
-				vertex1 = "",
+				vertex1 = STR_EMPTY,
 				weight = 1.1,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
-												animation = "",
+												animation = STR_EMPTY,
 												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
@@ -819,15 +819,15 @@ function get_smart_cover()
 			},
 			{
 				vertex0 = "stand_right",
-				vertex1 = "",
+				vertex1 = STR_EMPTY,
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
-												animation = "",
+												animation = STR_EMPTY,
 												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
@@ -837,15 +837,15 @@ function get_smart_cover()
 			},
 			{
 				vertex0 = "stand_back",
-				vertex1 = "",
+				vertex1 = STR_EMPTY,
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
-												animation = "",
+												animation = STR_EMPTY,
 												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},
@@ -855,15 +855,15 @@ function get_smart_cover()
 			},
 			{
 				vertex0 = "stand_left",
-				vertex1 = "",
+				vertex1 = STR_EMPTY,
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
 								actions =	{
 											{
-												animation = "",
+												animation = STR_EMPTY,
 												position = VEC_ZERO,
 												body_state = move.crouch, movement_type = move.run,
 											},

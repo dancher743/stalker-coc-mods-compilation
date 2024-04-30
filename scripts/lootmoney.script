@@ -132,7 +132,7 @@ end
 
 function debug_sc(text, icon) -- debug function
 	if not lootmoney_debug then return end
-	--db.actor:give_game_news("Loot Money >> Debug Message", text, "", 0, 50000) -- debug message on screen
+	--db.actor:give_game_news("Loot Money >> Debug Message", text, STR_EMPTY, 0, 50000) -- debug message on screen
 	local formatted_text = strformat("Loot Money >> Debug Message\\n%s", text)
 	news_manager.send_tip(db.actor, formatted_text, nil, "tourist", 10000)
 	alun_utils.printf(formatted_text)

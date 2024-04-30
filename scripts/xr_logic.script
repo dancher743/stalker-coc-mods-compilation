@@ -466,7 +466,7 @@ end
 -- Выполняет переключение на указанную секцию, если задана.
 -- Если section == nil, остается работать старая секция.
 function switch_to_section(npc, ini, section)
-	if section == "" or section == nil then
+	if section == STR_EMPTY or section == nil then
 		return false
 	end
 
@@ -871,8 +871,8 @@ function cfg_get_switch_conditions(ini, section, npc)
 	local line_count = ini:line_count(section)
 
 	for line_number = 0, line_count - 1 do
-		local result, id, value  = ini:r_line_ex(section,line_number,"","")
-		local cond_name = id:gsub("%d*$","")
+		local result, id, value  = ini:r_line_ex(section,line_number,STR_EMPTY,STR_EMPTY)
+		local cond_name = id:gsub("%d*$",STR_EMPTY)
 		if (cond_name == "on_actor_dist_le") then
 			lst[#lst+1] = cfg_get_number_and_condlist(ini,section,id,npc,cond_name)
 		elseif (cond_name == "on_actor_dist_le_nvis") then
@@ -1093,11 +1093,11 @@ function save_obj(obj, packet)
 		return
 	end
 
-	--packet:w_stringZ(st.job_ini or "")
-	packet:w_stringZ(st.ini_filename or "")
-	packet:w_stringZ(st.section_logic or "")
-	packet:w_stringZ(st.active_section or "")
-	packet:w_stringZ(st.gulag_name or "")
+	--packet:w_stringZ(st.job_ini or STR_EMPTY)
+	packet:w_stringZ(st.ini_filename or STR_EMPTY)
+	packet:w_stringZ(st.section_logic or STR_EMPTY)
+	packet:w_stringZ(st.active_section or STR_EMPTY)
+	packet:w_stringZ(st.gulag_name or STR_EMPTY)
 
 	local activation_time = db.storage[npc_id].activation_time or 0
 
@@ -1127,29 +1127,29 @@ function load_obj(obj, reader)
 
 	--[[
 	local job_ini = reader:r_stringZ()
-	if job_ini == "" then
+	if job_ini == STR_EMPTY then
 		job_ini = nil
 	end
 	--]]
 
 	local ini_filename = reader:r_stringZ()
-	if ini_filename == "" then
+	if ini_filename == STR_EMPTY then
 		ini_filename = nil
 	end
 
 	local section_logic = reader:r_stringZ()
-	if section_logic == "" then
+	if section_logic == STR_EMPTY then
 		section_logic = nil
 	end
 
 	local active_section = reader:r_stringZ()
-	if active_section == "" then
+	if active_section == STR_EMPTY then
 		active_section = "nil"
 	end
 
 	local gulag_name = reader:r_stringZ()
 	if (gulag_name == "nil") then
-		gulag_name = ""
+		gulag_name = STR_EMPTY
 	end
 
 	--st.job_ini = job_ini
@@ -1192,14 +1192,14 @@ function initialize_obj(obj, st, loaded, actor, stype)
 
 	local ini_filename = loaded and st.loaded_ini_filename or "<customdata>"
 	local ini = get_customdata_or_ini_file(obj, ini_filename)
-	ini = xr_logic.configure_schemes(obj, ini, ini_filename, stype, loaded and st.loaded_section_logic or "logic", loaded and st.loaded_gulag_name or "")
+	ini = xr_logic.configure_schemes(obj, ini, ini_filename, stype, loaded and st.loaded_section_logic or "logic", loaded and st.loaded_gulag_name or STR_EMPTY)
 
 	local section = loaded and st.loaded_active_section or xr_logic.determine_section_to_activate(obj, ini, "logic", actor)
-	xr_logic.activate_by_section(obj, ini, section, loaded and st.loaded_gulag_name or "", true)
+	xr_logic.activate_by_section(obj, ini, section, loaded and st.loaded_gulag_name or STR_EMPTY, true)
 
 	-- no need to keep this information after initializing
 	st.loaded_ini_filename = nil
 	st.loaded_active_section = nil
 	st.loaded_section_logic = nil
-	st.loaded_gulag_name = ""
+	st.loaded_gulag_name = STR_EMPTY
 end

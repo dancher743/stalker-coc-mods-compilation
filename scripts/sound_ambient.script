@@ -29,7 +29,7 @@ function reset_settings(level_name, ambient)
 	empty_table(snd_chanels)
 	print_dbg("level_name: %s - ambient: %s", level_name, ambient)
 	
-	if not (level_name and ambient and ambient ~= "") then
+	if not (level_name and ambient and ambient ~= STR_EMPTY) then
 		print_dbg("level_name or ambient is missing")
 		return false
 	end

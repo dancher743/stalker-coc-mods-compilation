@@ -35,7 +35,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 end
 
 local function on_ok_button_clicked(text)
-	if (text == "") then
+	if (text == STR_EMPTY) then
 		return
 	end
 	

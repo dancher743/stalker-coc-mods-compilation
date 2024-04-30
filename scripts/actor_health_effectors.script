@@ -59,7 +59,7 @@ local function bleedcondition()
     end
     
 	if show_health_effectors and db.actor.bleeding > 0.4 and db.actor.power < 0.35 and ble2 ~= true then
-        level.add_cam_effector("camera_effects\\pripyat_horror.anm", 1001, false, "")
+        level.add_cam_effector("camera_effects\\pripyat_horror.anm", 1001, false, STR_EMPTY)
         level.add_pp_effector("snd_shock.ppe", 2015, true)
         ble2 = true
     end

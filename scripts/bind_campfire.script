@@ -213,7 +213,7 @@ function campfire_binder:net_spawn(server_object)
 		end
 	end
 	
-	local smart_name = string.gsub(self.object:name(), "_campfire_%d*", "")
+	local smart_name = string.gsub(self.object:name(), "_campfire_%d*", STR_EMPTY)
 	if SIMBOARD.smarts_by_names[smart_name] then
 		if db.campfire_table_by_smart_names[smart_name] == nil then
 			db.campfire_table_by_smart_names[smart_name] = {}
@@ -224,7 +224,7 @@ function campfire_binder:net_spawn(server_object)
 end
 
 function campfire_binder:net_destroy(server_object)
-	local smart_name = string.gsub(self.object:name(), "_campfire_%d*", "")
+	local smart_name = string.gsub(self.object:name(), "_campfire_%d*", STR_EMPTY)
 	if SIMBOARD.smarts_by_names[smart_name] then
 		if (db.campfire_table_by_smart_names[smart_name]) then 
 			db.campfire_table_by_smart_names[smart_name][self.object:id()] = nil

@@ -213,10 +213,10 @@ function CStory:__init(story_id)
 	--' Вычитываем шаблон истории из ini файла
 
 	local n = story_ltx:line_count(story_id)
-	local id, value = "",""
+	local id, value = STR_EMPTY,STR_EMPTY
 
 	for i=0,n-1 do
-		result, id, value	= story_ltx:r_line(story_id,i,"","")
+		result, id, value	= story_ltx:r_line(story_id,i,STR_EMPTY,STR_EMPTY)
 
 		local t = parse_names(value)
 

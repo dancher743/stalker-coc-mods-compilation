@@ -34,7 +34,7 @@ end
 function squad_control(squad)
 
 	squad.__lock = true
-	squad.scripted_target = ""	
+	squad.scripted_target = STR_EMPTY	
 	
 	if not (sim_offline_control.ocs_power_table[squad.id]) then
 	    sim_offline_control.calculate_squad_power(squad)
@@ -232,7 +232,7 @@ function set_target(squad, target)
 
     if (obj) then
         squad.current_action = 0
-        squad.scripted_target = ""
+        squad.scripted_target = STR_EMPTY
         squad.current_target_id = target
         squad.assigned_target_id = target
 		squad.registered_in_simultaion = true

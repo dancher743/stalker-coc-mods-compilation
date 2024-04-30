@@ -67,12 +67,12 @@ end
 
 function set_actor_dialogs(npc, ini, name, dialog_section)
 	if dialog_section == nil then return end
-	local actor_dialogs_string = ini:r_string_ex(dialog_section,"id") or ""
+	local actor_dialogs_string = ini:r_string_ex(dialog_section,"id") or STR_EMPTY
 	if actor_dialogs_string ~= nil then
 		db.storage[npc:id()].actor_dialogs = parse_names(actor_dialogs_string)
 	end
 
-	local actor_disable = ini:r_string_ex(dialog_section,"disable") or ""
+	local actor_disable = ini:r_string_ex(dialog_section,"disable") or STR_EMPTY
 	if actor_disable ~= nil then
 		db.storage[npc:id()].actor_disable = parse_names(actor_disable)
 	end
@@ -82,7 +82,7 @@ function dm_init_is_actor_companion(dialog)
 	saved_dialog = dialog
 
 ------MAIN [ DIALOG INITATION ] --
-	add_dialog("",0,"axr_phrase_actor_give_command","dialogs_axr_companion.is_actor_companion")
+	add_dialog(STR_EMPTY,0,"axr_phrase_actor_give_command","dialogs_axr_companion.is_actor_companion")
 	add_dialog(0,1,"axr_phrase_companion_ask_for_command")
 
 ------MAIN [ FOLLOW/WAIT ] (10+)
@@ -160,7 +160,7 @@ end
 --]]
 function dm_init_companion_patrol(dialog)
 	saved_dialog = dialog
-	add_dialog("",0,"axr_phrase_actor_give_command_patrol_menu")
+	add_dialog(STR_EMPTY,0,"axr_phrase_actor_give_command_patrol_menu")
 	add_dialog(0,1,"axr_phrase_companion_acknowledge_2")
 		add_dialog(1,2,"axr_phrase_actor_give_command_stop_patrol","dialogs_axr_companion.companion_is_patrolling","dialogs_axr_companion.switch_companion_patrol_mode")
 		add_dialog(1,3,"axr_phrase_actor_give_command_start_patrol",{"dialogs_axr_companion.companion_not_patrolling","dialogs_axr_companion.companion_has_waypoint"},"dialogs_axr_companion.switch_companion_patrol_mode")

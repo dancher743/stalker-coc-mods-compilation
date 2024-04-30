@@ -98,7 +98,7 @@ function drx_da_update_dynamic_anomalies( )
 
 	-- Get the current level name:
 	local level_name = level.name( )
-	if ( (not level_name) or (level_name == "") ) then
+	if ( (not level_name) or (level_name == STR_EMPTY) ) then
 		printf( "DRX DA: Cannot update anomalies, actor not on a level" )
 		return false
 	end
@@ -161,7 +161,7 @@ function drx_da_spawn_anomalies_current_level( )
 
 	-- Get the current level name:
 	local level_name = level.name( )
-	if ( (not level_name) or (level_name == "") ) then
+	if ( (not level_name) or (level_name == STR_EMPTY) ) then
 		return false
 	end
 
@@ -667,7 +667,7 @@ function drx_da_refresh_anomalies( )
 
 	-- Get the current level name:
 	local level_name = level.name( )
-	if ( (not level_name) or (level_name == "") ) then
+	if ( (not level_name) or (level_name == STR_EMPTY) ) then
 		return false
 	end
 

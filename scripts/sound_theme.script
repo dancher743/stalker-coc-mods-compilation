@@ -21,7 +21,7 @@ function npc_sound:__init(snd_ini, section)
 	self.class_id = "npc_sound"
 		--' Параметры вычитывания звука
 	self.prefix = snd_ini:r_bool_ex(section,"npc_prefix",false)
-	self.path = snd_ini:r_string_ex(section,"path") or ""
+	self.path = snd_ini:r_string_ex(section,"path") or STR_EMPTY
 	self.shuffle = snd_ini:r_string_ex(section,"shuffle") or "rnd"
 	self.group_snd = snd_ini:r_bool_ex(section,"group_snd",false)
 	self.play_always = snd_ini:r_bool_ex(section,"play_always",false)
@@ -42,9 +42,9 @@ function npc_sound:__init(snd_ini, section)
 	self.can_play_group_sound = true
 	self.can_play_sound = {}
 	self.sound_path = {}
-	self.faction = snd_ini:r_string_ex(section,"faction") or ""
-	self.point = snd_ini:r_string_ex(section,"point") or ""
-	self.msg = snd_ini:r_string_ex(section,"message") or ""
+	self.faction = snd_ini:r_string_ex(section,"faction") or STR_EMPTY
+	self.point = snd_ini:r_string_ex(section,"point") or STR_EMPTY
+	self.msg = snd_ini:r_string_ex(section,"message") or STR_EMPTY
 	self.avail_communities = snd_ini:line_exist(section,"avail_communities") and alun_utils.parse_list(snd_ini,section,"avail_communities",true) or nil
 end
 
@@ -391,7 +391,7 @@ function actor_sound:__init(snd_ini, section)
 		--' Параметры вычитывания звука
 	self.stereo = snd_ini:r_bool_ex(section,"actor_stereo",false)
 	self.prefix = snd_ini:r_bool_ex(section,"npc_prefix",false)
-	self.path = snd_ini:r_string_ex(section,"path") or ""
+	self.path = snd_ini:r_string_ex(section,"path") or STR_EMPTY
 	self.shuffle = snd_ini:r_string_ex(section,"shuffle") or "rnd"
 	self.play_always = snd_ini:r_bool_ex(section,"play_always",false)
 	self.section = section
@@ -408,9 +408,9 @@ function actor_sound:__init(snd_ini, section)
 	self.sound = {}
 	self.snd_obj = nil
 	self.can_play_sound = true
-	self.faction = snd_ini:r_string_ex(section,"faction") or ""
-	self.point = snd_ini:r_string_ex(section,"point") or ""
-	self.msg = snd_ini:r_string_ex(section,"message") or ""
+	self.faction = snd_ini:r_string_ex(section,"faction") or STR_EMPTY
+	self.point = snd_ini:r_string_ex(section,"point") or STR_EMPTY
+	self.msg = snd_ini:r_string_ex(section,"message") or STR_EMPTY
 
 	local f = getFS()
 
@@ -582,7 +582,7 @@ class "object_sound"
 function object_sound:__init(snd_ini, section)
 	self.class_id = "object_sound"
 	--' Параметры вычитывания звука
-	self.path = snd_ini:r_string_ex(section,"path") or ""
+	self.path = snd_ini:r_string_ex(section,"path") or STR_EMPTY
 	self.shuffle = snd_ini:r_string_ex(section,"shuffle") or "rnd"
 
 	--' Интервал проигрывания звука
@@ -595,9 +595,9 @@ function object_sound:__init(snd_ini, section)
 	self.can_play_sound = {}
 	self.section = section
 	self.played_id = nil
-	self.faction = snd_ini:r_string_ex(section,"faction") or ""
-	self.point = snd_ini:r_string_ex(section,"point") or ""
-	self.msg = snd_ini:r_string_ex(section,"message") or ""
+	self.faction = snd_ini:r_string_ex(section,"faction") or STR_EMPTY
+	self.point = snd_ini:r_string_ex(section,"point") or STR_EMPTY
+	self.msg = snd_ini:r_string_ex(section,"message") or STR_EMPTY
 
 	local f = getFS()
 	if f:exist("$game_sounds$",self.path..".ogg") ~= nil then
@@ -773,7 +773,7 @@ class "looped_sound"
 function looped_sound:__init(snd_ini, section)
 	self.class_id = "looped_sound"
 	--' Параметры вычитывания звука
-	self.path = snd_ini:r_string_ex(section,"path") or ""
+	self.path = snd_ini:r_string_ex(section,"path") or STR_EMPTY
 	self.sound = nil
 	self.snd_obj = nil
 	self.section = section
@@ -837,7 +837,7 @@ function load_sound()
 	local function itr(section)
 		local level_list = snd_ini:line_exist(section,"levels") and alun_utils.parse_list(snd_ini,section,"levels",true) or nil
 		if (level_list == nil or level_list[level.name()]) then
-			local type = snd_ini:r_string_ex(section,"type") or ""
+			local type = snd_ini:r_string_ex(section,"type") or STR_EMPTY
 			if type == "npc" then
 				theme[section] = theme[section] or npc_sound(snd_ini, section)
 			elseif type == "actor" then
@@ -859,7 +859,7 @@ function init_npc_sound(npc)
 		if v.init_npc then
 			--printf("checking %s for %s (%s)", v.section, npc:name(), character_community(npc))
 			if (v.avail_communities == nil or v.avail_communities[character_community(npc)]) then
-				if (v.story_ids == nil or v.story_ids[ get_object_story_id(npc:id()) or ""]) then
+				if (v.story_ids == nil or v.story_ids[ get_object_story_id(npc:id()) or STR_EMPTY]) then
 					v:init_npc(npc)
 				end
 			end

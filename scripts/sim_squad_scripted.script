@@ -15,7 +15,7 @@ do -- to localize below
 	local locations_ini	= ini_file("misc\\smart_terrain_masks.ltx")
 	
 	local function itr(section)
-		local a,key,val = locations_ini:r_line_ex(section,0,"","")
+		local a,key,val = locations_ini:r_line_ex(section,0,STR_EMPTY,STR_EMPTY)
 		location_types[key] = key
 	end 
 	
@@ -44,9 +44,9 @@ function sim_squad_scripted:init_squad()
 	local settings_id 		= self:section_name()
 	
 	self.player_id 			= sys_ini:r_string_ex(settings_id,"faction") or "stalker"
-	self.action_condlist	= xr_logic.parse_condlist(self, "assign_action", "target_smart", sys_ini:r_string_ex(settings_id,"target_smart") or "")
-	self.death_condlist		= xr_logic.parse_condlist(self, "death_condlist", "on_death", sys_ini:r_string_ex(settings_id,"on_death") or "")
-	self.invulnerability	= xr_logic.parse_condlist(self, "invulnerability", "invulnerability", sys_ini:r_string_ex(settings_id,"invulnerability") or "")
+	self.action_condlist	= xr_logic.parse_condlist(self, "assign_action", "target_smart", sys_ini:r_string_ex(settings_id,"target_smart") or STR_EMPTY)
+	self.death_condlist		= xr_logic.parse_condlist(self, "death_condlist", "on_death", sys_ini:r_string_ex(settings_id,"on_death") or STR_EMPTY)
+	self.invulnerability	= xr_logic.parse_condlist(self, "invulnerability", "invulnerability", sys_ini:r_string_ex(settings_id,"invulnerability") or STR_EMPTY)
 	
 	local rel 				= sys_ini:r_string_ex(settings_id,"relationship")
 	self.relationship_condlist = rel and xr_logic.parse_condlist(self, settings_id, "relationship",rel)
@@ -170,7 +170,7 @@ function sim_squad_scripted:update()
 
 				-- Disable any squad that is not on actor's level and not linked to actor's level through ai_tweaks\simulation_objects.ltx
 				if (level_name ~= actor_level) and (self:commander_id() and not sim:has_info(self:commander_id(),"npcx_is_companion")) then
-					if not (string.find(simulation_objects.config:r_value(actor_level,"target_maps",0,""),level_name)) then
+					if not (string.find(simulation_objects.config:r_value(actor_level,"target_maps",0,STR_EMPTY),level_name)) then
 						if (DEACTIVATE_SIM_ON_NON_LINKED_LEVELS) then
 							SIMBOARD.squads[self.id] = nil
 							if (self.smart_id) then
@@ -609,7 +609,7 @@ function sim_squad_scripted:create_npc(spawn_smart,pos,lvid,gvid)
 	--alun_utils.debug_write("sim_squad_scripted:create_npc")
 	local ini = system_ini()
 	local settings_id = self:section_name()
-	local spawn_sections = utils.parse_names(ini:r_string_ex(settings_id, "npc") or "")
+	local spawn_sections = utils.parse_names(ini:r_string_ex(settings_id, "npc") or STR_EMPTY)
 	
 	local spawn_point, base_spawn_position, base_lvi, base_gvi, spawn_vid
 	if (spawn_smart) then 
@@ -1109,8 +1109,8 @@ function sim_squad_scripted:show()
 		self:show()
 		return
 	end
-	local spot = ""
-	local non_commander_spot = ""
+	local spot = STR_EMPTY
+	local non_commander_spot = STR_EMPTY
 
 	if (DEV_DEBUG and axr_main.config:r_value("mm_options","enable_debug_hud",1,false) == true) then
 		if (DEV_DEBUG_HOLD_ACTION_1) then 
@@ -1153,7 +1153,7 @@ function sim_squad_scripted:show()
 		end
 	end
 
-	if (spot~="") then
+	if (spot~=STR_EMPTY) then
 		if spot == self.spot_section then
 			level.map_change_spot_hint(self.current_spot_id, self.spot_section, self:get_squad_props())
 			return
@@ -1173,10 +1173,10 @@ function sim_squad_scripted:show()
 	local squad = alife_object(self.id)
 	for k in squad:squad_members() do
 		if (k.id ~= squad:commander_id()) then
-			if (non_commander_spot~="" and level.map_has_object_spot(k.id, non_commander_spot) == 0) then
+			if (non_commander_spot~=STR_EMPTY and level.map_has_object_spot(k.id, non_commander_spot) == 0) then
 				level.map_add_object_spot(k.id, non_commander_spot, self:get_squad_props())
 				self.non_commander_spot_section = non_commander_spot
-			elseif (non_commander_spot=="" and self.non_commander_spot_section and level.map_has_object_spot(k.id, self.non_commander_spot_section) == 1) then
+			elseif (non_commander_spot==STR_EMPTY and self.non_commander_spot_section and level.map_has_object_spot(k.id, self.non_commander_spot_section) == 1) then
 				level.map_remove_object_spot(k.id, self.non_commander_spot_section)
 				self.non_commander_spot_section = nil
 			end
@@ -1190,7 +1190,7 @@ function sim_squad_scripted:get_squad_props()
 		local current_target = self.current_target_id and alife_object(self.current_target_id)
 
 		local t = "%s\\n\\n%s\\n\\nnpcs=%s\\n\\ncurrent_target=%s\\nassigned_target=%s\\n\\n"
-		t = strformat(t,self.disabled and "[disabled]" or "",self:name(),self:npc_count(),self.current_target_id == 0 and "actor" or current_target and current_target:name(),self.assigned_target_id == 0 and "actor" or assigned_target and assigned_target:name())
+		t = strformat(t,self.disabled and "[disabled]" or STR_EMPTY,self:name(),self:npc_count(),self.current_target_id == 0 and "actor" or current_target and current_target:name(),self.assigned_target_id == 0 and "actor" or assigned_target and assigned_target:name())
 
 		if (self.current_action) then
 			if (self.current_action == 0) then 
