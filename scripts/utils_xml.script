@@ -604,7 +604,7 @@ function XmlParser:ToXmlString(value)
 	value = string_gsub(value, "&", "&amp;"); -- '&' -> "&amp;"
 	value = string_gsub(value, "<", "&lt;"); -- '<' -> "&lt;"
 	value = string_gsub(value, ">", "&gt;"); -- '>' -> "&gt;"
-	value = string_gsub(value, "\STR_EMPTY, "&quot;"); -- '"' -> "&quot;"
+	value = string_gsub(value, "\"", "&quot;"); -- '"' -> "&quot;"
 	value = string_gsub(value, "([^%w%&%;%p%\t% ])",
 		function(c)
 			return string_format("&#x%X;", string_byte(c))
@@ -620,7 +620,7 @@ function XmlParser:FromXmlString(value)
 		function(h)
 			return string_char(tonumber(h, 10))
 		end);
-	value = string_gsub(value, "&quot;", "\STR_EMPTY);
+	value = string_gsub(value, "&quot;", "\"");
 	value = string_gsub(value, "&apos;", "'");
 	value = string_gsub(value, "&gt;", ">");
 	value = string_gsub(value, "&lt;", "<");
