@@ -1787,7 +1787,6 @@ end
 -----------------------------------------
 -- Constants
 -----------------------------------------
-
 -- For vectors from CoC 1.5
 VEC_ZERO 		= vector():set(0,0,0)
 VEC_RIGHT 		= vector():set(1,0,0)
