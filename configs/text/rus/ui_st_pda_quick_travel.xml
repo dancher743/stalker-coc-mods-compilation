@@ -367,4 +367,8 @@
 	<string id="discovered_message">
 		<text>Исследовано: %s</text>
 	</string>
+	
+	<string id="ui_st_fast_travel_spot_title">
+		<text>Быстрый переход</text>
+	</string>
 </string_table>

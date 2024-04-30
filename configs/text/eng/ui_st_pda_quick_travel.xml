@@ -367,4 +367,8 @@
 	<string id="discovered_message">
 		<text>Discovered: %s</text>
 	</string>
+	
+	<string id="ui_st_fast_travel_spot_title">
+		<text>Fast travel point</text>
+	</string>
 </string_table>
