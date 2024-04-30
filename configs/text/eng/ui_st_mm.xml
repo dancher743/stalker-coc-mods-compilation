@@ -555,10 +555,10 @@
 	<string id="ui_mm_show_crit_hit_cam_vfx">
 		<text>Crit hit cam effect</text>
 	</string>
-	<string id="ui_mm_can_crit_hit_actor">
-		<text>Crit hit from NPC</text>
+	<string id="ui_mm_can_stalker_crit_hit">
+		<text>Crit hit from stalker</text>
 	</string>
-	<string id="ui_mm_can_crit_hit_enemy">
+	<string id="ui_mm_can_actor_crit_hit">
 		<text>Crit hit from player</text>
 	</string>
 	<string id="ui_mm_companions_invulnerability">

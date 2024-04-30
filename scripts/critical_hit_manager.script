@@ -25,8 +25,8 @@ local function get_hit_chance(who)
 	local chance = 0
 	
 	if (IsStalker(who)) then
-		local who_rank = ranks.get_obj_rank_name(who)
-		chance = hit_chance_by_rank[who_rank]
+		local rank = ranks.get_obj_rank_name(who)
+		chance = hit_chance_by_rank[rank]
 	end
 	
 	return chance
@@ -57,7 +57,7 @@ local function can_hit(victim, who, bone_index, chance)
 	return chance > 0 and victim:alive() and type(bone_index) == "number" and bone_index > 0 and math.random() <= chance
 end
 
-function try_hit(victim, who, damage, local_direction, bone_index)
+local function try_hit(victim, who, damage, local_direction, bone_index)
 	local hit_chance = get_hit_chance(who)
 	local can_hit = can_hit(victim, who, bone_index, hit_chance)
 	
@@ -72,14 +72,18 @@ function try_hit(victim, who, damage, local_direction, bone_index)
 	return can_hit
 end
 
-local function npc_or_monster_on_hit_callback(victim, damage, local_direction, who, bone_index)
-	if (not axr_main_options.get_check_option("can_crit_hit_enemy")) then
+local function npc_or_monster_on_hit_callback(victim, damage, local_direction, who, bone_index)	
+	if (IsStalkerOnly(who) or IsMonster(who)) then
+		return
+	end
+	
+	if (IsActor(who) and not axr_main_options.get_check_option("can_actor_crit_hit")) then
 		return
 	end
 	
 	local has_crit_hit = try_hit(victim, who, damage, local_direction, bone_index)
 	
-	if (has_crit_hit and IsActor(who)) then
+	if (has_crit_hit) then
 		if (axr_main_options.get_check_option("show_crit_hit_mark")) then
 			ui_actor_critical_hit.show_mark()
 		end
@@ -91,10 +95,14 @@ local function npc_or_monster_on_hit_callback(victim, damage, local_direction, w
 end
 
 local function actor_on_hit_callback(victim, damage, local_direction, who, bone_index)
-	if (not axr_main_options.get_check_option("can_crit_hit_actor") or IsActor(who)) then
+	if (IsActor(who) or IsMonster(who)) then
 		return
 	end
 
+	if (IsStalkerOnly(who) and not axr_main_options.get_check_option("can_stalker_crit_hit")) then
+		return
+	end
+	
 	local has_crit_hit = try_hit(victim, who, damage, local_direction, bone_index)
 	
 	if (has_crit_hit) then

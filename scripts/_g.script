@@ -1809,6 +1809,13 @@ function IsActor(o,c)
 	return c and (c == clsid.script_actor) or false
 end
 
+function IsStalkerOnly(o,c)
+	if not (c) then
+		c = o and o:clsid()
+	end
+	return c and (c == clsid.script_stalker) or false
+end
+
 function IsAnomaly(o,c)
 	if not (c) then
 		c = o and o:clsid()
