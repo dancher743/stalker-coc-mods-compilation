@@ -510,23 +510,4 @@
 		</item>
 	</final_peace>
 
-	<!-- Added by Dancher -->
-
-	<tutorial_change_language>
-		<global_wnd/>
-		<item>
-			<disabled_key>quit</disabled_key>
-			<length_sec/>
-			<guard_key>custom_spot</guard_key>
-			<disabled_key>quit</disabled_key>
-			<grab_input>0</grab_input>
-			<main_wnd>
-				<auto_static start_time="0" length_sec="5000" x="512" y="660" width="300" height="60" alignment="c" stretch="1"
-							la_cyclic="1" la_texture="1" la_alpha="1">
-					<text font="graffiti22" r="225" g="225" b="250" a="255" align="c">st_change_language</text>
-				</auto_static>
-			</main_wnd>
-		</item>
-	</tutorial_change_language>
-	
 </window>

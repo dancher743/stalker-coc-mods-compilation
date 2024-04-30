@@ -46,6 +46,19 @@ function input_dialog_ui:InitControls()
 
 	local btn = xml:Init3tButton("input_dialog:btn_cancel", self.back)
 	self:Register(btn,"btn_cancel")
+	
+	self:InitTutorialControl(xml)
+end
+
+function input_dialog_ui:InitTutorialControl(xml)
+	local actor = db.actor
+	local tutorial_name = "tutorial_change_language"
+	
+	if (not actor:has_info(tutorial_name)) then
+		self.tutorial_change_language = xml:InitStatic("input_dialog:tutorial_change_language", self)
+		self.tutorial_change_language:Show(false)
+		actor:give_info_portion(tutorial_name)
+	end
 end
 
 function input_dialog_ui:SetCurrentValues()
@@ -60,31 +73,27 @@ function input_dialog_ui:InitCallBacks()
 	self:AddCallback("btn_cancel", ui_events.BUTTON_CLICKED, self.OnCancel, self)
 end
 
-function input_dialog_ui:StartTutorial()
-	local actor = db.actor
-	local tutorial_name = "tutorial_change_language"
-	
-	if (not actor:has_info(tutorial_name)) then
-		game.start_tutorial(tutorial_name)
-		actor:give_info_portion(tutorial_name)
+function input_dialog_ui:ShowTutorial()
+	if (self.tutorial_change_language) then
+		self.tutorial_change_language:Show(true)
 	end
 end
 
-function input_dialog_ui:StopTutorial()
-	if (game.has_active_tutorial()) then
-		game.stop_tutorial()
+function input_dialog_ui:HideTutorial()
+	if (self.tutorial_change_language) then
+		self.tutorial_change_language:Show(false)
 	end
 end
 
 function input_dialog_ui:Show(value)
 	self:ShowDialog(value)
-	self:StartTutorial()
+	self:ShowTutorial()
 	axr_keybind.enabled = false
 end
 
 function input_dialog_ui:Hide()
 	self:HideDialog()
-	self:StopTutorial()
+	self:HideTutorial()
 	axr_keybind.enabled = true
 end
 
