@@ -67,7 +67,7 @@
 		<text>stash</text>
 	</string>
 	<string id="st_itm_stash_of_character">
-		<text>%s's stash</text>
+		<text>%s (%s)</text>
 	</string>
 	<string id="st_itm_stash_of_actor">
 		<text>Player's stash</text>

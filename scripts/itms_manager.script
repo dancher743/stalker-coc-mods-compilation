@@ -413,7 +413,7 @@ function actor_on_item_use(obj)
 
 		local se_obj = alife():create("inv_actor_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id())
 
-		level.map_add_object_spot_ser(se_obj.id, ActorBackPackSpot, strformat(game.translate_string("st_itm_stash_of_character"),alife():actor():character_name()))
+		level.map_add_object_spot_ser(se_obj.id, ActorBackPackSpot, game.translate_string("st_itm_stash_of_actor"))
 
 		utils.save_var(db.actor,"actor_inv_backpack_id",se_obj.id)
 	end
