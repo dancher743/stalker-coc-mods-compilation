@@ -285,6 +285,9 @@ local function on_game_load(binder)
 		for i = 1, #ammo_table do
 			sim:create(ammo_table[i],db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),0)
 		end
+		if (math.random() <= 0.01) then
+			sim:create("af_medusa",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),0)
+		end
 		config:w_value("character_creation","new_game_loadout")
 		
 		se_actor:set_profile_name("actor_"..faction)
