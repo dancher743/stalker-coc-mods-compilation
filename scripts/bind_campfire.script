@@ -58,7 +58,7 @@ function use_campfire(npc,zone,p)
 			local chance_to_ignite = 90
 			
 			if (is_windy()) then
-				chance_to_ignite = chance_to_ignite - 20
+				chance_to_ignite = 50
 			end
 			
 			local rain_factor = level.rain_factor()
