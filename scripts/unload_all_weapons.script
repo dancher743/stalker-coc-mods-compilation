@@ -8,6 +8,12 @@ local bgl,bsi,bsc
 local weapon_empty_sound
 
 function unload_weapons()
+	local t = level_weathers.get_weather_manager():get_sound_channels()
+	
+	for i=1,#t do
+		printf(t[i])
+	end
+	
 	local inventory = ActorMenu.get_actor_menu()
 	
 	if not (inventory and inventory:IsShown()) then 

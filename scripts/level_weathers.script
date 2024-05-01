@@ -517,6 +517,12 @@ function WeatherManager:get_curr_ambient()
     return amb
 end
 
+function WeatherManager:get_sound_channels()
+	local ini = ini_file("environment\\ambients\\" .. level.name() .. ".ltx")
+	local ambient = self:get_curr_ambient()
+	local channels = alun_utils.parse_list(ini,ambient,"sound_channels")
+	return channels
+end
 
 function WeatherManager:get_level_name() -- not used?
 

@@ -8,25 +8,29 @@ campfires_all = {}
 -- Matches sound from NLC 7: Build 3.0
 local matches_sound = sound_object([[nlc\matches_1_short]])
 
-local wind_sounds_channels = {
-	restored_rnd_wind		= true,
-	darkwind_1				= true,
-    forest_rnd_wind			= true,
-    marsh_rnd_wind			= true
+local wind_sound_channels = {
+	wind_bkg_1				= true,
+	jupiter_bkg_tuman		= true
 }
 
-local playing_wind_sounds = {}
+local level_sound_channels = nil
 
 local function is_windy()
 	local result = false
+	
+	if (level_sound_channels == nil) then
+		level_sound_channels = level_weathers.get_weather_manager():get_sound_channels()
+	end	
 
-	for snd_path,snd_obj in pairs(playing_wind_sounds) do
-		if (snd_obj:playing()) then
+	for _,channel in pairs(level_sound_channels) do
+		printf(channel)
+		if (wind_sound_channels[channel]) then
 			result = true
 			break
 		end
 	end
 	
+	printf("Result - " .. tostring(result))
 	return result
 end
 
@@ -117,12 +121,6 @@ function get_nearest_campfire(npc, range)
 	return nil
 end
 
-local function sound_on_ambient_playing(snd_obj, snd_path, snd_channel_name, snd_volume, snd_dist)
-	if (wind_sounds_channels[snd_channel_name] and snd_dist <= 40 and snd_volume > 0.3) then
-		playing_wind_sounds[snd_path] = snd_obj
-	end
-end
-
 function on_game_start()
 	local tutorial_ran = 0 -- because we don't want to conflict with other tutorials, we need to identify if we are running (ie. > 0)
 	local function main_loop()
@@ -166,7 +164,6 @@ function on_game_start()
 	end
 
 	AddUniqueCall(main_loop)
-	RegisterScriptCallback("sound_on_ambient_playing",sound_on_ambient_playing)
 end 
 
 
