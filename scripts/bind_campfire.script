@@ -10,7 +10,6 @@ local matches_sound = sound_object([[nlc\matches_1_short]])
 
 local function is_windy()
 	local wind_velocity = level_weathers.get_weather_manager():get_wind_velocity()
-	printf(tostring(wind_velocity))
 	return wind_velocity > 0
 end
 
