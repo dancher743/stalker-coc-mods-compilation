@@ -1897,3 +1897,7 @@ end
 function StopTimer(id)
 	RemoveTimeEvent(timer_ev_id, id)
 end
+
+function strtransl(str)
+	return game.translate_string(str)
+end
