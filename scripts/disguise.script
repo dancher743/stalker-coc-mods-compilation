@@ -114,7 +114,7 @@ local function run_updates()
 
 		update_actor()
 		update_npc()
-		update_ui()
+		update_ui(is_first_update)
 		
 		is_first_update = false
 		prev_patch_in_slot = patch_in_slot
@@ -275,16 +275,12 @@ function update_npc()
 	end
 end
 
-function update_ui(patch_in_slot)
-	if (not db.actor:alive()) then
-		return
-	end
-	
+function update_ui(is_first_update)	
 	local is_main_hud_shown = main_hud_shown()
 	
 	ui_disguise.show(is_main_hud_shown)
 	
-	if (is_main_hud_shown and disguise_helper.has_patch_changed(patch_in_slot, prev_patch_in_slot)) then
+	if (is_first_update or is_main_hud_shown and disguise_helper.has_patch_changed(patch_in_slot, prev_patch_in_slot)) then
 		ui_disguise.update(patch_in_slot)
 	end
 end
