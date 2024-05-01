@@ -6,6 +6,13 @@
 local safe_houses_ini = ini_file("misc\\safe_houses.ltx")
 local bar_room_cost = tonumber(safe_houses_ini:r_string_ex("bar_room","cost"))
 
+local function add_bed_spot(se_obj_id)
+	local title = game.translate_string("st_ui_safe_houses_title")
+	local description = game.translate_string("st_ui_safe_houses_bar_room")
+	local text = strformat("%c[160,0,255,255]%s\\n%c[default]%s", title, description)
+	level.map_add_object_spot_ser(se_obj_id, "safe_house", text)
+end
+
 local function spawn_bed()
 	local x = 113.91
 	local y = -4.96
@@ -13,7 +20,7 @@ local function spawn_bed()
 	local lvid = 33618
 	local gvid = 1744
 	local se_obj = alife():create("bar_room_sofa",vector():set(x,y,z),lvid,gvid)
-	level.map_add_object_spot_ser(se_obj.id, "safe_house", "st_ui_safe_houses_bar_room")
+	add_bed_spot(se_obj.id)
 end
 
 local function spawn_safe()
