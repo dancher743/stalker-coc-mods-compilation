@@ -10,11 +10,12 @@ debug = false
 local beep_1 = sound_object([[device\pda\pda_beep_1]])
 local beep_2 = sound_object([[device\pda\pda_beep_2]])
 
+function on_game_first_load()
+	jg_timers.g_start_timer('guid_msg',0,0,15,'jg_guider','prepare_follower')
+end
 function load_state()
 	guid = jg_utils.l_v("guid", {})
 	curr_guid = jg_utils.l_v("curr_guid", {})
-	local newgame = jg_utils.l_v("newgame")	-- хз как ещё сделать срабатывание при НИ
-	if not newgame then jg_utils.s_v("newgame", 'Каллбек сработал') return jg_timers.g_start_timer('guid_msg',0,0,15,'jg_guider','prepare_follower') end
 end 
 function save_state()
 	jg_utils.s_v("guid", guid)
@@ -30,6 +31,7 @@ function squad_on_npc_death(squad,se_npc)
 	end
 end
 function on_game_start()
+	RegisterScriptCallback("on_game_first_load",on_game_first_load)
 	RegisterScriptCallback("load_state",load_state)
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("squad_on_npc_death",squad_on_npc_death)
@@ -94,7 +96,6 @@ function prepare_follower()
 	local news_text = string.format(game.translate_string('st_jg_14'), game.translate_string(level_name), dynamic_news_helper.GetPointDescription(npc))
 	send_tip(npc, news_text, beep_1)
 	
-	return
 	-- Запускаем таймер следующего вызова этой функции
 	jg_timers.g_start_timer('guid_msg',math.random(0,1),math.random(23),0,'jg_guider','prepare_follower')
 end
