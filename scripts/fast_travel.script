@@ -21,7 +21,7 @@ quick_travel_smarts = nil
 local spot_discovered_sound = nil
 
 local function add_object_spot(id, description)
-	local text = strformat("%c[255,77,139,3]%s\\n%c[default]%s", game.translate_string("ui_st_fast_travel_spot_title"), description)
+	local text = strformat("%c[ui_lime]%s\\n%c[default]%s", game.translate_string("ui_st_fast_travel_spot_title"), description)
 	level.map_add_object_spot(id, "fast_travel", text)
 end
 
