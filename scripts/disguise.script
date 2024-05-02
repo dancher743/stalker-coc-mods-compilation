@@ -94,6 +94,7 @@ local function run_updates()
 	
 	local function main_update()
 		if (not db.actor:alive()) then
+			ui_disguise.show(false)
 			RemoveTimeEvent("disguise","main_update")
 			return
 		end
