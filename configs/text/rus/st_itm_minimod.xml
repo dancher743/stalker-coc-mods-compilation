@@ -67,7 +67,7 @@
 		<text> тайник</text>
 	</string>
 	<string id="st_itm_stash_of_character">
-		<text>%s (%s)</text>
+		<text>%s, %s</text>
 	</string>
 	<string id="st_itm_stash_of_actor">
 		<text>Тайник игрока</text>

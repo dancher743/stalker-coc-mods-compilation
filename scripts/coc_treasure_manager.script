@@ -702,7 +702,7 @@ function get_extended_hint(sim,stash,hint,id)
 	
 	local descr_type = stash_name == nil and 0 or 1
 
-	if hint and string.match(hint, string.format(game.translate_string("st_itm_stash_of_character"),'','')) then
+	if hint and string.match(hint, string.format(game.translate_string("st_itm_stash_of_character"),STR_EMPTY,STR_EMPTY)) then
 		if (math.random(100) <= 30) then
 			descr_type = 0
 		elseif (math.random(100) <= 20) then
