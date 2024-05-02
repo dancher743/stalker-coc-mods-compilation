@@ -96,7 +96,7 @@ function prepare_follower()
 	
 	return
 	-- Запускаем таймер следующего вызова этой функции
-	jg_timers.g_start_timer('guid_msg',0,math.random(6),0,'jg_guider','prepare_follower')
+	jg_timers.g_start_timer('guid_msg',math.random(0,1),math.random(23),0,'jg_guider','prepare_follower')
 end
 
 function activate()
