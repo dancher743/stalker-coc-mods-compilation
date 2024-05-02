@@ -975,3 +975,7 @@ function pick(source_table)
 	local index = count > 1 and math.random(count) or 1
 	return source_table[index]
 end
+
+function round_to_1000(value)
+	return round(value/1000)*1000
+end

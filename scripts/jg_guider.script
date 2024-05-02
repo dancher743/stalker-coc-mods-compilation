@@ -90,8 +90,8 @@ function prepare_follower()
 	guid.squad_id		= get_object_squad(npc).id
 	guid.size			= size
 	guid.timer			= 2*(size + math.random(0, size))
-	guid.zarplata		= 2*(math.ceil(size * math.random(stdzarplata * 0.5, stdzarplata * 1.5)))
-	guid.neustoika		= math.ceil(math.random(guid.zarplata * 0.5, guid.zarplata * 1.5))
+	guid.zarplata		= utils.round_to_1000(2*(math.ceil(size * math.random(stdzarplata * 1, stdzarplata * 2))))
+	guid.neustoika		= utils.round_to_1000(guid.zarplata * math.random(25,100)/100)
 	
 	local news_text = string.format(game.translate_string('st_jg_14'), game.translate_string(level_name), dynamic_news_helper.GetPointDescription(npc))
 	send_tip(npc, news_text, beep_1)
