@@ -64,6 +64,7 @@ end
 
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
+	RegisterScriptCallback("actor_on_before_death",actor_on_before_death)
 	RegisterScriptCallback("on_game_load",on_game_load)
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
@@ -93,12 +94,6 @@ local function run_updates()
 	local main_update_act_id = "main_update"
 	
 	local function main_update()
-		if (not db.actor:alive()) then
-			ui_disguise.show(false)
-			RemoveTimeEvent("disguise","main_update")
-			return
-		end
-		
 		patch_in_slot = get_patch_in_slot()
 		
 		if (not can_update and not patch_in_slot and not has_actor_disguised()) then
@@ -125,8 +120,17 @@ local function run_updates()
 	CreateTimeEvent(main_update_ev_id, main_update_act_id, main_update_rate, main_update)
 end
 
+local function stop_updates()
+	ui_disguise.show(false)
+	RemoveTimeEvent("disguise","main_update")
+end
+
 function actor_on_first_update()
 	run_updates()
+end
+
+function actor_on_before_death()
+	stop_updates()
 end
 
 function update_actor()
