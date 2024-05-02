@@ -49,6 +49,7 @@ local function clear_guid()
 end 
 
 function ins_mass_onl()
+	if has_guiding_started() then return nil end
 	local mass_onl = {}
 	for k, id in pairs(db.OnlineStalkers) do
 		local npc = level.object_by_id(id)
