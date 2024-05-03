@@ -4,7 +4,7 @@
 --
 
 local rate = 30 -- seconds
-local memory_threshold = 35000
+local memory_threshold = 50000
 
 function collect(reason)
     if (reason) then
