@@ -42,4 +42,13 @@
 	<string id="zombie_ghost">
 		<text>Зомби-призрак</text>
 	</string>
+	<string id="psysucker_weak">
+		<text>Пси-кровосос</text>
+	</string>
+	<string id="psysucker_normal">
+		<text>Пси-кровосос</text>
+	</string>
+	<string id="psysucker_strong">
+		<text>Пси-кровосос</text>
+	</string>
 </string_table>

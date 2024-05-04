@@ -39,4 +39,13 @@
 	<string id="zombie_ghost">
 		<text>Ghost zombie</text>
 	</string>
+	<string id="psysucker_weak">
+		<text>Psysucker</text>
+	</string>
+	<string id="psysucker_normal">
+		<text>Psysucker</text>
+	</string>
+	<string id="psysucker_strong">
+		<text>Psysucker</text>
+	</string>
 </string_table>
