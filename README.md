@@ -120,5 +120,4 @@ Mods
 68. Animated detectors (selectively) (Alex_91zA)
 69. PDA Upgrades (Dancher)
 70. Next surge and/or psi storm dialog for Sakharov (Dancher)
-71. Controller Show Phantoms (naxac)
-72. Psy dog from Build 1935 (Charsi, Ю Е Проскудин, Dancher)
+71. Psy dog from Build 1935 (Charsi, Ю Е Проскудин, Dancher)
