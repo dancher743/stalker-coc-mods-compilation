@@ -145,7 +145,7 @@ local function on_level_changing()
 	teleport_companions_to_actor()
 end
 
-local function actor_on_update()
+local function actor_on_slicing_update()
 	if (has_companion()) then
 		ui_axr_companions.activate_hud()
 	else
@@ -218,7 +218,7 @@ function on_game_start()
 	RegisterScriptCallback("squad_on_register",squad_on_register)
 	RegisterScriptCallback("squad_on_unregister",squad_on_unregister)
 	RegisterScriptCallback("on_level_changing",on_level_changing)
-	RegisterScriptCallback("actor_on_update",actor_on_update)
+	RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
 	RegisterScriptCallback("actor_on_item_drop",actor_on_item_drop)
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)

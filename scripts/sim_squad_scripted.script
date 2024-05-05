@@ -27,6 +27,7 @@ end
 --***********************************************************************************************
 class "sim_squad_scripted" (cse_alife_online_offline_group)
 function sim_squad_scripted:__init(section) super (section)
+	self.frame_counter = 0
 	self.smart_id 			= nil
 	self.current_spot_id 	= nil
 	self.current_action 	= nil
@@ -208,6 +209,12 @@ function sim_squad_scripted:update()
 	end
 	
 	SendScriptCallback("squad_on_update",self)
+	
+	local frame_counter = self.frame_counter
+	if (frame_counter % 3 == 0) then
+		SendScriptCallback("squad_on_slicing_update",binder,delta)
+	end
+	self.frame_counter = frame_counter + 1
 
 	local sim = alife()
 	local se_actor = sim:actor()
