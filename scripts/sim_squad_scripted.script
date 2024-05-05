@@ -1122,7 +1122,7 @@ function sim_squad_scripted:show()
 			spot = "storyline_task_location"
 		end
 	elseif not(is_squad_monster[self.player_id]) then
-		if (axr_companions.companion_squads[self.id]) then
+		if (axr_companions.companion_squads[self.id] and not axr_companions.is_hostage_squad(self.id)) then
 			spot = "alife_presentation_squad_companion_1"
 			non_commander_spot = "alife_presentation_squad_companion_non_commander"
 		else	

@@ -101,10 +101,6 @@ local function squad_on_npc_death(squad,se_npc,killer)
 	if (squad:npc_count() == 0) then 
 		companion_squads[squad.id] = nil
 	end
-	
-	if (not has_companion()) then
-		ui_axr_companions.deactivate_hud()
-	end
 end
 
 local function squad_on_register(squad)
@@ -147,6 +143,14 @@ end
 
 local function on_level_changing()
 	teleport_companions_to_actor()
+end
+
+local function actor_on_update()
+	if (has_companion()) then
+		ui_axr_companions.activate_hud()
+	else
+		ui_axr_companions.deactivate_hud()
+	end
 end
 
 local function actor_on_item_drop(item)
@@ -214,6 +218,7 @@ function on_game_start()
 	RegisterScriptCallback("squad_on_register",squad_on_register)
 	RegisterScriptCallback("squad_on_unregister",squad_on_unregister)
 	RegisterScriptCallback("on_level_changing",on_level_changing)
+	RegisterScriptCallback("actor_on_update",actor_on_update)
 	RegisterScriptCallback("actor_on_item_drop",actor_on_item_drop)
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
@@ -259,7 +264,7 @@ function teleport_companions_to_actor()
 	
 	for id,v in pairs(companion_squads) do 
 		local squad = sim:object(id)
-		if (squad and squad.commander_id) then 
+		if (squad and squad.commander_id and companion_squad_can_teleport(squad)) then
 			teleport_companion_squad_to_actor(squad)
 		end
 	end
@@ -350,7 +355,6 @@ function add_to_actor_squad(npc)
 	utils.se_obj_save_var(id,npc:name(),"companion_start_time",game.time())
 	npc:inactualize_patrol_path()
 	setup_companion_logic(npc,db.storage[id],false)
-	ui_axr_companions.activate_hud()
 end
 
 function remove_from_actor_squad(npc)
@@ -376,10 +380,6 @@ function remove_from_actor_squad(npc)
 	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_hostage",nil)
 	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_start_time",nil)
 	se_obj.companion_start_time = nil
-	
-	if (not has_companion()) then
-		ui_axr_companions.deactivate_hud()
-	end
 end
 
 function remove_all_from_actor_squad()
@@ -411,8 +411,6 @@ function remove_all_from_actor_squad()
 	for id,b in pairs(non_task_companions) do
 		non_task_companions[id] = nil
 	end
-	
-	ui_axr_companions.deactivate_hud()
 end
 
 function set_companion_allow_teleport(npc)
@@ -692,7 +690,8 @@ local function move_companions_to_point()
 		_current_move_mode = 1
 		for id,squad in pairs(companion_squads) do 
 			if (squad and squad.commander_id) then
-				if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
+				-- Temp workaround fix -
+				if not (is_hostage_squad(id)) then
 					for k in squad:squad_members() do
 						st = db.storage[k.id]
 						local member = st and st.object
@@ -877,40 +876,21 @@ end
 local simulation = alife()
 
 function has_companion()
-    local result = false
-    
-	for id,squad in pairs(companion_squads) do
-		if (squad) then
-			for k in squad:squad_members() do
-				local npc = (db.storage[k.id] and db.storage[k.id].object) or level.object_by_id(k.id)
-				if (is_companion(npc)) then
-					result = true
-					break
-				end
-			end
+	local result = false
+	
+	for squad_id in pairs(companion_squads) do
+		if (not is_hostage_squad(squad_id)) then
+			result = true
+			break
 		end
 	end
-    
-    return result
+	
+	return result
 end
 
 function is_companion(npc)
-	local result = false
-	
-	if (npc) then
-		local se_obj = simulation:object(npc:id())
-		local is_npc_hostage = se_obj and is_hostage(se_obj) or false
-	
-		if (not is_npc_hostage) then
-			result = npc:has_info("npcx_is_companion")
-			if (not result) then
-				local clist = list_actor_squad_by_id()
-				result = clist[npc:id()] ~= nil
-			end
-		end
-	end
-    
-    return result
+	local clist = list_actor_squad_by_id()
+    return clist[npc:id()] ~= nil
 end
 
 function is_companion_squad(squad_id)
@@ -919,6 +899,32 @@ end
 
 function is_hostage(se_obj)
 	return utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_is_hostage") == true
+end
+
+function is_hostage_squad(squad_id)
+	local result = false
+	local squad = companion_squads[squad_id]
+	
+	if (squad) then
+		local se_obj = alife_object(squad:commander_id())
+		if (se_obj and is_hostage(se_obj)) then
+			result = true
+		end
+	end
+	
+	return result
+end
+
+function get_non_hostage_companion_squads()
+	local t = {}
+	
+	for id,squad in pairs(companion_squads) do
+		if (not is_hostage_squad(id)) then
+			t[id] = squad
+		end
+	end
+	
+	return t
 end
 
 function is_invulnerable(se_obj)
