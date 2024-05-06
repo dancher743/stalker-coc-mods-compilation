@@ -13,7 +13,7 @@ if (jit == nil) then
 end
 
 GAME_VERSION = "1.4.22"
-MOD_VERSION = "Dancher's Compilation 1.4.0"
+MOD_VERSION = "Dancher's Compilation 1.4.1"
 
 if string.find(command_line(), "-dbg") then
 	DEV_DEBUG = true
@@ -278,7 +278,7 @@ function JumpToLevel(new_level)
 	for id,smart in pairs(db.smart_terrain_by_id) do
 		cvertex = smart and gg:vertex(smart.m_game_vertex_id)
 		if (cvertex and sim:level_name(cvertex:level_id()) == new_level) then
-			ChangeLevel(cvertex:level_point(),cvertex:level_vertex_id(),smart.m_game_vertex_id,vector():set(0,0,0))
+			ChangeLevel(cvertex:level_point(),cvertex:level_vertex_id(),smart.m_game_vertex_id,VEC_ZERO)
 			return true
 		end
 	end
@@ -289,7 +289,7 @@ function JumpToLevel(new_level)
 			cvertex = gg:vertex(gvid)
 			lvl = sim:level_name(cvertex:level_id())
 			if (lvl == new_level) then
-				ChangeLevel(cvertex:level_point(),cvertex:level_vertex_id(),gvid,vector():set(0,0,0))
+				ChangeLevel(cvertex:level_point(),cvertex:level_vertex_id(),gvid,VEC_ZERO)
 				return true
 			end
 		else
@@ -666,7 +666,7 @@ function print_table(table, subs)
 	if subs ~= nil then
 		sub = subs
 	else
-		sub = ""
+		sub = STR_EMPTY
 	end
 	for k,v in pairs(table) do
 		if type(v) == "table" then
@@ -708,7 +708,7 @@ function store_table(table, subs)
 	if subs ~= nil then
 		sub = subs
 	else
-		sub = ""
+		sub = STR_EMPTY
 	end
 	printf(sub.."{")
 	for k,v in pairs(table) do
@@ -1603,7 +1603,7 @@ if (USE_INI_MEMOIZE) then
 			end
 		end
 		
-		local a,b,c = ini:r_line(s,k,"","")
+		local a,b,c = ini:r_line(s,k,STR_EMPTY,STR_EMPTY)
 		
 		if (ini_cache[ini]) then
 			local key = s.."&"..k
@@ -1636,7 +1636,7 @@ else
 	end
 		function ini_file.r_line_ex(ini,s,k)
 		--callstack()
-		return ini:r_line(s,k,"","")
+		return ini:r_line(s,k,STR_EMPTY,STR_EMPTY)
 	end
 end
 
@@ -1679,7 +1679,7 @@ end
 
 function ini_file_ex:w_value(s,k,val,comment)
 	self.cache[s.."&"..k] = val
-	self.ini:w_string(s,k,val ~= nil and tostring(val) or "",comment ~= nil and tostring(comment) or "")
+	self.ini:w_string(s,k,val ~= nil and tostring(val) or STR_EMPTY,comment ~= nil and tostring(comment) or STR_EMPTY)
 end
 
 function ini_file_ex:collect_section(section)
@@ -1688,7 +1688,7 @@ function ini_file_ex:collect_section(section)
 	local n = self.ini:section_exist(section) and self.ini:line_count(section) or 0
 	if (n > 0) then
 		for i = 0,n-1 do
-			local res,id,val = self.ini:r_line(section,i,"","")
+			local res,id,val = self.ini:r_line(section,i,STR_EMPTY,STR_EMPTY)
 			_t[id] = val
 		end
 	end
@@ -1784,14 +1784,20 @@ end
 -- Added by Dancher
 --
 
--- From CoC 1.5
 -----------------------------------------
 -- Constants
 -----------------------------------------
-VEC_ZERO 	= vector():set(0,0,0)
-VEC_X 		= vector():set(1,0,0)
-VEC_Y 		= vector():set(0,1,0)
-VEC_Z 		= vector():set(0,0,1)
+-- For vectors from CoC 1.5
+VEC_ZERO 		= vector():set(0,0,0)
+VEC_RIGHT 		= vector():set(1,0,0)
+VEC_LEFT 		= vector():set(-1,0,0)
+VEC_UP 			= vector():set(0,1,0)
+VEC_DOWN 		= vector():set(0,-1,0)
+VEC_FORWARD 	= vector():set(0,0,1)
+VEC_BACK 		= vector():set(0,0,-1)
+
+STR_EMPTY		= ""
+-----------------------------------------
 
 function IsEocMode()
 	return alife_storage_manager.get_state().enable_eoc_mode == true or 
@@ -1803,6 +1809,13 @@ function IsActor(o,c)
 		c = o and o:clsid()
 	end
 	return c and (c == clsid.script_actor) or false
+end
+
+function IsStalkerOnly(o,c)
+	if not (c) then
+		c = o and o:clsid()
+	end
+	return c and (c == clsid.script_stalker) or false
 end
 
 function IsAnomaly(o,c)
@@ -1862,4 +1875,29 @@ function TeleportActorToSmart(smart)
 			end
 		end
 	end
+end
+
+local timer_ev_id = "global_timers"
+
+function StartTimer(id, interval_in_ms, tickback, ...)
+	if (HasTimeEvent(timer_ev_id, id)) then
+		StopTimer(id)
+	end
+	
+	local interval = interval_in_ms / 1000
+	
+	local function tick(...)
+		tickback(...)
+		ResetTimeEvent(timer_ev_id, id, interval)
+	end
+	
+	CreateTimeEvent(timer_ev_id, id, interval, tick, ...)
+end
+
+function StopTimer(id)
+	RemoveTimeEvent(timer_ev_id, id)
+end
+
+function strtransl(str)
+	return game.translate_string(str)
 end

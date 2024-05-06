@@ -101,7 +101,6 @@ local intercepts = {
 	on_key_hold					= {},
 	actor_on_before_death		= {},
 	on_game_load				= {},
-	on_game_unload				= {},
 	actor_on_net_destroy		= {},
 	actor_on_first_update		= {},
 	actor_on_update				= {},
@@ -162,7 +161,13 @@ local intercepts = {
 	
 	-- Callbacks added by Dancher
 	actor_on_awoke_after_sleeping	= {},
-	sound_on_ambient_playing		= {}
+	
+	on_game_unload					= {},
+	on_game_first_load				= {},
+	
+	actor_on_slicing_update			= {},
+	squad_on_slicing_update			= {}
+	--
 }
 
 -----------------------------------------------------------

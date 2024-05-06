@@ -547,7 +547,7 @@ function GetShortPointDescription(obj)
 	end 
 	
 	local m_s = game.translate_string("st_dyn_news_"..level_name)
-	m_s = string.gsub(m_s, "%p", "")
+	m_s = string.gsub(m_s, "%p", STR_EMPTY)
 	
 	return m_s
 end
@@ -578,9 +578,9 @@ function GetTimeString(TimeDiffHrs,AccuracyTier) -- convert the difference betwe
 	
 	local TimeStringRange, TimeStringNumber, TimeStringPharse
 	local hrs = GetTimeScope(TimeNext,4) -- hour of event
-	local s_p = "" -- adding the plural "s"
-	local endString = "" -- Little touch for ending part
-	local dayPart = "" -- PM or AM
+	local s_p = STR_EMPTY -- adding the plural "s"
+	local endString = STR_EMPTY -- Little touch for ending part
+	local dayPart = STR_EMPTY -- PM or AM
 	
 	local result
 	
@@ -860,7 +860,7 @@ function GetMonsterDescription(obj,index) -- Get monster description, return tra
 		return m_class[cls]
 	end
 		
-	return game.translate_string("st_dyn_news_" .. m_class[cls] .. "_" .. index) or ""
+	return game.translate_string("st_dyn_news_" .. m_class[cls] .. "_" .. index) or STR_EMPTY
 end
 
 function GetWeaponClass(obj)
@@ -897,7 +897,7 @@ function GetColor(num)
 	if clr then
 		return clr
 	else
-		return ""
+		return STR_EMPTY
 	end
 end
 
@@ -967,8 +967,8 @@ function get_random_character_icon()
 		local ini = ini_file("plugins\\faction_portraits.ltx")
 		local n = ini:section_exist(section) and ini:line_count(section) or 0
 		for i=0, n-1 do
-			local result, id, value = ini:r_line(section,i,"","")
-			if (id ~= "" and id ~= "default_portrait" and id ~= "ui_inGame2_degtyarev_ico" and 
+			local result, id, value = ini:r_line(section,i,STR_EMPTY,STR_EMPTY)
+			if (id ~= STR_EMPTY and id ~= "default_portrait" and id ~= "ui_inGame2_degtyarev_ico" and 
 				id ~= "ui_inGame2_scar_ico" and id ~= "ui_inGame2_Strelok" and id ~= "ui_inGame2_strelok_ico")
 			then
 				table.insert(t,id)

@@ -147,9 +147,9 @@ end
 function fill_visuals()
 	visuals = {}
 	local n = death_visual_ini:line_count("outfits_and_helms")
-	local id, value = "", ""
+	local id, value = STR_EMPTY, STR_EMPTY
 	for i=0,n-1 do
-		local result, id, value = death_visual_ini:r_line_ex("outfits_and_helms",i,"","")
+		local result, id, value = death_visual_ini:r_line_ex("outfits_and_helms",i,STR_EMPTY,STR_EMPTY)
 		local p = alun_utils.str_explode(value,",")
 		if (p) then
 			p[1] = tostring(p[1])

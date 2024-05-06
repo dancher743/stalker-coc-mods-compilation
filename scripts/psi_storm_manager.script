@@ -54,8 +54,8 @@ function CPsiStormManager:initialize()
 	self.max_distance_npc_hit=50
 	self.psi_storm_duration = 254 -- (duration: about 40mins of game time)
 
-	self.psi_storm_message 		= ""
-	self.psi_storm_task_sect 	= ""
+	self.psi_storm_message 		= STR_EMPTY
+	self.psi_storm_task_sect 	= STR_EMPTY
 	
 	self.time_forwarded = false
 end
@@ -145,8 +145,8 @@ function CPsiStormManager:skip_psi_storm()
 	self.started 			= false
 	self.finished 			= true
 
-	self.psi_storm_message 		= ""
-	self.psi_storm_task_sect 	= ""
+	self.psi_storm_message 		= STR_EMPTY
+	self.psi_storm_task_sect 	= STR_EMPTY
 	self.task_given 		= nil
 	prev_sec				= 0
 	--xr_statistic.inc_counter("storms")
@@ -171,8 +171,8 @@ function CPsiStormManager:finish(manual)
 		v:stop()
 	end
 
-	self.psi_storm_message 		= ""
-	self.psi_storm_task_sect 	= ""
+	self.psi_storm_message 		= STR_EMPTY
+	self.psi_storm_task_sect 	= STR_EMPTY
 	self.task_given = nil
 
 	if(manual or (self.time_forwarded and level_weathers.get_weather_manager().weather_fx)) then
@@ -391,7 +391,7 @@ function CPsiStormManager:vortex_actor_hit(vortex)
 			h.power = surge_manager.SurgeManager:hit_power(hit_power, h.type)
 		end		
 		h.impulse = 0
-		h.direction = vector():set(0,0,1)
+		h.direction = VEC_FORWARD
 		h.draftsman = db.actor
 		
 		db.actor:hit(h)
@@ -410,7 +410,7 @@ function CPsiStormManager:vortex_actor_hit(vortex)
 			h.power = surge_manager.SurgeManager:hit_power(hit_power, h.type)
 		end
 		h.impulse = 0
-		h.direction = vector():set(0,0,1)
+		h.direction = VEC_FORWARD
 		h.draftsman = db.actor
 		db.actor:hit(h)
 		level.remove_pp_effector(667)
@@ -534,7 +534,7 @@ function CPsiStormManager:kill_crows_at_pos(pos)
 	h.type = hit.fire_wound
 	h.power = 1.0
 	h.impulse = 0
-	h.direction = vector():set(0,0,1)
+	h.direction = VEC_FORWARD
 	h.draftsman = db.actor
 	for k,v in pairs(bind_crow.crow_storage) do
 		local obj = alife_object(v)
@@ -669,8 +669,8 @@ end
 
 function CPsiStormManager:give_psi_storm_hide_task()
 	if(self.psi_storm_message~="empty") then
-		local mess = ""
-		if(self.psi_storm_message=="") then
+		local mess = STR_EMPTY
+		if(self.psi_storm_message==STR_EMPTY) then
 			local time = 0
 			mess = game.translate_string("hide_from_psi_storm_message")
 		else
@@ -678,7 +678,7 @@ function CPsiStormManager:give_psi_storm_hide_task()
 		end
 	end
 	if(self.psi_storm_task_sect~="empty") then
-		if(self.psi_storm_task_sect=="") then
+		if(self.psi_storm_task_sect==STR_EMPTY) then
 			task_manager.get_task_manager():give_task("hide_from_psi_storm")
 		else
 			task_manager.get_task_manager():give_task(self.psi_storm_task_sect)
@@ -699,7 +699,7 @@ function is_loaded()
 end
 
 function get_task_title()
-	local title = ""
+	local title = STR_EMPTY
 	if(surge_manager.actor_in_cover()) then
 		title = "hide_from_psi_storm_name_2"
 	else
@@ -709,7 +709,7 @@ function get_task_title()
 end
 
 function get_task_descr()
-	local descr = ""
+	local descr = STR_EMPTY
 	if(surge_manager.actor_in_cover()) then
 		descr = game.translate_string("hide_from_psi_storm_descr_2_a")
 	else

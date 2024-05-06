@@ -8,20 +8,20 @@ function get_smart_cover()
 	return {
 			need_weapon = false,
 			loopholes = {
-				smart_covers_loophole_animpoint_sit_low.get_loophole("animpoint_sit_low",	VEC_ZERO, vector():set(0,0,-1),	vector():set(0,0,-1))
+				smart_covers_loophole_animpoint_sit_low.get_loophole("animpoint_sit_low",	VEC_ZERO, VEC_BACK,	VEC_BACK)
 			},
 
 	
 			transitions = {
 			--' Анимации входа в бойницы
 			{
-				vertex0 = "",
+				vertex0 = STR_EMPTY,
 				vertex1 = "animpoint_sit_low",
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
                                 actions =	{
 											{
 												animation = "animpoint_sit_low_in_1",
@@ -37,12 +37,12 @@ function get_smart_cover()
 			--' Анимации выхода из бойниц.
 			{
 				vertex0 = "animpoint_sit_low",
-				vertex1 = "",
+				vertex1 = STR_EMPTY,
 				weight = 1.1,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
                                 actions =	{
 											{
 												animation = "animpoint_sit_low_out_1",

@@ -106,10 +106,10 @@ function loot_ui:SetMutantImage()
 	giant				= {file="ui\\ui_actor_monsters_pda_1",x="0",y="200",special="0"},
 	}
 
-	local mutant_id = game.translate_string(system_ini():r_string_ex(self.section,"species") or "")
+	local mutant_id = game.translate_string(system_ini():r_string_ex(self.section,"species") or STR_EMPTY)
 
 	if mutant_id == "arena_monstr" then
-	mutant_id = game.translate_string(system_ini():r_string_ex(self.section,"community") or "")
+	mutant_id = game.translate_string(system_ini():r_string_ex(self.section,"community") or STR_EMPTY)
 	end
 
 	local mutant_f = killed_mutant_tbl[mutant_id].file or "ui\\ui_actor_monsters_pda_1"
@@ -151,7 +151,7 @@ function loot_ui:FillList()
 	end
 
 	if (not is_empty(self.loot)) then
-		SetHudMsg("",0)
+		SetHudMsg(STR_EMPTY,0)
 		self:ShowDialog(true)
 	else		
 		if self:IsShown() then
@@ -201,7 +201,7 @@ function loot_ui:OnListItemDbClicked()
 	end
 
 	alife():create(booty.sec, db.actor:position(),0,0,0)
-	news_manager.relocate_item(db.actor, "in", booty.sec, 1)
+	--news_manager.relocate_item(db.actor, "in", booty.sec, 1)
 	xr_statistic.inc_counter("field_dressings")
 
 	if self.loot[booty.sec].count > 1 then
@@ -231,7 +231,7 @@ function loot_ui:OnButton_ok()
 		alife():create(sec, db.actor:position(),0,0,0)
 		xr_statistic.inc_counter("field_dressings")
 		end
-	news_manager.relocate_item(db.actor, "in", sec, t.count)
+	--news_manager.relocate_item(db.actor, "in", sec, t.count)
 	self.loot[sec] = nil
 	end
 	utils.save_var(self.obj,"looted",true)

@@ -21,7 +21,9 @@ function input_dialog_ui:__init(owner, show_after_init, on_ok_clicked, on_cancel
 	end
 end
 
-function input_dialog_ui:__finalize() end
+function input_dialog_ui:__finalize()
+	self:StopTutorial()
+end
 
 function input_dialog_ui:InitControls()
 	self:SetWndRect(Frect():set(0,0,1024,768))
@@ -32,18 +34,31 @@ function input_dialog_ui:InitControls()
 	self:Enable(true)
 
 	local xml					= CScriptXmlInit()
-	xml:ParseFile				("ui_itm_main.xml")
+	xml:ParseFile				("ui_generic_dialogs.xml")
 
-	self.back					= xml:InitStatic("itm_backpack:background", self)
+	self.back					= xml:InitStatic("input_dialog:background", self)
 
-	self.input = xml:InitEditBox("itm_backpack:input",self)
+	self.input = xml:InitEditBox("input_dialog:input",self)
 	self:Register(self.input,"fld_input")
 
-	local btn = xml:Init3tButton("itm_backpack:btn_cancel", self.back)
-	self:Register(btn,"btn_cancel")
-
-	btn = xml:Init3tButton("itm_backpack:btn_ok", self.back)
+	btn = xml:Init3tButton("input_dialog:btn_ok", self.back)
 	self:Register(btn,"btn_ok")
+
+	local btn = xml:Init3tButton("input_dialog:btn_cancel", self.back)
+	self:Register(btn,"btn_cancel")
+	
+	self:InitTutorialControl(xml)
+end
+
+function input_dialog_ui:InitTutorialControl(xml)
+	local actor = db.actor
+	local tutorial_name = "tutorial_change_language"
+	
+	if (not actor:has_info(tutorial_name)) then
+		self.tutorial_change_language = xml:InitStatic("input_dialog:tutorial_change_language", self)
+		self.tutorial_change_language:Show(false)
+		actor:give_info_portion(tutorial_name)
+	end
 end
 
 function input_dialog_ui:SetCurrentValues()
@@ -58,13 +73,27 @@ function input_dialog_ui:InitCallBacks()
 	self:AddCallback("btn_cancel", ui_events.BUTTON_CLICKED, self.OnCancel, self)
 end
 
+function input_dialog_ui:ShowTutorial()
+	if (self.tutorial_change_language) then
+		self.tutorial_change_language:Show(true)
+	end
+end
+
+function input_dialog_ui:HideTutorial()
+	if (self.tutorial_change_language) then
+		self.tutorial_change_language:Show(false)
+	end
+end
+
 function input_dialog_ui:Show(value)
 	self:ShowDialog(value)
+	self:ShowTutorial()
 	axr_keybind.enabled = false
 end
 
 function input_dialog_ui:Hide()
 	self:HideDialog()
+	self:HideTutorial()
 	axr_keybind.enabled = true
 end
 
@@ -72,7 +101,7 @@ function input_dialog_ui:GetText()
 	local text = self.input:GetText()
 	
 	if (text == nil) then
-		text = ""
+		text = STR_EMPTY
 	end
 	
 	return text

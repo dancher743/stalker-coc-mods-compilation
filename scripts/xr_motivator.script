@@ -59,7 +59,7 @@ function motivator_binder:net_spawn(sobject)
 
 	self.object:enable_vision(true)
 	local visual = system_ini():r_string_ex(self.object:section(),"set_visual")
-	if (visual and visual ~= "") then
+	if (visual and visual ~= STR_EMPTY) then
 		if visual == "actor_visual" then
 			self.object:set_visual_name(db.actor:get_visual_name())
 		else
@@ -331,7 +331,7 @@ function motivator_binder:death_callback(victim, who)
 	end
 	
 	trade_manager.on_npc_death(self.object)
-	self:hit_callback(victim, 1, vector():set(0,0,0), who, "from_death_callback")
+	self:hit_callback(victim, 1, VEC_ZERO, who, "from_death_callback")
 
 	local id = victim:id()
 	xr_combat_ignore.fighting_with_actor_npcs[id] = nil
@@ -596,7 +596,7 @@ function motivator_binder:load_state()
 	st.loaded_ini_filename = state.xr_logic.ini_filename
 	st.loaded_section_logic = state.xr_logic.section_logic
 	st.loaded_active_section = state.xr_logic.active_section
-	st.loaded_gulag_name = state.xr_logic.gulag_name or ""
+	st.loaded_gulag_name = state.xr_logic.gulag_name or STR_EMPTY
 	st.activation_time = state.xr_logic.activation_time and state.xr_logic.activation_time + time_global() or time_global()
 	st.activation_game_time = state.xr_logic.activation_game_time or game.get_game_time()
 	state.xr_logic = nil

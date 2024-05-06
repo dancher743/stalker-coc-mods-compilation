@@ -170,6 +170,9 @@
 	<string id="gen_smart_terrain_lab_entrance_2">
 		<text>Abandoned Lab</text>
 	</string>
+	<string id="gen_smart_terrain_military">
+		<text>The Final Checkpoint</text>
+	</string>
 
 	<string id="mar_smart_terrain_base">
 		<text>Clear Sky Base</text>
@@ -358,5 +361,14 @@
 	</string>
 	<string id="zat_b101">
 		<text>Sawmill Pipeline Campsite</text>
+	</string>
+	
+	<!-- Messages -->
+	<string id="discovered_message">
+		<text>Discovered: %s</text>
+	</string>
+	
+	<string id="ui_st_fast_travel_spot_title">
+		<text>Fast travel point</text>
 	</string>
 </string_table>

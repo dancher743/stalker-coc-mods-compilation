@@ -17,16 +17,18 @@ local radiation_reaction_sounds = {
 
 local last_reaction_sound
 
+local option_name = "show_health_effectors"
+
+local function has_option()
+	return axr_main_options.get_check_option(option_name)
+end
+
 local function play_reaction_sound(snd_obj)
 	if (last_reaction_sound and last_reaction_sound:playing()) then
 		last_reaction_sound:stop()
 	end
 	snd_obj:play(db.actor,0,sound_object.s2d)
 	last_reaction_sound = snd_obj
-end
-
-local function is_master_difficulty()
-	return level.get_game_difficulty() == 3
 end
 
 local function bleedcondition()
@@ -49,15 +51,15 @@ local function bleedcondition()
         radeffect = false
     end
 	
-	local is_master_difficulty = is_master_difficulty()
-	
-	if is_master_difficulty and db.actor.bleeding > 0.5 and db.actor.health < 0.4 and ble1 < time_global() then
+	local show_health_effectors = has_option()
+
+	if show_health_effectors and db.actor.bleeding > 0.5 and db.actor.health < 0.4 and ble1 < time_global() then
         level.add_pp_effector("deimos1.ppe", 2014, false)
         ble1 = time_global() + math.random(4000, 10000)
     end
     
-	if is_master_difficulty and db.actor.bleeding > 0.4 and db.actor.power < 0.35 and ble2 ~= true then
-        level.add_cam_effector("camera_effects\\pripyat_horror.anm", 1001, false, "")
+	if show_health_effectors and db.actor.bleeding > 0.4 and db.actor.power < 0.35 and ble2 ~= true then
+        level.add_cam_effector("camera_effects\\pripyat_horror.anm", 1001, false, STR_EMPTY)
         level.add_pp_effector("snd_shock.ppe", 2015, true)
         ble2 = true
     end

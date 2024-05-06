@@ -18,6 +18,7 @@ Install
 
 Settings
 ---
+* To change input language press Ctrl + Shift key combination
 * To access Dynamic News settings: load your game, then open the main menu and press Page-Up button
 * To ignite/extinguish a campfire holster your weapon first
 * To make the sky less bright type `r2_tonemap off` command at the console
@@ -119,3 +120,4 @@ Mods
 68. Animated detectors (selectively) (Alex_91zA)
 69. PDA Upgrades (Dancher)
 70. Next surge and/or psi storm dialog for Sakharov (Dancher)
+71. Psy dog from Build 1935 (Charsi, Ю Е Проскудин, Dancher)

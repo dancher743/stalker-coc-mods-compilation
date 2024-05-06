@@ -322,7 +322,7 @@ function get_special_txt(str)
 	if str == "actor_monster"         then return "Mutant"                  end
 	if str == "actor_zombied"         then return "Zombified"               end
 	
-	return ""
+	return STR_EMPTY
 end
 
 ----------------------------------------------------------------------
@@ -645,11 +645,11 @@ function XmlParser:ParseXmlText(xmlText,path)
 		if not ni then break end
 		local text = string_sub(xmlText, i, ni-1);
 		if not string_find(text, "^%s*$") then
-			top.Value=(top.Value or "")..self:FromXmlString(text);
+			top.Value=(top.Value or STR_EMPTY)..self:FromXmlString(text);
 		end
 		if empty == "/" then  -- empty element tag
 			table.insert(top.ChildNodes, {Name=label,Value=nil,Attributes=self:ParseArgs(xarg),ChildNodes={}})
-		elseif c == "" then   -- start tag
+		elseif c == STR_EMPTY then   -- start tag
 			top = {Name=label, Value=nil, Attributes=self:ParseArgs(xarg), ChildNodes={}}
 			table.insert(stack, top)   -- new level
 		else  -- end tag
@@ -667,7 +667,7 @@ function XmlParser:ParseXmlText(xmlText,path)
 	end
 	local text = string_sub(xmlText, i);
 	if not string_find(text, "^%s*$") then
-		stack[#stack].Value=(stack[#stack].Value or "")..self:FromXmlString(text);
+		stack[#stack].Value=(stack[#stack].Value or STR_EMPTY)..self:FromXmlString(text);
 	end
 	if #stack > 1 then
 		printf("XmlParser: unclosed "..stack[stack.n].Name)

@@ -27,7 +27,7 @@ function on_game_start()
 	local ini = ini_file("plugins\\news_tips_icons.ltx")
 	local line_count = ini:line_count("news_tips_icons") or 0
 	for k = 0, line_count - 1 do
-		local junk1, section, value = ini:r_line("news_tips_icons", k, "", "")
+		local junk1, section, value = ini:r_line("news_tips_icons", k, STR_EMPTY, STR_EMPTY)
 		tips_icons[section] = value
 	end
 end
@@ -99,7 +99,7 @@ function send_sound(npc, faction, point, str, str2, delay_sound)
 	if faction ~= nil then
 		--printf("---------------------")
 		--printf(tostring(faction))
-		local point_name = ""
+		local point_name = STR_EMPTY
 		if point ~= nil then
 			local smart = sim_board.get_sim_board().smarts[point]
 			if smart then
@@ -109,7 +109,7 @@ function send_sound(npc, faction, point, str, str2, delay_sound)
 			end
 		end
 		--printf(point_name)
-		local txt = ""
+		local txt = STR_EMPTY
 		if str2 == nil then
 			txt = string.gsub(str, "(characters_voice\\human_..\\)([^\\]*)", "%2")
 			txt = string.gsub(txt, "[\\]([^\\]*)", "_%1")
@@ -141,7 +141,7 @@ function send_sound(npc, faction, point, str, str2, delay_sound)
 		end
 --		printf("--->texture="..tostring(texture))
 		local news_caption = game.translate_string("st_tip").." "..game.translate_string(faction)
-		if point_name ~= "" then
+		if point_name ~= STR_EMPTY then
 			news_caption = news_caption..". "..point_name..":"
 		else
 			news_caption = news_caption..":"
@@ -183,7 +183,7 @@ function send_task(actor, type, tsk)
 	end
 	xr_sound.set_sound_play(db.actor:id(), "pda_task")
 	local news_caption = game.translate_string(action_descr_by_type[type])
-	local news_text = game.translate_string(tsk:get_title() or "")
+	local news_text = game.translate_string(tsk:get_title() or STR_EMPTY)
 	local icon = tsk:get_icon_name()
 	if(icon==nil) then
 		icon = "ui_iconsTotal_storyline"
@@ -199,7 +199,7 @@ end
 
 function send_treasure(param, has_spot)
 	local news_caption = game.translate_string("st_tip")
-	local news_text = ""
+	local news_text = STR_EMPTY
 	local news_icon = "ui_inGame2_Polucheni_koordinaty_taynika"
 	
 	if(param==0) then
@@ -229,7 +229,7 @@ function send_treasure_with_level(stash_name, se_box)
 	else
 		level_point = dynamic_news_helper.GetPointDescription(se_box)
 	end
-	level_point = string.gsub(level_point, "%.", "")
+	level_point = string.gsub(level_point, "%.", STR_EMPTY)
 	
 	local news_caption = game.translate_string("st_found_new_treasure")
 	local news_text = string.format("%s %s", stash_name, level_point)
@@ -237,7 +237,7 @@ function send_treasure_with_level(stash_name, se_box)
 	if db.actor:is_talking() then
 		db.actor:give_talk_message2(news_caption, news_text, "ui_inGame2_Polucheni_koordinaty_taynika", "iconed_answer_item")
 	else
-		db.actor:give_game_news(news_caption, news_text, "ui_inGame2_Polucheni_koordinaty_taynika", 0, 6000)
+		db.actor:give_game_news(news_caption, news_text, "ui_inGame2_Polucheni_koordinaty_taynika", 0, 10000)
 	end
 	
 	xr_sound.set_sound_play(db.actor:id(), "pda_news")
@@ -257,8 +257,8 @@ function relocate_item(actor, type, item, amount)
 	if not amount then
 		amount = 1
 	end
-	local news_caption = ""
-	local news_text = ""
+	local news_caption = STR_EMPTY
+	local news_text = STR_EMPTY
 	if type == "in" then
 		if amount == 1 then
 			news_caption = game.translate_string("general_in_item")

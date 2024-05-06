@@ -215,7 +215,7 @@ function repair_ui:OnPartsListItemClicked()
 	local item = self.list_box_parts:GetSelectedItem()
 	if not (item) then
 		self.picture_parts:SetTextureRect(Frect():set(0,0,0,0))
-		self.caption_parts:SetText("")
+		self.caption_parts:SetText(STR_EMPTY)
 		return
 	end
 
@@ -295,7 +295,7 @@ function repair_ui:OnListItemClicked()
 
 	if (self.use_parts) then
 		self.picture_parts:SetTextureRect(Frect():set(0,0,0,0))
-		self.caption_parts:SetText("")
+		self.caption_parts:SetText(STR_EMPTY)
 		self:FillPartsList()
 	end
 end

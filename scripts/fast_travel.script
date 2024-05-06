@@ -20,12 +20,17 @@ quick_travel_smarts = nil
 
 local spot_discovered_sound = nil
 
+local function add_object_spot(id, description)
+	local text = strformat("%c[255,0,168,0]%s\\n%c[default]%s", game.translate_string("ui_st_fast_travel_spot_title"), description)
+	level.map_add_object_spot(id, "fast_travel", text)
+end
+
 local function get_spotted_object_hint(se_obj_spot)
 	local spot_id = se_obj_spot.id
 	local spot_hint = objects_spots_hints[spot_id]
 	
 	if (spot_hint == nil) then
-		local object_name = se_obj_spot:name():gsub(spot_id, "")
+		local object_name = se_obj_spot:name():gsub(spot_id, STR_EMPTY)
 		spot_hint = spotted_objects[object_name]
 		objects_spots_hints[spot_id] = spot_hint
 	end
@@ -173,7 +178,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 		axr_companions.teleport_companions_to_actor_in_online()
 		get_hud():HidePdaMenu()
 	else
-		ChangeLevel(se_obj.position,se_obj.m_level_vertex_id,se_obj.m_game_vertex_id,vector():set(0,0,0))
+		ChangeLevel(se_obj.position,se_obj.m_level_vertex_id,se_obj.m_game_vertex_id,VEC_ZERO)
 	end
 end
 
@@ -204,14 +209,14 @@ local function check_visit(id,level_name)
 			local discovered_message = game.translate_string("discovered_message");
 			if (longnames) then
 				local longname = game.translate_string(level_name)..". "..game.translate_string(se_obj:name())
-				level.map_add_object_spot(id, "fast_travel", longname)
+				add_object_spot(id, longname)
 				if (markermessage) then
 					SetHudMsg(strformat(discovered_message, longname), 4)
 					play_discovered_sound()
 				end
 			else
 				local name = game.translate_string(se_obj:name())
-				level.map_add_object_spot(id, "fast_travel", name)
+				add_object_spot(id, name)
 				if (markermessage) then
 					SetHudMsg(strformat(discovered_message, name), 4)
 					play_discovered_sound()
@@ -261,17 +266,17 @@ local function on_game_load()
 					else
 						if (longnames) then
 							level_name = sim:level_name(smart and gg:vertex(smart.m_game_vertex_id):level_id())
-							level.map_add_object_spot(i, "fast_travel", game.translate_string(level_name)..". "..game.translate_string(smart:name()))
+							add_object_spot(i, game.translate_string(level_name)..". "..game.translate_string(smart:name()))
 						else
-							level.map_add_object_spot(i, "fast_travel", game.translate_string(smart:name()))
+							add_object_spot(i, game.translate_string(smart:name()))
 						end
 					end
 				elseif (enabled == 2) then
 					if (longnames) then
 						level_name = sim:level_name(smart and gg:vertex(smart.m_game_vertex_id):level_id())
-						level.map_add_object_spot(i, "fast_travel", game.translate_string(level_name)..". "..game.translate_string(smart:name()))
+						add_object_spot(i, game.translate_string(level_name)..". "..game.translate_string(smart:name()))
 					else
-						level.map_add_object_spot(i, "fast_travel", game.translate_string(smart:name()))
+						add_object_spot(i, game.translate_string(smart:name()))
 					end
 				end
 			end

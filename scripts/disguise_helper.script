@@ -57,7 +57,7 @@ function anybody_remember(last_seen, time_to_forget)
 end
 
 function is_outfit_fits_community(npc_community, outfit_section)
-	local outfit_community = ""
+	local outfit_community = STR_EMPTY
 	
 	if(string.match(outfit_section,"specops_") or string.match(outfit_section,"military_")) then
 		outfit_community = "army"

@@ -547,7 +547,19 @@
 		<text>Unique NPC respawn</text>
 	</string>
 	<string id="ui_mm_show_crit_hit_mark">
-		<text>Show crit hit mark</text>
+		<text>Crit hit mark</text>
+	</string>
+	<string id="ui_mm_play_crit_hit_sound">
+		<text>Crit hit sound</text>
+	</string>
+	<string id="ui_mm_show_crit_hit_cam_vfx">
+		<text>Crit hit cam effect</text>
+	</string>
+	<string id="ui_mm_can_stalker_crit_hit">
+		<text>Crit hit from stalker</text>
+	</string>
+	<string id="ui_mm_can_actor_crit_hit">
+		<text>Crit hit from player</text>
 	</string>
 	<string id="ui_mm_companions_invulnerability">
 		<text>Companions invulnerability</text>
@@ -557,5 +569,8 @@
 	</string>
 	<string id="ui_mm_auto_garbage_collection">
 		<text>Auto garbage collection</text>
+	</string>
+	<string id="ui_mm_show_health_effectors">
+		<text>Show wound effects</text>
 	</string>
 </string_table>

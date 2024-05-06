@@ -279,7 +279,7 @@ function simulation_board:fill_start_position()
 		for li=0,lc-1 do
 			local smart = self.smarts_by_names[section]
 			if (smart) then
-				result, squad_section, count = setting_ini:r_line(section,li,"","")
+				result, squad_section, count = setting_ini:r_line(section,li,STR_EMPTY,STR_EMPTY)
 				count = tonumber(count) or 1
 				
 				if (string.find(squad_section,"sim_squad")) then

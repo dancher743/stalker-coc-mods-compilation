@@ -1,0 +1,28 @@
+<w>
+	<input_dialog>
+		<background x="400" y="335" width="600" height="300">
+			<auto_static x="-5" y="0" width="240" height="85" stretch="1">
+				<texture>ui_inGame2_message_box</texture>
+			</auto_static>
+		</background>
+
+		<input x="415" y="355" width="200" height="30">
+			<text x="5" font="letterica16" vert_align="c" align="l"/>
+			<texture>ui_inGame2_edit_box_2</texture>
+		</input>
+		
+		<btn_ok x="45" y="64" width="70" height="28" check_mode="0">
+			<text font="letterica18">ui_inv_ok</text>
+			<texture>ui_inGame2_Mp_bigbuttone</texture>
+		</btn_ok>
+		
+		<btn_cancel x="115" y="64" width="70" height="28" check_mode="0">
+			<text font="letterica18">ui_inv_cancel</text>
+			<texture>ui_inGame2_Mp_bigbuttone</texture>
+		</btn_cancel>
+		
+		<tutorial_change_language x="512" y="480" width="300" height="60" alignment="c" stretch="1" la_cyclic="1" la_texture="1" la_alpha="1" light_anim="ui_too_slow_blinking">
+			<text font="graffiti22" r="225" g="225" b="250" a="255" align="c">st_change_language</text>
+		</tutorial_change_language>
+	</input_dialog>
+</w>

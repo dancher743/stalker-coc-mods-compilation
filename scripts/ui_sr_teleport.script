@@ -160,6 +160,6 @@ function msg_box_ui:InitControls()
 
 	self.message_box:InitMessageBox("message_box_yes_no")
 	self.message_box:ShowDialog(true)
-	local str = game.translate_string(ini:r_string_ex(self.name,"text") or "")
+	local str = game.translate_string(ini:r_string_ex(self.name,"text") or STR_EMPTY)
 	self.message_box:SetText(str)
 end

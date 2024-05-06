@@ -21,7 +21,7 @@ function start_timer(name,delay,name_script,name_func,param)
 		return false
 	end
 	if not action
-		then action=""
+		then action=STR_EMPTY
 	end
 	local time=game.time() --time in seconds since 1970
 	local timers_tbl = jg_utils.l_v('timers_tbl',nil)
@@ -41,7 +41,7 @@ function g_start_timer(name,delay_d,delay_h,delay_m,name_script,name_func,param)
 		return false
 	end
 	if action==nil then
-		action=""
+		action=STR_EMPTY
 	end
 	local time=level.get_time_days()*60*24+level.get_time_hours()*60+level.get_time_minutes()  --time in game minutes
 	

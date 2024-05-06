@@ -197,8 +197,6 @@ function main_menu:OnMessageQuitWin()
 end
 
 function main_menu:OnButton_return_game()
-	gc.collect()
-
 	local console = get_console()
 	console:execute("main_menu off")
 	SendScriptCallback("main_menu_on_quit",self)
@@ -392,7 +390,7 @@ function main_menu:OnMenuReloaded()
 end
 
 function main_menu:SetMsg(text,tmr)
-	if (text == "") then 
+	if (text == STR_EMPTY) then 
 		return 
 	end
 	self.msg_wnd:Show(true)

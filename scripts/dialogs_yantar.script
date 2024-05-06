@@ -120,7 +120,7 @@ function actor_dont_has_good_psi_helmet_task_completed(a,b)
 end
 
 function get_next_surge_or_psi_storm_phrase_1()	
-	local phase = ""
+	local phase = STR_EMPTY
 	
 	if (surge_manager.is_started() or psi_storm_manager.is_started()) then
 		phase = game.translate_string("yan_stalker_sakharov_next_surge_or_psi_storm_1_1")
@@ -143,8 +143,8 @@ function get_next_surge_or_psi_storm_phrase_1()
 		if (next_surge_hours == nil and next_psi_storm_hours == nil) then
 			phase = game.translate_string("yan_stalker_sakharov_next_surge_or_psi_storm_1_1")
 		else
-			local next_surge_string = ""
-			local next_psi_storm_string = ""
+			local next_surge_string = STR_EMPTY
+			local next_psi_storm_string = STR_EMPTY
 			
 			if (next_surge_hours ~= nil) then
 				next_surge_string = game.translate_string("yan_stalker_sakharov_next_surge_or_psi_storm_1_0_1")
@@ -156,7 +156,7 @@ function get_next_surge_or_psi_storm_phrase_1()
 				next_psi_storm_string = string.format(next_psi_storm_string, next_psi_storm_hours)
 			end
 			
-			local separator = (next_surge_string ~= "" and next_psi_storm_string ~= "") and ", " or ""
+			local separator = (next_surge_string ~= STR_EMPTY and next_psi_storm_string ~= STR_EMPTY) and ", " or STR_EMPTY
 			
 			phase = game.translate_string("yan_stalker_sakharov_next_surge_or_psi_storm_1_0")
 			phase = string.format("%s %s%s%s", phase, next_surge_string, separator, next_psi_storm_string)

@@ -177,7 +177,7 @@ function check_light(stalker)
 			end
 		else
 			local sim = alife()
-			sim:create("device_torch", vector():set(0,0,0), 0, 0, stalker:id())
+			sim:create("device_torch", VEC_ZERO, 0, 0, stalker:id())
 		end
 		st.ignore_torch_flag = false
 	else

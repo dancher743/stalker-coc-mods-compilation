@@ -106,7 +106,7 @@ function se_smart_terrain:on_register()
 	-- Disable any smart terrain that is not on actor's level and not linked to actor's level through ai_tweaks\simulation_objects.ltx
 	if not (self.is_on_actor_level) then
 		if (DEACTIVATE_SIM_ON_NON_LINKED_LEVELS) then
-			if not (string.find(simulation_objects.config:r_value(actor_level,"target_maps",0,""),smart_level)) then
+			if not (string.find(simulation_objects.config:r_value(actor_level,"target_maps",0,STR_EMPTY),smart_level)) then
 				SIMBOARD.smarts[self.id] = nil
 				self.disabled = true
 				--alun_utils.debug_write(strformat("%s:%s:ON_REGISTER END (DISABLED)",self:name(),self.id))
@@ -178,7 +178,7 @@ function se_smart_terrain:read_params()
 	self.def_restr				= ini:r_string_ex(smart_sect,"def_restr")	-- default out_restrictor for npc on jobs here
 	self.default_faction 		= ini:r_string_ex(smart_sect,"default_faction")
 	self.faction_controlled 	= ini:r_string_ex(smart_sect,"faction_controlled")
-	self.max_population 		= tonumber(xr_logic.pick_section_from_condlist(get_story_object("actor"), nil, xr_logic.parse_condlist(nil, smart_sect, "max_population", ini:r_string_ex(smart_sect,"max_population") or ""))) or 0
+	self.max_population 		= tonumber(xr_logic.pick_section_from_condlist(get_story_object("actor"), nil, xr_logic.parse_condlist(nil, smart_sect, "max_population", ini:r_string_ex(smart_sect,"max_population") or STR_EMPTY))) or 0
 	self.respawn_idle 			= ini:r_float_ex(smart_sect,"respawn_idle") or 43200
 	self.respawn_only_level 	= ini:r_bool_ex(smart_sect,"respawn_only_level",false)
 	self.respawn_only_smart 	= ini:r_bool_ex(smart_sect,"respawn_only_smart",false)
@@ -248,7 +248,7 @@ function se_smart_terrain:read_params()
 	self.respawn_point		= true
 	
 	for j=0,n-1 do
-		local result, prop_name, prop_condlist = ini:r_line(respawn_params,j,"","")
+		local result, prop_name, prop_condlist = ini:r_line(respawn_params,j,STR_EMPTY,STR_EMPTY)
 		if not ini:section_exist(prop_name) then
 			printf("ERROR: %s Wrong smatr_terrain respawn_params section [%s] prop [%s](there is no section)",self:name(), respawn_params, prop_name)
 		else
@@ -503,7 +503,7 @@ function se_smart_terrain:load_jobs()
 						else
 							prefix_name = gulag_general.get_job_prefix_name(job)
 							if (prefix_name) then 
-								path_name = (prefix_name == "nil" and "" or prefix_name) .. ltx:r_string_ex(active_section, path_field)
+								path_name = (prefix_name == "nil" and STR_EMPTY or prefix_name) .. ltx:r_string_ex(active_section, path_field)
 							else 
 								path_name = self:name() .. "_" .. ltx:r_string_ex(active_section, path_field)
 							end 
@@ -990,7 +990,7 @@ function se_smart_terrain:STATE_Read(packet, size)
 	for i =1,n do
 		local sec = packet:r_stringZ()
 		local gt = utils.r_CTime(packet)
-		if (sec and sec ~= "nil" and sec ~= "") then
+		if (sec and sec ~= "nil" and sec ~= STR_EMPTY) then
 			self.dead_time[sec] = gt
 		end
 	end
@@ -1003,7 +1003,7 @@ function se_smart_terrain:STATE_Read(packet, size)
 		for i = 1, n do
 			local id = packet:r_stringZ()
 			local num = packet:r_u8()
-			if (self.already_spawned and id and id ~= "nil" and id ~= "") then
+			if (self.already_spawned and id and id ~= "nil" and id ~= STR_EMPTY) then
 				-- technically it's an error but it's makes save compatible if change respawn
 				if not (self.already_spawned[id]) then 
 					self.already_spawned[id] = {}
@@ -1011,7 +1011,7 @@ function se_smart_terrain:STATE_Read(packet, size)
 				--[[
 				if (self.already_spawned[id] == nil) then 
 					printf("ERROR! %s:STATE_Read already_spawned %s is nil!",self:name(),id)
-					local str = ""
+					local str = STR_EMPTY
 					for k,v in pairs(self.already_spawned) do 
 						str = str .. k .. ", "
 					end
@@ -1608,9 +1608,9 @@ function se_smart_terrain:try_respawn()
 					max_respawn_count = tonumber(xr_logic.pick_section_from_condlist(db.actor, self,v.num) or 0)
 				
 					if (string.find(k,"sim_squad")) then 
-						max_respawn_count = math.floor(max_respawn_count*stalker_pop_factor)
+						max_respawn_count = utils.round(max_respawn_count*stalker_pop_factor)
 					elseif (string.find(k,"simulation")) then
-						max_respawn_count = math.floor(max_respawn_count*monster_pop_factor)
+						max_respawn_count = utils.round(max_respawn_count*monster_pop_factor)
 					end
 					
 					if max_respawn_count > self.already_spawned[k].num then
@@ -1629,10 +1629,13 @@ function se_smart_terrain:try_respawn()
 			if (sect_to_spawn_params.squads) then
 				local squad
 				if (IsSurvivalMode() and not bar_smarts[self:name()] and math.random(1,100) < 90) then
-					local t = {"simulation_zombie","simulation_zombie","simulation_zombie","simulation_zombie","simulation_zombie","zombied_sim_squad_novice","zombied_sim_squad_advanced","zombied_sim_squad_veteran","simulation_fracture","simulation_snork"}
+					local t = {"simulation_zombie","simulation_zombie","zombied_sim_squad_","simulation_fracture","simulation_snork"}
 					local simulation_section = t[math.random(#t)]
 					if (simulation_section == "simulation_zombie" and math.random() <= 0.01) then
 						simulation_section = "simulation_zombie_ghost"
+					elseif (simulation_section == "zombied_sim_squad_") then
+						t = {"novice","advanced","veteran"}
+						simulation_section = simulation_section..t[math.random(#t)]
 					end
 					squad = SIMBOARD:create_squad(self, simulation_section)
 				else 
@@ -1662,7 +1665,7 @@ function se_smart_terrain:try_respawn()
 					-- required to spawn by script
 					local data = stpk_utils.get_heli_data(se_heli)
 					if (data) then
-						data.visual_name = visual and visual ~="" and visual or [[dynamics\vehicles\mi2\veh_mi2_01]]
+						data.visual_name = visual and visual ~=STR_EMPTY and visual or [[dynamics\vehicles\mi2\veh_mi2_01]]
 						data.motion_name = [[helicopter\aaa.anm]]
 						data.startup_animation = "idle"
 						data.skeleton_name = "idle"

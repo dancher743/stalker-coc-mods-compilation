@@ -366,6 +366,7 @@ mutants_tier_by_lvl = {
 
 mutants_for_survival_mode = {
     "simulation_zombie",
+	"simulation_zombie",
     "simulation_fracture",
     "simulation_snork",
 }

@@ -70,7 +70,7 @@
 		<text>Барьер</text>
 	</string>
 	<string id="mil_smart_terrain_7_4">
-		<text>Вход на военные склады</text>
+		<text>Брошенный хутор</text>
 	</string>
 	<string id="mil_smart_terrain_7_12">
 		<text>Лагерь между бараками</text>
@@ -169,6 +169,9 @@
 	</string>
 	<string id="gen_smart_terrain_lab_entrance_2">
 		<text>Заброшенная подстанция</text>
+	</string>
+	<string id="gen_smart_terrain_military">
+		<text>Последний блокпост</text>
 	</string>
 
 	<string id="mar_smart_terrain_base">
@@ -363,5 +366,9 @@
 	<!-- Messages -->
 	<string id="discovered_message">
 		<text>Исследовано: %s</text>
+	</string>
+	
+	<string id="ui_st_fast_travel_spot_title">
+		<text>Быстрый переход</text>
 	</string>
 </string_table>

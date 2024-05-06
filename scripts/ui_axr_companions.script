@@ -146,7 +146,7 @@ function UICompanionList:Update()
 			
 			-- Icon
 			local icon_name = npc and npc:character_icon() or se_obj:character_icon()
-			icon_name = icon_name and icon_name ~= "" and icon_name or "ui\\anomaly\\ui_noise"
+			icon_name = icon_name and icon_name ~= STR_EMPTY and icon_name or "ui\\anomaly\\ui_noise"
 			ele.icon:InitTexture(icon_name)
 			
 			-- Distance

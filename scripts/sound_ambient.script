@@ -29,7 +29,7 @@ function reset_settings(level_name, ambient)
 	empty_table(snd_chanels)
 	print_dbg("level_name: %s - ambient: %s", level_name, ambient)
 	
-	if not (level_name and ambient and ambient ~= "") then
+	if not (level_name and ambient and ambient ~= STR_EMPTY) then
 		print_dbg("level_name or ambient is missing")
 		return false
 	end
@@ -184,7 +184,6 @@ function update_ambient()
 		--print_dbg("angle_dec: %s - angle_rad: %s - math.cos(angle_rad): %s - math.sin(angle_rad): %s", angle_dec, angle_rad, math.cos(angle_rad), math.sin(angle_rad))
 		--print_dbg("player | x: %s - y: %s - z: %s", (pos.x), (pos.y), (pos.z))
 		--print_dbg("sound  | x: %s - y: %s - z: %s", (pos.x + pos_x), (pos.y), (pos.z + pos_z))
-		SendScriptCallback("sound_on_ambient_playing", ch.snd, file, ch.name, ch.snd.volume, dist)
 	end
 	
 	return false

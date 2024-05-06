@@ -8,26 +8,9 @@ campfires_all = {}
 -- Matches sound from NLC 7: Build 3.0
 local matches_sound = sound_object([[nlc\matches_1_short]])
 
-local wind_sounds_channels = {
-	restored_rnd_wind		= true,
-	darkwind_1				= true,
-    forest_rnd_wind			= true,
-    marsh_rnd_wind			= true
-}
-
-local playing_wind_sounds = {}
-
 local function is_windy()
-	local result = false
-
-	for snd_path,snd_obj in pairs(playing_wind_sounds) do
-		if (snd_obj:playing()) then
-			result = true
-			break
-		end
-	end
-	
-	return result
+	local wind_velocity = level_weathers.get_weather_manager():get_wind_velocity()
+	return wind_velocity > 0
 end
 
 -- For use with Marshal save state system
@@ -72,15 +55,15 @@ function use_campfire(npc,zone,p)
 		if (campfire:is_on()) then 
 			campfire:turn_off()
 		else
-			local chance_to_ignite
+			local chance_to_ignite = 90
+			
+			if (is_windy()) then
+				chance_to_ignite = 50
+			end
 			
 			local rain_factor = level.rain_factor()
 			if (rain_factor > 0) then
-				chance_to_ignite = utils.lerp(70, 30, rain_factor)
-			elseif (is_windy()) then
-				chance_to_ignite = 50
-			else
-				chance_to_ignite = 90
+				chance_to_ignite = utils.lerp(chance_to_ignite, 30, rain_factor)
 			end
 			
 			if math.random(100) < chance_to_ignite then
@@ -115,12 +98,6 @@ function get_nearest_campfire(npc, range)
 	end
 
 	return nil
-end
-
-local function sound_on_ambient_playing(snd_obj, snd_path, snd_channel_name, snd_volume, snd_dist)
-	if (wind_sounds_channels[snd_channel_name] and snd_dist <= 40 and snd_volume > 0.3) then
-		playing_wind_sounds[snd_path] = snd_obj
-	end
 end
 
 function on_game_start()
@@ -166,7 +143,6 @@ function on_game_start()
 	end
 
 	AddUniqueCall(main_loop)
-	RegisterScriptCallback("sound_on_ambient_playing",sound_on_ambient_playing)
 end 
 
 
@@ -213,7 +189,7 @@ function campfire_binder:net_spawn(server_object)
 		end
 	end
 	
-	local smart_name = string.gsub(self.object:name(), "_campfire_%d*", "")
+	local smart_name = string.gsub(self.object:name(), "_campfire_%d*", STR_EMPTY)
 	if SIMBOARD.smarts_by_names[smart_name] then
 		if db.campfire_table_by_smart_names[smart_name] == nil then
 			db.campfire_table_by_smart_names[smart_name] = {}
@@ -224,7 +200,7 @@ function campfire_binder:net_spawn(server_object)
 end
 
 function campfire_binder:net_destroy(server_object)
-	local smart_name = string.gsub(self.object:name(), "_campfire_%d*", "")
+	local smart_name = string.gsub(self.object:name(), "_campfire_%d*", STR_EMPTY)
 	if SIMBOARD.smarts_by_names[smart_name] then
 		if (db.campfire_table_by_smart_names[smart_name]) then 
 			db.campfire_table_by_smart_names[smart_name][self.object:id()] = nil

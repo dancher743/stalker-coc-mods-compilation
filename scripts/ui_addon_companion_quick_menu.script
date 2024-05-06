@@ -2,7 +2,7 @@ local addonMenu=nil
 
 function show_quick_menu()
 	if not(addonMenu) then
-		local i,v = next(axr_companions.companion_squads,nil) 
+		local i,v = next(axr_companions.get_non_hostage_companion_squads(),nil)
 		if not(v) or db.actor:is_talking() or not db.actor:alive() then 
 			return
 		end
@@ -150,8 +150,10 @@ function addonCompanionsContextMenu:ExecuteScriptByCondition(info , true_script,
 		targetScript=false_script
 	end
 	
-	for _,squad in pairs(axr_companions.companion_squads) do
-		alun_utils.execute_script_on_squad(squad,targetScript)
+	for id,squad in pairs(axr_companions.companion_squads) do
+		if (not axr_companions.is_hostage_squad(id)) then
+			alun_utils.execute_script_on_squad(squad,targetScript)
+		end
 	end
 		
 end

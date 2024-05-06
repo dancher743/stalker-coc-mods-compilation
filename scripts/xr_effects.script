@@ -110,7 +110,7 @@ function drx_sl_meet_random_honcho( actor, npc, p )
 		local honcho = drx_sl_honchos_table[i][1]
 
 		-- Check if honcho is alive and is not current task giver:
-		if ( ((xr_conditions.is_alive( nil, nil, {honcho} )) or (honcho == "esc_m_trader")) and (honcho ~= alun_utils.load_var( db.actor, "drx_sl_current_honcho", "" )) ) then
+		if ( ((xr_conditions.is_alive( nil, nil, {honcho} )) or (honcho == "esc_m_trader")) and (honcho ~= alun_utils.load_var( db.actor, "drx_sl_current_honcho", STR_EMPTY )) ) then
 
 			-- Check if the honcho surrounding factions are not enemy of player:
 			local is_enemy = false
@@ -136,7 +136,7 @@ function drx_sl_meet_random_honcho( actor, npc, p )
 	end
 
 	-- Pick next honcho:
-	local next_honcho = alun_utils.load_var( db.actor, "drx_sl_current_honcho", "" )
+	local next_honcho = alun_utils.load_var( db.actor, "drx_sl_current_honcho", STR_EMPTY )
 	if ( #honcho_list > 0 ) then
 		next_honcho = honcho_list[math.random( #honcho_list )]
 	end
@@ -149,7 +149,7 @@ function drx_sl_meet_random_honcho( actor, npc, p )
 	-- Build list of available meet current honcho tasks:
 	task_ltx_file = ini_file("misc\\task_manager.ltx")
 	local honcho_task_list = {}
-	local honcho_task_id = ""
+	local honcho_task_id = STR_EMPTY
 	local i = 1
 	while ( true ) do
 		honcho_task_id = ("drx_sl_" .. next_honcho .. "_meet_task_" .. i)
@@ -518,7 +518,7 @@ function drx_sl_setup_assault_remote( actor, npc, p )
 			local smrt = SIMBOARD.smarts[smart.id]
 			if ( smrt ) then
 				local smart_level = alife( ):level_name( game_graph( ):vertex( smart.m_game_vertex_id ):level_id( ) )
-				if ( smart.online or DEACTIVATE_SIM_ON_NON_LINKED_LEVELS ~= true or string.find( simulation_objects.config:r_value( actor_level, "target_maps", 0, "" ),smart_level ) ) then
+				if ( smart.online or DEACTIVATE_SIM_ON_NON_LINKED_LEVELS ~= true or string.find( simulation_objects.config:r_value( actor_level, "target_maps", 0, STR_EMPTY ),smart_level ) ) then
 					for k, squad in pairs( smrt.squads ) do
 						if ( squad and squad.current_target_id and squad.current_target_id == smart.id and not squad:get_script_target( ) ) then
 							for h = 1, #enemy_faction_list do
@@ -2589,7 +2589,7 @@ function drx_sl_setup_fetch_mutant_meat( actor, npc, p )
 	local max_count = (p[3] and tonumber( p[3] ) or min_count)
 
 	-- Save chosen fetch item:
-	dialogs._FETCH_TEXT = game.translate_string( system_ini( ):r_string_ex( fetch_item, "inv_name" ) or "" )
+	dialogs._FETCH_TEXT = game.translate_string( system_ini( ):r_string_ex( fetch_item, "inv_name" ) or STR_EMPTY )
 	alun_utils.save_var( db.actor, p[1], fetch_item )
 	alun_utils.save_var( db.actor, (p[1] .. "_count"), math.random( min_count, max_count ) )
 
@@ -2646,7 +2646,7 @@ function drx_sl_setup_fetch_mutant_parts( actor, npc, p )
 	local max_count = (p[3] and tonumber( p[3] ) or min_count)
 
 	-- Save chosen fetch item:
-	dialogs._FETCH_TEXT = game.translate_string( system_ini( ):r_string_ex( fetch_item, "inv_name" ) or "" )
+	dialogs._FETCH_TEXT = game.translate_string( system_ini( ):r_string_ex( fetch_item, "inv_name" ) or STR_EMPTY )
 	alun_utils.save_var( db.actor, p[1], fetch_item )
 	alun_utils.save_var( db.actor, (p[1] .. "_count"), math.random( min_count, max_count ) )
 
@@ -2718,7 +2718,7 @@ function drx_sl_setup_fetch_artefact( actor, npc, p )
 	local max_count = (p[3] and tonumber( p[3] ) or min_count)
 
 	-- Save chosen fetch item:
-	dialogs._FETCH_TEXT = game.translate_string( system_ini( ):r_string_ex( fetch_item, "inv_name" ) or "" )
+	dialogs._FETCH_TEXT = game.translate_string( system_ini( ):r_string_ex( fetch_item, "inv_name" ) or STR_EMPTY )
 	alun_utils.save_var( db.actor, p[1], fetch_item )
 	alun_utils.save_var( db.actor, (p[1] .. "_count"), math.random( min_count, max_count ) )
 
@@ -2797,7 +2797,7 @@ function drx_sl_setup_fetch_weapon( actor, npc, p )
 	local fetch_item = item_list[math.random( #item_list )]
 
 	-- Save chosen fetch item:
-	dialogs._FETCH_TEXT = game.translate_string( system_ini( ):r_string_ex( fetch_item, "inv_name" ) or "" )
+	dialogs._FETCH_TEXT = game.translate_string( system_ini( ):r_string_ex( fetch_item, "inv_name" ) or STR_EMPTY )
 	alun_utils.save_var( db.actor, p[1], fetch_item )
 	alun_utils.save_var( db.actor, (p[1] .. "_count"), math.random( min_count, max_count ) )
 
@@ -2864,7 +2864,7 @@ function drx_sl_setup_fetch_supplies( actor, npc, p )
 	local max_count = (p[3] and tonumber( p[3] ) or min_count)
 
 	-- Save chosen fetch item:
-	dialogs._FETCH_TEXT = game.translate_string( system_ini( ):r_string_ex( fetch_item, "inv_name" ) or "" )
+	dialogs._FETCH_TEXT = game.translate_string( system_ini( ):r_string_ex( fetch_item, "inv_name" ) or STR_EMPTY )
 	alun_utils.save_var( db.actor, p[1], fetch_item )
 	alun_utils.save_var( db.actor, (p[1] .. "_count"), math.random( min_count, max_count ) )
 
@@ -3118,7 +3118,7 @@ function find_smart_under_faction_control_ex(actor,npc,p)
 			local smrt = SIMBOARD.smarts[smart.id]
 			if (smrt) then
 				local smart_level = alife():level_name(game_graph():vertex(smart.m_game_vertex_id):level_id())
-				if (smart.online or DEACTIVATE_SIM_ON_NON_LINKED_LEVELS ~= true or string.find(simulation_objects.config:r_value(actor_level,"target_maps",0,""),smart_level)) then
+				if (smart.online or DEACTIVATE_SIM_ON_NON_LINKED_LEVELS ~= true or string.find(simulation_objects.config:r_value(actor_level,"target_maps",0,STR_EMPTY),smart_level)) then
 					for k,squad in pairs(smrt.squads) do
 						if (squad and squad.current_target_id and squad.current_target_id == smart.id and not squad:get_script_target()) then
 							for i=2,#p do
@@ -3389,7 +3389,7 @@ function setup_generic_fetch_task(actor,npc,p)
 		local sec = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 		DIALOG_LAST_ID = inventory_upgrades.victim_id
 		if (sec and system_ini():section_exist(sec)) then
-			dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(sec,"inv_name") or "")
+			dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(sec,"inv_name") or STR_EMPTY)
 		else
 			sec = #p > 3 and p[math.random(3,#p)] or p[3]
 			if (sec and system_ini():section_exist(sec)) then
@@ -3398,7 +3398,7 @@ function setup_generic_fetch_task(actor,npc,p)
 				if (count > 1) then
 					utils.save_var(db.actor,p[1].."_count",count)
 				end
-				dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(sec,"inv_name") or "")
+				dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(sec,"inv_name") or STR_EMPTY)
 			else
 				printf("ERROR: xr_effects:setup_generic_fetch_task - invalid section %s",sec)
 			end
@@ -3411,7 +3411,7 @@ function setup_rare_mutant_fetch_task(actor,npc,p)
 	local part = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
 	if (part and system_ini():section_exist(part)) then
-		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(part,"inv_name") or "")
+		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(part,"inv_name") or STR_EMPTY)
 	else
 		local parts = {
 		"mutant_part_controller_glass",
@@ -3424,7 +3424,7 @@ function setup_rare_mutant_fetch_task(actor,npc,p)
 		}
 		part = parts[math.random(#parts)]
 		utils.save_var(db.actor,p[1],part)
-		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(part,"inv_name") or "")
+		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(part,"inv_name") or STR_EMPTY)
 	end
 end
 
@@ -3433,7 +3433,7 @@ function setup_artefact_fetch_task(actor,npc,p)
 	local artefact = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
 	if (artefact and system_ini():section_exist(artefact)) then
-		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(artefact,"inv_name") or "")
+		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(artefact,"inv_name") or STR_EMPTY)
 	else
 		local arts = {
 		"af_cristall",
@@ -3463,7 +3463,7 @@ function setup_artefact_fetch_task(actor,npc,p)
 
 		artefact = arts[math.random(#arts)]
 		utils.save_var(db.actor,p[1],artefact)
-		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(artefact,"inv_name") or "")
+		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(artefact,"inv_name") or STR_EMPTY)
 	end
 end
 
@@ -3471,7 +3471,7 @@ function setup_weapon_fetch_task(actor,npc,p)
 	local wpn = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
 	if (wpn and system_ini():section_exist(wpn)) then
-		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(wpn,"inv_name") or "")
+		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(wpn,"inv_name") or STR_EMPTY)
 	else
 		local itm = {
 				"wpn_bm16",
@@ -3498,7 +3498,7 @@ function setup_weapon_fetch_task(actor,npc,p)
 				"wpn_pkm"
 		}
 		wpn = itm[math.random(#itm)]
-		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(wpn,"inv_name") or "")
+		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(wpn,"inv_name") or STR_EMPTY)
 		utils.save_var(db.actor,p[1],wpn)
 	end
 end
@@ -3510,7 +3510,7 @@ function setup_supplies_fetch_task(actor,npc,p)
 	local itm = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
 	if (itm and system_ini():section_exist(itm)) then
-		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(itm,"inv_name") or "")
+		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(itm,"inv_name") or STR_EMPTY)
 	else
 		local itms = {
 					"bandage",
@@ -3533,7 +3533,7 @@ function setup_supplies_fetch_task(actor,npc,p)
 					"energy_drink"
 					}
 		itm = itms[math.random(#itms)]
-		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(itm,"inv_name") or "")
+		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(itm,"inv_name") or STR_EMPTY)
 		utils.save_var(db.actor,p[1],itm)
 		utils.save_var(db.actor,p[1].."_count",math.random(p[2] and tonumber(p[2]) or 1,p[3] and tonumber(p[3]) or 1))
 	end
@@ -4487,7 +4487,7 @@ end
 
 function hit_actor(actor, npc, p)
 	local h = hit()
-	h.direction = vector():set(0,0,0)
+	h.direction = VEC_ZERO
 	h.draftsman = actor
 	h.type = hit.shock
 	h:bone("bip01_spine")
@@ -4613,7 +4613,7 @@ function actor_punch(npc)
 	end
 
 	set_inactivate_input_time(30)
-	level.add_cam_effector("camera_effects\\fusker.anm", 999, false, "")
+	level.add_cam_effector("camera_effects\\fusker.anm", 999, false, STR_EMPTY)
 
 	local active_slot = db.actor:active_slot()
 	if active_slot ~= 2 and
@@ -4711,7 +4711,7 @@ function turn_on_and_force(actor, npc, p)
 	end
 	if p[2] == nil then p[2] = 55 end
 	if p[3] == nil then p[3] = 14000 end
-	obj:set_const_force(vector():set(0,1,0), p[2], p[3])
+	obj:set_const_force(VEC_UP, p[2], p[3])
 	obj:start_particles("weapons\\light_signal", "link")
 	obj:get_hanging_lamp():turn_on()
 end
@@ -4830,7 +4830,7 @@ function start_full_reject(actor, npc)
 	level.set_weather_fx("fx_surge_day_3")
 	level.remove_pp_effector(1974)
 	level.remove_cam_effector(1975)
-	level.add_cam_effector("camera_effects\\earthquake.anm", 1975, true, "")
+	level.add_cam_effector("camera_effects\\earthquake.anm", 1975, true, STR_EMPTY)
 end
 
 function stop_full_reject(actor, npc)
@@ -5285,7 +5285,7 @@ function create_squad_member(actor, obj, p)
 		local spawn_point
 		if p[3] == "simulation_point" then
 			spawn_point = system_ini():r_string_ex(squad:section_name(),"spawn_point")
-			if spawn_point == "" or spawn_point == nil then
+			if spawn_point == STR_EMPTY or spawn_point == nil then
 				spawn_point = xr_logic.parse_condlist(obj, "spawn_point", "spawn_point", squad_smart.spawn_point)
 			else
 				spawn_point = xr_logic.parse_condlist(obj, "spawn_point", "spawn_point", spawn_point)
@@ -6739,7 +6739,7 @@ function clear_tip_from_story(actor, npc, p)
 		return
 	end
 
-	obj:set_tip_text("")
+	obj:set_tip_text(STR_EMPTY)
 end
 ]]--
 
@@ -7146,7 +7146,7 @@ function force_obj(actor, npc, p)
 	end
 	if p[2] == nil then p[2] = 20 end
 	if p[3] == nil then p[3] = 100 end
-	obj:set_const_force(vector():set(0,1,0), p[2], p[3])
+	obj:set_const_force(VEC_UP, p[2], p[3])
 end
 
 function pri_a28_check_zones()
@@ -7349,7 +7349,7 @@ function make_a_wish(actor,npc,p)
 --			local gvid = spawn_path:game_vertex_id(0)
 --			local gg = game_graph()
 --			if (gvid and gg:valid_vertex_id(gvid)) then
---				ChangeLevel(pos,lvid,gvid,vector():set(0,0,0))
+--				ChangeLevel(pos,lvid,gvid,VEC_ZERO)
 --			end
 --		end
 
@@ -7357,7 +7357,7 @@ function make_a_wish(actor,npc,p)
 --		Goodwill is increased with the Monolith and Zombified faction to ensure they aren't hostile.
 		inc_faction_goodwill_to_actor(db.actor, nil, {"monolith", 5000})
 		inc_faction_goodwill_to_actor(db.actor, nil, {"zombied", 5000})
-		ChangeLevel(vector():set(266.99, 0.00, -131.07), 310937, 181, vector():set(0,0,0))
+		ChangeLevel(vector():set(266.99, 0.00, -131.07), 310937, 181, VEC_ZERO)
 		return
 	end
 
@@ -7541,7 +7541,7 @@ function yan_gluk (actor, npc)
 
 	sound_obj_l:play_no_feedback(db.actor, sound_object.s2d, 0, vector():set(-1, 0, 1), 1.0)
 	sound_obj_r:play_no_feedback(db.actor, sound_object.s2d, 0, vector():set( 1, 0, 1), 1.0)
-	level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false, "")
+	level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false, STR_EMPTY)
 end
 
 function yan_saharov_message(actor, npc, p)
@@ -7566,7 +7566,7 @@ function x18_gluk (actor, npc)
 		snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
 		sound_obj_l:play_no_feedback(db.actor, sound_object.s2d, 0, vector():set(-1, 0, 1), 1.0)
 		sound_obj_r:play_no_feedback(db.actor, sound_object.s2d, 0, vector():set( 1, 0, 1), 1.0)
-	level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false, "")
+	level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false, STR_EMPTY)
 end
 
 function end_yantar_dream(actor, npc)
@@ -7596,7 +7596,7 @@ end
 function aes_earthshake (npc)
 	local snd_obj = xr_sound.get_safe_sound_object([[ambient\earthquake]])
 	snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
-	level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false, "")
+	level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false, STR_EMPTY)
     --set_postprocess ("scripts\\earthshake.ltx")
 end
 

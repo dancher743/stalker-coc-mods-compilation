@@ -92,7 +92,7 @@ function simulation_objects_registry:get_props(obj)
 	local result, prop_name, prop_condlist
 	local tonumber = tonumber
 	for j=0,n-1 do
-		result, prop_name, prop_condlist = props_ini:r_line_ex(props_section,j,"","")
+		result, prop_name, prop_condlist = props_ini:r_line_ex(props_section,j,STR_EMPTY,STR_EMPTY)
 		if prop_name == "sim_avail" then
 			obj.sim_avail = xr_logic.parse_condlist(nil, "simulation_object", "sim_avail", prop_condlist)
 		else

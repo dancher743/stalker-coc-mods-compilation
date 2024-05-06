@@ -43,7 +43,13 @@ function clear()
 	jg_timers.stop_g_timer('guid_fail')
 end 
 
+local function clear_guid()
+	guid = {}
+	jg_utils.d_v("guid")
+end 
+
 function ins_mass_onl()
+	if has_guiding_started() then return nil end
 	local mass_onl = {}
 	for k, id in pairs(db.OnlineStalkers) do
 		local npc = level.object_by_id(id)
@@ -60,6 +66,7 @@ end
 	Вызывается таймерами
 ]]
 function prepare_follower()
+	clear_guid()
 	local npc = ins_mass_onl()
 	if npc == nil then
 		if debug == true then printf('! Некого провожать | npc==nil') end
@@ -77,25 +84,23 @@ function prepare_follower()
 	end
 	guid.pos			= pos
 	guid.target_level	= level_name
-	guid.description	= strformat("%s %s", game.translate_string("st_dyn_news_"..level_name) or "", game.translate_string("st_dyn_"..level_name.."_blizko_"..rnd))
+	guid.description	= strformat("%s %s", game.translate_string("st_dyn_news_"..level_name) or STR_EMPTY, game.translate_string("st_dyn_"..level_name.."_blizko_"..rnd))
 	guid.squad_id		= get_object_squad(npc).id
 	guid.size			= size
 	guid.timer			= 2*(size + math.random(0, size))
-	guid.zarplata		= 2*(math.ceil(size * math.random(stdzarplata * 0.5, stdzarplata * 1.5)))
-	guid.neustoika		= math.ceil(math.random(guid.zarplata * 0.5, guid.zarplata * 1.5))
+	guid.zarplata		= utils.round_to_1000(2*(math.ceil(size * math.random(stdzarplata * 1, stdzarplata * 2))))
+	guid.neustoika		= utils.round_to_1000(guid.zarplata * math.random(25,100)/100)
 	
 	local news_text = string.format(game.translate_string('st_jg_14'), game.translate_string(level_name), dynamic_news_helper.GetPointDescription(npc))
 	send_tip(npc, news_text, beep_1)
 	
-	return
 	-- Запускаем таймер следующего вызова этой функции
-	jg_timers.g_start_timer('guid_msg',0,math.random(6),0,'jg_guider','prepare_follower')
+	jg_timers.g_start_timer('guid_msg',math.random(0,1),math.random(23),0,'jg_guider','prepare_follower')
 end
 
 function activate()
 	curr_guid = jg_utils.copy_tbl(guid)
-	guid = {}
-	jg_utils.d_v("guid")
+	clear_guid()
 	-- Старт таймера фэйла
 	jg_timers.g_start_timer('guid_fail',0,curr_guid['timer'],0,'jg_guider','fail_time')
 	-- level.map_add_object_spot_ser(guid.squad_id, 'storyline_task_location', 'Сталкеру необходимо попасть '..description)
@@ -229,7 +234,6 @@ end
 function try_clear_prepared_follower(npc)
     local squad = get_object_squad(npc)
 	if (squad and squad.id == guid['squad_id']) then
-		guid = {}
-		jg_utils.d_v("guid")
+		clear_guid()
 	end
 end

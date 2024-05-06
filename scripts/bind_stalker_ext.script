@@ -65,6 +65,12 @@ function actor_on_net_spawn()
 		end
 	end
 	
+	local m_data = alife_storage_manager.get_state()
+	if (not m_data.was_on_game_first_load_callback_sent) then
+		SendScriptCallback("on_game_first_load",binder)
+		m_data.was_on_game_first_load_callback_sent = true
+	end
+	
 	SendScriptCallback("on_game_load",binder)
 end
 
@@ -92,6 +98,7 @@ function actor_on_first_update(binder,delta)
 	SendScriptCallback("actor_on_first_update",binder,delta)
 end
 
+local frame_counter = 0
 function actor_on_update(binder,delta)
 	-- WISH GRANTER ZOMBIED-IMMORTALITY
 	if (db.actor:has_info("actor_made_wish_immortal") or invulnerable_time and invulnerable_time > time_global() + 7000) then 
@@ -113,6 +120,11 @@ function actor_on_update(binder,delta)
 	end
 
 	SendScriptCallback("actor_on_update",binder,delta)
+	
+	if (frame_counter % 3 == 0) then
+		SendScriptCallback("actor_on_slicing_update",binder,delta)
+	end
+	frame_counter = frame_counter + 1
 end
 
 -------------------

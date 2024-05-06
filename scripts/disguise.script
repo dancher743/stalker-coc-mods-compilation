@@ -6,8 +6,8 @@
 -- Reworked due to patch dressing feature: Dancher
 ----------------------
 
--- update rate in seconds (where 1 is 1 second)
-local update_rate = 1
+-- main update rate in seconds (where 1 is 1 second)
+local main_update_rate = 1
 
 --time you need to be hidden (not seen by any npc) before changing outfit to make the disguise effective, 100 means roughly 10 seconds
 local time_to_forget = 100
@@ -35,36 +35,37 @@ local callout = false
 local warned = false
 
 local patch_slot_number = 14
+
+local patch_in_slot
 local prev_patch_in_slot
 
 local default_faction
+local actor_community
 local disguise_community
 
-local patch_sections = {
-	["csky_patch"] 			= "csky",
-	["freedom_patch"] 		= "freedom",
-	["stalker_patch"] 		= "stalker",
-	["ecolog_patch"] 		= "ecolog",
-	["bandit_patch"] 		= "bandit",
-	["duty_patch"] 			= "dolg",
-	["monolith_patch"] 		= "monolith",
-	["army_patch"] 			= "army",
-	["merc_patch"] 			= "killer"
-}
+local patch_factions
+
+local function get_patch_faction(patch_section)
+	if (patch_factions == nil) then
+		patch_factions = {
+			["csky_patch"] 			= "csky",
+			["freedom_patch"] 		= "freedom",
+			["stalker_patch"] 		= "stalker",
+			["ecolog_patch"] 		= "ecolog",
+			["bandit_patch"] 		= "bandit",
+			["duty_patch"] 			= "dolg",
+			["monolith_patch"] 		= "monolith",
+			["army_patch"] 			= "army",
+			["merc_patch"] 			= "killer"
+		}
+	end
+	return patch_factions[patch_section]
+end
 
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
-	
-	local function update()
-		actor_update()
-		npc_update()
-		ui_disguise.show(main_hud_shown())
-		ResetTimeEvent("disguise","update",update_rate)
-	end
-	CreateTimeEvent("disguise","update",update_rate,update)
-	
+	RegisterScriptCallback("actor_on_before_death",actor_on_before_death)
 	RegisterScriptCallback("on_game_load",on_game_load)
-	
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
 end
@@ -73,7 +74,7 @@ function on_game_load()
 	--printf("DBG on_game_load")
 	local defaults = {
 		disguise_system = {
-			ds_default_faction = default_faction or character_community(db.actor):sub(7) or "stalker",
+			ds_default_faction = default_faction or utils.get_actor_community(),
 			ds_last_seen = last_seen,
 			ds_suspicion = suspicion,
 			ds_callout = callout,
@@ -85,25 +86,63 @@ function on_game_load()
 	--printf("DBG default " .. (default_faction or "?"))
 end
 
-function actor_on_first_update()
-    prev_patch_in_slot = db.actor:item_in_slot(patch_slot_number)
-end
+local function run_updates()
+	local is_first_update = true
+	local can_update = false
+	
+	local main_update_ev_id = "disguise"
+	local main_update_act_id = "main_update"
+	
+	local function main_update()
+		patch_in_slot = get_patch_in_slot()
+		
+		if (not can_update and not patch_in_slot and not has_actor_disguised()) then
+			return
+		end
+		
+		can_update = true
+		
+		if (is_first_update) then
+			prev_patch_in_slot = patch_in_slot
+		end
+		
+		actor_community = utils.get_actor_community()
 
-function actor_update()
-	
-	local actor = db.actor
-	
-	if not actor:alive() then
-		return
+		update_actor()
+		update_npc()
+		update_ui(is_first_update)
+		
+		is_first_update = false
+		prev_patch_in_slot = patch_in_slot
+		
+		ResetTimeEvent(main_update_ev_id, main_update_act_id, main_update_rate)
 	end
-
-	local actor_community = utils.get_actor_community()
-
-	update_default_faction(actor_community)
-	disguise_by_patch(actor_community)
+	CreateTimeEvent(main_update_ev_id, main_update_act_id, main_update_rate, main_update)
 end
 
-function update_default_faction(actor_community)	
+local function stop_updates()
+	ui_disguise.show(false)
+	RemoveTimeEvent("disguise","main_update")
+end
+
+function actor_on_first_update()
+	run_updates()
+end
+
+function actor_on_before_death()
+	stop_updates()
+end
+
+function update_actor()
+	update_actor_default_faction()
+	update_actor_disguise_by_patch()
+end
+
+function get_patch_in_slot()
+	return db.actor:item_in_slot(patch_slot_number)
+end
+
+function update_actor_default_faction()
 	if not disguise_helper.has_faction_changed(actor_community, disguise_community, default_faction) then
 		return
 	end
@@ -111,21 +150,19 @@ function update_default_faction(actor_community)
 	default_faction = actor_community
 end
 
-function disguise_by_patch(actor_community)
-	local patch_in_slot = db.actor:item_in_slot(patch_slot_number)
-	local has_actor_disguised = has_actor_disguised(actor_community)
+function update_actor_disguise_by_patch()
+	local has_actor_disguised = has_actor_disguised()
 	local disguise_tip_type = disguise_news.disguise_tip_type
+	local previous_community = disguise_community
 	
 	if disguise_helper.has_patch_changed(patch_in_slot, prev_patch_in_slot) then
 		disguise_news.reset_once_disguise_tips()
-		ui_disguise.update(patch_in_slot)
 	end
 	
 	if not patch_in_slot and has_actor_disguised then
 		if disguise_helper.has_actor_in_sight(last_seen, time_to_forget) then
 			disguise_news.send_disguise_tip_once(disguise_tip_type.not_allowed)
 		else
-			local previous_community = disguise_community
 			change_actor_community(default_faction)
 			actor_community = default_faction
 			has_actor_disguised = false
@@ -134,7 +171,7 @@ function disguise_by_patch(actor_community)
 	end
 	
 	if patch_in_slot then
-		local patch_community = patch_sections[patch_in_slot:section()]
+		local patch_community = get_patch_faction(patch_in_slot:section())
 		if actor_community ~= patch_community then
 			if axr_companions.has_companion() then
 				disguise_news.send_disguise_tip_once(disguise_tip_type.has_companion)
@@ -146,24 +183,21 @@ function disguise_by_patch(actor_community)
 				has_actor_disguised = true
 				if patch_community ~= default_faction then
 					disguise_news.send_disguise_tip(disguise_tip_type.changed, patch_community)
+				else
+					disguise_news.send_disguise_tip(disguise_tip_type.returned, previous_community)
 				end
 			end
 		elseif not has_actor_disguised then
 			disguise_news.send_disguise_tip_once(disguise_tip_type.same)
 		end
 	end
-	
-	prev_patch_in_slot = patch_in_slot
 end
 
-function has_actor_disguised(actor_community)
-	if (actor_community == nil) then
-		actor_community = utils.get_actor_community()
-	end
-	return disguise_community ~= nil and disguise_community == actor_community
+function has_actor_disguised()
+	return disguise_community ~= nil
 end
 
-function change_actor_community(community)	
+function change_actor_community(community)
 	if community == default_faction then
 		suspicion = {}
 		callout = true
@@ -179,30 +213,24 @@ function change_actor_community(community)
 	db.actor:set_character_community( ("actor_" .. community), 0, 0 )
 end
 
-function npc_update()
-	
-	if not default_faction or not db.actor then return end
+function update_npc()
+	local actor = db.actor
 	
 	for i=1, #db.OnlineStalkers do
 		local st = db.storage[db.OnlineStalkers[i]]
 		local npc = st and st.object or level.object_by_id(db.OnlineStalkers[i])
+		local is_npc_stalker = npc and IsStalkerOnly(npc)
+		local is_npc_alive = npc and npc:alive()
+		local id = npc and npc:id()
 		
-		if (npc and IsStalker(npc)) then
-			local id = npc:id()
-			
-			if (not npc:alive()) then
-				last_seen[id] = nil
-				suspicion[id] = nil
-				return
-			end
-			
-			local npc_is_enemy = game_relations.is_factions_enemies(default_faction, npc:character_community()) or npc:relation(db.actor) == game_object.enemy
+		if (is_npc_stalker and is_npc_alive) then
+			local npc_is_enemy = game_relations.is_factions_enemies(default_faction, npc:character_community()) or npc:relation(actor) == game_object.enemy
 			local current = utils.get_actor_community()
-			if current ~= default_faction and npc:see(db.actor) and npc_is_enemy then
+			if current ~= default_faction and npc:see(actor) and npc_is_enemy then
 				last_seen[id] = game.get_game_time()
 				
 				if suspicion[id] then
-					local distance = npc:position():distance_to_sqr(db.actor:position())
+					local distance = npc:position():distance_to_sqr(actor:position())
 					suspicion[id] = suspicion[id] + suspicion_increase(distance)
 					
 					if (suspicion[id] > suspicion_limit) then
@@ -243,7 +271,20 @@ function npc_update()
 					warned = false
 				end
 			end
+		elseif (is_npc_stalker and not is_npc_alive) then
+			last_seen[id] = nil
+			suspicion[id] = nil
 		end
+	end
+end
+
+function update_ui(is_first_update)	
+	local is_main_hud_shown = main_hud_shown()
+	
+	ui_disguise.show(is_main_hud_shown)
+	
+	if (is_first_update or is_main_hud_shown and disguise_helper.has_patch_changed(patch_in_slot, prev_patch_in_slot)) then
+		ui_disguise.update(patch_in_slot)
 	end
 end
 
@@ -253,11 +294,11 @@ function suspicion_increase(distance)
 	if(distance > discovery_distance) then
 		increase = 0
 	else
-		local helm = db.actor:item_in_slot(12)
-		local outfit = db.actor:item_in_slot(7)
+		local actor = db.actor
+		local helm = actor:item_in_slot(12)
+		local outfit = actor:item_in_slot(7)
 		local has_helm_hides = helm and (helm:condition() > min_condition_h)
 		local has_outfit_hides = outfit and (outfit:condition() > min_condition_o)
-		local actor_community = utils.get_actor_community()
 		
 		if not has_helm_hides and has_outfit_hides then
 			has_helm_hides = alun_utils.read_from_ini(nil,outfit:section(),"helmet_avaliable","bool",false)
@@ -269,6 +310,8 @@ function suspicion_increase(distance)
 		
 		if has_outfit_hides then
 			increase = increase - 0.25
+			
+			local actor_community = utils.get_actor_community()
 			
 			if disguise_helper.is_outfit_fits_community(actor_community, outfit:section()) then
 				increase = increase - 0.25
@@ -301,8 +344,9 @@ function load_state(data)
 	warned = data.disguise_system.ds_warned or callout
 	disguise_community = data.disguise_system.ds_community 
 
-	if not default_faction or default_faction == "" then
-		default_faction = db.actor and character_community(db.actor):sub(7) or ""
+	if not default_faction or default_faction == STR_EMPTY then
+		local actor = db.actor
+		default_faction = actor and utils.get_actor_community() or STR_EMPTY
 		printf("DBG loaded default " .. (default_faction or "?"))
 	end
 

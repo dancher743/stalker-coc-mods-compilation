@@ -447,7 +447,7 @@ function drx_sl_text_fetch_task( a, b )
 
 	local text = game.translate_string( last_task_id and axr_task_manager.get_fetch_task_description( last_task_id ) or "st_about_fetch_task_default" )
 
-	return string.format( text, _FETCH_TEXT or "" ) or ""
+	return string.format( text, _FETCH_TEXT or STR_EMPTY ) or STR_EMPTY
 
 end
 
@@ -560,9 +560,9 @@ function drx_sl_text_end_game( a, b )
 	local text_list = {}
 	local i = 1
 	while ( true ) do
-		local text_id = (alun_utils.load_var( db.actor, "drx_sl_start_task", "" ) .. "_endgame_" .. i)
+		local text_id = (alun_utils.load_var( db.actor, "drx_sl_start_task", STR_EMPTY ) .. "_endgame_" .. i)
 		local end_game_text = game.translate_string( text_id )
-		if ( end_game_text and end_game_text ~= "" and end_game_text ~= ("_endgame_" .. i) and end_game_text ~= text_id ) then
+		if ( end_game_text and end_game_text ~= STR_EMPTY and end_game_text ~= ("_endgame_" .. i) and end_game_text ~= text_id ) then
 			table.insert( text_list, end_game_text )
 		else
 			break
@@ -1245,7 +1245,7 @@ end
 -- Give player storyline task:
 function drx_sl_give_sl_task( a, b )
 
-	disable_info( ("drx_sl_meet_honcho_" .. alun_utils.load_var( db.actor, "drx_sl_current_honcho", "" )) )
+	disable_info( ("drx_sl_meet_honcho_" .. alun_utils.load_var( db.actor, "drx_sl_current_honcho", STR_EMPTY )) )
 	local npc = who_is_npc( a, b )
 	local task_section = axr_task_manager and axr_task_manager.drx_sl_generate_random_sl_task( npc, nil, true )
 	while last_task_id and task_section ~= nil and task_section ~= last_task_id do
@@ -1650,7 +1650,7 @@ function text_npc_has_task(a,b)
 	local fetch = task_id and task_manager.task_ini:r_string_ex(task_id,"fetch_descr")
 	if (fetch) then
 		axr_task_manager.trigger_fetch_func(task_id)
-		return strformat(game.translate_string(fetch),_FETCH_TEXT or "")
+		return strformat(game.translate_string(fetch),_FETCH_TEXT or STR_EMPTY)
 	end
 
 	return game.translate_string(task_id and task_manager.task_ini:r_string_ex(task_id,"job_descr") or "st_no_available_task")
@@ -1778,8 +1778,8 @@ function text_npc_has_cancel_task(a,b)
         if not (sec) then
             return text or game.translate_string("st_task_none_active")
         end
-		local name = game.translate_string(system_ini():r_string_ex(sec,"inv_name") or "")
-		return strformat(text,name or "")
+		local name = game.translate_string(system_ini():r_string_ex(sec,"inv_name") or STR_EMPTY)
+		return strformat(text,name or STR_EMPTY)
 	end
 
 	return text
@@ -2005,7 +2005,7 @@ function text_trade_npc_pda(a,b)
 			db.actor:transfer_item(item,npc)
 			news_manager.relocate_item(db.actor, "out", item:section())
 			relocate_money(npc, random_choice(10000,15000,20000,25000) , "in")
-			local name = game.translate_string(system_ini():r_string_ex(item:section(),"inv_name") or "")
+			local name = game.translate_string(system_ini():r_string_ex(item:section(),"inv_name") or STR_EMPTY)
 			return strformat(game.translate_string("st_broker_trade_valuable"),name)
 		end
 	end
@@ -2021,7 +2021,7 @@ function text_trade_npc_pda(a,b)
     end
     db.actor:iterate_inventory(itr,db.actor)
 
-    local npc_text = ""
+    local npc_text = STR_EMPTY
 
     local total_value = 0
     local pda_bonus_coords = 0
@@ -2194,9 +2194,10 @@ function surrender_victim_answers_1(a,b)
 		npc:iterate_inventory(itr,npc)
 
 		if (coc_treasure_manager) then
-			coc_treasure_manager.create_random_stash(nil, strformat(game.translate_string("st_itm_stash_of_character"),npc:character_name()) )
+			local hint = strformat(strtransl("st_itm_stash_of_character"), npc:character_name(), strtransl(character_community(npc)))
+			coc_treasure_manager.create_random_stash(nil,hint)
 			if (has_alife_info("achieved_silver_or_lead") and ((math.random(1,100)/100) <= 0.33)) then
-				coc_treasure_manager.create_random_stash(nil,strformat(game.translate_string("st_itm_stash_of_character"),npc:character_name()))
+				coc_treasure_manager.create_random_stash(nil,hint)
 			end
 		else
 			axr_dynamic_spawn.random_secret()
@@ -2204,7 +2205,7 @@ function surrender_victim_answers_1(a,b)
 
 		if (axr_dynamic_spawn.last_secret) then
 			local hint = axr_dynamic_spawn.ini:r_string_ex(axr_dynamic_spawn.last_secret,"hint")
-			hint = hint and " " .. game.translate_string(hint) or ""
+			hint = hint and " " .. game.translate_string(hint) or STR_EMPTY
 			return game.translate_string("st_surrender_victim_answer_"..math.random(3)) .. hint
 		elseif (coc_treasure_manager and coc_treasure_manager.last_secret) then
 			return game.translate_string("st_surrender_victim_answer_"..math.random(3))

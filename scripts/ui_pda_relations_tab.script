@@ -199,7 +199,7 @@ function pda_relations_tab:autoupdate()
 			local npc = st and st.object
 
 			local icon_name = npc and npc:character_icon() or se_obj:character_icon()
-			icon_name = icon_name and icon_name ~= "" and icon_name or "ui\\ui_noise"
+			icon_name = icon_name and icon_name ~= STR_EMPTY and icon_name or "ui\\ui_noise"
 			self.companion_info[i].icon_wnd:InitTexture(icon_name)
 			self.companion_info[i].icon_wnd:Show(true)
 
@@ -344,11 +344,11 @@ function pda_relations_tab:autoupdate()
 			self.companion_info[i].icon_wnd:Show(false)
 			self.companion_info[i].leader_wnd:Show(false)
 			self.companion_info[i].invulner_wnd:Show(false)
-			self.companion_info[i].health_wnd:SetText("")
-			self.companion_info[i].name_wnd:SetText("")
-			self.companion_info[i].comm_wnd:SetText("")
-			self.companion_info[i].rank_wnd:SetText("")
-			self.companion_info[i].dist_wnd:SetText("")
+			self.companion_info[i].health_wnd:SetText(STR_EMPTY)
+			self.companion_info[i].name_wnd:SetText(STR_EMPTY)
+			self.companion_info[i].comm_wnd:SetText(STR_EMPTY)
+			self.companion_info[i].rank_wnd:SetText(STR_EMPTY)
+			self.companion_info[i].dist_wnd:SetText(STR_EMPTY)
 		end
 	end
 end
@@ -425,7 +425,7 @@ function pda_relations_tab:btn_to_text()
 end
 
 function pda_relations_tab:SetMsg(text,tmr)
-	if (text == "") then
+	if (text == STR_EMPTY) then
 		return
 	end
 	self.msg_wnd:Show(true)
@@ -441,7 +441,7 @@ function pda_relations_tab:SetMsg(text,tmr)
 end
 
 function pda_relations_tab:SetHint(text,pos)
-	if (text == "") then
+	if (text == STR_EMPTY) then
 		return
 	end
 	self.hint_wnd:Show(true)
@@ -785,7 +785,7 @@ end
 ---------------------------------------------------------------------------------------------------
 class "ui_companion_row" (CUIListBoxItem)
 function ui_companion_row:__init(owner,row,xml) super(owner,row,xml)
-	self:GetTextItem():SetText("")
+	self:GetTextItem():SetText(STR_EMPTY)
 
 	local is_widescreen = utils.is_widescreen()
 	local x = is_widescreen and 20 or 35
@@ -799,12 +799,12 @@ function ui_companion_row:__init(owner,row,xml) super(owner,row,xml)
 			["icon_wnd"] 		= self:AddIconField(1),
 			["leader_wnd"] 		= self:AddIconField(1),
 			["invulner_wnd"]	= self:AddIconField(1),
-			["name_wnd"]		= self:AddTextField("",1),
-			["comm_wnd"]		= self:AddTextField("",1),
-			["rank_wnd"]		= self:AddTextField("",1),
-			["health_wnd"]		= self:AddTextField("",1),
-			["dist_wnd"]		= self:AddTextField("",1),
-			["hint"]			= ""
+			["name_wnd"]		= self:AddTextField(STR_EMPTY,1),
+			["comm_wnd"]		= self:AddTextField(STR_EMPTY,1),
+			["rank_wnd"]		= self:AddTextField(STR_EMPTY,1),
+			["health_wnd"]		= self:AddTextField(STR_EMPTY,1),
+			["dist_wnd"]		= self:AddTextField(STR_EMPTY,1),
+			["hint"]			= STR_EMPTY
 		}
 
 		owner.companion_info[n].icon_wnd:InitTexture("ui\\ui_noise")

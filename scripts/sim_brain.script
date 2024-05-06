@@ -16,8 +16,8 @@ function on_game_start()
 	RegisterScriptCallback("smart_terrain_on_update", smart_terrain_on_update)
 	RegisterScriptCallback("save_state", save_state)
 	RegisterScriptCallback("load_state", load_state)
-	RegisterScriptCallback("actor_on_update", actor_on_update)
-	RegisterScriptCallback("squad_on_update", squad_on_update)
+	RegisterScriptCallback("actor_on_slicing_update", actor_on_slicing_update)
+	RegisterScriptCallback("squad_on_slicing_update", squad_on_slicing_update)
 	
 	default_sim_on_non_linked_levels = _G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS
 	default_process_event_queue_state = _G.ProcessEventQueueState
@@ -146,9 +146,9 @@ end
 
 local last_update
 
-function actor_on_update()
+function actor_on_slicing_update()
 	if (not IsEocMode()) then
-		UnregisterScriptCallback("actor_on_update", actor_on_update)
+		UnregisterScriptCallback("actor_on_slicing_update", actor_on_slicing_update)
 		return
 	end
 	
@@ -254,7 +254,7 @@ function fill_start_position()
 		for li=0,lc-1 do
 			local smart = SIMBOARD.smarts_by_names[section]
 			if (smart) then
-				result, squad_section, count = setting_ini:r_line(section,li,"","")
+				result, squad_section, count = setting_ini:r_line(section,li,STR_EMPTY,STR_EMPTY)
 				count = tonumber(count) or 1
 				
 				if string.find(squad_section,"sim_squad_novice") or string.find(squad_section,"sim_squad_advanced") or string.find(squad_section,"sim_squad_veteran") or string.find(squad_section,"sim_squad_sniper") then
@@ -406,9 +406,9 @@ function smart_terrain_on_update(smart)
 	sim_smart.smart_terrain_on_update(smart)
 end
 
-function squad_on_update(squad)
+function squad_on_slicing_update(squad)
 	if (not IsEocMode()) then
-		UnregisterScriptCallback("squad_on_update", squad_on_update)
+		UnregisterScriptCallback("squad_on_slicing_update", squad_on_slicing_update)
 		return
 	end
 	

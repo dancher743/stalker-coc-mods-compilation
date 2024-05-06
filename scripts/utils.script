@@ -45,7 +45,7 @@ function print_table()
 	if subs ~= nil then
 		sub = subs
 	else
-		sub = ""
+		sub = STR_EMPTY
 	end
 	for k,v in pairs(table) do
 		if type(v) == "table" then
@@ -139,7 +139,7 @@ function cfg_get_string(char_ini, section, field, object, mandatory, gulag_name,
 
 	--printf("DEBUG: conf_get_string: section='%s', field='%s'", section, field)
 	if section and char_ini:section_exist(section) and char_ini:line_exist(section, field) then
-		if gulag_name and gulag_name ~= "" and gulag_name ~= "nil" then
+		if gulag_name and gulag_name ~= STR_EMPTY and gulag_name ~= "nil" then
 			return gulag_name .. "_" .. char_ini:r_string_ex(section, field)
 		else
 			return char_ini:r_string_ex(section, field)
@@ -181,7 +181,7 @@ function mob_get_string(char_ini, section, field, override, object, mandatory, d
 		return override
 	end
 
-	return cfg_get_string(char_ini, section, field, object, mandatory, "", default_val)
+	return cfg_get_string(char_ini, section, field, object, mandatory, STR_EMPTY, default_val)
 end
 
 function mob_get_number(char_ini, section, field, override, object, mandatory, default_val)
@@ -273,7 +273,7 @@ function parse_waypoint_data(pathname, wpflags, wpname)
 		if par_num == 1 then
 			-- continue
 		else
-			if param == "" then
+			if param == STR_EMPTY then
 				printf("path '%s': waypoint '%s': syntax error in waypoint name", pathname, wpname)
 			end
 
@@ -288,12 +288,12 @@ function parse_waypoint_data(pathname, wpflags, wpname)
 			fld = string.sub(param, 1,t_pos - 1)
 			val = string.sub(param, t_pos + 1)
 
-			if not fld or fld == "" then
+			if not fld or fld == STR_EMPTY then
 				printf("path '%s': waypoint '%s': syntax error while parsing the param '%s': no field specified",
 					pathname, wpname, param)
 			end
 
-			if not val or val == "" then
+			if not val or val == STR_EMPTY then
 				val = "true"
 			end
 
@@ -309,7 +309,7 @@ function parse_waypoint_data(pathname, wpflags, wpname)
 end
 
 function path_parse_waypoints(pathname)
-	if (pathname == nil or pathname == "") then
+	if (pathname == nil or pathname == STR_EMPTY) then
 		return nil
 	end
 
@@ -405,7 +405,7 @@ function wpn_info_equal(wpn_info1, wpn_info2)
 end
 
 function get_scheme_by_section(section)
-	return section and string.gsub(section,"@(.*)","")
+	return section and string.gsub(section,"@(.*)",STR_EMPTY)
 end
 
 -- a | b | c  ==>  { 1 = "a", 2 = "b", 3 = "c" }
@@ -753,14 +753,14 @@ function prefix_r_string(ini,sec,key,prefix)
 	if not (rslt) then
 		return
 	end
-	if (prefix and prefix ~= "" and prefix ~= "nil") then
+	if (prefix and prefix ~= STR_EMPTY and prefix ~= "nil") then
 		return prefix .. "_" .. rslt
 	end
 	return rslt
 end
 
 function is_ammo(section)
-	local v = system_ini():r_string_ex(section,"class","")
+	local v = system_ini():r_string_ex(section,"class",STR_EMPTY)
 	return v == "AMMO" or v == "AMMO_S"
 end
 
@@ -954,4 +954,28 @@ function get_hours_elapsed()
 	local seconds = tonumber(game.get_game_time():diffSec(start_time))
 	local hours = math.floor(seconds/60/60)
 	return hours
+end
+
+function pick_without(value_to_exclude, source_table)
+	if (#source_table == 1 and source_table[1] == value_to_exclude) then
+	    return nil
+    end
+	
+    local result = nil
+	
+    while result == nil or result == value_to_exclude do
+		result = pick(source_table)
+	end
+	
+	return result
+end
+
+function pick(source_table)
+	local count = #source_table
+	local index = count > 1 and math.random(count) or 1
+	return source_table[index]
+end
+
+function round_to_1000(value)
+	return round(value/1000)*1000
 end

@@ -222,7 +222,7 @@ function action.debug_select_object(p)
 					end
 				end
 			end
-			SetHudMsg("",1)
+			SetHudMsg(STR_EMPTY,1)
 		end	
 	end 
 end
@@ -250,7 +250,7 @@ function action.debug_test(p)
 			return s
 		end
 	
-		local txt = ""
+		local txt = STR_EMPTY
 		for k,v in pairs(_G) do 
 			if (valid[type(k)] == true) then 
 				txt = txt .. addTab(tostring(k),40)
@@ -374,7 +374,7 @@ function on_key_release(key)
 				if (key_bindings[v] == dik_to_bind(key)) then 
 					action[k](0)
 				end
-			elseif (key == DIK_keys[axr_main.config:r_value("global_keybinds",k,0,"")]) then
+			elseif (key == DIK_keys[axr_main.config:r_value("global_keybinds",k,0,STR_EMPTY)]) then
 				action[k](0)
 			end
 		end
@@ -393,7 +393,7 @@ function on_key_press(key)
 				if (key_bindings[v] == dik_to_bind(key)) then 
 					action[k](1)
 				end
-			elseif (key == DIK_keys[axr_main.config:r_value("global_keybinds",k,0,"")]) then
+			elseif (key == DIK_keys[axr_main.config:r_value("global_keybinds",k,0,STR_EMPTY)]) then
 				action[k](1)
 			end
 		end
@@ -411,7 +411,7 @@ function on_key_hold(key)
 				if (key_bindings[v] == dik_to_bind(key)) then 
 					action[k](2)
 				end
-			elseif (key == DIK_keys[axr_main.config:r_value("global_keybinds",k,0,"")]) then
+			elseif (key == DIK_keys[axr_main.config:r_value("global_keybinds",k,0,STR_EMPTY)]) then
 				action[k](2)
 			end
 		end

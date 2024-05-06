@@ -7,20 +7,20 @@ move	= temp
 function get_smart_cover_loophole_lesnik()
 	return {
 			loopholes = {
-				smart_covers_loophole_lesnik.get_smart_cover_loophole_lesnik("lesnik_sit",	VEC_ZERO, vector():set(1,0,0),	vector():set(1,0,0))
+				smart_covers_loophole_lesnik.get_smart_cover_loophole_lesnik("lesnik_sit",	VEC_ZERO, VEC_RIGHT,	VEC_RIGHT)
 			},
 
 	
 			transitions = {
 			--' Анимации входа в бойницы
 			{
-				vertex0 = "",
+				vertex0 = STR_EMPTY,
 				vertex1 = "lesnik_sit",
 				weight = 1.0,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
                                 actions =	{
 											{
 												animation = "sit",
@@ -36,12 +36,12 @@ function get_smart_cover_loophole_lesnik()
 			--' Анимации выхода из бойниц.
 			{
 				vertex0 = "lesnik_sit",
-				vertex1 = "",
+				vertex1 = STR_EMPTY,
 				weight = 1.1,
 				actions =	{
 							{
 								precondition_functor = "smart_covers.script_functor_true",
-								precondition_params = "",
+								precondition_params = STR_EMPTY,
                                 actions =	{
 											{
 												animation = "sit",

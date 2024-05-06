@@ -1,0 +1,119 @@
+--
+-- Critical Hit Manager
+-- Added by Dancher
+--
+-- See also:
+--	actor_critical_hit.script
+--  ui_actor_critical_hit.script
+--  sound_actor_critical_hit.script
+--
+
+local hit_chance_by_rank = {
+	["novice"] 			= 0.06,
+	["trainee"] 		= 0.08,
+	["experienced"]		= 0.10,
+	["professional"]    = 0.12,
+	["veteran"]         = 0.14,
+	["expert"]          = 0.16,
+	["master"]          = 0.18,
+	["legend"]          = 0.20
+}
+
+local damage_factor = 3.0
+
+local function get_hit_chance(who)
+	local chance = 0
+	
+	if (IsStalker(who)) then
+		local rank = ranks.get_obj_rank_name(who)
+		chance = hit_chance_by_rank[rank]
+	end
+	
+	return chance
+end
+
+local function calculate_hit_power(who, damage, chance)
+	local a = damage * (1 - chance)
+	local b = damage * damage_factor * chance
+	local power = (a + b) - damage
+	
+	return power
+end
+
+local function create_hit(who, power, local_direction, bone_index)
+	local crit_hit = hit()
+	
+	crit_hit.type = hit.fire_wound
+	crit_hit.bone = bone_index
+	crit_hit.power = power
+	crit_hit.impulse = 0.0
+	crit_hit.direction = local_direction
+	crit_hit.draftsman = who
+	
+	return crit_hit
+end
+
+local function can_hit(victim, who, bone_index, chance)
+	return chance > 0 and victim:alive() and type(bone_index) == "number" and bone_index > 0 and math.random() <= chance
+end
+
+local function try_hit(victim, who, damage, local_direction, bone_index)
+	local hit_chance = get_hit_chance(who)
+	local can_hit = can_hit(victim, who, bone_index, hit_chance)
+	
+	if (can_hit) then
+		local hit_power = calculate_hit_power(who, damage, hit_chance)
+		local crit_hit = create_hit(who, hit_power, local_direction, bone_index)
+		
+		victim:hit(crit_hit)
+		-- printf(string.format("DANCHER | actor_critical_hit.script -> Critical damage is %0.2f. Orignal damage is %0.2f.", crit_hit.power, damage))
+	end
+	
+	return can_hit
+end
+
+local function npc_or_monster_on_hit_callback(victim, damage, local_direction, who, bone_index)	
+	if (IsStalkerOnly(who) or IsMonster(who)) then
+		return
+	end
+	
+	if (IsActor(who) and not axr_main_options.get_check_option("can_actor_crit_hit")) then
+		return
+	end
+	
+	local has_crit_hit = try_hit(victim, who, damage, local_direction, bone_index)
+	
+	if (has_crit_hit) then
+		if (axr_main_options.get_check_option("show_crit_hit_mark")) then
+			ui_actor_critical_hit.show_mark()
+		end
+		
+		if (axr_main_options.get_check_option("play_crit_hit_sound")) then
+			sound_actor_critical_hit.play_sound_on_distance(victim:position())
+		end
+	end
+end
+
+local function actor_on_hit_callback(victim, damage, local_direction, who, bone_index)
+	if (IsActor(who) or IsMonster(who)) then
+		return
+	end
+
+	if (IsStalkerOnly(who) and not axr_main_options.get_check_option("can_stalker_crit_hit")) then
+		return
+	end
+	
+	local has_crit_hit = try_hit(victim, who, damage, local_direction, bone_index)
+	
+	if (has_crit_hit) then
+		if (axr_main_options.get_check_option("show_crit_hit_cam_vfx")) then
+			ui_actor_critical_hit.show_cam_effector()
+		end
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("npc_on_hit_callback", npc_or_monster_on_hit_callback)
+	RegisterScriptCallback("monster_on_hit_callback", npc_or_monster_on_hit_callback)
+	RegisterScriptCallback("actor_on_hit_callback", actor_on_hit_callback)
+end

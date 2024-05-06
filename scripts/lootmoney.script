@@ -19,6 +19,15 @@ local npc_random_indexes = {} -- where we store the data. { npc name = random va
 local tableSize = 0
 local mnytb = {}
 
+local inv_sound = sound_object([[interface\inv_money_paper]])
+
+local function play_inv_sound(player_char)
+	if (inv_sound:playing()) then
+		inv_sound:stop()
+	end
+	inv_sound:play(player_char,0,sound_object.s2d)
+end
+
 function on_game_start()
 	RegisterScriptCallback("on_game_load", on_game_load)
 end
@@ -83,10 +92,10 @@ function lootmoney(npc) -- player character is looting a npc or creature
 		local news_caption = game.translate_string("st_lootmoney_found_money")
 		local news_text = game.translate_string(math.floor(calculated_money))
 		player_char:give_game_news(news_caption, news_text, "ui_iconsTotal_found_money", 0, 10000)
-		--xr_sound.set_sound_play(player_char:id(), "pda_news")
+		play_inv_sound(player_char)
 	end
 	if (math.random(1, 99) < lootmoney_stashchance and lootmoney_stash) then -- spawn random stash
-		coc_treasure_manager.create_random_stash(nil, strformat(game.translate_string("st_itm_stash_of_character"), npc_name))
+		coc_treasure_manager.create_random_stash(nil, strformat(strtransl("st_itm_stash_of_character"), npc_name, strtransl(character_community(npc))))
 	end
 	debug_sc(
 		strformat("You collected money from NPC. Chance: %s. Stalker: %c[66,167,245,0]%s%c[default]", rnd_value, npc_name)
@@ -123,7 +132,7 @@ end
 
 function debug_sc(text, icon) -- debug function
 	if not lootmoney_debug then return end
-	--db.actor:give_game_news("Loot Money >> Debug Message", text, "", 0, 50000) -- debug message on screen
+	--db.actor:give_game_news("Loot Money >> Debug Message", text, STR_EMPTY, 0, 50000) -- debug message on screen
 	local formatted_text = strformat("Loot Money >> Debug Message\\n%s", text)
 	news_manager.send_tip(db.actor, formatted_text, nil, "tourist", 10000)
 	alun_utils.printf(formatted_text)

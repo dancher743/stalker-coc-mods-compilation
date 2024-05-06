@@ -43,7 +43,7 @@ end
 function property_box_add_properties(property_ui,id,level_name,hint)
 	map_spot_property.id = id 
 	map_spot_property.level_name = level_name
-	-- if (hint and hint ~= "") then
+	-- if (hint and hint ~= STR_EMPTY) then
 		-- property_ui:AddItem(hint)
 	-- end
 	SendScriptCallback("map_spot_menu_add_property",property_ui,id,level_name,hint)
@@ -135,7 +135,7 @@ function get_stat(index) -- index= int        return string
 	elseif(index==18) then 
 		return tostring(db.actor:money()) .. " RU"
 	end
-	return ""
+	return STR_EMPTY
 end
 
 ----------------------------------------------------------------------------
@@ -340,7 +340,7 @@ end
 function add_quick_slot_items_on_game_start()
 	local ini = system_ini()
 	for i=0,3 do
-		get_console():execute( strformat("slot_%s %s",i, ini:r_string_ex("actor","quick_item_"..tostring(i+1)) or "") )
+		get_console():execute( strformat("slot_%s %s",i, ini:r_string_ex("actor","quick_item_"..tostring(i+1)) or STR_EMPTY) )
 	end
 end
 
@@ -416,7 +416,7 @@ function coc_rankings_set_name(index)
 	if (se_obj) then
 		return strformat("%s. %s",se_obj.id == 0 and actor_rank_place or index,se_obj:character_name())
 	end
-	return ""
+	return STR_EMPTY
 end
 
 -- called from engine! must return string!
@@ -425,9 +425,9 @@ function coc_rankings_set_hint(index)
 	if (se_obj) then
 		if (se_obj.id == 0) then
 			--TODO: Maybe some stats for player, like rank points per minute; if such a thing is possible.
-			return ""
+			return STR_EMPTY
 		else
-			local return_str = ""
+			local return_str = STR_EMPTY
 			
 			-- DEBUG REMOVE ME LATER
 			if(DEV_DEBUG and axr_main.config:r_value("mm_options","enable_debug_hud",1,false) == true) then
@@ -460,7 +460,7 @@ function coc_rankings_set_hint(index)
 			return return_str
 		end
 	end
-	return ""
+	return STR_EMPTY
 end
 
 -- called from engine! must return string!
@@ -489,7 +489,7 @@ function coc_rankings_set_description(index)
 		
 		return strformat([[ %s \n %s \n %s]],faction_str,rank_str,repu_str)
 	end
-	return ""
+	return STR_EMPTY
 end
 
 -- called from engine! must return string!
@@ -502,7 +502,7 @@ function coc_rankings_set_icon(index)
 				local outfit = db.actor:item_in_slot(7)
 				if (outfit) then 
 					local icon = system_ini():r_string_ex(outfit:section(),"character_portrait")
-					if (icon and icon ~= "") then
+					if (icon and icon ~= STR_EMPTY) then
 						return icon
 					end
 				end 
@@ -516,9 +516,9 @@ function coc_rankings_set_icon(index)
 				icon_name = se_obj:character_icon()
 			end
 		end
-		return icon_name and icon_name ~= "" and icon_name or "ui\\ui_noise"
+		return icon_name and icon_name ~= STR_EMPTY and icon_name or "ui\\ui_noise"
 	end
-	return ""
+	return STR_EMPTY
 end
 
 function coc_rankings_show_border(index)

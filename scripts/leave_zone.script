@@ -3,6 +3,27 @@
 -- Author: Dancher
 --
 
+local function make_finish_save()
+	local character_name = alife():actor():character_name()
+	local level_name = game.translate_string(level.name())
+	local finish_text = game.translate_string("ui_st_leave_zone_finish_save")
+	
+	local save_name = string.format("%s %s %s", character_name, level_name, finish_text)
+	local save_command = string.format("save %s", save_name)
+	get_console():execute(save_command)
+end
+
+local function finish_game()
+	xr_effects.game_credits()
+	
+	local function postpone_for_next_frame()
+		make_finish_save()
+		xr_effects.game_disconnect()
+	end
+	
+	CreateTimeEvent("leave_zone", "finish_game", 0, postpone_for_next_frame)
+end
+
 local function spawn_on_l13_generators()
 	local x = 81.86
 	local y = 26.80
@@ -12,37 +33,29 @@ local function spawn_on_l13_generators()
 	alife():create("leave_zone_object",vector():set(x,y,z),lvid,gvid)
 end
 
-local function try_spawn()
-	local were_objects_spawned = alun_utils.load_var(db.actor, "leave_zone_objects_spawned")
-
-	if (were_objects_spawned) then
-		return
-	end
-
-	spawn_on_l13_generators()
-
-	alun_utils.save_var(db.actor, "leave_zone_objects_spawned", true)
-	printf("leave_zone.script - all objects were spawned!")
-end
-
-local function on_game_load()
-	try_spawn()
-end
-
-local function on_yes_button_clicked()
-	xr_effects.game_credits()
-	xr_effects.game_disconnect()
-end
-
 local function physic_object_on_use_callback(obj,who) 
 	if (obj:section() ~= "leave_zone_object") then
 		return
 	end
 	
+	local function on_yes_button_clicked()
+		finish_game()
+	end
+	
 	ui_generic_dialogs.confirm_dialog_ui("ui_st_leave_zone_confirm", on_yes_button_clicked)
 end
 
+local function on_game_first_load()
+	-- Migration case
+    if (alun_utils.load_var(db.actor, "leave_zone_objects_spawned")) then
+        return
+    end
+	
+	spawn_on_l13_generators()
+	printf("leave_zone.script - all objects were spawned!")
+end
+
 function on_game_start()
-	RegisterScriptCallback("on_game_load",on_game_load)
+	RegisterScriptCallback("on_game_first_load",on_game_first_load)
 	RegisterScriptCallback("physic_object_on_use_callback",physic_object_on_use_callback)
 end

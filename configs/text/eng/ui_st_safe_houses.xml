@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
+	<string id="st_ui_safe_houses_title">
+		<text>Safe house</text>
+	</string>
 	<string id="st_ui_safe_houses_bar_room">
-		<text>Safe-house in bar room</text>
+		<text>Bar room</text>
 	</string>
 </string_table>

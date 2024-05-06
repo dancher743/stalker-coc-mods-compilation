@@ -1,0 +1,33 @@
+--
+-- Sound for Critical Hit from/to Actor
+-- Added by Dancher
+--
+
+local volume_min_distance = 0
+local volume_max_distance = 30
+
+local function get_hit_sound_paths()
+	return {
+		"actor\\hurt2",
+		"actor\\hurt3",
+		"actor\\hurt5",
+		"actor\\hurt6",
+		"actor\\hurt7"
+	}
+end
+
+function play_sound_on_distance(obj_position)
+	local hit_sound_paths = get_hit_sound_paths()
+	local hit_sound_path = hit_sound_paths[math.random(#hit_sound_paths)]
+	local hit_sound = xr_sound.get_safe_sound_object(hit_sound_path)
+	
+	if (hit_sound and not hit_sound:playing()) then
+		local actor = db.actor
+		local distance = actor:position():distance_to(obj_position)
+		local volume = utils.inverse_lerp(volume_max_distance, volume_min_distance, distance)
+		
+		-- printf(string.format("DANCHER | sound_actor_critical_hit.script -> Distance: %0.0f, volume: %0.2f.", distance, volume))
+		
+		hit_sound:play_no_feedback(actor, sound_object.s2d, 0, VEC_ZERO, volume)
+	end
+end
