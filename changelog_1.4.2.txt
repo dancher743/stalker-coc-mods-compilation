@@ -1,0 +1,8 @@
+### Features
+* A few campfire idle sounds from OLR 3.0
+
+### Improvements
+
+### Fixes
+
+### Framework
