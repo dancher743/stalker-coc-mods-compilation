@@ -934,6 +934,9 @@ function sim_squad_scripted:on_register()
 	cse_alife_online_offline_group.on_register( self )
 	story_objects.check_spawn_ini_for_story_id(self)
 	sim_board.get_sim_board().squads[self.id] = self
+	if (not is_squad_monster[self.player_id]) then
+		sim_board.get_sim_board().stalker_squads[self.id] = self
+	end
 	simulation_objects.get_sim_obj_registry():register(self)
 	SendScriptCallback("squad_on_register",self)
 	--alun_utils.debug_write( strformat("%s:on_register end",self:name()) )
@@ -943,6 +946,9 @@ function sim_squad_scripted:on_unregister()
 	SendScriptCallback("squad_on_unregister",self)
 	unregister_story_object_by_id(self.id)
 	SIMBOARD.squads[self.id] = nil
+	if (not is_squad_monster[self.player_id]) then
+		SIMBOARD.stalker_squads[self.id] = nil
+	end
 	SIMBOARD:assign_squad_to_smart(self, nil)
 	simulation_objects.get_sim_obj_registry():unregister(self)
 	if self.respawn_point_id ~= nil then

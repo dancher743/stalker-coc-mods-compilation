@@ -119,6 +119,7 @@ function simulation_board:__init()
 	self.smarts_by_names = {}
 	self.simulation_started = true
 	self.squads = {}
+	self.stalker_squads = {}
 	self.tmp_assigned_squad = {}
 end
 

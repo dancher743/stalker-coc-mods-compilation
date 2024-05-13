@@ -3412,17 +3412,20 @@ function is_target_exists(actor,npc,p)
 		target_communities[p[i]] = true
 	end
 	
-	for i=1,65534 do
-		local se_obj = sim:object(i)
-		if (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and 
-			string.find(se_obj:section_name(),target_section) and get_object_story_id(i) == nil) 
-			and 
-			(se_obj.group_id == nil or se_obj.group_id == 65535 or get_object_story_id(se_obj.group_id) == nil) 
-		then
-			local community = alife_character_community(se_obj)
-			if (target_communities[community] == true) then
-				result = true
-				break
+	local stalker_squads = sim_board.get_sim_board().stalker_squads
+	for _,squad in pairs(stalker_squads) do
+		for k in squad:squad_members() do
+			local se_obj = k.object or sim:object(k.id)
+			if (se_obj and IsStalkerOnly(nil,se_obj:clsid()) and se_obj:alive() and 
+				string.find(se_obj:section_name(),target_section) and get_object_story_id(k.id) == nil) 
+				and 
+				(se_obj.group_id == nil or se_obj.group_id == 65535 or get_object_story_id(se_obj.group_id) == nil)
+			then
+				local community = alife_character_community(se_obj)
+				if (target_communities[community] == true) then
+					result = true
+					break
+				end
 			end
 		end
 	end
