@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 ### Features
 * A few campfire idle sounds from OLR 3.0
 
+### Mods
+
 ### Improvements
 
 ### Fixes
@@ -444,7 +446,7 @@ All notable changes to this project will be documented in this file.
 * Fixed extra dots in text of emission/psi-storm message
 * Added "actor is alive" condition for showing of Companions List HUD
 
-## [1.1.0] - 2022-09-21
+## [1.1.0] - 2022-07-29
 
 #### Mods
 * Lor's models v2.5 (Grelka)
@@ -465,7 +467,7 @@ All notable changes to this project will be documented in this file.
 * DoctorX Questlines 1.25 [CoC 1.4.22] (DoctorX)
 * DoctorX Dynamic Faction Relations 1.8 [1.4.22] (DoctorX)
 
-## [1.0.0] - 2022-07-29 
+## [1.0.0] - 2021-07-30
 
 #### Mods
 1. Original Item Models and Icons (Panzermann11)
