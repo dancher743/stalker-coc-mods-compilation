@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 ### Mods
 
 ### Improvements
+* Excluded patrol and wait behaviours of companions from fast travel
 
 ### Fixes
 

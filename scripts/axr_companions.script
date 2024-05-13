@@ -240,9 +240,10 @@ function companion_squad_can_teleport(squad)
 		end
 	end 
 	
-	if (id) and (sim:has_info(id,"npcx_beh_patrol_mode") or sim:has_info(id,"npcx_beh_wait")) then
+	-- Disabled for Dancher's Compilation mod
+	--[[if (id) and (sim:has_info(id,"npcx_beh_patrol_mode") or sim:has_info(id,"npcx_beh_wait")) then
 		return false
-	end
+	end]]
 	return true
 end 
 
