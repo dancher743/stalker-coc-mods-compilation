@@ -928,10 +928,6 @@ function drx_sl_setup_bounty_hunt( actor, npc, p )
 		"bandit",
 		"monolith"
 	}
-	
-	if (IsSurvivalMode()) then
-		table.insert( factions_list, "zombied" )
-	end
 
 	-- Reset bounty id storage:
 	axr_task_manager.bounties_by_id[p[1]] = nil
@@ -976,6 +972,14 @@ function drx_sl_setup_bounty_hunt( actor, npc, p )
 	local valid_targets = {}
 	local target_section = "sim_default"
 
+	local zombied_section
+	local valid_zombied
+	local is_survival_mode = IsSurvivalMode()
+	if (is_survival_mode) then
+		zombied_section = "zombied"
+		valid_zombied = {}
+	end
+
 	local stalker_squads = sim_board.get_sim_board().stalker_squads
 	for _,squad in pairs(stalker_squads) do
 		for k in squad:squad_members() do
@@ -990,6 +994,9 @@ function drx_sl_setup_bounty_hunt( actor, npc, p )
 						table.insert( valid_targets, k.id )
 						break
 					end
+					if (is_survival_mode and current_sim_faction == zombied_section) then
+						table.insert( valid_zombied, k.id )
+					end
 				end
 			end
 
@@ -998,6 +1005,9 @@ function drx_sl_setup_bounty_hunt( actor, npc, p )
 	end
 
 	-- Ensure a valid target was found:
+	if (is_survival_mode and #valid_targets < 1 and #valid_zombied > 0) then
+		valid_targets = valid_zombied
+	end
 	if ( #valid_targets < 1 ) then
 		printf( "DRX SL Error: drx_sl_setup_bounty_hunt failed, no targets !!!" )
 		return

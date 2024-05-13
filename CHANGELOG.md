@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 * Excluded patrol and wait behaviours of companions from fast travel
 
 ### Fixes
+* Fixed picking `zombied` target in DRX's bounty hunt tasks in Survival mode
 
 ### Optimization
 * Optimized the target finding code of bounty hunt tasks
