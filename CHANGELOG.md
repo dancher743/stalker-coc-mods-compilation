@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
 ### Fixes
 
 ### Optimization
-* Optimized the target finding code of bounty hunt task
+* Optimized the target finding code of bounty hunt tasks
 
 ### Framework
 * Added `stalker_squads` table into `sim_board.script`
