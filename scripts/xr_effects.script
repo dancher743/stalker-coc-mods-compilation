@@ -974,18 +974,22 @@ function drx_sl_setup_bounty_hunt( actor, npc, p )
 	local se_obj
 	local sim = alife( )
 	local valid_targets = {}
-	for k = 1, 65534 do
+	local target_section = "sim_default"
 
-		-- Analyze current sim stalker:
-		se_obj = sim:object( k )
-		if ( (se_obj and IsStalker( nil, se_obj:clsid( ) ) and se_obj:alive( ) and sfind( se_obj:section_name( ), "sim_default" ) and get_object_story_id( k ) == nil) and (se_obj.group_id == nil or se_obj.group_id == 65535 or get_object_story_id( se_obj.group_id ) == nil) ) then
-
-			-- If sim stalker is enemy faction then add to list of valid targets:
-			local current_sim_faction = alife_character_community( se_obj )
-			for l = 1, #enemy_faction_list do
-				if ( current_sim_faction == enemy_faction_list[l] ) then
-					table.insert( valid_targets, k )
-					break
+	local stalker_squads = sim_board.get_sim_board().stalker_squads
+	for _,squad in pairs(stalker_squads) do
+		for k in squad:squad_members() do
+			-- Analyze current sim stalker:
+			se_obj = k.object or sim:object(k.id)
+			if ( (se_obj and IsStalkerOnly( nil, se_obj:clsid( ) ) and se_obj:alive( ) and sfind( se_obj:section_name( ), target_section ) and get_object_story_id( k.id ) == nil) and (se_obj.group_id == nil or se_obj.group_id == 65535 or get_object_story_id( se_obj.group_id ) == nil) ) then
+	
+				-- If sim stalker is enemy faction then add to list of valid targets:
+				local current_sim_faction = alife_character_community( se_obj )
+				for l = 1, #enemy_faction_list do
+					if ( current_sim_faction == enemy_faction_list[l] ) then
+						table.insert( valid_targets, k.id )
+						break
+					end
 				end
 			end
 
