@@ -17,9 +17,11 @@ All notable changes to this project will be documented in this file.
 
 ### Optimization
 * Optimized the target finding code of bounty hunt tasks
+* Optimized work of `UICompanionList:Update()` function
 
 ### Framework
 * Added `stalker_squads` table into `sim_board.script`
+* Moved crit hit mark to the own `ui_actor_crit_hit_mark` texture
 
 ## [1.4.1] - 2024-05-06
 
