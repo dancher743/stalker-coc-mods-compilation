@@ -125,6 +125,8 @@ function UICompanionList:InitControls()
 		
 		self.companion_info[i].invulnerable:InitTexture("ui_hud_icon_shield")
 		self.companion_info[i].invulnerable_shadow:InitTexture("ui_hud_icon_shield")
+		
+		self.companion_info[i].base:Show(false)
 	end
 end
 
