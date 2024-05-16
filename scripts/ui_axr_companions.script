@@ -14,13 +14,8 @@ end
 function deactivate_hud()
 	if HUD ~= nil then
 		get_hud():RemoveDialogToRender(HUD)
+		HUD:Clear()
 		HUD = nil
-	end
-end
-
-local function se_actor_on_register()
-	if (axr_companions.has_companion()) then
-		ui_axr_companions.activate_hud()
 	end
 end
 
@@ -41,7 +36,6 @@ local function actor_on_weapon_zoom_out(item)
 end
 
 function on_game_start()
-	RegisterScriptCallback("actor_on_first_update",se_actor_on_register)
 	RegisterScriptCallback("actor_on_net_destroy",actor_on_net_destroy)
 	RegisterScriptCallback("actor_on_weapon_zoom_in",actor_on_weapon_zoom_in)
 	RegisterScriptCallback("actor_on_weapon_zoom_out",actor_on_weapon_zoom_out)
@@ -53,7 +47,6 @@ class "UICompanionList" (CUIScriptWnd)
 function UICompanionList:__init() super()
 	self.max_size = 15
 	self.companion_info = {}
-	self._tmr 			= time_global()
 	self.update_rate	= 1000 --[ms]
 	self.clr_list = {
 		["def"]     = GetARGB(255,255,255,255),
@@ -70,6 +63,15 @@ function UICompanionList:__init() super()
 	}
 
 	self:InitControls()
+	
+	local function tickback()
+		self:CustomUpdate()
+	end
+	StartTimer("UICompanionListTimer", self.update_rate, tickback)
+end
+
+function UICompanionList:Clear()
+	StopTimer("UICompanionListTimer")
 end
 
 function UICompanionList:__finalize()
@@ -126,15 +128,7 @@ function UICompanionList:InitControls()
 	end
 end
 
-function UICompanionList:Update()
-	CUIScriptWnd.Update(self)
-	
-	local tg = time_global()
-	if self._tmr >= tg then
-		return
-	end
-	self._tmr = tg + self.update_rate
-	
+function UICompanionList:CustomUpdate()
 	local clist = axr_companions.list_actor_squad_by_id()
 	for i=1,#self.companion_info do
 		local se_obj = clist[i] and alife_object(clist[i])
