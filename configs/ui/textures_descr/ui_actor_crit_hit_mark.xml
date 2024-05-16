@@ -1,0 +1,5 @@
+<w>
+    <file name="ui\ui_actor_crit_hit_mark">
+		<texture id="ui_crit_hit_mark" x="0" y="0" width="7" height="7" />
+   </file>
+</w>
