@@ -1,5 +1,5 @@
 <w>
-	<critical_hit_mark x="505" y="375" width="18" height="18" stretch="1" heading_angle="45">
+	<critical_hit_mark x="506" y="375" width="18" height="18" stretch="1" heading_angle="45">
 		<texture r="255" g="0" b="0">ui_crit_hit_mark</texture>
 	</critical_hit_mark>
 </w>
