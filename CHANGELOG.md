@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 ### Fixes
 * Fixed picking `zombied` target in DRX's bounty hunt tasks in Survival mode
 * Added disabling companion list slot into init function
+* Fixed companion removing when rescue hostage task has completed
 
 ### Optimization
 * Optimized the target finding code of bounty hunt tasks

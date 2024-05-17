@@ -5345,6 +5345,9 @@ function remove_squad(actor, obj, p)
 		assert("Wrong squad identificator [%s]. squad doesnt exist", tostring(story_id))
 		return
 	end
+	if (axr_companions.is_companion_squad(squad.id)) then
+		remove_task_companion(actor, obj, p)
+	end
 	SIMBOARD:remove_squad(squad)
 end
 
