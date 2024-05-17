@@ -63,4 +63,7 @@
 	<string id="ui_st_jg_squad_killed">
         <text>В роли проводника, вы потеряли весь отряд.</text>
     </string>
+	<string id="st_ui_pda_need_guider_spot_descr">
+		<text>Нужен проводник</text>
+	</string>
 </string_table>

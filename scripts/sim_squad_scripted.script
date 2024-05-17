@@ -1125,6 +1125,7 @@ function sim_squad_scripted:show()
 	end
 	local spot = STR_EMPTY
 	local non_commander_spot = STR_EMPTY
+	local spot_descr = nil
 
 	if (DEV_DEBUG and axr_main.config:r_value("mm_options","enable_debug_hud",1,false) == true) then
 		if (DEV_DEBUG_HOLD_ACTION_1) then 
@@ -1135,9 +1136,13 @@ function sim_squad_scripted:show()
 			spot = "storyline_task_location"
 		end
 	elseif not(is_squad_monster[self.player_id]) then
-		if (axr_companions.companion_squads[self.id] and not axr_companions.is_hostage_squad(self.id)) then
+		if (jg_guider.is_squad_need_guider(self.id)) then
+			spot = "ui_pda2_need_guider_location"
+			spot_descr = "st_ui_pda_need_guider_spot_descr"
+		elseif (axr_companions.companion_squads[self.id] and not axr_companions.is_hostage_squad(self.id)) then
 			spot = "alife_presentation_squad_companion_1"
 			non_commander_spot = "alife_presentation_squad_companion_non_commander"
+			spot_descr = "companion"
 		else	
 			if (pda_upgrade_manager.has_squads_on_map_upgrade() and axr_main.config:r_value("mm_options","enable_show_stalkers_on_map",1,false) == true) then
 -------------------------------------av661194--start---------------
@@ -1169,14 +1174,14 @@ function sim_squad_scripted:show()
 
 	if (spot~=STR_EMPTY) then
 		if spot == self.spot_section then
-			level.map_change_spot_hint(self.current_spot_id, self.spot_section, self:get_squad_props())
+			level.map_change_spot_hint(self.current_spot_id, self.spot_section, spot_descr or self:get_squad_props())
 			return
 		end
 		if self.spot_section == nil then
-			level.map_add_object_spot(self.current_spot_id, spot, self:get_squad_props())
+			level.map_add_object_spot(self.current_spot_id, spot, spot_descr or self:get_squad_props())
 		else
 			level.map_remove_object_spot(self.current_spot_id, self.spot_section)
-			level.map_add_object_spot(self.current_spot_id, spot, self:get_squad_props())
+			level.map_add_object_spot(self.current_spot_id, spot, spot_descr or self:get_squad_props())
 		end
 		self.spot_section = spot
 	elseif (self.spot_section~=nil) then
@@ -1188,7 +1193,7 @@ function sim_squad_scripted:show()
 	for k in squad:squad_members() do
 		if (k.id ~= squad:commander_id()) then
 			if (non_commander_spot~=STR_EMPTY and level.map_has_object_spot(k.id, non_commander_spot) == 0) then
-				level.map_add_object_spot(k.id, non_commander_spot, self:get_squad_props())
+				level.map_add_object_spot(k.id, non_commander_spot, spot_descr or self:get_squad_props())
 				self.non_commander_spot_section = non_commander_spot
 			elseif (non_commander_spot==STR_EMPTY and self.non_commander_spot_section and level.map_has_object_spot(k.id, self.non_commander_spot_section) == 1) then
 				level.map_remove_object_spot(k.id, self.non_commander_spot_section)
@@ -1220,7 +1225,7 @@ function sim_squad_scripted:get_squad_props()
 
 		return t
 	else
-		return game.translate_string(axr_companions.is_companion_squad(self.id) and "companion" or self.player_id)
+		return game.translate_string(axr_companions.companion_squads[self.id] and "pda_companions_header" or self.player_id)
 	end
 end
 

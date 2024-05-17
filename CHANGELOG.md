@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Features
 * A few campfire idle sounds from OLR 3.0
+* Added mapspot for looking for a guide NPC
 
 ### Mods
 
@@ -25,6 +26,7 @@ All notable changes to this project will be documented in this file.
 ### Framework
 * Added `stalker_squads` table into `sim_board.script`
 * Moved crit hit mark to the own `ui_actor_crit_hit_mark` texture
+* Added `spot_descr` into `sim_squad_scripted.script`
 
 ## [1.4.1] - 2024-05-06
 

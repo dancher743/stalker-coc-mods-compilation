@@ -919,6 +919,18 @@
     	<secondary_task_on_guider_spot x="0" y="0" width="21" height="21" stretch="1" alignment="c" location_level="-1">
         	<texture>ui_pda2_stask_last_01</texture>
 	    </secondary_task_on_guider_spot>
+		
+		<!-- Added by Dancher -->
+		<ui_pda2_need_guider_location>
+                <level_map spot="ui_pda2_need_guider_location_spot"/>
+                <mini_map spot="ui_pda2_need_guider_location_mini_spot"/>
+        </ui_pda2_need_guider_location>
+        <ui_pda2_need_guider_location_spot width="19" height="19" stretch="1" alignment="c" location_level="-1" scale_min="3">
+                <texture r="135" g="183" b="116">ui_pda2_sq_sos</texture>
+        </ui_pda2_need_guider_location_spot>
+        <ui_pda2_need_guider_location_mini_spot width="14" height="14" stretch="1" alignment="c" location_level="-1">
+                <texture r="135" g="183" b="116">ui_pda2_sq_sos</texture>
+        </ui_pda2_need_guider_location_mini_spot>
 </map_spots>
 
 

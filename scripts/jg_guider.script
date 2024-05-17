@@ -237,3 +237,7 @@ function try_clear_prepared_follower(npc)
 		clear_guid()
 	end
 end
+
+function is_squad_need_guider(squad_id)
+	return guid.squad_id == squad_id
+end
