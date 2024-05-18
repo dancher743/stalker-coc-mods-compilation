@@ -9,6 +9,9 @@
 local STAY_POINT_IDLE_MIN = 2*60*60
 local STAY_POINT_IDLE_MAX = 8*60*60
 
+local STALKERS_ON_MAP_OPTION_NAME = "show_stalkers_on_map"
+local MONSTERS_ON_MAP_OPTION_NAME = "show_monsters_on_map"
+
 -- setup location types
 local location_types = {}
 do -- to localize below
@@ -1144,7 +1147,7 @@ function sim_squad_scripted:show()
 			non_commander_spot = "alife_presentation_squad_companion_non_commander"
 			spot_descr = "companion"
 		else	
-			if (pda_upgrade_manager.has_squads_on_map_upgrade() and axr_main.config:r_value("mm_options","enable_show_stalkers_on_map",1,false) == true) then
+			if (pda_upgrade_manager.has_squads_on_map_upgrade() and axr_main_options.get_check_option(STALKERS_ON_MAP_OPTION_NAME)) then
 -------------------------------------av661194--start---------------
 				local relation = self:get_squad_relation()
 				if (relation == "friends") then
@@ -1165,7 +1168,7 @@ function sim_squad_scripted:show()
 			end
 		end
 	else
-		if (pda_upgrade_manager.has_squads_on_map_upgrade() and axr_main.config:r_value("mm_options","enable_show_monsters_on_map",1,false) == true) then
+		if (pda_upgrade_manager.has_squads_on_map_upgrade() and axr_main_options.get_check_option(MONSTERS_ON_MAP_OPTION_NAME)) then
 -------------------------------------av661194--start---------------
 			spot = "alife_presentation_squad_monster_1"
 -------------------------------------av661194--end---------------
