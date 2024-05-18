@@ -64,6 +64,6 @@
         <text>As a guide, you have lost the entire squad.</text>
     </string>
 	<string id="st_ui_pda_need_guider_spot_descr">
-		<text>Looking for a guide</text>
+		<text>Guide needed</text>
 	</string>
 </string_table>
