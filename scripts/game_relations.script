@@ -19,9 +19,9 @@
  NEUTRALS = 0
  ENEMIES = -1000
 default_sympathy = 0.01
-game_relations_by_num = {	[0] = "friend",
-							[1] = "neutral",
-							[2] = "enemy",
+game_relations_by_num = {	[0] = game_object.friend,
+							[1] = game_object.neutral,
+							[2] = game_object.enemy,
 }
 temp_goodwill_table = {}
 
@@ -362,7 +362,7 @@ end
 
 function set_factions_community(faction, faction_to, new_community)
 	if(faction~=nil) and (faction~="none") and (faction_to~="none") then
-		local community = tonumber(new_community) or new_community=="enemy" and -5000 or new_community=="friend" and 5000 or 0
+		local community = tonumber(new_community) or new_community==game_object.enemy and -5000 or new_community==game_object.friend and 5000 or 0
 		set_factions_community_num(faction, faction_to, community)
 	else
 		--printf("No such faction community: "..tostring(faction))
@@ -417,7 +417,7 @@ function get_npcs_relation(npc1, npc2)
 end
 
 function set_npcs_relation(npc1, npc2, new_relation)
-	local goodwill = tonumber(new_relation) or new_relation == "enemy" and -1000 or new_relation == "friend" and 1000 or 0
+	local goodwill = tonumber(new_relation) or new_relation == game_object.enemy and -1000 or new_relation == game_object.friend and 1000 or 0
 	if npc1 and npc2 then
 		npc1:force_set_goodwill(goodwill, npc2)
 	else
@@ -464,7 +464,7 @@ function set_squad_goodwill_to_npc(npc, squad_id, new_goodwill)
 	if not (npc) then
 		return
 	end
-	local goodwill = tonumber(new_relation) or new_relation == "enemy" and -1000 or new_relation == "friend" and 1000 or 0
+	local goodwill = tonumber(new_relation) or new_relation == game_object.enemy and -1000 or new_relation == game_object.friend and 1000 or 0
 	local squad = squad_id and (get_story_squad(squad_id) or alife_object(squad_id))
 	if squad then
 		local sim = alife()
@@ -485,7 +485,7 @@ function set_squad_goodwill_to_npc(npc, squad_id, new_goodwill)
 end
 
 function set_squad_community_goodwill(squad_id, community, new_goodwill)
-	local goodwill = tonumber(new_relation) or new_relation == "enemy" and -1000 or new_relation == "friend" and 1000 or 0
+	local goodwill = tonumber(new_relation) or new_relation == game_object.enemy and -1000 or new_relation == game_object.friend and 1000 or 0
 	local squad = squad_id and (get_story_squad(squad_id) or alife_object(squad_id))
 	if squad then
 		for k in squad:squad_members() do
@@ -506,7 +506,7 @@ function set_level_faction_community(obj)
 				for kk,vv in pairs(v) do
 					if(kk==obj:id()) and db.actor then
 						relation_registry.set_community_goodwill(k, db.actor:id(), vv)
---	run_string xr_effects.set_level_faction_community(nil, nil, {"bandit", "peacemaker_selo", "friend"})
+--	run_string xr_effects.set_level_faction_community(nil, nil, {"bandit", "peacemaker_selo", game_object.friend})
 						obj:force_set_goodwill(vv, db.actor)
 						v[kk] = nil
 					end
@@ -527,7 +527,7 @@ function check_all_squad_members(squad_name, relation)
 	local squad = get_story_squad(squad_name)
 	if squad == nil then return false end
 	if db.actor == nil then return false end
-	local goodwill = tonumber(relation) or relation == "enemy" and -1000 or relation == "friend" and 1000 or 0
+	local goodwill = tonumber(relation) or relation == game_object.enemy and -1000 or relation == game_object.friend and 1000 or 0
 	local is_enemy
 	for k in squad:squad_members() do
 		is_enemy = nil
@@ -555,13 +555,13 @@ function get_squad_goodwill_to_actor_by_id(squad_id)
 		return squad.relationship
 	else
 		if (is_squad_monster[squad.player_id]) then
-			return "enemy"
+			return game_object.enemy
 		end
-		local goodwill = "neutral"
+		local goodwill = game_object.neutral
 		if(relation_registry.community_relation(squad:get_squad_community(), alife():actor():community())>=FRIENDS) then
-			goodwill = "friend"
+			goodwill = game_object.friend
 		elseif(relation_registry.community_relation(squad:get_squad_community(), alife():actor():community())<=ENEMIES) then
-			goodwill = "enemy"
+			goodwill = game_object.enemy
 		end
 		return goodwill
 	end
@@ -579,33 +579,33 @@ function get_squad_goodwill_to_actor(squad_name)
 		return squad.relationship
 	else
 		if (is_squad_monster[squad.player_id]) then
-			return "enemy"
+			return game_object.enemy
 		end
-		local goodwill = "neutral"
+		local goodwill = game_object.neutral
 		if(relation_registry.community_relation(squad:get_squad_community(), alife():actor():community())>=FRIENDS) then
-			goodwill = "friend"
+			goodwill = game_object.friend
 		elseif(relation_registry.community_relation(squad:get_squad_community(), alife():actor():community())<=ENEMIES) then
-			goodwill = "enemy"
+			goodwill = game_object.enemy
 		end
 		return goodwill
 	end
 end
 
 function is_squad_enemy_to_actor(squad_name)
-	return get_squad_goodwill_to_actor(squad_name)=="enemy"
+	return get_squad_goodwill_to_actor(squad_name)==game_object.enemy
 end
 
 function is_squad_friend_to_actor(squad_name)
-	return get_squad_goodwill_to_actor(squad_name)=="friend"
+	return get_squad_goodwill_to_actor(squad_name)==game_object.friend
 end
 
 function is_squad_neutral_to_actor(squad_name)
-	return get_squad_goodwill_to_actor(squad_name)=="neutral"
+	return get_squad_goodwill_to_actor(squad_name)==game_object.neutral
 end
 
 function set_gulag_relation_actor(smart_name, relation)
 	local gulag = xr_gulag.get_gulag_by_name(smart_name)
-	local goodwill = tonumber(relation) or relation == "enemy" and -1000 or relation == "friend" and 1000 or 0
+	local goodwill = tonumber(relation) or relation == game_object.enemy and -1000 or relation == game_object.friend and 1000 or 0
 	local object
 	for k,v in pairs(gulag.npc_info) do
 		object = db.storage[v.se_obj.id] and db.storage[v.se_obj.id].object or level.object_by_id(v.se_obj.id)
@@ -631,7 +631,7 @@ function get_gulag_relation_actor(smart_name, relation)
 		end
 		if npc_count ~= 0 then
 			local delta = goodwill/npc_count
-			relation = tonumber(relation) or relation == "enemy" and -1000 or relation == "friend" and 1000 or 0
+			relation = tonumber(relation) or relation == game_object.enemy and -1000 or relation == game_object.friend and 1000 or 0
 			if relation == -1000 and delta <= ENEMIES then
 				return true
 			elseif relation == 1000 and delta >= FRIENDS then
@@ -651,7 +651,7 @@ function get_squad_relation_to_actor_by_id(squad_id)
 	end
 
 	if (is_squad_monster[squad.player_id]) then
-		return "enemy"
+		return game_object.enemy
 	end
 
     local goodwill = 0
@@ -674,7 +674,7 @@ function get_squad_relation_to_actor_by_id(squad_id)
             return game_object.neutral
         end
     end
-	return "enemy"
+	return game_object.enemy
 end
 
 -- ------------------------------------------------------------------------------------------------
