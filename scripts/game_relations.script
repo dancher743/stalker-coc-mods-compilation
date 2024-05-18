@@ -667,11 +667,11 @@ function get_squad_relation_to_actor_by_id(squad_id)
     if npc_count ~= 0 then
         local delta = goodwill/npc_count
         if delta <= ENEMIES then
-            return "enemy"
+            return game_object.enemy
         elseif delta >= FRIENDS then
-            return "friends"
+            return game_object.friend
         elseif delta < FRIENDS and delta > ENEMIES then
-            return "neutral"
+            return game_object.neutral
         end
     end
 	return "enemy"
