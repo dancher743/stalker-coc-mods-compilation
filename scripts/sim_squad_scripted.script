@@ -1139,17 +1139,18 @@ function sim_squad_scripted:show()
 			spot = "storyline_task_location"
 		end
 	elseif not(is_squad_monster[self.player_id]) then
-		if (jg_guider.is_squad_need_guider(self.id)) then
+		local relation = game_relations.get_squad_relation_to_actor_by_id(self.id)
+		if (relation ~= game_object.enemy and jg_guider.is_squad_need_guider(self.id)) then
 			spot = "ui_pda2_need_guider_location"
 			spot_descr = "st_ui_pda_need_guider_spot_descr"
-		elseif (axr_companions.companion_squads[self.id] and not axr_companions.is_hostage_squad(self.id)) then
+		elseif (relation ~= game_object.enemy and axr_companions.companion_squads[self.id] and not axr_companions.is_hostage_squad(self.id)) then
 			spot = "alife_presentation_squad_companion_1"
 			non_commander_spot = "alife_presentation_squad_companion_non_commander"
 			spot_descr = "companion"
 		else	
 			if (pda_upgrade_manager.has_squads_on_map_upgrade() and axr_main_options.get_check_option(STALKERS_ON_MAP_OPTION_NAME)) then
 -------------------------------------av661194--start---------------
-				local relation = self:get_squad_relation()
+				relation = self:get_squad_relation()
 				if (relation == game_object.friend) then
 					spot = "alife_presentation_squad_friend_1"
 				elseif (relation == game_object.neutral) then
@@ -1159,7 +1160,6 @@ function sim_squad_scripted:show()
 				end
 -------------------------------------av661194--end---------------
 			else
-				local relation = game_relations.get_squad_relation_to_actor_by_id(self.id)
 				if(relation == game_object.friend) then
 					spot = "alife_presentation_squad_friend"
 				elseif(relation == game_object.neutral) then

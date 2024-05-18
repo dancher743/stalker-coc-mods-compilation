@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 * Excluded patrol and wait behaviours of companions from fast travel
 * Improved `gc.script` code
 * Refactored code of squad game relations
+* Added `relation` into guider and companion map spots
 
 ### Fixes
 * Fixed picking `zombied` target in DRX's bounty hunt tasks in Survival mode
