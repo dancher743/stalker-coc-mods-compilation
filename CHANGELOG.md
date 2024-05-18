@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 ### Improvements
 * Excluded patrol and wait behaviours of companions from fast travel
 * Improved `gc.script` code
+* Refactored code of squad game relations
 
 ### Fixes
 * Fixed picking `zombied` target in DRX's bounty hunt tasks in Survival mode
@@ -22,6 +23,7 @@ All notable changes to this project will be documented in this file.
 ### Optimization
 * Optimized the target finding code of bounty hunt tasks
 * Optimized work of `UICompanionList:Update()` function
+* Optimized code of squad game relations
 
 ### Framework
 * Added `stalker_squads` table into `sim_board.script`
