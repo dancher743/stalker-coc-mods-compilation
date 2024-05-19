@@ -1192,17 +1192,20 @@ function sim_squad_scripted:show()
 		self.spot_section = nil
 	end
 	
-	local squad = alife_object(self.id)
-	for k in squad:squad_members() do
-		if (k.id ~= squad:commander_id()) then
-			if (non_commander_spot~=STR_EMPTY and level.map_has_object_spot(k.id, non_commander_spot) == 0) then
+	if (non_commander_spot~=STR_EMPTY) then
+		for k in self:squad_members() do
+			if (level.map_has_object_spot(k.id, non_commander_spot) == 0) then
 				level.map_add_object_spot(k.id, non_commander_spot, spot_descr or self:get_squad_props())
-				self.non_commander_spot_section = non_commander_spot
-			elseif (non_commander_spot==STR_EMPTY and self.non_commander_spot_section and level.map_has_object_spot(k.id, self.non_commander_spot_section) == 1) then
-				level.map_remove_object_spot(k.id, self.non_commander_spot_section)
-				self.non_commander_spot_section = nil
 			end
 		end
+		self.non_commander_spot_section = non_commander_spot
+	elseif (non_commander_spot==STR_EMPTY) then
+		for k in self:squad_members() do
+			if (self.non_commander_spot_section and level.map_has_object_spot(k.id, self.non_commander_spot_section) == 1) then
+				level.map_remove_object_spot(k.id, self.non_commander_spot_section)
+			end
+		end
+		self.non_commander_spot_section = nil
 	end
 end
 
