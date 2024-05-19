@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Features
 * A few campfire idle sounds from OLR 3.0
 * Added mapspot for looking for a guide NPC
+* Added map spot for Guide job
 
 ### Mods
 
@@ -15,12 +16,14 @@ All notable changes to this project will be documented in this file.
 * Improved `gc.script` code
 * Refactored code of squad game relations
 * Added `relation` into guider and companion map spots
+* Corrected locale strings of Guide job
 
 ### Fixes
 * Fixed picking `zombied` target in DRX's bounty hunt tasks in Survival mode
 * Added disabling companion list slot into init function
 * Fixed companion removing when rescue hostage task has completed
 * Fixed map spots of companion squads 
+* Added pack of fixes into `jg_guider.script`
 
 ### Optimization
 * Optimized the target finding code of bounty hunt tasks
