@@ -979,3 +979,35 @@ end
 function round_to_1000(value)
 	return round(value/1000)*1000
 end
+
+function get_nearest_game_vertex(target_position, target_level)
+	local sim = alife()
+	local gg = game_graph()
+	local vertex, lvid, pos
+	local near_lvid, near_dist, near_gvid, dist
+	local gvid = 0
+	local lgvid = 0
+	local level = level
+	while gg:valid_vertex_id(gvid) do
+		vertex = gg:vertex(gvid)
+		level_name = sim:level_name(vertex:level_id())
+		if (level_name == target_level) then
+			pos = vertex:level_point()
+		
+			dist = target_position:distance_to_sqr(pos)
+		
+			if not (near_dist) then
+				near_gvid = gvid
+				near_dist = dist
+			end
+		
+			if (dist < near_dist) then
+				near_gvid = gvid
+				near_dist = dist
+			end
+			lgvid = lgvid + 1
+		end
+		gvid = gvid + 1
+	end
+	return near_gvid
+end

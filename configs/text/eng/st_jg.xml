@@ -66,4 +66,7 @@
 	<string id="st_ui_pda_need_guider_spot_descr">
 		<text>Guide needed</text>
 	</string>
+	<string id="st_ui_pda_guider_target_spot_descr">
+		<text>%s should be in %s</text>
+	</string>
 </string_table>

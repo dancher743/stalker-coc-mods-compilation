@@ -66,4 +66,7 @@
 	<string id="st_ui_pda_need_guider_spot_descr">
 		<text>Нужен проводник</text>
 	</string>
+	<string id="st_ui_pda_guider_target_spot_descr">
+		<text>%s должен быть %s</text>
+	</string>
 </string_table>

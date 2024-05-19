@@ -38,6 +38,13 @@
         <crlc_small_spot  x="0" y="0" width="31" height="31" alignment="c" scale="1" scale_min="1" scale_max="3" stretch = "1">
                 <texture x="633" y="789" width="31" height="31">ui\ui_common</texture>
         </crlc_small_spot>
+		
+		<crlc_guide>
+                <level_map spot="crlc_guide_spot"        pointer="quest_pointer"/>
+        </crlc_guide>
+        <crlc_guide_spot x="0" y="0" width="31" height="31" alignment="c" stretch="1">
+                <texture x="633" y="789" width="31" height="31">ui\ui_common</texture>
+        </crlc_guide_spot>
 
         <blue_location>
                 <level_map  spot="blue_spot"              pointer="quest_pointer"/>

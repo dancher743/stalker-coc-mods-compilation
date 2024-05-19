@@ -38,6 +38,9 @@ end
 function clear()
 	db.actor:disable_info_portion('guider_start')
 	-- level.map_remove_object_spot(curr_guid.squad_id, 'storyline_task_location')
+	local se_obj = curr_guid.spot_se_obj
+	level.map_remove_object_spot(se_obj.id, "crlc_small")
+	alife():release(se_obj)
 	curr_guid = {}
 	jg_utils.d_v("curr_guid")
 	jg_timers.stop_g_timer('guid_fail')
@@ -104,6 +107,15 @@ function activate()
 	-- Старт таймера фэйла
 	jg_timers.g_start_timer('guid_fail',0,curr_guid['timer'],0,'jg_guider','fail_time')
 	-- level.map_add_object_spot_ser(guid.squad_id, 'storyline_task_location', 'Сталкеру необходимо попасть '..description)
+	
+	local pos = vector():set(curr_guid.pos[1], curr_guid.pos[2], curr_guid.pos[3])
+	local lvid = level.vertex_id(pos)
+	local gvid = utils.get_nearest_game_vertex(pos, curr_guid.target_level)
+	local se_obj = alife():create("guide_spot_object",pos,lvid,gvid)
+	local npc = level.object_by_id(get_comm_id(curr_guid.squad_id))
+	local spot_descr = strformat(strtransl("st_ui_pda_guider_target_spot_descr"),npc:character_name(),curr_guid.description)
+	level.map_add_object_spot_ser(se_obj.id, "crlc_guide", spot_descr)
+	curr_guid.spot_se_obj = se_obj
 end
 
 function complete(first_speaker,second_speaker)
@@ -193,7 +205,7 @@ end
 
 function prec_5(actor, npc)
 	local npc = dialogs.who_is_npc(actor,npc)
-	if curr_guid.target_level == level.name() and (type(npc.position) == "function" and npc:position() or npc.position):distance_to(vector():set(curr_guid.pos[1], curr_guid.pos[2], curr_guid.pos[3])) <= 50 then
+	if curr_guid.target_level == level.name() and (type(npc.position) == "function" and npc:position() or npc.position):distance_to_sqr(vector():set(curr_guid.pos[1], curr_guid.pos[2], curr_guid.pos[3])) <= 10*10 then
 		return true
 	end
 end
