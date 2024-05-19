@@ -13,7 +13,7 @@
 		<text>I agree. We can go.</text>
 	</string>
 	<string id="st_jg_5">
-		<text>Sounds good, come on!</text>
+		<text>Great. I've marked the palce on your Map. Come on!</text>
 	</string>
 	<string id="st_jg_6">
 		<text>Oh, dude, you have not enough money for paying the penalty.</text>
@@ -46,7 +46,7 @@
 		<text>We are late! We have agreed : pay the penalty of %s rubles.</text>
 	</string>
 	<string id="st_jg_16">
-		<text>Yes. I`m going to visit some place. The reward will be worth.\nAfter %s hours i`ll have to get into %s, I`ll pay %s rubles\nJust remember, if we do not arrive in time, I`ll take %s as the penalty.</text>
+		<text>Yes. I`m going to visit some place. The reward will be worth. After %s hours I`ll have to get into %s, I`ll pay %s rubles. Just remember, if we do not arrive in time, I`ll take %s as the penalty.</text>
 	</string>
 	<string id="st_jg_17">
 		<text>I should be in</text>
@@ -67,6 +67,6 @@
 		<text>Guide needed</text>
 	</string>
 	<string id="st_ui_pda_guider_target_spot_descr">
-		<text>%s should be in %s</text>
+		<text>%c[255,135,183,116]Guide\n%c[default]%s should be in %s. He marked this place on Map.</text>
 	</string>
 </string_table>
