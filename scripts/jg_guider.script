@@ -14,7 +14,10 @@ function load_state()
 	guid = jg_utils.l_v("guid", {})
 	curr_guid = jg_utils.l_v("curr_guid", {})
 	local newgame = jg_utils.l_v("newgame")	-- хз как ещё сделать срабатывание при НИ
-	if not newgame then jg_utils.s_v("newgame", 'Каллбек сработал') return jg_timers.g_start_timer('guid_msg',0,0,15,'jg_guider','prepare_follower') end
+	if not newgame then 
+		jg_utils.s_v("newgame", 'Каллбек сработал')
+		jg_timers.g_start_timer('guid_msg',0,0,15,'jg_guider','prepare_follower')
+	end
 end 
 function save_state()
 	jg_utils.s_v("guid", guid)
@@ -38,12 +41,15 @@ end
 function clear()
 	db.actor:disable_info_portion('guider_start')
 	-- level.map_remove_object_spot(curr_guid.squad_id, 'storyline_task_location')
-	local se_obj = curr_guid.spot_se_obj
-	level.map_remove_object_spot(se_obj.id, "crlc_small")
-	alife():release(se_obj)
+	local se_obj = alife_object(curr_guid.spot_id)
+	if (se_obj) then
+		level.map_remove_object_spot(se_obj.id, "crlc_guide")
+		alife():release(se_obj)
+	end
 	curr_guid = {}
 	jg_utils.d_v("curr_guid")
 	jg_timers.stop_g_timer('guid_fail')
+	jg_timers.g_start_timer('guid_msg',math.random(0,1),math.random(23),0,'jg_guider','prepare_follower')
 end 
 
 local function clear_guid()
@@ -73,7 +79,8 @@ function prepare_follower()
 	local npc = ins_mass_onl()
 	if npc == nil then
 		if debug == true then printf('! Некого провожать | npc==nil') end
-		return jg_timers.g_start_timer('guid_msg',0,0,15,'jg_guider','prepare_follower')
+		jg_timers.g_start_timer('guid_msg',0,0,15,'jg_guider','prepare_follower')
+		return
 	end
 	local level_name, size = jg_gps.go_poisk()
 	if level_name == nil or size == nil then return jg_timers.g_start_timer('guid_msg',0,0,15,'jg_guider','prepare_follower') end
@@ -106,23 +113,25 @@ function activate()
 	clear_guid()
 	-- Старт таймера фэйла
 	jg_timers.g_start_timer('guid_fail',0,curr_guid['timer'],0,'jg_guider','fail_time')
+	jg_timers.stop_g_timer('guid_msg')
 	-- level.map_add_object_spot_ser(guid.squad_id, 'storyline_task_location', 'Сталкеру необходимо попасть '..description)
 	
 	local pos = vector():set(curr_guid.pos[1], curr_guid.pos[2], curr_guid.pos[3])
 	local lvid = level.vertex_id(pos)
 	local gvid = utils.get_nearest_game_vertex(pos, curr_guid.target_level)
 	local se_obj = alife():create("guide_spot_object",pos,lvid,gvid)
+	curr_guid.spot_id = se_obj.id
+	
 	local npc = level.object_by_id(get_comm_id(curr_guid.squad_id))
 	local spot_descr = strformat(strtransl("st_ui_pda_guider_target_spot_descr"),npc:character_name(),curr_guid.description)
-	level.map_add_object_spot_ser(se_obj.id, "crlc_guide", spot_descr)
-	curr_guid.spot_se_obj = se_obj
+	level.map_add_object_spot_ser(curr_guid.spot_id, "crlc_guide", spot_descr)
+	
 end
 
-function complete(first_speaker,second_speaker)
-	dialogs.relocate_money(db.actor,curr_guid['zarplata'],"in")
+function complete(actor,npc)
+	dialogs.relocate_money(actor,curr_guid['zarplata'],"in")
 	xr_statistic.inc_actor_reputation(100)
-	local snpc = alife():object(get_comm_id(curr_guid['squad_id']))
-	alun_utils.execute_script_on_squad(snpc,axr_companions.remove_from_actor_squad)
+	dialogs_axr_companion.remove_companions_from_squad(actor,npc)
 	clear()
 end
 
