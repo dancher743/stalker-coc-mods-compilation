@@ -78,6 +78,6 @@
 		<text>Нужен проводник</text>
 	</string>
 	<string id="st_ui_pda_guider_target_spot_descr">
-		<text>%c[255,135,183,116]Проводник\n%c[default]%s должет быть %s. Он отметил это место на карте.</text>
+		<text>%c[255,135,183,116]Проводник\n%c[default]%s должен быть %s. Он отметил это место на карте.</text>
 	</string>
 </string_table>
