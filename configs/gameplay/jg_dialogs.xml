@@ -7,6 +7,7 @@
                 <text>st_jg_2</text>
                 <next>11</next>
                 <next>12</next>
+				<next>20</next>
                 <next>13</next>
                 <next>14</next>
                 <next>15</next>
@@ -80,6 +81,16 @@
                 <action>jg_guider.activate</action>
                 <action>dialogs_axr_companion.become_actor_companion</action>
                 <give_info>guider_start</give_info>
+            </phrase>
+			
+			<phrase id="20">
+                <precondition>jg_guider.prec_6</precondition>
+                <has_info>guider_start</has_info>
+				<text>st_jg_20</text>
+                <next>21</next>
+            </phrase>
+			<phrase id="21">
+				<script_text>jg_guider.get_phrase4</script_text>
             </phrase>
         </phrase_list>
     </dialog>

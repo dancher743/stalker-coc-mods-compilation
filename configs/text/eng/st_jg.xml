@@ -57,6 +57,17 @@
 	<string id="st_jg_19">
 		<text>Size way (Include the start and end level): </text>
 	</string>
+	
+	<string id="st_jg_20">
+        <text>How much time is left?</text>
+    </string>
+	<string id="st_jg_210">
+        <text>%s full hours left.</text>
+    </string>
+	<string id="st_jg_211">
+        <text>Less than an hour.</text>
+    </string>
+	
 	<string id="st_travel_guider">
         <text>You can't travel as a guide</text>
     </string>

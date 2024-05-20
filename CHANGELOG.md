@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Features
 * A few campfire idle sounds from OLR 3.0
 * Added mapspot for looking for a guide NPC
-* Added map spot for Guide job
+* Added map spot and time left dialog for Guide job
 
 ### Mods
 

@@ -57,6 +57,17 @@
     <string id="st_jg_19">
         <text>Длина пути (включая стартовый и конечный уровень): </text>
     </string>
+	
+	<string id="st_jg_20">
+        <text>Сколько времени осталось?</text>
+    </string>
+	<string id="st_jg_210">
+        <text>Полных %s часов.</text>
+    </string>
+	<string id="st_jg_211">
+        <text>Менее часа.</text>
+    </string>
+	
 	<string id="st_travel_guider">
         <text>Нельзя путешествовать в роли проводника</text>
     </string>
