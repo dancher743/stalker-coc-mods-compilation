@@ -131,3 +131,17 @@ function fCall(file,func,...)
 	end
 	_G[file][func](...)
 end
+
+-- Added by Dancher
+
+function get_g_timer_left_time(name)
+	local g_timers_tbl = jg_utils.l_v('g_timers_tbl',nil)
+	local g_timer = g_timers_tbl and g_timers_tbl[name]
+	local g_timer_left_time = 0
+	if (g_timer) then
+		local current_time = level.get_time_days()*60*24+level.get_time_hours()*60+level.get_time_minutes()
+		local start_time = g_timer['delay']
+		g_timer_left_time = start_time - current_time
+	end
+	return g_timer_left_time
+end

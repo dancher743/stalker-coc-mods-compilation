@@ -34,6 +34,7 @@ All notable changes to this project will be documented in this file.
 * Added `stalker_squads` table into `sim_board.script`
 * Moved crit hit mark to the own `ui_actor_crit_hit_mark` texture
 * Added `spot_descr` into `sim_squad_scripted.script`
+* Added `get_g_timer_left_time()` function into `jg_timers.script`
 
 ## [1.4.1] - 2024-05-06
 

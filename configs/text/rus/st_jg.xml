@@ -61,11 +61,8 @@
 	<string id="st_jg_20">
         <text>Сколько времени осталось?</text>
     </string>
-	<string id="st_jg_210">
-        <text>Полных %s часов.</text>
-    </string>
-	<string id="st_jg_211">
-        <text>Менее часа.</text>
+	<string id="st_jg_21">
+        <text>%s часов и %s минут.</text>
     </string>
 	
 	<string id="st_travel_guider">

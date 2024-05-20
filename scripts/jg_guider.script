@@ -115,7 +115,6 @@ function activate()
 	-- Старт таймера фэйла
 	jg_timers.g_start_timer('guid_fail',0,curr_guid['timer'],0,'jg_guider','fail_time')
 	jg_timers.stop_g_timer('guid_msg')
-	curr_guid.start_time = game.get_game_time()
 	
 	local pos = vector():set(curr_guid.pos[1], curr_guid.pos[2], curr_guid.pos[3])
 	local lvid = level.vertex_id(pos)
@@ -220,10 +219,6 @@ function prec_5(actor, npc)
 	end
 end
 
-function prec_6(actor, npc)
-	return curr_guid.start_time ~= nil and prec_4(actor, npc)
-end
-
 function get_phrase_1()
 	local str = string.format(game.translate_string('st_jg_16'), guid['timer'], guid.description, guid['zarplata'], guid['neustoika'])
 	if jg_guider.debug == true then
@@ -245,11 +240,11 @@ function get_phrase3()
 end
 
 function get_phrase4()
-	local start_time = curr_guid.start_time
-	local elapsed_hours = math.ceil(game.get_game_time():diffSec(start_time) / 3600)
-	local left_hours = curr_guid.timer - elapsed_hours
-	local phrase = left_hours >= 1 and 'st_jg_210' or 'st_jg_211'
-	return strformat(strtransl(phrase), left_hours)
+	local left_minutes_total = jg_timers.get_g_timer_left_time('guid_fail')
+	local left_hours = math.floor(left_minutes_total / 60)
+	local left_minutes = left_minutes_total - (left_hours * 60)
+	local phrase = strformat(strtransl('st_jg_21'), left_hours, left_minutes)
+	return phrase
 end
 
 --///////////////////////////////// Вспомогательные функции

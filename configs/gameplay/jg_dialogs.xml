@@ -84,7 +84,7 @@
             </phrase>
 			
 			<phrase id="20">
-                <precondition>jg_guider.prec_6</precondition>
+                <precondition>jg_guider.prec_4</precondition>
                 <has_info>guider_start</has_info>
 				<text>st_jg_20</text>
                 <next>21</next>
