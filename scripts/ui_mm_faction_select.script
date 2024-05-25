@@ -1854,6 +1854,9 @@ function faction_ui:OnStartGame()
 	axr_main.config:w_value("character_creation","new_game_map",self.selected_map or nil)
 	axr_main.config:w_value("character_creation","new_game_money",self.selected_money or nil)
 	
+	axr_main.config:w_value("character_creation","new_game_stalker_pop",0.1 or nil)
+	axr_main.config:w_value("character_creation","new_game_mutant_pop",0.1 or nil)
+	
 	-- write defaults of population into config
 	--[[
 	axr_main.config:w_value("mm_options","alife_mutant_pop",0.5)
