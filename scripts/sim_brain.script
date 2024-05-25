@@ -247,8 +247,6 @@ function fill_start_position()
 	
 	local stalker_pop_factor = (axr_main.config:r_value("character_creation","new_game_stalker_pop",3) or 1)
 	local monster_pop_factor = (axr_main.config:r_value("character_creation","new_game_mutant_pop",3) or 1)
-	printf("DANCHER! " .. stalker_pop_factor)
-	printf("DANCHER! " .. monster_pop_factor)
 		
 	local result, squad_section, count, li, lc
 	setting_ini:section_for_each(function(section)
