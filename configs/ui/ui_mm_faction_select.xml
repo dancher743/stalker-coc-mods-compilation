@@ -152,10 +152,10 @@
 		<scroll_item_desc x="593" y="301" width="296" height="65" right_ident="0" left_ident="0" top_indent="0" bottom_indent="0" vert_interval="0" always_show_scroll="0"/>
 		
 		<!-- Options -->
-		<list_difficulty_cap x="342" y="400" width="152" height="27">
+		<list_difficulty_cap x="308" y="400" width="152" height="27">
 			<text r="245" g="245" b="245" font="letterica18" align="l" vert_align="c">st_cap_list_difficulty</text>
 		</list_difficulty_cap>
-		<list_difficulty x="227" y="403" width="110" height="27">
+		<list_difficulty x="193" y="403" width="110" height="27">
 			<list_font r="245" g="245" b="245" font="letterica16"/>
 			<text_color>
 				<e r="245" g="245" b="245"/>
@@ -163,10 +163,10 @@
 			</text_color>
 		</list_difficulty>
 		
-		<list_companions_cap x="682" y="400" width="152" height="27">
+		<list_companions_cap x="545" y="400" width="152" height="27">
 			<text r="245" g="245" b="245" font="letterica18" align="l" vert_align="c">st_cap_list_companions</text>
 		</list_companions_cap>
-		<list_companions x="567" y="403" width="110" height="27">
+		<list_companions x="430" y="403" width="110" height="27">
 			<list_font r="245" g="245" b="245" font="letterica16"/>
 			<text_color>
 				<e r="245" g="245" b="245"/>
