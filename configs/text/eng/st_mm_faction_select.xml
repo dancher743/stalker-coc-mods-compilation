@@ -210,6 +210,26 @@
 			\n%c[0,255,255,255]Recommended for: advanced players who are familiar with Story mode or have played without it.
 		</text>
 	</string>
+		<string id="st_mm_list_stalker_population_desc">
+		<text>
+			%c[0,150,150,150]Stalker population factor.
+			\n
+			\nDetermines how many stalkers will be in the Zone at the very beginning of the game.
+			\n
+			\n%c[200,50,200,50]• %c[0,150,150,150]Further population is determined in the options.
+			\nSee "Options" -> "Game". Then "Population factor (stalkers)".
+		</text>
+	</string>
+	<string id="st_mm_list_mutant_population_desc">
+		<text>
+			%c[0,150,150,150]Mutants population factor.
+			\n
+			\nDetermines how many mutants will be in the Zone at the very beginning of the game.
+			\n
+			\n%c[200,50,200,50]• %c[0,150,150,150]Further population is determined in the options.
+			\nSee "Options" -> "Game". Then "Population factor (mutants)".
+		</text>
+	</string>
 	
 	<!-- Static Text -->
 	<string id="st_mm_new_game_character">
@@ -287,6 +307,9 @@
 	</string>
 	<string id="st_cap_list_difficulty">
 		<text>Difficulty</text>
+	</string>
+	<string id="st_cap_lists_population">
+		<text>Population</text>
 	</string>
 	<string id="st_companions_0">
 		<text>No</text>

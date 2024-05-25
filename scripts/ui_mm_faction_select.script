@@ -392,6 +392,7 @@ function faction_ui:__init(owner) super()
 	self.table_inv = {}
 	self.table_difficulty = {"novice","stalker","veteran","master"}
 	self.table_companions = {"0","1","2","3"}
+	self.table_populations = {"0.1","0.25","0.5","1.0","1.5"}
 	
 	self.table_hardcore_lives = {}
 	local n = ini_opt:line_count("new_game_hardcore_lives") or 0
@@ -433,6 +434,8 @@ function faction_ui:__init(owner) super()
 	self.selected_money = nil
 	self.selected_difficulty = self.table_difficulty[2]
 	self.selected_companions = self.table_companions[1]
+	self.selected_stalker_population = self.table_populations[3]
+	self.selected_mutant_population = self.table_populations[3]
 	self.selected_hardcore_lives = self.table_hardcore_lives[1]
 	self.selected_hardcore_regen = self.table_hardcore_regen[1]
 	self.selected_timer = self.table_timer[1]
@@ -591,6 +594,15 @@ function faction_ui:Main_Controls()
 		self.list_companions:SetAutoDelete(true)
 		self:Register(self.list_companions, "list_companions")
 		self:LoadCompanions()
+		
+		self.lists_population_cap = xml:InitStatic("main_dialog:lists_population_cap",self.dialog)
+		self.list_stalker_population = xml:InitComboBox("main_dialog:list_stalker_population", self.dialog)
+		self.list_stalker_population:SetAutoDelete(true)
+		self:Register(self.list_stalker_population, "list_stalker_population")
+		self.list_mutant_population = xml:InitComboBox("main_dialog:list_mutant_population", self.dialog)
+		self.list_mutant_population:SetAutoDelete(true)
+		self:Register(self.list_mutant_population, "list_mutant_population")
+		self:LoadPopulations()
 
 		self.ck_story_cap = xml:InitStatic("main_dialog:options:cap_check_story",self.templ_options)
 		self.ck_story = xml:InitCheck("main_dialog:options:check_story",	self.templ_options)
@@ -656,7 +668,10 @@ function faction_ui:Main_Controls()
 							["list_companions"] = false,
 							["list_hardcore_lives"] = false,
 							["list_hardcore_regen"] = false,
-							["list_timer"] = false
+							["list_timer"] = false,
+							
+							["list_stalker_population"] = false,
+							["list_mutant_population"] = false
 		}
 	end
 	self.scroll_options:AddWindow(self.templ_options, true)
@@ -708,6 +723,9 @@ function faction_ui:Main_CallBacks()
 	self:AddCallback("list_hardcore_lives", ui_events.LIST_ITEM_SELECT, self.OnSelectHardcoreLives, self)
 	self:AddCallback("list_hardcore_regen", ui_events.LIST_ITEM_SELECT, self.OnSelectHardcoreRegen, self)
 	self:AddCallback("list_timer", ui_events.LIST_ITEM_SELECT, self.OnSelectTimer, self)
+	
+	self:AddCallback("list_stalker_population", ui_events.LIST_ITEM_SELECT, self.OnSelectStalkerPopulation, self)
+	self:AddCallback("list_mutant_population", ui_events.LIST_ITEM_SELECT, self.OnSelectMutantPopulation, self)
 end
 
 function faction_ui:Update()
@@ -1246,6 +1264,28 @@ function faction_ui:LoadCompanions (rand)
 	self.selected_companions = pick
 end
 
+function faction_ui:LoadPopulations (rand)
+	self.list_stalker_population:ClearList()
+	self.list_mutant_population:ClearList()
+	
+	local table_populations_count = #self.table_populations
+	
+	for i=1,table_populations_count do
+		local item = self.table_populations[i]
+		self.list_stalker_population:AddItem(item, i)
+		self.list_mutant_population:AddItem(item, i)
+	end
+	
+	local pick_stalker_population = rand and self.table_populations[math.random(table_populations_count)] or self.table_populations[3]
+	local pick_mutant_population = rand and self.table_populations[math.random(table_populations_count)] or self.table_populations[3]
+	
+	self.list_stalker_population:SetText(pick_stalker_population)
+	self.list_mutant_population:SetText(pick_mutant_population)
+	
+	self.selected_stalker_population = pick_stalker_population
+	self.selected_mutant_population = pick_mutant_population
+end
+
 function faction_ui:LoadHardcoreLives (rand)
 	local str
 	self.list_hardcore_lives:ClearList()
@@ -1458,6 +1498,16 @@ end
 
 function faction_ui:OnSelectCompanions()
 	self.selected_companions = self.table_companions[self.list_companions:CurrentID()]
+end
+
+function faction_ui:OnSelectStalkerPopulation()
+	self.selected_stalker_population = self.table_populations[self.list_stalker_population:CurrentID()]
+	printf(self.selected_stalker_population)
+end
+
+function faction_ui:OnSelectMutantPopulation()
+	self.selected_mutant_population = self.table_populations[self.list_mutant_population:CurrentID()]
+	printf(self.selected_mutant_population)
 end
 
 function faction_ui:OnSelectHardcoreLives()
@@ -1752,6 +1802,9 @@ function faction_ui:OnRandomize()
 	
 	-- Companions
 	--self:LoadCompanions(true)
+	
+	-- Populations
+	-- self:LoadPopulations(true)
 end
 
 function faction_ui:OnKeyboard(dik, keyboard_action)
@@ -1854,8 +1907,8 @@ function faction_ui:OnStartGame()
 	axr_main.config:w_value("character_creation","new_game_map",self.selected_map or nil)
 	axr_main.config:w_value("character_creation","new_game_money",self.selected_money or nil)
 	
-	axr_main.config:w_value("character_creation","new_game_stalker_pop",0.1 or nil)
-	axr_main.config:w_value("character_creation","new_game_mutant_pop",0.1 or nil)
+	axr_main.config:w_value("character_creation","new_game_stalker_pop",self.selected_stalker_population or nil)
+	axr_main.config:w_value("character_creation","new_game_mutant_pop",self.selected_mutant_population or nil)
 	
 	axr_main.config:save() -- Store info in temp file
 	self.owner:StartGame() -- Start the game
