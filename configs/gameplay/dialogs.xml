@@ -2637,4 +2637,30 @@
             </phrase>
         </phrase_list>
     </dialog>
+	
+	<!-- Added by Dancher -->
+	
+	<dialog id="vanish_bounty_hunt_target_dialog">
+		<precondition>dialogs.is_bounty_hunt_target</precondition>
+        <phrase_list>
+            <phrase id="0">
+                <text>vanish_bounty_hunt_target_dialog_0</text>
+                <next>1</next>
+				<next>2</next>
+            </phrase>
+            <phrase id="1">
+                <precondition>dialogs.can_vanish_bounty_hunt_target</precondition>
+				<text>vanish_bounty_hunt_target_dialog_1</text>
+				<next>11</next>
+            </phrase>
+			<phrase id="11">
+				<text>vanish_bounty_hunt_target_dialog_11</text>
+				<action>dialogs.vanish_bounty_hunt_target</action>
+            </phrase>
+			<phrase id="2">
+				<precondition>dialogs.cant_vanish_bounty_hunt_target</precondition>
+				<script_text>dialogs.get_vanish_bounty_hunt_target_phrase_2</script_text>
+            </phrase>
+        </phrase_list>
+    </dialog>
 </game_dialogs>

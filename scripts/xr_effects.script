@@ -7959,3 +7959,47 @@ end
 function setup_base_defense_fail_conditions(actor,npc,p)
 	utils.save_var(db.actor,"base_defense_level",level.name())
 end
+
+-- Added by Dancher
+
+function remove_task_squad(actor,npc,p)
+	level.add_pp_effector("black.ppe", 1313, false)
+	
+	local squad = get_object_squad(npc)
+	
+	if (squad == nil) then
+		assert("Squad doesnt exist")
+		return
+	end
+	
+	if (axr_companions.is_companion_squad(squad.id)) then
+		remove_task_companion_by_squad(actor, obj, { squad })
+	end
+	
+	SIMBOARD:remove_squad(squad)
+end
+
+-- remove a companion squad by squad
+function remove_task_companion_by_squad(actor,npc,p)
+	local squad = p[1]
+	
+	if not (squad) then
+		return
+	end
+
+	axr_companions.companion_squads[squad.id] = nil
+	squad:reset()
+
+	for k in squad:squad_members() do
+		local npc = k.id and (db.storage[k.id] and db.storage[k.id].object or level.object_by_id(k.id))
+		if (npc) then
+			axr_logic.restore_scheme_and_logic(npc)
+			npc:disable_info_portion("npcx_is_companion")
+			npc:disable_info_portion("npcx_beh_cannot_dismiss")
+
+			utils.se_obj_save_var(k.id,k.object:name(),"companion",nil)
+			utils.se_obj_save_var(k.id,k.object:name(),"companion_cannot_dismiss",nil)
+			utils.se_obj_save_var(k.id,k.object:name(),"companion_cannot_teleport",nil)
+		end
+	end
+end

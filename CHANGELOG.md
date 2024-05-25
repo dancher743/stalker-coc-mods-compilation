@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 * A few campfire idle sounds from OLR 3.0
 * Added mapspot for looking for a guide NPC
 * Added map spot and time left dialog for Guide job
+* Added peaceful way dialog for bounty hunt task
 
 ### Mods
 
@@ -37,6 +38,7 @@ All notable changes to this project will be documented in this file.
 * Added `get_nearest_game_vertex(target_position, target_level)` function into `utils.script`
 * Added `dummy_object` into `system.ltx`
 * Added `get_g_timer_left_time()` function into `jg_timers.script`
+* Added `remove_task_squad(actor,npc,p)` function into `xr_effects.script`
 
 ## [1.4.1] - 2024-05-06
 
