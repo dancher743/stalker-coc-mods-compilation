@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 * Added mapspot for looking for a guide NPC
 * Added map spot and time left dialog for Guide job
 * Added peaceful way dialog for bounty hunt task
+* Choose start population of stalkers/monsters
 
 ### Mods
 
