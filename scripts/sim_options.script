@@ -14,11 +14,6 @@ function get_unpc_respawn_option()
 	return axr_main.config:r_string_ex("mm_options","eoc_faction_warfare_unpc_respawn")
 end
 
-function write_defaults_to_config()
-	axr_main.config:w_value("mm_options","eoc_faction_warfare_activity",warfare_activity.medium)
-	axr_main.config:w_value("mm_options","eoc_faction_warfare_unpc_respawn",false)
-end
-
 local function opt_menu_on_init(menu)
 	if (not db.actor or not IsEocMode()) then
 		return
