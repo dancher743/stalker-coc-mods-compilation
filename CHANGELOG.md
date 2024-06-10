@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 * Added map spot and time left dialog for Guide job
 * Added peaceful way dialog for bounty hunt task
 * Choose start population of stalkers/monsters
+* Simplified lottery for Merc's patches
 
 ### Mods
 
@@ -26,6 +27,7 @@ All notable changes to this project will be documented in this file.
 * Fixed companion removing when rescue hostage task has completed
 * Fixed map spots of companion squads 
 * Added pack of fixes into `jg_guider.script`
+* Fixed lottery for Merc's patches
 
 ### Optimization
 * Optimized the target finding code of bounty hunt tasks
