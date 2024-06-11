@@ -164,6 +164,9 @@ end
 --
 -- from CoC 1.5b r6
 --
+local all_options = "mm_options"
+local slot_hud_option = "enable_slot_hud"
+
 function slot_hud:Update()
 	local tg = time_global()
 	
@@ -177,7 +180,7 @@ function slot_hud:Update()
 	
 	self:show_hud(main_hud_shown())
 	
-	if (axr_main.config:r_value("mm_options","enable_slot_hud",1,true)) == false then
+	if (axr_main.config:r_value(all_options,slot_hud_option,1,true)) == false then
 		if (sloted_patch ~= nil or table.size(belted_arts) > 0) then
 			self:clear(0)
 --			deactivate_hud()
