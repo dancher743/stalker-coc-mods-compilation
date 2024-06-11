@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 * Added peaceful way dialog for bounty hunt task
 * Choose start population of stalkers/monsters
 * Simplified lottery for Merc's patches
+* Added flies into ambient
 
 ### Mods
 * Removed Animated detectors (selectively) (Alex_91zA)
