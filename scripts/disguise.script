@@ -121,7 +121,6 @@ local function run_updates()
 end
 
 local function stop_updates()
-	ui_disguise.show(false)
 	RemoveTimeEvent("disguise","main_update")
 end
 
@@ -140,6 +139,11 @@ end
 
 function get_patch_in_slot()
 	return db.actor:item_in_slot(patch_slot_number)
+end
+
+function get_patch_section_in_slot()
+	local patch = get_patch_in_slot()
+	return patch and patch:section() or nil
 end
 
 function update_actor_default_faction()
@@ -279,12 +283,9 @@ function update_npc()
 end
 
 function update_ui(is_first_update)	
-	local is_main_hud_shown = main_hud_shown()
-	
-	ui_disguise.show(is_main_hud_shown)
-	
-	if (is_first_update or is_main_hud_shown and disguise_helper.has_patch_changed(patch_in_slot, prev_patch_in_slot)) then
-		ui_disguise.update(patch_in_slot)
+	if (is_first_update or disguise_helper.has_patch_changed(patch_in_slot, prev_patch_in_slot)) then
+		local patch_section = get_patch_section_in_slot()
+		slot_hud.set_patch_slot(patch_section)
 	end
 end
 

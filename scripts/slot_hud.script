@@ -1,6 +1,7 @@
 --//  Shows belted artifacts on primary hud
 
-local HUD,belted_arts
+local HUD
+local belted_arts, belted_patch
 local update_rate = 1000 --[ms]
 
 function activate_hud()
@@ -19,11 +20,13 @@ function activate_hud()
 			end
 		end
 	)		
+	belted_patch = disguise.get_patch_section_in_slot()
 	HUD:update_hud()
 end
 
 function deactivate_hud()
 	belted_arts = nil
+	belted_patch = nil
 	close_hud()
 	UnregisterScriptCallback("actor_item_to_belt",actor_item_to_belt)
 	UnregisterScriptCallback("actor_item_to_ruck", actor_item_to_ruck)
@@ -44,6 +47,13 @@ function close_hud()
 	if HUD ~= nil then
 		get_hud():RemoveDialogToRender(HUD)
 		HUD = nil
+	end
+end
+
+function set_patch_slot(patch_section)
+	belted_patch = patch_section
+	if HUD ~= nil then
+		HUD:update_hud()
 	end
 end
 
@@ -108,24 +118,33 @@ function slot_hud:InitControls()
 	xml:ParseFile("ui_slot_hud.xml")
 	self.static_back = xml:InitStatic("static_slot_back", self)
 	self.static_back:Show(false)
-	for i=1, 5 do
+	for i=1,6 do
 		self.slot[i] = xml:InitStatic("static_slot_back:slot_"..i, self.static_back)
 		self.slot[i]:InitTexture("ui\\ui_icon_equipment")
 	end
 end
 
+function slot_hud:update_slot(section, index)
+	local x1 = (self.ini:r_float_ex(section,"inv_grid_x")or 0)*50
+	local y1 = (self.ini:r_float_ex(section,"inv_grid_y")or 0)*50
+	local x2 = x1 + 50
+	local y2 = y1 + 50
+	self.slot[index]:SetTextureRect(Frect():set(x1,y1,x2,y2))
+	self.slot[index]:Show(true)
+end
+
 function slot_hud:update_hud(item)
 	local cnt = 0
+	if (belted_patch) then
+		cnt = cnt + 1
+		local sec = disguise.get_patch_section_in_slot()
+		self:update_slot(sec,cnt)
+	end
 	for id, sec in pairs(belted_arts) do
 		cnt = cnt + 1
-		local x1 = (self.ini:r_float_ex(sec,"inv_grid_x")or 0)*50
-		local y1 = (self.ini:r_float_ex(sec,"inv_grid_y")or 0)*50
-		local x2 = x1 + 50
-		local y2 = y1 + 50
-		self.slot[cnt]:SetTextureRect(Frect():set(x1,y1,x2,y2))
-		self.slot[cnt]:Show(true)
+		self:update_slot(sec,cnt)
 	end
-	for i=cnt+1,5 do
+	for i=cnt+1,6 do
 		self.slot[i]:Show(false)
 	end
 	self:show_hud(table.size(belted_arts) > 0)
