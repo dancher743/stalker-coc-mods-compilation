@@ -139,14 +139,18 @@ function slot_hud:update_hud(item)
 		cnt = cnt + 1 
 		self:update_slot(sloted_patch:section(),cnt)
 	end
-	for id, sec in pairs(belted_arts) do
-		cnt = cnt + 1
-		self:update_slot(sec,cnt)
+	if (table.size(belted_arts) > 0) then
+		for id, sec in pairs(belted_arts) do
+			cnt = cnt + 1
+			self:update_slot(sec,cnt)
+		end
 	end
 	for i=cnt+1,6 do
 		self.slot[i]:Show(false)
 	end
-	self:show_hud(table.size(belted_arts) > 0)
+	if (cnt == 0) then
+		self:show_hud(false)
+	end
 end
 
 function slot_hud:show_hud(value)
@@ -174,7 +178,7 @@ function slot_hud:Update()
 	self:show_hud(main_hud_shown())
 	
 	if (axr_main.config:r_value("mm_options","enable_slot_hud",1,true)) == false then
-		if table.size(belted_arts) > 0 then
+		if (sloted_patch ~= nil or table.size(belted_arts) > 0) then
 			self:clear(0)
 --			deactivate_hud()
 		end
