@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 * Refactored code of squad game relations
 * Added `relation` into guider and companion map spots
 * Corrected locale strings of Guide job
+* Corrected crosshair length
 
 ### Fixes
 * Fixed picking `zombied` target in DRX's bounty hunt tasks in Survival mode
