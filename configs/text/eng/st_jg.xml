@@ -72,7 +72,7 @@
         <text>As a guide, you have lost the entire squad.</text>
     </string>
 	<string id="st_ui_pda_need_guider_spot_descr">
-		<text>Guide needed</text>
+		<text>%c[255,135,183,116]Guide\n%c[default]%s needs a guide.</text>
 	</string>
 	<string id="st_ui_pda_guider_target_spot_descr">
 		<text>%c[255,135,183,116]Guide\n%c[default]%s should be in %s. He marked this place on Map.</text>

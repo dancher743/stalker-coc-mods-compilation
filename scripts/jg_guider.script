@@ -53,6 +53,11 @@ function clear()
 end 
 
 local function clear_guid()
+	local spot_id = guid.squad_id
+	local spot_icon = "ui_pda2_need_guider_location_level_map"
+	if (level.map_has_object_spot(spot_id,spot_icon) == 1) then
+		level.map_remove_object_spot(spot_id,spot_icon)
+	end
 	guid = {}
 	jg_utils.d_v("guid")
 end 
@@ -100,6 +105,11 @@ function prepare_follower()
 	guid.timer			= 2*(size + math.random(0, size))
 	guid.zarplata		= utils.round_to_1000(2*(math.ceil(size * math.random(stdzarplata * 1, stdzarplata * 2))))
 	guid.neustoika		= utils.round_to_1000(guid.zarplata * math.random(25,100)/100)
+	
+	local spot_id = guid.squad_id
+	local spot_icon = "ui_pda2_need_guider_location_level_map"
+	local spot_descr = strformat(strtransl("st_ui_pda_need_guider_spot_descr"), npc:character_name())
+	level.map_add_object_spot_ser(spot_id, spot_icon, spot_descr)
 	
 	local news_text = string.format(game.translate_string('st_jg_14'), game.translate_string(level_name), dynamic_news_helper.GetPointDescription(npc))
 	send_tip(npc, news_text, beep_1)

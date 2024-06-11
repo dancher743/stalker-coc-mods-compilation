@@ -1141,8 +1141,7 @@ function sim_squad_scripted:show()
 	elseif not(is_squad_monster[self.player_id]) then
 		local relation = game_relations.get_squad_relation_to_actor_by_id(self.id)
 		if (relation ~= game_object.enemy and jg_guider.is_squad_need_guider(self.id)) then
-			spot = "ui_pda2_need_guider_location"
-			spot_descr = "st_ui_pda_need_guider_spot_descr"
+			spot = "ui_pda2_need_guider_location_mini_map"
 		elseif (relation ~= game_object.enemy and axr_companions.companion_squads[self.id] and not axr_companions.is_hostage_squad(self.id)) then
 			spot = "alife_presentation_squad_companion_1"
 			non_commander_spot = "alife_presentation_squad_companion_non_commander"

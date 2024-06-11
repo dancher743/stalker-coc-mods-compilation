@@ -72,7 +72,7 @@
         <text>В роли проводника, вы потеряли весь отряд.</text>
     </string>
 	<string id="st_ui_pda_need_guider_spot_descr">
-		<text>Нужен проводник</text>
+		<text>%c[255,135,183,116]Проводник\n%c[default]%s нуждается в проводнике.</text>
 	</string>
 	<string id="st_ui_pda_guider_target_spot_descr">
 		<text>%c[255,135,183,116]Проводник\n%c[default]%s должен быть %s. Он отметил это место на карте.</text>
