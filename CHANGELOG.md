@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 * Simplified lottery for Merc's patches
 
 ### Mods
+* Removed Animated detectors (selectively) (Alex_91zA)
 
 ### Improvements
 * Excluded patrol and wait behaviours of companions from fast travel
