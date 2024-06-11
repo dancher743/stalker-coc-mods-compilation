@@ -1,7 +1,7 @@
 --//  Shows belted artifacts on primary hud
 
 local HUD
-local belted_arts, belted_patch
+local belted_arts, sloted_patch
 local update_rate = 1000 --[ms]
 
 function activate_hud()
@@ -20,13 +20,13 @@ function activate_hud()
 			end
 		end
 	)		
-	belted_patch = disguise.get_patch_section_in_slot()
+	sloted_patch = db.actor:item_in_slot(14)
 	HUD:update_hud()
 end
 
 function deactivate_hud()
 	belted_arts = nil
-	belted_patch = nil
+	sloted_patch = nil
 	close_hud()
 	UnregisterScriptCallback("actor_item_to_belt",actor_item_to_belt)
 	UnregisterScriptCallback("actor_item_to_ruck", actor_item_to_ruck)
@@ -50,8 +50,8 @@ function close_hud()
 	end
 end
 
-function set_patch_slot(patch_section)
-	belted_patch = patch_section
+function set_patch_slot(item)
+	sloted_patch = item
 	if HUD ~= nil then
 		HUD:update_hud()
 	end
@@ -135,10 +135,9 @@ end
 
 function slot_hud:update_hud(item)
 	local cnt = 0
-	if (belted_patch) then
-		cnt = cnt + 1
-		local sec = disguise.get_patch_section_in_slot()
-		self:update_slot(sec,cnt)
+	if (sloted_patch) then
+		cnt = cnt + 1 
+		self:update_slot(sloted_patch:section(),cnt)
 	end
 	for id, sec in pairs(belted_arts) do
 		cnt = cnt + 1

@@ -141,11 +141,6 @@ function get_patch_in_slot()
 	return db.actor:item_in_slot(patch_slot_number)
 end
 
-function get_patch_section_in_slot()
-	local patch = get_patch_in_slot()
-	return patch and patch:section() or nil
-end
-
 function update_actor_default_faction()
 	if not disguise_helper.has_faction_changed(actor_community, disguise_community, default_faction) then
 		return
@@ -284,8 +279,7 @@ end
 
 function update_ui(is_first_update)	
 	if (is_first_update or disguise_helper.has_patch_changed(patch_in_slot, prev_patch_in_slot)) then
-		local patch_section = get_patch_section_in_slot()
-		slot_hud.set_patch_slot(patch_section)
+		slot_hud.set_patch_slot(patch_in_slot)
 	end
 end
 
