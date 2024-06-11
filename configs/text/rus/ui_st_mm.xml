@@ -500,7 +500,7 @@
 		<text>Угол обзора</text>
 	</string>
 	<string id="ui_mm_slot_hud">
-		<text>Артефакты на поясе</text>
+		<text>Интерфейс слотов</text>
 	</string>
 	<string id="ui_mm_show_tracers">
 		<text>Трассеры пуль</text>
