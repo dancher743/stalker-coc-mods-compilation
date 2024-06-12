@@ -330,4 +330,13 @@
 	<string id="st_disassemble">
 		<text>Разобрать</text>
 	</string>
+	
+	<!-- Added by Dancher -->
+	
+	<string id="st_move_to_bag_all">
+		<text>убрать в рюкзак всё</text>
+	</string>
+	<string id="st_move_from_bag_all">
+		<text>убрать из рюкзака всё</text>
+	</string>
 </string_table>

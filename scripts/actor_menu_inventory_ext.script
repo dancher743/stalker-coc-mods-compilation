@@ -39,7 +39,7 @@ function can_transfer_all_to_box(item)
 		db.actor:iterate_inventory(iterator, nil)
 	end
 	
-	return has_item_found and "transfer_to_box" or nil
+	return has_item_found and strtransl("st_move_from_bag_all") or nil
 end
 
 function can_transfer_all_to_ruck(item)
@@ -55,7 +55,7 @@ function can_transfer_all_to_ruck(item)
 		last_inv_box:iterate_inventory_box(iterator, nil)
 	end
 	
-	return has_item_found and "transfer_to_ruck" or nil
+	return has_item_found and strtransl("st_move_to_bag_all") or nil
 end
 
 function transfer_all_to_box(item)
