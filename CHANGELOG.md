@@ -34,6 +34,7 @@ All notable changes to this project will be documented in this file.
 * Fixed map spots of companion squads 
 * Added pack of fixes into `jg_guider.script`
 * Fixed lottery for Merc's patches
+* Removed non-existent sections from `medkits` and `bandages` in `xr_eat_medkit.ltx`
 
 ### Optimization
 * Optimized the target finding code of bounty hunt tasks
