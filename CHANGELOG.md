@@ -25,7 +25,6 @@ All notable changes to this project will be documented in this file.
 * Corrected locale strings of Guide job
 * Corrected crosshair length
 * Replaced patch slot UI with slot-based approach
-* Added `location_level` into `treasure_quest` mapspot to be above quest pointer
 * Moved phrase13 above the rest in `guid_dlg` dialog
 
 ### Fixes
