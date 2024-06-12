@@ -84,6 +84,7 @@ function dead_body_search_wnd_closed()
 	--printf("---:>DeadBodySearch closed")
 	dead_body_searching = false
 	bind_container.curBoxID = nil
+	SendScriptCallback("DeadBodySearchClosed")
 end
 
 function dialog_wnd_showed()

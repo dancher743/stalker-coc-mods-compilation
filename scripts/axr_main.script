@@ -166,7 +166,9 @@ local intercepts = {
 	on_game_first_load				= {},
 	
 	actor_on_slicing_update			= {},
-	squad_on_slicing_update			= {}
+	squad_on_slicing_update			= {},
+	
+	DeadBodySearchClosed			= {}
 	--
 }
 
