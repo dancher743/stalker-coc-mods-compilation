@@ -25,7 +25,7 @@ All notable changes to this project will be documented in this file.
 * Corrected locale strings of Guide job
 * Corrected crosshair length
 * Replaced patch slot UI with slot-based approach
-* Moved phrase13 above the rest in `guid_dlg` dialog
+* Corrected order of phrases in Guide dialog
 * Corrected `st_addon_companion_quick_menu_ignoreCombatButHelpMe` string in rus locale
 
 ### Fixes
