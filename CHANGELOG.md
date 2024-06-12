@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 * Corrected crosshair length
 * Replaced patch slot UI with slot-based approach
 * Moved phrase13 above the rest in `guid_dlg` dialog
+* Corrected `st_addon_companion_quick_menu_ignoreCombatButHelpMe` string in rus locale
 
 ### Fixes
 * Fixed picking `zombied` target in DRX's bounty hunt tasks in Survival mode
