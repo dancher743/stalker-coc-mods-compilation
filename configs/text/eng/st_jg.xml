@@ -46,7 +46,7 @@
 		<text>We are late! We have agreed : pay the penalty of %s rubles.</text>
 	</string>
 	<string id="st_jg_16">
-		<text>Yes. I`m going to visit some place. The reward will be worth. After %s hours I`ll have to get into %s, I`ll pay %s rubles. Just remember, if we do not arrive in time, I`ll take %s as the penalty.</text>
+		<text>Yes. I`m going to visit some place. The reward will be worth. After %s hours I`ll have to get into %s, I`ll pay %s rubles. Just remember, if we do not arrive in time, I`ll take %s as the penalty. If you do it much earlier, I'll give you a bonus.</text>
 	</string>
 	<string id="st_jg_17">
 		<text>I should be in</text>
@@ -63,6 +63,10 @@
     </string>
 	<string id="st_jg_21">
         <text>%s hours and %s minutes.</text>
+    </string>
+	
+	<string id="st_jg_22">
+        <text>And since you did it much earlier, keep a bonus of 20 percent of the reward.</text>
     </string>
 	
 	<string id="st_travel_guider">

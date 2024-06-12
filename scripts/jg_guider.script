@@ -139,7 +139,11 @@ function activate()
 end
 
 function complete(actor,npc)
-	dialogs.relocate_money(actor,curr_guid['zarplata'],"in")
+	local zarplata = curr_guid['zarplata']
+	if (has_time_bonus()) then
+		zarplata = zarplata + zarplata * 0.2
+	end
+	dialogs.relocate_money(actor,zarplata,"in")
 	xr_statistic.inc_actor_reputation(100)
 	dialogs_axr_companion.remove_companions_from_squad(actor,npc)
 	clear()
@@ -257,6 +261,16 @@ function get_phrase4()
 	return phrase
 end
 
+function get_phrase5()
+	local phrase
+	if (has_time_bonus()) then
+		phrase = strformat("%s %s", strtransl("st_jg_9"), strtransl("st_jg_22"))
+	else
+		phrase = strtransl("st_jg_9")
+	end
+	return phrase
+end
+
 --///////////////////////////////// Вспомогательные функции
 
 function send_tip(npc, news_text, news_sound)
@@ -279,4 +293,14 @@ end
 
 function is_squad_need_guider(squad_id)
 	return guid.squad_id == squad_id
+end
+
+function has_time_bonus()
+	local result = false
+	if (curr_guid and curr_guid.timer) then
+		local minutes_left = jg_timers.get_g_timer_left_time('guid_fail')
+		local minutes_total = curr_guid.timer * 60
+		result = minutes_left > math.floor(minutes_total * 0.2)
+	end
+	return result
 end

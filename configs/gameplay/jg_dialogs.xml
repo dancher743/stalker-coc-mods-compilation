@@ -37,7 +37,7 @@
                 <next>131</next>
             </phrase>
             <phrase id="131">
-                <text>st_jg_9</text>
+                <script_text>jg_guider.get_phrase5</script_text>
                 <action>jg_guider.complete</action>
             </phrase>
             <phrase id="14">

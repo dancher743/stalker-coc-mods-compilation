@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 * A few campfire idle sounds from OLR 3.0
 * Added mapspot for looking for a guide NPC
 * Added map spot and time left dialog for Guide job
+* Added bonus reward for time for Guide job
 * Added peaceful way dialog for bounty hunt task
 * Choose start population of stalkers/monsters
 * Simplified lottery for Merc's patches
