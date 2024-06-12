@@ -104,7 +104,7 @@ function prepare_follower()
 	guid.size			= size
 	guid.timer			= 2*(size + math.random(0, size))
 	guid.zarplata		= utils.round_to_1000(2*(math.ceil(size * math.random(stdzarplata * 1, stdzarplata * 2))))
-	guid.neustoika		= utils.round_to_1000(guid.zarplata * math.random(25,100)/100)
+	guid.neustoika		= utils.round_to_1000(guid.zarplata * math.random(25,75)/100)
 	
 	local spot_id = guid.squad_id
 	local spot_icon = "ui_pda2_need_guider_location_level_map"
