@@ -37,6 +37,7 @@ All notable changes to this project will be documented in this file.
 * Optimized the target finding code of bounty hunt tasks
 * Optimized work of `UICompanionList:Update()` function
 * Optimized code of squad game relations
+* Optimized work of `slot_hud:CustomUpdate()` function
 
 ### Framework
 * Added `stalker_squads` table into `sim_board.script`

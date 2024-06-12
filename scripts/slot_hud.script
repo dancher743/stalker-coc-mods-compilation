@@ -46,6 +46,7 @@ end
 function close_hud()
 	if HUD ~= nil then
 		get_hud():RemoveDialogToRender(HUD)
+		HUD:Clear()
 		HUD = nil
 	end
 end
@@ -106,7 +107,6 @@ class "slot_hud" (CUIScriptWnd)
 function slot_hud:__init() super()
 	self.slot = {}
 	self.ini = system_ini()
-	self.tmr = time_global()
 	self.shown = false
 	self:InitControls()
 end
@@ -122,6 +122,14 @@ function slot_hud:InitControls()
 		self.slot[i] = xml:InitStatic("static_slot_back:slot_"..i, self.static_back)
 		self.slot[i]:InitTexture("ui\\ui_icon_equipment")
 	end
+	local function tickback()
+		self:CustomUpdate()
+	end
+	StartTimer("slot_hud_timer", update_rate, tickback)
+end
+
+function slot_hud:Clear()
+	StopTimer("slot_hud_timer")
 end
 
 function slot_hud:update_slot(section, index)
@@ -167,17 +175,7 @@ end
 local all_options = "mm_options"
 local slot_hud_option = "enable_slot_hud"
 
-function slot_hud:Update()
-	local tg = time_global()
-	
-	if self.tmr >= tg then
-		return
-	else
-		self.tmr = tg + update_rate
-	end
-	
-	CUIScriptWnd.Update(self)
-	
+function slot_hud:CustomUpdate()
 	self:show_hud(main_hud_shown())
 	
 	if (axr_main.config:r_value(all_options,slot_hud_option,1,true)) == false then
