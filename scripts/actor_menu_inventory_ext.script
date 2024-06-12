@@ -108,11 +108,12 @@ local function physic_object_on_use_callback(obj,who)
 	end
 end
 
-function on_game_start()
-	RegisterScriptCallback("physic_object_on_use_callback", physic_object_on_use_callback)
-end
-
-function reset()
+local function DeadBodySearchClosed()
 	last_inv_box = nil
 	last_se_inv_box = nil
+end
+
+function on_game_start()
+	RegisterScriptCallback("physic_object_on_use_callback", physic_object_on_use_callback)
+	RegisterScriptCallback("DeadBodySearchClosed", DeadBodySearchClosed)
 end
