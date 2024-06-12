@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 * Choose start population of stalkers/monsters
 * Simplified lottery for Merc's patches
 * Added flies into environment's sounds
+* Added ability to move all patches from/to inventory/box
 
 ### Mods
 * Removed Animated detectors (selectively) (Alex_91zA)
@@ -49,6 +50,7 @@ All notable changes to this project will be documented in this file.
 * Added `dummy_object` into `system.ltx`
 * Added `get_g_timer_left_time()` function into `jg_timers.script`
 * Added `remove_task_squad(actor,npc,p)` function into `xr_effects.script`
+* Added `DeadBodySearchClosed` callback into `axr_main.script`
 
 ## [1.4.1] - 2024-05-06
 
