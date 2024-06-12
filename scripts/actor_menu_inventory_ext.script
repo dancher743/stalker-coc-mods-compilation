@@ -26,7 +26,7 @@ local function update_actor_menu()
 	CreateTimeEvent("actor_menu_inventory_ext","update_actor_menu",0,reuse_container)
 end
 
-function can_transfer_all_to_box(item)
+function can_move_all_to_box(item)
 	local has_item_found = false
 	
 	if (actor_menu.dead_body_searching and last_inv_box) then
@@ -42,7 +42,7 @@ function can_transfer_all_to_box(item)
 	return has_item_found and strtransl("st_move_from_bag_all") or nil
 end
 
-function can_transfer_all_to_ruck(item)
+function can_move_all_to_ruck(item)
 	local has_item_found = false
 	
 	if (actor_menu.dead_body_searching and last_inv_box) then
@@ -58,7 +58,7 @@ function can_transfer_all_to_ruck(item)
 	return has_item_found and strtransl("st_move_to_bag_all") or nil
 end
 
-function transfer_all_to_box(item)
+function move_all_to_box(item)
 	local items_to_transfer = {}
 	local item_section = item:section()
 	local actor = db.actor
@@ -78,7 +78,7 @@ function transfer_all_to_box(item)
 	update_actor_menu()
 end
 
-function transfer_all_to_ruck(item)
+function move_all_to_ruck(item)
 	local items_to_transfer = {}
 	local item_section = item:section()
 	
