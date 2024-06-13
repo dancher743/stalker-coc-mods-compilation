@@ -30,7 +30,7 @@ function process_pda(info_id)
 		return
 	end
 
-	local has_surge_or_storm = (surge_manager.is_started() and surge_manager.has_stage("quake20")) or (psi_storm_manager.is_started() and psi_storm_manager.has_stage("1stvortex"))
+	local has_surge_or_storm = (surge_manager.is_started() and surge_manager.has_stage("pdaoff")) or (psi_storm_manager.is_started() and psi_storm_manager.has_stage("pdaoff"))
 	local hud = get_hud()
 	
 	if (info_id == "ui_pda" and has_surge_or_storm and window == nil) then

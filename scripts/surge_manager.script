@@ -564,6 +564,10 @@ function CSurgeManager:update()
 				--self.debugMessages[2]:SetText("task given at: "..tostring(diff_sec))
 			end
 		end
+		-- pda off -----------------------------------------------------------------------------------------------------------------------------------------
+		if (diff_sec>=40) and (self.stages['pdaoff'] ~= true) then
+			self.stages['pdaoff']=true
+		end
 		-- blowout impact -----------------------------------------------------------------------------------------------------------------------------------------
 		if (diff_sec>=47) and (self.stages['impact'] ~= true) then
 			if (rnd_sound % 2) ~= 0 then

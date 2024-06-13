@@ -306,6 +306,10 @@ function CPsiStormManager:update()
 			end
 			self.task_given = true
 		end
+		-- pda off -----------------------------------------------------------------------------------------------------------------------------------------
+		if (diff_sec>=22) and (self.stages['pdaoff'] ~= true) then
+			self.stages['pdaoff']=true
+		end
 		-- psi storm main phase -----------------------------------------------------------------------------------------------------------------------------------------
 		if (diff_sec>=40) and (diff_sec<=228) then
 			if self.next_vortex_at == nil then
