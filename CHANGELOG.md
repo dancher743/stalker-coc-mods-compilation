@@ -29,7 +29,7 @@ All notable changes to this project will be documented in this file.
 * Corrected order of phrases in Guide dialog
 * Corrected `st_addon_companion_quick_menu_ignoreCombatButHelpMe` string in rus locale
 * Balanced penalty of Guider job
-* Changed keys for mutant's loot window: `LShift` for take all, `USE` for close window
+* Changed keys for mutant's loot window: `LShift` to take all, `USE` or `QUIT` to close
 * Balanced time of PDA off feature
 
 ### Fixes
