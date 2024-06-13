@@ -31,6 +31,7 @@ All notable changes to this project will be documented in this file.
 * Balanced penalty of Guider job
 * Changed keys for mutant's loot window: `LShift` to take all, `USE` or `QUIT` to close
 * Balanced time of PDA off feature
+* Improved bar guard's logic
 
 ### Fixes
 * Fixed picking `zombied` target in DRX's bounty hunt tasks in Survival mode
