@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
 * Simplified lottery for Merc's patches
 * Added flies into environment's sounds
 * Added ability to move all patches from/to inventory/box
-* Replaced 3 gen night vision with 2 gen night vision from Clear Sky
+* Replaced 3 gen night vision with 2 gen night vision from Shadow of Chernobyl
 
 ### Mods
 * Removed Animated detectors (selectively) (Alex_91zA)
