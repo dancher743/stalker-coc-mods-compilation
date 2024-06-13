@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 * Simplified lottery for Merc's patches
 * Added flies into environment's sounds
 * Added ability to move all patches from/to inventory/box
+* Replaced 3 gen night vision with 2 gen night vision from Clear Sky
 
 ### Mods
 * Removed Animated detectors (selectively) (Alex_91zA)
@@ -29,7 +30,7 @@ All notable changes to this project will be documented in this file.
 * Corrected order of phrases in Guide dialog
 * Corrected `st_addon_companion_quick_menu_ignoreCombatButHelpMe` string in rus locale
 * Balanced penalty of Guider job
-* Changed keys for mutant's loot window: `LShift` to take all, `USE` or `QUIT` to close
+* Changed keys for mutant's loot window: `LShift` to take all, `USE` or `QUIT` for close
 * Balanced time of PDA off feature
 
 ### Fixes
