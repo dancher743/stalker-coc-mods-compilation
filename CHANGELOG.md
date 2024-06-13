@@ -46,6 +46,7 @@ All notable changes to this project will be documented in this file.
 * Optimized work of `UICompanionList:Update()` function
 * Optimized code of squad game relations
 * Optimized work of `slot_hud:CustomUpdate()` function
+* Optimized code of `pda_off.script`
 
 ### Framework
 * Added `stalker_squads` table into `sim_board.script`
