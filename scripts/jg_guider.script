@@ -105,6 +105,8 @@ function prepare_follower()
 	guid.timer			= 2*(size + math.random(0, size))
 	guid.zarplata		= utils.round_to_1000(2*(math.ceil(size * math.random(stdzarplata * 1, stdzarplata * 2))))
 	guid.neustoika		= utils.round_to_1000(guid.zarplata * math.random(25,75)/100)
+	guid.nadbavka_cf	= 0.2
+	guid.bonus_time_cf	= 0.2
 	
 	local spot_id = guid.squad_id
 	local spot_icon = "ui_pda2_need_guider_location_level_map"
@@ -140,8 +142,8 @@ end
 
 function complete(actor,npc)
 	local zarplata = curr_guid['zarplata']
-	if (has_time_bonus()) then
-		zarplata = zarplata + zarplata * 0.2
+	if (has_time_bonus() and curr_guid.nadbavka_cf) then
+		zarplata = zarplata + zarplata * curr_guid.nadbavka_cf
 	end
 	dialogs.relocate_money(actor,zarplata,"in")
 	xr_statistic.inc_actor_reputation(100)
@@ -264,7 +266,8 @@ end
 function get_phrase5()
 	local phrase
 	if (has_time_bonus()) then
-		phrase = strformat("%s %s", strtransl("st_jg_9"), strtransl("st_jg_22"))
+		local bonus_time_phrase = strformat(strtransl("st_jg_22"), curr_guid.bonus_time_cf * 100)
+		phrase = strformat("%s %s", strtransl("st_jg_9"), bonus_time_phrase)
 	else
 		phrase = strtransl("st_jg_9")
 	end
@@ -297,10 +300,10 @@ end
 
 function has_time_bonus()
 	local result = false
-	if (curr_guid and curr_guid.timer) then
+	if (curr_guid and curr_guid.timer and curr_guid.bonus_time_cf) then
 		local minutes_left = jg_timers.get_g_timer_left_time('guid_fail')
 		local minutes_total = curr_guid.timer * 60
-		result = minutes_left > math.floor(minutes_total * 0.2)
+		result = minutes_left > math.floor(minutes_total * curr_guid.bonus_time_cf)
 	end
 	return result
 end
