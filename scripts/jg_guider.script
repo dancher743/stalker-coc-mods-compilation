@@ -40,11 +40,14 @@ end
 
 function clear()
 	db.actor:disable_info_portion('guider_start')
-	-- level.map_remove_object_spot(curr_guid.squad_id, 'storyline_task_location')
-	local se_obj = alife_object(curr_guid.spot_id)
-	if (se_obj) then
-		level.map_remove_object_spot(se_obj.id, "crlc_guide")
-		alife():release(se_obj)
+	local spot_id = curr_guid.spot_id
+	if (spot_id) then
+		-- level.map_remove_object_spot(curr_guid.squad_id, 'storyline_task_location')
+		local se_obj = alife_object(spot_id)
+		if (se_obj) then
+			level.map_remove_object_spot(se_obj.id, "crlc_guide")
+			alife():release(se_obj)
+		end
 	end
 	curr_guid = {}
 	jg_utils.d_v("curr_guid")
@@ -53,10 +56,12 @@ function clear()
 end 
 
 local function clear_guid()
-	local spot_id = guid.squad_id
-	local spot_icon = "ui_pda2_need_guider_location_level_map"
-	if (level.map_has_object_spot(spot_id,spot_icon) == 1) then
-		level.map_remove_object_spot(spot_id,spot_icon)
+	local spot_id = guid.spot_id
+	if (spot_id) then
+		local spot_icon = "ui_pda2_need_guider_location_level_map"
+		if (level.map_has_object_spot(spot_id,spot_icon) == 1) then
+			level.map_remove_object_spot(spot_id,spot_icon)
+		end
 	end
 	guid = {}
 	jg_utils.d_v("guid")
@@ -108,10 +113,13 @@ function prepare_follower()
 	guid.nadbavka_cf	= 0.2
 	guid.bonus_time_cf	= 0.2
 	
-	local spot_id = guid.squad_id
-	local spot_icon = "ui_pda2_need_guider_location_level_map"
-	local spot_descr = strformat(strtransl("st_ui_pda_need_guider_spot_descr"), npc:character_name())
-	level.map_add_object_spot_ser(spot_id, spot_icon, spot_descr)
+	if (axr_main_options.get_check_option("show_guide_job_on_map")) then
+		local spot_id = guid.squad_id
+		local spot_icon = "ui_pda2_need_guider_location_level_map"
+		local spot_descr = strformat(strtransl("st_ui_pda_need_guider_spot_descr"), npc:character_name())
+		level.map_add_object_spot_ser(spot_id, spot_icon, spot_descr)
+		guid.spot_id = spot_id
+	end
 	
 	local news_text = string.format(game.translate_string('st_jg_14'), game.translate_string(level_name), dynamic_news_helper.GetPointDescription(npc))
 	send_tip(npc, news_text, beep_1)
@@ -128,16 +136,22 @@ function activate()
 	jg_timers.g_start_timer('guid_fail',0,curr_guid['timer'],0,'jg_guider','fail_time')
 	jg_timers.stop_g_timer('guid_msg')
 	
-	local pos = vector():set(curr_guid.pos[1], curr_guid.pos[2], curr_guid.pos[3])
-	local lvid = level.vertex_id(pos)
-	local gvid = utils.get_nearest_game_vertex(pos, curr_guid.target_level)
-	local se_obj = alife():create("guide_spot_object",pos,lvid,gvid)
-	curr_guid.spot_id = se_obj.id
-	
-	local npc = level.object_by_id(get_comm_id(curr_guid.squad_id))
-	local spot_descr = strformat(strtransl("st_ui_pda_guider_target_spot_descr"),npc:character_name(),curr_guid.description)
-	level.map_add_object_spot_ser(curr_guid.spot_id, "crlc_guide", spot_descr)
-	-- level.map_add_object_spot_ser(guid.squad_id, 'storyline_task_location', 'Сталкеру необходимо попасть '..description)
+	if (axr_main_options.get_check_option("show_guide_job_on_map")) then
+		local pos = vector():set(curr_guid.pos[1], curr_guid.pos[2], curr_guid.pos[3])
+		local lvid = level.vertex_id(pos)
+		local gvid = utils.get_nearest_game_vertex(pos, curr_guid.target_level)
+		local se_obj = alife():create("guide_spot_object",pos,lvid,gvid)
+		
+		local spot_id = se_obj.id
+		local npc = level.object_by_id(get_comm_id(curr_guid.squad_id))
+		local spot_descr = strformat(strtransl("st_ui_pda_guider_target_spot_descr"),npc:character_name(),curr_guid.description)
+		level.map_add_object_spot_ser(spot_id, "crlc_guide", spot_descr)
+		-- level.map_add_object_spot_ser(guid.squad_id, 'storyline_task_location', 'Сталкеру необходимо попасть '..description)
+		
+		curr_guid.spot_id = spot_id
+	else
+		curr_guid.spot_id = nil
+	end
 end
 
 function complete(actor,npc)
@@ -233,7 +247,7 @@ end
 
 function prec_5(actor, npc)
 	local npc = dialogs.who_is_npc(actor,npc)
-	if curr_guid.target_level == level.name() and (type(npc.position) == "function" and npc:position() or npc.position):distance_to_sqr(vector():set(curr_guid.pos[1], curr_guid.pos[2], curr_guid.pos[3])) <= 10*10 then
+	if curr_guid.target_level == level.name() and (type(npc.position) == "function" and npc:position() or npc.position):distance_to_sqr(vector():set(curr_guid.pos[1], curr_guid.pos[2], curr_guid.pos[3])) <= 25*25 then
 		return true
 	end
 end

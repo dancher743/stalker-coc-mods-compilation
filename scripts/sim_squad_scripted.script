@@ -11,6 +11,7 @@ local STAY_POINT_IDLE_MAX = 8*60*60
 
 local STALKERS_ON_MAP_OPTION_NAME = "show_stalkers_on_map"
 local MONSTERS_ON_MAP_OPTION_NAME = "show_monsters_on_map"
+local GUIDE_JOB_ON_MAP_OPTION_NAME = "show_guide_job_on_map"
 
 -- setup location types
 local location_types = {}
@@ -1140,7 +1141,7 @@ function sim_squad_scripted:show()
 		end
 	elseif not(is_squad_monster[self.player_id]) then
 		local relation = game_relations.get_squad_relation_to_actor_by_id(self.id)
-		if (relation ~= game_object.enemy and jg_guider.is_squad_need_guider(self.id)) then
+		if (relation ~= game_object.enemy and jg_guider.is_squad_need_guider(self.id) and axr_main_options.get_check_option(GUIDE_JOB_ON_MAP_OPTION_NAME)) then
 			spot = "ui_pda2_need_guider_location_mini_map"
 		elseif (relation ~= game_object.enemy and axr_companions.companion_squads[self.id] and not axr_companions.is_hostage_squad(self.id)) then
 			spot = "alife_presentation_squad_companion_1"

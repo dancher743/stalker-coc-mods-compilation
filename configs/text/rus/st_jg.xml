@@ -13,7 +13,7 @@
         <text>Я согласен. Выдвигаемся.</text>
     </string>
     <string id="st_jg_5">
-        <text>Здорово. Я отметил место у тебя на карте. Пошли!</text>
+        <text>Здорово. Пошли!</text>
     </string>
     <string id="st_jg_6">
         <text>Не мужик, у тебя не хватит денег, чтобы заплатить мне неустойку.</text>
@@ -79,6 +79,6 @@
 		<text>%c[255,135,183,116]Проводник\n%c[default]%s нуждается в проводнике.</text>
 	</string>
 	<string id="st_ui_pda_guider_target_spot_descr">
-		<text>%c[255,135,183,116]Проводник\n%c[default]%s должен быть %s. Он отметил это место на карте.</text>
+		<text>%c[255,135,183,116]Проводник\n%c[default]%s должен быть %s. Это примерно где-то здесь.</text>
 	</string>
 </string_table>

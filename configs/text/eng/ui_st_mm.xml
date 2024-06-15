@@ -573,4 +573,7 @@
 	<string id="ui_mm_show_health_effectors">
 		<text>Show wound effects</text>
 	</string>
+	<string id="ui_mm_show_guide_job_on_map">
+		<text>Show guide job on map</text>
+	</string>
 </string_table>

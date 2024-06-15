@@ -13,7 +13,7 @@
 		<text>I agree. We can go.</text>
 	</string>
 	<string id="st_jg_5">
-		<text>Great. I've marked the palce on your Map. Come on!</text>
+		<text>Great. Come on!</text>
 	</string>
 	<string id="st_jg_6">
 		<text>Oh, dude, you have not enough money for paying the penalty.</text>
@@ -79,6 +79,6 @@
 		<text>%c[255,135,183,116]Guide\n%c[default]%s needs a guide.</text>
 	</string>
 	<string id="st_ui_pda_guider_target_spot_descr">
-		<text>%c[255,135,183,116]Guide\n%c[default]%s should be in %s. He marked this place on Map.</text>
+		<text>%c[255,135,183,116]Guide\n%c[default]%s should be in %s. It should be right around here.</text>
 	</string>
 </string_table>
