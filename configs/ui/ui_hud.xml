@@ -21,9 +21,9 @@
 				<progress stretch="1">
 					<texture>ui_inGame2_companion_health_bar</texture>
 				</progress>
-				<min_color r="255" g="50" b="50"/>
+				<min_color r="200" g="50" b="50"/>
 				<middle_color r="255" g="255" b="80"/>
-				<max_color r="70" g="255" b="120"/>
+				<max_color r="50" g="160" b="50"/>
 			</health>
 		</slot>
 	</companion_list>

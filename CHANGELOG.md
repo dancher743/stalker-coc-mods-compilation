@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 * Simplified lottery for Merc's patches
 * Added flies into environment's sounds
 * Added ability to move all patches from/to inventory/box
+* Reworked companion's health bar
 
 ### Mods
 * Removed Animated detectors (selectively) (Alex_91zA)
