@@ -175,7 +175,7 @@ function UICompanionList:CustomUpdate()
 			
 			-- Health
 			if (npc) then 
-				local health = clamp( round_idp(npc.health,1),0,1)
+				local health = utils.clamp(round_idp(npc.health,1),0,1)
 				ele.prog_health:SetProgressPos( health )
 			end
 			

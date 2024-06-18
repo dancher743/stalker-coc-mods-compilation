@@ -10,7 +10,7 @@
 
 
 function clamp(val, min, max)
-	return val < min and min or val > max and max or val
+	return (val < min and min) or (val > max and max) or val
 end
 
 function round(num, idp)
