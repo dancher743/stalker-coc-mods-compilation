@@ -32,6 +32,11 @@ local monster_classes = {
 local progress = nil
 local last_id = nil
 
+local all_options = "mm_options"
+local show_enemy_health_option = "enable_show_enemy_health"
+
+local cs_enemy_health = "cs_enemy_health"
+
 function on_game_start()
 	RegisterScriptCallback("monster_on_hit_callback",on_hit)
 	RegisterScriptCallback("npc_on_hit_callback",on_hit)
@@ -46,7 +51,7 @@ function on_hit(obj,power,dir,who,bi)
 	
 	if not (st.show_health) then
 		-- show health progress for all objects hit by actor if option is enabled
-		if (axr_main.config:r_value("mm_options","enable_show_enemy_health",1,false) == false) then
+		if (axr_main.config:r_value(all_options,show_enemy_health_option,1,false) == false) then
 			return 
 		end
 	end
@@ -70,12 +75,12 @@ function on_hit(obj,power,dir,who,bi)
 		return 
 	end
 	
-	local cs = hud:GetCustomStatic("cs_enemy_health") 
+	local cs = hud:GetCustomStatic(cs_enemy_health) 
 	if (cs == nil) then 
-		hud:AddCustomStatic("cs_enemy_health", true)
+		hud:AddCustomStatic(cs_enemy_health, true)
 		local xml = CScriptXmlInit()
 		xml:ParseFile("ui_enemy_health.xml")
-		cs = hud:GetCustomStatic("cs_enemy_health")
+		cs = hud:GetCustomStatic(cs_enemy_health)
 		local w = cs:wnd()
 		progress = xml:InitProgressBar("enemy_health", w)
 	end
@@ -83,7 +88,7 @@ function on_hit(obj,power,dir,who,bi)
 	if (bi == "from_death_callback") then
 		last_id = nil
 		progress = nil
-		hud:RemoveCustomStatic("cs_enemy_health")
+		hud:RemoveCustomStatic(cs_enemy_health)
 		return
 	end
 	
@@ -118,16 +123,18 @@ function on_hit(obj,power,dir,who,bi)
 		cs:wnd():TextControl():SetText(text)
 		
 		-- Auto-remove Custom Static after 30s unless hit again
-		RemoveTimeEvent("ui_enemy_health","cs_remove")
+		local enemy_health_ev_id = "ui_enemy_health"
+		local enemy_health_act_id = "cs_remove"
+		RemoveTimeEvent(enemy_health_ev_id,enemy_health_act_id)
 		local function remove_me()
 			cs_remove()
 		end
-		CreateTimeEvent("ui_enemy_health","cs_remove",10,remove_me)
+		CreateTimeEvent(enemy_health_ev_id,enemy_health_act_id,10,remove_me)
 		last_id = obj:id()
 	else
 		last_id = nil
 		progress = nil
-		hud:RemoveCustomStatic("cs_enemy_health")
+		hud:RemoveCustomStatic(cs_enemy_health)
 	end
 end
 
@@ -135,8 +142,8 @@ function cs_remove()
 	last_id = nil
 	progress = nil
 	local hud = get_hud()
-	local cs = hud and hud:GetCustomStatic("cs_enemy_health") 
+	local cs = hud and hud:GetCustomStatic(cs_enemy_health) 
 	if (cs) then
-		hud:RemoveCustomStatic("cs_enemy_health")
+		hud:RemoveCustomStatic(cs_enemy_health)
 	end
 end

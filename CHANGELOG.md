@@ -50,6 +50,7 @@ All notable changes to this project will be documented in this file.
 * Optimized code of squad game relations
 * Optimized work of `slot_hud:CustomUpdate()` function
 * Optimized code of `pda_off.script`
+* Optimized RAM and CPU usage in `ui_enemy_health.script`
 
 ### Framework
 * Added `stalker_squads` table into `sim_board.script`
