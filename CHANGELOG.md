@@ -33,6 +33,7 @@ All notable changes to this project will be documented in this file.
 * Changed keys for mutant's loot window: `LShift` to take all, `USE` or `QUIT` to close
 * Balanced time of PDA off feature
 * Improved bar guard's logic
+* Corrected probabilities of `atmosfear_stormy` in `dynamic_weather_graphs.ltx`
 
 ### Fixes
 * Fixed picking `zombied` target in DRX's bounty hunt tasks in Survival mode
