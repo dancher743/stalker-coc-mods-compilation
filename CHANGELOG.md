@@ -52,6 +52,7 @@ All notable changes to this project will be documented in this file.
 * Optimized code of `pda_off.script`
 * Optimized RAM and CPU usage in `ui_enemy_health.script`
 * Optimized utils functions from Anomaly 1.5.1.2 in `_g.script`
+* Changed `switch_distance` to 150 in `alife.ltx`
 
 ### Framework
 * Added `stalker_squads` table into `sim_board.script`
