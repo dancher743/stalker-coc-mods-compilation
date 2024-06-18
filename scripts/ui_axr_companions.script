@@ -78,7 +78,8 @@ function UICompanionList:__finalize()
 end
 
 function UICompanionList:InitControls()
-	local xml = utils_xml.get_hud_xml()
+	local xml = CScriptXmlInit()
+	xml:ParseFile("ui_companion_list.xml")
 
 	self.dialog = xml:InitStatic("companion_list", self)
 	--utils_xml.correct_ratio(self.dialog, true)
