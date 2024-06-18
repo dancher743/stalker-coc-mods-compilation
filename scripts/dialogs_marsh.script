@@ -28,7 +28,7 @@ end
 function ecolog_companion_task_1_give_reward(a,b)
 	dialogs.relocate_money(db.actor,math.random(4500,7000),"in")
 	if ((math.random(1,100)/100) <= 0.5) then
-		coc_treasure_manager.create_random_stash()
+		coc_treasure_manager.create_random_stash(nil, strtransl("st_itm_reward_stash"))
 	end
 	xr_effects.inc_faction_goodwill_to_actor(db.actor, nil, {"ecolog", 50})
 	xr_effects.inc_faction_goodwill_to_actor(db.actor, nil, {"csky", 25})

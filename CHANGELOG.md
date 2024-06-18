@@ -34,6 +34,7 @@ All notable changes to this project will be documented in this file.
 * Balanced time of PDA off feature
 * Improved bar guard's logic
 * Corrected probabilities of `atmosfear_stormy` in `dynamic_weather_graphs.ltx`
+* Added "The reward for the task" string into stash's description
 
 ### Fixes
 * Fixed picking `zombied` target in DRX's bounty hunt tasks in Survival mode

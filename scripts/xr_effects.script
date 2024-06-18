@@ -2109,7 +2109,7 @@ function drx_sl_reward_stash( actor, npc, p )
 		end
 
 		-- Create the stash:
-		coc_treasure_manager.create_random_stash( nil, nil, bonus )
+		coc_treasure_manager.create_random_stash( nil, strtransl("st_itm_reward_stash"), bonus )
 
 	end
 
@@ -3305,7 +3305,7 @@ function reward_stash(actor,npc,p)
 			local t = {"itm_repairkit_tier_1","itm_repairkit_tier_1","itm_repairkit_tier_1","itm_repairkit_tier_2","itm_repairkit_tier_2","itm_repairkit_tier_3"}
 			bonus = {t[math.random(#t)]}
 		end
-		coc_treasure_manager.create_random_stash(nil,nil,bonus)
+		coc_treasure_manager.create_random_stash(nil,strtransl("st_itm_reward_stash"),bonus)
 	end
 end
 
