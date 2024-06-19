@@ -35,6 +35,7 @@ All notable changes to this project will be documented in this file.
 * Improved bar guard's logic
 * Corrected probabilities of `atmosfear_stormy` in `dynamic_weather_graphs.ltx`
 * Added "The reward for the task" string into stash's description
+* Refactored code of `npc_death_sound.script`
 
 ### Fixes
 * Fixed picking `zombied` target in DRX's bounty hunt tasks in Survival mode
@@ -55,6 +56,7 @@ All notable changes to this project will be documented in this file.
 * Optimized RAM and CPU usage in `ui_enemy_health.script`
 * Optimized utils functions from Anomaly 1.5.1.2 in `_g.script`
 * Changed `switch_distance` to 150 in `alife.ltx`
+* Optimized RAM usage in `npc_death_sound.script`
 
 ### Framework
 * Added `stalker_squads` table into `sim_board.script`
