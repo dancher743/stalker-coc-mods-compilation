@@ -6,8 +6,6 @@
 local snd_obj
 local last_snd_tbl
 
-local distance_to_play_sqr = 30*30
-
 local function get_death_sound_tbl(community)
 	if (community == "stalker") then
 		return {
@@ -311,14 +309,6 @@ local function get_death_sound_tbl(community)
 end
 
 local function npc_on_death_callback(victim)
-	local actor = db.actor
-	local actor_pos = actor:position()
-	local npc_pos = victim:position()
-	
-	if (actor_pos:distance_to_sqr(npc_pos) > distance_to_play_sqr) then
-		return
-	end
-	
 	local community = victim:character_community()
 	local snd_tbl = (last_snd_tbl and last_snd_tbl[community]) or nil
 	
@@ -331,7 +321,16 @@ local function npc_on_death_callback(victim)
 	snd_obj = sound_object(snd)
 	
 	if (snd_obj) then
-		snd_obj:play_at_pos(actor, vector():set(npc_pos.x - actor_pos.x, npc_pos.y - actor_pos.y, npc_pos.z - actor_pos.z), 0, sound_object.s2d)
+		local actor = db.actor
+		local actor_pos = actor:position()
+		local npc_pos = victim:position()
+		local is_npc_far = actor_pos:distance_to_sqr(npc_pos) > 900 -- 30*30 meters
+		
+		if (is_npc_far) then
+			snd_obj:play_at_pos(actor, npc_pos, 0, sound_object.s3d)
+		else
+			snd_obj:play_at_pos(actor, vector():set(npc_pos.x - actor_pos.x, npc_pos.y - actor_pos.y, npc_pos.z - actor_pos.z), 0, sound_object.s2d)
+		end
 	end
 end
 
