@@ -30,7 +30,7 @@ Optimization
 * Add `-noprefetch` to the end of a shortcut as a launch parameter to forces the game to clear RAM
 * Disable "Sun shadow" in "Options" in "Video" to reduce the load on a video card
 
-Screenshots
+❗ Screenshots
 ---
 <details>
 <summary>Spoiler</summary>
