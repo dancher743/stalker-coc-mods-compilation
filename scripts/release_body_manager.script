@@ -10,6 +10,9 @@ local STAY_TIME = 180000				-- time corpse exists before removal if body max cou
 local SURV_OR_EOC_MODE_BODY_MAX_COUNT = 10		-- For Survival or EOC mode
 local SURV_OR_EOC_MODE_STAY_TIME = 86400		-- For Survival or EOC mode
 
+local current_body_max_count
+local current_stay_time
+
 local RB_manager = nil
 function get_release_body_manager()
 	if(RB_manager==nil) then
@@ -19,11 +22,17 @@ function get_release_body_manager()
 end
 
 local function get_body_count()
-	return IsSurvivalOrEocMode() and SURV_OR_EOC_MODE_BODY_MAX_COUNT or BODY_MAX_COUNT
+	if (current_body_max_count == nil) then
+		current_body_max_count = IsSurvivalOrEocMode() and SURV_OR_EOC_MODE_BODY_MAX_COUNT or BODY_MAX_COUNT
+	end
+	return current_body_max_count
 end
 
 local function get_stay_time()
-	return IsSurvivalOrEocMode() and SURV_OR_EOC_MODE_STAY_TIME or STAY_TIME
+	if (current_stay_time == nil) then
+		current_stay_time = IsSurvivalOrEocMode() and SURV_OR_EOC_MODE_STAY_TIME or STAY_TIME
+	end
+	return current_stay_time
 end
 
 local function has_known_info(obj)
