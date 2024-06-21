@@ -37,6 +37,7 @@ All notable changes to this project will be documented in this file.
 * Corrected probabilities of `atmosfear_stormy` in `dynamic_weather_graphs.ltx`
 * Added "The reward for the task" string into stash's description
 * Refactored code of `npc_death_sound.script`
+* Returned messages of received mutant's loot for OK button of UI mutant loot window
 
 ### Fixes
 * Fixed picking `zombied` target in DRX's bounty hunt tasks in Survival mode
