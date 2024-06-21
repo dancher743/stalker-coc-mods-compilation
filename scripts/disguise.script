@@ -88,7 +88,7 @@ end
 
 local function run_updates()
 	local is_first_update = true
-	local can_update = false
+	local is_sleeping = true
 	
 	local main_update_ev_id = "disguise"
 	local main_update_act_id = "main_update"
@@ -96,11 +96,11 @@ local function run_updates()
 	local function main_update()
 		patch_in_slot = get_patch_in_slot()
 		
-		if (not can_update and not patch_in_slot and not has_actor_disguised()) then
+		if (is_sleeping and not patch_in_slot and not has_actor_disguised()) then
 			return
 		end
 		
-		can_update = true
+		is_sleeping = false
 		
 		if (is_first_update) then
 			prev_patch_in_slot = patch_in_slot
