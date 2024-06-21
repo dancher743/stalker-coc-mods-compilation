@@ -39,6 +39,7 @@ All notable changes to this project will be documented in this file.
 * Refactored code of `npc_death_sound.script`
 * Returned messages of received mutant's loot for OK button of UI mutant loot window
 * Renamed flag `can_update` to `is_sleeping` in `disguise.script`
+* Replaced `IsEocMode() or IsSurvivalMode()` statement with `IsSurvivalOrEocMode()` call
 
 ### Fixes
 * Fixed picking `zombied` target in DRX's bounty hunt tasks in Survival mode
