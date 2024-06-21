@@ -58,6 +58,7 @@ All notable changes to this project will be documented in this file.
 * Optimized utils functions from Anomaly 1.5.1.2 in `_g.script`
 * Changed `switch_distance` to 150 in `alife.ltx`
 * Optimized RAM usage in `npc_death_sound.script`
+* Removed timer from `release_item_manager.script`
 
 ### Framework
 * Added `stalker_squads` table into `sim_board.script`

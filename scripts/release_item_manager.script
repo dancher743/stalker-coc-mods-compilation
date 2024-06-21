@@ -36,7 +36,7 @@ local function load_state(m_data)
 end
 
 local function on_game_load()
-	CreateTimeEvent(0,"release_item",5,clear)
+	clear()
 end
 --------------------------------------------------------
 -- ON GAME START 
@@ -72,8 +72,6 @@ function clear()
 			end
 		end
 	end
-	
-	ResetTimeEvent(0,"release",5)
 	
 	return false
 end
