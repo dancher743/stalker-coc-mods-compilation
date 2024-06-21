@@ -1792,6 +1792,10 @@ function IsEocMode()
 		axr_main.config and axr_main.config:r_value("character_creation","new_game_eoc_mode",1) == true
 end
 
+function IsSurvivalOrEocMode()
+	return IsSurvivalMode() or IsEocMode()
+end
+
 function IsActor(o,c)
 	if not (c) then
 		c = o and o:clsid()
