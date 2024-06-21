@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 * Added flies into environment's sounds
 * Added ability to move all patches from/to inventory/box
 * Reworked companion's health bar
+* Added sometimes weather occurrence option
 
 ### Mods
 * Removed Animated detectors (selectively) (Alex_91zA)

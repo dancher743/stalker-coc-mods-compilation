@@ -381,7 +381,7 @@
 	            </text_color>
 			</button>
 			
-			<button x="60" y="0" width="20" height="12" id="2" stretch="1">
+			<button x="40" y="0" width="20" height="12" id="2" stretch="1">
 				<text font="arial_14" vert_align="c" x="0" y="10" align="c" width="40" height="20" >st_occurrence_rare</text>
 	            <text_color>
 	                <e r="170" g="170" b="170"/>
@@ -389,7 +389,15 @@
 	            </text_color>
 			</button>
 			
-			<button x="120" y="0" width="20" height="12" id="3" stretch="1">
+			<button x="80" y="0" width="20" height="12" id="3" stretch="1">
+				<text font="arial_14" vert_align="c" x="0" y="10" align="c" width="40" height="20" >st_occurrence_sometimes</text>
+	            <text_color>
+	                <e r="170" g="170" b="170"/>
+	                <d r="70" g="70" b="70"/>
+	            </text_color>
+			</button>
+			
+			<button x="120" y="0" width="20" height="12" id="4" stretch="1">
 				<text font="arial_14" vert_align="c" x="0" y="10" align="c" width="40" height="20" >st_occurrence_regular</text>
 	            <text_color>
 	                <e r="170" g="170" b="170"/>

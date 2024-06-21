@@ -42,7 +42,7 @@ function atmosfear_init()
 		--printf(">>> Tronex: atmosfear_init - current_parameters don't exist")
 		for	i = 1, #weather_tbl do
 			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_period", random_choice(4,6,8))
-			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur", math.random(2,3))
+			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur", math.random(2,4))
 		end
 
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_enable_blowout",1)
@@ -398,9 +398,9 @@ function WeatherManager:get_next_weather_cycle(curr_weather)
 	-- prepare a table of allowed weather cycles to pick from
 	for i=1,#weather_tbl do
 		if (weather_tbl[i] ~= curr_weather) then
-			local val = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur",2,3)
+			local val = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur",2,4)
 			val = tonumber(val)
-			local pick_chance = (val == 3 and 80) or (val == 2 and 20) or 0
+			local pick_chance = (val == 4 and 80) or (val == 3 and 50) or (val == 2 and 20) or 0
 			if (math.random(100) <= pick_chance) then
 				avail_weather[#avail_weather + 1] = weather_tbl[i]
 			end
@@ -919,7 +919,7 @@ function get_random_weather()
 	local ini = ini_file_ex("atmosfear_options.ltx",true)
 	if (ini:section_exist("atmosfear_current_parameters")) then
 		for i=1,#weather_tbl do
-			local a = ini:r_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur",2,6)
+			local a = ini:r_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur",2,4)
 			if (a > 1) then
 				tbl[#tbl+1] = weather_tbl[i]
 				--printf(">>> Tronex: get_random_weather | " .. weather_tbl[i])

@@ -274,6 +274,9 @@
 	<string id="st_occurrence_zero">
 		<text>None</text>
 	</string>
+	<string id="st_occurrence_sometimes">
+		<text>Sometimes</text>
+	</string>
 	<string id="st_occurrence_regular">
 		<text>Regular</text>
 	</string>
