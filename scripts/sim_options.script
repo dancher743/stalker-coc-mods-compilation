@@ -7,11 +7,11 @@ warfare_activity =
 
 
 function get_warfare_activity_option()
-	return axr_main.config:r_string_ex("mm_options","eoc_faction_warfare_activity")
+	return axr_main.config:r_string_ex(MM_OPTIONS,"eoc_faction_warfare_activity")
 end
 
 function get_unpc_respawn_option()
-	return axr_main.config:r_string_ex("mm_options","eoc_faction_warfare_unpc_respawn")
+	return axr_main.config:r_string_ex(MM_OPTIONS,"eoc_faction_warfare_unpc_respawn")
 end
 
 local function opt_menu_on_init(menu)

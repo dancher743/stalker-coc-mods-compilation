@@ -63,7 +63,7 @@ function actor_on_net_destroy()
 end
 
 function on_game_start()
-	if (axr_main.config:r_value("mm_options","enable_slot_hud",1,false) == false) then return end
+	if (axr_main.config:r_value(MM_OPTIONS,"enable_slot_hud",1,false) == false) then return end
 	local function actor_on_first_update()
 		activate_hud()
 	end
@@ -172,13 +172,12 @@ end
 --
 -- from CoC 1.5b r6
 --
-local all_options = "mm_options"
 local slot_hud_option = "enable_slot_hud"
 
 function slot_hud:CustomUpdate()
 	self:show_hud(main_hud_shown())
 	
-	if (axr_main.config:r_value(all_options,slot_hud_option,1,true)) == false then
+	if (axr_main.config:r_value(MM_OPTIONS,slot_hud_option,1,true)) == false then
 		if (sloted_patch ~= nil or table.size(belted_arts) > 0) then
 			self:clear(0)
 --			deactivate_hud()

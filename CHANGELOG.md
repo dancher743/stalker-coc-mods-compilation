@@ -59,6 +59,7 @@ All notable changes to this project will be documented in this file.
 * Changed `switch_distance` to 150 in `alife.ltx`
 * Optimized RAM usage in `npc_death_sound.script`
 * Removed timer from `release_item_manager.script`
+* Turned `mm_options` strings to `MM_OPTIONS` constant in `_g.script`
 
 ### Framework
 * Added `stalker_squads` table into `sim_board.script`

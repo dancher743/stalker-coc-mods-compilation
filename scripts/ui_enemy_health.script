@@ -32,7 +32,6 @@ local monster_classes = {
 local progress = nil
 local last_id = nil
 
-local all_options = "mm_options"
 local show_enemy_health_option = "enable_show_enemy_health"
 
 local cs_enemy_health = "cs_enemy_health"
@@ -51,7 +50,7 @@ function on_hit(obj,power,dir,who,bi)
 	
 	if not (st.show_health) then
 		-- show health progress for all objects hit by actor if option is enabled
-		if (axr_main.config:r_value(all_options,show_enemy_health_option,1,false) == false) then
+		if (axr_main.config:r_value(MM_OPTIONS,show_enemy_health_option,1,false) == false) then
 			return 
 		end
 	end

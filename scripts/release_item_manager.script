@@ -56,7 +56,7 @@ end
 -----------------------------------------------------------
 function clear()
 
-	if (axr_main.config:r_value("mm_options","enable_release_dropped_items",1,false)) then
+	if (axr_main.config:r_value(MM_OPTIONS,"enable_release_dropped_items",1,false)) then
 		local sim = alife()
 		for id,t in pairs(items_marked_for_removal) do 
 			local se_obj = sim:object(id)

@@ -1784,6 +1784,7 @@ VEC_FORWARD 	= vector():set(0,0,1)
 VEC_BACK 		= vector():set(0,0,-1)
 
 STR_EMPTY		= ""
+MM_OPTIONS		= "mm_options"
 -----------------------------------------
 
 function IsEocMode()

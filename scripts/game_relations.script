@@ -213,7 +213,7 @@ end
 -- NPC killed callback - raises or lowers faction relations when an NPC is killed:
 local function drx_df_npc_on_death_callback( npc, who )
 	-- Return if Dynamic Relations option is off
-	if ( not axr_main.config:r_value("mm_options","enable_dynamic_relations", 1, true) ) then
+	if ( not axr_main.config:r_value(MM_OPTIONS,"enable_dynamic_relations", 1, true) ) then
 		return
 	end
 
@@ -684,7 +684,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 function drx_df_faction_npc_on_death( killed_faction, killer_faction )
 	-- Return if Dynamic Relations option is off
-	if ( not axr_main.config:r_value("mm_options","enable_dynamic_relations", 1, true) ) then
+	if ( not axr_main.config:r_value(MM_OPTIONS,"enable_dynamic_relations", 1, true) ) then
 		return
 	end
 
@@ -725,7 +725,7 @@ function drx_df_faction_npc_on_death( killed_faction, killer_faction )
 	end
 	
 	-- Base value for relation change:
-	local max_value = (axr_main.config:r_value("mm_options","dynamic_relations_factor",5) or 100)
+	local max_value = (axr_main.config:r_value(MM_OPTIONS,"dynamic_relations_factor",5) or 100)
 	--printf("Max value:"..tostring(max_value))
 
 	-- If killed NPC was enemy of facton, raise goodwill toward killer faction:

@@ -938,7 +938,7 @@ function is_invulnerable(se_obj)
 		se_obj.companion_is_invulnerable = true
 	end
 	
-	local option = axr_main.config:r_value("mm_options","enable_companions_invulnerability",1,false)
+	local option = axr_main.config:r_value(MM_OPTIONS,"enable_companions_invulnerability",1,false)
 	
 	return option and se_obj.companion_is_invulnerable
 end

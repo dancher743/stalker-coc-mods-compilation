@@ -1064,7 +1064,7 @@ function sim_squad_scripted:can_switch_online()
 		end
 		
 		if (db.actor and db.spawned_vertex_by_id[self:commander_id()] == nil) then
-			local dist = axr_main.config:r_value("mm_options","excl_dist",2) or 0
+			local dist = axr_main.config:r_value(MM_OPTIONS,"excl_dist",2) or 0
 			if (dist > 0 and not db.actor:has_info("actor_is_sleeping")) then 
 				local actor = alife():actor()
 				if (self.position:distance_to(actor.position) <= dist) then
@@ -1131,7 +1131,7 @@ function sim_squad_scripted:show()
 	local non_commander_spot = STR_EMPTY
 	local spot_descr = nil
 
-	if (DEV_DEBUG and axr_main.config:r_value("mm_options","enable_debug_hud",1,false) == true) then
+	if (DEV_DEBUG and axr_main.config:r_value(MM_OPTIONS,"enable_debug_hud",1,false) == true) then
 		if (DEV_DEBUG_HOLD_ACTION_1) then 
 			if (self.assigned_target_id ~= nil and smart_terrain.nearest_to_actor_smart.id == self.assigned_target_id) then 
 				spot = "storyline_task_location"
@@ -1210,7 +1210,7 @@ function sim_squad_scripted:show()
 end
 
 function sim_squad_scripted:get_squad_props()
-	if (DEV_DEBUG and axr_main.config:r_value("mm_options","enable_debug_hud",1,false) == true) then
+	if (DEV_DEBUG and axr_main.config:r_value(MM_OPTIONS,"enable_debug_hud",1,false) == true) then
 		local assigned_target = self.assigned_target_id and alife_object(self.assigned_target_id)
 		local current_target = self.current_target_id and alife_object(self.current_target_id)
 
