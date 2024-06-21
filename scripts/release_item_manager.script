@@ -54,15 +54,11 @@ end
 -----------------------------------------------------------
 -- CLEARING
 -----------------------------------------------------------
-local function get_stay_time()
-	return IsSurvivalOrEocMode() and 43200 or 86400
-end
-
 function clear()
 
 	if (axr_main.config:r_value(MM_OPTIONS,"enable_release_dropped_items",1,false)) then
 		local game_time = game.get_game_time()
-		local stay_time = get_stay_time()
+		local stay_time = 86400
 		local sim = alife()
 		for id,t in pairs(items_marked_for_removal) do 
 			local se_obj = sim:object(id)
