@@ -83,7 +83,8 @@ function release_item_by_parent(se_parent_id)
 		local sim = alife()
 		for id,t in pairs(items_marked_for_removal) do
 			local se_obj = sim:object(id)
-			if (se_obj and t[3] == se_parent_id) then
+			if (se_obj and se_obj.parent_id == 65535 and t[3] == se_parent_id) then
+				--printf("release %s",t[1])
 				safe_release_manager.release(se_obj)
 				items_marked_for_removal[id] = nil
 			end
