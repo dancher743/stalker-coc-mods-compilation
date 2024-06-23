@@ -50,6 +50,7 @@ All notable changes to this project will be documented in this file.
 * Fixed lottery for Merc's patches
 * Removed non-existent sections from `medkits` and `bandages` in `xr_eat_medkit.ltx`
 * Fixed portrait and health bar positions on Companions List HUD
+* Moved `ResetTimeEvent()` call to the beginning of `tick()` callback
 
 ### Optimization
 * Optimized the target finding code of bounty hunt tasks
@@ -63,7 +64,6 @@ All notable changes to this project will be documented in this file.
 * Optimized RAM usage in `npc_death_sound.script`
 * Removed timer from `release_item_manager.script`
 * Turned `mm_options` strings to `MM_OPTIONS` constant in `_g.script`
-* Moved `ResetTimeEvent()` call to the beginning of `tick()` callback
 
 ### Framework
 * Added `stalker_squads` table into `sim_board.script`
