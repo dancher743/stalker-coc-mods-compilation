@@ -76,6 +76,7 @@ All notable changes to this project will be documented in this file.
 * Added `remove_task_squad(actor,npc,p)` function into `xr_effects.script`
 * Added `DeadBodySearchClosed` callback into `axr_main.script`
 * Added `IsSurvivalOrEocMode()` function into `_g.script`
+* Added `release_item_by_parent(...)` function into `release_item_manager.script` to release item with NPC
 
 ## [1.4.1] - 2024-05-06
 

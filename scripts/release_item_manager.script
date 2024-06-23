@@ -5,8 +5,13 @@
 local items_marked_for_removal = {}
 
 local function npc_on_item_drop(npc,item)
-	if (item:parent() == nil or item:parent():id() == npc:id()) then 
-		items_marked_for_removal[item:id()] = {item:name(),game.get_game_time()}
+	local item_parent = item:parent()
+	local npc_id = npc:id()
+	local has_npc_item = item_parent and item_parent:id() == npc_id
+	local se_npc = alife_object(npc_id)
+	
+	if (item_parent == nil or has_npc_item) then
+		items_marked_for_removal[item:id()] = {item:name(),game.get_game_time(),se_npc.id}
 	end
 end
 
@@ -76,4 +81,17 @@ function clear()
 	end
 	
 	return false
+end
+
+function release_item_by_parent(se_parent_id)
+	if (axr_main.config:r_value(MM_OPTIONS,"enable_release_dropped_items",1,false)) then
+		local sim = alife()
+		for id,t in pairs(items_marked_for_removal) do
+			local se_obj = sim:object(id)
+			if (se_obj and t[3] == se_parent_id) then
+				safe_release_manager.release(se_obj)
+				items_marked_for_removal[id] = nil
+			end
+		end
+	end
 end

@@ -137,6 +137,7 @@ function Crelease_body:clear(all,dist)
 			elseif (pos:distance_to_sqr(se_obj.position) >= dist) then
 				local obj = db.storage[id] and db.storage[id].object or level.object_by_id(id)
 				if (obj and time_global()-obj:death_time() > STAY_TIME) then
+					release_item_manager.release_item_by_parent(se_obj.id)
 					--printf("release_body_manager:safe_remove_npc: releasing %s from the game",se_obj:name())
 					--alun_utils.debug_write(strformat("Crelease_body: releasing npc %s",se_obj:name()))
 					--sim:release(se_obj,true)
