@@ -60,7 +60,6 @@ end
 -- CLEARING
 -----------------------------------------------------------
 function release_actor_items()
-
 	if (axr_main.config:r_value(MM_OPTIONS,"enable_release_dropped_items",1,false)) then
 		local game_time = game.get_game_time()
 		local stay_time = 14400
@@ -75,8 +74,6 @@ function release_actor_items()
 			end
 		end
 	end
-	
-	return false
 end
 
 function release_item_by_parent(se_parent_id)
