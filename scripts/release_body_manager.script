@@ -5,7 +5,7 @@
 
 local MIN_RELEASE_DISTANCE = 5625		-- dist*dist away from actor required before releasing
 local BODY_MAX_COUNT = 5				-- The max amount of corpses that can exist before checking for releasable corpses.
-local STAY_TIME = 180000				-- time corpse exists before removal if body max count and distance is met
+local STAY_TIME = 86400					-- time corpse exists before removal if body max count and distance is met
 
 local RB_manager = nil
 function get_release_body_manager()

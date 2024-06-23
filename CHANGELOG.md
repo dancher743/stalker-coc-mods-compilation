@@ -66,6 +66,7 @@ All notable changes to this project will be documented in this file.
 * Removed timer from `release_item_manager.script`
 * Turned `mm_options` strings to `MM_OPTIONS` constant in `_g.script`
 * Optimized RAM usage of update timer in `sound_ambient.script`
+* Changed `STAY_TIME` in `release_body_manager.script` from 50h to 24h
 
 ### Framework
 * Added `stalker_squads` table into `sim_board.script`
