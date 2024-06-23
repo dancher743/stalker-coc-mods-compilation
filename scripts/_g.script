@@ -1879,8 +1879,8 @@ function StartTimer(id, interval_in_ms, tickback, ...)
 	local interval = interval_in_ms / 1000
 	
 	local function tick(...)
-		tickback(...)
 		ResetTimeEvent(timer_ev_id, id, interval)
+		tickback(...)
 	end
 	
 	CreateTimeEvent(timer_ev_id, id, interval, tick, ...)

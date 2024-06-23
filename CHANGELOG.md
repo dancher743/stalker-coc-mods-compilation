@@ -63,6 +63,7 @@ All notable changes to this project will be documented in this file.
 * Optimized RAM usage in `npc_death_sound.script`
 * Removed timer from `release_item_manager.script`
 * Turned `mm_options` strings to `MM_OPTIONS` constant in `_g.script`
+* Moved `ResetTimeEvent()` call to the beginning of `tick()` callback
 
 ### Framework
 * Added `stalker_squads` table into `sim_board.script`
