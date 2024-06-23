@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 * Added ability to move all patches from/to inventory/box
 * Reworked companion's health bar
 * Added sometimes weather occurrence option
+* Reworked the clearing of a dropped items
 
 ### Mods
 * Removed Animated detectors (selectively) (Alex_91zA)
@@ -52,7 +53,6 @@ All notable changes to this project will be documented in this file.
 * Removed non-existent sections from `medkits` and `bandages` in `xr_eat_medkit.ltx`
 * Fixed portrait and health bar positions on Companions List HUD
 * Moved `ResetTimeEvent()` call to the beginning of `tick()` callback
-* Reworked the clearing of a dropped items
 
 ### Optimization
 * Optimized the target finding code of bounty hunt tasks
