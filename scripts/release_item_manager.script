@@ -41,7 +41,7 @@ local function load_state(m_data)
 end
 
 local function on_game_load()
-	clear()
+	release_actor_items()
 end
 --------------------------------------------------------
 -- ON GAME START 
@@ -59,15 +59,16 @@ end
 -----------------------------------------------------------
 -- CLEARING
 -----------------------------------------------------------
-function clear()
+function release_actor_items()
 
 	if (axr_main.config:r_value(MM_OPTIONS,"enable_release_dropped_items",1,false)) then
 		local game_time = game.get_game_time()
-		local stay_time = 86400
+		local stay_time = 14400
 		local sim = alife()
+		local se_actor_id = sim:actor().id
 		for id,t in pairs(items_marked_for_removal) do 
 			local se_obj = sim:object(id)
-			if (se_obj and se_obj.parent_id == 65535 and se_obj:name() == t[1] and game_time:diffSec(t[2]) >= stay_time) then
+			if (se_obj and se_obj.parent_id == 65535 and se_obj:name() == t[1] and game_time:diffSec(t[2]) >= stay_time and t[3] == se_actor_id) then
 				--printf("release %s",t[1])
 				safe_release_manager.release(se_obj)
 				items_marked_for_removal[id] = nil
@@ -83,7 +84,7 @@ function release_item_by_parent(se_parent_id)
 		local sim = alife()
 		for id,t in pairs(items_marked_for_removal) do
 			local se_obj = sim:object(id)
-			if (se_obj and se_obj.parent_id == 65535 and t[3] == se_parent_id) then
+			if (se_obj and se_obj.parent_id == 65535 and se_obj:name() == t[1] and t[3] == se_parent_id) then
 				--printf("release %s",t[1])
 				safe_release_manager.release(se_obj)
 				items_marked_for_removal[id] = nil

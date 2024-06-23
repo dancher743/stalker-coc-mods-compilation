@@ -40,7 +40,7 @@ All notable changes to this project will be documented in this file.
 * Returned messages of received mutant's loot for OK button of UI mutant loot window
 * Renamed flag `can_update` to `is_sleeping` in `disguise.script`
 * Replaced `IsEocMode() or IsSurvivalMode()` statement with `IsSurvivalOrEocMode()` call
-* Removed online condition from `clear()` function in `release_item_manager.script`
+* Reworked `release_item_manager.script` code
 
 ### Fixes
 * Fixed picking `zombied` target in DRX's bounty hunt tasks in Survival mode
