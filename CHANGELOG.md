@@ -52,6 +52,7 @@ All notable changes to this project will be documented in this file.
 * Removed non-existent sections from `medkits` and `bandages` in `xr_eat_medkit.ltx`
 * Fixed portrait and health bar positions on Companions List HUD
 * Moved `ResetTimeEvent()` call to the beginning of `tick()` callback
+* Reworked the clearing of a dropped items
 
 ### Optimization
 * Optimized the target finding code of bounty hunt tasks
