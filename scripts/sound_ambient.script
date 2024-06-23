@@ -92,11 +92,15 @@ end
 -------------------------------
 -- UPDATE
 -------------------------------
+local update_timer_ev_id = "sound_channels"
+local update_timer_act_id = "update_ambient"
+
 local next_idx = 0
 local last_hour
 local next_hour
+
 function update_ambient()
-	ResetTimeEvent("sound_channels","update_ambient",1)
+	ResetTimeEvent(update_timer_ev_id,update_timer_act_id,1)
 	
 	local next_hour = level.get_time_hours()
 	if (next_hour ~= last_hour) then
@@ -193,7 +197,7 @@ end
 -- CALLBACKS
 -------------------------------
 local function actor_on_first_update()
-	CreateTimeEvent("sound_channels", "update_ambient", 1, update_ambient)
+	CreateTimeEvent(update_timer_ev_id, update_timer_act_id, 1, update_ambient)
 end
 	
 function on_game_start()
