@@ -68,13 +68,8 @@ function clear()
 		for id,t in pairs(items_marked_for_removal) do 
 			local se_obj = sim:object(id)
 			if (se_obj and se_obj.parent_id == 65535 and se_obj:name() == t[1] and game_time:diffSec(t[2]) >= stay_time) then
-				if not (se_obj.online) then
-					--printf("release %s",t[1])
-					safe_release_manager.release(se_obj)
-					items_marked_for_removal[id] = nil
-				end
-			else 
-				--printf("fail %s",t[1])
+				--printf("release %s",t[1])
+				safe_release_manager.release(se_obj)
 				items_marked_for_removal[id] = nil
 			end
 		end
