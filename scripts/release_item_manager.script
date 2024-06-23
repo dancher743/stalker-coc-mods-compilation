@@ -80,15 +80,13 @@ function release_actor_items()
 end
 
 function release_item_by_parent(se_parent_id)
-	if (axr_main.config:r_value(MM_OPTIONS,"enable_release_dropped_items",1,false)) then
-		local sim = alife()
-		for id,t in pairs(items_marked_for_removal) do
-			local se_obj = sim:object(id)
-			if (se_obj and se_obj.parent_id == 65535 and se_obj:name() == t[1] and t[3] == se_parent_id) then
-				--printf("release %s",t[1])
-				safe_release_manager.release(se_obj)
-				items_marked_for_removal[id] = nil
-			end
+	local sim = alife()
+	for id,t in pairs(items_marked_for_removal) do
+		local se_obj = sim:object(id)
+		if (se_obj and se_obj.parent_id == 65535 and se_obj:name() == t[1] and t[3] == se_parent_id) then
+			--printf("release %s",t[1])
+			safe_release_manager.release(se_obj)
+			items_marked_for_removal[id] = nil
 		end
 	end
 end

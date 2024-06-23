@@ -506,7 +506,7 @@
 		<text>Трассеры пуль</text>
 	</string>
 	<string id="ui_mm_release_dropped_items">
-		<text>Удалять брошенные вещи</text>
+		<text>Удалять выброшенные вещи</text>
 	</string>
 	<string id="ui_mm_hardcore_ai_aim">
 		<text>Меткие НПС</text>
