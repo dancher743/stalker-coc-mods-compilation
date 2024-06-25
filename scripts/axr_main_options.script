@@ -183,6 +183,11 @@ function opt_menu_on_init(menu)
 			end
 		}
 		
+		-- Added by Dancher
+		menu.gameplay_options["alife_switch_dist"] = {default=150, debug_only=false, typ="list", list={100,150,200,250}, on_accept=function(handler,optMgr,ctrl)
+			SetSwitchDistance(tonumber(ctrl:GetText()))
+		end}
+		--
 	end
 	
     -- axr option default config

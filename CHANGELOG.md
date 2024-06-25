@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 * Reworked companion's health bar
 * Added sometimes weather occurrence option
 * Reworked the clearing of a dropped items
+* Added "Online switch distance" option
 
 ### Mods
 * Removed Animated detectors (selectively) (Alex_91zA)

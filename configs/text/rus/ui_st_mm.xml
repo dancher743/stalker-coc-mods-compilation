@@ -579,4 +579,7 @@
 	<string id="ui_mm_show_guide_job_on_map">
 		<text>Показ. меток проводника</text>
 	</string>
+	<string id="ui_mm_alife_switch_dist">
+		<text>Радиус жизни на локации</text>
+	</string>
 </string_table>
