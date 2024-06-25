@@ -528,6 +528,9 @@
 		<text>Low</text>
 	</string>
 
+	<string id="ui_mm_companions_hud">
+		<text>Companions HUD</text>
+	</string>
 	<string id="ui_mm_show_monsters_on_map">
 		<text>Show mutants on map</text>
 	</string>

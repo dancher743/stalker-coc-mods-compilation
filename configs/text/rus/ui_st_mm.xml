@@ -531,6 +531,9 @@
 		<text>низкая</text>
 	</string>
 	
+	<string id="ui_mm_companions_hud">
+		<text>Интерфейс напарников</text>
+	</string>
 	<string id="ui_mm_show_monsters_on_map">
 		<text>Показ. мутантов на карте</text>
 	</string>
