@@ -2,6 +2,8 @@
 -- Companions List
 -- From Anomaly 1.5.1.2
 --------------------------------------------------
+local hud_option_name = "companions_hud"
+
 local HUD = nil
 
 function activate_hud()
@@ -132,11 +134,19 @@ function UICompanionList:InitControls()
 end
 
 function UICompanionList:CustomUpdate()
+	local is_option_enabled = axr_main_options.get_check_option(hud_option_name)
+	
+	self.dialog:Show(is_option_enabled)
+	
+	if (is_option_enabled == false) then
+		return
+	end
+	
 	local clist = axr_companions.list_actor_squad_by_id()
 	for i=1,#self.companion_info do
 		local se_obj = clist[i] and alife_object(clist[i])
-		local option_enabled = axr_main_options.get_check_option("companions_hud")
-		if (option_enabled and main_hud_shown() and se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and not axr_companions.is_hostage(se_obj)) then
+		
+		if (main_hud_shown() and se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and not axr_companions.is_hostage(se_obj)) then
 			local st = db.storage[se_obj.id]
 			local npc = st and st.object
 			local ele = self.companion_info[i]

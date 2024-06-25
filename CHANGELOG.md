@@ -69,7 +69,7 @@ All notable changes to this project will be documented in this file.
 * Turned `mm_options` strings to `MM_OPTIONS` constant in `_g.script`
 * Optimized RAM usage of update timer in `sound_ambient.script`
 * Changed `STAY_TIME` in `release_body_manager.script` from 50h to 24h
-* Optimized CPU usage of "Auto garbage collection" option
+* Optimized CPU usage of "Auto garbage collection" and "Companions HUD" options
 
 ### Framework
 * Added `stalker_squads` table into `sim_board.script`
