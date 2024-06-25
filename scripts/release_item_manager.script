@@ -5,6 +5,10 @@
 local items_marked_for_removal = {}
 
 local function npc_on_item_drop(npc,item)
+	if (is_quest_item(item:section())) then
+		return
+	end
+	
 	local item_parent = item:parent()
 	local npc_id = npc:id()
 	local has_npc_item = item_parent and item_parent:id() == npc_id
@@ -86,4 +90,11 @@ function release_item_by_parent(se_parent_id)
 			items_marked_for_removal[id] = nil
 		end
 	end
+end
+
+-----------------------------------------------------------
+-- HELPERS
+-----------------------------------------------------------
+function is_quest_item(section)
+	return system_ini():r_bool_ex(section,"quest_item",nil) ~= nil
 end
