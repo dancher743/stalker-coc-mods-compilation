@@ -109,7 +109,7 @@ function opt_menu_on_init(menu)
 	-- excl_dist
 	-- note: shouldn't be greater than switch distance or no simulation squads will come online. Instead it should create a border zone between excl_dist and switch_distance where stuff can come online
 	-- so that when actor walks stuff will naturally come online but if squad teleports very close to actor it will stay offline until player walks far enough away.
-	menu.gameplay_options["excl_dist"]			= {default=25, 		debug_only=false, 	typ="list", list={0,25,50,75,95}}  
+	menu.gameplay_options["excl_dist"]			= {default=25, 		debug_only=false, 	typ="list", list={0,25,50,75,90}}  
 	
 	-- quicksave_cnt
 	menu.gameplay_options["quicksave_cnt"]		= {default=5, 		debug_only=false, 	typ="list", list={1,5,10,20}}
