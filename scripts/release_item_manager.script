@@ -95,6 +95,11 @@ end
 -----------------------------------------------------------
 -- HELPERS
 -----------------------------------------------------------
+local quest_item_str
+
 function is_quest_item(section)
-	return system_ini():r_bool_ex(section,"quest_item",nil) ~= nil
+	if (quest_item_str == nil) then
+		quest_item_str = "quest_item"
+	end
+	return system_ini():r_bool_ex(section,quest_item_str,nil) ~= nil
 end
