@@ -377,56 +377,32 @@ end
 
 function WeatherManager:get_next_weather_cycle(curr_weather)
 	--printf(">>> Tronex: get_next_weather_cycle | curr_weather = " .. curr_weather)
-	local weather_table_num = {}
-	local avail_weather = {}
 	
-	-- set initiate values for (weather_table_num)
-	for i=1,#weather_tbl do
-		weather_table_num[weather_tbl[i]] = 0
+	local next_weather
+	local curr_weather_graph = self:get_graph_by_name("atmosfear_"..curr_weather)
+	
+	if (curr_weather_graph) then
+		next_weather = get_next_state(curr_weather_graph)
+	else
+		next_weather = utils.pick_without(curr_weather, weather_tbl)
 	end
 	
-	-- store correct occurrences for each stored weather cycle in (weather_table_num)
-	for i=1,#self.weather_storage do
-		for j=1,#weather_tbl do
-			if self.weather_storage[i] == weather_tbl[j] then
-				weather_table_num[self.weather_storage[i]] = weather_table_num[self.weather_storage[i]] + 1
-				break
-			end
-		end
-	end
-	
-	-- prepare a table of allowed weather cycles to pick from
-	for i=1,#weather_tbl do
-		if (weather_tbl[i] ~= curr_weather) then
-			local val = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur",2,4)
-			val = tonumber(val)
-			local pick_chance = (val == 4 and 80) or (val == 3 and 40) or (val == 2 and 20) or 0
-			if (math.random(100) <= pick_chance) then
-				avail_weather[#avail_weather + 1] = weather_tbl[i]
-			end
-		end
+	-- prepare a weather of allowed weather cycles to pick from
+	local val = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. next_weather .. "_occur",2,4)
+	val = tonumber(val)
+	local pick_chance = (val == 4 and 80) or (val == 3 and 40) or (val == 2 and 20) or 0
+	if (math.random(100) > pick_chance) then
+		next_weather = nil
 	end
 	
 	-- if no allowed weather cycles found, reset
-	if (#avail_weather == 0) then
-		--printf(">>> Tronex: get_next_weather_cycle | #avail_weather = 0")
+	if (next_weather == nil) then
+		--printf(">>> Tronex: get_next_weather_cycle | next_weather == nil")
 		self.weather_storage = {}
 		return get_random_weather()
 	end
 	
-	--[[
-	for k,v in pairs(weather_table_num) do
-		printf(">>> Tronex: get_next_weather_cycle | weather_table_num[" .. k .. "] = " .. v)
-	end
-	for i=1,#avail_weather do
-		printf(">>> Tronex: get_next_weather_cycle | avail_weather[" .. i .. "] = " .. avail_weather[i])
-	end
-	for i=1,#self.weather_storage do
-		printf(">>> Tronex: get_next_weather_cycle | self.weather_storage[" .. i .. "] = " .. self.weather_storage[i])
-	end
-	--]]
-	
-	local pick = avail_weather[math.random(#avail_weather)]
+	local pick = next_weather
 	self.weather_storage[#self.weather_storage + 1] = pick -- store new value
 	--printf(">>> Tronex: get_next_weather_cycle | pick = " .. pick)
 	return pick
