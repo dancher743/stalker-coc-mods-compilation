@@ -26,7 +26,7 @@ end
 
 function anybody_see()
 	for i=1, #db.OnlineStalkers do
-		npc = level.object_by_id(db.OnlineStalkers[i])
+		local npc = level.object_by_id(db.OnlineStalkers[i])
 		if (npc and IsStalker(npc,npc:clsid()) and npc:alive()) then
 			if(npc:see(db.actor)) then
 				if (not axr_companions.is_companion(npc)) then
