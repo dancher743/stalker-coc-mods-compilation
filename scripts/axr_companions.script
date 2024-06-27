@@ -889,9 +889,25 @@ function has_companion()
 	return result
 end
 
-function is_companion(npc)
-	local clist = list_actor_squad_by_id()
-    return clist[npc:id()] ~= nil
+function is_companion(obj)
+    local result = false
+	
+	local se_obj = simulation:object(obj:id())
+	
+	if (is_hostage(se_obj) == false) then
+		result = obj:has_info("npcx_is_companion")
+		if (result == false) then
+			local clist = list_actor_squad_by_id()
+			for i=1,#clist do
+				if (clist[i] == se_obj.id) then
+					result = true
+					break
+				end
+			end
+		end
+	end
+    
+    return result
 end
 
 function is_companion_squad(squad_id)
