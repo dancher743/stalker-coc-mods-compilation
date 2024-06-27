@@ -59,6 +59,7 @@ All notable changes to this project will be documented in this file.
 * Moved `ui_mm_companions_hud` string from `st_ui_companions.xml` to `ui_st_mm.xml` file
 * Fixed changing of weather periods
 * Fixed weather reset after save load
+* Fixed rain ambient (pt.3)
 
 ### Optimization
 * Optimized the target finding code of bounty hunt tasks
