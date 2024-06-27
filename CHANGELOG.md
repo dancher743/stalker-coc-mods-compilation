@@ -56,6 +56,7 @@ All notable changes to this project will be documented in this file.
 * Fixed portrait and health bar positions on Companions List HUD
 * Moved `ResetTimeEvent()` call to the beginning of `tick()` callback
 * Moved `ui_mm_companions_hud` string from `st_ui_companions.xml` to `ui_st_mm.xml` file
+* Fixed change hour of weather period
 
 ### Optimization
 * Optimized the target finding code of bounty hunt tasks
