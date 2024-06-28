@@ -189,6 +189,11 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
 	-- prepare periods
 	self.next_period_change_hour = self:get_next_period_change_hour(self.cycle)
 	self.inited_time = game.get_game_time()
+	self.last_hour = level.get_time_hours()
+	self.next_hour = self.last_hour + 1
+	if (self.next_hour > 23) then
+		self.next_hour = self.next_hour - 24
+	end
 	
 	-- enable distant storms
 	local rnd = (math.random(1,100)/100)
@@ -758,8 +763,6 @@ function WeatherManager:load_state(m_data)
 	self.weather_storage = m_data.weather_manager.weather_storage or {} -- new
 	self.last_period_change_hour = m_data.weather_manager.last_period_change_hour
 	self.next_period_change_hour = m_data.weather_manager.next_period_change_hour
-	self.last_hour = m_data.weather_manager.last_hour or 0
-	self.next_hour = m_data.weather_manager.next_hour or 0
 	--self.state = m_data.weather_manager.state or self.state or {}
 	if (not bLevelUnderground) then 
 		self.update_time = m_data.weather_manager.update_time
@@ -786,8 +789,6 @@ function WeatherManager:save_state(m_data)
 	m_data.weather_manager.weather_storage = self.weather_storage -- new
 	m_data.weather_manager.last_period_change_hour = self.last_period_change_hour
 	m_data.weather_manager.next_period_change_hour = self.next_period_change_hour
-	m_data.weather_manager.last_hour = self.last_hour
-	m_data.weather_manager.next_hour = self.next_hour
 	--m_data.weather_manager.state = self.state
 	
 	if (not bLevelUnderground) then 
