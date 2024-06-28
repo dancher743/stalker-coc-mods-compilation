@@ -18,7 +18,7 @@ All notable changes to this project will be documented in this file.
 * Added sometimes weather occurrence option
 * Reworked the clearing of a dropped items
 * Added "Online switch distance" option
-* Included weather graph into weather calculation
+* Reworked weather changing
 
 ### Mods
 * Removed Animated detectors (selectively) (Alex_91zA)
@@ -45,6 +45,7 @@ All notable changes to this project will be documented in this file.
 * Replaced `IsEocMode() or IsSurvivalMode()` statement with `IsSurvivalOrEocMode()` call
 * Reworked `release_item_manager.script` code
 * Extended values of "Online exclusion radius" option
+* Included weather graph into weather calculation
 
 ### Fixes
 * Fixed picking `zombied` target in DRX's bounty hunt tasks in Survival mode
@@ -62,6 +63,7 @@ All notable changes to this project will be documented in this file.
 * Fixed `is_companion(obj)` function in `axr_companions.script`
 * Added missing `local` modifer in `anybody_see()` function in `disguise_helper.script`
 * Fixed squad map spot of non commander companion
+* Added fix for changing of weather periods
 
 ### Optimization
 * Optimized the target finding code of bounty hunt tasks
