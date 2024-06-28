@@ -219,7 +219,7 @@ function WeatherManager:update()
 		if (self.next_hour > 23) then
 			self.next_hour = self.next_hour - 24
 		end
-		self:check_period() -- fix
+		--self:check_period() -- fix
 		self:change_period()
 		self:select_weather(false)
 	end
@@ -279,13 +279,16 @@ function WeatherManager:change_period()
 		end
 	end
 
-	-- if current hour is next period's last hour, switch period type, set next period's hour, transition is true
+	-- if current hour is next period's last hour or more than it, switch period type, set next period's hour
 	if (current_hour >= self.next_period_change_hour) then
 		--printf(">>> Tronex: change_period | current_hour == self.next_period_change_hour")
 		self.cycle = self:get_next_weather_cycle(self.cycle)
 		self.last_period_change_hour = current_hour
 		self.next_period_change_hour = self:get_next_period_change_hour(self.cycle)
 		self.transition_period = true
+		-- transition (see [atmosfear_transition] section in dynamic_weather_graphs.ltx) is disabled, 
+		-- because we are already using configured states (i.e. [atmosfear_clear], [atmosfear_partly] and etc.)
+		-- self.transition_period = true
 	end
 end
 
