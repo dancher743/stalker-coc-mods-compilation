@@ -1098,12 +1098,17 @@ function sim_squad_scripted:refresh()
 end
 
 function sim_squad_scripted:hide()
-	if(self.current_spot_id==nil) or (self.spot_section==nil) then
-		return
+	if(self.current_spot_id~=nil) and (self.spot_section~=nil) then
+		level.map_remove_object_spot(self.current_spot_id, self.spot_section)
+		self.current_spot_id = nil
+		self.spot_section = nil
 	end
-	level.map_remove_object_spot(self.current_spot_id, self.spot_section)
-	self.current_spot_id = nil
-	self.spot_section = nil
+	if (self.non_commander_spot_section~=nil) then
+		for k in self:squad_members() do
+			level.map_remove_object_spot(k.id, self.non_commander_spot_section)
+		end
+		self.non_commander_spot_section = nil
+	end
 end
 
 function sim_squad_scripted:show()
@@ -1175,6 +1180,22 @@ function sim_squad_scripted:show()
 		end
 	end
 
+	if (non_commander_spot ~= STR_EMPTY and self.non_commander_spot_section == nil) then
+		for k in self:squad_members() do
+			if (k.id ~= self:commander_id() and level.map_has_object_spot(k.id, non_commander_spot) == 0) then
+				level.map_add_object_spot(k.id, non_commander_spot, spot_descr or self:get_squad_props())
+			end
+		end
+		self.non_commander_spot_section = non_commander_spot
+	elseif (non_commander_spot == STR_EMPTY and self.non_commander_spot_section ~= nil) then
+		for k in self:squad_members() do
+			if (k.id ~= self:commander_id() and self.non_commander_spot_section and level.map_has_object_spot(k.id, self.non_commander_spot_section) == 1) then
+				level.map_remove_object_spot(k.id, self.non_commander_spot_section)
+			end
+		end
+		self.non_commander_spot_section = nil
+	end
+
 	if (spot~=STR_EMPTY) then
 		if spot == self.spot_section then
 			level.map_change_spot_hint(self.current_spot_id, self.spot_section, spot_descr or self:get_squad_props())
@@ -1190,22 +1211,6 @@ function sim_squad_scripted:show()
 	elseif (self.spot_section~=nil) then
 		level.map_remove_object_spot(self.current_spot_id, self.spot_section)
 		self.spot_section = nil
-	end
-	
-	if (non_commander_spot~=STR_EMPTY) then
-		for k in self:squad_members() do
-			if (level.map_has_object_spot(k.id, non_commander_spot) == 0) then
-				level.map_add_object_spot(k.id, non_commander_spot, spot_descr or self:get_squad_props())
-			end
-		end
-		self.non_commander_spot_section = non_commander_spot
-	elseif (non_commander_spot==STR_EMPTY) then
-		for k in self:squad_members() do
-			if (self.non_commander_spot_section and level.map_has_object_spot(k.id, self.non_commander_spot_section) == 1) then
-				level.map_remove_object_spot(k.id, self.non_commander_spot_section)
-			end
-		end
-		self.non_commander_spot_section = nil
 	end
 end
 

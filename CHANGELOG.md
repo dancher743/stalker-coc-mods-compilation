@@ -61,6 +61,7 @@ All notable changes to this project will be documented in this file.
 * Fixed rain ambient (pt.3)
 * Fixed `is_companion(obj)` function in `axr_companions.script`
 * Added missing `local` modifer in `anybody_see()` function in `disguise_helper.script`
+* Fixed squad map spot of non commander companion
 
 ### Optimization
 * Optimized the target finding code of bounty hunt tasks
