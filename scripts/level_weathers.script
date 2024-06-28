@@ -197,8 +197,7 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
 	else
 		self.distant_storm_on = false
 	end
-	self:change_period()
-    self:select_weather(false)
+    self:select_weather(true)
 end
 
 function WeatherManager:update()
@@ -215,7 +214,7 @@ function WeatherManager:update()
 		if (self.next_hour > 23) then
 			self.next_hour = self.next_hour - 24
 		end
-		-- self:check_period() -- fix
+		self:check_period() -- fix
 		self:change_period()
 		self:select_weather(false)
 	end

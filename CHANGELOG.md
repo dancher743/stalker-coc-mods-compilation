@@ -58,7 +58,6 @@ All notable changes to this project will be documented in this file.
 * Moved `ResetTimeEvent()` call to the beginning of `tick()` callback
 * Moved `ui_mm_companions_hud` string from `st_ui_companions.xml` to `ui_st_mm.xml` file
 * Fixed changing of weather periods
-* Fixed weather reset after save load
 * Fixed rain ambient (pt.3)
 * Fixed `is_companion(obj)` function in `axr_companions.script`
 * Added missing `local` modifer in `anybody_see()` function in `disguise_helper.script`
