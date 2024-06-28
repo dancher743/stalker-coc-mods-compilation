@@ -187,6 +187,7 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
 	end
 
 	-- prepare periods
+	self.next_period_change_hour = self:get_next_period_change_hour(self.cycle)
 	self.inited_time = game.get_game_time()
 	
 	-- enable distant storms
@@ -196,7 +197,8 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
 	else
 		self.distant_storm_on = false
 	end
-    self:select_weather(true)
+	self:change_period()
+    self:select_weather(false)
 end
 
 function WeatherManager:update()
