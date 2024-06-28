@@ -288,7 +288,7 @@ function WeatherManager:change_period()
 		self.transition_period = true
 		-- transition (see [atmosfear_transition] section in dynamic_weather_graphs.ltx) is disabled, 
 		-- because we are already using configured states (i.e. [atmosfear_clear], [atmosfear_partly] and etc.)
-		-- self.transition_period = true
+		self.transition_period = false
 	end
 end
 
