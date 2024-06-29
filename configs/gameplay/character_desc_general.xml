@@ -10713,7 +10713,7 @@
     <rank>2518</rank>
     <money min="1500" max="3500" infinitive="0"/>
     <reputation>2144</reputation>
-    <visual>actors\stalker_neutral\stalker_neutral_2</visual>
+    <visual>actors\stalker_neutral\stalker_neutral_2_old_exo</visual>
     <supplies>
         [spawn] \n
         wpn_wincheaster1300 \n
@@ -12338,7 +12338,7 @@
     <rank>2182</rank>
     <money min="2500" max="5000" infinitive="0"/>
     <reputation>-2029</reputation>
-    <visual>actors\stalker_neutral\stalker_neutral_2</visual>
+    <visual>actors\stalker_neutral\stalker_neutral_2_old_exo</visual>
     <supplies>
         [spawn] \n
         wpn_val = 1, scope \n
