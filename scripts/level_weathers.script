@@ -380,33 +380,32 @@ end
 
 function WeatherManager:get_next_weather_cycle(curr_weather)
 	--printf(">>> Tronex: get_next_weather_cycle | curr_weather = " .. curr_weather)
+	local curr_weather_states = get_global_weather_graph(curr_weather)
+	local avail_weather = {}
 	
-	local next_weather
-	local curr_weather_graph = self:get_graph_by_name("atmosfear_"..curr_weather)
-	
-	if (curr_weather_graph) then
-		next_weather = get_next_state(curr_weather_graph)
-	else
-		next_weather = utils.pick_without(curr_weather, weather_tbl)
-	end
-	
-	-- prepare a weather of allowed weather cycles to pick from
-	local val = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. next_weather .. "_occur",2,4)
-	val = tonumber(val)
-	local pick_chance = (val == 4 and 80) or (val == 3 and 40) or (val == 2 and 20) or 0
-	if (math.random(100) > pick_chance) then
-		next_weather = nil
+	-- prepare a table of allowed weather cycles to pick from
+	for i=1,#curr_weather_states do
+		local val = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. curr_weather_states[i] .. "_occur",2,4)
+		val = tonumber(val)
+		local pick_chance = (val == 4 and 80) or (val == 3 and 40) or (val == 2 and 20) or (val == 1 and 0)
+		if (math.random(100) <= pick_chance) then
+			avail_weather[#avail_weather + 1] = curr_weather_states[i]
+		end
 	end
 	
 	-- if no allowed weather cycles found, reset
-	if (next_weather == nil) then
-		--printf(">>> Tronex: get_next_weather_cycle | next_weather == nil")
-		self.weather_storage = {}
-		return get_random_weather()
+	if (#avail_weather == 0) then
+		--printf(">>> Tronex: get_next_weather_cycle | #avail_weather = 0")
+		return "clear"
 	end
 	
-	local pick = next_weather
-	self.weather_storage[#self.weather_storage + 1] = pick -- store new value
+	--[[
+	for i=1,#avail_weather do
+		printf(">>> Tronex: get_next_weather_cycle | avail_weather[" .. i .. "] = " .. avail_weather[i])
+	end
+	--]]
+	
+	local pick = avail_weather[math.random(#avail_weather)]
 	--printf(">>> Tronex: get_next_weather_cycle | pick = " .. pick)
 	return pick
 end
@@ -909,4 +908,16 @@ function get_random_weather()
 		end
 	end
 	return weather_tbl[math.random(#weather_tbl)]
+end
+
+function get_global_weather_graph(graph_name)
+	local tbl = {}
+	local ini = ini_file("plugins\\global_weather_graphs.ltx")
+	local section = graph_name
+	local n = ini:section_exist(section) and ini:line_count(section) or 0
+	for i=0, n-1 do
+		local result, id, value = ini:r_line(section,i,STR_EMPTY,STR_EMPTY )
+		table.insert(tbl,id)
+	end
+	return tbl
 end
