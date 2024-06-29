@@ -95,6 +95,7 @@ All notable changes to this project will be documented in this file.
 * Added `DeadBodySearchClosed` callback into `axr_main.script`
 * Added `IsSurvivalOrEocMode()` function into `_g.script`
 * Added `release_item_by_parent(...)` function into `release_item_manager.script` to release item with NPC
+* Added `new_game_start_time` field into `alife_storage_manager` state data
 
 ## [1.4.1] - 2024-05-06
 
