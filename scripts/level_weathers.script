@@ -205,8 +205,10 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
     self:select_weather(true)
 end
 
-function WeatherManager:update(force)
-	if (not force) then
+function WeatherManager:update()
+	local is_force = self.forced_weather_change_on_time_change
+	
+	if (not is_force) then
 		if (self.___timer and time_global() < self.___timer) then 
 			return
 		end
@@ -216,7 +218,7 @@ function WeatherManager:update(force)
 	-- printf(">>> Dancher: check_period | self.next_period_change_hour = " .. self.next_period_change_hour)
 	
 	-- update every 1 hour, apply weather change if necessary
-	if self.last_hour ~= level.get_time_hours() then
+	if (is_force or self.last_hour ~= level.get_time_hours()) then
 		--printf(">>> Tronex: update")
 		self.last_hour = level.get_time_hours()
 		self.next_hour = self.last_hour + 1
@@ -243,6 +245,8 @@ function WeatherManager:update(force)
 			self:distant_storm()
 		end
 	end
+	
+	self.forced_weather_change_on_time_change = false
 end
 
 function WeatherManager:check_period()
@@ -295,6 +299,10 @@ function WeatherManager:change_period()
 		-- transitions between states is disabled, 
 		-- because we are using global_weather_graphs.ltx instead of dynamic_weather_graphs.ltx
 		self.transition_period = false
+		can_change = true
+	end
+	
+	if (self.forced_weather_change_on_time_change) then
 		can_change = true
 	end
 	
@@ -439,7 +447,7 @@ end
 
 function WeatherManager:forced_weather_change()
 	self.forced_weather_change_on_time_change = true
-	self:update(true)
+	self:update()
 end
 
 
