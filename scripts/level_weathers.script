@@ -211,6 +211,8 @@ function WeatherManager:update()
 	end
 	self.___timer = time_global() + 3000
 	
+	-- printf(">>> Dancher: check_period | self.next_period_change_hour = " .. self.next_period_change_hour)
+	
 	-- update every 1 hour, apply weather change if necessary
 	if self.last_hour ~= level.get_time_hours() then
 		--printf(">>> Tronex: update")
@@ -220,8 +222,9 @@ function WeatherManager:update()
 			self.next_hour = self.next_hour - 24
 		end
 		--self:check_period() -- fix
-		self:change_period()
-		self:select_weather(false)
+		if (self:change_period()) then
+			self:select_weather(false)
+		end
 	end
 
 	-- not used?
@@ -264,6 +267,7 @@ end
 
 function WeatherManager:change_period()
 	--printf(">>> Tronex: change_period")
+	local can_change = false
 	local current_hour = level.get_time_hours()
 
 	-- if a surge is close, shift next period's last hour further.
@@ -277,6 +281,7 @@ function WeatherManager:change_period()
 		if (self.next_period_change_hour > 23) then
 			self.next_period_change_hour = self.next_period_change_hour - 24
 		end
+		can_change = true
 	end
 
 	-- if current hour is next period's last hour or more than it, switch period type, set next period's hour
@@ -285,11 +290,13 @@ function WeatherManager:change_period()
 		self.cycle = self:get_next_weather_cycle(self.cycle)
 		self.last_period_change_hour = current_hour
 		self.next_period_change_hour = self:get_next_period_change_hour(self.cycle)
-		self.transition_period = true
-		-- transition (see [atmosfear_transition] section in dynamic_weather_graphs.ltx) is disabled, 
-		-- because we are already using configured states (i.e. [atmosfear_clear], [atmosfear_partly] and etc.)
+		-- transitions between states is disabled, 
+		-- because we are using global_weather_graphs.ltx instead of dynamic_weather_graphs.ltx
 		self.transition_period = false
+		can_change = true
 	end
+	
+	return can_change
 end
 
 function WeatherManager:select_weather(now)
