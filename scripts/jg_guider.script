@@ -108,7 +108,7 @@ function prepare_follower()
 	guid.squad_id		= get_object_squad(npc).id
 	guid.size			= size
 	guid.timer			= 2*(size + math.random(0, size))
-	guid.zarplata		= utils.round_to_1000(2*(math.ceil(size * math.random(stdzarplata * 1, stdzarplata * 2))))
+	guid.zarplata		= utils.round_to_1000(2*(math.ceil(size * math.random(stdzarplata * 0.5, stdzarplata * 1.5))))
 	guid.neustoika		= utils.round_to_1000(guid.zarplata * math.random(25,75)/100)
 	guid.nadbavka_cf	= 0.2
 	guid.bonus_time_cf	= 0.2

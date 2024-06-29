@@ -47,6 +47,7 @@ All notable changes to this project will be documented in this file.
 * Extended values of "Online exclusion radius" option
 * Included weather graph into weather calculation
 * Added build exoskeleton mesh to neutral stalkers from Legend Returns 0.9.2
+* Balanced reward of Guider job
 
 ### Fixes
 * Fixed picking `zombied` target in DRX's bounty hunt tasks in Survival mode
