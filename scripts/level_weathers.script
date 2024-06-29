@@ -205,11 +205,13 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
     self:select_weather(true)
 end
 
-function WeatherManager:update()
-	if (self.___timer and time_global() < self.___timer) then 
-		return
+function WeatherManager:update(force)
+	if (not force) then
+		if (self.___timer and time_global() < self.___timer) then 
+			return
+		end
+		self.___timer = time_global() + 3000
 	end
-	self.___timer = time_global() + 3000
 	
 	-- printf(">>> Dancher: check_period | self.next_period_change_hour = " .. self.next_period_change_hour)
 	
@@ -437,6 +439,7 @@ end
 
 function WeatherManager:forced_weather_change()
 	self.forced_weather_change_on_time_change = true
+	self:update(true)
 end
 
 

@@ -66,6 +66,7 @@ All notable changes to this project will be documented in this file.
 * Added missing `local` modifer in `anybody_see()` function in `disguise_helper.script`
 * Fixed squad map spot of non commander companion
 * Added fix for changing of weather periods
+* Fixed weather changing on level changing
 
 ### Optimization
 * Optimized the target finding code of bounty hunt tasks
