@@ -354,7 +354,7 @@ function add_to_actor_squad(npc)
 	local id = npc:id()
 	non_task_companions[id] = true
 	utils.se_obj_save_var(id,npc:name(),"companion",true)
-	utils.se_obj_save_var(id,npc:name(),"companion_start_time",game.time())
+	utils.se_obj_save_var(id,npc:name(),"companion_start_time",realtime_manager.get_elapsed_time_h())
 	npc:inactualize_patrol_path()
 	setup_companion_logic(npc,db.storage[id],false)
 end
