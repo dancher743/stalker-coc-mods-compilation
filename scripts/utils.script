@@ -1011,3 +1011,19 @@ function get_nearest_game_vertex(target_position, target_level)
 	end
 	return near_gvid
 end
+
+function get_migration_flag(name, default_value)
+	local m_data = alife_storage_manager.get_state()
+	local migration_flags = m_data.migration_flags
+	return migration_flags and migration_flags[name] or default_value
+end
+
+function set_migration_flag(name, value)
+	local m_data = alife_storage_manager.get_state()
+	
+	if (not m_data.migration_flags) then
+		m_data.migration_flags = {}
+	end
+	
+	m_data.migration_flags[name] = value
+end

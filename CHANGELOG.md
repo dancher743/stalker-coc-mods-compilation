@@ -67,6 +67,7 @@ All notable changes to this project will be documented in this file.
 * Fixed squad map spot of non commander companion
 * Added fix for changing of weather periods
 * Fixed weather changing on level changing
+* Fixed calculation of `companion_start_time` var due to an overflow of `game.time()` value
 
 ### Optimization
 * Optimized the target finding code of bounty hunt tasks
@@ -96,6 +97,7 @@ All notable changes to this project will be documented in this file.
 * Added `IsSurvivalOrEocMode()` function into `_g.script`
 * Added `release_item_by_parent(...)` function into `release_item_manager.script` to release item with NPC
 * Added Real time manager - `realtime_manager.script`
+* Added migration API - `get_migration_flag` and `set_migration_flag` funcs into `utils.script`
 
 ## [1.4.1] - 2024-05-06
 

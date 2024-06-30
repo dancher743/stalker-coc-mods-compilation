@@ -82,9 +82,10 @@ local function migrate_data(squad)
 		local se_obj = k.object or alife():object(k.id)
 		if (se_obj and utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion")) then
 			-- Migrate "companion_start_time" var
-			local companion_start_time = utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_start_time")
-			if (not companion_start_time) then
-				utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_start_time",game.time())
+			local flag_name = "companion_start_time_to_realtime"
+			if (not utils.get_migration_flag(flag_name)) then
+				utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_start_time",realtime_manager.get_elapsed_time_h())
+				utils.set_migration_flag(flag_name, true)
 			end
 		end
 	end
@@ -982,9 +983,10 @@ function get_hours_with_companion(se_obj)
 	local companion_start_time = se_obj.companion_start_time
 	
 	if (companion_start_time) then
-		local seconds = (game.time() - companion_start_time) / 10000
-		hours = math.floor(seconds/60/60)
-		-- printf(string.format("DANCHER | axr_companions.get_hours_with_companion(...) -> total elapsed time: %sh; %sm; %ss.", hours, math.floor(seconds/60), math.floor(seconds)))
+		local game_elapsed_hours = realtime_manager.get_elapsed_time_h()
+		hours = game_elapsed_hours - companion_start_time
+		-- printf(string.format(">>> Dancher | axr_companions.get_hours_with_companion(...) -> %s", hours))
+		hours = math.floor(hours)
 	end
 	
 	return hours
