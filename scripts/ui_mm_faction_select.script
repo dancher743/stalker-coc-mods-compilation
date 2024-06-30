@@ -17,13 +17,6 @@ local gs = game.translate_string
 
 
 --=======================================< Callbacks >=======================================--
-local function on_game_first_load()
-	local m_data = alife_storage_manager.get_state()
-	if (not m_data.new_game_start_time) then
-		m_data.new_game_start_time = game.time()
-	end
-end
-
 local spawn_path, start_pos
 local function on_game_load(binder)
 	local config = axr_main.config
@@ -378,7 +371,6 @@ local function actor_on_first_update(binder,delta)
 end
 
 function on_game_start()
-	RegisterScriptCallback("on_game_first_load",on_game_first_load)
 	RegisterScriptCallback("on_game_load",on_game_load)
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
 end
