@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 * Reworked the clearing of a dropped items
 * Added "Online switch distance" option
 * Reworked weather changing
+* Reworked companion invulnerability timer due to an numeric overflow of built-in timer
 
 ### Mods
 * Removed Animated detectors (selectively) (Alex_91zA)
@@ -67,7 +68,6 @@ All notable changes to this project will be documented in this file.
 * Fixed squad map spot of non commander companion
 * Added fix for changing of weather periods
 * Fixed weather changing on level changing
-* Fixed calculation of `companion_start_time` var due to an overflow of `game.time()` value
 
 ### Optimization
 * Optimized the target finding code of bounty hunt tasks
