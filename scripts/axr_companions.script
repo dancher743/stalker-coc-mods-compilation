@@ -84,7 +84,7 @@ local function migrate_data(squad)
 			-- Migrate "companion_start_time" var
 			local flag_name = "companion_start_time_to_realtime"
 			if (not utils.get_migration_flag(flag_name)) then
-				utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_start_time",realtime_manager.get_elapsed_time_h())
+				utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_start_time",realtime_manager.get_time_from_new_game_h())
 				utils.set_migration_flag(flag_name, true)
 			end
 		end
@@ -354,7 +354,7 @@ function add_to_actor_squad(npc)
 	local id = npc:id()
 	non_task_companions[id] = true
 	utils.se_obj_save_var(id,npc:name(),"companion",true)
-	utils.se_obj_save_var(id,npc:name(),"companion_start_time",realtime_manager.get_elapsed_time_h())
+	utils.se_obj_save_var(id,npc:name(),"companion_start_time",realtime_manager.get_time_from_new_game_h())
 	npc:inactualize_patrol_path()
 	setup_companion_logic(npc,db.storage[id],false)
 end
@@ -983,7 +983,7 @@ function get_hours_with_companion(se_obj)
 	local companion_start_time = se_obj.companion_start_time
 	
 	if (companion_start_time) then
-		local game_elapsed_hours = realtime_manager.get_elapsed_time_h()
+		local game_elapsed_hours = realtime_manager.get_time_from_new_game_h()
 		hours = game_elapsed_hours - companion_start_time
 		-- printf(string.format(">>> Dancher | axr_companions.get_hours_with_companion(...) -> %s", hours))
 		hours = math.floor(hours)
