@@ -165,7 +165,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 			dist = db.actor:position():distance_to(obj:position())
         else
 			local se_actor = alife():actor()
-			dist = utils.get_sim_dist_to(se_obj, se_actor)
+			dist = utils.get_sim_distance_to(se_obj, se_actor)
         end
 		
 		local kilometers = dist/1000

@@ -1012,7 +1012,7 @@ function get_nearest_game_vertex(target_position, target_level)
 	return near_gvid
 end
 
-function get_sim_dist_to(se_obj1, se_obj2)
+function get_sim_distance_to(se_obj1, se_obj2)
 	local gvid1 = se_obj1.m_game_vertex_id
 	local gvid2 = se_obj2.m_game_vertex_id
 	return graph_distance(gvid1, gvid2)
