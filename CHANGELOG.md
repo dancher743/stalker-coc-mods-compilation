@@ -51,6 +51,7 @@ All notable changes to this project will be documented in this file.
 * Added build exoskeleton mesh to neutral stalkers from Legend Returns 0.9.2
 * Balanced reward of Guider job
 * Balanced coocked mutant food
+* Force enabled `black.ppe` effector in `msg_box_ui`
 
 ### Fixes
 * Fixed picking `zombied` target in DRX's bounty hunt tasks in Survival mode
