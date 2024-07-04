@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 * Added "Online switch distance" option
 * Reworked weather changing
 * Reworked companion invulnerability timer due to an numeric overflow of built-in timer
+* Reworked time skip of Fast travel
 
 ### Mods
 * Removed Animated detectors (selectively) (Alex_91zA)
@@ -99,6 +100,7 @@ All notable changes to this project will be documented in this file.
 * Added `release_item_by_parent(...)` function into `release_item_manager.script` to release item with NPC
 * Added Real time manager - `realtime_manager.script`
 * Added migration API - `get_migration_flag` and `set_migration_flag` funcs into `utils.script`
+* Added `sim_non_smart_dist_to` function into `simulation_objects.script` to find distance between two server objects
 
 ## [1.4.1] - 2024-05-06
 
