@@ -228,13 +228,3 @@ function evaluate_prior(target, squad)
 	
 	return prior*evaluate_prior_by_dist(target, squad)
 end
-
-----------------------------
--- Added by Dancher
-----------------------------
-
-function sim_non_smart_dist_to(se_obj1, se_obj2)
-	local gv1 = se_obj1.m_game_vertex_id
-	local gv2 = se_obj2.m_game_vertex_id
-	return utils.graph_distance(gv1, gv2)
-end
