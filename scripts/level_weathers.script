@@ -68,7 +68,7 @@ class "WeatherManager"
 function WeatherManager:__init()
 	--printf(">>> Tronex: __init")
 	self.weather_storage = {}
-	self.cycle = get_first_valid_weather()
+	self.cycle = get_random_weather()
 	self.transition_period = false
 	self.pre_blowout_period = false
 	self.curr_weather = STR_EMPTY
@@ -779,7 +779,7 @@ function WeatherManager:load_state(m_data)
 	end
 	self.levelWeather = m_data.weather_manager.levelWeather
 	self.period = m_data.weather_manager.period
-	self.cycle = m_data.weather_manager.cycle or get_first_valid_weather() -- new
+	self.cycle = m_data.weather_manager.cycle or get_random_weather() -- new
 	self.weather_storage = m_data.weather_manager.weather_storage or {} -- new
 	self.last_period_change_hour = m_data.weather_manager.last_period_change_hour
 	self.next_period_change_hour = m_data.weather_manager.next_period_change_hour
@@ -829,7 +829,7 @@ function WeatherManager:load(F)
 	set_save_marker(F, "load", false, "WeatherManager")
 	self.levelWeather = F:r_stringZ()
 	self.period = F:r_stringZ()
-	self.cycle = F:r_stringZ() or get_first_valid_weather() -- new
+	self.cycle = F:r_stringZ() or get_random_weather() -- new
 	if self.levelWeather == "atmosfear_transition" then
 		self.transition_period = true
 	end
@@ -910,20 +910,22 @@ function get_next_state(graph,state)
 	return next_state
 end
 
-function get_first_valid_weather()
-	local result
+function get_random_weather()
+	local tbl = {}
 	local ini = ini_file_ex("atmosfear_options.ltx",true)
 	if (ini:section_exist("atmosfear_current_parameters")) then
 		for i=1,#weather_tbl do
 			local a = ini:r_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur",2,4)
 			if (a > 1) then
-				result = weather_tbl[i]
-				--printf(">>> Tronex: get_first_valid_weather | " .. weather_tbl[i])
-				break
+				tbl[#tbl+1] = weather_tbl[i]
+				--printf(">>> Tronex: get_random_weather | " .. weather_tbl[i])
 			end
 		end
+		if (#tbl > 0) then
+			return tbl[math.random(#tbl)]
+		end
 	end
-	return result or weather_tbl[math.random(#weather_tbl)]
+	return weather_tbl[math.random(#weather_tbl)]
 end
 
 function get_global_weather_graph(graph_name)
