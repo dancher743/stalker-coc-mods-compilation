@@ -410,10 +410,10 @@ function WeatherManager:get_next_weather_cycle(curr_weather)
 		end
 	end
 	
-	-- if no allowed weather cycles found, reset
+	-- if no allowed weather cycles found return current weather
 	if (#avail_weather == 0) then
 		--printf(">>> Tronex: get_next_weather_cycle | #avail_weather = 0")
-		return get_first_valid_weather()
+		return curr_weather
 	end
 	
 	--[[
