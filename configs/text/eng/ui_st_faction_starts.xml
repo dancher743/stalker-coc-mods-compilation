@@ -96,6 +96,10 @@
 	<string id="ui_st_rookie_village">
 		<text>Rookie Village (Cordon)</text>
 	</string>
+	
+	<string id="ui_st_zone_entrance">
+		<text>Zone Entrance (Cordon)</text>
+	</string>
 
 	<string id="ui_st_research_institute">
 		<text>Research Institute (Agroprom)</text>

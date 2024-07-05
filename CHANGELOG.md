@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 * Reworked weather changing
 * Reworked companion invulnerability timer due to an numeric overflow of built-in timer
 * Reworked time skip of Fast travel
+* Added "Zone Entrance" as a start location
 
 ### Mods
 * Removed Animated detectors (selectively) (Alex_91zA)
