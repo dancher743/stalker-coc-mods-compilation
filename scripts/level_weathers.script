@@ -401,11 +401,12 @@ function WeatherManager:get_next_weather_cycle(curr_weather)
 	local avail_weather = {}
 	
 	-- prepare a table of allowed weather cycles to pick from
+	local pick_chance = math.random(100)
 	for i=1,#curr_weather_states do
 		local val = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. curr_weather_states[i] .. "_occur",2,4)
 		val = tonumber(val)
-		local pick_chance = (val == 4 and 80) or (val == 3 and 40) or (val == 2 and 20) or (val == 1 and 0)
-		if (math.random(100) <= pick_chance) then
+		local occur_chance = (val == 4 and 80) or (val == 3 and 40) or (val == 2 and 20) or (val == 1 and 0)
+		if (pick_chance <= occur_chance) then
 			avail_weather[#avail_weather + 1] = curr_weather_states[i]
 		end
 	end
