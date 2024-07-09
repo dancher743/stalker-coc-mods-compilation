@@ -123,7 +123,7 @@ function drx_df_change_faction_relations( faction_1, faction_2, delta )
 	alun_utils.save_var( db.actor, ("drx_df_" .. faction_1 .. "_" .. faction_2 .. "_relations"), relation )
 	set_factions_community_num( faction_2, faction_1, relation )
 	alun_utils.save_var( db.actor, ("drx_df_" .. faction_2 .. "_" .. faction_1 .. "_relations"), relation )
-	printf( ("DRX DF: " .. faction_1 .. " / " .. faction_2 .. " relations changed from " .. tostring( old_1_2_relations ) .. " to " .. tostring( get_factions_community( faction_1, faction_2 ) )) )
+	-- printf( ("DRX DF: " .. faction_1 .. " / " .. faction_2 .. " relations changed from " .. tostring( old_1_2_relations ) .. " to " .. tostring( get_factions_community( faction_1, faction_2 ) )) )
 
 	-- Change actor faction / faction 2 relations:
 	set_factions_community_num( ("actor_" .. faction_1), faction_2, relation )
@@ -139,7 +139,7 @@ function drx_df_change_faction_relations( faction_1, faction_2, delta )
 
 	-- Check if faction war footing has changed to hostile:
 	if ( (old_1_2_relations > ENEMIES) and (get_factions_community( faction_1, faction_2 ) <= ENEMIES) ) then
-		printf( ("DRX DF: " .. faction_1 .. " has declared war on " .. faction_2) )
+		-- printf( ("DRX DF: " .. faction_1 .. " has declared war on " .. faction_2) )
 		news_manager.send_tip( db.actor, (game.translate_string( faction_1 ) .. " " .. game.translate_string("st_drx_relations_and") .. " " .. game.translate_string( faction_2 ) .. " " .. game.translate_string("st_drx_relations_declared_war")), nil, "patriarch", nil, nil )
 		if ( character_community( db.actor ) == faction_1 or ("actor_" .. faction_1) ) then
 			relation_registry.set_community_goodwill( faction_2, db.actor:id( ), 0 )
@@ -150,7 +150,7 @@ function drx_df_change_faction_relations( faction_1, faction_2, delta )
 
 	-- Check if faction war footing has changed to allied:
 	if ( (old_1_2_relations < FRIENDS) and (get_factions_community( faction_1, faction_2 ) >= FRIENDS) ) then
-		printf( ("DRX DF: " .. faction_1 .. " has formed an alliance with " .. faction_2) )
+		-- printf( ("DRX DF: " .. faction_1 .. " has formed an alliance with " .. faction_2) )
 		news_manager.send_tip( db.actor, (game.translate_string( faction_1 ) .. " " .. game.translate_string("st_drx_relations_and") .. " " .. game.translate_string( faction_2 ) .. " " .. game.translate_string("st_drx_relations_alliance")), nil, "completionist", nil, nil )
 		if ( character_community( db.actor ) == faction_1 or ("actor_" .. faction_1) ) then
 			relation_registry.set_community_goodwill( faction_2, db.actor:id( ), 0 )
@@ -161,7 +161,7 @@ function drx_df_change_faction_relations( faction_1, faction_2, delta )
 
 	-- Check if faction war footing has changed from allied to neutral:
 	if ( (old_1_2_relations >= FRIENDS) and (get_factions_community( faction_1, faction_2 ) < FRIENDS) and (get_factions_community( faction_1, faction_2 ) > ENEMIES) ) then
-		printf( ("DRX DF: Relations between " .. faction_1 .. " and " .. faction_2 .. " are deteriorating") )
+		-- printf( ("DRX DF: Relations between " .. faction_1 .. " and " .. faction_2 .. " are deteriorating") )
 		news_manager.send_tip( db.actor, (game.translate_string( faction_1 ) .. " - " .. game.translate_string( faction_2 ) .. STR_EMPTY .. game.translate_string("st_drx_relations_deteriorating")), nil, "silver_or_lead", nil, nil )
 		if ( character_community( db.actor ) == faction_1 or ("actor_" .. faction_1) ) then
 			relation_registry.set_community_goodwill( faction_2, db.actor:id( ), 0 )
@@ -172,7 +172,7 @@ function drx_df_change_faction_relations( faction_1, faction_2, delta )
 
 	-- Check if faction war footing has changed from hostile to neutral:
 	if ( (old_1_2_relations <= ENEMIES) and (get_factions_community( faction_1, faction_2 ) < FRIENDS) and (get_factions_community( faction_1, faction_2 ) > ENEMIES) ) then
-		printf( ("DRX DF: " .. faction_1 .. " and " .. faction_2 .. " have declared a cease-fire") )
+		-- printf( ("DRX DF: " .. faction_1 .. " and " .. faction_2 .. " have declared a cease-fire") )
 		news_manager.send_tip( db.actor, (game.translate_string( faction_1 ) .. " " .. game.translate_string("st_drx_relations_and") .. " " .. game.translate_string( faction_2 ) .. " " .. game.translate_string("st_drx_relations_cease_fire")), nil, nil, nil, nil )
 		if ( character_community( db.actor ) == faction_1 or ("actor_" .. faction_1) ) then
 			relation_registry.set_community_goodwill( faction_2, db.actor:id( ), 0 )
@@ -283,7 +283,7 @@ function drx_df_on_game_load_callback( )
 			relation = alun_utils.load_var( db.actor, ("drx_df_" .. faction_1 .. "_" .. faction_2 .. "_relations"), nil )
 			if ( relation ~= nil ) then
 				set_factions_community_num( faction_1, faction_2, relation )
-				printf( ("DRX DF: " .. faction_1 .. " - " .. faction_2 .. " relations restored to " .. tostring( relation )) )
+				-- printf( ("DRX DF: " .. faction_1 .. " - " .. faction_2 .. " relations restored to " .. tostring( relation )) )
 			end
 			relation = alun_utils.load_var( db.actor, ("drx_df_" .. faction_2 .. "_" .. faction_1 .. "_relations"), nil )
 			if ( relation ~= nil ) then
@@ -365,7 +365,7 @@ function set_factions_community(faction, faction_to, new_community)
 		local community = tonumber(new_community) or new_community==game_object.enemy and -5000 or new_community==game_object.friend and 5000 or 0
 		set_factions_community_num(faction, faction_to, community)
 	else
-		--printf("No such faction community: "..tostring(faction))
+		---- printf("No such faction community: "..tostring(faction))
 	end
 end
 
@@ -373,7 +373,7 @@ function set_factions_community_num(faction, faction_to, new_community_num)
 	if(faction~=nil) and (faction~="none") and (faction_to~="none") then
 		relation_registry.set_community_relation(faction, faction_to, new_community_num)
 	else
-		--printf("No such faction community: "..tostring(faction))
+		---- printf("No such faction community: "..tostring(faction))
 	end
 end
 
@@ -381,7 +381,7 @@ function change_factions_community_num(faction_name, obj_id, delta)
 	if(faction_name~=nil) and (faction_name~="none") and (obj_id ~= nil) then
 		relation_registry.change_community_goodwill(faction_name, obj_id, delta)
 	else
-		printf("No such faction community: "..tostring(faction))
+		-- printf("No such faction community: "..tostring(faction))
 	end
 end
 
@@ -389,7 +389,7 @@ function get_factions_community(faction, faction_to)
 	if(faction~=nil) and (faction~="none") and (faction_to~="none") then
 		return relation_registry.community_relation(faction, faction_to)
 	else
-		--printf("No such faction community: "..tostring(faction))
+		---- printf("No such faction community: "..tostring(faction))
 		return nil
 	end
 end
@@ -398,7 +398,7 @@ function is_factions_friends(faction, faction_to)
 	if(faction~=nil) and (faction~="none") and (faction_to~="none") then
 		return relation_registry.community_relation(faction, faction_to)>=FRIENDS
 	else
-		--printf("No such faction community: "..tostring(faction))
+		---- printf("No such faction community: "..tostring(faction))
 		return false
 	end
 end
@@ -407,7 +407,7 @@ function is_factions_enemies(faction, faction_to)
 	if(faction~=nil) and (faction~="none") and (faction_to~="none") then
 		return relation_registry.community_relation(faction, faction_to)<=ENEMIES
 	else
-		--printf("No such faction community: "..tostring(faction))
+		---- printf("No such faction community: "..tostring(faction))
 		return false
 	end
 end
@@ -421,7 +421,7 @@ function set_npcs_relation(npc1, npc2, new_relation)
 	if npc1 and npc2 then
 		npc1:force_set_goodwill(goodwill, npc2)
 	else
-		printf("Npc not set in goodwill function!!!")
+		-- printf("Npc not set in goodwill function!!!")
 	end
 end
 
@@ -438,16 +438,16 @@ function set_npc_sympathy(npc, new_sympathy)
 	if npc then
 		npc:set_sympathy(new_sympathy)
 	else
-		printf("Npc not set in sympathy function!!!")
+		-- printf("Npc not set in sympathy function!!!")
 	end
 end
 
 function set_squad_goodwill(squad_id, new_goodwill)
-	printf("Applying new game relation [%s] between squad [%s] and npc [%s] !", new_goodwill, squad_id, "actor")
+	-- printf("Applying new game relation [%s] between squad [%s] and npc [%s] !", new_goodwill, squad_id, "actor")
 	local squad = get_story_squad(squad_id)
 	if squad == nil then
 		if type(squad_id) == "string" then
-			printf("there is no story squad with id [%s]", squad_id)
+			-- printf("there is no story squad with id [%s]", squad_id)
 			return
 		else
 			squad = alife_object(squad_id)
@@ -456,7 +456,7 @@ function set_squad_goodwill(squad_id, new_goodwill)
 	if squad then
 		squad:set_squad_relation(new_goodwill)
 	else
-		printf("There is no squad [%s] in sim_board", squad_id)
+		-- printf("There is no squad [%s] in sim_board", squad_id)
 	end
 end
 
@@ -480,7 +480,7 @@ function set_squad_goodwill_to_npc(npc, squad_id, new_goodwill)
 			end
 		end
 	else
-		printf("There is no squad [%s] in sim_board", squad_id)
+		-- printf("There is no squad [%s] in sim_board", squad_id)
 	end
 end
 
@@ -495,7 +495,7 @@ function set_squad_community_goodwill(squad_id, community, new_goodwill)
 			end
 		end
 	else
-		printf("There is no squad [%s] in sim_board", squad_id)
+		-- printf("There is no squad [%s] in sim_board", squad_id)
 	end
 end
 
@@ -547,11 +547,11 @@ end
 function get_squad_goodwill_to_actor_by_id(squad_id)
 	local squad = alife_object(squad_id)
 	if(squad==nil) then
-		printf("No such squad %s in board", tostring(squad_id))
+		-- printf("No such squad %s in board", tostring(squad_id))
 		return false
 	end
 	if(squad.relationship~=nil) then
-		--printf(" squad_relation %s", tostring(squad.relationship))
+		---- printf(" squad_relation %s", tostring(squad.relationship))
 		return squad.relationship
 	else
 		if (is_squad_monster[squad.player_id]) then
@@ -571,11 +571,11 @@ end
 function get_squad_goodwill_to_actor(squad_name)
 	local squad = get_story_squad(squad_name)
 	if(squad==nil) then
-		printf("No such squad %s in board", tostring(squad_name))
+		-- printf("No such squad %s in board", tostring(squad_name))
 		return false
 	end
 	if(squad.relationship~=nil) then
-		--printf(" squad_relation %s", tostring(squad.relationship))
+		---- printf(" squad_relation %s", tostring(squad.relationship))
 		return squad.relationship
 	else
 		if (is_squad_monster[squad.player_id]) then
@@ -647,7 +647,7 @@ end
 function get_squad_relation_to_actor_by_id(squad_id)
 	local squad = alife_object(squad_id)
 	if(squad==nil) then
-		printf("No such squad %s in board", tostring(squad_id))
+		-- printf("No such squad %s in board", tostring(squad_id))
 	end
 
 	if (is_squad_monster[squad.player_id]) then
@@ -726,7 +726,7 @@ function drx_df_faction_npc_on_death( killed_faction, killer_faction )
 	
 	-- Base value for relation change:
 	local max_value = (axr_main.config:r_value(MM_OPTIONS,"dynamic_relations_factor",5) or 100)
-	--printf("Max value:"..tostring(max_value))
+	---- printf("Max value:"..tostring(max_value))
 
 	-- If killed NPC was enemy of facton, raise goodwill toward killer faction:
 	if ( math.random( 100 ) > 50 ) then
