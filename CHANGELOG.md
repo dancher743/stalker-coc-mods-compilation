@@ -93,6 +93,7 @@ All notable changes to this project will be documented in this file.
 * Changed `STAY_TIME` in `release_body_manager.script` from 50h to 24h
 * Optimized CPU usage of "Auto garbage collection" and "Companions HUD" options
 * Cached `system_ini()` allocations (from Anomaly 1.5.1.2)
+* Removed extra sky textures of clear weather of "All AtmosFear 3 cycles for CoC" mod
 
 ### Framework
 * Added `stalker_squads` table into `sim_board.script`
