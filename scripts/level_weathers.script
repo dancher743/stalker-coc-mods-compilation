@@ -661,7 +661,7 @@ end
 --##################################################################################################
 
 function WeatherManager:distant_storm()
-	if self.distant_storm_on == nil and (self.next_weather == "cloudy"  and level.get_time_minutes() >= 30) then
+	if self.distant_storm_on == nil and (self.next_weather == "storm" and level.get_time_minutes() >= 30) then
 		local rnd = (math.random(1,100)/100)
 		if (rnd <= self.distant_storm_prob) then
 			self.distant_storm_on = true
@@ -692,7 +692,7 @@ function WeatherManager:distant_storm()
 		end
 	end
 	
-	if self.distant_storm_on == true and ((self.curr_weather == "cloudy" and level.get_time_minutes() <= 30) or (self.next_weather == "cloudy"  and level.get_time_minutes() >= 30)) and (not level.is_wfx_playing()) then
+	if self.distant_storm_on == true and (self.next_weather == "storm" and level.get_time_minutes() >= 30) and (not level.is_wfx_playing()) then
 		if self.next_thunder_at == nil then
 			self.next_thunder_at = diff_sec + math.random(5, 10)
 		end
@@ -702,7 +702,7 @@ function WeatherManager:distant_storm()
 		end
 	end
 
-	if self.distant_storm_on ~= nil and (self.next_weather ~= "cloudy" and level.get_time_minutes() >= 30) then
+	if self.distant_storm_on ~= nil and (self.next_weather ~= "storm" and level.get_time_minutes() >= 30) then
 		self.distant_storm_on = nil
 		self.next_thunder_at = nil
 	end
