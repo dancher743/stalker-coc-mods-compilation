@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 * Reworked companion invulnerability timer due to an numeric overflow of built-in timer
 * Reworked time skip of Fast travel
 * Added "Zone Entrance" as a start location
+* No more NPC vs boxes (original idea - [NPC Don't Attack Boxes](https://www.moddb.com/mods/stalker-anomaly/addons/npc-dont-attack-boxes))
 
 ### Mods
 * Removed Animated detectors (selectively) (Alex_91zA)

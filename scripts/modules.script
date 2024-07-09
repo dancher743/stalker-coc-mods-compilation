@@ -23,7 +23,7 @@ LoadScheme("xr_help_wounded",		"help_wounded",				stype_stalker)
 LoadScheme("xr_corpse_detection",	"corpse_detection",			stype_stalker)
 --LoadScheme("axr_stalker_panic",		"stalker_panic",			stype_stalker) -- working but not ideal behavior so it's disabled
 LoadScheme("axr_npc_vs_heli",		"npc_vs_heli",				stype_stalker)
-LoadScheme("axr_npc_vs_box",		"npc_vs_box",				stype_stalker)
+--LoadScheme("axr_npc_vs_box",		"npc_vs_box",				stype_stalker)
 LoadScheme("axr_fight_from_cover",	"fight_from_cover",			stype_stalker)
 LoadScheme("axr_radio_in_heli",		"radio_in_heli",			stype_stalker)
 LoadScheme("axr_turn_on_campfire",	"turn_on_campfire",			stype_stalker)
