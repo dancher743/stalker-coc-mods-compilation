@@ -107,6 +107,7 @@ All notable changes to this project will be documented in this file.
 * Added Real time manager - `realtime_manager.script`
 * Added migration API - `get_migration_flag` and `set_migration_flag` funcs into `utils.script`
 * Added `get_sim_dist_to` function into `utils.script` to find distance between two server objects
+* Added `play_once` flag for sound channels to play them once
 
 ## [1.4.1] - 2024-05-06
 

@@ -71,6 +71,7 @@ function reset_settings(level_name, ambient)
 			local period_1 = ini_snd:r_float_ex(ch,"period1")
 			local period_2 = ini_snd:r_float_ex(ch,"period2")
 			local period_3 = ini_snd:r_float_ex(ch,"period3")
+			snd_chanels[idx].play_once = ini_snd:r_bool_ex(ch,"play_once") or false
 			snd_chanels[idx].periods = {period_0, period_1, period_2, period_3}
 			snd_chanels[idx].sounds = alun_utils.parse_list(ini_snd,ch,"sounds")
 			
@@ -122,8 +123,15 @@ function update_ambient()
 		next_idx = 1
 	end
 	
-	local tg = time_global()
 	local ch = snd_chanels[next_idx]
+	
+	if (ch.has_played_once) then
+		-- print_dbg("sound [%s] has already played once", ch.name)
+		return false
+	end
+	
+	local tg = time_global()
+	
 	if (not ch.next) then
 		ch.next = tg + math.random( 1 , (ch.periods[math.random(4)] + 1) )
 		print_dbg("sound [%s] set to play at %s",ch.name,ch.next)
@@ -179,11 +187,17 @@ function update_ambient()
 		
 		ch.snd.volume = vol
 
-		-- Set next play time
-		ch.next = tg + (ch.periods[math.random(4)])
-
 		print_dbg("sound [%s] set to use sound: %s - volume: %s - distance: %s", ch.name, file, ch.snd.volume, dist)
-		print_dbg("sound [%s] set to play next at %s | time now: %s", ch.name, ch.next, tg)
+		
+		if (ch.play_once) then
+			ch.has_played_once = true
+			print_dbg("sound [%s] not set to play next, because it should play once", ch.name)
+		else
+			-- Set next play time
+			ch.next = tg + (ch.periods[math.random(4)])
+			print_dbg("sound [%s] set to play next at %s | time now: %s", ch.name, ch.next, tg)
+		end
+		
 		--print_dbg("angle_dec: %s - angle_rad: %s - math.cos(angle_rad): %s - math.sin(angle_rad): %s", angle_dec, angle_rad, math.cos(angle_rad), math.sin(angle_rad))
 		--print_dbg("player | x: %s - y: %s - z: %s", (pos.x), (pos.y), (pos.z))
 		--print_dbg("sound  | x: %s - y: %s - z: %s", (pos.x + pos_x), (pos.y), (pos.z + pos_z))
