@@ -65,7 +65,6 @@ function reset_settings(level_name, ambient)
 			snd_chanels[idx].name = ch
 			snd_chanels[idx].max_dist = ini_snd:r_float_ex(ch,"max_distance")
 			snd_chanels[idx].min_dist = ini_snd:r_float_ex(ch,"min_distance")
-			snd_chanels[idx].div_dist_for_surv_mode = ini_snd:r_bool_ex(ch,"div_distance_for_surv_mode") or false
 			snd_chanels[idx].height = ini_snd:r_float_ex(ch,"height") or 0
 			snd_chanels[idx].indoor = ini_snd:r_bool_ex(ch,"indoor") or false
 			local period_0 = ini_snd:r_float_ex(ch,"period0")

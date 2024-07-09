@@ -55,6 +55,7 @@ All notable changes to this project will be documented in this file.
 * Balanced coocked mutant food
 * Force enabled `black.ppe` effector in `msg_box_ui`
 * Balanced start money in new game loadouts
+* Removed obsolete `div_distance_for_surv_mode` string from `sound_ambient.script`
 
 ### Fixes
 * Fixed picking `zombied` target in DRX's bounty hunt tasks in Survival mode
