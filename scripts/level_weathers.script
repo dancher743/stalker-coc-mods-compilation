@@ -692,7 +692,7 @@ function WeatherManager:distant_storm()
 		end
 	end
 	
-	if self.distant_storm_on == true and (self.next_weather == "storm" and level.get_time_minutes() >= 30) and (not level.is_wfx_playing()) then
+    if self.distant_storm_on == true and ((self.curr_weather == "storm" and level.get_time_minutes() <= 30) or (self.next_weather == "storm" and level.get_time_minutes() >= 30)) and (not level.is_wfx_playing()) then
 		if self.next_thunder_at == nil then
 			self.next_thunder_at = diff_sec + math.random(5, 10)
 		end
