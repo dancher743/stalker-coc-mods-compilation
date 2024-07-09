@@ -273,7 +273,7 @@ function loot_ui:AddItemToList(sec,count)
 
 	_itm.sec = sec
 
-	local ini = system_ini()
+	local ini = ini_sys
 	local inv_grid_width = ini:r_float_ex(sec,"inv_grid_width") or 0
 	local inv_grid_height = ini:r_float_ex(sec,"inv_grid_height") or 0
 	local inv_grid_x = ini:r_float_ex(sec,"inv_grid_x") or 0

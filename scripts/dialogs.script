@@ -2391,7 +2391,7 @@ function relocate_item_section(victim, section, type, amount)
 			end
 		end
 		if (utils.is_ammo(section)) then
-			local ltx = system_ini()
+			local ltx = ini_sys
 			local box_size = ltx:r_s32(section, "box_size")
 			amount = amount * box_size
 		end
@@ -2644,7 +2644,7 @@ function relocate_item_section_to_actor(first_speaker, second_speaker, section, 
 		end
 	end
 	if (utils.is_ammo(section)) then
-		local ltx = system_ini()
+		local ltx = ini_sys
 		local box_size = ltx:r_s32(section, "box_size")
 		amount = amount * box_size
 	end
@@ -2719,7 +2719,7 @@ function relocate_item_section_from_actor(first_speaker, second_speaker, section
 	end
 
 	if (utils.is_ammo(section)) then
-		local ltx = system_ini()
+		local ltx = ini_sys
 		local box_size = ltx:r_s32(section, "box_size")
 		amount = amount * box_size
 	end

@@ -5248,7 +5248,7 @@ function create_squad(actor, obj, p)
 		printf("Wrong smart name [NIL] in create_squad function")
 	end
 
-	local ltx = system_ini()
+	local ltx = ini_sys
 
 	if not ltx:section_exist(squad_id) then
 		printf("Wrong squad identificator [%s]. Squad descr doesnt exist.", tostring(squad_id))
@@ -7318,7 +7318,7 @@ function make_a_wish(actor,npc,p)
 
 	action_list[4] = function()
 		local sim = alife()
-		local sysini = system_ini()
+		local sysini = ini_sys
 		local valid_ids = {[1] = true, [2] = true , [3] = true, [4] = true, [8] = true, [12] = true, [13] = true, [14] = true, [15] = true}
 		for k,v in pairs(ui_debug_main.id_to_spawn_table) do
 			if (valid_ids[k]) then

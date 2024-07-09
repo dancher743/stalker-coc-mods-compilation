@@ -936,7 +936,7 @@ function CSurgeManager:hit_power(power,hit_type)
 	if (expiration) then
 		g_time = utils.CTimeToSec(game.get_game_time())
 		if g_time<expiration then
-			ini = system_ini()
+			ini = ini_sys
 			self.drug_telepatic_protection = ini:r_float_ex("drug_psy_blockade","boost_telepat_protection")
 		else
 			self.drug_telepatic_protection = nil
@@ -947,7 +947,7 @@ function CSurgeManager:hit_power(power,hit_type)
 	if (expiration) then
 		g_time = g_time or utils.CTimeToSec(game.get_game_time())
 		if g_time<expiration then
-			ini = ini or system_ini()
+			ini = ini or ini_sys
 			self.drug_radiation_protection = ini:r_float_ex("drug_radioprotector","boost_radiation_protection")
 		else
 			self.drug_radiation_protection = nil
@@ -958,7 +958,7 @@ function CSurgeManager:hit_power(power,hit_type)
 	if (expiration) then
 		g_time = g_time or utils.CTimeToSec(game.get_game_time())
 		if g_time<expiration then
-			ini = ini or system_ini()
+			ini = ini or ini_sys
 			self.drug_chemical_burn_protection = ini:r_float_ex("drug_antidot","boost_chemburn_protection")
 		else
 			self.drug_chemical_burn_protection = nil

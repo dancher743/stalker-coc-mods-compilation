@@ -88,7 +88,7 @@ end
 function on_item_focus(itm)
 	local section = itm:section()
 	if (RepairTools[section]) then 
-		local ini = system_ini()
+		local ini = ini_sys
 		local repair_type = ini:r_string_ex(section,"repair_type")
 		if not (repair_type) then 
 			return
@@ -127,7 +127,7 @@ function on_item_drag_dropped(itm1,itm2,from_slot,to_slot)
 		return 
 	end
 
-	local ini = system_ini()
+	local ini = ini_sys
 	local repair_type = ini:r_string_ex(section,"repair_type")
 	if not (repair_type) then 
 		return 

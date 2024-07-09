@@ -45,7 +45,7 @@ end
 
 function sim_squad_scripted:init_squad()
 	--alun_utils.debug_write("sim_squad_scripted:init_squad")
-	local sys_ini			= system_ini()
+	local sys_ini			= ini_sys
 	local settings_id 		= self:section_name()
 	
 	self.player_id 			= sys_ini:r_string_ex(settings_id,"faction") or "stalker"
@@ -588,7 +588,7 @@ end
 
 function sim_squad_scripted:add_squad_member(spawn_section, spawn_position, lv_id, gv_id)
 	--alun_utils.debug_write("sim_squad_scripted:add_squad_member")
-	local spawn_sections_ltx = system_ini()
+	local spawn_sections_ltx = ini_sys
 	
 	if not (spawn_sections_ltx:section_exist(spawn_section)) then 
 		printf("ERROR: npc section %s does not exist!",spawn_section)
@@ -618,7 +618,7 @@ end
 
 function sim_squad_scripted:create_npc(spawn_smart,pos,lvid,gvid)
 	--alun_utils.debug_write("sim_squad_scripted:create_npc")
-	local ini = system_ini()
+	local ini = ini_sys
 	local settings_id = self:section_name()
 	local spawn_sections = utils.parse_names(ini:r_string_ex(settings_id, "npc") or STR_EMPTY)
 	

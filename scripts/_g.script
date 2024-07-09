@@ -38,6 +38,8 @@ marshal = require "marshal"
 USE_MARSHAL = marshal ~= nil
 
 ----------------------------------------------------------------------
+-- Global use
+ini_sys	= system_ini()
 mus_vol = 0
 amb_vol = 0
 b_discard_settings_shown = false
@@ -1197,7 +1199,7 @@ function disable_info (info)
 end
 
 function create_ammo(section, position, lvi, gvi, pid, num)
-	local ini = system_ini()
+	local ini = ini_sys
 
 	local num_in_box = ini:r_u32(section, "box_size")
 	local t = {}

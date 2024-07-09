@@ -338,7 +338,7 @@ function fill_primary_objects()
 end
 
 function add_quick_slot_items_on_game_start()
-	local ini = system_ini()
+	local ini = ini_sys
 	for i=0,3 do
 		get_console():execute( strformat("slot_%s %s",i, ini:r_string_ex("actor","quick_item_"..tostring(i+1)) or STR_EMPTY) )
 	end
