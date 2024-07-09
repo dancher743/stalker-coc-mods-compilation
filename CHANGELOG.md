@@ -75,6 +75,7 @@ All notable changes to this project will be documented in this file.
 * Fixed squad map spot of non commander companion
 * Added fix for changing of weather periods
 * Fixed weather changing on level changing
+* Fixed possible non-alive object checks in `disguise.script`
 
 ### Optimization
 * Optimized the target finding code of bounty hunt tasks
