@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.4.2] - Unreleased
+## [1.4.2] - 2024-07-10
 
 ### Features
 * A few campfire idle sounds from OLR 3.0
