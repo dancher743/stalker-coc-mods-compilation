@@ -72,4 +72,7 @@
 	<string id="st_itm_stash_of_actor">
 		<text>Тайник игрока</text>
 	</string>
+	<string id="st_itm_reward_stash">
+		<text>Награда за задание</text>
+	</string>
 </string_table>

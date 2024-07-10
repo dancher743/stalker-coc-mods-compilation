@@ -13,7 +13,7 @@ if (jit == nil) then
 end
 
 GAME_VERSION = "1.4.22"
-MOD_VERSION = "Dancher's Compilation 1.4.1"
+MOD_VERSION = "Dancher's Compilation 1.4.2 RC 8"
 
 if string.find(command_line(), "-dbg") then
 	DEV_DEBUG = true
@@ -38,6 +38,8 @@ marshal = require "marshal"
 USE_MARSHAL = marshal ~= nil
 
 ----------------------------------------------------------------------
+-- Global use
+ini_sys	= system_ini()
 mus_vol = 0
 amb_vol = 0
 b_discard_settings_shown = false
@@ -1197,7 +1199,7 @@ function disable_info (info)
 end
 
 function create_ammo(section, position, lvi, gvi, pid, num)
-	local ini = system_ini()
+	local ini = ini_sys
 
 	local num_in_box = ini:r_u32(section, "box_size")
 	local t = {}
@@ -1746,34 +1748,21 @@ function round_idp(num, idp)
   return math.floor(num * mult + 0.5) / mult
 end
 
-function clamp(val, min, max)
-	return (val < min and min) or (val > max and max) or val
-end
-
-function get_console_cmd(typ, name)
-	if (type(name) ~= "string") then
-		callstack()
-		printe("!ERROR exec_console_cmd | missing command")
-		return
-	end
-	
-	if typ == 0 then
-		return get_console():get_string(name)
-	elseif typ == 1 then
-		return get_console():get_bool(name)
-	elseif typ == 2 then
-		return get_console():get_float(name)
-	end
-	return get_console():get_token(name)
-end
+local console = nil
+local hud_draw_command = nil
+local actor_is_sleeping_info = nil
 
 function main_hud_shown()
+	console = (console == nil and get_console()) or console
+	hud_draw_command = (hud_draw_command == nil and "hud_draw") or hud_draw_command
+	actor_is_sleeping_info = (actor_is_sleeping_info == nil and "actor_is_sleeping") or actor_is_sleeping_info
+	
 	local actor = db.actor
-	if get_console():get_bool("hud_draw") 
+	if console:get_bool(hud_draw_command) 
 	and (not axr_main.weapon_is_zoomed) 
 	and (not actor:is_talking())
 	and (actor:alive())
-	and (not actor:has_info("actor_is_sleeping"))
+	and (not actor:has_info(actor_is_sleeping_info))
 	then
 		return true
 	end
@@ -1797,11 +1786,16 @@ VEC_FORWARD 	= vector():set(0,0,1)
 VEC_BACK 		= vector():set(0,0,-1)
 
 STR_EMPTY		= ""
+MM_OPTIONS		= "mm_options"
 -----------------------------------------
 
 function IsEocMode()
 	return alife_storage_manager.get_state().enable_eoc_mode == true or 
 		axr_main.config and axr_main.config:r_value("character_creation","new_game_eoc_mode",1) == true
+end
+
+function IsSurvivalOrEocMode()
+	return IsSurvivalMode() or IsEocMode()
 end
 
 function IsActor(o,c)
@@ -1887,8 +1881,8 @@ function StartTimer(id, interval_in_ms, tickback, ...)
 	local interval = interval_in_ms / 1000
 	
 	local function tick(...)
-		tickback(...)
 		ResetTimeEvent(timer_ev_id, id, interval)
+		tickback(...)
 	end
 	
 	CreateTimeEvent(timer_ev_id, id, interval, tick, ...)

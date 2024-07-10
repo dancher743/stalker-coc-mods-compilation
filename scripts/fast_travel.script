@@ -39,7 +39,7 @@ local function get_spotted_object_hint(se_obj_spot)
 end
 
 local function bbp_extra_weight()
-	local w,ini = 0,system_ini()
+	local w,ini = 0,ini_sys
 	if (string.find(_G.GAME_VERSION,"1.5")) then
 		local x,itm = db.actor:belt_count() or 0,nil
 		for i = 0, x - 1, 1 do
@@ -158,16 +158,22 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 
 	-- forward time when traveling
 	if not (notime) then
-		local hours
+		local dist
 		
 		if (se_obj.online) then
-			hours = 0
-		else
-			local dist = db.actor:position():distance_to(se_obj.position)
-			hours = math.floor(dist/1000)+math.random(1,2)
-		end
+			local obj = db.storage[se_obj.id] and db.storage[se_obj.id].object or level.object_by_id(se_obj.id)
+			dist = db.actor:position():distance_to(obj:position())
+        else
+			local se_actor = alife():actor()
+			dist = utils.get_sim_distance_to(se_obj, se_actor)
+        end
 		
-		level.change_game_time(0,hours,math.random(1,59))
+		local kilometers = dist/1000
+		local meters = utils.fmod(kilometers, 1) * 1000
+		local hours = math.floor(kilometers)
+		local minutes = utils.lerp(0, 59, utils.inverse_lerp(0, 1000, meters))
+		
+		level.change_game_time(0,hours,minutes)
 		surge_manager.get_surge_manager().time_forwarded = true
 		psi_storm_manager.get_psi_storm_manager().time_forwarded = true
 		level_weathers.get_weather_manager():forced_weather_change()
@@ -229,7 +235,7 @@ local function check_visit(id,level_name)
 end
 
 local function on_game_load()
-	local stxt = axr_main.config:r_string_ex("mm_options","fast_travel") or game.translate_string("ui_mm_visited_only_travel")
+	local stxt = axr_main.config:r_string_ex(MM_OPTIONS,"fast_travel") or game.translate_string("ui_mm_visited_only_travel")
 	if (stxt == game.translate_string("ui_mm_visited_only_travel")) then
 		enabled = 1
 	elseif (stxt == game.translate_string("ui_mm_show_all_travel")) or (stxt == nil) then
@@ -237,14 +243,14 @@ local function on_game_load()
 	else
 		enabled = 0
 	end
-	combattravel = axr_main.config:r_bool_ex("mm_options","enable_combat_travel",false)
-	weighttravel = axr_main.config:r_bool_ex("mm_options","enable_weight_travel",false)
-	damagetravel = axr_main.config:r_bool_ex("mm_options","enable_damage_travel",false)
-	stormtravel = axr_main.config:r_bool_ex("mm_options","enable_storm_travel",false)
-	guidertravel = axr_main.config:r_bool_ex("mm_options","enable_guider_travel",true)
-	longnames = axr_main.config:r_bool_ex("mm_options","enable_long_names",false)
-	markermessage = axr_main.config:r_bool_ex("mm_options","enable_visited_message",true)
-	notime = axr_main.config:r_bool_ex("mm_options","enable_no_time_travel",false)
+	combattravel = axr_main.config:r_bool_ex(MM_OPTIONS,"enable_combat_travel",false)
+	weighttravel = axr_main.config:r_bool_ex(MM_OPTIONS,"enable_weight_travel",false)
+	damagetravel = axr_main.config:r_bool_ex(MM_OPTIONS,"enable_damage_travel",false)
+	stormtravel = axr_main.config:r_bool_ex(MM_OPTIONS,"enable_storm_travel",false)
+	guidertravel = axr_main.config:r_bool_ex(MM_OPTIONS,"enable_guider_travel",true)
+	longnames = axr_main.config:r_bool_ex(MM_OPTIONS,"enable_long_names",false)
+	markermessage = axr_main.config:r_bool_ex(MM_OPTIONS,"enable_visited_message",true)
+	notime = axr_main.config:r_bool_ex(MM_OPTIONS,"enable_no_time_travel",false)
 
 	local faction = character_community(db.actor):sub(7)
 	local pini = ini_file("plugins\\faction_quick_travel.ltx")

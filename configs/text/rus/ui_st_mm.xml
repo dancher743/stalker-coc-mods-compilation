@@ -500,13 +500,13 @@
 		<text>Угол обзора</text>
 	</string>
 	<string id="ui_mm_slot_hud">
-		<text>Артефакты на поясе</text>
+		<text>Интерфейс слотов</text>
 	</string>
 	<string id="ui_mm_show_tracers">
 		<text>Трассеры пуль</text>
 	</string>
 	<string id="ui_mm_release_dropped_items">
-		<text>Удалять брошенные вещи</text>
+		<text>Удалять выброшенные вещи</text>
 	</string>
 	<string id="ui_mm_hardcore_ai_aim">
 		<text>Меткие НПС</text>
@@ -531,6 +531,9 @@
 		<text>низкая</text>
 	</string>
 	
+	<string id="ui_mm_companions_hud">
+		<text>Интерфейс напарников</text>
+	</string>
 	<string id="ui_mm_show_monsters_on_map">
 		<text>Показ. мутантов на карте</text>
 	</string>
@@ -575,5 +578,11 @@
 	</string>
 	<string id="ui_mm_show_health_effectors">
 		<text>Показ. эффекты ранений</text>
+	</string>
+	<string id="ui_mm_show_guide_job_on_map">
+		<text>Показ. меток проводника</text>
+	</string>
+	<string id="ui_mm_alife_switch_dist">
+		<text>Радиус жизни на локации</text>
 	</string>
 </string_table>

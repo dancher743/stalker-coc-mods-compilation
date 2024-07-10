@@ -1,295 +1,339 @@
---возвращение озвучки смерти НПС by av661194
+--
+-- Возвращение озвучки смерти НПС by av661194
+-- Оптимизация/рефакторинг by Dancher
+--
 
-local function npc_on_death_callback(victim)
+local snd_obj
+local last_snd_tbl
 
-local actor = db.actor
-local pos = actor:position()
-local npc_pos = victim:position()
-	if pos:distance_to(npc_pos) > 30 then
-	return
+local function get_death_sound_tbl(community)
+	if (community == "stalker") then
+		return {
+			"characters_voice\\human_01\\stalker\\fight\\death\\death_1",
+			"characters_voice\\human_01\\stalker\\fight\\death\\death_2",
+			"characters_voice\\human_01\\stalker\\fight\\death\\death_3",
+			"characters_voice\\human_01\\stalker\\fight\\death\\death_4",
+			"characters_voice\\human_01\\stalker\\fight\\death\\death_5",
+			"characters_voice\\human_01\\stalker\\fight\\death\\death_6",
+			"characters_voice\\human_01\\stalker\\fight\\death\\death_7",
+			"characters_voice\\human_01\\stalker\\fight\\death\\death_8",
+		
+			"characters_voice\\human_02\\stalker\\fight\\death\\death_1",
+			"characters_voice\\human_02\\stalker\\fight\\death\\death_2",
+			"characters_voice\\human_02\\stalker\\fight\\death\\death_3",
+			"characters_voice\\human_02\\stalker\\fight\\death\\death_4",
+			"characters_voice\\human_02\\stalker\\fight\\death\\death_5",
+			"characters_voice\\human_02\\stalker\\fight\\death\\death_6",
+			"characters_voice\\human_02\\stalker\\fight\\death\\death_7",
+			"characters_voice\\human_02\\stalker\\fight\\death\\death_8",
+			"characters_voice\\human_02\\stalker\\fight\\death\\death_9",
+		
+			"characters_voice\\human_03\\stalker\\fight\\death\\death_1",
+			"characters_voice\\human_03\\stalker\\fight\\death\\death_2",
+			"characters_voice\\human_03\\stalker\\fight\\death\\death_3",
+			"characters_voice\\human_03\\stalker\\fight\\death\\death_4",
+			"characters_voice\\human_03\\stalker\\fight\\death\\death_5",
+			"characters_voice\\human_03\\stalker\\fight\\death\\death_6",
+			"characters_voice\\human_03\\stalker\\fight\\death\\death_7"
+		}
 	end
-local community = victim:character_community()
-
-local faction_tbl = {
-	["stalker"] = {
-	"characters_voice\\human_01\\stalker\\fight\\death\\death_1",
-	"characters_voice\\human_01\\stalker\\fight\\death\\death_2",
-	"characters_voice\\human_01\\stalker\\fight\\death\\death_3",
-	"characters_voice\\human_01\\stalker\\fight\\death\\death_4",
-	"characters_voice\\human_01\\stalker\\fight\\death\\death_5",
-	"characters_voice\\human_01\\stalker\\fight\\death\\death_6",
-	"characters_voice\\human_01\\stalker\\fight\\death\\death_7",
-	"characters_voice\\human_01\\stalker\\fight\\death\\death_8",
-
-	"characters_voice\\human_02\\stalker\\fight\\death\\death_1",
-	"characters_voice\\human_02\\stalker\\fight\\death\\death_2",
-	"characters_voice\\human_02\\stalker\\fight\\death\\death_3",
-	"characters_voice\\human_02\\stalker\\fight\\death\\death_4",
-	"characters_voice\\human_02\\stalker\\fight\\death\\death_5",
-	"characters_voice\\human_02\\stalker\\fight\\death\\death_6",
-	"characters_voice\\human_02\\stalker\\fight\\death\\death_7",
-	"characters_voice\\human_02\\stalker\\fight\\death\\death_8",
-	"characters_voice\\human_02\\stalker\\fight\\death\\death_9",
-
-	"characters_voice\\human_03\\stalker\\fight\\death\\death_1",
-	"characters_voice\\human_03\\stalker\\fight\\death\\death_2",
-	"characters_voice\\human_03\\stalker\\fight\\death\\death_3",
-	"characters_voice\\human_03\\stalker\\fight\\death\\death_4",
-	"characters_voice\\human_03\\stalker\\fight\\death\\death_5",
-	"characters_voice\\human_03\\stalker\\fight\\death\\death_6",
-	"characters_voice\\human_03\\stalker\\fight\\death\\death_7",
-	},
-
-	["dolg"] = {
-	"characters_voice\\human_01\\dolg\\fight\\death\\death_1",
-	"characters_voice\\human_01\\dolg\\fight\\death\\death_2",
-	"characters_voice\\human_01\\dolg\\fight\\death\\death_3",
-
-	"characters_voice\\human_02\\dolg\\fight\\death\\death_1",
-	"characters_voice\\human_02\\dolg\\fight\\death\\death_2",
-	"characters_voice\\human_02\\dolg\\fight\\death\\death_3",
-
-	"characters_voice\\human_03\\dolg\\fight\\death\\death_1",
-	"characters_voice\\human_03\\dolg\\fight\\death\\death_2",
-	"characters_voice\\human_03\\dolg\\fight\\death\\death_3",
-	},
-
-	["freedom"] = {
-	"characters_voice\\human_01\\freedom\\fight\\death\\death_1",
-	"characters_voice\\human_01\\freedom\\fight\\death\\death_2",
-	"characters_voice\\human_01\\freedom\\fight\\death\\death_3",
-	"characters_voice\\human_01\\freedom\\fight\\death\\death_4",
-	"characters_voice\\human_01\\freedom\\fight\\death\\death_5",
-	"characters_voice\\human_01\\freedom\\fight\\death\\death_6",
-	"characters_voice\\human_01\\freedom\\fight\\death\\death_7",
-	"characters_voice\\human_01\\freedom\\fight\\death\\death_8",
-
-	"characters_voice\\human_02\\freedom\\fight\\death\\death_1",
-	"characters_voice\\human_02\\freedom\\fight\\death\\death_2",
-	"characters_voice\\human_02\\freedom\\fight\\death\\death_3",
-	"characters_voice\\human_02\\freedom\\fight\\death\\death_4",
-	"characters_voice\\human_02\\freedom\\fight\\death\\death_5",
-	"characters_voice\\human_02\\freedom\\fight\\death\\death_6",
-	"characters_voice\\human_02\\freedom\\fight\\death\\death_7",
-	"characters_voice\\human_02\\freedom\\fight\\death\\death_8",
-
-	"characters_voice\\human_03\\freedom\\fight\\death\\death_1",
-	"characters_voice\\human_03\\freedom\\fight\\death\\death_2",
-	"characters_voice\\human_03\\freedom\\fight\\death\\death_3",
-	"characters_voice\\human_03\\freedom\\fight\\death\\death_4",
-	"characters_voice\\human_03\\freedom\\fight\\death\\death_5",
-	"characters_voice\\human_03\\freedom\\fight\\death\\death_6",
-	"characters_voice\\human_03\\freedom\\fight\\death\\death_7",
-	"characters_voice\\human_03\\freedom\\fight\\death\\death_8",
-	},
-
-	["killer"] = {
-	"characters_voice\\human_01\\killer\\fight\\death\\death_1",
-	"characters_voice\\human_01\\killer\\fight\\death\\death_2",
-	"characters_voice\\human_01\\killer\\fight\\death\\death_3",
-	"characters_voice\\human_01\\killer\\fight\\death\\death_4",
-	"characters_voice\\human_01\\killer\\fight\\death\\death_5",
-	"characters_voice\\human_01\\killer\\fight\\death\\death_6",
-	"characters_voice\\human_01\\killer\\fight\\death\\death_7",
-
-	"characters_voice\\human_02\\killer\\fight\\death\\death_1",
-	"characters_voice\\human_02\\killer\\fight\\death\\death_2",
-	"characters_voice\\human_02\\killer\\fight\\death\\death_3",
-	"characters_voice\\human_02\\killer\\fight\\death\\death_4",
-	"characters_voice\\human_02\\killer\\fight\\death\\death_5",
-	"characters_voice\\human_02\\killer\\fight\\death\\death_6",
-	"characters_voice\\human_02\\killer\\fight\\death\\death_7",
-
-	"characters_voice\\human_03\\killer\\fight\\death\\death_1",
-	"characters_voice\\human_03\\killer\\fight\\death\\death_2",
-	"characters_voice\\human_03\\killer\\fight\\death\\death_3",
-	"characters_voice\\human_03\\killer\\fight\\death\\death_4",
-	"characters_voice\\human_03\\killer\\fight\\death\\death_5",
-	"characters_voice\\human_03\\killer\\fight\\death\\death_6",
-	"characters_voice\\human_03\\killer\\fight\\death\\death_7",
-	},
-
-	["csky"] = {
-	"characters_voice\\human_01\\csky\\fight\\death\\death_1",
-	"characters_voice\\human_01\\csky\\fight\\death\\death_2",
-	"characters_voice\\human_01\\csky\\fight\\death\\death_3",
-	"characters_voice\\human_01\\csky\\fight\\death\\death_4",
-	"characters_voice\\human_01\\csky\\fight\\death\\death_5",
-	"characters_voice\\human_01\\csky\\fight\\death\\death_6",
-	"characters_voice\\human_01\\csky\\fight\\death\\death_7",
-
-	"characters_voice\\human_02\\csky\\fight\\death\\death_1",
-	"characters_voice\\human_02\\csky\\fight\\death\\death_2",
-	"characters_voice\\human_02\\csky\\fight\\death\\death_3",
-	"characters_voice\\human_02\\csky\\fight\\death\\death_4",
-	"characters_voice\\human_02\\csky\\fight\\death\\death_5",
-	"characters_voice\\human_02\\csky\\fight\\death\\death_6",
-	"characters_voice\\human_02\\csky\\fight\\death\\death_7",
-
-	"characters_voice\\human_03\\csky\\fight\\death\\death_1",
-	"characters_voice\\human_03\\csky\\fight\\death\\death_2",
-	"characters_voice\\human_03\\csky\\fight\\death\\death_3",
-	"characters_voice\\human_03\\csky\\fight\\death\\death_4",
-	"characters_voice\\human_03\\csky\\fight\\death\\death_5",
-	"characters_voice\\human_03\\csky\\fight\\death\\death_6",
-	"characters_voice\\human_03\\csky\\fight\\death\\death_7",
-	},
-
-	["monolith"] = {
-	"characters_voice\\human_01\\monolith\\fight\\death\\death_1",
-	"characters_voice\\human_01\\monolith\\fight\\death\\death_2",
-	"characters_voice\\human_01\\monolith\\fight\\death\\death_3",
-	"characters_voice\\human_01\\monolith\\fight\\death\\death_4",
-	"characters_voice\\human_01\\monolith\\fight\\death\\death_5",
-	"characters_voice\\human_01\\monolith\\fight\\death\\death_6",
-	"characters_voice\\human_01\\monolith\\fight\\death\\death_7",
-	"characters_voice\\human_01\\monolith\\fight\\death\\death_8",
-
-	"characters_voice\\human_02\\monolith\\fight\\death\\death_1",
-	"characters_voice\\human_02\\monolith\\fight\\death\\death_2",
-	"characters_voice\\human_02\\monolith\\fight\\death\\death_3",
-	"characters_voice\\human_02\\monolith\\fight\\death\\death_4",
-	"characters_voice\\human_02\\monolith\\fight\\death\\death_5",
-	"characters_voice\\human_02\\monolith\\fight\\death\\death_6",
-	"characters_voice\\human_02\\monolith\\fight\\death\\death_7",
-	"characters_voice\\human_02\\monolith\\fight\\death\\death_8",
-
-	"characters_voice\\human_03\\monolith\\fight\\death\\death_1",
-	"characters_voice\\human_03\\monolith\\fight\\death\\death_2",
-	"characters_voice\\human_03\\monolith\\fight\\death\\death_3",
-	"characters_voice\\human_03\\monolith\\fight\\death\\death_4",
-	"characters_voice\\human_03\\monolith\\fight\\death\\death_5",
-	"characters_voice\\human_03\\monolith\\fight\\death\\death_6",
-	"characters_voice\\human_03\\monolith\\fight\\death\\death_7",
-	"characters_voice\\human_03\\monolith\\fight\\death\\death_8",
-	},
-	["army"] = {
-	"characters_voice\\human_01\\military\\fight\\death\\death_1",
-	"characters_voice\\human_01\\military\\fight\\death\\death_2",
-	"characters_voice\\human_01\\military\\fight\\death\\death_3",
-	"characters_voice\\human_01\\military\\fight\\death\\death_4",
-	"characters_voice\\human_01\\military\\fight\\death\\death_5",
-
-	"characters_voice\\human_02\\military\\fight\\death\\death_1",
-	"characters_voice\\human_02\\military\\fight\\death\\death_2",
-	"characters_voice\\human_02\\military\\fight\\death\\death_3",
-	"characters_voice\\human_02\\military\\fight\\death\\death_4",
-	"characters_voice\\human_02\\military\\fight\\death\\death_5",
-
-	"characters_voice\\human_03\\military\\fight\\death\\death_1",
-	"characters_voice\\human_03\\military\\fight\\death\\death_2",
-	"characters_voice\\human_03\\military\\fight\\death\\death_3",
-	"characters_voice\\human_03\\military\\fight\\death\\death_4",
-	"characters_voice\\human_03\\military\\fight\\death\\death_5",
-	},
-	["ecolog"] = {
-	"characters_voice\\human_01\\ecolog\\fight\\death\\death_1",
-	"characters_voice\\human_01\\ecolog\\fight\\death\\death_2",
-	"characters_voice\\human_01\\ecolog\\fight\\death\\death_3",
-	"characters_voice\\human_01\\ecolog\\fight\\death\\death_4",
-	"characters_voice\\human_01\\ecolog\\fight\\death\\death_5",
-	"characters_voice\\human_01\\ecolog\\fight\\death\\death_6",
-	"characters_voice\\human_01\\ecolog\\fight\\death\\death_7",
-	"characters_voice\\human_01\\ecolog\\fight\\death\\death_8",
-	"characters_voice\\human_01\\ecolog\\fight\\death\\death_9",
-
-	"characters_voice\\human_02\\ecolog\\fight\\death\\death_1",
-	"characters_voice\\human_02\\ecolog\\fight\\death\\death_2",
-	"characters_voice\\human_02\\ecolog\\fight\\death\\death_3",
-	"characters_voice\\human_02\\ecolog\\fight\\death\\death_4",
-	"characters_voice\\human_02\\ecolog\\fight\\death\\death_5",
-	"characters_voice\\human_02\\ecolog\\fight\\death\\death_6",
-	"characters_voice\\human_02\\ecolog\\fight\\death\\death_7",
-	"characters_voice\\human_02\\ecolog\\fight\\death\\death_8",
-	"characters_voice\\human_02\\ecolog\\fight\\death\\death_9",
-
-	"characters_voice\\human_03\\ecolog\\fight\\death\\death_1",
-	"characters_voice\\human_03\\ecolog\\fight\\death\\death_2",
-	"characters_voice\\human_03\\ecolog\\fight\\death\\death_3",
-	"characters_voice\\human_03\\ecolog\\fight\\death\\death_4",
-	"characters_voice\\human_03\\ecolog\\fight\\death\\death_5",
-	"characters_voice\\human_03\\ecolog\\fight\\death\\death_6",
-	"characters_voice\\human_03\\ecolog\\fight\\death\\death_7",
-	"characters_voice\\human_03\\ecolog\\fight\\death\\death_8",
-	"characters_voice\\human_03\\ecolog\\fight\\death\\death_9",
-	},
-
-	["bandit"] = {
-	"characters_voice\\human_01\\bandit\\fight\\death\\death_1",
-	"characters_voice\\human_01\\bandit\\fight\\death\\death_2",
-	"characters_voice\\human_01\\bandit\\fight\\death\\death_3",
-	"characters_voice\\human_01\\bandit\\fight\\death\\death_4",
-	"characters_voice\\human_01\\bandit\\fight\\death\\death_5",
-	"characters_voice\\human_01\\bandit\\fight\\death\\death_6",
-	"characters_voice\\human_01\\bandit\\fight\\death\\death_7",
-
-	"characters_voice\\human_02\\bandit\\fight\\death\\death_1",
-	"characters_voice\\human_02\\bandit\\fight\\death\\death_2",
-	"characters_voice\\human_02\\bandit\\fight\\death\\death_3",
-	"characters_voice\\human_02\\bandit\\fight\\death\\death_4",
-	"characters_voice\\human_02\\bandit\\fight\\death\\death_5",
-	"characters_voice\\human_02\\bandit\\fight\\death\\death_6",
-	"characters_voice\\human_02\\bandit\\fight\\death\\death_7",
-	"characters_voice\\human_02\\bandit\\fight\\death\\death_8",
-
-	"characters_voice\\human_03\\bandit\\fight\\death\\death_1",
-	"characters_voice\\human_03\\bandit\\fight\\death\\death_2",
-	"characters_voice\\human_03\\bandit\\fight\\death\\death_3",
-	"characters_voice\\human_03\\bandit\\fight\\death\\death_4",
-	"characters_voice\\human_03\\bandit\\fight\\death\\death_5",
-	"characters_voice\\human_03\\bandit\\fight\\death\\death_6",
-	"characters_voice\\human_03\\bandit\\fight\\death\\death_7",
-	},
-
-	["zombied"] = {
-	"characters_voice\\human_01\\zombied\\fight\\death\\death_1",
-	"characters_voice\\human_01\\zombied\\fight\\death\\death_2",
-	"characters_voice\\human_01\\zombied\\fight\\death\\death_3",
-	"characters_voice\\human_01\\zombied\\fight\\death\\death_4",
-	"characters_voice\\human_01\\zombied\\fight\\death\\death_5",
-	"characters_voice\\human_01\\zombied\\fight\\death\\death_6",
-
-	"characters_voice\\human_02\\zombied\\fight\\death\\death_1",
-	"characters_voice\\human_02\\zombied\\fight\\death\\death_2",
-	"characters_voice\\human_02\\zombied\\fight\\death\\death_3",
-	"characters_voice\\human_02\\zombied\\fight\\death\\death_4",
-	"characters_voice\\human_02\\zombied\\fight\\death\\death_5",
-	"characters_voice\\human_02\\zombied\\fight\\death\\death_6",
-
-	"characters_voice\\human_03\\zombied\\fight\\death\\death_1",
-	"characters_voice\\human_03\\zombied\\fight\\death\\death_2",
-	"characters_voice\\human_03\\zombied\\fight\\death\\death_3",
-	"characters_voice\\human_03\\zombied\\fight\\death\\death_4",
-	"characters_voice\\human_03\\zombied\\fight\\death\\death_5",
-	"characters_voice\\human_03\\zombied\\fight\\death\\death_6",
-	},
-
-	["arena_enemy"] = {
-	"characters_voice\\human_01\\stalker\\fight\\death\\death_4",
-	"characters_voice\\human_01\\stalker\\fight\\death\\death_5",
-	"characters_voice\\human_01\\stalker\\fight\\death\\death_6",
-	"characters_voice\\human_01\\stalker\\fight\\death\\death_7",
-	"characters_voice\\human_01\\stalker\\fight\\death\\death_8",
-
-	"characters_voice\\human_02\\killer\\fight\\death\\death_1",
-	"characters_voice\\human_02\\killer\\fight\\death\\death_2",
-	"characters_voice\\human_02\\killer\\fight\\death\\death_3",
-	"characters_voice\\human_02\\killer\\fight\\death\\death_4",
-	"characters_voice\\human_02\\killer\\fight\\death\\death_5",
-
-	"characters_voice\\human_03\\military\\fight\\death\\death_1",
-	"characters_voice\\human_03\\military\\fight\\death\\death_2",
-	"characters_voice\\human_03\\military\\fight\\death\\death_3",
-	"characters_voice\\human_03\\military\\fight\\death\\death_4",
-	},
-}
-local snd_tbl = faction_tbl[community] or faction_tbl.arena_enemy
-local snd = snd_tbl[math.random(#snd_tbl)]
-sound_object(snd):play_at_pos(actor, vector():set(npc_pos.x - pos.x, npc_pos.y - pos.y, npc_pos.z - pos.z), 0, 2)
+	
+	if (community == "dolg") then
+		return {
+			"characters_voice\\human_01\\dolg\\fight\\death\\death_1",
+			"characters_voice\\human_01\\dolg\\fight\\death\\death_2",
+			"characters_voice\\human_01\\dolg\\fight\\death\\death_3",
+		    
+			"characters_voice\\human_02\\dolg\\fight\\death\\death_1",
+			"characters_voice\\human_02\\dolg\\fight\\death\\death_2",
+			"characters_voice\\human_02\\dolg\\fight\\death\\death_3",
+		    
+			"characters_voice\\human_03\\dolg\\fight\\death\\death_1",
+			"characters_voice\\human_03\\dolg\\fight\\death\\death_2",
+			"characters_voice\\human_03\\dolg\\fight\\death\\death_3"
+		}
+	end
+	
+	if (community == "freedom") then
+		return {
+			"characters_voice\\human_01\\freedom\\fight\\death\\death_1",
+			"characters_voice\\human_01\\freedom\\fight\\death\\death_2",
+			"characters_voice\\human_01\\freedom\\fight\\death\\death_3",
+			"characters_voice\\human_01\\freedom\\fight\\death\\death_4",
+			"characters_voice\\human_01\\freedom\\fight\\death\\death_5",
+			"characters_voice\\human_01\\freedom\\fight\\death\\death_6",
+			"characters_voice\\human_01\\freedom\\fight\\death\\death_7",
+			"characters_voice\\human_01\\freedom\\fight\\death\\death_8",
+			
+			"characters_voice\\human_02\\freedom\\fight\\death\\death_1",
+			"characters_voice\\human_02\\freedom\\fight\\death\\death_2",
+			"characters_voice\\human_02\\freedom\\fight\\death\\death_3",
+			"characters_voice\\human_02\\freedom\\fight\\death\\death_4",
+			"characters_voice\\human_02\\freedom\\fight\\death\\death_5",
+			"characters_voice\\human_02\\freedom\\fight\\death\\death_6",
+			"characters_voice\\human_02\\freedom\\fight\\death\\death_7",
+			"characters_voice\\human_02\\freedom\\fight\\death\\death_8",
+			
+			"characters_voice\\human_03\\freedom\\fight\\death\\death_1",
+			"characters_voice\\human_03\\freedom\\fight\\death\\death_2",
+			"characters_voice\\human_03\\freedom\\fight\\death\\death_3",
+			"characters_voice\\human_03\\freedom\\fight\\death\\death_4",
+			"characters_voice\\human_03\\freedom\\fight\\death\\death_5",
+			"characters_voice\\human_03\\freedom\\fight\\death\\death_6",
+			"characters_voice\\human_03\\freedom\\fight\\death\\death_7",
+			"characters_voice\\human_03\\freedom\\fight\\death\\death_8"
+		}
+	end
+	
+	if (community == "killer") then
+		return {
+			"characters_voice\\human_01\\killer\\fight\\death\\death_1",
+			"characters_voice\\human_01\\killer\\fight\\death\\death_2",
+			"characters_voice\\human_01\\killer\\fight\\death\\death_3",
+			"characters_voice\\human_01\\killer\\fight\\death\\death_4",
+			"characters_voice\\human_01\\killer\\fight\\death\\death_5",
+			"characters_voice\\human_01\\killer\\fight\\death\\death_6",
+			"characters_voice\\human_01\\killer\\fight\\death\\death_7",
+		    
+			"characters_voice\\human_02\\killer\\fight\\death\\death_1",
+			"characters_voice\\human_02\\killer\\fight\\death\\death_2",
+			"characters_voice\\human_02\\killer\\fight\\death\\death_3",
+			"characters_voice\\human_02\\killer\\fight\\death\\death_4",
+			"characters_voice\\human_02\\killer\\fight\\death\\death_5",
+			"characters_voice\\human_02\\killer\\fight\\death\\death_6",
+			"characters_voice\\human_02\\killer\\fight\\death\\death_7",
+		    
+			"characters_voice\\human_03\\killer\\fight\\death\\death_1",
+			"characters_voice\\human_03\\killer\\fight\\death\\death_2",
+			"characters_voice\\human_03\\killer\\fight\\death\\death_3",
+			"characters_voice\\human_03\\killer\\fight\\death\\death_4",
+			"characters_voice\\human_03\\killer\\fight\\death\\death_5",
+			"characters_voice\\human_03\\killer\\fight\\death\\death_6",
+			"characters_voice\\human_03\\killer\\fight\\death\\death_7"
+		}
+	end
+	
+	if (community == "csky") then
+		return {
+			"characters_voice\\human_01\\csky\\fight\\death\\death_1",
+			"characters_voice\\human_01\\csky\\fight\\death\\death_2",
+			"characters_voice\\human_01\\csky\\fight\\death\\death_3",
+			"characters_voice\\human_01\\csky\\fight\\death\\death_4",
+			"characters_voice\\human_01\\csky\\fight\\death\\death_5",
+			"characters_voice\\human_01\\csky\\fight\\death\\death_6",
+			"characters_voice\\human_01\\csky\\fight\\death\\death_7",
+		    
+			"characters_voice\\human_02\\csky\\fight\\death\\death_1",
+			"characters_voice\\human_02\\csky\\fight\\death\\death_2",
+			"characters_voice\\human_02\\csky\\fight\\death\\death_3",
+			"characters_voice\\human_02\\csky\\fight\\death\\death_4",
+			"characters_voice\\human_02\\csky\\fight\\death\\death_5",
+			"characters_voice\\human_02\\csky\\fight\\death\\death_6",
+			"characters_voice\\human_02\\csky\\fight\\death\\death_7",
+		    
+			"characters_voice\\human_03\\csky\\fight\\death\\death_1",
+			"characters_voice\\human_03\\csky\\fight\\death\\death_2",
+			"characters_voice\\human_03\\csky\\fight\\death\\death_3",
+			"characters_voice\\human_03\\csky\\fight\\death\\death_4",
+			"characters_voice\\human_03\\csky\\fight\\death\\death_5",
+			"characters_voice\\human_03\\csky\\fight\\death\\death_6",
+			"characters_voice\\human_03\\csky\\fight\\death\\death_7"
+		}
+	end
+	
+	if (community == "monolith") then
+		return {
+			"characters_voice\\human_01\\monolith\\fight\\death\\death_1",
+			"characters_voice\\human_01\\monolith\\fight\\death\\death_2",
+			"characters_voice\\human_01\\monolith\\fight\\death\\death_3",
+			"characters_voice\\human_01\\monolith\\fight\\death\\death_4",
+			"characters_voice\\human_01\\monolith\\fight\\death\\death_5",
+			"characters_voice\\human_01\\monolith\\fight\\death\\death_6",
+			"characters_voice\\human_01\\monolith\\fight\\death\\death_7",
+			"characters_voice\\human_01\\monolith\\fight\\death\\death_8",
+		    
+			"characters_voice\\human_02\\monolith\\fight\\death\\death_1",
+			"characters_voice\\human_02\\monolith\\fight\\death\\death_2",
+			"characters_voice\\human_02\\monolith\\fight\\death\\death_3",
+			"characters_voice\\human_02\\monolith\\fight\\death\\death_4",
+			"characters_voice\\human_02\\monolith\\fight\\death\\death_5",
+			"characters_voice\\human_02\\monolith\\fight\\death\\death_6",
+			"characters_voice\\human_02\\monolith\\fight\\death\\death_7",
+			"characters_voice\\human_02\\monolith\\fight\\death\\death_8",
+		    
+			"characters_voice\\human_03\\monolith\\fight\\death\\death_1",
+			"characters_voice\\human_03\\monolith\\fight\\death\\death_2",
+			"characters_voice\\human_03\\monolith\\fight\\death\\death_3",
+			"characters_voice\\human_03\\monolith\\fight\\death\\death_4",
+			"characters_voice\\human_03\\monolith\\fight\\death\\death_5",
+			"characters_voice\\human_03\\monolith\\fight\\death\\death_6",
+			"characters_voice\\human_03\\monolith\\fight\\death\\death_7",
+			"characters_voice\\human_03\\monolith\\fight\\death\\death_8"
+		}
+	end
+	
+	if (community == "army") then
+		return {
+			"characters_voice\\human_01\\military\\fight\\death\\death_1",
+			"characters_voice\\human_01\\military\\fight\\death\\death_2",
+			"characters_voice\\human_01\\military\\fight\\death\\death_3",
+			"characters_voice\\human_01\\military\\fight\\death\\death_4",
+			"characters_voice\\human_01\\military\\fight\\death\\death_5",
+		    
+			"characters_voice\\human_02\\military\\fight\\death\\death_1",
+			"characters_voice\\human_02\\military\\fight\\death\\death_2",
+			"characters_voice\\human_02\\military\\fight\\death\\death_3",
+			"characters_voice\\human_02\\military\\fight\\death\\death_4",
+			"characters_voice\\human_02\\military\\fight\\death\\death_5",
+		    
+			"characters_voice\\human_03\\military\\fight\\death\\death_1",
+			"characters_voice\\human_03\\military\\fight\\death\\death_2",
+			"characters_voice\\human_03\\military\\fight\\death\\death_3",
+			"characters_voice\\human_03\\military\\fight\\death\\death_4",
+			"characters_voice\\human_03\\military\\fight\\death\\death_5"
+		}
+	end
+	
+	if (community == "ecolog") then
+		return {
+			"characters_voice\\human_01\\ecolog\\fight\\death\\death_1",
+			"characters_voice\\human_01\\ecolog\\fight\\death\\death_2",
+			"characters_voice\\human_01\\ecolog\\fight\\death\\death_3",
+			"characters_voice\\human_01\\ecolog\\fight\\death\\death_4",
+			"characters_voice\\human_01\\ecolog\\fight\\death\\death_5",
+			"characters_voice\\human_01\\ecolog\\fight\\death\\death_6",
+			"characters_voice\\human_01\\ecolog\\fight\\death\\death_7",
+			"characters_voice\\human_01\\ecolog\\fight\\death\\death_8",
+			"characters_voice\\human_01\\ecolog\\fight\\death\\death_9",
+		    
+			"characters_voice\\human_02\\ecolog\\fight\\death\\death_1",
+			"characters_voice\\human_02\\ecolog\\fight\\death\\death_2",
+			"characters_voice\\human_02\\ecolog\\fight\\death\\death_3",
+			"characters_voice\\human_02\\ecolog\\fight\\death\\death_4",
+			"characters_voice\\human_02\\ecolog\\fight\\death\\death_5",
+			"characters_voice\\human_02\\ecolog\\fight\\death\\death_6",
+			"characters_voice\\human_02\\ecolog\\fight\\death\\death_7",
+			"characters_voice\\human_02\\ecolog\\fight\\death\\death_8",
+			"characters_voice\\human_02\\ecolog\\fight\\death\\death_9",
+			
+			"characters_voice\\human_03\\ecolog\\fight\\death\\death_1",
+			"characters_voice\\human_03\\ecolog\\fight\\death\\death_2",
+			"characters_voice\\human_03\\ecolog\\fight\\death\\death_3",
+			"characters_voice\\human_03\\ecolog\\fight\\death\\death_4",
+			"characters_voice\\human_03\\ecolog\\fight\\death\\death_5",
+			"characters_voice\\human_03\\ecolog\\fight\\death\\death_6",
+			"characters_voice\\human_03\\ecolog\\fight\\death\\death_7",
+			"characters_voice\\human_03\\ecolog\\fight\\death\\death_8",
+			"characters_voice\\human_03\\ecolog\\fight\\death\\death_9"
+		}
+	end
+	
+	if (community == "bandit") then
+		return {
+			"characters_voice\\human_01\\bandit\\fight\\death\\death_1",
+			"characters_voice\\human_01\\bandit\\fight\\death\\death_2",
+			"characters_voice\\human_01\\bandit\\fight\\death\\death_3",
+			"characters_voice\\human_01\\bandit\\fight\\death\\death_4",
+			"characters_voice\\human_01\\bandit\\fight\\death\\death_5",
+			"characters_voice\\human_01\\bandit\\fight\\death\\death_6",
+			"characters_voice\\human_01\\bandit\\fight\\death\\death_7",
+		    
+			"characters_voice\\human_02\\bandit\\fight\\death\\death_1",
+			"characters_voice\\human_02\\bandit\\fight\\death\\death_2",
+			"characters_voice\\human_02\\bandit\\fight\\death\\death_3",
+			"characters_voice\\human_02\\bandit\\fight\\death\\death_4",
+			"characters_voice\\human_02\\bandit\\fight\\death\\death_5",
+			"characters_voice\\human_02\\bandit\\fight\\death\\death_6",
+			"characters_voice\\human_02\\bandit\\fight\\death\\death_7",
+			"characters_voice\\human_02\\bandit\\fight\\death\\death_8",
+		    
+			"characters_voice\\human_03\\bandit\\fight\\death\\death_1",
+			"characters_voice\\human_03\\bandit\\fight\\death\\death_2",
+			"characters_voice\\human_03\\bandit\\fight\\death\\death_3",
+			"characters_voice\\human_03\\bandit\\fight\\death\\death_4",
+			"characters_voice\\human_03\\bandit\\fight\\death\\death_5",
+			"characters_voice\\human_03\\bandit\\fight\\death\\death_6",
+			"characters_voice\\human_03\\bandit\\fight\\death\\death_7"
+		}
+	end
+	
+	if (community == "zombied") then
+		return {
+			"characters_voice\\human_01\\zombied\\fight\\death\\death_1",
+			"characters_voice\\human_01\\zombied\\fight\\death\\death_2",
+			"characters_voice\\human_01\\zombied\\fight\\death\\death_3",
+			"characters_voice\\human_01\\zombied\\fight\\death\\death_4",
+			"characters_voice\\human_01\\zombied\\fight\\death\\death_5",
+			"characters_voice\\human_01\\zombied\\fight\\death\\death_6",
+		    
+			"characters_voice\\human_02\\zombied\\fight\\death\\death_1",
+			"characters_voice\\human_02\\zombied\\fight\\death\\death_2",
+			"characters_voice\\human_02\\zombied\\fight\\death\\death_3",
+			"characters_voice\\human_02\\zombied\\fight\\death\\death_4",
+			"characters_voice\\human_02\\zombied\\fight\\death\\death_5",
+			"characters_voice\\human_02\\zombied\\fight\\death\\death_6",
+		    
+			"characters_voice\\human_03\\zombied\\fight\\death\\death_1",
+			"characters_voice\\human_03\\zombied\\fight\\death\\death_2",
+			"characters_voice\\human_03\\zombied\\fight\\death\\death_3",
+			"characters_voice\\human_03\\zombied\\fight\\death\\death_4",
+			"characters_voice\\human_03\\zombied\\fight\\death\\death_5",
+			"characters_voice\\human_03\\zombied\\fight\\death\\death_6"
+		}
+	end
+	
+	local default_tbl = {
+		"characters_voice\\human_01\\stalker\\fight\\death\\death_4",
+		"characters_voice\\human_01\\stalker\\fight\\death\\death_5",
+		"characters_voice\\human_01\\stalker\\fight\\death\\death_6",
+		"characters_voice\\human_01\\stalker\\fight\\death\\death_7",
+		"characters_voice\\human_01\\stalker\\fight\\death\\death_8",
+		
+		"characters_voice\\human_02\\killer\\fight\\death\\death_1",
+		"characters_voice\\human_02\\killer\\fight\\death\\death_2",
+		"characters_voice\\human_02\\killer\\fight\\death\\death_3",
+		"characters_voice\\human_02\\killer\\fight\\death\\death_4",
+		"characters_voice\\human_02\\killer\\fight\\death\\death_5",
+		
+		"characters_voice\\human_03\\military\\fight\\death\\death_1",
+		"characters_voice\\human_03\\military\\fight\\death\\death_2",
+		"characters_voice\\human_03\\military\\fight\\death\\death_3",
+		"characters_voice\\human_03\\military\\fight\\death\\death_4"
+	}
+	
+	if (community == "arena_enemy") then
+		return default_tbl
+	end
+	
+	return default_tbl
 end
 
-
+local function npc_on_death_callback(victim)
+	local community = victim:character_community()
+	local snd_tbl = (last_snd_tbl and last_snd_tbl[community]) or nil
+	
+	if (snd_tbl == nil) then
+		snd_tbl = get_death_sound_tbl(community)
+		last_snd_tbl = { [community] = snd_tbl }
+	end
+	
+	local snd = snd_tbl[math.random(#snd_tbl)]
+	snd_obj = sound_object(snd)
+	
+	if (snd_obj) then
+		local actor = db.actor
+		local actor_pos = actor:position()
+		local npc_pos = victim:position()
+		local is_npc_far = actor_pos:distance_to_sqr(npc_pos) > 900 -- 30*30 meters
+		
+		if (is_npc_far) then
+			snd_obj:play_at_pos(actor, npc_pos, 0, sound_object.s3d)
+		else
+			snd_obj:play_at_pos(actor, vector():set(npc_pos.x - actor_pos.x, npc_pos.y - actor_pos.y, npc_pos.z - actor_pos.z), 0, sound_object.s2d)
+		end
+	end
+end
 
 function on_game_start()
-RegisterScriptCallback("npc_on_death_callback", npc_on_death_callback)
+	RegisterScriptCallback("npc_on_death_callback", npc_on_death_callback)
 end

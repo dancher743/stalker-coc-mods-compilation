@@ -1,0 +1,69 @@
+--
+-- Real time manager
+-- Added by Dancher
+--
+
+local time_from_new_game_ms = 0
+
+local is_debug_enabled = false
+
+local function print_debug_string()
+	local ms = get_time_from_new_game_ms()
+	local s = get_time_from_new_game_s()
+	local m = get_time_from_new_game_m()
+	local h = get_time_from_new_game_h()
+	local d = get_time_from_new_game_d()
+	local debug_string = strformat(">>> Dancher: realtime_manager - ms: %s, s: %s, m: %s, h: %s, d: %s.", ms, s, m, h, d)
+	printf(debug_string)
+end
+
+local function save_state(m_data)
+	local state = m_data.realtime_manager_state
+	if (state == nil) then
+		state = {}
+	end
+	state.time_from_new_game_ms = time_from_new_game_ms
+	m_data.realtime_manager_state = state
+end
+
+local function load_state(m_data)
+	local state = m_data.realtime_manager_state
+	time_from_new_game_ms = state and state.time_from_new_game_ms or 0
+end
+
+local function actor_on_update(_,delta)
+	time_from_new_game_ms = time_from_new_game_ms + delta
+	if (is_debug_enabled) then
+		print_debug_string()
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("save_state",save_state)
+	RegisterScriptCallback("load_state",load_state)
+	RegisterScriptCallback("actor_on_update",actor_on_update)
+end
+
+--
+-- Helpers
+--
+
+function get_time_from_new_game_ms()
+	return time_from_new_game_ms
+end
+
+function get_time_from_new_game_s()
+	return time_from_new_game_ms / 1000 -- 1 sec = 1000 msec
+end
+
+function get_time_from_new_game_m()
+	return time_from_new_game_ms / 60000 -- 1 min = 60 sec = 60000 msec
+end
+
+function get_time_from_new_game_h()
+	return time_from_new_game_ms / 3600000 -- 1 hour = 60 min = 3600 sec = 3600000 msec
+end
+
+function get_time_from_new_game_d()
+	return time_from_new_game_ms / 86400000 -- 1 day = 24 hours = 1440 min = 86400 sec = 86400000 msec
+end

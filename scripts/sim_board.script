@@ -119,6 +119,7 @@ function simulation_board:__init()
 	self.smarts_by_names = {}
 	self.simulation_started = true
 	self.squads = {}
+	self.stalker_squads = {}
 	self.tmp_assigned_squad = {}
 end
 
@@ -270,8 +271,8 @@ function simulation_board:fill_start_position()
 		setting_ini = ini_file("misc\\simulation.ltx")
 	end 
 	
-	local stalker_pop_factor = (axr_main.config:r_value("mm_options","alife_stalker_pop",3) or 1)
-	local monster_pop_factor = (axr_main.config:r_value("mm_options","alife_mutant_pop",3) or 1)
+	local stalker_pop_factor = (axr_main.config:r_value("character_creation","new_game_stalker_pop",3) or 1)
+	local monster_pop_factor = (axr_main.config:r_value("character_creation","new_game_mutant_pop",3) or 1)
 		
 	local result, squad_section, count, li, lc
 	setting_ini:section_for_each(function(section)

@@ -1,0 +1,119 @@
+--
+-- Extensions for Engine's UIActorMenu.h class
+-- Added by Dancher
+--
+
+local last_se_inv_box
+local last_inv_box
+
+local function update_actor_menu()
+	local function reuse_container()
+		local se_inv_box = last_se_inv_box
+		local inv_box = last_inv_box
+		
+		local hud = get_hud()
+		if (hud) then
+			hud:HideActorMenu()
+		end
+		inv_box:use(db.actor)
+		
+		last_se_inv_box = se_inv_box
+		last_inv_box = inv_box
+		
+		return true
+	end
+	
+	CreateTimeEvent("actor_menu_inventory_ext","update_actor_menu",0,reuse_container)
+end
+
+function can_move_all_to_box(item)
+	local has_item_found = false
+	
+	if (actor_menu.dead_body_searching and last_inv_box) then
+		local function iterator(_, inv_item)
+			if (inv_item:id() == item:id()) then
+				has_item_found = true
+			end
+		end
+		
+		db.actor:iterate_inventory(iterator, nil)
+	end
+	
+	return has_item_found and strtransl("st_move_from_bag_all") or nil
+end
+
+function can_move_all_to_ruck(item)
+	local has_item_found = false
+	
+	if (actor_menu.dead_body_searching and last_inv_box) then
+		local function iterator(_, inv_item)
+			if (inv_item:id() == item:id()) then
+				has_item_found = true
+			end
+		end
+	
+		last_inv_box:iterate_inventory_box(iterator, nil)
+	end
+	
+	return has_item_found and strtransl("st_move_to_bag_all") or nil
+end
+
+function move_all_to_box(item)
+	local items_to_transfer = {}
+	local item_section = item:section()
+	local actor = db.actor
+	
+	local function iterator(_, inv_item)
+		if (inv_item:section() == item_section) then
+			table.insert(items_to_transfer, inv_item)
+		end
+	end
+	
+	actor:iterate_inventory(iterator, nil)
+	
+	for _,inv_item in ipairs(items_to_transfer) do
+		actor:transfer_item(inv_item,last_inv_box)
+	end
+	
+	update_actor_menu()
+end
+
+function move_all_to_ruck(item)
+	local items_to_transfer = {}
+	local item_section = item:section()
+	
+	local function iterator(_, inv_item)
+		if (inv_item:section() == item_section) then
+			table.insert(items_to_transfer,inv_item)
+		end
+	end
+
+	last_inv_box:iterate_inventory_box(iterator, nil)
+	
+	for i,inv_item in ipairs(items_to_transfer) do
+		last_inv_box:transfer_item(inv_item,db.actor)
+	end
+	
+	update_actor_menu()
+end
+
+local function physic_object_on_use_callback(obj,who)
+	if (IsInvbox(obj)) then
+		local se_inv_box = alife_object(obj:id())
+		local inv_box = level.object_by_id(se_inv_box.id)
+		if (se_inv_box and inv_box) then
+			last_se_inv_box = se_inv_box
+			last_inv_box = inv_box
+		end
+	end
+end
+
+local function DeadBodySearchClosed()
+	last_inv_box = nil
+	last_se_inv_box = nil
+end
+
+function on_game_start()
+	RegisterScriptCallback("physic_object_on_use_callback", physic_object_on_use_callback)
+	RegisterScriptCallback("DeadBodySearchClosed", DeadBodySearchClosed)
+end

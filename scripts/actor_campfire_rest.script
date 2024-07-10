@@ -31,10 +31,11 @@ local function rest_near_campfire()
 	local smart_campfires = db.campfire_table_by_smart_names[smart_name]
 	
 	if (smart_campfires ~= nil and not is_empty(smart_campfires)) then		
+		local actor_position = actor:position()
 		for id,binder in pairs (smart_campfires) do
 			if (binder.object and binder.campfire and binder.campfire:is_on()) then
 				local campfire_obj = level.object_by_id(id)
-				local campfire_distance_sqr = campfire_obj and campfire_obj:position():distance_to_sqr(actor:position()) 
+				local campfire_distance_sqr = campfire_obj and campfire_obj:position():distance_to_sqr(actor_position)
 				if (campfire_distance_sqr <= rest_distance_sqr) then
 					actor.health = 0.025
 					actor.psy_health = 0.05

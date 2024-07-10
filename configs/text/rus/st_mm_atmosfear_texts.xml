@@ -274,6 +274,9 @@
 	<string id="st_occurrence_zero">
 		<text>Никогда</text>
 	</string>
+	<string id="st_occurrence_sometimes">
+		<text>Иногда</text>
+	</string>
 	<string id="st_occurrence_regular">
 		<text>Часто</text>
 	</string>

@@ -82,9 +82,10 @@ local function migrate_data(squad)
 		local se_obj = k.object or alife():object(k.id)
 		if (se_obj and utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion")) then
 			-- Migrate "companion_start_time" var
-			local companion_start_time = utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_start_time")
-			if (not companion_start_time) then
-				utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_start_time",game.time())
+			local flag_name = "companion_start_time_to_realtime"
+			if (not utils.get_migration_flag(flag_name)) then
+				utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_start_time",realtime_manager.get_time_from_new_game_h())
+				utils.set_migration_flag(flag_name, true)
 			end
 		end
 	end
@@ -240,9 +241,10 @@ function companion_squad_can_teleport(squad)
 		end
 	end 
 	
-	if (id) and (sim:has_info(id,"npcx_beh_patrol_mode") or sim:has_info(id,"npcx_beh_wait")) then
+	-- Disabled for Dancher's Compilation mod
+	--[[if (id) and (sim:has_info(id,"npcx_beh_patrol_mode") or sim:has_info(id,"npcx_beh_wait")) then
 		return false
-	end
+	end]]
 	return true
 end 
 
@@ -352,7 +354,7 @@ function add_to_actor_squad(npc)
 	local id = npc:id()
 	non_task_companions[id] = true
 	utils.se_obj_save_var(id,npc:name(),"companion",true)
-	utils.se_obj_save_var(id,npc:name(),"companion_start_time",game.time())
+	utils.se_obj_save_var(id,npc:name(),"companion_start_time",realtime_manager.get_time_from_new_game_h())
 	npc:inactualize_patrol_path()
 	setup_companion_logic(npc,db.storage[id],false)
 end
@@ -888,9 +890,25 @@ function has_companion()
 	return result
 end
 
-function is_companion(npc)
-	local clist = list_actor_squad_by_id()
-    return clist[npc:id()] ~= nil
+function is_companion(obj)
+    local result = false
+	
+	local se_obj = simulation:object(obj:id())
+	
+	if (is_hostage(se_obj) == false) then
+		result = obj:has_info("npcx_is_companion")
+		if (result == false) then
+			local clist = list_actor_squad_by_id()
+			for i=1,#clist do
+				if (clist[i] == se_obj.id) then
+					result = true
+					break
+				end
+			end
+		end
+	end
+    
+    return result
 end
 
 function is_companion_squad(squad_id)
@@ -937,7 +955,7 @@ function is_invulnerable(se_obj)
 		se_obj.companion_is_invulnerable = true
 	end
 	
-	local option = axr_main.config:r_value("mm_options","enable_companions_invulnerability",1,false)
+	local option = axr_main.config:r_value(MM_OPTIONS,"enable_companions_invulnerability",1,false)
 	
 	return option and se_obj.companion_is_invulnerable
 end
@@ -965,9 +983,10 @@ function get_hours_with_companion(se_obj)
 	local companion_start_time = se_obj.companion_start_time
 	
 	if (companion_start_time) then
-		local seconds = (game.time() - companion_start_time) / 10000
-		hours = math.floor(seconds/60/60)
-		-- printf(string.format("DANCHER | axr_companions.get_hours_with_companion(...) -> total elapsed time: %sh; %sm; %ss.", hours, math.floor(seconds/60), math.floor(seconds)))
+		local game_elapsed_hours = realtime_manager.get_time_from_new_game_h()
+		hours = game_elapsed_hours - companion_start_time
+		-- printf(string.format(">>> Dancher | axr_companions.get_hours_with_companion(...) -> %s", hours))
+		hours = math.floor(hours)
 	end
 	
 	return hours

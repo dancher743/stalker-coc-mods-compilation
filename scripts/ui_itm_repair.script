@@ -22,7 +22,7 @@ function repair_ui:__init(owner,obj,section) super()
 	self.object = obj
 	self.owner = owner
 	self.section = section
-	local ini = system_ini()
+	local ini = ini_sys
 	self.use_condition = ini:r_bool_ex(section,"use_condition") or false
 	self.min_condition = ini:r_float_ex(section,"repair_min_condition") or 0
 	self.max_condition = ini:r_float_ex(section,"repair_max_condition") or 0
@@ -128,7 +128,7 @@ function repair_ui:InitControls()
 	-- Repair tool picture
 	self.pic = self.xml:InitStatic("itm_repair:form:icon_tool",self.form)
 
-	local ini = system_ini()
+	local ini = ini_sys
 	local inv_grid_width = ini:r_float_ex(self.section,"inv_grid_width") or 0 
 	local inv_grid_height = ini:r_float_ex(self.section,"inv_grid_height") or 0
 	local inv_grid_x = ini:r_float_ex(self.section,"inv_grid_x") or 0
@@ -373,7 +373,7 @@ function repair_ui:OnButton_repair()
 end
 
 function repair_ui:AddItemToList(item,listbox,condition)
-	local ini = system_ini()
+	local ini = ini_sys
 	local _itm			= load_item(self.file_item_main_sz.y)
 	local sec = item and item:section()
 	local inv_name 		= item and game.translate_string(ini:r_string_ex(sec,"inv_name") or "none")

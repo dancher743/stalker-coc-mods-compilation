@@ -14,7 +14,10 @@ function load_state()
 	guid = jg_utils.l_v("guid", {})
 	curr_guid = jg_utils.l_v("curr_guid", {})
 	local newgame = jg_utils.l_v("newgame")	-- хз как ещё сделать срабатывание при НИ
-	if not newgame then jg_utils.s_v("newgame", 'Каллбек сработал') return jg_timers.g_start_timer('guid_msg',0,0,15,'jg_guider','prepare_follower') end
+	if not newgame then 
+		jg_utils.s_v("newgame", 'Каллбек сработал')
+		jg_timers.g_start_timer('guid_msg',0,0,15,'jg_guider','prepare_follower')
+	end
 end 
 function save_state()
 	jg_utils.s_v("guid", guid)
@@ -37,13 +40,29 @@ end
 
 function clear()
 	db.actor:disable_info_portion('guider_start')
-	-- level.map_remove_object_spot(curr_guid.squad_id, 'storyline_task_location')
+	local spot_id = curr_guid.spot_id
+	if (spot_id) then
+		-- level.map_remove_object_spot(curr_guid.squad_id, 'storyline_task_location')
+		local se_obj = alife_object(spot_id)
+		if (se_obj) then
+			level.map_remove_object_spot(se_obj.id, "crlc_guide")
+			alife():release(se_obj)
+		end
+	end
 	curr_guid = {}
 	jg_utils.d_v("curr_guid")
 	jg_timers.stop_g_timer('guid_fail')
+	jg_timers.g_start_timer('guid_msg',math.random(0,1),math.random(23),0,'jg_guider','prepare_follower')
 end 
 
 local function clear_guid()
+	local spot_id = guid.spot_id
+	if (spot_id) then
+		local spot_icon = "ui_pda2_need_guider_location_level_map"
+		if (level.map_has_object_spot(spot_id,spot_icon) == 1) then
+			level.map_remove_object_spot(spot_id,spot_icon)
+		end
+	end
 	guid = {}
 	jg_utils.d_v("guid")
 end 
@@ -70,7 +89,8 @@ function prepare_follower()
 	local npc = ins_mass_onl()
 	if npc == nil then
 		if debug == true then printf('! Некого провожать | npc==nil') end
-		return jg_timers.g_start_timer('guid_msg',0,0,15,'jg_guider','prepare_follower')
+		jg_timers.g_start_timer('guid_msg',0,0,15,'jg_guider','prepare_follower')
+		return
 	end
 	local level_name, size = jg_gps.go_poisk()
 	if level_name == nil or size == nil then return jg_timers.g_start_timer('guid_msg',0,0,15,'jg_guider','prepare_follower') end
@@ -88,8 +108,18 @@ function prepare_follower()
 	guid.squad_id		= get_object_squad(npc).id
 	guid.size			= size
 	guid.timer			= 2*(size + math.random(0, size))
-	guid.zarplata		= utils.round_to_1000(2*(math.ceil(size * math.random(stdzarplata * 1, stdzarplata * 2))))
-	guid.neustoika		= utils.round_to_1000(guid.zarplata * math.random(25,100)/100)
+	guid.zarplata		= utils.round_to_1000(2*(math.ceil(size * math.random(stdzarplata * 0.5, stdzarplata * 1.5))))
+	guid.neustoika		= utils.round_to_1000(guid.zarplata * math.random(25,75)/100)
+	guid.nadbavka_cf	= 0.2
+	guid.bonus_time_cf	= 0.2
+	
+	if (axr_main_options.get_check_option("show_guide_job_on_map")) then
+		local spot_id = guid.squad_id
+		local spot_icon = "ui_pda2_need_guider_location_level_map"
+		local spot_descr = strformat(strtransl("st_ui_pda_need_guider_spot_descr"), npc:character_name())
+		level.map_add_object_spot_ser(spot_id, spot_icon, spot_descr)
+		guid.spot_id = spot_id
+	end
 	
 	local news_text = string.format(game.translate_string('st_jg_14'), game.translate_string(level_name), dynamic_news_helper.GetPointDescription(npc))
 	send_tip(npc, news_text, beep_1)
@@ -101,16 +131,40 @@ end
 function activate()
 	curr_guid = jg_utils.copy_tbl(guid)
 	clear_guid()
+	
 	-- Старт таймера фэйла
 	jg_timers.g_start_timer('guid_fail',0,curr_guid['timer'],0,'jg_guider','fail_time')
-	-- level.map_add_object_spot_ser(guid.squad_id, 'storyline_task_location', 'Сталкеру необходимо попасть '..description)
+	jg_timers.stop_g_timer('guid_msg')
+	
+	if (axr_main_options.get_check_option("show_guide_job_on_map")) then
+		local pos = vector():set(curr_guid.pos[1], curr_guid.pos[2], curr_guid.pos[3])
+		local lvid = level.vertex_id(pos)
+		local gvid = utils.get_nearest_game_vertex(pos, curr_guid.target_level)
+		local se_obj = alife():create("guide_spot_object",pos,lvid,gvid)
+		
+		local spot_id = se_obj.id
+		local npc = level.object_by_id(get_comm_id(curr_guid.squad_id))
+		local spot_descr = strformat(strtransl("st_ui_pda_guider_target_spot_descr"),npc:character_name(),curr_guid.description)
+		level.map_add_object_spot_ser(spot_id, "crlc_guide", spot_descr)
+		-- level.map_add_object_spot_ser(guid.squad_id, 'storyline_task_location', 'Сталкеру необходимо попасть '..description)
+		
+		curr_guid.spot_id = spot_id
+	else
+		curr_guid.spot_id = nil
+	end
 end
 
-function complete(first_speaker,second_speaker)
-	dialogs.relocate_money(db.actor,curr_guid['zarplata'],"in")
+function complete(actor,npc)
+	local zarplata = curr_guid['zarplata']
+	dialogs.relocate_money(actor,zarplata,"in")
+	
+	local nadbavka_cf = curr_guid.nadbavka_cf
+	if (has_time_bonus() and nadbavka_cf) then
+		dialogs.relocate_money(actor,zarplata * nadbavka_cf,"in")
+	end
+	
 	xr_statistic.inc_actor_reputation(100)
-	local snpc = alife():object(get_comm_id(curr_guid['squad_id']))
-	alun_utils.execute_script_on_squad(snpc,axr_companions.remove_from_actor_squad)
+	dialogs_axr_companion.remove_companions_from_squad(actor,npc)
 	clear()
 end
 
@@ -193,7 +247,7 @@ end
 
 function prec_5(actor, npc)
 	local npc = dialogs.who_is_npc(actor,npc)
-	if curr_guid.target_level == level.name() and (type(npc.position) == "function" and npc:position() or npc.position):distance_to(vector():set(curr_guid.pos[1], curr_guid.pos[2], curr_guid.pos[3])) <= 50 then
+	if curr_guid.target_level == level.name() and (type(npc.position) == "function" and npc:position() or npc.position):distance_to_sqr(vector():set(curr_guid.pos[1], curr_guid.pos[2], curr_guid.pos[3])) <= 25*25 then
 		return true
 	end
 end
@@ -218,6 +272,24 @@ function get_phrase3()
 	return string.format(game.translate_string('st_jg_18'), curr_guid['neustoika'])
 end
 
+function get_phrase4()
+	local left_minutes_total = jg_timers.get_g_timer_left_time('guid_fail')
+	local left_hours = math.floor(left_minutes_total / 60)
+	local left_minutes = left_minutes_total - (left_hours * 60)
+	local phrase = strformat(strtransl('st_jg_21'), left_hours, left_minutes)
+	return phrase
+end
+
+function get_phrase5()
+	local phrase
+	if (has_time_bonus()) then
+		phrase = strformat("%s %s", strtransl("st_jg_9"), strtransl("st_jg_22"))
+	else
+		phrase = strtransl("st_jg_9")
+	end
+	return phrase
+end
+
 --///////////////////////////////// Вспомогательные функции
 
 function send_tip(npc, news_text, news_sound)
@@ -236,4 +308,18 @@ function try_clear_prepared_follower(npc)
 	if (squad and squad.id == guid['squad_id']) then
 		clear_guid()
 	end
+end
+
+function is_squad_need_guider(squad_id)
+	return guid.squad_id == squad_id
+end
+
+function has_time_bonus()
+	local result = false
+	if (curr_guid and curr_guid.timer and curr_guid.bonus_time_cf) then
+		local minutes_left = jg_timers.get_g_timer_left_time('guid_fail')
+		local minutes_total = curr_guid.timer * 60
+		result = minutes_left > math.floor(minutes_total * curr_guid.bonus_time_cf)
+	end
+	return result
 end

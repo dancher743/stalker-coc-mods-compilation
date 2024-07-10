@@ -1,0 +1,105 @@
+----------------------------------------
+-- Auto-release old dropped items 
+-- Author: Alundaio
+----------------------------------------
+local items_marked_for_removal = {}
+
+local function npc_on_item_drop(npc,item)
+	if (is_quest_item(item:section())) then
+		return
+	end
+	
+	local item_parent = item:parent()
+	local npc_id = npc:id()
+	local has_npc_item = item_parent and item_parent:id() == npc_id
+	local se_npc = alife_object(npc_id)
+	
+	if (item_parent == nil or has_npc_item) then
+		items_marked_for_removal[item:id()] = {item:name(),game.get_game_time(),se_npc.id}
+	end
+end
+
+local function npc_on_item_take(npc,item)
+	items_marked_for_removal[item:id()] = nil
+end
+
+local function actor_on_item_drop(item)
+	npc_on_item_drop(db.actor,item)
+end
+
+local function actor_on_item_take(item)
+	items_marked_for_removal[item:id()] = nil
+end 
+
+local function save_state(m_data)
+	m_data.items_marked_for_removal = items_marked_for_removal
+end
+
+local function load_state(m_data)
+	if (m_data.items_marked_for_removal) then
+		for k,v in pairs(m_data.items_marked_for_removal) do 
+			items_marked_for_removal[k] = v
+		end
+		m_data.items_marked_for_removal = nil
+	end
+end
+
+local function on_game_load()
+	release_actor_items()
+end
+--------------------------------------------------------
+-- ON GAME START 
+--------------------------------------------------------
+function on_game_start()
+	RegisterScriptCallback("npc_on_item_drop",npc_on_item_drop)
+	RegisterScriptCallback("npc_on_item_take",npc_on_item_take)
+	RegisterScriptCallback("actor_on_item_drop",actor_on_item_drop)
+	RegisterScriptCallback("actor_on_item_take",actor_on_item_take)
+	RegisterScriptCallback("save_state",save_state)
+	RegisterScriptCallback("load_state",load_state)
+	RegisterScriptCallback("on_game_load",on_game_load)
+end
+
+-----------------------------------------------------------
+-- CLEARING
+-----------------------------------------------------------
+function release_actor_items()
+	if (axr_main.config:r_value(MM_OPTIONS,"enable_release_dropped_items",1,false)) then
+		local game_time = game.get_game_time()
+		local stay_time = 14400
+		local sim = alife()
+		local se_actor_id = sim:actor().id
+		for id,t in pairs(items_marked_for_removal) do 
+			local se_obj = sim:object(id)
+			if (se_obj and se_obj.parent_id == 65535 and se_obj:name() == t[1] and game_time:diffSec(t[2]) >= stay_time and t[3] == se_actor_id) then
+				--printf("release %s",t[1])
+				safe_release_manager.release(se_obj)
+				items_marked_for_removal[id] = nil
+			end
+		end
+	end
+end
+
+function release_item_by_parent(se_parent_id)
+	local sim = alife()
+	for id,t in pairs(items_marked_for_removal) do
+		local se_obj = sim:object(id)
+		if (se_obj and se_obj.parent_id == 65535 and se_obj:name() == t[1] and t[3] == se_parent_id) then
+			--printf("release %s",t[1])
+			safe_release_manager.release(se_obj)
+			items_marked_for_removal[id] = nil
+		end
+	end
+end
+
+-----------------------------------------------------------
+-- HELPERS
+-----------------------------------------------------------
+local quest_item_str
+
+function is_quest_item(section)
+	if (quest_item_str == nil) then
+		quest_item_str = "quest_item"
+	end
+	return system_ini():r_bool_ex(section,quest_item_str,nil) ~= nil
+end

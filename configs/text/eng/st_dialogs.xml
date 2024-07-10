@@ -1218,5 +1218,34 @@
 	<string id="axr_phrase_friend_companion_answer_join_hostage">
 		<text>Yes, he needs our help! Lead the way.</text>
 	</string>
-
+	
+	<!-- Added by Dancher -->
+	
+	<string id="vanish_bounty_hunt_target_dialog_0">
+		<text>There is a bounty on your head. I suggest you disperse peacefully.</text>
+	</string>
+	<string id="vanish_bounty_hunt_target_dialog_1">
+		<text>I heard about it... Don't kill me, stalker. I will disappear and you will never see me again.</text>
+	</string>
+	<string id="vanish_bounty_hunt_target_dialog_11">
+		<text>Goodbye.</text>
+	</string>
+	<string id="vanish_bounty_hunt_target_dialog_20">
+		<text>Back off.</text>
+	</string>
+	<string id="vanish_bounty_hunt_target_dialog_21">
+		<text>Who are you exactly?</text>
+	</string>
+	<string id="vanish_bounty_hunt_target_dialog_22">
+		<text>Heh, good luck.</text>
+	</string>
+	<string id="vanish_bounty_hunt_target_dialog_23">
+		<text>Try it.</text>
+	</string>
+	<string id="vanish_bounty_hunt_target_dialog_24">
+		<text>Was joking...</text>
+	</string>
+	<string id="vanish_bounty_hunt_target_dialog_25">
+		<text>I'm not afraid of you.</text>
+	</string>
 </string_table>

@@ -41,8 +41,8 @@ function atmosfear_init()
 	if (not atmosfear_options.config:section_exist("atmosfear_current_parameters")) then
 		--printf(">>> Tronex: atmosfear_init - current_parameters don't exist")
 		for	i = 1, #weather_tbl do
-			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_period", random_choice(4,6,8))
-			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur", math.random(2,3))
+			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_period", math.random(3,6))
+			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur", math.random(2,4))
 		end
 
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_enable_blowout",1)
@@ -206,22 +206,29 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
 end
 
 function WeatherManager:update()
-	if (self.___timer and time_global() < self.___timer) then 
-		return
+	local is_force = self.forced_weather_change_on_time_change
+	
+	if (not is_force) then
+		if (self.___timer and time_global() < self.___timer) then 
+			return
+		end
+		self.___timer = time_global() + 3000
 	end
-	self.___timer = time_global() + 3000
+	
+	-- printf(">>> Dancher: check_period | self.next_period_change_hour = " .. self.next_period_change_hour)
 	
 	-- update every 1 hour, apply weather change if necessary
-	if self.last_hour ~= level.get_time_hours() then
+	if (is_force or self.last_hour ~= level.get_time_hours()) then
 		--printf(">>> Tronex: update")
 		self.last_hour = level.get_time_hours()
 		self.next_hour = self.last_hour + 1
 		if (self.next_hour > 23) then
 			self.next_hour = self.next_hour - 24
 		end
-		self:check_period() -- fix
-		self:change_period()
-		self:select_weather(false)
+		--self:check_period() -- fix
+		if (self:change_period()) then
+			self:select_weather(false)
+		end
 	end
 
 	-- not used?
@@ -238,6 +245,8 @@ function WeatherManager:update()
 			self:distant_storm()
 		end
 	end
+	
+	self.forced_weather_change_on_time_change = false
 end
 
 function WeatherManager:check_period()
@@ -264,6 +273,7 @@ end
 
 function WeatherManager:change_period()
 	--printf(">>> Tronex: change_period")
+	local can_change = false
 	local current_hour = level.get_time_hours()
 
 	-- if a surge is close, shift next period's last hour further.
@@ -277,16 +287,26 @@ function WeatherManager:change_period()
 		if (self.next_period_change_hour > 23) then
 			self.next_period_change_hour = self.next_period_change_hour - 24
 		end
+		can_change = true
 	end
 
-	-- if current hour is next period's last hour, switch period type, set next period's hour, transition is true
-	if (current_hour == self.next_period_change_hour) then
+	-- if current hour is next period's last hour or more than it, switch period type, set next period's hour
+	if (current_hour >= self.next_period_change_hour) then
 		--printf(">>> Tronex: change_period | current_hour == self.next_period_change_hour")
 		self.cycle = self:get_next_weather_cycle(self.cycle)
 		self.last_period_change_hour = current_hour
 		self.next_period_change_hour = self:get_next_period_change_hour(self.cycle)
-		self.transition_period = true
+		-- transitions between states is disabled, 
+		-- because we are using global_weather_graphs.ltx instead of dynamic_weather_graphs.ltx
+		self.transition_period = false
+		can_change = true
 	end
+	
+	if (self.forced_weather_change_on_time_change) then
+		can_change = true
+	end
+	
+	return can_change
 end
 
 function WeatherManager:select_weather(now)
@@ -377,57 +397,33 @@ end
 
 function WeatherManager:get_next_weather_cycle(curr_weather)
 	--printf(">>> Tronex: get_next_weather_cycle | curr_weather = " .. curr_weather)
-	local weather_table_num = {}
+	local curr_weather_states = get_global_weather_graph(curr_weather)
 	local avail_weather = {}
 	
-	-- set initiate values for (weather_table_num)
-	for i=1,#weather_tbl do
-		weather_table_num[weather_tbl[i]] = 0
-	end
-	
-	-- store correct occurrences for each stored weather cycle in (weather_table_num)
-	for i=1,#self.weather_storage do
-		for j=1,#weather_tbl do
-			if self.weather_storage[i] == weather_tbl[j] then
-				weather_table_num[self.weather_storage[i]] = weather_table_num[self.weather_storage[i]] + 1
-				break
-			end
-		end
-	end
-	
 	-- prepare a table of allowed weather cycles to pick from
-	for i=1,#weather_tbl do
-		if (weather_tbl[i] ~= curr_weather) then
-			local val = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur",2,3)
-			val = tonumber(val)
-			local pick_chance = (val == 3 and 80) or (val == 2 and 20) or 0
-			if (math.random(100) <= pick_chance) then
-				avail_weather[#avail_weather + 1] = weather_tbl[i]
-			end
+	local pick_chance = math.random(100)
+	for i=1,#curr_weather_states do
+		local val = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. curr_weather_states[i] .. "_occur",2,4)
+		val = tonumber(val)
+		local occur_chance = (val == 4 and 80) or (val == 3 and 40) or (val == 2 and 20) or (val == 1 and 0)
+		if (pick_chance <= occur_chance) then
+			avail_weather[#avail_weather + 1] = curr_weather_states[i]
 		end
 	end
 	
-	-- if no allowed weather cycles found, reset
+	-- if no allowed weather cycles found return current weather
 	if (#avail_weather == 0) then
 		--printf(">>> Tronex: get_next_weather_cycle | #avail_weather = 0")
-		self.weather_storage = {}
-		return get_random_weather()
+		return curr_weather
 	end
 	
 	--[[
-	for k,v in pairs(weather_table_num) do
-		printf(">>> Tronex: get_next_weather_cycle | weather_table_num[" .. k .. "] = " .. v)
-	end
 	for i=1,#avail_weather do
 		printf(">>> Tronex: get_next_weather_cycle | avail_weather[" .. i .. "] = " .. avail_weather[i])
-	end
-	for i=1,#self.weather_storage do
-		printf(">>> Tronex: get_next_weather_cycle | self.weather_storage[" .. i .. "] = " .. self.weather_storage[i])
 	end
 	--]]
 	
 	local pick = avail_weather[math.random(#avail_weather)]
-	self.weather_storage[#self.weather_storage + 1] = pick -- store new value
 	--printf(">>> Tronex: get_next_weather_cycle | pick = " .. pick)
 	return pick
 end
@@ -452,6 +448,7 @@ end
 
 function WeatherManager:forced_weather_change()
 	self.forced_weather_change_on_time_change = true
+	self:update()
 end
 
 
@@ -664,7 +661,7 @@ end
 --##################################################################################################
 
 function WeatherManager:distant_storm()
-	if self.distant_storm_on == nil and (self.next_weather == "cloudy"  and level.get_time_minutes() >= 30) then
+	if self.distant_storm_on == nil and (self.next_weather == "storm" and level.get_time_minutes() >= 30) then
 		local rnd = (math.random(1,100)/100)
 		if (rnd <= self.distant_storm_prob) then
 			self.distant_storm_on = true
@@ -695,7 +692,7 @@ function WeatherManager:distant_storm()
 		end
 	end
 	
-	if self.distant_storm_on == true and ((self.curr_weather == "cloudy" and level.get_time_minutes() <= 30) or (self.next_weather == "cloudy"  and level.get_time_minutes() >= 30)) and (not level.is_wfx_playing()) then
+    if self.distant_storm_on == true and ((self.curr_weather == "storm" and level.get_time_minutes() <= 30) or (self.next_weather == "storm" and level.get_time_minutes() >= 30)) and (not level.is_wfx_playing()) then
 		if self.next_thunder_at == nil then
 			self.next_thunder_at = diff_sec + math.random(5, 10)
 		end
@@ -705,7 +702,7 @@ function WeatherManager:distant_storm()
 		end
 	end
 
-	if self.distant_storm_on ~= nil and (self.next_weather ~= "cloudy" and level.get_time_minutes() >= 30) then
+	if self.distant_storm_on ~= nil and (self.next_weather ~= "storm" and level.get_time_minutes() >= 30) then
 		self.distant_storm_on = nil
 		self.next_thunder_at = nil
 	end
@@ -919,7 +916,7 @@ function get_random_weather()
 	local ini = ini_file_ex("atmosfear_options.ltx",true)
 	if (ini:section_exist("atmosfear_current_parameters")) then
 		for i=1,#weather_tbl do
-			local a = ini:r_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur",2,6)
+			local a = ini:r_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur",2,4)
 			if (a > 1) then
 				tbl[#tbl+1] = weather_tbl[i]
 				--printf(">>> Tronex: get_random_weather | " .. weather_tbl[i])
@@ -930,4 +927,16 @@ function get_random_weather()
 		end
 	end
 	return weather_tbl[math.random(#weather_tbl)]
+end
+
+function get_global_weather_graph(graph_name)
+	local tbl = {}
+	local ini = ini_file("plugins\\global_weather_graphs.ltx")
+	local section = graph_name
+	local n = ini:section_exist(section) and ini:line_count(section) or 0
+	for i=0, n-1 do
+		local result, id, value = ini:r_line(section,i,STR_EMPTY,STR_EMPTY )
+		table.insert(tbl,id)
+	end
+	return tbl
 end

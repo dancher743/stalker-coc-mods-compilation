@@ -2,6 +2,8 @@
 -- Companions List
 -- From Anomaly 1.5.1.2
 --------------------------------------------------
+local hud_option_name = "companions_hud"
+
 local HUD = nil
 
 function activate_hud()
@@ -14,13 +16,8 @@ end
 function deactivate_hud()
 	if HUD ~= nil then
 		get_hud():RemoveDialogToRender(HUD)
+		HUD:Clear()
 		HUD = nil
-	end
-end
-
-local function se_actor_on_register()
-	if (axr_companions.has_companion()) then
-		ui_axr_companions.activate_hud()
 	end
 end
 
@@ -41,7 +38,6 @@ local function actor_on_weapon_zoom_out(item)
 end
 
 function on_game_start()
-	RegisterScriptCallback("actor_on_first_update",se_actor_on_register)
 	RegisterScriptCallback("actor_on_net_destroy",actor_on_net_destroy)
 	RegisterScriptCallback("actor_on_weapon_zoom_in",actor_on_weapon_zoom_in)
 	RegisterScriptCallback("actor_on_weapon_zoom_out",actor_on_weapon_zoom_out)
@@ -53,7 +49,6 @@ class "UICompanionList" (CUIScriptWnd)
 function UICompanionList:__init() super()
 	self.max_size = 15
 	self.companion_info = {}
-	self._tmr 			= time_global()
 	self.update_rate	= 1000 --[ms]
 	self.clr_list = {
 		["def"]     = GetARGB(255,255,255,255),
@@ -70,13 +65,23 @@ function UICompanionList:__init() super()
 	}
 
 	self:InitControls()
+	
+	local function tickback()
+		self:CustomUpdate()
+	end
+	StartTimer("UICompanionListTimer", self.update_rate, tickback)
+end
+
+function UICompanionList:Clear()
+	StopTimer("UICompanionListTimer")
 end
 
 function UICompanionList:__finalize()
 end
 
 function UICompanionList:InitControls()
-	local xml = utils_xml.get_hud_xml()
+	local xml = CScriptXmlInit()
+	xml:ParseFile("ui_companion_list.xml")
 
 	self.dialog = xml:InitStatic("companion_list", self)
 	--utils_xml.correct_ratio(self.dialog, true)
@@ -123,23 +128,25 @@ function UICompanionList:InitControls()
 		
 		self.companion_info[i].invulnerable:InitTexture("ui_hud_icon_shield")
 		self.companion_info[i].invulnerable_shadow:InitTexture("ui_hud_icon_shield")
+		
+		self.companion_info[i].base:Show(false)
 	end
 end
 
-function UICompanionList:Update()
-	CUIScriptWnd.Update(self)
+function UICompanionList:CustomUpdate()
+	local is_option_enabled = axr_main_options.get_check_option(hud_option_name)
 	
-	local tg = time_global()
-	if self._tmr >= tg then
+	self.dialog:Show(is_option_enabled)
+	
+	if (is_option_enabled == false) then
 		return
 	end
-	self._tmr = tg + self.update_rate
 	
 	local clist = axr_companions.list_actor_squad_by_id()
 	for i=1,#self.companion_info do
 		local se_obj = clist[i] and alife_object(clist[i])
-		local option_enabled = axr_main_options.get_check_option("companions_hud")
-		if (option_enabled and main_hud_shown() and se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and not axr_companions.is_hostage(se_obj)) then
+		
+		if (main_hud_shown() and se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and not axr_companions.is_hostage(se_obj)) then
 			local st = db.storage[se_obj.id]
 			local npc = st and st.object
 			local ele = self.companion_info[i]
@@ -178,7 +185,7 @@ function UICompanionList:Update()
 			
 			-- Health
 			if (npc) then 
-				local health = clamp( round_idp(npc.health,1),0,1)
+				local health = utils.clamp(round_idp(npc.health,1),0,1)
 				ele.prog_health:SetProgressPos( health )
 			end
 			

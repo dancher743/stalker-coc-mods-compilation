@@ -10,7 +10,7 @@
 
 
 function clamp(val, min, max)
-	return val < min and min or val > max and max or val
+	return (val < min and min) or (val > max and max) or val
 end
 
 function round(num, idp)
@@ -978,4 +978,58 @@ end
 
 function round_to_1000(value)
 	return round(value/1000)*1000
+end
+
+function get_nearest_game_vertex(target_position, target_level)
+	local sim = alife()
+	local gg = game_graph()
+	local vertex, lvid, pos
+	local near_lvid, near_dist, near_gvid, dist
+	local gvid = 0
+	local lgvid = 0
+	local level = level
+	while gg:valid_vertex_id(gvid) do
+		vertex = gg:vertex(gvid)
+		level_name = sim:level_name(vertex:level_id())
+		if (level_name == target_level) then
+			pos = vertex:level_point()
+		
+			dist = target_position:distance_to_sqr(pos)
+		
+			if not (near_dist) then
+				near_gvid = gvid
+				near_dist = dist
+			end
+		
+			if (dist < near_dist) then
+				near_gvid = gvid
+				near_dist = dist
+			end
+			lgvid = lgvid + 1
+		end
+		gvid = gvid + 1
+	end
+	return near_gvid
+end
+
+function get_sim_distance_to(se_obj1, se_obj2)
+	local gvid1 = se_obj1.m_game_vertex_id
+	local gvid2 = se_obj2.m_game_vertex_id
+	return graph_distance(gvid1, gvid2)
+end
+
+function get_migration_flag(name, default_value)
+	local m_data = alife_storage_manager.get_state()
+	local migration_flags = m_data.migration_flags
+	return migration_flags and migration_flags[name] or default_value
+end
+
+function set_migration_flag(name, value)
+	local m_data = alife_storage_manager.get_state()
+	
+	if (not m_data.migration_flags) then
+		m_data.migration_flags = {}
+	end
+	
+	m_data.migration_flags[name] = value
 end

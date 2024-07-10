@@ -3,7 +3,7 @@
 -- Added by Dancher
 --
 
-local rate = 30 -- seconds
+local rate = 15 -- seconds
 local memory_threshold = 50000
 
 function collect(reason)
@@ -16,18 +16,15 @@ function collect(reason)
     printf("collectgarbage after=%sKb",collectgarbage("count")*1024)
 end
 
-local function start_auto_collect()
+function start_auto_collect()
 	local function update()
 		if (collectgarbage("count") >= memory_threshold) then
 			collect("Automatic garbage collection")
 		end
-		ResetTimeEvent("gc","update",rate)
 	end
-	CreateTimeEvent("gc","update",rate,update)
+	StartTimer("gc_auto_collect",rate*1000,update)
 end
 
-function on_game_start()
-	if (axr_main_options.get_check_option("auto_garbage_collection")) then
-		start_auto_collect()
-	end
+function stop_auto_collect()
+	StopTimer("gc_auto_collect")
 end

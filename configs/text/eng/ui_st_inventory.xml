@@ -330,4 +330,13 @@
 	<string id="st_disassemble">
 		<text>Disassemble</text>
 	</string>
+	
+	<!-- Added by Dancher -->
+	
+	<string id="st_move_to_bag_all">
+		<text>move to bag all</text>
+	</string>
+	<string id="st_move_from_bag_all">
+		<text>move from bag all</text>
+	</string>
 </string_table>

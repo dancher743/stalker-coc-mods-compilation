@@ -13,7 +13,7 @@
 		<text>I agree. We can go.</text>
 	</string>
 	<string id="st_jg_5">
-		<text>Sounds good, come on!</text>
+		<text>Great. Come on!</text>
 	</string>
 	<string id="st_jg_6">
 		<text>Oh, dude, you have not enough money for paying the penalty.</text>
@@ -40,13 +40,13 @@
 		<text>Do not mind it.</text>
 	</string>
 	<string id="st_jg_14">
-		<text>I`m looking for an experienced stalker, who will escort to %s. At the moment I`m in %s.</text>
+		<text>I`m looking for an stalker, who will escort to %s. At the moment I`m in %s.</text>
 	</string>
 	<string id="st_jg_15">
 		<text>We are late! We have agreed : pay the penalty of %s rubles.</text>
 	</string>
 	<string id="st_jg_16">
-		<text>Yes. I`m going to visit some place. The reward will be worth.\nAfter %s hours i`ll have to get into %s, I`ll pay %s rubles\nJust remember, if we do not arrive in time, I`ll take %s as the penalty.</text>
+		<text>Yes. I`m going to visit some place. The reward will be worth. After %s hours I`ll have to get into %s, I`ll pay %s rubles. Just remember, if we do not arrive in time, I`ll take %s as the penalty. If you do it much earlier, I'll give you a bonus.</text>
 	</string>
 	<string id="st_jg_17">
 		<text>I should be in</text>
@@ -57,10 +57,28 @@
 	<string id="st_jg_19">
 		<text>Size way (Include the start and end level): </text>
 	</string>
+	
+	<string id="st_jg_20">
+        <text>How much time is left?</text>
+    </string>
+	<string id="st_jg_21">
+        <text>%s hours and %s minutes.</text>
+    </string>
+	
+	<string id="st_jg_22">
+        <text>And since you did it much earlier, take the bonus as well.</text>
+    </string>
+	
 	<string id="st_travel_guider">
         <text>You can't travel as a guide</text>
     </string>
 	<string id="ui_st_jg_squad_killed">
         <text>As a guide, you have lost the entire squad.</text>
     </string>
+	<string id="st_ui_pda_need_guider_spot_descr">
+		<text>%c[255,135,183,116]Guide\n%c[default]%s needs a guide.</text>
+	</string>
+	<string id="st_ui_pda_guider_target_spot_descr">
+		<text>%c[255,135,183,116]Guide\n%c[default]%s should be in %s. It should be right around here.</text>
+	</string>
 </string_table>

@@ -9,6 +9,10 @@
 local STAY_POINT_IDLE_MIN = 2*60*60
 local STAY_POINT_IDLE_MAX = 8*60*60
 
+local STALKERS_ON_MAP_OPTION_NAME = "show_stalkers_on_map"
+local MONSTERS_ON_MAP_OPTION_NAME = "show_monsters_on_map"
+local GUIDE_JOB_ON_MAP_OPTION_NAME = "show_guide_job_on_map"
+
 -- setup location types
 local location_types = {}
 do -- to localize below
@@ -41,7 +45,7 @@ end
 
 function sim_squad_scripted:init_squad()
 	--alun_utils.debug_write("sim_squad_scripted:init_squad")
-	local sys_ini			= system_ini()
+	local sys_ini			= ini_sys
 	local settings_id 		= self:section_name()
 	
 	self.player_id 			= sys_ini:r_string_ex(settings_id,"faction") or "stalker"
@@ -584,7 +588,7 @@ end
 
 function sim_squad_scripted:add_squad_member(spawn_section, spawn_position, lv_id, gv_id)
 	--alun_utils.debug_write("sim_squad_scripted:add_squad_member")
-	local spawn_sections_ltx = system_ini()
+	local spawn_sections_ltx = ini_sys
 	
 	if not (spawn_sections_ltx:section_exist(spawn_section)) then 
 		printf("ERROR: npc section %s does not exist!",spawn_section)
@@ -614,7 +618,7 @@ end
 
 function sim_squad_scripted:create_npc(spawn_smart,pos,lvid,gvid)
 	--alun_utils.debug_write("sim_squad_scripted:create_npc")
-	local ini = system_ini()
+	local ini = ini_sys
 	local settings_id = self:section_name()
 	local spawn_sections = utils.parse_names(ini:r_string_ex(settings_id, "npc") or STR_EMPTY)
 	
@@ -672,7 +676,7 @@ function sim_squad_scripted:create_npc(spawn_smart,pos,lvid,gvid)
 	if random_spawn ~= nil then
 		random_spawn = utils.parse_names(random_spawn)
 
-		local count_string = (IsEocMode() or IsSurvivalMode()) and "npc_in_squad_eoc_or_surv" or "npc_in_squad"
+		local count_string = IsSurvivalOrEocMode() and "npc_in_squad_eoc_or_surv" or "npc_in_squad"
 		local count = ini:r_string_ex(settings_id,count_string) or "1,2"
 		count = alun_utils.str_explode(count,",")
 		count[1] = count[1] and tonumber(count[1])
@@ -934,6 +938,9 @@ function sim_squad_scripted:on_register()
 	cse_alife_online_offline_group.on_register( self )
 	story_objects.check_spawn_ini_for_story_id(self)
 	sim_board.get_sim_board().squads[self.id] = self
+	if (not is_squad_monster[self.player_id]) then
+		sim_board.get_sim_board().stalker_squads[self.id] = self
+	end
 	simulation_objects.get_sim_obj_registry():register(self)
 	SendScriptCallback("squad_on_register",self)
 	--alun_utils.debug_write( strformat("%s:on_register end",self:name()) )
@@ -943,6 +950,9 @@ function sim_squad_scripted:on_unregister()
 	SendScriptCallback("squad_on_unregister",self)
 	unregister_story_object_by_id(self.id)
 	SIMBOARD.squads[self.id] = nil
+	if (not is_squad_monster[self.player_id]) then
+		SIMBOARD.stalker_squads[self.id] = nil
+	end
 	SIMBOARD:assign_squad_to_smart(self, nil)
 	simulation_objects.get_sim_obj_registry():unregister(self)
 	if self.respawn_point_id ~= nil then
@@ -1054,7 +1064,7 @@ function sim_squad_scripted:can_switch_online()
 		end
 		
 		if (db.actor and db.spawned_vertex_by_id[self:commander_id()] == nil) then
-			local dist = axr_main.config:r_value("mm_options","excl_dist",2) or 0
+			local dist = axr_main.config:r_value(MM_OPTIONS,"excl_dist",2) or 0
 			if (dist > 0 and not db.actor:has_info("actor_is_sleeping")) then 
 				local actor = alife():actor()
 				if (self.position:distance_to(actor.position) <= dist) then
@@ -1088,12 +1098,17 @@ function sim_squad_scripted:refresh()
 end
 
 function sim_squad_scripted:hide()
-	if(self.current_spot_id==nil) or (self.spot_section==nil) then
-		return
+	if(self.current_spot_id~=nil) and (self.spot_section~=nil) then
+		level.map_remove_object_spot(self.current_spot_id, self.spot_section)
+		self.current_spot_id = nil
+		self.spot_section = nil
 	end
-	level.map_remove_object_spot(self.current_spot_id, self.spot_section)
-	self.current_spot_id = nil
-	self.spot_section = nil
+	if (self.non_commander_spot_section~=nil) then
+		for k in self:squad_members() do
+			level.map_remove_object_spot(k.id, self.non_commander_spot_section)
+		end
+		self.non_commander_spot_section = nil
+	end
 end
 
 function sim_squad_scripted:show()
@@ -1119,8 +1134,9 @@ function sim_squad_scripted:show()
 	end
 	local spot = STR_EMPTY
 	local non_commander_spot = STR_EMPTY
+	local spot_descr = nil
 
-	if (DEV_DEBUG and axr_main.config:r_value("mm_options","enable_debug_hud",1,false) == true) then
+	if (DEV_DEBUG and axr_main.config:r_value(MM_OPTIONS,"enable_debug_hud",1,false) == true) then
 		if (DEV_DEBUG_HOLD_ACTION_1) then 
 			if (self.assigned_target_id ~= nil and smart_terrain.nearest_to_actor_smart.id == self.assigned_target_id) then 
 				spot = "storyline_task_location"
@@ -1129,71 +1145,77 @@ function sim_squad_scripted:show()
 			spot = "storyline_task_location"
 		end
 	elseif not(is_squad_monster[self.player_id]) then
-		if (axr_companions.companion_squads[self.id] and not axr_companions.is_hostage_squad(self.id)) then
+		local relation = game_relations.get_squad_relation_to_actor_by_id(self.id)
+		if (relation ~= game_object.enemy and jg_guider.is_squad_need_guider(self.id) and axr_main_options.get_check_option(GUIDE_JOB_ON_MAP_OPTION_NAME)) then
+			spot = "ui_pda2_need_guider_location_mini_map"
+		elseif (relation ~= game_object.enemy and axr_companions.companion_squads[self.id] and not axr_companions.is_hostage_squad(self.id)) then
 			spot = "alife_presentation_squad_companion_1"
 			non_commander_spot = "alife_presentation_squad_companion_non_commander"
+			spot_descr = "companion"
 		else	
-			if (pda_upgrade_manager.has_squads_on_map_upgrade() and axr_main.config:r_value("mm_options","enable_show_stalkers_on_map",1,false) == true) then
+			if (pda_upgrade_manager.has_squads_on_map_upgrade() and axr_main_options.get_check_option(STALKERS_ON_MAP_OPTION_NAME)) then
 -------------------------------------av661194--start---------------
-				local relation = self:get_squad_relation()
-				if (relation == "friends") then
+				relation = self:get_squad_relation()
+				if (relation == game_object.friend) then
 					spot = "alife_presentation_squad_friend_1"
-				elseif (relation == "neutral") then
+				elseif (relation == game_object.neutral) then
 					spot = "alife_presentation_squad_neutral_1"
 				else
 					spot = "alife_presentation_squad_enemy_1"
 				end
 -------------------------------------av661194--end---------------
 			else
-				local relation = game_relations.get_squad_relation_to_actor_by_id(self.id)
-				if(relation=="friends") then
+				if(relation == game_object.friend) then
 					spot = "alife_presentation_squad_friend"
-				elseif(relation=="neutral") then
+				elseif(relation == game_object.neutral) then
 					spot = "alife_presentation_squad_neutral"
 				end
 			end
 		end
 	else
-		if (pda_upgrade_manager.has_squads_on_map_upgrade() and axr_main.config:r_value("mm_options","enable_show_monsters_on_map",1,false) == true) then
+		if (pda_upgrade_manager.has_squads_on_map_upgrade() and axr_main_options.get_check_option(MONSTERS_ON_MAP_OPTION_NAME)) then
 -------------------------------------av661194--start---------------
 			spot = "alife_presentation_squad_monster_1"
 -------------------------------------av661194--end---------------
 		end
 	end
 
+	if (non_commander_spot ~= STR_EMPTY and self.non_commander_spot_section == nil) then
+		for k in self:squad_members() do
+			if (k.id ~= self:commander_id() and level.map_has_object_spot(k.id, non_commander_spot) == 0) then
+				level.map_add_object_spot(k.id, non_commander_spot, spot_descr or self:get_squad_props())
+			end
+		end
+		self.non_commander_spot_section = non_commander_spot
+	elseif (non_commander_spot == STR_EMPTY and self.non_commander_spot_section ~= nil) then
+		for k in self:squad_members() do
+			if (k.id ~= self:commander_id() and self.non_commander_spot_section and level.map_has_object_spot(k.id, self.non_commander_spot_section) == 1) then
+				level.map_remove_object_spot(k.id, self.non_commander_spot_section)
+			end
+		end
+		self.non_commander_spot_section = nil
+	end
+
 	if (spot~=STR_EMPTY) then
 		if spot == self.spot_section then
-			level.map_change_spot_hint(self.current_spot_id, self.spot_section, self:get_squad_props())
+			level.map_change_spot_hint(self.current_spot_id, self.spot_section, spot_descr or self:get_squad_props())
 			return
 		end
 		if self.spot_section == nil then
-			level.map_add_object_spot(self.current_spot_id, spot, self:get_squad_props())
+			level.map_add_object_spot(self.current_spot_id, spot, spot_descr or self:get_squad_props())
 		else
 			level.map_remove_object_spot(self.current_spot_id, self.spot_section)
-			level.map_add_object_spot(self.current_spot_id, spot, self:get_squad_props())
+			level.map_add_object_spot(self.current_spot_id, spot, spot_descr or self:get_squad_props())
 		end
 		self.spot_section = spot
 	elseif (self.spot_section~=nil) then
 		level.map_remove_object_spot(self.current_spot_id, self.spot_section)
 		self.spot_section = nil
 	end
-	
-	local squad = alife_object(self.id)
-	for k in squad:squad_members() do
-		if (k.id ~= squad:commander_id()) then
-			if (non_commander_spot~=STR_EMPTY and level.map_has_object_spot(k.id, non_commander_spot) == 0) then
-				level.map_add_object_spot(k.id, non_commander_spot, self:get_squad_props())
-				self.non_commander_spot_section = non_commander_spot
-			elseif (non_commander_spot==STR_EMPTY and self.non_commander_spot_section and level.map_has_object_spot(k.id, self.non_commander_spot_section) == 1) then
-				level.map_remove_object_spot(k.id, self.non_commander_spot_section)
-				self.non_commander_spot_section = nil
-			end
-		end
-	end
 end
 
 function sim_squad_scripted:get_squad_props()
-	if (DEV_DEBUG and axr_main.config:r_value("mm_options","enable_debug_hud",1,false) == true) then
+	if (DEV_DEBUG and axr_main.config:r_value(MM_OPTIONS,"enable_debug_hud",1,false) == true) then
 		local assigned_target = self.assigned_target_id and alife_object(self.assigned_target_id)
 		local current_target = self.current_target_id and alife_object(self.current_target_id)
 
@@ -1214,7 +1236,7 @@ function sim_squad_scripted:get_squad_props()
 
 		return t
 	else
-		return game.translate_string(axr_companions.is_companion_squad(self.id) and "companion" or self.player_id)
+		return game.translate_string(axr_companions.companion_squads[self.id] and "pda_companions_header" or self.player_id)
 	end
 end
 
@@ -1324,11 +1346,11 @@ function sim_squad_scripted:get_squad_relation()
     if npc_count ~= 0 then
         local delta = goodwill/npc_count
         if delta <= -1000 then
-            return "enemy"
+            return game_object.enemy
         elseif delta >= 1000 then
-            return "friends"
+            return game_object.friend
         elseif delta < 1000 and delta > -1000 then
-            return "neutral"
+            return game_object.neutral
         end
     end   
     local relation = 0
@@ -1339,11 +1361,11 @@ function sim_squad_scripted:get_squad_relation()
     end
     
     if relation >= 1000 then
-  return "friends"
+  return game_object.friend
     elseif relation <= -1000 then
-  return "enemy"
+  return game_object.enemy
     else
-  return "neutral"
+  return game_object.neutral
     end
 end
 --xrSanya-----------------------------------------------

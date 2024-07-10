@@ -1,6 +1,7 @@
 --//  Shows belted artifacts on primary hud
 
-local HUD,belted_arts
+local HUD
+local belted_arts, sloted_patch
 local update_rate = 1000 --[ms]
 
 function activate_hud()
@@ -19,11 +20,13 @@ function activate_hud()
 			end
 		end
 	)		
+	sloted_patch = db.actor:item_in_slot(14)
 	HUD:update_hud()
 end
 
 function deactivate_hud()
 	belted_arts = nil
+	sloted_patch = nil
 	close_hud()
 	UnregisterScriptCallback("actor_item_to_belt",actor_item_to_belt)
 	UnregisterScriptCallback("actor_item_to_ruck", actor_item_to_ruck)
@@ -43,7 +46,15 @@ end
 function close_hud()
 	if HUD ~= nil then
 		get_hud():RemoveDialogToRender(HUD)
+		HUD:Clear()
 		HUD = nil
+	end
+end
+
+function set_patch_slot(item)
+	sloted_patch = item
+	if HUD ~= nil then
+		HUD:update_hud()
 	end
 end
 
@@ -52,7 +63,7 @@ function actor_on_net_destroy()
 end
 
 function on_game_start()
-	if (axr_main.config:r_value("mm_options","enable_slot_hud",1,false) == false) then return end
+	if (axr_main.config:r_value(MM_OPTIONS,"enable_slot_hud",1,false) == false) then return end
 	local function actor_on_first_update()
 		activate_hud()
 	end
@@ -95,8 +106,7 @@ end
 class "slot_hud" (CUIScriptWnd)
 function slot_hud:__init() super()
 	self.slot = {}
-	self.ini = system_ini()
-	self.tmr = time_global()
+	self.ini = ini_sys
 	self.shown = false
 	self:InitControls()
 end
@@ -108,27 +118,47 @@ function slot_hud:InitControls()
 	xml:ParseFile("ui_slot_hud.xml")
 	self.static_back = xml:InitStatic("static_slot_back", self)
 	self.static_back:Show(false)
-	for i=1, 5 do
+	for i=1,6 do
 		self.slot[i] = xml:InitStatic("static_slot_back:slot_"..i, self.static_back)
 		self.slot[i]:InitTexture("ui\\ui_icon_equipment")
 	end
+	local function tickback()
+		self:CustomUpdate()
+	end
+	StartTimer("slot_hud_timer", update_rate, tickback)
+end
+
+function slot_hud:Clear()
+	StopTimer("slot_hud_timer")
+end
+
+function slot_hud:update_slot(section, index)
+	local x1 = (self.ini:r_float_ex(section,"inv_grid_x")or 0)*50
+	local y1 = (self.ini:r_float_ex(section,"inv_grid_y")or 0)*50
+	local x2 = x1 + 50
+	local y2 = y1 + 50
+	self.slot[index]:SetTextureRect(Frect():set(x1,y1,x2,y2))
+	self.slot[index]:Show(true)
 end
 
 function slot_hud:update_hud(item)
 	local cnt = 0
-	for id, sec in pairs(belted_arts) do
-		cnt = cnt + 1
-		local x1 = (self.ini:r_float_ex(sec,"inv_grid_x")or 0)*50
-		local y1 = (self.ini:r_float_ex(sec,"inv_grid_y")or 0)*50
-		local x2 = x1 + 50
-		local y2 = y1 + 50
-		self.slot[cnt]:SetTextureRect(Frect():set(x1,y1,x2,y2))
-		self.slot[cnt]:Show(true)
+	if (sloted_patch) then
+		cnt = cnt + 1 
+		self:update_slot(sloted_patch:section(),cnt)
 	end
-	for i=cnt+1,5 do
+	if (table.size(belted_arts) > 0) then
+		for id, sec in pairs(belted_arts) do
+			cnt = cnt + 1
+			self:update_slot(sec,cnt)
+		end
+	end
+	for i=cnt+1,6 do
 		self.slot[i]:Show(false)
 	end
-	self:show_hud(table.size(belted_arts) > 0)
+	if (cnt == 0) then
+		self:show_hud(false)
+	end
 end
 
 function slot_hud:show_hud(value)
@@ -142,21 +172,13 @@ end
 --
 -- from CoC 1.5b r6
 --
-function slot_hud:Update()
-	local tg = time_global()
-	
-	if self.tmr >= tg then
-		return
-	else
-		self.tmr = tg + update_rate
-	end
-	
-	CUIScriptWnd.Update(self)
-	
+local slot_hud_option = "enable_slot_hud"
+
+function slot_hud:CustomUpdate()
 	self:show_hud(main_hud_shown())
 	
-	if (axr_main.config:r_value("mm_options","enable_slot_hud",1,true)) == false then
-		if table.size(belted_arts) > 0 then
+	if (axr_main.config:r_value(MM_OPTIONS,slot_hud_option,1,true)) == false then
+		if (sloted_patch ~= nil or table.size(belted_arts) > 0) then
 			self:clear(0)
 --			deactivate_hud()
 		end

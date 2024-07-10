@@ -513,7 +513,7 @@ function inc_actor_rank(rank, can_inc_companions)
 	check_actor_rank_change()
 	
 	-- Display scripted rank increases if debug hud is enabled.
-	if (DEV_DEBUG and axr_main.config:r_value("mm_options","enable_debug_hud", 1, false) == true) then
+	if (DEV_DEBUG and axr_main.config:r_value(MM_OPTIONS,"enable_debug_hud", 1, false) == true) then
 		news_manager.send_tip(db.actor, game.translate_string("ui_st_rank") .. ": ".. db.actor:character_rank(), nil, "rank_change", nil, nil)
 	end
 end
@@ -556,7 +556,7 @@ function inc_actor_reputation(reputation, can_inc_companions)
 	check_actor_reputation_change()
 	
 	-- Display scripted reputation increases if debug hud is enabled.
-	if (DEV_DEBUG and axr_main.config:r_value("mm_options","enable_debug_hud", 1, false) == true) then
+	if (DEV_DEBUG and axr_main.config:r_value(MM_OPTIONS,"enable_debug_hud", 1, false) == true) then
 		news_manager.send_tip(db.actor, game.translate_string("ui_st_reputation") .. ": ".. db.actor:character_reputation(), nil, "rep_change", nil, nil)
 	end
 end

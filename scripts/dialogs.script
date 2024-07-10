@@ -2391,7 +2391,7 @@ function relocate_item_section(victim, section, type, amount)
 			end
 		end
 		if (utils.is_ammo(section)) then
-			local ltx = system_ini()
+			local ltx = ini_sys
 			local box_size = ltx:r_s32(section, "box_size")
 			amount = amount * box_size
 		end
@@ -2644,7 +2644,7 @@ function relocate_item_section_to_actor(first_speaker, second_speaker, section, 
 		end
 	end
 	if (utils.is_ammo(section)) then
-		local ltx = system_ini()
+		local ltx = ini_sys
 		local box_size = ltx:r_s32(section, "box_size")
 		amount = amount * box_size
 	end
@@ -2719,7 +2719,7 @@ function relocate_item_section_from_actor(first_speaker, second_speaker, section
 	end
 
 	if (utils.is_ammo(section)) then
-		local ltx = system_ini()
+		local ltx = ini_sys
 		local box_size = ltx:r_s32(section, "box_size")
 		amount = amount * box_size
 	end
@@ -3155,3 +3155,68 @@ function can_do_alun_riddle_quest(first_speaker, second_speaker)
 end
 
 --
+
+-- Added by Dancher
+
+function is_bounty_hunt_target(first_speaker, second_speaker)
+	local npc = who_is_npc(first_speaker, second_speaker)
+	local actor = db.actor
+	local id = npc:id()
+	local bounties_npcs = axr_task_manager.bounties_by_id
+	
+	local result = false
+
+	for _,npc_id in pairs(bounties_npcs) do
+		if (npc_id == id) then
+			result = true
+			break
+		end
+	end
+	
+	return result
+end
+
+function can_vanish_bounty_hunt_target(first_speaker, second_speaker)
+	local npc = who_is_npc(first_speaker, second_speaker)
+	local actor = db.actor
+	local actor_rank = actor:character_rank()
+	local npc_rank = npc:character_rank()
+	
+	return actor_rank > npc_rank
+end
+
+function cant_vanish_bounty_hunt_target(first_speaker, second_speaker)
+	return can_vanish_bounty_hunt_target(first_speaker, second_speaker) == false
+end
+
+function vanish_bounty_hunt_target(first_speaker, second_speaker)
+	local npc = who_is_npc(first_speaker, second_speaker)
+	local actor = db.actor
+	local id = npc:id()
+	local bounties_npcs = axr_task_manager.bounties_by_id
+
+	for task_id,npc_id in pairs(bounties_npcs) do
+		if (npc_id == id) then
+			local tm = task_manager.get_task_manager()
+			local tsk = tm.task_info[task_id]
+			if (tsk and tsk.stage == 0) then
+				--tsk.stage = 3
+				tsk.stage = 1 -- complete task anyway instead of failing
+			end
+			break_dialog(actor, npc)
+			jg_guider.try_clear_prepared_follower(npc)
+			xr_effects.remove_task_squad(actor, npc)
+			break
+		end
+	end
+end
+
+local last_vanish_phrase_2_index
+
+function get_vanish_bounty_hunt_target_phrase_2(first_speaker, second_speaker)
+	local phrase_index = utils.pick_without(last_vanish_phrase_2_index,{0,1,2,3,4,5})
+	local phrase = strformat("vanish_bounty_hunt_target_dialog_2%s",phrase_index)
+	last_vanish_phrase_2_index = phrase_index
+
+	return strtransl(phrase)
+end

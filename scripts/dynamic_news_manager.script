@@ -55,7 +55,7 @@ function update_options()
 	
 	msg_duration		= tonumber(axr_main.config:r_value("mm_dynamic_news_options","message_duration",2))
 	
-	if (axr_main.config:r_value("mm_options","enable_dynamic_news",1,true) == true) then
+	if (axr_main.config:r_value(MM_OPTIONS,"enable_dynamic_news",1,true) == true) then
 		ResetTimeEvent("DynamicNewsManager","TickSpecial",math.random(cycle_TickSpecial + 1, cycle_TickSpecial*2 + 1)*TimeFactor)
 		ResetTimeEvent("DynamicNewsManager","TickTask",math.random(cycle_TickTask + 1, cycle_TickTask*2 + 1)*TimeFactor)
 		ResetTimeEvent("DynamicNewsManager","TickRandom",math.random(cycle_TickRandom + 1, cycle_TickRandom*2 + 1)*TimeFactor)
@@ -82,7 +82,7 @@ function on_game_start()
 	
 	destroy_dynamic_news()
 	
-	if (axr_main.config:r_value("mm_options","enable_dynamic_news",1,true) == false) then
+	if (axr_main.config:r_value(MM_OPTIONS,"enable_dynamic_news",1,true) == false) then
 		return 
 	end
 	
@@ -194,7 +194,7 @@ function DynamicNewsManager:destroy()
 end
 
 function DynamicNewsManager:TickNews()
-	if (axr_main.config:r_value("mm_options","enable_dynamic_news",1,true) == false) then
+	if (axr_main.config:r_value(MM_OPTIONS,"enable_dynamic_news",1,true) == false) then
 		return true
 	end
 	
@@ -238,7 +238,7 @@ function DynamicNewsManager:TickNews()
 end
 
 function DynamicNewsManager:TickQuick()
-	if (axr_main.config:r_value("mm_options","enable_dynamic_news",1,true) == false) then
+	if (axr_main.config:r_value(MM_OPTIONS,"enable_dynamic_news",1,true) == false) then
 		return true
 	end
 	
@@ -330,7 +330,7 @@ function DynamicNewsManager:TickQuick()
 end
 
 function DynamicNewsManager:TickSpecial()
-	if (axr_main.config:r_value("mm_options","enable_dynamic_news",1,true) == false) then
+	if (axr_main.config:r_value(MM_OPTIONS,"enable_dynamic_news",1,true) == false) then
 		return true
 	end
 	
@@ -369,7 +369,7 @@ function DynamicNewsManager:TickSpecial()
 end
 
 function DynamicNewsManager:TickTask()
-	if (axr_main.config:r_value("mm_options","enable_dynamic_news",1,true) == false) then
+	if (axr_main.config:r_value(MM_OPTIONS,"enable_dynamic_news",1,true) == false) then
 		return true
 	end
 	
@@ -389,7 +389,7 @@ function DynamicNewsManager:TickTask()
 end
 
 function DynamicNewsManager:TickRandom()
-	if (axr_main.config:r_value("mm_options","enable_dynamic_news",1,true) == false) then
+	if (axr_main.config:r_value(MM_OPTIONS,"enable_dynamic_news",1,true) == false) then
 		return true
 	end
 	
@@ -430,7 +430,7 @@ function DynamicNewsManager:TickRandom()
 end
 
 function DynamicNewsManager:TickCompanion()
-	if (axr_main.config:r_value("mm_options","enable_dynamic_news",1,true) == false) then
+	if (axr_main.config:r_value(MM_OPTIONS,"enable_dynamic_news",1,true) == false) then
 		return true
 	end
 	

@@ -338,7 +338,7 @@ function fill_primary_objects()
 end
 
 function add_quick_slot_items_on_game_start()
-	local ini = system_ini()
+	local ini = ini_sys
 	for i=0,3 do
 		get_console():execute( strformat("slot_%s %s",i, ini:r_string_ex("actor","quick_item_"..tostring(i+1)) or STR_EMPTY) )
 	end
@@ -430,7 +430,7 @@ function coc_rankings_set_hint(index)
 			local return_str = STR_EMPTY
 			
 			-- DEBUG REMOVE ME LATER
-			if(DEV_DEBUG and axr_main.config:r_value("mm_options","enable_debug_hud",1,false) == true) then
+			if(DEV_DEBUG and axr_main.config:r_value(MM_OPTIONS,"enable_debug_hud",1,false) == true) then
 				return_str = se_obj:profile_name() .. [[ \n]] .. se_obj:character_icon() .. [[ \n]]
 			end 
 			
@@ -498,7 +498,7 @@ function coc_rankings_set_icon(index)
 	if (se_obj) then
 		local icon_name
 		if (se_obj.id == 0) then 
-			if (axr_main.config:r_value("mm_options","enable_outfit_portrait",1,false) == true) then
+			if (axr_main.config:r_value(MM_OPTIONS,"enable_outfit_portrait",1,false) == true) then
 				local outfit = db.actor:item_in_slot(7)
 				if (outfit) then 
 					local icon = system_ini():r_string_ex(outfit:section(),"character_portrait")

@@ -38,6 +38,17 @@
         <crlc_small_spot  width="31" height="31" alignment="c" scale="1" scale_min="1" scale_max="3" stretch = "1">
                 <texture x="633" y="789" width="31" height="31">ui\ui_common</texture>
         </crlc_small_spot>
+		
+		<crlc_guide>
+                <level_map spot="crlc_guide_spot" pointer="quest_pointer"/>
+				<mini_map spot="crlc_guide_spot_mini" pointer="quest_pointer"/>
+        </crlc_guide>
+        <crlc_guide_spot width="31" height="31" alignment="c" stretch="1">
+                <texture x="633" y="789" width="31" height="31">ui\ui_common</texture>
+        </crlc_guide_spot>
+        <crlc_guide_spot_mini width="31" height="31" alignment="c" stretch="1">
+                <texture x="633" y="789" width="31" height="31">ui\ui_common</texture>
+        </crlc_guide_spot_mini>
 
         <blue_location>
                 <level_map  spot="blue_spot"              pointer="quest_pointer"/>
@@ -919,6 +930,21 @@
     	<secondary_task_on_guider_spot x="0" y="0" width="21" height="21" stretch="1" alignment="c" location_level="-1">
         	<texture>ui_pda2_stask_last_01</texture>
 	    </secondary_task_on_guider_spot>
+		
+		<!-- Added by Dancher -->
+		<ui_pda2_need_guider_location_mini_map>
+                <mini_map spot="ui_pda2_need_guider_location_mini_spot"/>
+        </ui_pda2_need_guider_location_mini_map>
+        <ui_pda2_need_guider_location_mini_spot width="14" height="14" stretch="1" alignment="c" location_level="1">
+                <texture r="135" g="183" b="116">ui_pda2_sq_sos</texture>
+        </ui_pda2_need_guider_location_mini_spot>
+		
+		<ui_pda2_need_guider_location_level_map>
+                <level_map spot="ui_pda2_need_guider_location_spot"/>
+        </ui_pda2_need_guider_location_level_map>
+        <ui_pda2_need_guider_location_spot width="19" height="19" stretch="1" alignment="c" location_level="1">
+                <texture r="135" g="183" b="116">ui_pda2_sq_sos</texture>
+        </ui_pda2_need_guider_location_spot>
 </map_spots>
 
 

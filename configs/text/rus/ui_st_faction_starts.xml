@@ -96,6 +96,10 @@
 	<string id="ui_st_rookie_village">
 		<text>Деревня новичков (Кордон)</text>
 	</string>
+	
+	<string id="ui_st_zone_entrance">
+		<text>Вход в Зону (Кордон)</text>
+	</string>
 
 	<string id="ui_st_research_institute">
 		<text>НИИ (Агропром)</text>

@@ -928,10 +928,6 @@ function drx_sl_setup_bounty_hunt( actor, npc, p )
 		"bandit",
 		"monolith"
 	}
-	
-	if (IsSurvivalMode()) then
-		table.insert( factions_list, "zombied" )
-	end
 
 	-- Reset bounty id storage:
 	axr_task_manager.bounties_by_id[p[1]] = nil
@@ -974,18 +970,33 @@ function drx_sl_setup_bounty_hunt( actor, npc, p )
 	local se_obj
 	local sim = alife( )
 	local valid_targets = {}
-	for k = 1, 65534 do
+	local target_section = "sim_default"
 
-		-- Analyze current sim stalker:
-		se_obj = sim:object( k )
-		if ( (se_obj and IsStalker( nil, se_obj:clsid( ) ) and se_obj:alive( ) and sfind( se_obj:section_name( ), "sim_default" ) and get_object_story_id( k ) == nil) and (se_obj.group_id == nil or se_obj.group_id == 65535 or get_object_story_id( se_obj.group_id ) == nil) ) then
+	local zombied_section
+	local valid_zombied
+	local is_survival_mode = IsSurvivalMode()
+	if (is_survival_mode) then
+		zombied_section = "zombied"
+		valid_zombied = {}
+	end
 
-			-- If sim stalker is enemy faction then add to list of valid targets:
-			local current_sim_faction = alife_character_community( se_obj )
-			for l = 1, #enemy_faction_list do
-				if ( current_sim_faction == enemy_faction_list[l] ) then
-					table.insert( valid_targets, k )
-					break
+	local stalker_squads = sim_board.get_sim_board().stalker_squads
+	for _,squad in pairs(stalker_squads) do
+		for k in squad:squad_members() do
+			-- Analyze current sim stalker:
+			se_obj = k.object or sim:object(k.id)
+			if ( (se_obj and IsStalkerOnly( nil, se_obj:clsid( ) ) and se_obj:alive( ) and sfind( se_obj:section_name( ), target_section ) and get_object_story_id( k.id ) == nil) and (se_obj.group_id == nil or se_obj.group_id == 65535 or get_object_story_id( se_obj.group_id ) == nil) ) then
+	
+				-- If sim stalker is enemy faction then add to list of valid targets:
+				local current_sim_faction = alife_character_community( se_obj )
+				for l = 1, #enemy_faction_list do
+					if ( current_sim_faction == enemy_faction_list[l] ) then
+						table.insert( valid_targets, k.id )
+						break
+					end
+					if (is_survival_mode and current_sim_faction == zombied_section) then
+						table.insert( valid_zombied, k.id )
+					end
 				end
 			end
 
@@ -994,6 +1005,9 @@ function drx_sl_setup_bounty_hunt( actor, npc, p )
 	end
 
 	-- Ensure a valid target was found:
+	if (is_survival_mode and #valid_targets < 1 and #valid_zombied > 0) then
+		valid_targets = valid_zombied
+	end
 	if ( #valid_targets < 1 ) then
 		printf( "DRX SL Error: drx_sl_setup_bounty_hunt failed, no targets !!!" )
 		return
@@ -2095,7 +2109,7 @@ function drx_sl_reward_stash( actor, npc, p )
 		end
 
 		-- Create the stash:
-		coc_treasure_manager.create_random_stash( nil, nil, bonus )
+		coc_treasure_manager.create_random_stash( nil, strtransl("st_itm_reward_stash"), bonus )
 
 	end
 
@@ -3214,22 +3228,28 @@ function on_setup_bounty_hunt(actor,npc,p)
 	bounty_hunt_targets[p[1]] = nil
 
 	local valid_targets = {}
+	local target_section = "sim_default"
 	local sim = alife()
 	local comm
-	local sfind = string.find
 
 	local faction_lookup = {}
 	for i=2,#p do
 		faction_lookup[p[i]] = true
 	end
 
-	for i=1,65534 do
-		local se_obj = sim:object(i)
-		-- find random sim stalker
-		if (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and sfind(se_obj:section_name(),"sim_default") and get_object_story_id(i) == nil) and (se_obj.group_id == nil or se_obj.group_id == 65535 or get_object_story_id(se_obj.group_id) == nil) then
-			comm = alife_character_community(se_obj)
-			if (faction_lookup[comm] == true) then
-				table.insert(valid_targets,i)
+	local stalker_squads = sim_board.get_sim_board().stalker_squads
+	for _,squad in pairs(stalker_squads) do
+		for k in squad:squad_members() do
+			local se_obj = k.object or sim:object(k.id)
+			if (se_obj and IsStalkerOnly(nil,se_obj:clsid()) and se_obj:alive() and 
+				string.find(se_obj:section_name(),target_section) and get_object_story_id(k.id) == nil) 
+				and 
+				(se_obj.group_id == nil or se_obj.group_id == 65535 or get_object_story_id(se_obj.group_id) == nil) 
+			then
+				comm = alife_character_community(se_obj)
+				if (faction_lookup[comm] == true) then
+					table.insert(valid_targets,k.id)
+				end
 			end
 		end
 	end
@@ -3285,7 +3305,7 @@ function reward_stash(actor,npc,p)
 			local t = {"itm_repairkit_tier_1","itm_repairkit_tier_1","itm_repairkit_tier_1","itm_repairkit_tier_2","itm_repairkit_tier_2","itm_repairkit_tier_3"}
 			bonus = {t[math.random(#t)]}
 		end
-		coc_treasure_manager.create_random_stash(nil,nil,bonus)
+		coc_treasure_manager.create_random_stash(nil,strtransl("st_itm_reward_stash"),bonus)
 	end
 end
 
@@ -5228,7 +5248,7 @@ function create_squad(actor, obj, p)
 		printf("Wrong smart name [NIL] in create_squad function")
 	end
 
-	local ltx = system_ini()
+	local ltx = ini_sys
 
 	if not ltx:section_exist(squad_id) then
 		printf("Wrong squad identificator [%s]. Squad descr doesnt exist.", tostring(squad_id))
@@ -5324,6 +5344,9 @@ function remove_squad(actor, obj, p)
 	if squad == nil then
 		assert("Wrong squad identificator [%s]. squad doesnt exist", tostring(story_id))
 		return
+	end
+	if (axr_companions.is_companion_squad(squad.id)) then
+		remove_task_companion(actor, obj, p)
 	end
 	SIMBOARD:remove_squad(squad)
 end
@@ -7295,7 +7318,7 @@ function make_a_wish(actor,npc,p)
 
 	action_list[4] = function()
 		local sim = alife()
-		local sysini = system_ini()
+		local sysini = ini_sys
 		local valid_ids = {[1] = true, [2] = true , [3] = true, [4] = true, [8] = true, [12] = true, [13] = true, [14] = true, [15] = true}
 		for k,v in pairs(ui_debug_main.id_to_spawn_table) do
 			if (valid_ids[k]) then
@@ -7935,4 +7958,48 @@ end
 
 function setup_base_defense_fail_conditions(actor,npc,p)
 	utils.save_var(db.actor,"base_defense_level",level.name())
+end
+
+-- Added by Dancher
+
+function remove_task_squad(actor,npc,p)
+	level.add_pp_effector("black.ppe", 1313, false)
+	
+	local squad = get_object_squad(npc)
+	
+	if (squad == nil) then
+		assert("Squad doesnt exist")
+		return
+	end
+	
+	if (axr_companions.is_companion_squad(squad.id)) then
+		remove_task_companion_by_squad(actor, obj, { squad })
+	end
+	
+	SIMBOARD:remove_squad(squad)
+end
+
+-- remove a companion squad by squad
+function remove_task_companion_by_squad(actor,npc,p)
+	local squad = p[1]
+	
+	if not (squad) then
+		return
+	end
+
+	axr_companions.companion_squads[squad.id] = nil
+	squad:reset()
+
+	for k in squad:squad_members() do
+		local npc = k.id and (db.storage[k.id] and db.storage[k.id].object or level.object_by_id(k.id))
+		if (npc) then
+			axr_logic.restore_scheme_and_logic(npc)
+			npc:disable_info_portion("npcx_is_companion")
+			npc:disable_info_portion("npcx_beh_cannot_dismiss")
+
+			utils.se_obj_save_var(k.id,k.object:name(),"companion",nil)
+			utils.se_obj_save_var(k.id,k.object:name(),"companion_cannot_dismiss",nil)
+			utils.se_obj_save_var(k.id,k.object:name(),"companion_cannot_teleport",nil)
+		end
+	end
 end

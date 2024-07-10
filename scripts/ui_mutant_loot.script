@@ -231,7 +231,7 @@ function loot_ui:OnButton_ok()
 		alife():create(sec, db.actor:position(),0,0,0)
 		xr_statistic.inc_counter("field_dressings")
 		end
-	--news_manager.relocate_item(db.actor, "in", sec, t.count)
+	news_manager.relocate_item(db.actor, "in", sec, t.count)
 	self.loot[sec] = nil
 	end
 	utils.save_var(self.obj,"looted",true)
@@ -247,9 +247,9 @@ function loot_ui:OnKeyboard(dik, keyboard_action)
 	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
 	if (keyboard_action == ui_events.WINDOW_KEY_PRESSED) then
 	local bind = dik_to_bind(dik)
-		if bind == key_bindings.kQUIT or dik == DIK_keys.DIK_Q then
+		if bind == key_bindings.kQUIT or bind == key_bindings.kUSE then
 			self:HideDialog()
-		elseif bind == key_bindings.kUSE or dik == DIK_keys.DIK_E then
+		elseif dik == DIK_keys.DIK_LSHIFT then
 			self:OnButton_ok()
 		end
 	end
@@ -273,7 +273,7 @@ function loot_ui:AddItemToList(sec,count)
 
 	_itm.sec = sec
 
-	local ini = system_ini()
+	local ini = ini_sys
 	local inv_grid_width = ini:r_float_ex(sec,"inv_grid_width") or 0
 	local inv_grid_height = ini:r_float_ex(sec,"inv_grid_height") or 0
 	local inv_grid_x = ini:r_float_ex(sec,"inv_grid_x") or 0

@@ -371,11 +371,10 @@
 				<text>lottery_ds_aslan_mlr_41</text>
 				<action>dialogs_mlr.lottery_present_hight_5</action>
 			</phrase>
-			<!-- Mercs -->
 			<phrase id="42">
-				<precondition>dialogs_mlr.have_faction_and_merc_patch_for_lottery_25</precondition>
+				<precondition>dialogs_mlr.have_merc_patch_for_lottery_25</precondition>
 				<text>lottery_ds_aslan_mlr_merc_25</text>
-				<action>dialogs_mlr.take_csky_patch_for_lottery_25</action>
+				<action>dialogs_mlr.take_merc_patch_for_lottery_25</action>
 				<next>19</next>
 				<next>20</next>
 				<next>21</next>
@@ -387,7 +386,7 @@
 				<next>39</next>
 			</phrase>
 			<phrase id="43">
-				<precondition>dialogs_mlr.have_faction_and_merc_patch_for_lottery_50</precondition>
+				<precondition>dialogs_mlr.have_merc_patch_for_lottery_50</precondition>
 				<text>lottery_ds_aslan_mlr_merc_50</text>
 				<action>dialogs_mlr.take_merc_patch_for_lottery_50</action>
 				<next>25</next>
