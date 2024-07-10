@@ -41,7 +41,7 @@ Screenshots
 [![4.jpg](https://i.postimg.cc/4yR7q8yt/4.jpg)](https://postimg.cc/Vr4kbWjL)
 [![5.jpg](https://i.postimg.cc/HLK74WC6/5.jpg)](https://postimg.cc/FfyRh4zS)
 [![6.jpg](https://i.postimg.cc/PrzYskmq/6.jpg)](https://postimg.cc/2VyVhM9p)
-[![7.jpg](https://i.postimg.cc/05Kc6cH5/7.jpg)](https://postimg.cc/jCKzmQbB)
+[![7.jpg](https://i.postimg.cc/Pxwv6GXT/7.jpg)](https://postimg.cc/xJ9dC4N4)
 [![8.jpg](https://i.postimg.cc/cLF3CMky/8.jpg)](https://postimg.cc/LJZ50fMN)
 [![9.jpg](https://i.postimg.cc/q7g33hWt/9.jpg)](https://postimg.cc/GBwt02Lr)
 [![10.jpg](https://i.postimg.cc/dVsdJSBj/10.jpg)](https://postimg.cc/YhPj3RTv)
