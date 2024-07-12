@@ -1895,3 +1895,11 @@ end
 function strtransl(str)
 	return game.translate_string(str)
 end
+
+function SkipFrame(functor)
+	local function skip_frame_call()
+		functor()
+		return true
+	end
+	AddUniqueCall(skip_frame_call)
+end

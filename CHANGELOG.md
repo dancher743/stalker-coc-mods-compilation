@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 
 ### Fixes
 * Fixed distant storms
+* Fixed missing bounty hunt task's target and leave zone actions
+
+### Framework
+* Added `SkipFrame` function into `_g.script` to call functions on next frame
 
 ## [1.4.2] - 2024-07-10
 

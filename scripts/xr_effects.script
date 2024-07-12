@@ -1024,11 +1024,10 @@ function drx_sl_setup_bounty_hunt( actor, npc, p )
 	bounty_hunt_targets[p[1]] = target_id
 	printf( "drx_sl_setup_bounty_hunt target: %s", target_id )
 
-	local function postpone_for_next_frame(target_id)
+	local function postpone_for_next_frame()
 		give_hunt_target_talk_message(target_id)
-		return true
 	end
-	CreateTimeEvent(0,"drx_sl_setup_bounty_hunt",0,postpone_for_next_frame,target_id)
+	SkipFrame(postpone_for_next_frame)
 end
 
 -- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -3271,11 +3270,10 @@ function on_setup_bounty_hunt(actor,npc,p)
 
 	--utils.save_var(db.actor,p[1],target_id)
 	
-	local function postpone_for_next_frame(target_id)
+	local function postpone_for_next_frame()
 		give_hunt_target_talk_message(target_id)
-		return true
 	end
-	CreateTimeEvent(0,"on_setup_bounty_hunt",0,postpone_for_next_frame,target_id)
+	SkipFrame(postpone_for_next_frame)
 end
 
 function fail_task_dec_goodwill(actor,npc,p)
