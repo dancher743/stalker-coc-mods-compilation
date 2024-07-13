@@ -5,7 +5,8 @@ All notable changes to this project will be documented in this file.
 ## [1.4.3] - Unreleased
 
 ### Features
-* Added psy aura for psysucker and rad aura for black bloodsucker
+* Added psy aura for psysucker
+* Added rad aura for black bloodsucker and black chimera
 
 ### Fixes
 * Fixed distant storms
