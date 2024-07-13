@@ -32,7 +32,9 @@ local function play_reaction_sound(snd_obj)
 end
 
 local function bleedcondition()
-    if db.actor.health < 0.3 and isactcondset ~= true then
+    local show_health_effectors = has_option()
+	
+	if show_health_effectors and db.actor.health < 0.3 and isactcondset ~= true then
         level.add_pp_effector("cherno.ppe", 2012, true)
         isactcondset = true
     end
@@ -41,7 +43,7 @@ local function bleedcondition()
         isactcondset = false
     end
     
-	if db.actor.radiation > 0.3 and radeffect ~= true then
+	if show_health_effectors and db.actor.radiation > 0.3 and radeffect ~= true then
         level.add_pp_effector("cherno.ppe", 2013, true)
 		play_reaction_sound(radiation_reaction_sounds[math.random(#radiation_reaction_sounds)])
         radeffect = true
@@ -50,8 +52,6 @@ local function bleedcondition()
         level.remove_pp_effector(2013)
         radeffect = false
     end
-	
-	local show_health_effectors = has_option()
 
 	if show_health_effectors and db.actor.bleeding > 0.5 and db.actor.health < 0.4 and ble1 < time_global() then
         level.add_pp_effector("deimos1.ppe", 2014, false)
