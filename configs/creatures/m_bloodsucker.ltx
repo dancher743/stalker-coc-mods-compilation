@@ -737,12 +737,36 @@ stand_run_attack_right_0 = 0.30,   0.65,       50,        3.5, 2.0, 0.5,     -1.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 [psysucker_weak]:bloodsucker_weak
+psy_linear_factor		=	0.5
+psy_quadratic_factor	=	0.0
+psy_max_distance		=	12.0
+psy_max_power			=	0.2
+psy_sound				=	anomaly\psy_voices_1_l		;monsters\controller\controller_presence_l
+psy_pp_effector_name	= 	psy_antenna 				;postprocess_psi
+psy_pp_highest_at		= 	0.1
+
 can_spawn_phantom = true
 
 [psysucker_normal]:bloodsucker_normal
+psy_linear_factor		=	0.5
+psy_quadratic_factor	=	0.0
+psy_max_distance		=	12.0
+psy_max_power			=	0.2
+psy_sound				=	anomaly\psy_voices_1_l		;monsters\controller\controller_presence_l
+psy_pp_effector_name	= 	psy_antenna 				;postprocess_psi
+psy_pp_highest_at		= 	0.1
+
 can_spawn_phantom = true
 
 [psysucker_strong]:bloodsucker_strong
+psy_linear_factor		=	0.5
+psy_quadratic_factor	=	0.0
+psy_max_distance		=	12.0
+psy_max_power			=	0.2
+psy_sound				=	anomaly\psy_voices_1_l		;monsters\controller\controller_presence_l
+psy_pp_effector_name	= 	psy_antenna 				;postprocess_psi
+psy_pp_highest_at		= 	0.1
+
 can_spawn_phantom = true
 
 
@@ -771,6 +795,13 @@ corpse_visual        = monsters\krovosos\krovosos_dark_small_dead
 Predator_Visual = monsters\krovosos\krovosos_dark_small_xray
 MaxHealthValue         = 0.75              ; range [0..200]
 
+radiation_max_distance		=	5
+radiation_max_power			=	0.7
+radiation_linear_factor		=	1
+radiation_quadratic_factor	=	1
+radiation_pp_effector_name	= 	postprocess_rad
+radiation_pp_highest_at		= 	0.1
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;------------- Normal -------------
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -795,6 +826,13 @@ visual        = monsters\krovosos\krovosos_strong
 corpse_visual        = monsters\krovosos\krovosos_strong_dead
 Predator_Visual   = monsters\krovosos\krovosos_strong_xray
 MaxHealthValue         = 1.0              ; range [0..200]
+
+radiation_max_distance		=	5
+radiation_max_power			=	0.7
+radiation_linear_factor		=	1
+radiation_quadratic_factor	=	1
+radiation_pp_effector_name	= 	postprocess_rad
+radiation_pp_highest_at		= 	0.1
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;------------- Strong -------------
@@ -821,6 +859,13 @@ visual        = monsters\krovosos\krovosos_dark_big
 corpse_visual        = monsters\krovosos\krovosos_dark_big_dead
 Predator_Visual   = monsters\krovosos\krovosos_dark_big_xray
 MaxHealthValue         = 1.5              ; range [0..200]
+
+radiation_max_distance		=	5
+radiation_max_power			=	0.7
+radiation_linear_factor		=	1
+radiation_quadratic_factor	=	1
+radiation_pp_effector_name	= 	postprocess_rad
+radiation_pp_highest_at		= 	0.1
 
 [bloodsucker_arena]:bloodsucker_strong
 $spawn				= "monsters\bloodsuckers\arena\bloodsucker_arena"

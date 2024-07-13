@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [1.4.3] - Unreleased
 
+### Features
+* Added psy aura for psysucker and rad aura for black bloodsucker
+
 ### Fixes
 * Fixed distant storms
 * Fixed missing bounty hunt task's target and leave zone actions
