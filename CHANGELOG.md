@@ -16,6 +16,9 @@ All notable changes to this project will be documented in this file.
 * Fixed distant storms
 * Fixed missing bounty hunt task's target and leave zone actions
 
+### Optimization
+* Optimized RAM in `actor_health_effectors.script`
+
 ### Framework
 * Added `SkipFrame` function into `_g.script` to call functions on next frame
 

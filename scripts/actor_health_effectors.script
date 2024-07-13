@@ -9,7 +9,6 @@ local radeffect = false
 local ble1 = 0
 local ble2 = false
 
-local rad_reaction_sound_path = "actor\\radiation_%s_%s"
 local last_reaction_sound
 
 local option_name = "show_health_effectors"
@@ -18,13 +17,18 @@ local function has_option()
 	return axr_main_options.get_check_option(option_name)
 end
 
+local function stop_reaction_sound()
+	if (last_reaction_sound and last_reaction_sound:playing()) then
+		last_reaction_sound:stop()
+		last_reaction_sound = nil
+	end
+end
+
 local function play_reaction_sound(snd_obj)
 	if (not snd_obj) then
 		return
 	end
-	if (last_reaction_sound and last_reaction_sound:playing()) then
-		last_reaction_sound:stop()
-	end
+	stop_reaction_sound()
 	snd_obj:play(db.actor,0,sound_object.s2d)
 	last_reaction_sound = snd_obj
 end
@@ -43,7 +47,7 @@ local function bleedcondition()
     
 	if show_health_effectors and db.actor.radiation > 0.3 and radeffect ~= true then
         level.add_pp_effector("cherno.ppe", 2013, true)
-		local sound_path = strformat(rad_reaction_sound_path, db.actor:item_in_slot(12) and 2 or 1, math.random(3))
+		local sound_path = strformat("actor\\radiation_%s_%s", db.actor:item_in_slot(12) and 2 or 1, math.random(3))
 		local rad_reaction_sound = sound_object(sound_path)
 		play_reaction_sound(rad_reaction_sound)
         radeffect = true
@@ -51,6 +55,7 @@ local function bleedcondition()
     if db.actor.radiation == 0 and radeffect ~= false then
         level.remove_pp_effector(2013)
         radeffect = false
+		stop_reaction_sound()
     end
 
 	if show_health_effectors and db.actor.bleeding > 0.5 and db.actor.health < 0.4 and ble1 < time_global() then
