@@ -209,10 +209,10 @@ function WeatherManager:update()
 	local is_force = self.forced_weather_change_on_time_change
 	
 	if (not is_force) then
-		if (self.___timer and time_global() < self.___timer) then 
+		if (self.___timer and self.___timer == level.get_time_minutes()) then 
 			return
 		end
-		self.___timer = time_global() + 3000
+		self.___timer = level.get_time_minutes()
 	end
 	
 	-- printf(">>> Dancher: check_period | self.next_period_change_hour = " .. self.next_period_change_hour)
