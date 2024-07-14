@@ -78,6 +78,7 @@ function WeatherManager:__init()
 	self.last_period_change_hour = level.get_time_hours()
 	self.forced_weather_change_on_time_change = false
 	self.prev_weather_section_name = level.get_weather()
+	self.curr_weather_section_name = level.get_weather()
 	
 	self.wfx_time = 0
 	self.weather_fx = nil
@@ -204,6 +205,7 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
 		self.distant_storm_on = false
 	end
 	level.set_weather(self.prev_weather_section_name,true)
+	level.set_weather(self.curr_weather_section_name,false)
 	self:select_weather(false)
 end
 
@@ -395,6 +397,7 @@ function WeatherManager:select_weather(now)
 	else
 		-- printf(">>> Dancher: select_weather | change weather from " .. level.get_weather() .. " to " .. tostring(weather_section_name))
 		self.prev_weather_section_name = level.get_weather()
+		self.curr_weather_section_name = weather_section_name
 		level.set_weather(weather_section_name,now)
 	end
 end
@@ -791,6 +794,7 @@ function WeatherManager:load_state(m_data)
 	self.last_period_change_hour = m_data.weather_manager.last_period_change_hour
 	self.next_period_change_hour = m_data.weather_manager.next_period_change_hour
 	self.prev_weather_section_name = m_data.weather_manager.prev_weather_section_name or level.get_weather()
+	self.curr_weather_section_name = m_data.weather_manager.curr_weather_section_name or level.get_weather()
 	--self.state = m_data.weather_manager.state or self.state or {}
 	if (not bLevelUnderground) then 
 		self.update_time = m_data.weather_manager.update_time
@@ -818,6 +822,7 @@ function WeatherManager:save_state(m_data)
 	m_data.weather_manager.last_period_change_hour = self.last_period_change_hour
 	m_data.weather_manager.next_period_change_hour = self.next_period_change_hour
 	m_data.weather_manager.prev_weather_section_name = self.prev_weather_section_name
+	m_data.weather_manager.curr_weather_section_name = self.curr_weather_section_name
 	--m_data.weather_manager.state = self.state
 	
 	if (not bLevelUnderground) then 
