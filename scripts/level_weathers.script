@@ -161,6 +161,18 @@ function WeatherManager:__init()
 	bLevelUnderground = valid_levels[level.name()] == nil
 end
 
+function WeatherManager:try_replace_panorama()
+	local new_section_name = nil
+	
+	if (levels_without_panorama[level.name()] and self.cycle == "clear") then
+		if (level.get_time_hours() >= 4 and level.get_time_minutes() >= 30 or level.get_time_hours() <= 21 and level.get_time_minutes() <= 30) then
+			new_section_name = "without_panorama\\af3_day_clear"
+		end
+	end
+	
+	return new_section_name
+end
+
 function WeatherManager:reset() -- Called after load (). Weather status already loaded. called from bind_stalker
 	--printf(">>> Tronex: reset")
 	local ini = ini_file("game.ltx")
@@ -204,9 +216,12 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
 	else
 		self.distant_storm_on = false
 	end
-	level.set_weather(self.prev_weather_section_name,true)
-	level.set_weather(self.curr_weather_section_name,false)
-	-- printf(">>> Dancher: reset weather | weather has loaded! Prev: " .. self.prev_weather_section_name .. ", curr: " .. self.curr_weather_section_name)
+	
+	local prev_weather = self:try_replace_panorama() or self.prev_weather_section_name
+	local curr_weather = self:try_replace_panorama() or self.curr_weather_section_name
+	level.set_weather(prev_weather,true)
+	level.set_weather(curr_weather,false)
+	-- printf(">>> Dancher: reset weather | weather has loaded! Prev: " .. prev_weather .. ", curr: " .. curr_weather)
 end
 
 function WeatherManager:update()
@@ -357,11 +372,7 @@ function WeatherManager:select_weather(now)
 			weather_section_name = weather_section_name .. "_" .. self:get_moon_phase()
 		end
 		        
-		if (weather_section_name == "clear" and levels_without_panorama[level.name()] == true) then
-			if (level.get_time_hours() >= 4 and level.get_time_minutes() >= 30 or level.get_time_hours() <= 21 and level.get_time_minutes() <= 30) then
-				weather_section_name="without_panorama\\af3_day_clear"
-			end
-		end
+		weather_section_name = self:try_replace_panorama() or weather_section_name
 		
 		-- set up current and next weather, used for many things like distant storms/Meteorites/DOF
 		if now then
