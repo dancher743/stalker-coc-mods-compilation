@@ -206,7 +206,6 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
 	end
 	level.set_weather(self.prev_weather_section_name,true)
 	level.set_weather(self.curr_weather_section_name,false)
-	self:select_weather(false)
 end
 
 function WeatherManager:update()
