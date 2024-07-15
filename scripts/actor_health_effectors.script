@@ -47,7 +47,7 @@ local function bleedcondition()
     
 	if show_health_effectors and db.actor.radiation > 0.3 and radeffect ~= true then
         level.add_pp_effector("cherno.ppe", 2013, true)
-		local sound_path = strformat("actor\\radiation_%s_%s", db.actor:item_in_slot(12) and 2 or 1, math.random(3))
+		local sound_path = strformat("actor\\radiation_%s", math.random(3))
 		local rad_reaction_sound = sound_object(sound_path)
 		play_reaction_sound(rad_reaction_sound)
         radeffect = true

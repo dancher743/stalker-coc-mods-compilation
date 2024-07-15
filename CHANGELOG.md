@@ -7,10 +7,10 @@ All notable changes to this project will be documented in this file.
 ### Features
 * Added psy aura for psysucker
 * Added rad aura for black chimera
-* Extended radiation reaction sounds
 
 ### Improvements
 * Moved low health and high rad effectors under health effectors option
+* Improved radiation reaction sounds
 
 ### Fixes
 * Fixed distant storms
