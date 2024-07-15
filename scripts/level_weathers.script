@@ -206,6 +206,7 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
 	end
 	level.set_weather(self.prev_weather_section_name,true)
 	level.set_weather(self.curr_weather_section_name,false)
+	-- printf(">>> Dancher: reset weather | weather has loaded! Prev: " .. self.prev_weather_section_name .. ", curr: " .. self.curr_weather_section_name)
 end
 
 function WeatherManager:update()
