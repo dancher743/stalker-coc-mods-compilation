@@ -21,7 +21,7 @@ local function finish_game()
 		xr_effects.game_disconnect()
 	end
 	
-	CreateTimeEvent("leave_zone", "finish_game", 0, postpone_for_next_frame)
+	SkipFrame(postpone_for_next_frame)
 end
 
 local function spawn_on_l13_generators()

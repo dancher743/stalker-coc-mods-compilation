@@ -13,7 +13,7 @@ if (jit == nil) then
 end
 
 GAME_VERSION = "1.4.22"
-MOD_VERSION = "Dancher's Compilation 1.4.2"
+MOD_VERSION = "Dancher's Compilation 1.4.3 RC 2"
 
 if string.find(command_line(), "-dbg") then
 	DEV_DEBUG = true
@@ -1894,4 +1894,12 @@ end
 
 function strtransl(str)
 	return game.translate_string(str)
+end
+
+function SkipFrame(functor)
+	local function skip_frame_call()
+		functor()
+		return true
+	end
+	AddUniqueCall(skip_frame_call)
 end

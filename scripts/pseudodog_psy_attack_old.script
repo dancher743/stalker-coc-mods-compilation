@@ -5,6 +5,7 @@
 --
 
 local monster_section_name = "psy_dog_weak"
+local psy_attack_effector_name = "psy_antenna.ppe"
 local psy_attack_distance_sqr = 5*5
 local psy_aura_distance_sqr = 10*10
 
@@ -21,7 +22,7 @@ local function monster_on_update(npc, st)
 		local distance_to_actor = npc:position():distance_to_sqr(actor:position())
 		
 		if (distance_to_actor < psy_aura_distance_sqr) then
-			pp_effector_manager.try_add("psy_antenna.ppe",395,true)
+			pp_effector_manager.try_add(psy_attack_effector_name,395,true)
 		else
 			pp_effector_manager.remove(395)
 		end
@@ -52,7 +53,7 @@ local function monster_on_update(npc, st)
 					psy_affect_sound:play(actor,0,sound_object.s2d)
 				end
 				
-				timer = time_global + 2500*(1+math.random(-0.2,0.2)) + 700
+				timer = time_global + 2500*(1+math.random(-20,20)/100) + 700
 				DogTimers[npc_id] = timer
 			end
 		end

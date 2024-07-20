@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.3] - Unreleased
+
+### Features
+* Added psy aura for psysucker
+* Added rad aura for black chimera
+
+### Improvements
+* Moved low health and high rad effectors under health effectors option
+* Improved radiation reaction sounds
+* Refactored `sound_ambient.script` after adding `play_once` flag and `play_prob` float
+
+### Fixes
+* Fixed distant storms
+* Fixed missing bounty hunt task's target and leave zone actions
+* Fixed timer in `WeatherManager:update` function
+* Fixed spontaneous weather changing after save load
+* Fixed update timer in `pseudodog_psy_attack_old.script`
+
+### Optimization
+* Optimized RAM in `actor_health_effectors.script`
+* Cached psy attack effector name in `pseudodog_psy_attack_old.script`
+
+### Framework
+* Added `SkipFrame` function into `_g.script` to call functions on next frame
+* Added `play_prob` float for sound channels to play them with a certain probability
+
 ## [1.4.2] - 2024-07-10
 
 ### Features
