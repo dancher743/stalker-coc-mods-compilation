@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 * Fixed missing bounty hunt task's target and leave zone actions
 * Fixed timer in `WeatherManager:update` function
 * Fixed spontaneous weather changing after save load
+* Fixed update timer in `pseudodog_psy_attack_old.script`
 
 ### Optimization
 * Optimized RAM in `actor_health_effectors.script`

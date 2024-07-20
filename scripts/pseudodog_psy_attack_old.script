@@ -52,7 +52,7 @@ local function monster_on_update(npc, st)
 					psy_affect_sound:play(actor,0,sound_object.s2d)
 				end
 				
-				timer = time_global + 2500*(1+math.random(-0.2,0.2)) + 700
+				timer = time_global + 2500*(1+math.random(-20,20)/100) + 700
 				DogTimers[npc_id] = timer
 			end
 		end
