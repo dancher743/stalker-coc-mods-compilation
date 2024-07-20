@@ -124,15 +124,8 @@ function update_ambient()
 		next_idx = 1
 	end
 	
-	local ch = snd_chanels[next_idx]
-	
-	if (ch.has_played_once) then
-		-- print_dbg("sound [%s] has already played once", ch.name)
-		return false
-	end
-	
 	local tg = time_global()
-	
+	local ch = snd_chanels[next_idx]
 	if (not ch.next) then
 		ch.next = tg + math.random( 1 , (ch.periods[math.random(4)] + 1) )
 		print_dbg("sound [%s] set to play at %s",ch.name,ch.next)
@@ -142,8 +135,13 @@ function update_ambient()
 	--print_dbg("tg = %s - idx = %s - next = %s", tg, next_idx, ch.next)
 	if ch.next <= tg then
 		
+		if (ch.play_once and ch.has_played_once) then
+			print_dbg("sound [%s] has already played once", ch.name)
+			return false
+		end
+		
 		if (ch.play_prob and ch.play_prob < math.random()) then
-			print_dbg("sound [%s] does not play due to low probability", ch.name)
+			print_dbg("sound [%s] does not play due to low probability [%s]", ch.name, ch.play_prob)
 			-- Set next play time
 			ch.next = tg + (ch.periods[math.random(4)])
 			print_dbg("sound [%s] set to play next at %s | time now: %s", ch.name, ch.next, tg)
@@ -175,6 +173,7 @@ function update_ambient()
 		local file = ch.sounds[math.random(#ch.sounds)]
 		ch.snd = sound_object(file)
 		ch.snd:play_at_pos(actor, vec)
+		ch.has_played_once = true
 		
 		-- Volume management
 		local vol
@@ -196,17 +195,11 @@ function update_ambient()
 		
 		ch.snd.volume = vol
 
+		-- Set next play time
+		ch.next = tg + (ch.periods[math.random(4)])
+
 		print_dbg("sound [%s] set to use sound: %s - volume: %s - distance: %s", ch.name, file, ch.snd.volume, dist)
-		
-		if (ch.play_once) then
-			ch.has_played_once = true
-			print_dbg("sound [%s] not set to play next, because it should play once", ch.name)
-		else
-			-- Set next play time
-			ch.next = tg + (ch.periods[math.random(4)])
-			print_dbg("sound [%s] set to play next at %s | time now: %s", ch.name, ch.next, tg)
-		end
-		
+		print_dbg("sound [%s] set to play next at %s | time now: %s", ch.name, ch.next, tg)
 		--print_dbg("angle_dec: %s - angle_rad: %s - math.cos(angle_rad): %s - math.sin(angle_rad): %s", angle_dec, angle_rad, math.cos(angle_rad), math.sin(angle_rad))
 		--print_dbg("player | x: %s - y: %s - z: %s", (pos.x), (pos.y), (pos.z))
 		--print_dbg("sound  | x: %s - y: %s - z: %s", (pos.x + pos_x), (pos.y), (pos.z + pos_z))

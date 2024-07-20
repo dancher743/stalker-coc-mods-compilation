@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 ### Improvements
 * Moved low health and high rad effectors under health effectors option
 * Improved radiation reaction sounds
+* Refactored `sound_ambient.script` after adding `play_once` flag and `play_prob` float
 
 ### Fixes
 * Fixed distant storms
