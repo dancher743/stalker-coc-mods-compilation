@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 
 ### Optimization
 * Optimized RAM in `actor_health_effectors.script`
+* Cached psy attack effector name in `pseudodog_psy_attack_old.script`
 
 ### Framework
 * Added `SkipFrame` function into `_g.script` to call functions on next frame
