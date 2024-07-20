@@ -72,6 +72,7 @@ function reset_settings(level_name, ambient)
 			local period_2 = ini_snd:r_float_ex(ch,"period2")
 			local period_3 = ini_snd:r_float_ex(ch,"period3")
 			snd_chanels[idx].play_once = ini_snd:r_bool_ex(ch,"play_once") or false
+			snd_chanels[idx].play_prob = ini_snd:r_float_ex(ch,"play_prob")
 			snd_chanels[idx].periods = {period_0, period_1, period_2, period_3}
 			snd_chanels[idx].sounds = alun_utils.parse_list(ini_snd,ch,"sounds")
 			
@@ -140,6 +141,14 @@ function update_ambient()
 	
 	--print_dbg("tg = %s - idx = %s - next = %s", tg, next_idx, ch.next)
 	if ch.next <= tg then
+		
+		if (ch.play_prob and ch.play_prob < math.random()) then
+			print_dbg("sound [%s] does not play due to low probability", ch.name)
+			-- Set next play time
+			ch.next = tg + (ch.periods[math.random(4)])
+			print_dbg("sound [%s] set to play next at %s | time now: %s", ch.name, ch.next, tg)
+			return false
+		end
 		
 		local inside = surge_manager.npc_in_cover(db.actor)
 		local bLevelUnderground = IsUndergroundLevel()

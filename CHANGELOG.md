@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 
 ### Framework
 * Added `SkipFrame` function into `_g.script` to call functions on next frame
+* Added `play_prob` float for sound channels to play them with a certain probability
 
 ## [1.4.2] - 2024-07-10
 
