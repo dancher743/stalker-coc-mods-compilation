@@ -161,16 +161,16 @@ function WeatherManager:__init()
 	bLevelUnderground = valid_levels[level.name()] == nil
 end
 
-function WeatherManager:try_get_no_panorama_weather()
-	local new_section_name = nil
+function WeatherManager:try_get_no_panorama_weather(current_weather_section)
+	local no_panorama_weather_section = nil
 	
-	if (levels_without_panorama[level.name()] and self.cycle == "clear") then
+	if (levels_without_panorama[level.name()] and string.match(current_weather_section, "clear")) then
 		if (level.get_time_hours() >= 4 and level.get_time_minutes() >= 30 or level.get_time_hours() <= 21 and level.get_time_minutes() <= 30) then
-			new_section_name = "without_panorama\\af3_day_clear"
+			no_panorama_weather_section = "without_panorama\\af3_day_clear"
 		end
 	end
 	
-	return new_section_name
+	return no_panorama_weather_section or current_weather_section
 end
 
 function WeatherManager:reset() -- Called after load (). Weather status already loaded. called from bind_stalker
@@ -217,8 +217,8 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
 		self.distant_storm_on = false
 	end
 	
-	local prev_weather = self:try_get_no_panorama_weather() or self.prev_weather_section_name
-	local curr_weather = self:try_get_no_panorama_weather() or self.curr_weather_section_name
+	local prev_weather = self:try_get_no_panorama_weather(self.prev_weather_section_name)
+	local curr_weather = self:try_get_no_panorama_weather(self.curr_weather_section_name)
 	level.set_weather(prev_weather,true)
 	level.set_weather(curr_weather,false)
 	-- printf(">>> Dancher: reset weather | weather has loaded! Prev: " .. prev_weather .. ", curr: " .. curr_weather)
@@ -372,7 +372,7 @@ function WeatherManager:select_weather(now)
 			weather_section_name = weather_section_name .. "_" .. self:get_moon_phase()
 		end
 		        
-		weather_section_name = self:try_get_no_panorama_weather() or weather_section_name
+		weather_section_name = self:try_get_no_panorama_weather(weather_section_name)
 		
 		-- set up current and next weather, used for many things like distant storms/Meteorites/DOF
 		if now then
