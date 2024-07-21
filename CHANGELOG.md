@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixes
 * Included hour of weather next period into update code to change next weather period correctly
+* Improved code of weather restoring after save load
 
 ## [1.4.3] - 2024-07-21
 
