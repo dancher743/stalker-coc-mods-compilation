@@ -73,7 +73,7 @@ function WeatherManager:__init()
 	self.pre_blowout_period = false
 	self.curr_weather = STR_EMPTY
 	self.next_weather = STR_EMPTY
-	self.last_hour = 0
+	self.last_hour = level.get_time_hours()
 	self.next_hour = 0
 	self.last_period_change_hour = level.get_time_hours()
 	self.forced_weather_change_on_time_change = false
@@ -203,7 +203,6 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
 	-- prepare periods
 	self.next_period_change_hour = self:get_next_period_change_hour(self.cycle)
 	self.inited_time = game.get_game_time()
-	self.last_hour = level.get_time_hours()
 	self.next_hour = self.last_hour + 1
 	if (self.next_hour > 23) then
 		self.next_hour = self.next_hour - 24
@@ -802,6 +801,7 @@ function WeatherManager:load_state(m_data)
 	self.period = m_data.weather_manager.period
 	self.cycle = m_data.weather_manager.cycle or get_random_weather() -- new
 	self.weather_storage = m_data.weather_manager.weather_storage or {} -- new
+	self.last_hour = m_data.weather_manager.last_hour or level.get_time_hours()
 	self.last_period_change_hour = m_data.weather_manager.last_period_change_hour
 	self.next_period_change_hour = m_data.weather_manager.next_period_change_hour
 	self.prev_weather_section_name = m_data.weather_manager.prev_weather_section_name or level.get_weather()
@@ -830,6 +830,7 @@ function WeatherManager:save_state(m_data)
 	m_data.weather_manager.period = self.period
 	m_data.weather_manager.cycle = self.cycle -- new
 	m_data.weather_manager.weather_storage = self.weather_storage -- new
+	m_data.weather_manager.last_hour = self.last_hour
 	m_data.weather_manager.last_period_change_hour = self.last_period_change_hour
 	m_data.weather_manager.next_period_change_hour = self.next_period_change_hour
 	m_data.weather_manager.prev_weather_section_name = self.prev_weather_section_name
