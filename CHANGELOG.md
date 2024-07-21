@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [1.4.4] - Unreleased
 
+### Improvements
+* Balanced distance and power of psysucker's aura
+
 ### Fixes
 * Included hour of weather next period into update code to change next weather period correctly
 * Improved code of weather restoring after save load
