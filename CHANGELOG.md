@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.4] - Unreleased
+
 ## [1.4.3] - 2024-07-21
 
 ### Features
