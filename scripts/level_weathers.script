@@ -237,7 +237,7 @@ function WeatherManager:update()
 	-- printf(">>> Dancher: check_period | self.next_period_change_hour = " .. self.next_period_change_hour)
 	
 	-- update every 1 hour, apply weather change if necessary
-	if (is_force or self.last_hour ~= level.get_time_hours()) then
+	if (is_force or self.last_hour ~= level.get_time_hours() or self.last_hour == self.next_period_change_hour) then
 		--printf(">>> Tronex: update")
 		self.last_hour = level.get_time_hours()
 		self.next_hour = self.last_hour + 1
