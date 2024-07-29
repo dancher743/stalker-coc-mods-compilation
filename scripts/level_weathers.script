@@ -298,10 +298,6 @@ function WeatherManager:change_period()
 		can_change = true
 	end
 	
-	if (self.forced_weather_change_on_time_change) then
-		can_change = true
-	end
-	
 	return can_change
 end
 
