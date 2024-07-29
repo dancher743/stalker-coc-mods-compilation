@@ -242,6 +242,8 @@ function WeatherManager:update()
 		self.___timer = level.get_time_minutes()
 	end
 	
+    -- printf(">>> Dancher: check_period | next period change hour = " .. self:get_next_period_change_hour(self.cycle))
+    
 	-- update every 1 hour, apply weather change if necessary
 	if (is_force or self.last_hour ~= level.get_time_hours()) then
 		--printf(">>> Tronex: update")
@@ -424,6 +426,13 @@ function WeatherManager:is_next_change_date(weather_cycle)
 	local diff = math.ceil(game.get_game_time():diffSec(self.last_period_change_date))
 	--printf("is_next_change_date | current seconds difference = %s, critical difference = %s", diff, (hour*60*60))
 	return diff > (hour*60*60)
+end
+
+function WeatherManager:get_next_period_change_hour(weather_cycle)
+	local hour = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. weather_cycle .. "_period",2,6)
+	local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
+	local Y, M, D, h, m, s, ms = self.last_period_change_date:get(Y, M, D, h, m, s, ms)
+	return h + hour + 1
 end
 
 function WeatherManager:reset_change_date(cycle_change, _s)
@@ -658,7 +667,8 @@ end
 --##################################################################################################
 
 function WeatherManager:distant_storm()
-	local is_distant_storm_time = self.curr_weather == "cloudy" and self.next_weather == "storm"
+	local latest_period_change_hour = self:get_next_period_change_hour(self.cycle) - 1
+	local is_distant_storm_time = self.curr_weather == "cloudy" and self.next_weather == "storm" and level.get_time_hours() == latest_period_change_hour
 	
 	if self.distant_storm_on == nil and is_distant_storm_time then
 		local rnd = (math.random(1,100)/100)
