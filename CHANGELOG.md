@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 * Removed usage of force flag from `WeatherManager:change_period` function
 * Added fixes to weather changing code
 * Fixed repair of outfit toolkit item
+* Fixed `medkit` cost in `bandit_loadout`
 
 ## [1.4.3] - 2024-07-21
 
