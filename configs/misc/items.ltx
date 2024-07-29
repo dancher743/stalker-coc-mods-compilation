@@ -1423,7 +1423,16 @@ inv_grid_height                          = 1
 inv_grid_x                               = 18
 inv_grid_y                               = 23
 
+repair_min_condition                     = 0.00 ;Min required condition to use
+repair_max_condition                     = 0.75 ;Max required condition to use
+repair_add_condition                     = 0.25 ;Amount of condition added to repaired item
+repair_part_bonus                        = 0.10 ;Amount bonus to add_condition if parts are used
+repair_use_parts                         = true ;Allows the use of lesser conditioned weapons to be used for parts to add overall bonus to repair
 repair_type                              = outfit ;weapon or outfit  
+repair_refuse                            = ;Add sections separated by commas that cannot be repaired by this item
+repair_only                              = ;Add sections separated by commas that exclude all sections but these
+repair_parts_include                     = ;Add sections of items to include to be considered repair parts
+repair_parts_exclude                     = ;Add sections of items to exclude from being considered repair parts
 
 max_uses                                 = 3
 empty_weight                             = 0.8
