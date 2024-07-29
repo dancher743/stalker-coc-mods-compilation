@@ -420,8 +420,7 @@ function WeatherManager:get_next_weather_cycle(curr_weather)
 end
 
 function WeatherManager:is_next_change_date(weather_cycle)
-	local len = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. weather_cycle .. "_period",2,6)
-	local hour = math.random(math.ceil(len*2/3),len)
+	local hour = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. weather_cycle .. "_period",2,6)
 	local diff = math.ceil(game.get_game_time():diffSec(self.last_period_change_date))
 	--printf("is_next_change_date | current seconds difference = %s, critical difference = %s", diff, (hour*60*60))
 	return diff > (hour*60*60)
