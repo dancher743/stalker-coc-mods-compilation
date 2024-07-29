@@ -75,7 +75,7 @@ function WeatherManager:__init()
 	self.next_weather = STR_EMPTY
 	self.last_hour = 0
 	self.next_hour = 0
-	self.last_period_change_hour = level.get_time_hours()
+	self.last_period_change_date = game.get_game_time()
 	self.forced_weather_change_on_time_change = false
 	self.prev_weather_section_name = level.get_weather()
 	self.curr_weather_section_name = level.get_weather()
@@ -201,7 +201,6 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
 	end
 
 	-- prepare periods
-	self.next_period_change_hour = self:get_next_period_change_hour(self.cycle)
 	self.inited_time = game.get_game_time()
 	self.last_hour = level.get_time_hours()
 	self.next_hour = self.last_hour + 1
@@ -243,17 +242,16 @@ function WeatherManager:update()
 		self.___timer = level.get_time_minutes()
 	end
 	
-	-- printf(">>> Dancher: check_period | self.next_period_change_hour = " .. self.next_period_change_hour)
+	-- printf(">>> Dancher: check_period | next period change hour = " .. self:get_next_period_change_hour(self.cycle))
 	
 	-- update every 1 hour, apply weather change if necessary
-	if (is_force or self.last_hour ~= level.get_time_hours() or self.last_hour == self.next_period_change_hour) then
+	if (is_force or self.last_hour ~= level.get_time_hours()) then
 		--printf(">>> Tronex: update")
 		self.last_hour = level.get_time_hours()
 		self.next_hour = self.last_hour + 1
 		if (self.next_hour > 23) then
 			self.next_hour = self.next_hour - 24
 		end
-		--self:check_period() -- fix
 		if (self:change_period()) then
 			self:select_weather(false)
 		end
@@ -277,32 +275,9 @@ function WeatherManager:update()
 	self.forced_weather_change_on_time_change = false
 end
 
-function WeatherManager:check_period()
-	--printf(">>> Tronex: check_period")
-	local current_hour = level.get_time_hours()
-	local period_ini = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. self.cycle .. "_period",2,5)
-	local period_saved = self.next_period_change_hour
-	if (period_saved < current_hour) then 
-		period_saved = period_saved + 24
-	end
-	
-	-- if next period is longer than saved settings, change next period to be close
-	if ((period_saved - current_hour) > tonumber(period_ini)) then
-		self.next_period_change_hour = current_hour + 2
-		if (self.next_period_change_hour > 23) then
-			self.next_period_change_hour = self.next_period_change_hour - 24
-		end
-		--printf(">>> Tronex: check_period | self.next_period_change_hour CHANGED TO: " .. self.next_period_change_hour)
-	else
-		--printf(">>> Tronex: check_period | self.next_period_change_hour NOT CHANGED")
-	end
-	--printf(">>> Tronex: check_period | period_saved = " .. period_saved .. " (" .. (period_saved - current_hour) .. "), period_ini = " .. period_ini)
-end
-
 function WeatherManager:change_period()
 	--printf(">>> Tronex: change_period")
 	local can_change = false
-	local current_hour = level.get_time_hours()
 
 	-- if a surge is close, shift next period's last hour further.
 	local g_time = game.get_game_time()
@@ -311,26 +286,17 @@ function WeatherManager:change_period()
 
 	if (diff_s < 7200 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_blowout",2,1) ==1) or (diff_p < 7200 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_psi_storm",2,1)==1) or level.is_wfx_playing() then
 		self.pre_blowout_period = true
-		self.next_period_change_hour = self.next_period_change_hour + 1
-		if (self.next_period_change_hour > 23) then
-			self.next_period_change_hour = self.next_period_change_hour - 24
-		end
+		self:reset_change_date(false, 1*60*60)
 		can_change = true
 	end
 
 	-- if current hour is next period's last hour or more than it, switch period type, set next period's hour
-	if (current_hour >= self.next_period_change_hour) then
-		--printf(">>> Tronex: change_period | current_hour == self.next_period_change_hour")
+	if (self:is_next_change_date(self.cycle)) then
 		self.cycle = self:get_next_weather_cycle(self.cycle)
-		self.last_period_change_hour = current_hour
-		self.next_period_change_hour = self:get_next_period_change_hour(self.cycle)
+		self:reset_change_date(true)
 		-- transitions between states is disabled, 
 		-- because we are using global_weather_graphs.ltx instead of dynamic_weather_graphs.ltx
 		self.transition_period = false
-		can_change = true
-	end
-	
-	if (self.forced_weather_change_on_time_change) then
 		can_change = true
 	end
 	
@@ -455,17 +421,32 @@ function WeatherManager:get_next_weather_cycle(curr_weather)
 	return pick
 end
 
-function WeatherManager:get_next_period_change_hour(weather_cycle)
-	local hour = 0
-	local len = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. weather_cycle .. "_period",2,6)
+-- From Anomaly 1.5.1.2
+function WeatherManager:is_next_change_date(weather_cycle)
+	local hour = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. weather_cycle .. "_period",2,6)
+	local diff = math.ceil(game.get_game_time():diffSec(self.last_period_change_date))
+	--printf("is_next_change_date | current seconds difference = %s, critical difference = %s", diff, (hour*60*60))
+	return diff > (hour*60*60)
+end
 
-	hour = math.random(math.ceil(len*2/3),len) + self.last_period_change_hour + 1
-	if (hour > 23) then
-		hour = hour - 24
-	end
-	--printf(">>> Tronex: get_next_period_change_hour | " .. weather_cycle .. " - hours: " .. hour)
+-- From Anomaly 1.5.1.2 
+function WeatherManager:reset_change_date(cycle_change, _s)
+	--printf("reset_change_date = %s",tostring(cycle_change))
+	local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
+	local Y, M, D, h, m, s, ms = self.last_period_change_date:get(Y, M, D, h, m, s, ms)
 	
-	return hour
+	if (cycle_change) then
+		self.last_period_change_date = game.get_game_time()
+	else
+		self.last_period_change_date:set(Y, M, D, h, m, s + _s, ms)
+	end
+end
+
+function WeatherManager:get_next_period_change_hour(weather_cycle)
+	local hour = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. weather_cycle .. "_period",2,6)
+	local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
+	local Y, M, D, h, m, s, ms = self.last_period_change_date:get(Y, M, D, h, m, s, ms)
+	return h + hour + 1
 end
 
 function WeatherManager:round(n, precision)
@@ -477,7 +458,6 @@ function WeatherManager:forced_weather_change()
 	self.forced_weather_change_on_time_change = true
 	self:update()
 end
-
 
 function WeatherManager:get_hour_as_string(h)
 	local hour_str=STR_EMPTY
@@ -688,7 +668,8 @@ end
 --##################################################################################################
 
 function WeatherManager:distant_storm()
-	local is_distant_storm_time = self.curr_weather == "cloudy" and self.next_weather == "storm" and self.last_period_change_hour == level.get_time_hours()
+	local latest_period_change_hour = self:get_next_period_change_hour(self.cycle) - 1
+	local is_distant_storm_time = self.curr_weather == "cloudy" and self.next_weather == "storm" and level.get_time_hours() == latest_period_change_hour
 	
 	if self.distant_storm_on == nil and is_distant_storm_time then
 		local rnd = (math.random(1,100)/100)
@@ -811,8 +792,7 @@ function WeatherManager:load_state(m_data)
 	self.period = m_data.weather_manager.period
 	self.cycle = m_data.weather_manager.cycle or get_random_weather() -- new
 	self.weather_storage = m_data.weather_manager.weather_storage or {} -- new
-	self.last_period_change_hour = m_data.weather_manager.last_period_change_hour
-	self.next_period_change_hour = m_data.weather_manager.next_period_change_hour
+	self.last_period_change_date = m_data.weather_manager.last_period_change_date or game.get_game_time()
 	self.prev_weather_section_name = m_data.weather_manager.prev_weather_section_name or level.get_weather()
 	self.curr_weather_section_name = m_data.weather_manager.curr_weather_section_name or level.get_weather()
 	--self.state = m_data.weather_manager.state or self.state or {}
@@ -828,8 +808,6 @@ function WeatherManager:load_state(m_data)
 	end
 	--printf(">>> Tronex: load_state(m_data) | self.cycle = " .. self.cycle)
 	--printf(">>> Tronex: load_state(m_data) | self.weather_storage size = " .. #self.weather_storage)
-	--printf(">>> Tronex: load_state(m_data) | self.last_period_change_hour = " .. self.last_period_change_hour)
-	--printf(">>> Tronex: load_state(m_data) | self.next_period_change_hour = " .. self.next_period_change_hour)
 	--printf(">>> Tronex: load_state(m_data) | bLevelUnderground = " .. tostring(bLevelUnderground))
 end 
 
@@ -839,8 +817,7 @@ function WeatherManager:save_state(m_data)
 	m_data.weather_manager.period = self.period
 	m_data.weather_manager.cycle = self.cycle -- new
 	m_data.weather_manager.weather_storage = self.weather_storage -- new
-	m_data.weather_manager.last_period_change_hour = self.last_period_change_hour
-	m_data.weather_manager.next_period_change_hour = self.next_period_change_hour
+	m_data.weather_manager.last_period_change_date = self.last_period_change_date
 	m_data.weather_manager.prev_weather_section_name = self.prev_weather_section_name
 	m_data.weather_manager.curr_weather_section_name = self.curr_weather_section_name
 	--m_data.weather_manager.state = self.state
@@ -854,8 +831,6 @@ function WeatherManager:save_state(m_data)
 	end
 	--printf(">>> Tronex: save_state(m_data) | self.cycle = " .. self.cycle)
 	--printf(">>> Tronex: save_state(m_data) | self.weather_storage size = " .. #self.weather_storage)
-	--printf(">>> Tronex: save_state(m_data) | self.last_period_change_hour = " .. self.last_period_change_hour)
-	--printf(">>> Tronex: save_state(m_data) | self.next_period_change_hour = " .. self.next_period_change_hour)
 	--printf(">>> Tronex: save_state(m_data) | bLevelUnderground = " .. tostring(bLevelUnderground))
 end 
 
@@ -870,8 +845,6 @@ function WeatherManager:load(F)
 	if self.levelWeather == "atmosfear_pre_blowout" then
 		self.pre_blowout_period = true
 	end
-	self.last_period_change_hour = F:r_u32();
-	self.next_period_change_hour = F:r_u32();
 	local state_string = F:r_stringZ();
 	-- printf("str = "..state_string)
 	if state_string == STR_EMPTY then
@@ -893,8 +866,6 @@ function WeatherManager:save(F)
 	F:w_stringZ(self.cycle) -- new
 	F:w_stringZ(self.levelWeather or "atmosfear_transition")
 	F:w_stringZ(self.period)
-	F:w_u32(self.last_period_change_hour);
-	F:w_u32(self.next_period_change_hour);
 	F:w_stringZ(self:get_state_as_string())
 	F:w_u32(self.update_time)
 	F:w_stringZ(tostring(self.weather_fx))
