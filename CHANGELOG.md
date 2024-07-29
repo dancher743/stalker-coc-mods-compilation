@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Improvements
 * Balanced distance and power of psysucker's aura
+* Removed gunsmith and outfit toolkits from trade
 
 ### Fixes
 * Improved code of weather restoring after save load
