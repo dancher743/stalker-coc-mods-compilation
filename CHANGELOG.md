@@ -8,8 +8,9 @@ All notable changes to this project will be documented in this file.
 * Balanced distance and power of psysucker's aura
 
 ### Fixes
-* Included hour of weather next period into update code to change next weather period correctly
 * Improved code of weather restoring after save load
+* Removed usage of force flag from `WeatherManager:change_period` function
+* Added fixes to weather changing code
 
 ## [1.4.3] - 2024-07-21
 
