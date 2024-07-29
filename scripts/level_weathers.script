@@ -421,6 +421,7 @@ function WeatherManager:get_next_weather_cycle(curr_weather)
 	return pick
 end
 
+-- From Anomaly 1.5.1.2
 function WeatherManager:is_next_change_date(weather_cycle)
 	local hour = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. weather_cycle .. "_period",2,6)
 	local diff = math.ceil(game.get_game_time():diffSec(self.last_period_change_date))
@@ -428,13 +429,7 @@ function WeatherManager:is_next_change_date(weather_cycle)
 	return diff > (hour*60*60)
 end
 
-function WeatherManager:get_next_period_change_hour(weather_cycle)
-	local hour = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. weather_cycle .. "_period",2,6)
-	local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
-	local Y, M, D, h, m, s, ms = self.last_period_change_date:get(Y, M, D, h, m, s, ms)
-	return h + hour + 1
-end
-
+-- From Anomaly 1.5.1.2 
 function WeatherManager:reset_change_date(cycle_change, _s)
 	--printf("reset_change_date = %s",tostring(cycle_change))
 	local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
@@ -447,6 +442,13 @@ function WeatherManager:reset_change_date(cycle_change, _s)
 	end
 end
 
+function WeatherManager:get_next_period_change_hour(weather_cycle)
+	local hour = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. weather_cycle .. "_period",2,6)
+	local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
+	local Y, M, D, h, m, s, ms = self.last_period_change_date:get(Y, M, D, h, m, s, ms)
+	return h + hour + 1
+end
+
 function WeatherManager:round(n, precision)
 	local m = 10^(precision or 0)
 	return math.floor(m*n + 0.5)/m
@@ -456,7 +458,6 @@ function WeatherManager:forced_weather_change()
 	self.forced_weather_change_on_time_change = true
 	self:update()
 end
-
 
 function WeatherManager:get_hour_as_string(h)
 	local hour_str=STR_EMPTY
