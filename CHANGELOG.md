@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 * Added gunsmith and outfit toolkits into `bandit_loadout`
 * Changed `repair_max_condition` of gunsmith and outfit toolkits
 * Corrected text of toolkits tips
+* Increased `repair_part_bonus` for outfit toolkit
 
 ### Fixes
 * Improved code of weather restoring after save load
