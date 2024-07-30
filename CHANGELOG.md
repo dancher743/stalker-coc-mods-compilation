@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 * Increased drop chance of gunsmith and outfit toolkits from corpses
 * Added gunsmith and outfit toolkits into `bandit_loadout`
 * Changed `repair_max_condition` of gunsmith and outfit toolkits
+* Corrected text of toolkits tips
 
 ### Fixes
 * Improved code of weather restoring after save load
