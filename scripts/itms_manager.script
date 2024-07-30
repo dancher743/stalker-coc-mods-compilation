@@ -162,9 +162,10 @@ function on_item_drag_dropped(itm1,itm2,from_slot,to_slot)
 	end
 	
 	local c_add = ini:r_float_ex(section,"repair_add_condition") or 0.15
-	if (has_alife_info("achieved_mechanized_warfare")) then 
+	-- Dancher: disabled
+	--[[if (has_alife_info("achieved_mechanized_warfare")) then 
 		c_add = c_add + 0.10
-	end
+	end]]
 	
 	local function on_yes(owner,p)
 		
