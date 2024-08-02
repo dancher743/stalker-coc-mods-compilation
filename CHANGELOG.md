@@ -25,6 +25,9 @@ All notable changes to this project will be documented in this file.
 * Fixed overreparing of toolkits
 * Added discovery as a state into disguise system to fix relation bug
 
+### Optimization
+* Automated sleep code of disguise system
+
 ## [1.4.3] - 2024-07-21
 
 ### Features

@@ -98,9 +98,12 @@ function on_game_load()
 	--printf("DBG default " .. (default_faction or "?"))
 end
 
+local function can_sleep()
+	return not patch_in_slot and not has_actor_disguised() and is_empty(suspicion)
+end
+
 local function run_updates()
 	local is_first_update = true
-	local is_sleeping = true
 	
 	local main_update_ev_id = "disguise"
 	local main_update_act_id = "main_update"
@@ -108,11 +111,10 @@ local function run_updates()
 	local function main_update()
 		patch_in_slot = get_patch_in_slot()
 		
-		if (is_sleeping and not patch_in_slot and not has_actor_disguised()) then
+		if (can_sleep()) then
+			-- printf("Disguise system is sleeping!")
 			return
 		end
-		
-		is_sleeping = false
 		
 		if (is_first_update) then
 			prev_patch_in_slot = patch_in_slot
