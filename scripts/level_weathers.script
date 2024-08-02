@@ -389,12 +389,24 @@ function WeatherManager:select_weather(now)
 end
 
 function WeatherManager:get_next_weather_cycle(curr_weather)
+	local pick_chance = math.random(100)
+	
+	-- more foggy weather if Survival mode is enabled
+	if (IsSurvivalMode() and pick_chance <= 25) then
+		local foggy_weather = "foggy"
+		local val = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. foggy_weather .. "_occur",2,4)
+		val = tonumber(val)
+		if (val ~= 1) then
+			--printf(">>> Dancher: get_next_weather_cycle | Survival mode weather = " .. foggy_weather)
+			return foggy_weather
+		end
+	end
+	
 	--printf(">>> Tronex: get_next_weather_cycle | curr_weather = " .. curr_weather)
 	local curr_weather_states = get_global_weather_graph(curr_weather)
 	local avail_weather = {}
 	
 	-- prepare a table of allowed weather cycles to pick from
-	local pick_chance = math.random(100)
 	for i=1,#curr_weather_states do
 		local val = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. curr_weather_states[i] .. "_occur",2,4)
 		val = tonumber(val)

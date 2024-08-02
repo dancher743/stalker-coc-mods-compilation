@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [1.4.4] - Unreleased
 
+### Features
+* More foggy weather during Survival mode
+
 ### Improvements
 * Balanced distance and power of psysucker's aura
 * Removed gunsmith and outfit toolkits from trade
