@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 * Changed `repair_max_condition` of gunsmith and outfit toolkits
 * Corrected text of toolkits tips
 * Increased `repair_part_bonus` for outfit toolkit
+* Corrected text of `yan_stalker_sakharov_next_surge_or_psi_storm_0` string
 
 ### Fixes
 * Improved code of weather restoring after save load
