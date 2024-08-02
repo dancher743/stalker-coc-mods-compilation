@@ -12,6 +12,9 @@ local main_update_rate = 1
 --time you need to be hidden (not seen by any npc) before changing outfit to make the disguise effective, 100 means roughly 10 seconds
 local time_to_forget = 100
 
+--time you need to wait before discovery, 100 means roughly 10 seconds, 1200 = 2 minutes in realtime
+local time_to_forget_discovery = 1200
+
 --minimum condition for an outfit to work as disguise
 --set to 0 to not consider outfit condition, if you want only mint condition outfits to work set to 0.99 and not 1 because condition can never be exactly 1
 local min_condition_o = 0.25
@@ -33,6 +36,7 @@ local last_seen = {}
 local suspicion = {}
 local callout = false
 local warned = false
+local last_discovery_time = nil
 
 local patch_slot_number = 14
 
@@ -62,9 +66,16 @@ local function get_patch_faction(patch_section)
 	return patch_factions[patch_section]
 end
 
+local function npc_on_death_callback(victim,who)
+	if (IsActor(who) and has_actor_disguised()) then
+		discover()
+	end
+end
+
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
 	RegisterScriptCallback("actor_on_before_death",actor_on_before_death)
+	RegisterScriptCallback("npc_on_death_callback",npc_on_death_callback)
 	RegisterScriptCallback("on_game_load",on_game_load)
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
@@ -77,6 +88,7 @@ function on_game_load()
 			ds_default_faction = default_faction or utils.get_actor_community(),
 			ds_last_seen = last_seen,
 			ds_suspicion = suspicion,
+			ds_last_discovery_time = last_discovery_time,
 			ds_callout = callout,
 			ds_warned = warned,
 			ds_community = disguise_community
@@ -174,6 +186,8 @@ function update_actor_disguise_by_patch()
 		if actor_community ~= patch_community then
 			if axr_companions.has_companion() then
 				disguise_news.send_disguise_tip_once(disguise_tip_type.has_companion)
+			elseif disguise_helper.has_actor_discovered(last_discovery_time, time_to_forget_discovery) then
+				disguise_news.send_disguise_tip_once(disguise_tip_type.discovered)
 			elseif disguise_helper.has_actor_in_sight(last_seen, time_to_forget) then
 				disguise_news.send_disguise_tip_once(disguise_tip_type.not_allowed)
 			else
@@ -231,13 +245,8 @@ function update_npc()
 						suspicion[id] = suspicion[id] + suspicion_increase(distance)
 						
 						if (suspicion[id] > suspicion_limit) then
-							if not callout then
-								disguise_news.send_tip(game.translate_string("st_disguise_exposure_discovered"))
-								--printf("discovered at %s",os.date("%X"))
-							end
-							change_actor_community(default_faction)
+							discover()
 							current = default_faction
-							disguise_news.reset_once_disguise_tips()
 						elseif not warned and suspicion[id] > warning_limit then
 							disguise_news.send_suspicious_tip(npc) 
 							warned = true
@@ -318,6 +327,16 @@ function suspicion_increase(distance)
 	return increase
 end
 
+function discover()
+	if not callout then
+		disguise_news.send_tip(game.translate_string("st_disguise_exposure_discovered"))
+		--printf("discovered at %s",os.date("%X"))
+	end
+	change_actor_community(default_faction)
+	last_discovery_time = game.get_game_time()
+	disguise_news.reset_once_disguise_tips()
+end
+
 function save_state(data)
 	--printf("DBG save_state")
 	data.disguise_system = {}
@@ -326,6 +345,7 @@ function save_state(data)
 	data.disguise_system.ds_warned = warned
 	data.disguise_system.ds_last_seen = last_seen
 	data.disguise_system.ds_suspicion = suspicion
+	data.disguise_system.ds_last_discovery_time = last_discovery_time
 	data.disguise_system.ds_community = disguise_community
 
 	--printf("DBG default " .. (default_faction or "?"))
@@ -337,6 +357,7 @@ function load_state(data)
 	default_faction = data.disguise_system.ds_default_faction
 	callout = data.disguise_system.ds_callout
 	warned = data.disguise_system.ds_warned or callout
+	last_discovery_time = data.disguise_system.ds_last_discovery_time
 	disguise_community = data.disguise_system.ds_community 
 
 	if not default_faction or default_faction == STR_EMPTY then

@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 * Added fixes to weather changing code
 * Fixed `medkit` cost in `bandit_loadout`
 * Fixed overreparing of toolkits
+* Added discovery as a state into disguise system to fix relation bug
 
 ## [1.4.3] - 2024-07-21
 

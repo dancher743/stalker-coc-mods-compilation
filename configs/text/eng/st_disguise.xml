@@ -13,6 +13,10 @@
 	<string id="st_disguise_actor_in_same_faction">
 		<text>Can't disguise; you're already a member of this faction.</text>
     </string>
+	
+	<string id="st_disguise_actor_discovered">
+        <text>Can't disguise; you have been discovered and need to wait for some time.</text>
+    </string>
 
     <string id="st_disguise_faction_changed">
         <text>You have disguised themselves as a %s.</text>

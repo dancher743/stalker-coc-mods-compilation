@@ -56,6 +56,19 @@ function anybody_remember(last_seen, time_to_forget)
 	return false
 end
 
+function has_actor_discovered(last_discovery_time, time_to_forget_discovery)
+	local has_discovered = false
+	
+	if (last_discovery_time) then
+		local time_passed = game.get_game_time():diffSec(last_discovery_time)
+		if(time_passed < time_to_forget_discovery) then
+			has_discovered = true
+		end
+	end
+	
+	return has_discovered
+end
+
 function is_outfit_fits_community(npc_community, outfit_section)
 	local outfit_community = STR_EMPTY
 	
