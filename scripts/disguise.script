@@ -99,7 +99,7 @@ function on_game_load()
 end
 
 local function can_sleep()
-	return not patch_in_slot and not has_actor_disguised() and is_empty(suspicion)
+	return not patch_in_slot and not has_actor_disguised() and is_empty(suspicion) and not has_actor_discovered() and not has_actor_in_sight()
 end
 
 local function run_updates()
@@ -173,7 +173,7 @@ function update_actor_disguise_by_patch()
 	end
 	
 	if not patch_in_slot and has_actor_disguised then
-		if disguise_helper.has_actor_in_sight(last_seen, time_to_forget) then
+		if has_actor_in_sight() then
 			disguise_news.send_disguise_tip_once(disguise_tip_type.not_allowed)
 		else
 			change_actor_community(default_faction)
@@ -188,9 +188,9 @@ function update_actor_disguise_by_patch()
 		if actor_community ~= patch_community then
 			if axr_companions.has_companion() then
 				disguise_news.send_disguise_tip_once(disguise_tip_type.has_companion)
-			elseif disguise_helper.has_actor_discovered(last_discovery_time, time_to_forget_discovery) then
+			elseif has_actor_discovered() then
 				disguise_news.send_disguise_tip_once(disguise_tip_type.discovered)
-			elseif disguise_helper.has_actor_in_sight(last_seen, time_to_forget) then
+			elseif has_actor_in_sight() then
 				disguise_news.send_disguise_tip_once(disguise_tip_type.not_allowed)
 			else
 				change_actor_community(patch_community)
@@ -210,6 +210,14 @@ end
 
 function has_actor_disguised()
 	return disguise_community ~= nil
+end
+
+function has_actor_in_sight()
+	return disguise_helper.has_actor_in_sight(last_seen, time_to_forget)
+end
+
+function has_actor_discovered()
+	return disguise_helper.has_actor_discovered(last_discovery_time, time_to_forget_discovery)
 end
 
 function change_actor_community(community)
