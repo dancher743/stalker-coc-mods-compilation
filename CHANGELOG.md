@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file.
 * Fixed `medkit` cost in `bandit_loadout`
 * Fixed overreparing of toolkits
 * Added discovery as a state into disguise system to fix relation bug
+* Fixed rate of `main_update()` of disguise system
 
 ### Optimization
 * Automated sleep code of disguise system

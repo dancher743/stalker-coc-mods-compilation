@@ -109,6 +109,8 @@ local function run_updates()
 	local main_update_act_id = "main_update"
 	
 	local function main_update()
+		ResetTimeEvent(main_update_ev_id, main_update_act_id, main_update_rate)
+		
 		patch_in_slot = get_patch_in_slot()
 		
 		if (can_sleep()) then
@@ -128,8 +130,6 @@ local function run_updates()
 		
 		is_first_update = false
 		prev_patch_in_slot = patch_in_slot
-		
-		ResetTimeEvent(main_update_ev_id, main_update_act_id, main_update_rate)
 	end
 	CreateTimeEvent(main_update_ev_id, main_update_act_id, main_update_rate, main_update)
 end
