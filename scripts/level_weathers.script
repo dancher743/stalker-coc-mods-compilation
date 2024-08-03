@@ -79,6 +79,7 @@ function WeatherManager:__init()
 	self.forced_weather_change_on_time_change = false
 	self.prev_weather_section_name = level.get_weather()
 	self.curr_weather_section_name = level.get_weather()
+	self.transition_between_cycles = false
 	
 	self.wfx_time = 0
 	self.weather_fx = nil
@@ -216,6 +217,8 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
 		self.distant_storm_on = false
 	end
 	
+	-- printf(">>> Dancher: reset weather | saved weathers - prev: " .. self.prev_weather_section_name .. ", curr: " .. self.curr_weather_section_name)
+	
 	local prev_weather = self.prev_weather_section_name
 	-- if previous weather is WFX then apply only current weather
 	if (string.match(prev_weather, "fx_")) then
@@ -223,13 +226,12 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
 	else
 		prev_weather = self:try_get_no_panorama_weather(prev_weather)
 		level.set_weather(prev_weather,true)
-		-- use select_weather function instead of the following code -
-		-- local curr_weather = self:try_get_no_panorama_weather(self.curr_weather_section_name)
-		-- level.set_weather(curr_weather,false)
-		self:select_weather(false)
+		if (self.transition_between_cycles) then
+			self:select_weather(true)
+		else
+			self:select_weather(false)
+		end
 	end
-	
-	-- printf(">>> Dancher: reset weather | weather has loaded! Prev: " .. prev_weather .. ", curr: " .. self.curr_weather_section_name)
 end
 
 function WeatherManager:update()
@@ -252,6 +254,7 @@ function WeatherManager:update()
 		if (self.next_hour > 23) then
 			self.next_hour = self.next_hour - 24
 		end
+		self.transition_between_cycles = false
 		if (self:change_period()) then
 			self:select_weather(false)
 		end
@@ -292,11 +295,15 @@ function WeatherManager:change_period()
 
 	-- if current hour is next period's last hour or more than it, switch period type, set next period's hour
 	if (self:is_next_change_date(self.cycle)) then
+		local prev_cycle = self.cycle
 		self.cycle = self:get_next_weather_cycle(self.cycle)
 		self:reset_change_date(true)
+		
 		-- transitions between states is disabled, 
 		-- because we are using global_weather_graphs.ltx instead of dynamic_weather_graphs.ltx
 		self.transition_period = false
+		
+		self.transition_between_cycles = self.cycle ~= prev_cycle
 		can_change = true
 	end
 	
@@ -817,6 +824,7 @@ function WeatherManager:load_state(m_data)
 	self.last_period_change_date = m_data.weather_manager.last_period_change_date or game.get_game_time()
 	self.prev_weather_section_name = m_data.weather_manager.prev_weather_section_name or level.get_weather()
 	self.curr_weather_section_name = m_data.weather_manager.curr_weather_section_name or level.get_weather()
+	self.transition_between_cycles = m_data.weather_manager.transition_between_cycles or self.transition_between_cycles
 	--self.state = m_data.weather_manager.state or self.state or {}
 	if (not bLevelUnderground) then 
 		self.update_time = m_data.weather_manager.update_time
@@ -842,6 +850,7 @@ function WeatherManager:save_state(m_data)
 	m_data.weather_manager.last_period_change_date = self.last_period_change_date
 	m_data.weather_manager.prev_weather_section_name = self.prev_weather_section_name
 	m_data.weather_manager.curr_weather_section_name = self.curr_weather_section_name
+	m_data.weather_manager.transition_between_cycles = self.transition_between_cycles
 	--m_data.weather_manager.state = self.state
 	
 	if (not bLevelUnderground) then 
