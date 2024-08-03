@@ -462,7 +462,13 @@ function WeatherManager:get_next_period_change_hour(weather_cycle)
 	local hour = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. weather_cycle .. "_period",2,6)
 	local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
 	local Y, M, D, h, m, s, ms = self.last_period_change_date:get(Y, M, D, h, m, s, ms)
-	return h + hour + 1
+	
+	hour = hour + h
+	if (hour > 23) then
+		hour = hour - 24
+	end
+	
+	return hour
 end
 
 function WeatherManager:round(n, precision)
