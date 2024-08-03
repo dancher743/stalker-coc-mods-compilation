@@ -67,7 +67,7 @@ local function get_patch_faction(patch_section)
 end
 
 local function npc_on_death_callback(victim,who)
-	if (IsActor(who) and has_actor_disguised()) then
+	if (IsActor(who) and has_actor_disguised() and utils.is_actor_community_as(victim)) then
 		discover()
 	end
 end
