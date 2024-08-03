@@ -18,9 +18,7 @@ All notable changes to this project will be documented in this file.
 * Corrected text of `yan_stalker_sakharov_next_surge_or_psi_storm_0` string
 
 ### Fixes
-* Improved code of weather restoring after save load
-* Removed usage of force flag from `WeatherManager:change_period` function
-* Added fixes to weather changing code
+* Added a big bunch of fixes into weather changing code
 * Fixed `medkit` cost in `bandit_loadout`
 * Fixed overreparing of toolkits
 * Added discovery as a state into disguise system to fix relation bug
