@@ -388,12 +388,8 @@ function WeatherManager:select_weather(now)
 		self.weather_fx = nil 
 		self.wfx_time = 0
 	else
+		self.prev_weather_section_name = self.curr_weather_section_name
 		self.curr_weather_section_name = weather_section_name
-		if (now) then
-			self.prev_weather_section_name = self.curr_weather_section_name
-		else
-			self.prev_weather_section_name = level.get_weather()
-		end
 		level.set_weather(weather_section_name,now)
 		-- printf(">>> Dancher: select_weather | change weather from " .. self.prev_weather_section_name .. " to " .. self.curr_weather_section_name .. " | now is " .. tostring(now))
 	end
