@@ -18,7 +18,7 @@ All notable changes to this project will be documented in this file.
 * Corrected text of `yan_stalker_sakharov_next_surge_or_psi_storm_0` string
 * Returned old code for distant storms
 * Configured distant storms probability
-* Changed default value of weather periods to 6
+* Changed default value of weather periods to 6 and occurrency to 4
 * Decreased  `play_prob` of `rnd_flies` ambient
 
 ### Fixes

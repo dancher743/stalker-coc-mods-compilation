@@ -42,7 +42,7 @@ function atmosfear_init()
 		--printf(">>> Tronex: atmosfear_init - current_parameters don't exist")
 		for	i = 1, #weather_tbl do
 			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_period", 6)
-			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur", math.random(2,4))
+			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur", 4)
 		end
 
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_enable_blowout",1)
