@@ -154,7 +154,7 @@ function WeatherManager:__init()
 						}
 	self.thunders = {}
 	self.thunder_index = 1
-	self.distant_storm_prob = 0.5
+	self.distant_storm_prob = 0.25
 	
 	atmosfear_options.config = atmosfear_options.config or ini_file_ex("atmosfear_options.ltx",true)
 	atmosfear_init()
