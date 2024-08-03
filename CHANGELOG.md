@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 * Corrected text of toolkits tips
 * Increased `repair_part_bonus` for outfit toolkit
 * Corrected text of `yan_stalker_sakharov_next_surge_or_psi_storm_0` string
+* Returned old code for distant storms
 
 ### Fixes
 * Added a big bunch of fixes into weather changing code
