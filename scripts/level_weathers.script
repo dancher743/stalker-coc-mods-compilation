@@ -388,7 +388,7 @@ function WeatherManager:select_weather(now)
 			self.prev_weather_section_name = level.get_weather()
 		end
 		level.set_weather(weather_section_name,now)
-		-- printf(">>> Dancher: select_weather | change weather from " .. self.prev_weather_section_name .. " to " .. self.curr_weather_section_name)
+		-- printf(">>> Dancher: select_weather | change weather from " .. self.prev_weather_section_name .. " to " .. self.curr_weather_section_name .. " | now is " .. tostring(now))
 	end
 end
 
