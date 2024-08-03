@@ -249,12 +249,12 @@ function WeatherManager:update()
 	-- update every 1 hour, apply weather change if necessary
 	if (is_force or self.last_hour ~= level.get_time_hours()) then
 		--printf(">>> Tronex: update")
+		self.transition_between_cycles = false
 		self.last_hour = level.get_time_hours()
 		self.next_hour = self.last_hour + 1
 		if (self.next_hour > 23) then
 			self.next_hour = self.next_hour - 24
 		end
-		self.transition_between_cycles = false
 		if (self:change_period()) then
 			self:select_weather(false)
 		end
