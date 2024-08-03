@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 * Changed default value of weather periods to 6 and occurrency to 4
 * Decreased  `play_prob` of `rnd_flies` ambient
 * Replaced mine on sound with SoC variant
+* Separated squads of Survival mode from EOC mode
 
 ### Fixes
 * Added a big bunch of fixes into weather changing code
