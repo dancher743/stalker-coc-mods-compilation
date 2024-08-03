@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 * Corrected text of `yan_stalker_sakharov_next_surge_or_psi_storm_0` string
 * Returned old code for distant storms
 * Configured distant storms probability
+* Changed default value of weather periods to 6
 
 ### Fixes
 * Added a big bunch of fixes into weather changing code

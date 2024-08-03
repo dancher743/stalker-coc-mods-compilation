@@ -41,7 +41,7 @@ function atmosfear_init()
 	if (not atmosfear_options.config:section_exist("atmosfear_current_parameters")) then
 		--printf(">>> Tronex: atmosfear_init - current_parameters don't exist")
 		for	i = 1, #weather_tbl do
-			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_period", math.random(3,6))
+			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_period", 6)
 			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur", math.random(2,4))
 		end
 
