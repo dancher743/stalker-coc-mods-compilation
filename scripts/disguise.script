@@ -165,11 +165,16 @@ end
 
 function update_actor_disguise_by_patch()
 	local has_actor_disguised = has_actor_disguised()
+	local has_actor_discovered = has_actor_discovered()
 	local disguise_tip_type = disguise_news.disguise_tip_type
 	local previous_community = disguise_community
 	
 	if disguise_helper.has_patch_changed(patch_in_slot, prev_patch_in_slot) then
 		disguise_news.reset_once_disguise_tips()
+	end
+	
+	if not has_actor_discovered then
+		last_discovery_time = nil
 	end
 	
 	if not patch_in_slot and has_actor_disguised then
@@ -188,7 +193,7 @@ function update_actor_disguise_by_patch()
 		if actor_community ~= patch_community then
 			if axr_companions.has_companion() then
 				disguise_news.send_disguise_tip_once(disguise_tip_type.has_companion)
-			elseif has_actor_discovered() then
+			elseif has_actor_discovered then
 				disguise_news.send_disguise_tip_once(disguise_tip_type.discovered)
 			elseif has_actor_in_sight() then
 				disguise_news.send_disguise_tip_once(disguise_tip_type.not_allowed)
