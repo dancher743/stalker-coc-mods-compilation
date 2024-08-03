@@ -79,7 +79,7 @@ function WeatherManager:__init()
 	self.forced_weather_change_on_time_change = false
 	self.prev_weather_section_name = level.get_weather()
 	self.curr_weather_section_name = level.get_weather()
-	self.transition_between_cycles = false
+	self.transition_between_cycles = true -- force change cycle from a game start
 	
 	self.wfx_time = 0
 	self.weather_fx = nil
