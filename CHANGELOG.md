@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 * Returned old code for distant storms
 * Configured distant storms probability
 * Changed default value of weather periods to 6
+* Decreased  `play_prob` of `rnd_flies` ambient
 
 ### Fixes
 * Added a big bunch of fixes into weather changing code
