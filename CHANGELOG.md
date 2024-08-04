@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Features
 * More foggy weather during Survival mode
-* Reworked next surge/psi_storm dialog
+* Reworked next surge/psi storm dialog
 
 ### Improvements
 * Balanced distance and power of psysucker's aura
