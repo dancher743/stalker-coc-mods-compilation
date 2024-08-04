@@ -148,12 +148,14 @@ function get_next_surge_or_psi_storm_phrase_1()
 			
 			if (next_surge_hours ~= nil) then
 				next_surge_string = game.translate_string("yan_stalker_sakharov_next_surge_or_psi_storm_1_0_1")
-				next_surge_string = string.format(next_surge_string, next_surge_hours)
+				local next_surge_hours_value = next_surge_hours == 0 and strtransl("yan_stalker_sakharov_next_surge_or_psi_storm_1_0_3") or next_surge_hours
+				next_surge_string = string.format(next_surge_string, next_surge_hours_value)
 			end
 			
 			if (next_psi_storm_hours ~= nil) then
 				next_psi_storm_string = game.translate_string("yan_stalker_sakharov_next_surge_or_psi_storm_1_0_2")
-				next_psi_storm_string = string.format(next_psi_storm_string, next_psi_storm_hours)
+				local next_psi_storm_hours_value = next_psi_storm_hours == 0 and strtransl("yan_stalker_sakharov_next_surge_or_psi_storm_1_0_3") or next_psi_storm_hours
+				next_psi_storm_string = string.format(next_psi_storm_string, next_psi_storm_hours_value)
 			end
 			
 			local separator = (next_surge_string ~= STR_EMPTY and next_psi_storm_string ~= STR_EMPTY) and ", " or STR_EMPTY
