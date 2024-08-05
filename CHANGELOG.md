@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Features
 * More foggy weather during Survival mode
 * Reworked next surge/psi storm dialog
+* HUD Timer for Guide job
 
 ### Improvements
 * Balanced distance and power of psysucker's aura
