@@ -1,0 +1,55 @@
+--
+-- HUD code for Guider job
+-- Author: Dancher
+--
+
+local hud_timer
+local last_minute
+
+local function actor_on_slicing_update()
+	local current_minute = level.get_time_minutes()
+	
+	if (last_minute and last_minute == current_minute) then
+		return
+	end
+	last_minute = current_minute
+	
+	local left_hours, left_minutes = jg_guider.get_time_left()
+	hud_timer:SetValue(left_hours, left_minutes, 0)
+end
+
+local function on_game_load()
+	try_start()
+end
+
+function on_game_start()
+	RegisterScriptCallback("on_game_load",on_game_load)
+end
+
+function try_start()
+	if (hud_timer or not jg_guider.has_guiding_started() or not axr_main_options.get_check_option("show_guide_job_hud_timer")) then
+		return
+	end
+	
+	hud_timer = ui_hud_timer.create()
+	RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+	
+	local function tickback()
+		hud_timer:Show(main_hud_shown())
+	end
+	StartTimer("jg_hud_show_timer", 1000, tickback)
+end
+
+function try_stop()
+	if (not hud_timer) then
+		return
+	end
+	
+	StopTimer("jg_hud_show_timer")
+	
+	UnregisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+	last_minute = nil
+	
+	hud_timer:Clear()
+	hud_timer = nil
+end
