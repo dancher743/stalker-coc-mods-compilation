@@ -136,6 +136,8 @@ function activate()
 	jg_timers.g_start_timer('guid_fail',0,curr_guid['timer'],0,'jg_guider','fail_time')
 	jg_timers.stop_g_timer('guid_msg')
 	
+	jg_hud_timer.try_start()
+	
 	if (axr_main_options.get_check_option("show_guide_job_on_map")) then
 		local pos = vector():set(curr_guid.pos[1], curr_guid.pos[2], curr_guid.pos[3])
 		local lvid = level.vertex_id(pos)
@@ -204,6 +206,7 @@ function fail()
 	xr_statistic.inc_actor_reputation(-500)
 	local snpc = alife():object(get_comm_id(curr_guid['squad_id']))
 	alun_utils.execute_script_on_squad(snpc,axr_companions.remove_from_actor_squad)
+	jg_hud_timer.try_stop()
 	clear()
 end
 
@@ -273,9 +276,7 @@ function get_phrase3()
 end
 
 function get_phrase4()
-	local left_minutes_total = jg_timers.get_g_timer_left_time('guid_fail')
-	local left_hours = math.floor(left_minutes_total / 60)
-	local left_minutes = left_minutes_total - (left_hours * 60)
+	local left_hours, left_minutes = get_time_left()
 	local phrase = strformat(strtransl('st_jg_21'), left_hours, left_minutes)
 	return phrase
 end
@@ -322,4 +323,11 @@ function has_time_bonus()
 		result = minutes_left > math.floor(minutes_total * curr_guid.bonus_time_cf)
 	end
 	return result
+end
+
+function get_time_left()
+	local minutes_total = jg_timers.get_g_timer_left_time('guid_fail')
+	local hours = math.floor(minutes_total / 60)
+	local minutes = minutes_total - (hours * 60)
+	return hours, minutes
 end
