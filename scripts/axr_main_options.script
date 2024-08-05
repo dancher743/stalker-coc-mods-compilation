@@ -193,6 +193,14 @@ function opt_menu_on_init(menu)
 		menu.gameplay_options["alife_switch_dist"] = {default=150, debug_only=false, typ="list", list={100,150,200,250}, on_accept=function(handler,optMgr,ctrl)
 			SetSwitchDistance(tonumber(ctrl:GetText()))
 		end}
+		
+		menu.gameplay_options["show_guide_job_hud_timer"] = {default=true, debug_only=false, typ="check", on_accept=function(handler,optMgr,ctrl)
+				if (ctrl:GetCheck()) then
+					jg_hud_timer.try_start()
+				else
+					jg_hud_timer.try_stop()
+				end
+			end}
 		--
 	end
 	

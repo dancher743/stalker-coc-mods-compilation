@@ -27,7 +27,7 @@ function on_game_start()
 end
 
 function try_start()
-	if (hud_timer or not jg_guider.has_guiding_started()) then
+	if (hud_timer or not jg_guider.has_guiding_started() or not axr_main_options.get_check_option("show_guide_job_hud_timer")) then
 		return
 	end
 	
