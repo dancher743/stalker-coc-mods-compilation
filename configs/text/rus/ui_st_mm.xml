@@ -580,7 +580,7 @@
 		<text>Показ. эффекты ранений</text>
 	</string>
 	<string id="ui_mm_show_guide_job_on_map">
-		<text>Показ. меток проводника</text>
+		<text>Показ. метки проводника</text>
 	</string>
 	<string id="ui_mm_show_guide_job_hud_timer">
 		<text>Показ. таймер проводника</text>
