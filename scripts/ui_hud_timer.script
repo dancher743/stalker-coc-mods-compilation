@@ -12,9 +12,15 @@ function hud_timer_ui:__init() super()
 	self.owner = get_hud()
 	self:InitControls()
 	self:SetValue(0,0,0)
+	self.owner:AddDialogToRender(self)
 end
 
 function hud_timer_ui:__finalize()
+	self:Clear()
+end
+
+function hud_timer_ui:Clear()
+	self.owner:RemoveDialogToRender(self)
 end
 
 function hud_timer_ui:InitControls()
@@ -22,15 +28,18 @@ function hud_timer_ui:InitControls()
     if(device().width/device().height>(1024/768+0.01)) then
         wide = true
     end
-    self:SetAutoDelete(true)
 	
-	local timer_ui_name = "hud_timer"
-	self.owner:AddCustomStatic(timer_ui_name, true)
+	local xml = CScriptXmlInit()
+    xml:ParseFile("ui_hud_timer_2.xml")
+	
+	self.dialog = xml:InitStatic("hud_timer_2", self)
+	self.background = xml:InitStatic("hud_timer_2:background", self.dialog)
+	self.time = xml:InitTextWnd("hud_timer_2:time", self.dialog)
+	
 	self.time_format = "%s:%s:%s"
-	self.text_control = self.owner:GetCustomStatic(timer_ui_name):wnd():TextControl()
 end
 
 function hud_timer_ui:SetValue(arg1, arg2, arg3)
 	local value = strformat(self.time_format, arg1, arg2, arg3)
-	self.text_control:SetTextST(value)
+	self.time:SetText(value)
 end
