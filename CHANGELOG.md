@@ -36,6 +36,9 @@ All notable changes to this project will be documented in this file.
 ### Optimization
 * Automated sleep code of disguise system
 
+### Framework
+Added `hud_timer_ui` - UI-wrapper for HUD Timer
+
 ## [1.4.3] - 2024-07-21
 
 ### Features

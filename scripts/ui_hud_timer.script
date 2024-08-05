@@ -1,0 +1,36 @@
+--
+-- UI-wrapper for HUD Timer
+-- Added by Dancher
+--
+
+function create()
+	return hud_timer_ui()
+end
+
+class "hud_timer_ui" (CUIScriptWnd)
+function hud_timer_ui:__init() super()
+	self.owner = get_hud()
+	self:InitControls()
+	self:SetValue(0,0,0)
+end
+
+function hud_timer_ui:__finalize()
+end
+
+function hud_timer_ui:InitControls()
+	self:SetWndRect(Frect():set(0,0,1024,768))
+    if(device().width/device().height>(1024/768+0.01)) then
+        wide = true
+    end
+    self:SetAutoDelete(true)
+	
+	local timer_ui_name = "hud_timer"
+	self.owner:AddCustomStatic(timer_ui_name, true)
+	self.time_format_strting = "%s:%s:%s"
+	self.text_control = self.owner:GetCustomStatic(timer_ui_name):wnd():TextControl()
+end
+
+function hud_timer_ui:SetValue(hours, minutes, seconds)
+	local value = strformat(self.time_format_strting, hours, minutes, seconds)
+	self.text_control:SetTextST(value)
+end
