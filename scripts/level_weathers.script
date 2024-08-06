@@ -75,11 +75,11 @@ function WeatherManager:__init()
 	self.next_weather = STR_EMPTY
 	self.last_hour = 0
 	self.next_hour = 0
-	self.last_period_change_date = game.get_game_time()
+	self.next_period_change_date = game.get_game_time()
 	self.forced_weather_change_on_time_change = false
 	self.prev_weather_section_name = level.get_weather()
 	self.curr_weather_section_name = level.get_weather()
-	self.transition_between_cycles = true -- force change cycle from a game start
+	self.transition_between_cycles = false
 	
 	self.wfx_time = 0
 	self.weather_fx = nil
@@ -221,16 +221,12 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
 	
 	local prev_weather = self.prev_weather_section_name
 	-- if previous weather is WFX then apply only current weather
-	if (string.match(prev_weather, "fx_")) then
+	if (string.match(prev_weather, "fx_") or prev_weather == "dynamic_default") then
 		self:select_weather(true)
 	else
 		prev_weather = self:try_get_no_panorama_weather(prev_weather)
 		level.set_weather(prev_weather,true)
-		if (self.transition_between_cycles) then
-			self:select_weather(true)
-		else
-			self:select_weather(false)
-		end
+		self:select_weather(false)
 	end
 end
 
@@ -249,7 +245,6 @@ function WeatherManager:update()
 	-- update every 1 hour, apply weather change if necessary
 	if (is_force or self.last_hour ~= level.get_time_hours()) then
 		--printf(">>> Tronex: update")
-		self.transition_between_cycles = false
 		self.last_hour = level.get_time_hours()
 		self.next_hour = self.last_hour + 1
 		if (self.next_hour > 23) then
@@ -289,15 +284,15 @@ function WeatherManager:change_period()
 
 	if (diff_s < 7200 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_blowout",2,1) ==1) or (diff_p < 7200 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_psi_storm",2,1)==1) or level.is_wfx_playing() then
 		self.pre_blowout_period = true
-		self:reset_change_date(false, 1*60*60)
+		self:shift_next_period_change_date(1*60*60)
 		can_change = true
 	end
 
 	-- if current hour is next period's last hour or more than it, switch period type, set next period's hour
-	if (self:is_next_change_date(self.cycle)) then
+	if (self:is_next_period_change_date(self.cycle)) then
 		local prev_cycle = self.cycle
 		self.cycle = self:get_next_weather_cycle(self.cycle)
-		self:reset_change_date(true)
+		self:set_next_period_change_date(self.cycle)
 		
 		-- transitions between states is disabled, 
 		-- because we are using global_weather_graphs.ltx instead of dynamic_weather_graphs.ltx
@@ -388,8 +383,14 @@ function WeatherManager:select_weather(now)
 		self.weather_fx = nil 
 		self.wfx_time = 0
 	else
-		self.prev_weather_section_name = self.curr_weather_section_name
-		self.curr_weather_section_name = weather_section_name
+		if (self.transition_between_cycles) then
+			self.prev_weather_section_name = weather_section_name
+			self.curr_weather_section_name = weather_section_name
+			self.transition_between_cycles = false
+		else
+			self.prev_weather_section_name = self.curr_weather_section_name
+			self.curr_weather_section_name = weather_section_name
+		end
 		level.set_weather(weather_section_name,now)
 		-- printf(">>> Dancher: select_weather | change weather from " .. self.prev_weather_section_name .. " to " .. self.curr_weather_section_name .. " | now is " .. tostring(now))
 	end
@@ -441,32 +442,31 @@ function WeatherManager:get_next_weather_cycle(curr_weather)
 end
 
 -- From Anomaly 1.5.1.2
-function WeatherManager:is_next_change_date(weather_cycle)
-	local hour = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. weather_cycle .. "_period",2,6)
-	local diff = math.ceil(game.get_game_time():diffSec(self.last_period_change_date))
-	--printf("is_next_change_date | current seconds difference = %s, critical difference = %s", diff, (hour*60*60))
-	return diff > (hour*60*60)
+function WeatherManager:is_next_period_change_date(weather_cycle)
+	return game.get_game_time():diffSec(self.next_period_change_date) > 0
 end
 
 -- From Anomaly 1.5.1.2 
-function WeatherManager:reset_change_date(cycle_change, _s)
-	--printf("reset_change_date = %s",tostring(cycle_change))
+function WeatherManager:set_next_period_change_date(weather_cycle)
 	local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
-	local Y, M, D, h, m, s, ms = self.last_period_change_date:get(Y, M, D, h, m, s, ms)
+	local Y, M, D, h, m, s, ms = self.next_period_change_date:get(Y, M, D, h, m, s, ms)
+	local hour = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. weather_cycle .. "_period",2,6)
 	
-	if (cycle_change) then
-		self.last_period_change_date = game.get_game_time()
-	else
-		self.last_period_change_date:set(Y, M, D, h, m, s + _s, ms)
-	end
+	self.next_period_change_date = game.get_game_time()
+	self.next_period_change_date:set(Y, M, D, h, m, s + (hour*60*60), ms)
+end
+
+function WeatherManager:shift_next_period_change_date(delta)
+	local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
+	local Y, M, D, h, m, s, ms = self.next_period_change_date:get(Y, M, D, h, m, s, ms)
+	self.next_period_change_date:set(Y, M, D, h, m, s + delta, ms)
 end
 
 function WeatherManager:get_next_period_change_hour(weather_cycle)
-	local hour = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. weather_cycle .. "_period",2,6)
 	local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
-	local Y, M, D, h, m, s, ms = self.last_period_change_date:get(Y, M, D, h, m, s, ms)
+	local Y, M, D, h, m, s, ms = self.next_period_change_date:get(Y, M, D, h, m, s, ms)
 	
-	hour = hour + h
+	hour = h + 1
 	if (hour > 23) then
 		hour = hour - 24
 	end
@@ -814,10 +814,9 @@ function WeatherManager:load_state(m_data)
 	self.period = m_data.weather_manager.period
 	self.cycle = m_data.weather_manager.cycle or get_random_weather() -- new
 	self.weather_storage = m_data.weather_manager.weather_storage or {} -- new
-	self.last_period_change_date = m_data.weather_manager.last_period_change_date or game.get_game_time()
+	self.next_period_change_date = m_data.weather_manager.next_period_change_date or game.get_game_time()
 	self.prev_weather_section_name = m_data.weather_manager.prev_weather_section_name or level.get_weather()
 	self.curr_weather_section_name = m_data.weather_manager.curr_weather_section_name or level.get_weather()
-	self.transition_between_cycles = m_data.weather_manager.transition_between_cycles or self.transition_between_cycles
 	--self.state = m_data.weather_manager.state or self.state or {}
 	if (not bLevelUnderground) then 
 		self.update_time = m_data.weather_manager.update_time
@@ -840,10 +839,9 @@ function WeatherManager:save_state(m_data)
 	m_data.weather_manager.period = self.period
 	m_data.weather_manager.cycle = self.cycle -- new
 	m_data.weather_manager.weather_storage = self.weather_storage -- new
-	m_data.weather_manager.last_period_change_date = self.last_period_change_date
+	m_data.weather_manager.next_period_change_date = self.next_period_change_date
 	m_data.weather_manager.prev_weather_section_name = self.prev_weather_section_name
 	m_data.weather_manager.curr_weather_section_name = self.curr_weather_section_name
-	m_data.weather_manager.transition_between_cycles = self.transition_between_cycles
 	--m_data.weather_manager.state = self.state
 	
 	if (not bLevelUnderground) then 
