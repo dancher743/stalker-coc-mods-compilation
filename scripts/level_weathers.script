@@ -220,14 +220,13 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
 	-- printf(">>> Dancher: reset weather | saved weathers - prev: " .. self.prev_weather_section_name .. ", curr: " .. self.curr_weather_section_name)
 	
 	local prev_weather = self.prev_weather_section_name
-	-- if previous weather is WFX then apply only current weather
+	-- if previous weather is WFX or new game weather then apply only current weather
 	if (string.match(prev_weather, "fx_") or prev_weather == "dynamic_default") then
-		self:select_weather(true)
-	else
-		prev_weather = self:try_get_no_panorama_weather(prev_weather)
-		level.set_weather(prev_weather,true)
-		self:select_weather(false)
+		prev_weather = self.curr_weather_section_name
 	end
+	prev_weather = self:try_get_no_panorama_weather(prev_weather)
+	level.set_weather(prev_weather,true)
+	self:select_weather(false)
 end
 
 function WeatherManager:update()
