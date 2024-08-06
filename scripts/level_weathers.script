@@ -382,7 +382,7 @@ function WeatherManager:select_weather(now)
 		self.weather_fx = nil 
 		self.wfx_time = 0
 	else
-		if (self.transition_between_cycles) then
+		if (self.transition_between_cycles or now) then
 			self.prev_weather_section_name = weather_section_name
 			self.curr_weather_section_name = weather_section_name
 			self.transition_between_cycles = false
