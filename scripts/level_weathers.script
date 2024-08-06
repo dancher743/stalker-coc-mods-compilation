@@ -222,11 +222,12 @@ function WeatherManager:reset() -- Called after load (). Weather status already 
 	local prev_weather = self.prev_weather_section_name
 	-- if previous weather is WFX or new game weather then apply only current weather
 	if (string.match(prev_weather, "fx_") or prev_weather == "dynamic_default") then
-		prev_weather = self.curr_weather_section_name
+		self:select_weather(true)
+	else
+		prev_weather = self:try_get_no_panorama_weather(prev_weather)
+		level.set_weather(prev_weather,true)
+		self:select_weather(false)
 	end
-	prev_weather = self:try_get_no_panorama_weather(prev_weather)
-	level.set_weather(prev_weather,true)
-	self:select_weather(false)
 end
 
 function WeatherManager:update()
