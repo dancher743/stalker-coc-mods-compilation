@@ -238,7 +238,7 @@ function WeatherManager:get_next_period(period)
         end
     end
 	
-	local available_periods = get_period_next_states(period)
+	local available_periods = self:get_period_next_states(period)
 	local next_periods = {}
 	
 	for i=1,#available_periods do
@@ -592,9 +592,9 @@ function WeatherManager:try_get_no_panorama_weather(current_weather_section)
 	return no_panorama_weather_section or current_weather_section
 end
 
-function get_period_next_states(period)
+function WeatherManager:get_period_next_states(period)
 	local tbl = {}
-	local ini = graphs_ini
+	local ini = self.graphs_ini
 	local section = period
 	local n = ini:section_exist(section) and ini:line_count(section) or 0
 	for i=0, n-1 do
@@ -602,23 +602,6 @@ function get_period_next_states(period)
 		table.insert(tbl,next_state)
 	end
 	return tbl
-end
-
-function get_random_weather()
-	local tbl = {}
-	local ini = ini_file_ex("atmosfear_options.ltx",true)
-	if (ini:section_exist("atmosfear_current_parameters")) then
-		for i=1,#weather_tbl do
-			local a = ini:r_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur",2,4)
-			if (a > 1) then
-				tbl[#tbl+1] = weather_tbl[i]
-			end
-		end
-		if (#tbl > 0) then
-			return tbl[math.random(#tbl)]
-		end
-	end
-	return weather_tbl[math.random(#weather_tbl)]
 end
 
 function WeatherManager:load(F)
@@ -659,11 +642,32 @@ function WeatherManager:save(F)
 	set_save_marker(F, "save", true, "WeatherManager")
 end
 
+--##################################################################################################
+--##									HELPERS
+--##################################################################################################
+
 function get_weather_manager ()
 	if weather_manager == nil then
 		weather_manager = WeatherManager()
 	end
 	return weather_manager
+end
+
+function get_random_weather()
+	local tbl = {}
+	local ini = ini_file_ex("atmosfear_options.ltx",true)
+	if (ini:section_exist("atmosfear_current_parameters")) then
+		for i=1,#weather_tbl do
+			local a = ini:r_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur",2,4)
+			if (a > 1) then
+				tbl[#tbl+1] = weather_tbl[i]
+			end
+		end
+		if (#tbl > 0) then
+			return tbl[math.random(#tbl)]
+		end
+	end
+	return weather_tbl[math.random(#weather_tbl)]
 end
 
 --##################################################################################################
