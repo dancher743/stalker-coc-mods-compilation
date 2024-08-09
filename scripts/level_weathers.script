@@ -22,8 +22,8 @@ function atmosfear_init()
 	
 	if (not atmosfear_options.config:section_exist("atmosfear_current_parameters")) then
 		for level,v in pairs(valid_levels) do
-			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_"..level.."_period_good",random_choice("clear","clear_foggy","foggy","foggy_rainy","rainy","stormy"))
-			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_"..level.."_period_bad",random_choice("clear","clear_foggy","foggy","foggy_rainy","rainy","stormy"))
+			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_"..level.."_period_good",random_choice("clear","foggy","rainy","stormy"))
+			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_"..level.."_period_bad",random_choice("clear","foggy","rainy","stormy"))
 			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_"..level.."_period_good_length",random_choice(4,6,8))
 			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_"..level.."_period_bad_length",random_choice(4,6,8))
 		end
@@ -802,7 +802,7 @@ function WeatherManager:lightning()
 	local last_dist=self.far_distances[self.curr_weather][last_hour_str]
 	local next_dist=self.far_distances[self.next_weather][next_hour_str]
 	local m=level.get_time_minutes()
-	local current_far_distance=math.ceil(((next_dist - last_dist) * m / 60 + last_dist)*self.dof_factor)
+	local current_far_distance=math.ceil(350*self.dof_factor)
 
 	local distance=current_far_distance-50
 	local safe_distance=current_far_distance
