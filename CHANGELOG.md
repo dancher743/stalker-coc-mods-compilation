@@ -32,6 +32,7 @@ All notable changes to this project will be documented in this file.
 * Transferred Guide job timers on realtime manager to prevent overflow of  `game.time()`
 * Fixed hours rounding in code of next surge/psi storm dialog
 * Fixed wrong text of `ui_mm_show_guide_job_on_map` string in rus localization
+* Added missing `companion_is_hostage` flag into `xr_effects.setup_companion_task` function
 
 ### Optimization
 * Automated sleep code of disguise system
