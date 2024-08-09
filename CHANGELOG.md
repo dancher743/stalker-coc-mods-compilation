@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 * More foggy weather during Survival mode
 * Reworked next surge/psi storm dialog
 * HUD Timer for Guide job
+* Rebuilded weather script from scratch!
 
 ### Improvements
 * Balanced distance and power of psysucker's aura
@@ -18,15 +19,11 @@ All notable changes to this project will be documented in this file.
 * Corrected text of toolkits tips
 * Increased `repair_part_bonus` for outfit toolkit
 * Corrected text of `yan_stalker_sakharov_next_surge_or_psi_storm_0` string
-* Returned old code for distant storms
-* Configured distant storms probability
-* Changed default value of weather periods to 6 and occurrency to 4
 * Decreased  `play_prob` of `rnd_flies` ambient
 * Replaced mine on sound with SoC variant
 * Separated squads of Survival mode from EOC mode
 
 ### Fixes
-* Added a big bunch of fixes into weather changing code
 * Fixed `medkit` cost in `bandit_loadout`
 * Fixed overreparing of toolkits
 * Added discovery as a state into disguise system to fix relation bug
