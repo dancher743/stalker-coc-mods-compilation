@@ -33,11 +33,11 @@ function atmosfear_init()
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_blowout_fate","turntozombie")
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_blowout_warning","radio_siren")
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_blowout_task","give")
-		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_enable_fallout",1)
-		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_fallout_freq",12)
-		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_fallout_fate","poison")
-		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_fallout_warning","siren")
-		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_fallout_task","give")
+		-- atmosfear_options.config:w_value("atmosfear_current_parameters","opt_enable_fallout",1)
+		-- atmosfear_options.config:w_value("atmosfear_current_parameters","opt_fallout_freq",12)
+		-- atmosfear_options.config:w_value("atmosfear_current_parameters","opt_fallout_fate","poison")
+		-- atmosfear_options.config:w_value("atmosfear_current_parameters","opt_fallout_warning","siren")
+		-- atmosfear_options.config:w_value("atmosfear_current_parameters","opt_fallout_task","give")
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_enable_psi_storm",1)
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_psi_storm_freq",24)
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_psi_storm_fate","kill")
@@ -126,24 +126,17 @@ function WeatherManager:__init()
 								{-170,-110},	{-80,-20},		{-190,-150},	{-60,-20},
 								{-60,-30},		{-190,-150},	{-80,-20},		{50,110}
 							}
-	self.distant_sounds={	"nature\\new_thunder1_hec",
-							"nature\\new_thunder2_hec",
-							"nature\\new_thunder3_hec",
-							"nature\\storm_1",
-							"nature\\storm_2",
-							"nature\\storm_3",
-							"nature\\storm_4",
-							"nature\\storm_5",
-							"nature\\pre_storm_1",
-							"nature\\pre_storm_2",
-							"nature\\pre_storm_3",
-							"nature\\pre_storm_4",
-							"nature\\pre_storm_5",
-							"nature\\thunder-3-hec",
-							"nature\\thunder-4",
-							"nature\\thundernew1",
-							"nature\\thundernew2",
-							"nature\\thunder-3-hec"
+	self.distant_sounds={	"nature\\pre_storm_6",
+							"nature\\pre_storm_7",
+							"nature\\pre_storm_new_1",
+							"nature\\pre_storm_new_2",
+							"nature\\pre_storm_new_3",
+							"nature\\pre_storm_new_4",
+							"nature\\pre_storm_new_5",
+							"nature\\pre_storm_new_6",
+							"nature\\pre_storm_new_7",
+							"nature\\pre_storm_new_8",
+							"nature\\pre_storm_new_9"
 						}
 	self.thunders={}
 	self.thunder_index=1
@@ -574,7 +567,7 @@ function WeatherManager:get_state_as_string()
 		--local curs=self:pack_state(self.curr_weather)
 		--local nexs=self:pack_state(self.next_weather)
 		local grn=self:pack_graph_name(st.graph_name)
-		table.insert(lvlstrings,grn.."="..curs..","..nexs)
+		lvlstrings[#lvlstrings+1] = grn.."="..curs..","..nexs
 	end
 	--self.debugMessages[10]:SetText("saved string="..tostring(table.concat(lvlstrings,";")))
 	return table.concat(lvlstrings,";")
@@ -699,7 +692,7 @@ function WeatherManager:meteorites()
 		else
 			local actor_pos=db.actor:position()
 			local particle_pos= vector():set(actor_pos.x, actor_pos.y+500, actor_pos.z)
-			self.meteorites_particle:move_to(particle_pos,vector():set(0,0,0))
+			self.meteorites_particle:move_to(particle_pos,VEC_Z)
 		end
 	else
 		self:stop_meteorites()
@@ -849,8 +842,7 @@ function WeatherManager:save_state(m_data)
 	m_data.weather_manager.period = self.period
 	m_data.weather_manager.last_period_change_hour = self.last_period_change_hour
 	m_data.weather_manager.next_period_change_hour = self.next_period_change_hour
-	--TODO: Load as table but it will require newgame
-	m_data.weather_manager.state = self:get_state_as_string() or ""
+	m_data.weather_manager.state = self.state --self:get_state_as_string() or ""
 	m_data.weather_manager.update_time = self.update_time
 	
 	if (level.is_wfx_playing()) then
@@ -872,8 +864,7 @@ function WeatherManager:load_state(m_data)
 	self.period = m_data.weather_manager.period
 	self.last_period_change_hour = m_data.weather_manager.last_period_change_hour
 	self.next_period_change_hour = m_data.weather_manager.next_period_change_hour
-	--TODO: Store as table but it will require newgame
-	self:set_state_as_string(m_data.weather_manager.state or "")
+	self.state = m_data.weather_manager.state or self.state or {}
 	self.update_time = m_data.weather_manager.update_time
 	self.weather_fx = m_data.weather_manager.weather_fx
 	self.wfx_time = m_data.weather_manager.weather_fx_time or 0
