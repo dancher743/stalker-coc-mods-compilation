@@ -267,6 +267,7 @@ end
 
 function WeatherManager:forced_weather_change()
 	self.forced_weather_change_on_time_change = true
+	self:update()
 end
 
 function WeatherManager:apply_dof()
@@ -368,12 +369,13 @@ end
 -- Обновляем погоду раз в час.
 function WeatherManager:update()
 	--alun_utils.debug_write("WeatherManager:update start")
-	if (self.___timer and time_global() < self.___timer) then 
+	local is_force = self.forced_weather_change_on_time_change
+	if (not is_force and self.___timer and self.___timer == level.get_time_minutes()) then
 		return --alun_utils.debug_write("WeatherManager:update end 1")
 	end
-	self.___timer = time_global() + 3000
+	self.___timer = level.get_time_minutes()
 	
-	if self.last_hour~=level.get_time_hours() then
+	if (is_force or self.last_hour~=level.get_time_hours()) then
 		self.last_hour=level.get_time_hours()
 		self.next_hour=self.last_hour+1
 		if self.next_hour>23 then
