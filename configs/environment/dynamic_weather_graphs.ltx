@@ -1,53 +1,40 @@
-;dynamic weather graphs
+;Dynamic weather graphs
 ;AtmosFear 3 by Cromm Cruac
 
-[atmosfear_clear]
-clear 		= 0.5
-partly 		= 0.5
-foggy 		= 0
-cloudy 		= 0
-rain 		= 0
-storm 		= 0
+[clear]
+clear
+partly
+cloudy
 
-[atmosfear_clear_foggy]
-clear 		= 0.35
-partly 		= 0.35
-foggy 		= 0.3
-cloudy 		= 0
-rain 		= 0
-storm 		= 0
+[partly]
+clear
+partly
+cloudy
 
-[atmosfear_foggy]
-clear 		= 0.05
-partly 		= 0.05
-foggy 		= 0.9
-cloudy 		= 0
-rain 		= 0
-storm 		= 0
+[cloudy]
+clear
+partly
+cloudy
+rain
+storm
 
-[atmosfear_foggy_rainy]
-clear 		= 0
-partly 		= 0
-foggy 		= 0.3
-cloudy 		= 0.3
-rain 		= 0.3
-storm 		= 0.1
+[rain]
+foggy
+partly
+cloudy
+rain
+storm
 
-[atmosfear_rainy]
-clear 		= 0
-partly 		= 0
-foggy 		= 0.1
-cloudy 		= 0.4
-rain 		= 0.4
-storm 		= 0.1
+[storm]
+foggy
+cloudy
+rain
+storm
 
-[atmosfear_stormy]
-clear 		= 0
-partly 		= 0
-foggy 		= 0.1
-cloudy 		= 0.2
-rain 		= 0.3
-storm 		= 0.4
+[foggy]
+clear
+partly
+foggy
 
 [atmosfear_transition]
 cloudy		 		= 1
