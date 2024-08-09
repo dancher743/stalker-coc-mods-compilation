@@ -1,12 +1,19 @@
+--===============================================================================
 --18.02.2008 - added dynamic weather
 --25.06.2011 - modified for AtmosFear 3 by Cromm Cruac
 --28.12.2013 - modified by Alundaio for all levels
 --8.02.2016  - modified by Alundaio to USE_MARSHAL
+--7.05.2018  - modified by Tronex for global weather system
+--7.08.2024  - reworked Tronex's global weather system by Dancher
+--===============================================================================
+
 local weather_manager = nil
 local prev_sec = 0
 local diff_sec = 0
 valid_levels = {}
 bLevelUnderground = false
+weather_tbl = atmosfear_options.weather_tbl
+
 function atmosfear_init()
 	if not (is_empty(valid_levels)) then 
 		return 
@@ -21,11 +28,9 @@ function atmosfear_init()
 	end
 	
 	if (not atmosfear_options.config:section_exist("atmosfear_current_parameters")) then
-		for level,v in pairs(valid_levels) do
-			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_"..level.."_period_good",random_choice("clear","foggy","rainy","stormy"))
-			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_"..level.."_period_bad",random_choice("clear","foggy","rainy","stormy"))
-			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_"..level.."_period_good_length",random_choice(4,6,8))
-			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_"..level.."_period_bad_length",random_choice(4,6,8))
+		for i = 1,#weather_tbl do
+			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_period", random_choice(4,6,8))
+			atmosfear_options.config:w_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur", math.random(2,4))
 		end
 
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_enable_blowout",1)
@@ -46,9 +51,6 @@ function atmosfear_init()
 
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_moon_phase","8days")
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_night_brightness","slight")
-
-		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_weather_balance_presets","balance_default")
-		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_weather_length_presets","length_default")
 
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_god_mode","false")
 		atmosfear_options.config:save()
@@ -72,7 +74,7 @@ function WeatherManager:__init()
 		printf("error when open weather_dynamic_graphs.ltx")
 	end
 	self.dof_factor=1
-	self.period="good"
+	self.period=get_random_weather()
 	self.transition_period=false
 	self.pre_blowout_period=false
 	self.curr_weather=""
@@ -203,20 +205,28 @@ function WeatherManager:get_level_name()
 
 end
 
+function WeatherManager:get_next_period(period)
+	local pick_chance = math.random(100)
+	local available_periods = get_global_weather_graph(period)
+	local next_periods = {}
+	
+	for i=1,#available_periods do
+		local val = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. available_periods[i] .. "_occur",2,4)
+		val = tonumber(val)
+		local occur_chance = (val == 4 and 80) or (val == 3 and 40) or (val == 2 and 20) or (val == 1 and 0)
+		if (pick_chance <= occur_chance) then
+			next_periods[#next_periods + 1] = available_periods[i]
+		end
+	end
+	
+	local next_period = #next_periods == 0 and period or next_periods[math.random(#next_periods)]
+	return next_period
+end
+
 function WeatherManager:get_next_period_change_hour(period)
 	local hour=0
-	local level_name = level.name()
-	if not (level_weathers.valid_levels[level_name]) then
-		return 1
-	end
-
-	if period=="good" then
-		local len = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_"..level_name.."_period_good_length",2,6)
-		hour = math.random(math.ceil(len*2/3),len)+self.last_period_change_hour+1
-	else
-		local len = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_"..level_name.."_period_bad_length",2,6)
-		hour = math.random(math.ceil(len*2/3),len)+self.last_period_change_hour+1
-	end
+	local len = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. period .. "_period",2,6)
+	hour = math.random(math.ceil(len*2/3),len)+self.last_period_change_hour+1
 	if hour>23 then
 		hour=hour-24
 	end
@@ -239,11 +249,7 @@ function WeatherManager:change_period()
 	end
 
 	if current_hour==self.next_period_change_hour then
-		if self.period == "good" then
-			self.period = "bad"
-		else
-			self.period = "good"
-		end
+		self.period = self:get_next_period(self.period)
 		self.last_period_change_hour=current_hour
 		self.next_period_change_hour=self:get_next_period_change_hour(self.period)
 		self.transition_period=true
@@ -434,9 +440,8 @@ function WeatherManager:select_weather(now)
 			weather = weather.."_pre_blowout"
 			self.pre_blowout_period=false
 		else
-			local period = level_name and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_"..level_name.."_period_"..self.period)
+			local period = self.period
 			if not (period) then
-				printf("level_weathers: opt_%s_peroid_%s does not exist in atmosfear_current_parameters",level_name,self.period)
 				period = "clear"
 			end
 			weather = weather.."_"..period
@@ -603,6 +608,35 @@ end
 function WeatherManager:unpack_graph_name(grn)
 	-- Пока паковать не будем
 	return grn
+end
+
+function get_global_weather_graph(graph_name)
+	local tbl = {}
+	local ini = ini_file("plugins\\global_weather_graphs.ltx")
+	local section = graph_name
+	local n = ini:section_exist(section) and ini:line_count(section) or 0
+	for i=0, n-1 do
+		local result, id, value = ini:r_line(section,i,STR_EMPTY,STR_EMPTY)
+		table.insert(tbl,id)
+	end
+	return tbl
+end
+
+function get_random_weather()
+	local tbl = {}
+	local ini = ini_file_ex("atmosfear_options.ltx",true)
+	if (ini:section_exist("atmosfear_current_parameters")) then
+		for i=1,#weather_tbl do
+			local a = ini:r_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur",2,4)
+			if (a > 1) then
+				tbl[#tbl+1] = weather_tbl[i]
+			end
+		end
+		if (#tbl > 0) then
+			return tbl[math.random(#tbl)]
+		end
+	end
+	return weather_tbl[math.random(#weather_tbl)]
 end
 
 function WeatherManager:load(F)
