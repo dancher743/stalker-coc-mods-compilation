@@ -536,6 +536,26 @@ function WeatherManager:get_curr_ambient()
     return amb
 end
 
+function WeatherManager:get_wind_velocity()
+    local hours = level.get_time_hours()
+	local weather = level.get_weather()
+	
+	if (hours == last_amb.hr) and (weather == last_amb.wthr) and last_amb.wnd_vel then
+        return last_amb.wnd_vel
+    end
+	
+    local ini = weather and ini_file("environment\\weathers\\" .. weather .. ".ltx")
+    local hours_as_string = self:get_hour_as_string(hours)
+	local wind_velocity_as_string = ini and hours_as_string and ini:section_exist(hours_as_string) and ini:r_string_ex(hours_as_string,"wind_velocity") or STR_EMPTY
+    local wind_velocity = tonumber(wind_velocity_as_string) or 0
+	
+	last_amb.hr = hours
+    last_amb.wthr = weather
+    last_amb.wnd_vel = wind_velocity
+	
+    return wind_velocity
+end
+
 function WeatherManager:is_level_without_panorama()
 	return levels_without_panorama[level.name()]
 end
