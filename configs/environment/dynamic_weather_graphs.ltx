@@ -1,0 +1,63 @@
+;Dynamic weather graphs
+;AtmosFear 3 by Cromm Cruac
+
+[clear]
+clear
+partly
+cloudy
+
+[partly]
+clear
+partly
+cloudy
+
+[cloudy]
+clear
+partly
+cloudy
+rain
+storm
+
+[rain]
+foggy
+partly
+cloudy
+rain
+storm
+
+[storm]
+foggy
+cloudy
+rain
+storm
+
+[foggy]
+clear
+partly
+foggy
+
+[atmosfear_transition]
+cloudy		 		= 1
+
+[atmosfear_pre_blowout]
+foggy_no_sun 		= 0.4
+cloudy_no_sun 		= 0.6
+
+[dof_kernels]
+clear 				= 2
+partly 				= 2
+foggy 				= 6
+cloudy 				= 3
+rain 				= 4
+storm 				= 4
+foggy_no_sun 		= 6
+cloudy_no_sun 		= 3
+
+
+[dynamic_default]
+clear = 0.2
+partly = 0.2
+foggy = 0.2
+cloudy = 0.2
+rain = 0.1
+thunder = 0.1
