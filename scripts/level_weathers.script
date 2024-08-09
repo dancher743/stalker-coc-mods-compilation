@@ -91,7 +91,7 @@ function WeatherManager:__init()
 	self.dof_kernels={}
 	self.fx_started=nil
 	self.fx_ended=nil
-	self.last_period_change_date=game.get_game_time()
+	self.last_period_change_date = game.get_game_time()
 	--self.fallout=fallout_manager.get_fallout_manager()
 	--self.debugMessages[1]:SetText("Weather system initialized")
 	self.inited_time = 0
@@ -186,7 +186,6 @@ function WeatherManager:reset()
 		end
 	end
 
-	self.next_period_change_date=self:get_next_period_change_date(self.period)
 	self.inited_time = game.get_game_time()
 	self.last_hour=level.get_time_hours()
 	self.next_hour=self.last_hour+1
@@ -242,45 +241,37 @@ function WeatherManager:get_next_period(period)
 	return next_period
 end
 
-function WeatherManager:is_next_period_change_date(current_date)
-	return current_date:diffSec(self.next_period_change_date) >= 0
+function WeatherManager:reset_change_date(cycle_change, _s)
+	--self:Print("reset_change_date = %s",tostring(cycle_change))
+	local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
+	Y, M, D, h, m, s, ms = self.last_period_change_date:get(Y, M, D, h, m, s, ms)
+	if (not cycle_change) then
+		self.last_period_change_date:set(Y, M, D, h, m, s + _s, ms)
+	else
+		self.last_period_change_date = game.get_game_time()
+	end
 end
 
-function WeatherManager:get_next_period_change_date(period)
-	local hour=0
-	local len = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. period .. "_period",2,6)
-	local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
-	local Y, M, D, h, m, s, ms = self.last_period_change_date:get(Y, M, D, h, m, s, ms)
-	hour = len+h+1
-	local next_period_change_date = game.get_game_time():set(Y, M, D, hour, m, s, ms)
-	return next_period_change_date
-end
-
-function WeatherManager:shift_next_period_change_date(delta_h)
-	local hours = 0
-	local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
-	local Y, M, D, h, m, s, ms = self.next_period_change_date:get(Y, M, D, h, m, s, ms)
-	hour = h+delta_h
-	local next_period_change_date = game.get_game_time():set(Y, M, D, hour, m, s, ms)
-	return next_period_change_date
+function WeatherManager:is_next_change_date(period)
+	local hour = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. period .. "_period",2,6)
+	local diff = math.ceil(game.get_game_time():diffSec(self.last_period_change_date))
+	--self:Print("is_next_change_date | current seconds difference = %s, critical difference = %s", diff, (hour*60*60))
+	return diff > (hour*60*60)
 end
 
 function WeatherManager:change_period()
-	local current_date=game.get_game_time()
-
 	local g_time = game.get_game_time()
 	local diff_s = math.floor(surge_manager.SurgeManager._delta - g_time:diffSec(surge_manager.SurgeManager.last_surge_time))
 	local diff_p = psi_storm_manager and math.floor(psi_storm_manager.PsiStormManager._delta - g_time:diffSec(psi_storm_manager.PsiStormManager.last_psi_storm_time)) or 0
 
 	if (diff_s<7200 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_blowout",2,1) ==1) or (diff_p<7200 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_psi_storm",2,1)==1) or level.is_wfx_playing() then
 		self.pre_blowout_period=true
-		self.next_period_change_date=self:shift_next_period_change_date(1)
+		self:reset_change_date(false, 1*60*60)
 	end
 
-	if (self:is_next_period_change_date(current_date)) then
+	if (self:is_next_change_date(self.period)) then
 		self.period = self:get_next_period(self.period)
-		self.last_period_change_date=current_date
-		self.next_period_change_date=self:get_next_period_change_date(self.period)
+		self:reset_change_date(true)
 		self.transition_period=true
 	end
 end
@@ -748,7 +739,6 @@ function WeatherManager:load(F)
 		self.pre_blowout_period = true
 	end
 	self.last_period_change_date = utils.r_CTime(F,"level_weathers");
-	self.next_period_change_date = utils.r_CTime(F,"level_weathers");
 	local state_string = F:r_stringZ();
 	-- printf("str = "..state_string)
 	if state_string == STR_EMPTY then
@@ -771,7 +761,6 @@ function WeatherManager:save(F)
 	F:w_stringZ(self.levelWeather or "atmosfear_transition")
 	F:w_stringZ(self.period)
 	alun_utils.w_stpk(F,"CTime",self.last_period_change_date,"WeatherManager.last_period_change_date")
-	alun_utils.w_stpk(F,"CTime",self.next_period_change_date,"WeatherManager.next_period_change_date")
 	--F:w_stringZ(self.update_level);
 	-- printf("str = "..tostring(self:get_state_as_string()))
 	F:w_stringZ(self:get_state_as_string())
@@ -971,7 +960,6 @@ function WeatherManager:save_state(m_data)
 	m_data.weather_manager.levelWeather = self.levelWeather
 	m_data.weather_manager.period = self.period
 	m_data.weather_manager.last_period_change_date = self.last_period_change_date
-	m_data.weather_manager.next_period_change_date = self.next_period_change_date
 	m_data.weather_manager.state = self.state --self:get_state_as_string() or STR_EMPTY
 	m_data.weather_manager.update_time = self.update_time
 	
@@ -993,7 +981,6 @@ function WeatherManager:load_state(m_data)
 	self.levelWeather = m_data.weather_manager.levelWeather
 	self.period = m_data.weather_manager.period
 	self.last_period_change_date = m_data.weather_manager.last_period_change_date
-	self.next_period_change_date = m_data.weather_manager.next_period_change_date
 	self.state = m_data.weather_manager.state or self.state or {}
 	self.update_time = m_data.weather_manager.update_time
 	self.weather_fx = m_data.weather_manager.weather_fx
