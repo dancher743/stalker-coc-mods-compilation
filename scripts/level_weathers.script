@@ -75,8 +75,6 @@ function WeatherManager:__init()
 	self.forced_weather_change_on_time_change = false
 	self.last_hour = 0
 	self.next_hour=0
-	self.state={}
-	self.graphs={}
 	self.graphs_ini = ini_file("environment\\dynamic_weather_graphs.ltx")
 	if not self.graphs_ini then
 		printf("error when open weather_dynamic_graphs.ltx")
@@ -408,10 +406,6 @@ function WeatherManager:update()
 		if self.next_hour>23 then
 			self.next_hour=self.next_hour-24
 		end
-		for lvl,st in pairs(self.state) do
-			st.current_state=st.next_state
-			st.next_state=get_next_state(st.graph,st.current_state)
-		end
 		self:change_period()
 		self:select_weather(false)
 	end
@@ -462,6 +456,7 @@ function WeatherManager:select_weather(now)
 	--
 	--alun_utils.debug_write("WeatherManager:select_weather")
 	
+	local weather_valid = false
 	local weather = self.weatherType
 	if not (weather) then 
 		return
@@ -469,38 +464,29 @@ function WeatherManager:select_weather(now)
 	
 	-- CC add period to name
 	if (weather=="atmosfear") then
-		local level_name = level.name()
+		weather_valid = true
 		if self.transition_period==true then
 			weather = weather.."_transition"
+			self.period = "cloudy"
 			self.transition_period=false
 		elseif self.pre_blowout_period==true then
 			weather = weather.."_pre_blowout"
+			self.period = random_choice("foggy_no_sun","cloudy_no_sun")
 			self.pre_blowout_period=false
 		else
-			local period = self.period
-			if not (period) then
-				period = "clear"
+			if not (self.period) then
+				self.period = "clear"
 			end
-			weather = weather.."_"..period
+			weather = weather.."_"..self.period
 		end
 		--atmosfear.debugMessages[5]:SetText("weather= "..tostring(weather))
 	end
 	self.levelWeather = weather
 
-	local graph=self:get_graph_by_name(weather)
-	local weather_section_name=STR_EMPTY
-	if graph==nil then
-		self.state[weather]=nil
-		weather_section_name=weather
-	else
-		if self.state[weather]==nil or self.state[weather].graph_name~=weather then
-			self.state={}
-			self.state[weather]=self:init_by_graph(graph,weather)
-			--self.debugMessages[4]:SetText("self.state["..weather.."].current_state="..tostring(self.state[weather].current_state))
-		end
-		local st=self.state[weather]
-		weather_section_name="af3_"..atmosfear_options.config:r_value("atmosfear_current_parameters","opt_night_brightness").."_"..st.current_state
-		if st.current_state=="clear" or st.current_state=="partly" then
+	local weather_section_name = STR_EMPTY
+	if (weather_valid) then
+		weather_section_name="af3_"..atmosfear_options.config:r_value("atmosfear_current_parameters","opt_night_brightness").."_"..self.period
+		if self.period=="clear" or self.period=="partly" then
 			weather_section_name = weather_section_name.."_"..self:get_moon_phase()
 		end
 		if (self:is_level_without_panorama()) then
@@ -508,12 +494,14 @@ function WeatherManager:select_weather(now)
 		end
 		--atmosfear.debugMessages[6]:SetText("weather_section_name= "..tostring(weather_section_name))
 		if now then
-			self.curr_weather=st.current_state
-			self.next_weather=st.current_state
+			self.curr_weather=self.period
+			self.next_weather=self.period
 		else
 			self.curr_weather=self.next_weather
-			self.next_weather=st.current_state
+			self.next_weather=self.period
 		end
+	else
+		weather_section_name = weather
 	end
 
 	-- printf("weather_section_name = %s",weather_section_name)
@@ -604,114 +592,6 @@ function WeatherManager:try_get_no_panorama_weather(current_weather_section)
 	return no_panorama_weather_section or current_weather_section
 end
 
--- Возвращает начальное состояние погоды.
-function WeatherManager:init_by_graph(graph,graph_name)
-	local cur_state=get_next_state(graph,STR_EMPTY)
-	local next_state=get_next_state(graph,cur_state)
-	return {current_state=cur_state,next_state=next_state,graph_name=graph_name,graph=graph}
-end
--- Возвращает одно из следующих состояний графа, согласно прописанным вероятностям.
-function get_next_state(graph,state)
-	local sum=0
-	for st,prob in pairs(graph) do
-		--if state==st then prob=prob*2 end
-		sum=sum+prob
-	end
-	local rnd=(math.random(1,100)/100)*sum
-	local next_state
-	for st,prob in pairs(graph) do
-		--if state==st then prob=prob*2 end
-		next_state=st
-		rnd=rnd-prob
-		if (rnd<=0) then
-			break
-		end
-	end
-	return next_state
-end
-
--- Устанавливаем состояние менеджера, распарсивая строку состояния
-function WeatherManager:set_state_as_string(ss)
-	if (ss == STR_EMPTY) then
-		return
-	end
-
-	--self.debugMessages[7]:SetText(ss)
-	self.state={}
-	local laststring
-	for lvlstring in string.gmatch(ss,"[^;]+") do
-		-- printf("ss= %s lvlstring = %s",ss,lvlstring)
-		laststring=lvlstring
-	end
-
-	local i,j,grname,curs,nexs=string.find(laststring,"([^=]+)=([^,]+),([^,]+)")
-	if not grname then
-		printf("WeatherManager:set_state_as_string: malformed state string. "..ss)
-	end
-	--local lvl_name=self:unpack_level(lvl)
-	local current_state=self:unpack_state(curs)
-	local next_state=self:unpack_state(nexs)
-	local graph_name=self:unpack_graph_name(grname)
-	local graph=self:get_graph_by_name(graph_name)
-	self.curr_weather=current_state
-	self.next_weather=current_state
-	if graph==nil then
-	-- Старая сохранёнка? Будем считать что на этом уровне - статическая погода
-	else
-		--self.debugMessages[11]:SetText("loaded string="..laststring)
-		--self.debugMessages[12]:SetText("self.state["..graph_name.."]={current_state="..current_state..",next_state="..next_state..",graph_name="..graph_name..",graph=}")
-		self.state[graph_name]={current_state=current_state,next_state=next_state,graph_name=graph_name,graph=graph}
-	end
-end
-
--- Преобразуем текущее состояние менеджера в строку
-function WeatherManager:get_state_as_string()
-	local lvlstrings={}
-	for lvl_name,st in pairs(self.state) do
-		--local lvl=self:pack_level(lvl_name)
-		local curs=self:pack_state(st.current_state)
-		local nexs=self:pack_state(st.next_state)
-		--local curs=self:pack_state(self.curr_weather)
-		--local nexs=self:pack_state(self.next_weather)
-		local grn=self:pack_graph_name(st.graph_name)
-		lvlstrings[#lvlstrings+1] = grn.."="..curs..","..nexs
-	end
-	--self.debugMessages[10]:SetText("saved string="..tostring(table.concat(lvlstrings,";")))
-	return table.concat(lvlstrings,";")
-end
-
--- Получить граф (таблицу переходов состояний погоды) по его названию и названию игрового уровня
-function WeatherManager:get_graph_by_name(name)
-	if not self.graphs[name] then
-		self.graphs[name] = alun_utils.parse_ini_section_to_array(self.graphs_ini,name)
-	end
-	return self.graphs[name]
-end
-
--- Запаковать название вершины графа
-function WeatherManager:pack_state(state)
-	-- Пока паковать не будем.
-	return state
-end
-
--- Распаковать название вершины графа
-function WeatherManager:unpack_state(st)
-	-- Пока паковать не будем
-	return st
-end
-
--- Запаковать название графа переходов погоды
-function WeatherManager:pack_graph_name(graph_name)
-	-- Пока паковать не будем.
-	return graph_name
-end
-
--- Распаковать название графа переходов погоды
-function WeatherManager:unpack_graph_name(grn)
-	-- Пока паковать не будем
-	return grn
-end
-
 function get_global_weather_graph(graph_name)
 	local tbl = {}
 	local ini = ini_file("plugins\\global_weather_graphs.ltx")
@@ -754,12 +634,6 @@ function WeatherManager:load(F)
 		self.pre_blowout_period = true
 	end
 	self.last_period_change_date = utils.r_CTime(F,"level_weathers");
-	local state_string = F:r_stringZ();
-	-- printf("str = "..state_string)
-	if state_string == STR_EMPTY then
-		-- printf("str = empty string")
-	end
-	self:set_state_as_string(state_string)
 	self.update_time = F:r_u32();
 	local str = F:r_stringZ()
 	if(str~="nil") then
@@ -777,8 +651,6 @@ function WeatherManager:save(F)
 	F:w_stringZ(self.period)
 	alun_utils.w_stpk(F,"CTime",self.last_period_change_date,"WeatherManager.last_period_change_date")
 	--F:w_stringZ(self.update_level);
-	-- printf("str = "..tostring(self:get_state_as_string()))
-	F:w_stringZ(self:get_state_as_string())
 	F:w_u32(self.update_time)
 	F:w_stringZ(tostring(self.weather_fx))
 	if(self.weather_fx) then
@@ -975,7 +847,6 @@ function WeatherManager:save_state(m_data)
 	m_data.weather_manager.levelWeather = self.levelWeather
 	m_data.weather_manager.period = self.period
 	m_data.weather_manager.last_period_change_date = self.last_period_change_date
-	m_data.weather_manager.state = self.state --self:get_state_as_string() or STR_EMPTY
 	m_data.weather_manager.update_time = self.update_time
 	
 	if (level.is_wfx_playing()) then
@@ -996,7 +867,6 @@ function WeatherManager:load_state(m_data)
 	self.levelWeather = m_data.weather_manager.levelWeather
 	self.period = m_data.weather_manager.period
 	self.last_period_change_date = m_data.weather_manager.last_period_change_date
-	self.state = m_data.weather_manager.state or self.state or {}
 	self.update_time = m_data.weather_manager.update_time
 	self.weather_fx = m_data.weather_manager.weather_fx
 	self.wfx_time = m_data.weather_manager.weather_fx_time or 0
