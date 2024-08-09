@@ -285,6 +285,7 @@ function WeatherManager:change_period()
 	if (self:can_change_period(self.period)) then
 		self.period = self:get_next_period(self.period)
 		self:reset_last_period_change_date(true)
+		-- Dancher: disabled
 		self.transition_period=false
 	end
 end
