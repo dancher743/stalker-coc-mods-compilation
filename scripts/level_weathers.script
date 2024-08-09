@@ -15,6 +15,13 @@ valid_levels = {}
 bLevelUnderground = false
 weather_tbl = atmosfear_options.weather_tbl
 
+local levels_without_panorama = {
+	l11_pripyat = true,
+	l12_stancia = true,
+	l12_stancia_2 = true,
+	l13_generators = true
+}
+
 function atmosfear_init()
 	if not (is_empty(valid_levels)) then 
 		return 
@@ -467,6 +474,9 @@ function WeatherManager:select_weather(now)
 		if st.current_state=="clear" or st.current_state=="partly" then
 			weather_section_name = weather_section_name.."_"..self:get_moon_phase()
 		end
+		if (self:is_level_without_panorama()) then
+			weather_section_name = self:try_get_no_panorama_weather(weather_section_name)
+		end
 		--atmosfear.debugMessages[6]:SetText("weather_section_name= "..tostring(weather_section_name))
 		if now then
 			self.curr_weather=st.current_state
@@ -524,6 +534,25 @@ function WeatherManager:get_curr_ambient()
     --printf("get_curr_ambient | file: %s - ambient: %s", wthr, amb)
     
     return amb
+end
+
+function WeatherManager:is_level_without_panorama()
+	return levels_without_panorama[level.name()]
+end
+
+function WeatherManager:try_get_no_panorama_weather(current_weather_section)
+	local no_panorama_weather_section = nil
+	
+	if (string.find(current_weather_section, "clear")) then
+		local level_hours = level.get_time_hours()
+		local level_minutes = level.get_time_minutes()
+		
+		if (level_hours >= 4 and level_minutes >= 30 or level_hours <= 21 and level_minutes <= 30) then
+			no_panorama_weather_section = "without_panorama\\af3_day_clear"
+		end
+	end
+	
+	return no_panorama_weather_section or current_weather_section
 end
 
 -- ¬озвращает начальное состо€ние погоды.
