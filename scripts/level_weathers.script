@@ -467,11 +467,11 @@ function WeatherManager:select_weather(now)
 		weather_valid = true
 		if self.transition_period==true then
 			weather = weather.."_transition"
-			self.period = "cloudy"
+			self.period = self:get_period_with_prob(weather)
 			self.transition_period=false
 		elseif self.pre_blowout_period==true then
 			weather = weather.."_pre_blowout"
-			self.period = random_choice("foggy_no_sun","cloudy_no_sun")
+			self.period = self:get_period_with_prob(weather)
 			self.pre_blowout_period=false
 		else
 			if not (self.period) then
@@ -602,6 +602,27 @@ function WeatherManager:get_period_next_states(period)
 		table.insert(tbl,next_state)
 	end
 	return tbl
+end
+
+function WeatherManager:get_period_with_prob(weather)
+	local periods = alun_utils.parse_ini_section_to_array(self.graphs_ini,weather)
+	
+	local sum=0
+	for _,prob in pairs(periods) do
+		sum=sum+prob
+	end
+	
+	local rnd=(math.random(1,100)/100)*sum
+	local next_period
+	for period,prob in pairs(periods) do
+		next_period=period
+		rnd=rnd-prob
+		if (rnd<=0) then
+			break
+		end
+	end
+	
+	return next_period
 end
 
 function WeatherManager:load(F)
