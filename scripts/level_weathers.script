@@ -212,6 +212,21 @@ function WeatherManager:get_level_name()
 
 end
 
+function WeatherManager:get_next_period_change_hour(period)
+	local hour = 0
+	local len = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. period .. "_period",2,6)
+	local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
+	Y, M, D, h, m, s, ms = self.last_period_change_date:get(Y, M, D, h, m, s, ms)
+	hour = h + len
+	if (m > 0 or s > 0 or ms > 0) then
+		hour = hour + 1
+	end
+	if hour>23 then
+		hour=hour-24
+	end
+	return hour
+end
+
 function WeatherManager:get_next_period(period)
 	local pick_chance = math.random(100)
 	
