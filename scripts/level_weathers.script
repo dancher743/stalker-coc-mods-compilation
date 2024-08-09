@@ -10,6 +10,7 @@
 local weather_manager = nil
 local prev_sec = 0
 local diff_sec = 0
+local last_amb = {}
 valid_levels = {}
 bLevelUnderground = false
 weather_tbl = atmosfear_options.weather_tbl
@@ -500,6 +501,29 @@ function WeatherManager:select_weather(now)
 	-- if xrs_news then
 		-- xrs_news.news_call(1,1,nil,nil,weather_section_name,nil)
 	-- end
+end
+
+function WeatherManager:get_curr_ambient()
+    -- Check
+    local hr = level.get_time_hours()
+    local wthr = level.get_weather()
+    if (hr == last_amb.hr) and (wthr == last_amb.wthr) and last_amb.amb then
+        return last_amb.amb
+    end
+    
+    -- Read
+    local ini = wthr and ini_file("environment\\weathers\\" .. wthr .. ".ltx")
+    local hr_string = self:get_hour_as_string(hr)
+    local amb = ini and hr_string and ini:section_exist(hr_string) and ini:r_string_ex(hr_string,"ambient") or STR_EMPTY
+    
+    -- Cache
+    last_amb.hr = hr
+    last_amb.wthr = wthr
+    last_amb.amb = amb
+    
+    --printf("get_curr_ambient | file: %s - ambient: %s", wthr, amb)
+    
+    return amb
 end
 
 -- ¬озвращает начальное состо€ние погоды.
