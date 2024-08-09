@@ -215,6 +215,17 @@ end
 
 function WeatherManager:get_next_period(period)
 	local pick_chance = math.random(100)
+	
+	-- more foggy weather if Survival mode is enabled
+    if (IsSurvivalMode() and pick_chance <= 25) then
+        local foggy_period = "foggy"
+        local val = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. foggy_period .. "_occur",2,4)
+        val = tonumber(val)
+        if (val ~= 1) then
+            return foggy_period
+        end
+    end
+	
 	local available_periods = get_global_weather_graph(period)
 	local next_periods = {}
 	
