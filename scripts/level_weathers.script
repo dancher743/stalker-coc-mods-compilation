@@ -91,7 +91,7 @@ function WeatherManager:__init()
 	self.dof_kernels={}
 	self.fx_started=nil
 	self.fx_ended=nil
-	self.last_period_change_date = game.get_game_time()
+	self.last_period_change_date=game.get_game_time()
 	--self.fallout=fallout_manager.get_fallout_manager()
 	--self.debugMessages[1]:SetText("Weather system initialized")
 	self.inited_time = 0
@@ -241,21 +241,21 @@ function WeatherManager:get_next_period(period)
 	return next_period
 end
 
-function WeatherManager:reset_change_date(cycle_change, _s)
-	--self:Print("reset_change_date = %s",tostring(cycle_change))
+function WeatherManager:reset_last_period_change_date(period_change, delta_s)
+	--printf("reset_last_period_change_date = %s",tostring(period_change))
 	local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
 	Y, M, D, h, m, s, ms = self.last_period_change_date:get(Y, M, D, h, m, s, ms)
-	if (not cycle_change) then
-		self.last_period_change_date:set(Y, M, D, h, m, s + _s, ms)
+	if (not period_change) then
+		self.last_period_change_date:set(Y, M, D, h, m, s + delta_s, ms)
 	else
 		self.last_period_change_date = game.get_game_time()
 	end
 end
 
-function WeatherManager:is_next_change_date(period)
+function WeatherManager:can_change_period(period)
 	local hour = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. period .. "_period",2,6)
 	local diff = math.ceil(game.get_game_time():diffSec(self.last_period_change_date))
-	--self:Print("is_next_change_date | current seconds difference = %s, critical difference = %s", diff, (hour*60*60))
+	--printf("can_change_period | current seconds difference = %s, critical difference = %s", diff, (hour*60*60))
 	return diff > (hour*60*60)
 end
 
@@ -266,12 +266,12 @@ function WeatherManager:change_period()
 
 	if (diff_s<7200 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_blowout",2,1) ==1) or (diff_p<7200 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_psi_storm",2,1)==1) or level.is_wfx_playing() then
 		self.pre_blowout_period=true
-		self:reset_change_date(false, 1*60*60)
+		self:reset_last_period_change_date(false, 1*60*60)
 	end
 
-	if (self:is_next_change_date(self.period)) then
+	if (self:can_change_period(self.period)) then
 		self.period = self:get_next_period(self.period)
-		self:reset_change_date(true)
+		self:reset_last_period_change_date(true)
 		self.transition_period=true
 	end
 end
