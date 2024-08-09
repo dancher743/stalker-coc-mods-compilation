@@ -71,7 +71,7 @@ function WeatherManager:__init()
 	self.weather_fx = nil
 	self.weatherType = "[default]"
 	self.update_time = 0
-	self.update_level = ""
+	self.update_level = STR_EMPTY
 	self.forced_weather_change_on_time_change = false
 	self.last_hour = 0
 	self.next_hour=0
@@ -85,8 +85,8 @@ function WeatherManager:__init()
 	self.period=get_random_weather()
 	self.transition_period=false
 	self.pre_blowout_period=false
-	self.curr_weather=""
-	self.next_weather=""
+	self.curr_weather=STR_EMPTY
+	self.next_weather=STR_EMPTY
 	self.far_distances={}
 	self.dof_kernels={}
 	self.fx_started=nil
@@ -176,7 +176,7 @@ function WeatherManager:reset()
 			if cycle=="clear" or cycle=="partly" then
 				phase="_0"
 			else
-				phase = ""
+				phase = STR_EMPTY
 			end
 			local cycle_ltx=ini_file(("environment\\weathers\\af3_dark_"..cycle..phase..".ltx"))
 			for h = 0, 23 do
@@ -351,7 +351,7 @@ function WeatherManager:apply_dof()
 end
 
 function WeatherManager:get_hour_as_string(h)
-	local hour_str=""
+	local hour_str=STR_EMPTY
 	if h>23 then
 		h=h-24
 	end
@@ -459,7 +459,7 @@ function WeatherManager:select_weather(now)
 	self.levelWeather = weather
 
 	local graph=self:get_graph_by_name(weather)
-	local weather_section_name=""
+	local weather_section_name=STR_EMPTY
 	if graph==nil then
 		self.state[weather]=nil
 		weather_section_name=weather
@@ -557,7 +557,7 @@ end
 
 -- Возвращает начальное состояние погоды.
 function WeatherManager:init_by_graph(graph,graph_name)
-	local cur_state=get_next_state(graph,"")
+	local cur_state=get_next_state(graph,STR_EMPTY)
 	local next_state=get_next_state(graph,cur_state)
 	return {current_state=cur_state,next_state=next_state,graph_name=graph_name,graph=graph}
 end
@@ -583,7 +583,7 @@ end
 
 -- Устанавливаем состояние менеджера, распарсивая строку состояния
 function WeatherManager:set_state_as_string(ss)
-	if (ss == "") then
+	if (ss == STR_EMPTY) then
 		return
 	end
 
@@ -708,7 +708,7 @@ function WeatherManager:load(F)
 	self.next_period_change_hour = F:r_u32();
 	local state_string = F:r_stringZ();
 	-- printf("str = "..state_string)
-	if state_string == "" then
+	if state_string == STR_EMPTY then
 		-- printf("str = empty string")
 	end
 	self:set_state_as_string(state_string)
@@ -779,7 +779,7 @@ function WeatherManager:meteorites()
 		else
 			local actor_pos=db.actor:position()
 			local particle_pos= vector():set(actor_pos.x, actor_pos.y+500, actor_pos.z)
-			self.meteorites_particle:move_to(particle_pos,VEC_Z)
+			self.meteorites_particle:move_to(particle_pos,VEC_FORWARD)
 		end
 	else
 		self:stop_meteorites()
@@ -929,7 +929,7 @@ function WeatherManager:save_state(m_data)
 	m_data.weather_manager.period = self.period
 	m_data.weather_manager.last_period_change_hour = self.last_period_change_hour
 	m_data.weather_manager.next_period_change_hour = self.next_period_change_hour
-	m_data.weather_manager.state = self.state --self:get_state_as_string() or ""
+	m_data.weather_manager.state = self.state --self:get_state_as_string() or STR_EMPTY
 	m_data.weather_manager.update_time = self.update_time
 	
 	if (level.is_wfx_playing()) then
