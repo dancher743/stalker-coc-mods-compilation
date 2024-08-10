@@ -3243,7 +3243,7 @@ end
 local last_vanish_phrase_2_index
 
 function get_vanish_bounty_hunt_target_phrase_2(first_speaker, second_speaker)
-	local phrase_index = utils.pick_without(last_vanish_phrase_2_index,{0,1,2,3,4,5})
+	local phrase_index = utils.pick_without(last_vanish_phrase_2_index,{0,1,2,3,4,5,6})
 	local phrase = strformat("vanish_bounty_hunt_target_dialog_2%s",phrase_index)
 	last_vanish_phrase_2_index = phrase_index
 

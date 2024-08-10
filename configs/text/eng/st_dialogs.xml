@@ -1251,4 +1251,7 @@
 	<string id="vanish_bounty_hunt_target_dialog_25">
 		<text>I'm not afraid of you.</text>
 	</string>
+	<string id="vanish_bounty_hunt_target_dialog_26">
+		<text>What?</text>
+	</string>
 </string_table>
