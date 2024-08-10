@@ -3276,6 +3276,10 @@ function on_setup_bounty_hunt(actor,npc,p)
 	SkipFrame(postpone_for_next_frame)
 end
 
+function remove_bounty_hunt_target(actor,npc,p)
+	axr_task_manager.bounties_by_id[p[1]] = nil
+end
+
 function fail_task_dec_goodwill(actor,npc,p)
 	local amt = tonumber(p[1]) or 50
 	for i=2,#p do

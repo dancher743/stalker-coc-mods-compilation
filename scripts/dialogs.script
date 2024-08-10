@@ -3159,14 +3159,18 @@ end
 -- Added by Dancher
 
 function is_bounty_hunt_target(first_speaker, second_speaker)
+	local bounties_npcs = axr_task_manager.bounties_by_id
+	
+	if (is_empty(bounties_npcs)) then
+		return false
+	end
+	
 	local result = false
 	local npc = who_is_npc(first_speaker, second_speaker)
 	local squad = get_object_squad(npc)
 	
 	if (squad) then
 		local bounties_npc_id = {}
-		local bounties_npcs = axr_task_manager.bounties_by_id
-		
 		for _,npc_id in pairs(bounties_npcs) do
 			bounties_npc_id[npc_id] = true
 		end
@@ -3197,13 +3201,17 @@ function cant_vanish_bounty_hunt_target(first_speaker, second_speaker)
 end
 
 function vanish_bounty_hunt_target(first_speaker, second_speaker)
+	local bounties_npcs = axr_task_manager.bounties_by_id
+	
+	if (is_empty(bounties_npcs)) then
+		return
+	end
+	
 	local npc = who_is_npc(first_speaker, second_speaker)
 	local squad = get_object_squad(npc)
 	
 	if (squad) then
 		local bounties_npc_id = {}
-		local bounties_npcs = axr_task_manager.bounties_by_id
-		
 		for task_id,npc_id in pairs(bounties_npcs) do
 			bounties_npc_id[npc_id] = task_id
 		end
