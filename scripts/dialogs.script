@@ -3159,17 +3159,23 @@ end
 -- Added by Dancher
 
 function is_bounty_hunt_target(first_speaker, second_speaker)
-	local npc = who_is_npc(first_speaker, second_speaker)
-	local actor = db.actor
-	local id = npc:id()
-	local bounties_npcs = axr_task_manager.bounties_by_id
-	
 	local result = false
-
+	
+	local bounties_npc_id = {}
+	local bounties_npcs = axr_task_manager.bounties_by_id
 	for _,npc_id in pairs(bounties_npcs) do
-		if (npc_id == id) then
-			result = true
-			break
+		bounties_npc_id[npc_id] = true
+	end
+	
+	local npc = who_is_npc(first_speaker, second_speaker)
+	local squad = get_object_squad(npc)
+	if (squad) then
+		for k in squad:squad_members() do
+			local member = db.storage[k.id] and db.storage[k.id].object
+			if (member and bounties_npc_id[member:id()]) then
+				result = true
+				break
+			end
 		end
 	end
 	
@@ -3189,24 +3195,32 @@ function cant_vanish_bounty_hunt_target(first_speaker, second_speaker)
 	return can_vanish_bounty_hunt_target(first_speaker, second_speaker) == false
 end
 
-function vanish_bounty_hunt_target(first_speaker, second_speaker)
-	local npc = who_is_npc(first_speaker, second_speaker)
-	local actor = db.actor
-	local id = npc:id()
+function vanish_bounty_hunt_target(first_speaker, second_speaker)	
+	local bounties_npc_id = {}
 	local bounties_npcs = axr_task_manager.bounties_by_id
-
 	for task_id,npc_id in pairs(bounties_npcs) do
-		if (npc_id == id) then
-			local tm = task_manager.get_task_manager()
-			local tsk = tm.task_info[task_id]
-			if (tsk and tsk.stage == 0) then
-				--tsk.stage = 3
-				tsk.stage = 1 -- complete task anyway instead of failing
+		bounties_npc_id[npc_id] = task_id
+	end
+	
+	local npc = who_is_npc(first_speaker, second_speaker)
+	local squad = get_object_squad(npc)
+	if (squad) then
+		for k in squad:squad_members() do
+			local member = db.storage[k.id] and db.storage[k.id].object
+			local task_id = member and bounties_npc_id[member:id()]
+			if (task_id) then
+				local tm = task_manager.get_task_manager()
+				local tsk = tm.task_info[task_id]
+				if (tsk and tsk.stage == 0) then
+					--tsk.stage = 3
+					tsk.stage = 1 -- complete task anyway instead of failing
+				end
+				local actor = db.actor
+				break_dialog(actor, npc)
+				jg_guider.try_clear_prepared_follower(npc)
+				xr_effects.remove_task_squad(actor, npc)
+				break
 			end
-			break_dialog(actor, npc)
-			jg_guider.try_clear_prepared_follower(npc)
-			xr_effects.remove_task_squad(actor, npc)
-			break
 		end
 	end
 end
