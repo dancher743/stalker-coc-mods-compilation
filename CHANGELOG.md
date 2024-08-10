@@ -28,6 +28,7 @@ All notable changes to this project will be documented in this file.
 * Changed API of `ui_addon_companion_quick_menu.script` and added copyright
 * Added cancel phase and seven discard phase into peaceful way dialog of bounty hunt task
 * Added replaced normal controller with psy controller in Agroprom Underground and X16
+* Increased requirements to apply peaceful way dialog of bounty hunt task by NPC
 
 ### Fixes
 * Fixed `medkit` cost in `bandit_loadout`

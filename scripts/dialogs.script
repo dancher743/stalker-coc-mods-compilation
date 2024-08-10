@@ -3191,7 +3191,7 @@ function can_vanish_bounty_hunt_target(first_speaker, second_speaker)
 	local npc = who_is_npc(first_speaker, second_speaker)
 	local actor = db.actor
 	local actor_rank = actor:character_rank()
-	local npc_rank = npc:character_rank()
+	local npc_rank = npc:character_rank() + 1000
 	
 	return actor_rank > npc_rank
 end
