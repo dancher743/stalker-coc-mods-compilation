@@ -1230,6 +1230,9 @@
 	<string id="vanish_bounty_hunt_target_dialog_11">
 		<text>Great. Goodbye.</text>
 	</string>
+	<string id="vanish_bounty_hunt_target_dialog_12">
+		<text>Wait a while.</text>
+	</string>
 	<string id="vanish_bounty_hunt_target_dialog_20">
 		<text>Back off.</text>
 	</string>

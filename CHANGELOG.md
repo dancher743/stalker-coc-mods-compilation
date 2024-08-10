@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 * Corrected text of peaceful way dialogs for bounty hunt task
 * Handled peaceful way of bounty hunt task during Guide job
 * Changed API of `ui_addon_companion_quick_menu.script` and added copyright
+* Added cancel phase into peaceful way dialog of bounty hunt task
 
 ### Fixes
 * Fixed `medkit` cost in `bandit_loadout`

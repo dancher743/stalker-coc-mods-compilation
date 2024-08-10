@@ -1225,6 +1225,9 @@
 	<string id="vanish_bounty_hunt_target_dialog_11">
 		<text>Отлично. Всего хорошего.</text>
 	</string>
+	<string id="vanish_bounty_hunt_target_dialog_12">
+		<text>Подожди пока.</text>
+	</string>
 	<string id="vanish_bounty_hunt_target_dialog_20">
 		<text>Отвали.</text>
 	</string>
