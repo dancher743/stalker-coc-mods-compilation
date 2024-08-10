@@ -3220,7 +3220,11 @@ function vanish_bounty_hunt_target(first_speaker, second_speaker)
 				end
 				local actor = db.actor
 				break_dialog(actor, npc)
-				jg_guider.try_clear_prepared_follower(npc)
+				if (jg_guider.has_guiding_started()) then
+					jg_guider.clear()
+				else
+					jg_guider.try_clear_prepared_follower(npc)
+				end
 				xr_effects.remove_task_squad(actor, npc)
 				break
 			end
