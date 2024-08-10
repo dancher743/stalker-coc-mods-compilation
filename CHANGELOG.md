@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 * Replaced mine on sound with SoC variant
 * Separated squads of Survival mode from EOC mode
 * Changed text of `ui_st_zone_entrance` string
+* Corrected text of peaceful way dialogs for bounty hunt task
 
 ### Fixes
 * Fixed `medkit` cost in `bandit_loadout`
