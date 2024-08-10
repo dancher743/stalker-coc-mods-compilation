@@ -51,6 +51,7 @@ function clear()
 	end
 	curr_guid = {}
 	jg_utils.d_v("curr_guid")
+	jg_hud_timer.try_stop()
 	jg_timers.stop_g_timer('guid_fail')
 	jg_timers.g_start_timer('guid_msg',math.random(0,1),math.random(23),0,'jg_guider','prepare_follower')
 end 
@@ -206,7 +207,6 @@ function fail()
 	xr_statistic.inc_actor_reputation(-500)
 	local snpc = alife():object(get_comm_id(curr_guid['squad_id']))
 	alun_utils.execute_script_on_squad(snpc,axr_companions.remove_from_actor_squad)
-	jg_hud_timer.try_stop()
 	clear()
 end
 
