@@ -42,7 +42,7 @@ All notable changes to this project will be documented in this file.
 * Added cleaning of `axr_task_manager.bounties_by_id` table after task completion
 
 ### Framework
-Added `hud_timer_ui` - UI-wrapper for HUD Timer
+* Added `hud_timer_ui` - UI-wrapper for HUD Timer
 
 ## [1.4.3] - 2024-07-21
 
