@@ -1,6 +1,12 @@
+--
+-- Companions Quick Menu 1.1 [UPDATE August 8]
+-- Author: Debrovski
+-- Changed by Dancher
+--
+
 local addonMenu=nil
 
-function show_quick_menu()
+function show()
 	if not(addonMenu) then
 		local i,v = next(axr_companions.get_non_hostage_companion_squads(),nil)
 		if not(v) or db.actor:is_talking() or not db.actor:alive() then 

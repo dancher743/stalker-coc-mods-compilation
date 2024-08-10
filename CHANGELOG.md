@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 * Changed text of `ui_st_zone_entrance` string
 * Corrected text of peaceful way dialogs for bounty hunt task
 * Handled peaceful way of bounty hunt task during Guide job
+* Changed API of `ui_addon_companion_quick_menu.script` and added copyright
 
 ### Fixes
 * Fixed `medkit` cost in `bandit_loadout`
