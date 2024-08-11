@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 * Reworked next surge/psi storm dialog
 * HUD Timer for Guide job
 * Rebuilded weather script from scratch!
+* Added functor of move all to box/ruck into an ammo item
 
 ### Improvements
 * Balanced distance and power of psysucker's aura
