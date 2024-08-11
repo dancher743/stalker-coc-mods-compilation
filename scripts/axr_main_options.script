@@ -164,7 +164,7 @@ function opt_menu_on_init(menu)
 				if (ctrl:GetCheck()) then
 					local outfit = db.actor:item_in_slot(7)
 					if (outfit) then 
-						local icon = system_ini():r_string_ex(outfit:section(),"character_portrait")
+						local icon = ini_sys:r_string_ex(outfit:section(),"character_portrait")
 						if (icon) then 
 							db.actor_binder.character_icon = icon
 							db.actor:set_character_icon(db.actor_binder.character_icon)

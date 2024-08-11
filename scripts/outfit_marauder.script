@@ -137,7 +137,7 @@ function get_comb_coeff(npc)
 end
 
 function has_chance_to_create(section)
-	local cost = system_ini():r_string_ex(section, "cost")
+	local cost = ini_sys:r_string_ex(section, "cost")
 	if cost == nil then
 		return false
 	end

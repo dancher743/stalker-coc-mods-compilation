@@ -501,7 +501,7 @@ function coc_rankings_set_icon(index)
 			if (axr_main.config:r_value(MM_OPTIONS,"enable_outfit_portrait",1,false) == true) then
 				local outfit = db.actor:item_in_slot(7)
 				if (outfit) then 
-					local icon = system_ini():r_string_ex(outfit:section(),"character_portrait")
+					local icon = ini_sys:r_string_ex(outfit:section(),"character_portrait")
 					if (icon and icon ~= STR_EMPTY) then
 						return icon
 					end

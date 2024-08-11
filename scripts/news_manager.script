@@ -244,12 +244,12 @@ function send_treasure_with_level(stash_name, se_box)
 end
 
 function get_inv_name(section)
-	return system_ini():r_string_ex(section,"inv_name")
+	return ini_sys:r_string_ex(section,"inv_name")
 end
 
 function relocate_item(actor, type, item, amount)
 	if db.actor == nil then return false end
-	if not (item and system_ini():section_exist(item)) then 
+	if not (item and ini_sys:section_exist(item)) then 
 		printf("ERROR: relocate_item - section %s does not exist",item)
 		return false
 	end

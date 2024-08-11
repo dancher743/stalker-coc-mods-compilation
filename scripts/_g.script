@@ -1539,7 +1539,7 @@ function get_object_count(obj,npc)
 end
 
 -- INI Extensions
-local ini_cache = { [system_ini()] = {} }
+local ini_cache = { [ini_sys] = {} }
 function clear_ini_cache(ini)
 	ini_cache[ini] = empty_table(ini_cache[ini])
 end

@@ -1778,7 +1778,7 @@ function text_npc_has_cancel_task(a,b)
         if not (sec) then
             return text or game.translate_string("st_task_none_active")
         end
-		local name = game.translate_string(system_ini():r_string_ex(sec,"inv_name") or STR_EMPTY)
+		local name = game.translate_string(ini_sys:r_string_ex(sec,"inv_name") or STR_EMPTY)
 		return strformat(text,name or STR_EMPTY)
 	end
 
@@ -2005,7 +2005,7 @@ function text_trade_npc_pda(a,b)
 			db.actor:transfer_item(item,npc)
 			news_manager.relocate_item(db.actor, "out", item:section())
 			relocate_money(npc, random_choice(10000,15000,20000,25000) , "in")
-			local name = game.translate_string(system_ini():r_string_ex(item:section(),"inv_name") or STR_EMPTY)
+			local name = game.translate_string(ini_sys:r_string_ex(item:section(),"inv_name") or STR_EMPTY)
 			return strformat(game.translate_string("st_broker_trade_valuable"),name)
 		end
 	end
