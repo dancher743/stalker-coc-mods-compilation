@@ -62,8 +62,9 @@ local function on_game_load()
 		end
 	end
 
+	local hint = "stash"
 	for i=1, math.floor(caches_count/2) do
-		create_random_stash(true,"stash")
+		create_random_stash(true,hint)
 	end
 	
 	-- remove all unused stashes from the list

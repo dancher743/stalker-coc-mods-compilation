@@ -44,6 +44,7 @@ All notable changes to this project will be documented in this file.
 ### Optimization
 * Automated sleep code of disguise system
 * Added cleaning of `axr_task_manager.bounties_by_id` table after task completion
+* Optimized hint string allocation in `coc_treasure_manager.on_game_load` function
 
 ### Framework
 * Added `hud_timer_ui` - UI-wrapper for HUD Timer
