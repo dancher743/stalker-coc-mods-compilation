@@ -284,6 +284,11 @@ function npc_on_death_callback(victim,who)
 	
 end
 
+function inc_rank(statistic)
+	inc_actor_rank(rank_rep[statistic].rnk, rank_rep[statistic].comps)
+	inc_actor_rank(rank_rep[statistic].rpt, rank_rep[statistic].comps)
+end
+
 function set_best_weapon(hit_amount)
 	-- Weapon currently equipped.
 	local active_item = db.actor:active_item()
