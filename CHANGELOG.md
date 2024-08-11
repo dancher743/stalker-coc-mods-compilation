@@ -48,6 +48,7 @@ All notable changes to this project will be documented in this file.
 
 ### Framework
 * Added `hud_timer_ui` - UI-wrapper for HUD Timer
+* Added `xr_help.script` as list of the solutions to help in the development
 
 ## [1.4.3] - 2024-07-21
 

@@ -1,0 +1,19 @@
+--[[
+
+List of the solutions to help in the development
+
+1. Get online object
+local obj = db.storage[se_obj.id] and db.storage[se_obj.id].object or level.object_by_id(se_obj.id)
+
+
+2. Get offline object
+local se_obj = alife_object(obj:id())
+
+local sim = alife()
+local se_obj = sim:object(obj:id())
+
+
+3. Check is actor in combat
+local has_comabat = not (is_empty(xr_combat_ignore.fighting_with_actor_npcs))
+
+]]
