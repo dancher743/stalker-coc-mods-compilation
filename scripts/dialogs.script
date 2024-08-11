@@ -3234,6 +3234,7 @@ function vanish_bounty_hunt_target(first_speaker, second_speaker)
 					jg_guider.try_clear_prepared_follower(npc)
 				end
 				xr_effects.remove_task_squad(actor, npc)
+				xr_statistic.inc_rank("bounty_hunt_peace")
 				break
 			end
 		end

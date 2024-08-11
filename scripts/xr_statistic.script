@@ -130,6 +130,9 @@ rank_rep = {
 			tourist				=	{rnk=25,	rpt=0,		comps = false},
 			well_dressed		=	{rnk=25,	rpt=0,		comps = false},
 			wishful_thinking	=	{rnk=25,	rpt=0,		comps = false},
+			
+			-- Added by Dancher
+			bounty_hunt_peace	=	{rnk=0,		rpt=20,		comps = true}
 }
 
 weapons_table = {}
