@@ -22,8 +22,13 @@ local function on_game_load()
 	try_start()
 end
 
+local function on_game_unload()
+	try_stop()
+end
+
 function on_game_start()
 	RegisterScriptCallback("on_game_load",on_game_load)
+	RegisterScriptCallback("on_game_unload",on_game_unload)
 end
 
 function try_start()

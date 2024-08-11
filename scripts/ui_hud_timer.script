@@ -16,7 +16,6 @@ function hud_timer_ui:__init() super()
 end
 
 function hud_timer_ui:__finalize()
-	self:Clear()
 end
 
 function hud_timer_ui:Clear()
