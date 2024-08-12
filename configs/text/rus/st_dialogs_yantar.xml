@@ -103,17 +103,20 @@
 	</string>
 <!------------------- added by Dancher -------->
 	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_0">
-		<text>Не подскажите, когда будет ближайший выброс и пси-шторм?</text>
+		<text>Не подскажите, через сколько будет катаклизм?</text>
 	</string>
 	
 	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_0">
-		<text>Аппаратура выдаёт приблизительную оценку:</text>
+		<text>Аппаратура выдаёт оценку:</text>
 	</string>
 	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_0_1">
-		<text>выброс через %s ч.</text>
+		<text>выброс - %s ч.</text>
 	</string>
 	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_0_2">
-		<text>пси-шторм через %s ч.</text>
+		<text>пси-шторм - %s ч.</text>
+	</string>
+	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_0_3">
+		<text>менее 1</text>
 	</string>
 	
 	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_1">

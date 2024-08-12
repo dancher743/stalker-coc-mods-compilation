@@ -3276,6 +3276,10 @@ function on_setup_bounty_hunt(actor,npc,p)
 	SkipFrame(postpone_for_next_frame)
 end
 
+function remove_bounty_hunt_target(actor,npc,p)
+	axr_task_manager.bounties_by_id[p[1]] = nil
+end
+
 function fail_task_dec_goodwill(actor,npc,p)
 	local amt = tonumber(p[1]) or 50
 	for i=2,#p do
@@ -3323,7 +3327,7 @@ end
 function reward_random_item(actor,npc,p)
 	if (#p > 0) then
 		local section = p[math.random(#p)]
-		if (system_ini():section_exist(section)) then
+		if (ini_sys:section_exist(section)) then
 			alife():create(section,vector(),0,0,0)
 		end
 	end
@@ -3355,7 +3359,7 @@ function setup_companion_task(actor,npc,p)
 		return
 	end
 
-	if not (system_ini():section_exist(p[1])) then
+	if not (ini_sys:section_exist(p[1])) then
 		printf("setup_companion_task: Trying to setup companion squad with a non-existent section!")
 		return
 	end
@@ -3375,6 +3379,7 @@ function setup_companion_task(actor,npc,p)
 			utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss",true)
 			utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_teleport",p[4] == "true")
 			if (p[5] == "true") then
+				utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_hostage",true)
 				xrs_kill_wounded.hostage_list[se_obj.id] = smart.id
 			end
 		end
@@ -3406,17 +3411,17 @@ function setup_generic_fetch_task(actor,npc,p)
 	if (p[1] and p[2] and p[3]) then
 		local sec = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 		DIALOG_LAST_ID = inventory_upgrades.victim_id
-		if (sec and system_ini():section_exist(sec)) then
-			dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(sec,"inv_name") or STR_EMPTY)
+		if (sec and ini_sys:section_exist(sec)) then
+			dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(sec,"inv_name") or STR_EMPTY)
 		else
 			sec = #p > 3 and p[math.random(3,#p)] or p[3]
-			if (sec and system_ini():section_exist(sec)) then
+			if (sec and ini_sys:section_exist(sec)) then
 				utils.save_var(db.actor,p[1],sec)
 				local count = tonumber(p[2]) or 1
 				if (count > 1) then
 					utils.save_var(db.actor,p[1].."_count",count)
 				end
-				dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(sec,"inv_name") or STR_EMPTY)
+				dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(sec,"inv_name") or STR_EMPTY)
 			else
 				printf("ERROR: xr_effects:setup_generic_fetch_task - invalid section %s",sec)
 			end
@@ -3428,8 +3433,8 @@ end
 function setup_rare_mutant_fetch_task(actor,npc,p)
 	local part = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
-	if (part and system_ini():section_exist(part)) then
-		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(part,"inv_name") or STR_EMPTY)
+	if (part and ini_sys:section_exist(part)) then
+		dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(part,"inv_name") or STR_EMPTY)
 	else
 		local parts = {
 		"mutant_part_controller_glass",
@@ -3442,7 +3447,7 @@ function setup_rare_mutant_fetch_task(actor,npc,p)
 		}
 		part = parts[math.random(#parts)]
 		utils.save_var(db.actor,p[1],part)
-		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(part,"inv_name") or STR_EMPTY)
+		dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(part,"inv_name") or STR_EMPTY)
 	end
 end
 
@@ -3450,8 +3455,8 @@ end
 function setup_artefact_fetch_task(actor,npc,p)
 	local artefact = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
-	if (artefact and system_ini():section_exist(artefact)) then
-		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(artefact,"inv_name") or STR_EMPTY)
+	if (artefact and ini_sys:section_exist(artefact)) then
+		dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(artefact,"inv_name") or STR_EMPTY)
 	else
 		local arts = {
 		"af_cristall",
@@ -3481,15 +3486,15 @@ function setup_artefact_fetch_task(actor,npc,p)
 
 		artefact = arts[math.random(#arts)]
 		utils.save_var(db.actor,p[1],artefact)
-		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(artefact,"inv_name") or STR_EMPTY)
+		dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(artefact,"inv_name") or STR_EMPTY)
 	end
 end
 
 function setup_weapon_fetch_task(actor,npc,p)
 	local wpn = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
-	if (wpn and system_ini():section_exist(wpn)) then
-		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(wpn,"inv_name") or STR_EMPTY)
+	if (wpn and ini_sys:section_exist(wpn)) then
+		dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(wpn,"inv_name") or STR_EMPTY)
 	else
 		local itm = {
 				"wpn_bm16",
@@ -3516,7 +3521,7 @@ function setup_weapon_fetch_task(actor,npc,p)
 				"wpn_pkm"
 		}
 		wpn = itm[math.random(#itm)]
-		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(wpn,"inv_name") or STR_EMPTY)
+		dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(wpn,"inv_name") or STR_EMPTY)
 		utils.save_var(db.actor,p[1],wpn)
 	end
 end
@@ -3527,8 +3532,8 @@ end
 function setup_supplies_fetch_task(actor,npc,p)
 	local itm = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
-	if (itm and system_ini():section_exist(itm)) then
-		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(itm,"inv_name") or STR_EMPTY)
+	if (itm and ini_sys:section_exist(itm)) then
+		dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(itm,"inv_name") or STR_EMPTY)
 	else
 		local itms = {
 					"bandage",
@@ -3551,7 +3556,7 @@ function setup_supplies_fetch_task(actor,npc,p)
 					"energy_drink"
 					}
 		itm = itms[math.random(#itms)]
-		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(itm,"inv_name") or STR_EMPTY)
+		dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(itm,"inv_name") or STR_EMPTY)
 		utils.save_var(db.actor,p[1],itm)
 		utils.save_var(db.actor,p[1].."_count",math.random(p[2] and tonumber(p[2]) or 1,p[3] and tonumber(p[3]) or 1))
 	end
@@ -3877,7 +3882,7 @@ end
 
 function run_postprocess(actor, npc, p)
 	if (p[1]) then
-		if(system_ini():section_exist(p[1])) then
+		if(ini_sys:section_exist(p[1])) then
 			local num = 2000 + math.random(100)
 			if(p[2] and type(p[2]) == "number" and p[2]>0) then
 				num = p[2]
@@ -5302,7 +5307,7 @@ function create_squad_member(actor, obj, p)
 	if p[3] ~= nil then
 		local spawn_point
 		if p[3] == "simulation_point" then
-			spawn_point = system_ini():r_string_ex(squad:section_name(),"spawn_point")
+			spawn_point = ini_sys:r_string_ex(squad:section_name(),"spawn_point")
 			if spawn_point == STR_EMPTY or spawn_point == nil then
 				spawn_point = xr_logic.parse_condlist(obj, "spawn_point", "spawn_point", squad_smart.spawn_point)
 			else

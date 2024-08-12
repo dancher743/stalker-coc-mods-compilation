@@ -184,7 +184,7 @@ function CSurgeManager:start(manual)
 		return
 	end
 	
-	if (level_name == "l13_generators" or level_name == "l11_hospital") then
+	if (level_name == "l13_generators" or level_name == "l11_hospital" or has_alife_info("bar_arena_fight")) then
 		xr_statistic.inc_counter("surges")
 		self.skip_message = false
 		self:skip_surge()
@@ -478,11 +478,14 @@ function CSurgeManager:update()
 	if not(self.started) then
 		local g_time = game.get_game_time()
 		if(self.time_forwarded) then
+			self.time_forwarded = false
 			local diff = math.abs(self._delta - g_time:diffSec(self.last_surge_time))
 			if(diff<3600) then
-				self._delta = 3*3600+g_time:diffSec(self.last_surge_time)
+				self.skip_message = false
+                xr_statistic.inc_counter("surges")
+                self:skip_surge()
+                return
 			end
-			self.time_forwarded = false
 		end
 		if(g_time:diffSec(self.last_surge_time) < self._delta) then
 			return
@@ -927,7 +930,7 @@ function CSurgeManager:hit_power(power,hit_type)
 	local helmet_protection = 0
 	local helmet = db.actor:item_in_slot(12)
 	if helmet ~= nil then
-		helmet_protection = system_ini():r_float_ex(helmet:section(),hit_types[hit_type+1].."_protection")*suit_factors[hit_type+1]
+		helmet_protection = ini_sys:r_float_ex(helmet:section(),hit_types[hit_type+1].."_protection")*suit_factors[hit_type+1]
 	end
 
 	local ini,g_time

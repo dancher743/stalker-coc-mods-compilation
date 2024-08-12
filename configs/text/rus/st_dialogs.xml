@@ -1217,13 +1217,16 @@
 	<!-- Added by Dancher -->
 	
 	<string id="vanish_bounty_hunt_target_dialog_0">
-		<text>За твою голову назначена награда. Предлагаю тебе разойтись мирным путём.</text>
+		<text>За твою голову назначена награда. Предлагаю разойтись мирно.</text>
 	</string>
 	<string id="vanish_bounty_hunt_target_dialog_1">
-		<text>Слышал об этом... Не убивай меня, сталкер. Я исчезну, и ты меня больше никогда не увидишь.</text>
+		<text>Не убивай меня, сталкер! Я исчезну, и ты меня больше никогда не увидишь. Договорились?</text>
 	</string>
 	<string id="vanish_bounty_hunt_target_dialog_11">
-		<text>Всего хорошего.</text>
+		<text>Отлично. Всего хорошего.</text>
+	</string>
+	<string id="vanish_bounty_hunt_target_dialog_12">
+		<text>Подожди пока.</text>
 	</string>
 	<string id="vanish_bounty_hunt_target_dialog_20">
 		<text>Отвали.</text>
@@ -1242,5 +1245,8 @@
 	</string>
 	<string id="vanish_bounty_hunt_target_dialog_25">
 		<text>Я тебя не боюсь.</text>
+	</string>
+	<string id="vanish_bounty_hunt_target_dialog_26">
+		<text>Чего?</text>
 	</string>
 </string_table>

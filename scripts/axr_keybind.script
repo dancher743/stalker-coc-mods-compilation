@@ -140,7 +140,7 @@ function action.companions_wheel(p)
 	if not (p==1) then
 		return 
 	end
-	ui_addon_companion_quick_menu.show_quick_menu()
+	ui_addon_companion_quick_menu.show()
 end
 
 function action.inventory_unload_weapons(p)

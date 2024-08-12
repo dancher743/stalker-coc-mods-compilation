@@ -2,6 +2,60 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.4] - Unreleased
+
+### Features
+* More foggy weather during Survival mode
+* Reworked next surge/psi storm dialog
+* HUD Timer for Guide job
+* Rebuilded weather script from scratch!
+* Added functor of move all to box/ruck into an ammo item
+
+### Improvements
+* Balanced distance and power of psysucker's aura
+* Removed gunsmith and outfit toolkits from trade
+* Increased drop chance of gunsmith and outfit toolkits from corpses
+* Added gunsmith and outfit toolkits into `bandit_loadout`
+* Changed `repair_max_condition` of gunsmith and outfit toolkits
+* Corrected text of toolkits tips
+* Increased `repair_part_bonus` for outfit toolkit
+* Corrected text of `yan_stalker_sakharov_next_surge_or_psi_storm_0` string
+* Decreased  `play_prob` of `rnd_flies` ambient
+* Replaced mine on sound with SoC variant
+* Separated squads of Survival mode from EOC mode
+* Changed text of `ui_st_zone_entrance` string
+* Corrected text of peaceful way dialogs for bounty hunt task
+* Handled peaceful way of bounty hunt task during Guide job
+* Changed API of `ui_addon_companion_quick_menu.script` and added copyright
+* Added cancel phase and seven discard phase into peaceful way dialog of bounty hunt task
+* Added increasing reputation for peaceful way of bounty hunt task
+* Corrected psysucker's spawn
+* Added skip message for psi-storm
+
+### Fixes
+* Fixed `medkit` cost in `bandit_loadout`
+* Fixed overreparing of toolkits
+* Added discovery as a state into disguise system to fix relation bug
+* Fixed rate of `main_update()` of disguise system
+* Transferred Guide job timers on realtime manager to prevent overflow of  `game.time()`
+* Fixed hours rounding in code of next surge/psi storm dialog
+* Fixed wrong text of `ui_mm_show_guide_job_on_map` string in rus localization
+* Added missing `companion_is_hostage` flag into `xr_effects.setup_companion_task` function
+* Replaced `is_bounty_hunt_target` and `vanish_bounty_hunt_target` functions with squad check
+* Added surge/psi storm skip if time forwarded
+* Included  `bar_arena_fight` info in the condition for starting the surge/psi-storm
+
+### Optimization
+* Automated sleep code of disguise system
+* Added cleaning of `axr_task_manager.bounties_by_id` table after task completion
+* Optimized hint string allocation in `coc_treasure_manager.on_game_load` function
+* Cached `system_ini()` allocations (part 2)
+
+### Framework
+* Added `hud_timer_ui` - UI-wrapper for HUD Timer
+* Added `xr_help.script` as list of the solutions to help in the development
+* Added `inc_rank` function into `xr_statistic.script`
+
 ## [1.4.3] - 2024-07-21
 
 ### Features

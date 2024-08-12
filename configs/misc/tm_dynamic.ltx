@@ -342,8 +342,8 @@ condlist_0 = {!task_giver_alive(simulation_task_11)} fail
 
 on_init = %=drx_sl_init_bounty_hunt(simulation_task_11:stalker)%
 on_job_descr = %=drx_sl_setup_bounty_hunt(simulation_task_11:stalker)%
-on_complete = %=drx_sl_reward_random_money(2500:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(simulation_task_11) =drx_sl_unregister_task_giver(simulation_task_11) =drx_sl_reset_stored_task(simulation_task_11)%
-on_fail = %=fail_task_dec_goodwill(25:stalker) =drx_sl_unregister_task_giver(simulation_task_11) =drx_sl_reset_stored_task(simulation_task_11)%
+on_complete = %=drx_sl_reward_random_money(2500:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(simulation_task_11) =drx_sl_unregister_task_giver(simulation_task_11) =drx_sl_reset_stored_task(simulation_task_11) =remove_bounty_hunt_target(simulation_task_11)%
+on_fail = %=fail_task_dec_goodwill(25:stalker) =drx_sl_unregister_task_giver(simulation_task_11) =drx_sl_reset_stored_task(simulation_task_11) =remove_bounty_hunt_target(simulation_task_11)%
 
 ;------------------------------------------------
 ; Vengeance for Stalker Simulation Task-
@@ -370,8 +370,8 @@ condlist_0 = {!task_giver_alive(simulation_task_12)} fail
 
 on_init = %=on_init_bounty_hunt(simulation_task_12:bandit)%
 on_job_descr = %=on_setup_bounty_hunt(simulation_task_12:bandit)%
-on_complete = %=drx_sl_reward_random_rifle(2000:8000) =drx_sl_reward(1:vodka) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(simulation_task_12) =drx_sl_unregister_task_giver(simulation_task_12) =drx_sl_reset_stored_task(simulation_task_12)%
-on_fail = %=fail_task_dec_goodwill(25:stalker) =drx_sl_unregister_task_giver(simulation_task_12) =drx_sl_reset_stored_task(simulation_task_12)%
+on_complete = %=drx_sl_reward_random_rifle(2000:8000) =drx_sl_reward(1:vodka) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(simulation_task_12) =drx_sl_unregister_task_giver(simulation_task_12) =drx_sl_reset_stored_task(simulation_task_12) =remove_bounty_hunt_target(simulation_task_12)%
+on_fail = %=fail_task_dec_goodwill(25:stalker) =drx_sl_unregister_task_giver(simulation_task_12) =drx_sl_reset_stored_task(simulation_task_12) =remove_bounty_hunt_target(simulation_task_12)%
 
 ;------------------------------------------------
 ; Find Supplies for Bandit Simulation Task-
@@ -518,8 +518,8 @@ condlist_0 = {!task_giver_alive(simulation_task_17)} fail
 
 on_init = %=drx_sl_init_bounty_hunt(simulation_task_17:army)%
 on_job_descr = %=drx_sl_setup_bounty_hunt(simulation_task_17:army)%
-on_complete = %=drx_sl_reward_random_rifle(2000:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:army) =inc_task_stage(simulation_task_17) =drx_sl_unregister_task_giver(simulation_task_17) =drx_sl_reset_stored_task(simulation_task_17)%
-on_fail = %=fail_task_dec_goodwill(25:army) =drx_sl_unregister_task_giver(simulation_task_17) =drx_sl_reset_stored_task(simulation_task_17)%
+on_complete = %=drx_sl_reward_random_rifle(2000:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:army) =inc_task_stage(simulation_task_17) =drx_sl_unregister_task_giver(simulation_task_17) =drx_sl_reset_stored_task(simulation_task_17) =remove_bounty_hunt_target(simulation_task_17)%
+on_fail = %=fail_task_dec_goodwill(25:army) =drx_sl_unregister_task_giver(simulation_task_17) =drx_sl_reset_stored_task(simulation_task_17) =remove_bounty_hunt_target(simulation_task_17)%
 
 ;------------------------------------------------
 ; Subcontractor for Merc Simulation Task-
@@ -546,8 +546,8 @@ condlist_0 = {!task_giver_alive(simulation_task_18)} fail
 
 on_init = %=on_init_bounty_hunt(simulation_task_18:stalker:army:dolg)%
 on_job_descr = %=on_setup_bounty_hunt(simulation_task_18:stalker:army:dolg)%
-on_complete = %=drx_sl_reward_random_money(2500:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:killer) =inc_task_stage(simulation_task_18) =drx_sl_unregister_task_giver(simulation_task_18) =drx_sl_reset_stored_task(simulation_task_18)%
-on_fail = %=fail_task_dec_goodwill(25:killer) =drx_sl_unregister_task_giver(simulation_task_18) =drx_sl_reset_stored_task(simulation_task_18)%
+on_complete = %=drx_sl_reward_random_money(2500:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:killer) =inc_task_stage(simulation_task_18) =drx_sl_unregister_task_giver(simulation_task_18) =drx_sl_reset_stored_task(simulation_task_18) =remove_bounty_hunt_target(simulation_task_18)%
+on_fail = %=fail_task_dec_goodwill(25:killer) =drx_sl_unregister_task_giver(simulation_task_18) =drx_sl_reset_stored_task(simulation_task_18) =remove_bounty_hunt_target(simulation_task_18)%
 
 ;------------------------------------------------
 ; Eliminate Enemy Forces for Monolith Simulation Task-
@@ -882,8 +882,8 @@ condlist_0 = {!task_giver_alive(simulation_task_30)} fail
 
 on_init = %=drx_sl_init_bounty_hunt(simulation_task_30:monolith)%
 on_job_descr = %=drx_sl_setup_bounty_hunt(simulation_task_30:monolith)%
-on_complete = %=drx_sl_reward_random(2500:3500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:monolith) =inc_task_stage(simulation_task_30) =drx_sl_unregister_task_giver(simulation_task_30) =drx_sl_reset_stored_task(simulation_task_30)%
-on_fail = %=fail_task_dec_goodwill(25:monolith) =drx_sl_unregister_task_giver(simulation_task_30) =drx_sl_reset_stored_task(simulation_task_30)%
+on_complete = %=drx_sl_reward_random(2500:3500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:monolith) =inc_task_stage(simulation_task_30) =drx_sl_unregister_task_giver(simulation_task_30) =drx_sl_reset_stored_task(simulation_task_30) =remove_bounty_hunt_target(simulation_task_30)%
+on_fail = %=fail_task_dec_goodwill(25:monolith) =drx_sl_unregister_task_giver(simulation_task_30) =drx_sl_reset_stored_task(simulation_task_30) =remove_bounty_hunt_target(simulation_task_30)%
 
 ;------------------------------------------------
 ; Find Supplies for Merc Simulation Task-
@@ -1030,8 +1030,8 @@ condlist_0 = {!task_giver_alive(simulation_task_35)} fail
 
 on_init = %=on_init_bounty_hunt(simulation_task_35:stalker:army:dolg)%
 on_job_descr = %=on_setup_bounty_hunt(simulation_task_35:stalker:army:dolg)%
-on_complete = %=drx_sl_reward_random_money(2500:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:bandit) =inc_task_stage(simulation_task_35) =drx_sl_unregister_task_giver(simulation_task_35) =drx_sl_reset_stored_task(simulation_task_35)%
-on_fail = %=fail_task_dec_goodwill(25:bandit) =drx_sl_unregister_task_giver(simulation_task_35) =drx_sl_reset_stored_task(simulation_task_35)%
+on_complete = %=drx_sl_reward_random_money(2500:4500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:bandit) =inc_task_stage(simulation_task_35) =drx_sl_unregister_task_giver(simulation_task_35) =drx_sl_reset_stored_task(simulation_task_35) =remove_bounty_hunt_target(simulation_task_35)%
+on_fail = %=fail_task_dec_goodwill(25:bandit) =drx_sl_unregister_task_giver(simulation_task_35) =drx_sl_reset_stored_task(simulation_task_35) =remove_bounty_hunt_target(simulation_task_35)%
 
 ;------------------------------------------------
 ; Eliminate Dangerous Mutants for Clear Sky Simulation Task-

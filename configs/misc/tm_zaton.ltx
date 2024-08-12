@@ -264,8 +264,8 @@ condlist_0 = {!task_giver_alive(zat_a2_stalker_barmen_task_3)} fail
 
 on_init = %=on_init_bounty_hunt(zat_a2_stalker_barmen_task_3:army)%
 on_job_descr = %=on_setup_bounty_hunt(zat_a2_stalker_barmen_task_3:army)%
-on_complete = %=drx_sl_reward(1:af_baloon) =drx_sl_reward(1:vodka) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(zat_a2_stalker_barmen_task_3) =drx_sl_unregister_task_giver(zat_a2_stalker_barmen_task_3) =drx_sl_reset_stored_task(zat_a2_stalker_barmen_task_3)%
-on_fail = %=fail_task_dec_goodwill(25:stalker) =drx_sl_unregister_task_giver(zat_a2_stalker_barmen_task_3) =drx_sl_reset_stored_task(zat_a2_stalker_barmen_task_3)%
+on_complete = %=drx_sl_reward(1:af_baloon) =drx_sl_reward(1:vodka) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(zat_a2_stalker_barmen_task_3) =drx_sl_unregister_task_giver(zat_a2_stalker_barmen_task_3) =drx_sl_reset_stored_task(zat_a2_stalker_barmen_task_3) =remove_bounty_hunt_target(zat_a2_stalker_barmen_task_3)%
+on_fail = %=fail_task_dec_goodwill(25:stalker) =drx_sl_unregister_task_giver(zat_a2_stalker_barmen_task_3) =drx_sl_reset_stored_task(zat_a2_stalker_barmen_task_3) =remove_bounty_hunt_target(zat_a2_stalker_barmen_task_3)%
 
 ; \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 

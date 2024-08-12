@@ -1778,7 +1778,7 @@ function text_npc_has_cancel_task(a,b)
         if not (sec) then
             return text or game.translate_string("st_task_none_active")
         end
-		local name = game.translate_string(system_ini():r_string_ex(sec,"inv_name") or STR_EMPTY)
+		local name = game.translate_string(ini_sys:r_string_ex(sec,"inv_name") or STR_EMPTY)
 		return strformat(text,name or STR_EMPTY)
 	end
 
@@ -2005,7 +2005,7 @@ function text_trade_npc_pda(a,b)
 			db.actor:transfer_item(item,npc)
 			news_manager.relocate_item(db.actor, "out", item:section())
 			relocate_money(npc, random_choice(10000,15000,20000,25000) , "in")
-			local name = game.translate_string(system_ini():r_string_ex(item:section(),"inv_name") or STR_EMPTY)
+			local name = game.translate_string(ini_sys:r_string_ex(item:section(),"inv_name") or STR_EMPTY)
 			return strformat(game.translate_string("st_broker_trade_valuable"),name)
 		end
 	end
@@ -3159,17 +3159,28 @@ end
 -- Added by Dancher
 
 function is_bounty_hunt_target(first_speaker, second_speaker)
-	local npc = who_is_npc(first_speaker, second_speaker)
-	local actor = db.actor
-	local id = npc:id()
 	local bounties_npcs = axr_task_manager.bounties_by_id
 	
+	if (is_empty(bounties_npcs)) then
+		return false
+	end
+	
 	local result = false
-
-	for _,npc_id in pairs(bounties_npcs) do
-		if (npc_id == id) then
-			result = true
-			break
+	local npc = who_is_npc(first_speaker, second_speaker)
+	local squad = get_object_squad(npc)
+	
+	if (squad) then
+		local bounties_npc_id = {}
+		for _,npc_id in pairs(bounties_npcs) do
+			bounties_npc_id[npc_id] = true
+		end
+		
+		for k in squad:squad_members() do
+			local member = db.storage[k.id] and db.storage[k.id].object
+			if (member and bounties_npc_id[member:id()]) then
+				result = true
+				break
+			end
 		end
 	end
 	
@@ -3190,23 +3201,42 @@ function cant_vanish_bounty_hunt_target(first_speaker, second_speaker)
 end
 
 function vanish_bounty_hunt_target(first_speaker, second_speaker)
-	local npc = who_is_npc(first_speaker, second_speaker)
-	local actor = db.actor
-	local id = npc:id()
 	local bounties_npcs = axr_task_manager.bounties_by_id
-
-	for task_id,npc_id in pairs(bounties_npcs) do
-		if (npc_id == id) then
-			local tm = task_manager.get_task_manager()
-			local tsk = tm.task_info[task_id]
-			if (tsk and tsk.stage == 0) then
-				--tsk.stage = 3
-				tsk.stage = 1 -- complete task anyway instead of failing
+	
+	if (is_empty(bounties_npcs)) then
+		return
+	end
+	
+	local npc = who_is_npc(first_speaker, second_speaker)
+	local squad = get_object_squad(npc)
+	
+	if (squad) then
+		local bounties_npc_id = {}
+		for task_id,npc_id in pairs(bounties_npcs) do
+			bounties_npc_id[npc_id] = task_id
+		end
+		
+		for k in squad:squad_members() do
+			local member = db.storage[k.id] and db.storage[k.id].object
+			local task_id = member and bounties_npc_id[member:id()]
+			if (task_id) then
+				local tm = task_manager.get_task_manager()
+				local tsk = tm.task_info[task_id]
+				if (tsk and tsk.stage == 0) then
+					--tsk.stage = 3
+					tsk.stage = 1 -- complete task anyway instead of failing
+				end
+				local actor = db.actor
+				break_dialog(actor, npc)
+				if (jg_guider.has_guiding_started()) then
+					jg_guider.clear()
+				else
+					jg_guider.try_clear_prepared_follower(npc)
+				end
+				xr_effects.remove_task_squad(actor, npc)
+				xr_statistic.inc_rank("bounty_hunt_peace")
+				break
 			end
-			break_dialog(actor, npc)
-			jg_guider.try_clear_prepared_follower(npc)
-			xr_effects.remove_task_squad(actor, npc)
-			break
 		end
 	end
 end
@@ -3214,7 +3244,7 @@ end
 local last_vanish_phrase_2_index
 
 function get_vanish_bounty_hunt_target_phrase_2(first_speaker, second_speaker)
-	local phrase_index = utils.pick_without(last_vanish_phrase_2_index,{0,1,2,3,4,5})
+	local phrase_index = utils.pick_without(last_vanish_phrase_2_index,{0,1,2,3,4,5,6})
 	local phrase = strformat("vanish_bounty_hunt_target_dialog_2%s",phrase_index)
 	last_vanish_phrase_2_index = phrase_index
 

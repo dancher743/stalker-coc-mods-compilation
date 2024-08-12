@@ -91,8 +91,8 @@ condlist_0 = {!task_giver_alive(drx_sl_zat_b7_bandit_boss_sultan_task_2)} fail
 
 on_init = %=drx_sl_init_bounty_hunt(drx_sl_zat_b7_bandit_boss_sultan_task_2:bandit)%
 on_job_descr = %=drx_sl_setup_bounty_hunt(drx_sl_zat_b7_bandit_boss_sultan_task_2:bandit)%
-on_complete = %=drx_sl_reward_random(2500:3500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:bandit) =inc_task_stage(drx_sl_zat_b7_bandit_boss_sultan_task_2) =drx_sl_unregister_task_giver(drx_sl_zat_b7_bandit_boss_sultan_task_2)%
-on_fail = %=fail_task_dec_goodwill(25:bandit) =drx_sl_meet_random_honcho() =drx_sl_decrease_sl_tasks_count() =drx_sl_unregister_task_giver(drx_sl_zat_b7_bandit_boss_sultan_task_2)%
+on_complete = %=drx_sl_reward_random(2500:3500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:bandit) =inc_task_stage(drx_sl_zat_b7_bandit_boss_sultan_task_2) =drx_sl_unregister_task_giver(drx_sl_zat_b7_bandit_boss_sultan_task_2) =remove_bounty_hunt_target(drx_sl_zat_b7_bandit_boss_sultan_task_2)%
+on_fail = %=fail_task_dec_goodwill(25:bandit) =drx_sl_meet_random_honcho() =drx_sl_decrease_sl_tasks_count() =drx_sl_unregister_task_giver(drx_sl_zat_b7_bandit_boss_sultan_task_2) =remove_bounty_hunt_target(drx_sl_zat_b7_bandit_boss_sultan_task_2)%
 
 ;------------------------------------------------
 ; Sultan (Bandit Honcho) Kill the Rat Storyline Task-
@@ -118,8 +118,8 @@ condlist_0 = {!task_giver_alive(drx_sl_zat_b7_bandit_boss_sultan_task_3)} fail
 
 on_init = %=on_init_bounty_hunt(drx_sl_zat_b7_bandit_boss_sultan_task_3:bandit)%
 on_job_descr = %=on_setup_bounty_hunt(drx_sl_zat_b7_bandit_boss_sultan_task_3:bandit)%
-on_complete = %=drx_sl_reward_random(2000:3500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:bandit) =inc_task_stage(drx_sl_zat_b7_bandit_boss_sultan_task_3) =drx_sl_unregister_task_giver(drx_sl_zat_b7_bandit_boss_sultan_task_3)%
-on_fail = %=fail_task_dec_goodwill(25:bandit) =drx_sl_meet_random_honcho() =drx_sl_decrease_sl_tasks_count() =drx_sl_unregister_task_giver(drx_sl_zat_b7_bandit_boss_sultan_task_3)%
+on_complete = %=drx_sl_reward_random(2000:3500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:bandit) =inc_task_stage(drx_sl_zat_b7_bandit_boss_sultan_task_3) =drx_sl_unregister_task_giver(drx_sl_zat_b7_bandit_boss_sultan_task_3) =remove_bounty_hunt_target(drx_sl_zat_b7_bandit_boss_sultan_task_3)%
+on_fail = %=fail_task_dec_goodwill(25:bandit) =drx_sl_meet_random_honcho() =drx_sl_decrease_sl_tasks_count() =drx_sl_unregister_task_giver(drx_sl_zat_b7_bandit_boss_sultan_task_3) =remove_bounty_hunt_target(drx_sl_zat_b7_bandit_boss_sultan_task_3)%
 
 ;------------------------------------------------
 ; Sultan (Bandit Honcho) Search Lab X-16 (Yantar) Storyline Task-
@@ -221,8 +221,8 @@ condlist_0 = {!task_giver_alive(drx_sl_val_smart_terrain_7_4_bandit_trader_stalk
 
 on_init = %=on_init_bounty_hunt(drx_sl_val_smart_terrain_7_4_bandit_trader_stalker_task_2:army)%
 on_job_descr = %=on_setup_bounty_hunt(drx_sl_val_smart_terrain_7_4_bandit_trader_stalker_task_2:army)%
-on_complete = %=drx_sl_reward_random(2500:3500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:bandit) =inc_task_stage(drx_sl_val_smart_terrain_7_4_bandit_trader_stalker_task_2) =drx_sl_unregister_task_giver(drx_sl_val_smart_terrain_7_4_bandit_trader_stalker_task_2)%
-on_fail = %=fail_task_dec_goodwill(25:bandit) =drx_sl_meet_random_honcho() =drx_sl_decrease_sl_tasks_count() =drx_sl_unregister_task_giver(drx_sl_val_smart_terrain_7_4_bandit_trader_stalker_task_2)%
+on_complete = %=drx_sl_reward_random(2500:3500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:bandit) =inc_task_stage(drx_sl_val_smart_terrain_7_4_bandit_trader_stalker_task_2) =drx_sl_unregister_task_giver(drx_sl_val_smart_terrain_7_4_bandit_trader_stalker_task_2) =remove_bounty_hunt_target(drx_sl_val_smart_terrain_7_4_bandit_trader_stalker_task_2)%
+on_fail = %=fail_task_dec_goodwill(25:bandit) =drx_sl_meet_random_honcho() =drx_sl_decrease_sl_tasks_count() =drx_sl_unregister_task_giver(drx_sl_val_smart_terrain_7_4_bandit_trader_stalker_task_2) =remove_bounty_hunt_target(drx_sl_val_smart_terrain_7_4_bandit_trader_stalker_task_2)%
 
 ; \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
@@ -298,8 +298,8 @@ condlist_0 = {!task_giver_alive(zat_b7_bandit_boss_sultan_task_1)} fail
 
 on_init = %=drx_sl_init_bounty_hunt(zat_b7_bandit_boss_sultan_task_1:bandit)%
 on_job_descr = %=drx_sl_setup_bounty_hunt(zat_b7_bandit_boss_sultan_task_1:bandit)%
-on_complete = %=drx_sl_reward_random(4500:7000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:bandit) =inc_task_stage(zat_b7_bandit_boss_sultan_task_1) =drx_sl_unregister_task_giver(zat_b7_bandit_boss_sultan_task_1) =drx_sl_reset_stored_task(zat_b7_bandit_boss_sultan_task_1)%
-on_fail = %=fail_task_dec_goodwill(25:bandit) =drx_sl_unregister_task_giver(zat_b7_bandit_boss_sultan_task_1) =drx_sl_reset_stored_task(zat_b7_bandit_boss_sultan_task_1)%
+on_complete = %=drx_sl_reward_random(4500:7000) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:bandit) =inc_task_stage(zat_b7_bandit_boss_sultan_task_1) =drx_sl_unregister_task_giver(zat_b7_bandit_boss_sultan_task_1) =drx_sl_reset_stored_task(zat_b7_bandit_boss_sultan_task_1) =remove_bounty_hunt_target(zat_b7_bandit_boss_sultan_task_1)%
+on_fail = %=fail_task_dec_goodwill(25:bandit) =drx_sl_unregister_task_giver(zat_b7_bandit_boss_sultan_task_1) =drx_sl_reset_stored_task(zat_b7_bandit_boss_sultan_task_1) =remove_bounty_hunt_target(zat_b7_bandit_boss_sultan_task_1)%
 
 ;------------------------------------------------
 ; Sultan (Bandit Honcho) Eliminate Military Presence Dynamic Task-
@@ -458,8 +458,8 @@ condlist_0 = {!task_giver_alive(val_smart_terrain_7_4_bandit_trader_stalker_task
 
 on_init = %=drx_sl_init_bounty_hunt(val_smart_terrain_7_4_bandit_trader_stalker_task_4:bandit)%
 on_job_descr = %=drx_sl_setup_bounty_hunt(val_smart_terrain_7_4_bandit_trader_stalker_task_4:bandit)%
-on_complete = %=drx_sl_reward_random(2500:3500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:bandit) =inc_task_stage(val_smart_terrain_7_4_bandit_trader_stalker_task_4) =drx_sl_unregister_task_giver(val_smart_terrain_7_4_bandit_trader_stalker_task_4) =drx_sl_reset_stored_task(val_smart_terrain_7_4_bandit_trader_stalker_task_4)%
-on_fail = %=fail_task_dec_goodwill(25:bandit) =drx_sl_unregister_task_giver(val_smart_terrain_7_4_bandit_trader_stalker_task_4) =drx_sl_reset_stored_task(val_smart_terrain_7_4_bandit_trader_stalker_task_4)%
+on_complete = %=drx_sl_reward_random(2500:3500) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:bandit) =inc_task_stage(val_smart_terrain_7_4_bandit_trader_stalker_task_4) =drx_sl_unregister_task_giver(val_smart_terrain_7_4_bandit_trader_stalker_task_4) =drx_sl_reset_stored_task(val_smart_terrain_7_4_bandit_trader_stalker_task_4) =remove_bounty_hunt_target(val_smart_terrain_7_4_bandit_trader_stalker_task_4)%
+on_fail = %=fail_task_dec_goodwill(25:bandit) =drx_sl_unregister_task_giver(val_smart_terrain_7_4_bandit_trader_stalker_task_4) =drx_sl_reset_stored_task(val_smart_terrain_7_4_bandit_trader_stalker_task_4) =remove_bounty_hunt_target(val_smart_terrain_7_4_bandit_trader_stalker_task_4)%
 
 ; \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 

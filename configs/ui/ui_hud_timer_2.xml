@@ -1,0 +1,10 @@
+<w>
+	<hud_timer_2 x="869" y="0" width="155" height="66" stretch="1">
+		<background>
+			<texture>ui_hud_timer_games</texture>
+		</background>
+		<time x="140" y="23" stretch="1">
+			<text font="graffiti32" r="238" g="155" b="23" a="255" align="r"/>
+		</time>
+	</hud_timer_2>
+</w>

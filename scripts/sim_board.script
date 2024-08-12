@@ -169,7 +169,7 @@ end
 function simulation_board:create_squad(spawn_smart, sq_id)
 	--alun_utils.debug_write(strformat("simulation_board:create_squad spawn_smart=%s sq_id=%s",spawn_smart and spawn_smart:name(),sq_id))
 	local squad_id = tostring(sq_id)
-	-- if not (system_ini():section_exist(squad_id)) then
+	-- if not (ini_sys:section_exist(squad_id)) then
 		-- printf("squad section does not exist: %s",squad_id)
 		-- return
 	-- end

@@ -23,7 +23,7 @@ function start_timer(name,delay,name_script,name_func,param)
 	if not action
 		then action=STR_EMPTY
 	end
-	local time=game.time() --time in seconds since 1970
+	local time=realtime_manager.get_time_from_new_game_s() --realtime in seconds
 	local timers_tbl = jg_utils.l_v('timers_tbl',nil)
 	if timers_tbl == nil then
 		timers_tbl = {}
@@ -31,7 +31,7 @@ function start_timer(name,delay,name_script,name_func,param)
 	if timers_tbl[name] == nil then
 		timers_tbl[name] = {}
 	end
-	timers_tbl[name] = {name = name, delay = time+delay*10000, action = {name_script = name_script, name_func = name_func, param = param}}
+	timers_tbl[name] = {name = name, delay = time+delay, action = {name_script = name_script, name_func = name_func, param = param}}
 	jg_utils.s_v('timers_tbl', timers_tbl)
 	return true
 end
@@ -94,7 +94,7 @@ function check_timers()
 	if timers_tbl~=nil and table.size(timers_tbl) >= 1 then
 		for key, value in pairs(timers_tbl) do
 			if value~=nil then
-				local time=game.time() --time in seconds since 1970
+				local time=realtime_manager.get_time_from_new_game_s() --realtime in seconds
 				if value['delay'] <= time then
 					stop_timer(value['name'])
 					__do_timer_action(value['name'],value['action'])

@@ -28,13 +28,13 @@
 		<text>Gunsmith kit</text>
 	</string>
 	<string id="st_itm_gunsmith_toolkit_descr">
-		<text>A kit containing oils and tools used for basic firearm maintenance. Useful when out exploring, but also quite heavy.\n\n%c[255,255,1,1]Drag onto the item you wish to repair.</text>
+		<text>A kit containing oils and tools used for basic firearm maintenance. Useful when out exploring, but also quite heavy.\n\n%c[255,255,1,1]To repair, drag onto the item or click on the kit</text>
 	</string>
 	<string id="st_itm_outfit_toolkit">
 		<text>Sewing kit</text>
 	</string>
 	<string id="st_itm_outfit_toolkit_descr">
-		<text>A makeshift kit of sewing equipment and spare materials for outfit maintenance. Useful for repairing holes and tears in armour.\n\n%c[255,255,1,1]Drag onto the item you wish to repair.</text>
+		<text>A makeshift kit of sewing equipment and spare materials for outfit maintenance. Useful for repairing holes and tears in armour.\n\n%c[255,255,1,1]To repair, drag onto the item or click on the kit</text>
 	</string>
 	<string id="st_itm_repairkit_tier_1_name">
 		<text>Basic tools</text>

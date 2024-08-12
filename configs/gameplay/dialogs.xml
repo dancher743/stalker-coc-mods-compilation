@@ -2652,10 +2652,14 @@
                 <precondition>dialogs.can_vanish_bounty_hunt_target</precondition>
 				<text>vanish_bounty_hunt_target_dialog_1</text>
 				<next>11</next>
+				<next>12</next>
             </phrase>
 			<phrase id="11">
 				<text>vanish_bounty_hunt_target_dialog_11</text>
 				<action>dialogs.vanish_bounty_hunt_target</action>
+            </phrase>
+			<phrase id="12">
+				<text>vanish_bounty_hunt_target_dialog_12</text>
             </phrase>
 			<phrase id="2">
 				<precondition>dialogs.cant_vanish_bounty_hunt_target</precondition>

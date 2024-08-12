@@ -58,7 +58,7 @@ function motivator_binder:net_spawn(sobject)
 	end
 
 	self.object:enable_vision(true)
-	local visual = system_ini():r_string_ex(self.object:section(),"set_visual")
+	local visual = ini_sys:r_string_ex(self.object:section(),"set_visual")
 	if (visual and visual ~= STR_EMPTY) then
 		if visual == "actor_visual" then
 			self.object:set_visual_name(db.actor:get_visual_name())

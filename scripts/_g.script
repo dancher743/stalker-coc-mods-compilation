@@ -13,7 +13,7 @@ if (jit == nil) then
 end
 
 GAME_VERSION = "1.4.22"
-MOD_VERSION = "Dancher's Compilation 1.4.3"
+MOD_VERSION = "Dancher's Compilation 1.4.4 RC 6"
 
 if string.find(command_line(), "-dbg") then
 	DEV_DEBUG = true
@@ -1539,7 +1539,7 @@ function get_object_count(obj,npc)
 end
 
 -- INI Extensions
-local ini_cache = { [system_ini()] = {} }
+local ini_cache = { [ini_sys] = {} }
 function clear_ini_cache(ini)
 	ini_cache[ini] = empty_table(ini_cache[ini])
 end

@@ -106,10 +106,10 @@ function loot_ui:SetMutantImage()
 	giant				= {file="ui\\ui_actor_monsters_pda_1",x="0",y="200",special="0"},
 	}
 
-	local mutant_id = game.translate_string(system_ini():r_string_ex(self.section,"species") or STR_EMPTY)
+	local mutant_id = game.translate_string(ini_sys:r_string_ex(self.section,"species") or STR_EMPTY)
 
 	if mutant_id == "arena_monstr" then
-	mutant_id = game.translate_string(system_ini():r_string_ex(self.section,"community") or STR_EMPTY)
+	mutant_id = game.translate_string(ini_sys:r_string_ex(self.section,"community") or STR_EMPTY)
 	end
 
 	local mutant_f = killed_mutant_tbl[mutant_id].file or "ui\\ui_actor_monsters_pda_1"
@@ -258,7 +258,7 @@ end
 
 function loot_ui:AddItemToList(sec,count)
 	local _itm			= load_item(self.file_item_main_sz.y)
-	local inv_name 		= game.translate_string(system_ini():r_string_ex(sec,"inv_name") or "none")
+	local inv_name 		= game.translate_string(ini_sys:r_string_ex(sec,"inv_name") or "none")
 
 	_itm:SetWndSize		(self.file_item_main_sz)
 

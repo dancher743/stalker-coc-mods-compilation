@@ -1225,10 +1225,13 @@
 		<text>There is a bounty on your head. I suggest you disperse peacefully.</text>
 	</string>
 	<string id="vanish_bounty_hunt_target_dialog_1">
-		<text>I heard about it... Don't kill me, stalker. I will disappear and you will never see me again.</text>
+		<text>Don't kill me, stalker! I'll disappear and you'll never see me again. Okay?</text>
 	</string>
 	<string id="vanish_bounty_hunt_target_dialog_11">
-		<text>Goodbye.</text>
+		<text>Great. Goodbye.</text>
+	</string>
+	<string id="vanish_bounty_hunt_target_dialog_12">
+		<text>Wait a while.</text>
 	</string>
 	<string id="vanish_bounty_hunt_target_dialog_20">
 		<text>Back off.</text>
@@ -1247,5 +1250,8 @@
 	</string>
 	<string id="vanish_bounty_hunt_target_dialog_25">
 		<text>I'm not afraid of you.</text>
+	</string>
+	<string id="vanish_bounty_hunt_target_dialog_26">
+		<text>What?</text>
 	</string>
 </string_table>

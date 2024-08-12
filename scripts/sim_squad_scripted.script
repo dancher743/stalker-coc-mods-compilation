@@ -676,7 +676,7 @@ function sim_squad_scripted:create_npc(spawn_smart,pos,lvid,gvid)
 	if random_spawn ~= nil then
 		random_spawn = utils.parse_names(random_spawn)
 
-		local count_string = IsSurvivalOrEocMode() and "npc_in_squad_eoc_or_surv" or "npc_in_squad"
+		local count_string = IsEocMode() and "npc_in_squad_eoc" or "npc_in_squad"
 		local count = ini:r_string_ex(settings_id,count_string) or "1,2"
 		count = alun_utils.str_explode(count,",")
 		count[1] = count[1] and tonumber(count[1])
