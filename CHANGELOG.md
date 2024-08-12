@@ -30,6 +30,7 @@ All notable changes to this project will be documented in this file.
 * Added cancel phase and seven discard phase into peaceful way dialog of bounty hunt task
 * Added increasing reputation for peaceful way of bounty hunt task
 * Corrected psysucker's spawn
+* Added skip message for psi-storm
 
 ### Fixes
 * Fixed `medkit` cost in `bandit_loadout`

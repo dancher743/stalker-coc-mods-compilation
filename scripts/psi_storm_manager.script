@@ -76,6 +76,7 @@ function CPsiStormManager:start(manual)
 
 	diff_sec = math.ceil(game.get_game_time():diffSec(self.inited_time)/level.get_time_factor())
 	if atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_psi_storm",2,1)==0 then
+		self.skip_message = true
 		self:skip_psi_storm()
 		return
 	end
@@ -86,6 +87,7 @@ function CPsiStormManager:start(manual)
 		return
 	end
 	if(diff_sec+6>self.psi_storm_duration) then
+		self.skip_message = false
 		xr_statistic.inc_counter("storms")
 		self:skip_psi_storm()
 	else
@@ -149,7 +151,14 @@ function CPsiStormManager:skip_psi_storm()
 	self.psi_storm_task_sect 	= STR_EMPTY
 	self.task_given 		= nil
 	prev_sec				= 0
+	
 	--xr_statistic.inc_counter("storms")
+	if not self.skip_message then
+		news_manager.send_tip(db.actor, "st_psi_storm_while_asleep", nil, "recent_surge", nil, nil)
+		self.skip_message = true
+		--release_body_manager.get_release_body_manager():clear(true)
+	end
+	
 	level.set_time_factor(self.game_time_factor)
 end
 
@@ -229,6 +238,7 @@ function CPsiStormManager:update()
 			if (self.started) then 
 				self:finish()
 			else
+				self.skip_message = true
 				self:skip_psi_storm()
 			end			
 			return
@@ -238,12 +248,14 @@ function CPsiStormManager:update()
 			if (self.started) then 
 				self:finish()
 			else
+				self.skip_message = true
 				self:skip_psi_storm()
 			end			
 			return
 		end
 		local diff_sec = math.ceil(game.get_game_time():diffSec(self.inited_time)/level.get_time_factor())
 		if (diff_sec + 6 > self.psi_storm_duration) then
+			self.skip_message = false
 			xr_statistic.inc_counter("storms")
 			self:skip_psi_storm()
 			return
@@ -256,6 +268,7 @@ function CPsiStormManager:update()
 			self.time_forwarded = false
 			local diff = math.abs(self._delta - g_time:diffSec(self.last_psi_storm_time))
 			if(diff<3600) then
+				self.skip_message = false
 				xr_statistic.inc_counter("storms")
 				self:skip_psi_storm()
 				return

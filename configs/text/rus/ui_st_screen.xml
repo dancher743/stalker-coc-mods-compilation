@@ -451,4 +451,8 @@
 	<string id="st_change_language">
 		<text>Сменить язык: CTRL+SHIFT</text>
 	</string>
+	
+	<string id="st_psi_storm_while_asleep">
+		<text>В Зоне недавно произошёл пси-шторм.</text>
+	</string>
 </string_table>
