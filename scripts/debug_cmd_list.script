@@ -229,7 +229,7 @@ end
 -- reload_system_ini
 function cmd.reload_system_ini(me,txt,owner,p)
 	if (reload_system_ini) then 
-		reload_ini_sys
+		reload_system_ini()
 		return "reload_system_ini:= success"
 	end
 	return "reload_system_ini:= failure, engine does not have this function!"
