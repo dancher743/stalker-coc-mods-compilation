@@ -478,11 +478,14 @@ function CSurgeManager:update()
 	if not(self.started) then
 		local g_time = game.get_game_time()
 		if(self.time_forwarded) then
+			self.time_forwarded = false
 			local diff = math.abs(self._delta - g_time:diffSec(self.last_surge_time))
 			if(diff<3600) then
-				self._delta = 3*3600+g_time:diffSec(self.last_surge_time)
+				self.skip_message = false
+                xr_statistic.inc_counter("surges")
+                self:skip_surge()
+                return
 			end
-			self.time_forwarded = false
 		end
 		if(g_time:diffSec(self.last_surge_time) < self._delta) then
 			return

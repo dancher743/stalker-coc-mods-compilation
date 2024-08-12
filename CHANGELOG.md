@@ -41,6 +41,7 @@ All notable changes to this project will be documented in this file.
 * Fixed wrong text of `ui_mm_show_guide_job_on_map` string in rus localization
 * Added missing `companion_is_hostage` flag into `xr_effects.setup_companion_task` function
 * Replaced `is_bounty_hunt_target` and `vanish_bounty_hunt_target` functions with squad check
+* Added surge/psi storm skip if time forwarded
 
 ### Optimization
 * Automated sleep code of disguise system
