@@ -184,7 +184,7 @@ function CSurgeManager:start(manual)
 		return
 	end
 	
-	if (level_name == "l13_generators" or level_name == "l11_hospital") then
+	if (level_name == "l13_generators" or level_name == "l11_hospital" or has_alife_info("bar_arena_fight")) then
 		xr_statistic.inc_counter("surges")
 		self.skip_message = false
 		self:skip_surge()

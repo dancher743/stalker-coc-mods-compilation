@@ -81,7 +81,7 @@ function CPsiStormManager:start(manual)
 		return
 	end
 	local level_name = level.name()
-	if level_name == "l11_hospital" or level_weathers.valid_levels[level_name] ~= true then 
+	if level_name == "l11_hospital" or level_weathers.valid_levels[level_name] ~= true or has_alife_info("bar_arena_fight") then 
 		xr_statistic.inc_counter("storms")
 		self:skip_psi_storm()
 		return

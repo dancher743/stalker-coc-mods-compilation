@@ -43,6 +43,7 @@ All notable changes to this project will be documented in this file.
 * Added missing `companion_is_hostage` flag into `xr_effects.setup_companion_task` function
 * Replaced `is_bounty_hunt_target` and `vanish_bounty_hunt_target` functions with squad check
 * Added surge/psi storm skip if time forwarded
+* Included  `bar_arena_fight` info in the condition for starting the surge/psi-storm
 
 ### Optimization
 * Automated sleep code of disguise system
