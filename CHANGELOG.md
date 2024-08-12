@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.4.4] - Unreleased
+## [1.4.4] - 2024-08-12
 
 ### Features
 * More foggy weather during Survival mode
