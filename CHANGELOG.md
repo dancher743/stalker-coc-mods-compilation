@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [1.4.5] - Unreleased
 
+### Fixes
+* Fixed overlapping enemy health bar by Guide job's HUD Timer
+
 ## [1.4.4] - 2024-08-12
 
 ### Features

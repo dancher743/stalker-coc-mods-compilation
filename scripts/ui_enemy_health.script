@@ -36,6 +36,10 @@ local show_enemy_health_option = "enable_show_enemy_health"
 
 local cs_enemy_health = "cs_enemy_health"
 
+function has_progress_bar_shown()
+	return progress ~= nil
+end
+
 function on_game_start()
 	RegisterScriptCallback("monster_on_hit_callback",on_hit)
 	RegisterScriptCallback("npc_on_hit_callback",on_hit)
