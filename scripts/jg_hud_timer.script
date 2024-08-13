@@ -18,17 +18,17 @@ local function actor_on_slicing_update()
 	hud_timer:SetValue(left_hours, left_minutes, 0)
 end
 
-local function on_game_load()
+local function actor_on_first_update()
 	try_start()
 end
 
-local function on_game_unload()
+local function actor_on_net_destroy()
 	try_stop()
 end
 
 function on_game_start()
-	RegisterScriptCallback("on_game_load",on_game_load)
-	RegisterScriptCallback("on_game_unload",on_game_unload)
+	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
+	RegisterScriptCallback("actor_on_net_destroy",actor_on_net_destroy)
 end
 
 function try_start()

@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [1.4.5] - Unreleased
 
+### Improvements
+* Reworked callbacks in `jg_hud_timer.script`
+
 ### Fixes
 * Fixed overlapping enemy health bar by Guide job's HUD Timer
 
