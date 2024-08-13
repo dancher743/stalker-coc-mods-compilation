@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
 ### Fixes
 * Fixed overlapping enemy health bar by Guide job's HUD Timer
 
+### Optimization
+* Replaced `squad_on_update` with `squad_on_slicing_update` callback in `axr_companions.script`
+
 ## [1.4.4] - 2024-08-12
 
 ### Features

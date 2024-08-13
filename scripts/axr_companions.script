@@ -124,7 +124,7 @@ local function squad_on_unregister(squad)
 	companion_squads[squad.id] = nil
 end
 
-local function squad_on_update(squad)
+local function squad_on_slicing_update(squad)
 	--alun_utils.debug_write(strformat("axr_companions.squad_on_update - heli_enemy_flag"))
 	if (db.actor and not db.actor:alive()) then
 		remove_all_from_actor_squad()
@@ -214,7 +214,7 @@ function on_game_start()
 	if not (Enabled) then return end
 	
 	RegisterScriptCallback("npc_on_fighting_actor",on_fighting_actor)
-	RegisterScriptCallback("squad_on_update",squad_on_update)
+	RegisterScriptCallback("squad_on_slicing_update",squad_on_slicing_update)
 	RegisterScriptCallback("squad_on_npc_death",squad_on_npc_death)
 	RegisterScriptCallback("squad_on_register",squad_on_register)
 	RegisterScriptCallback("squad_on_unregister",squad_on_unregister)
