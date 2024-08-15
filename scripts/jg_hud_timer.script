@@ -39,7 +39,7 @@ function try_start()
 	hud_timer = ui_hud_timer.create()
 	local position_base = hud_timer:get_position()
 	local position_without_bar = vector2():set(position_base.x, position_base.y)
-	local position_with_bar = vector2():set(position_base.x, position_base.y + 40)
+	local position_with_bar = vector2():set(position_base.x, position_base.y + 45)
 	RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
 	
 	local function tickback()
