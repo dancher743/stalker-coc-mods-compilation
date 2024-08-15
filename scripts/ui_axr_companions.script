@@ -142,9 +142,9 @@ function UICompanionList:CustomUpdate()
 		return
 	end
 	
-	local clist = axr_companions.list_actor_squad_by_id()
+	local clist = axr_companions.list_actor_squad_by_se_obj()
 	for i=1,#self.companion_info do
-		local se_obj = clist[i] and alife_object(clist[i])
+		local se_obj = clist[i]
 		
 		if (main_hud_shown() and se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and not axr_companions.is_hostage(se_obj)) then
 			local st = db.storage[se_obj.id]
