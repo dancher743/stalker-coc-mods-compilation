@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 
 ### Optimization
 * Replaced `squad_on_update` with `squad_on_slicing_update` callback in `axr_companions.script`
+* Removed extra string allocations if debug mode is disabled in `sound_ambient.script`
 
 ## [1.4.4] - 2024-08-12
 
