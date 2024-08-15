@@ -43,10 +43,10 @@ function hud_timer_ui:SetValue(arg1, arg2, arg3)
 	self.time:SetText(value)
 end
 
-function hud_timer_ui:set_position(position)
-	self.dialog:SetWndPos(position)
+function hud_timer_ui:GetPosition()
+	return self.dialog:GetWndPos()
 end
 
-function hud_timer_ui:get_position()
-	return self.dialog:GetWndPos()
+function hud_timer_ui:SetPosition(vector)
+	self.dialog:SetWndPos(vector)
 end
