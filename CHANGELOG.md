@@ -14,6 +14,9 @@ All notable changes to this project will be documented in this file.
 * Replaced `squad_on_update` with `squad_on_slicing_update` callback in `axr_companions.script`
 * Removed extra string allocations if debug mode is disabled in `sound_ambient.script`
 
+### Framework
+* Added `list_actor_squad_by_se_obj()` function into `axr_companions.script`
+
 ## [1.4.4] - 2024-08-12
 
 ### Features
