@@ -12,12 +12,14 @@ All notable changes to this project will be documented in this file.
 * Fixed overlapping enemy health bar by Guide job's HUD Timer
 * Removed extra ids nilling in code of setup bounty hunt target
 * Fixed companion behaviours during hostage task (code from CoC 1.5 R6)
+* Fixed empty items in Companions List HUD
 
 ### Optimization
 * Replaced `squad_on_update` with `squad_on_slicing_update` callback in `axr_companions.script`
 * Removed extra string allocations if debug mode is disabled in `sound_ambient.script`
 * Added `list_actor_squad_by_se_obj()` into `UICompanionList:CustomUpdate()` to reduce allocations
 * Removed extra allocations of `alife()` using `get_alife()` function
+* Optimized update loop in `UICompanionList:CustomUpdate()` function
 
 ### Framework
 * Added `list_actor_squad_by_se_obj()` function into `axr_companions.script`

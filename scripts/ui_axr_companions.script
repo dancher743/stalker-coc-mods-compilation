@@ -2,8 +2,6 @@
 -- Companions List
 -- From Anomaly 1.5.1.2
 --------------------------------------------------
-local hud_option_name = "companions_hud"
-
 local HUD = nil
 
 function activate_hud()
@@ -63,6 +61,7 @@ function UICompanionList:__init() super()
 		["monolith"]= GetARGB(255,120,201,79),
 		["zombied"] = GetARGB(168,168,168,255),
 	}
+	self.hud_option_name = "companions_hud"
 
 	self:InitControls()
 	
@@ -134,19 +133,30 @@ function UICompanionList:InitControls()
 end
 
 function UICompanionList:CustomUpdate()
-	local is_option_enabled = axr_main_options.get_check_option(hud_option_name)
+	local is_option_enabled = axr_main_options.get_check_option(self.hud_option_name)
 	
-	self.dialog:Show(is_option_enabled)
-	
-	if (is_option_enabled == false) then
-		return
-	end
+    if (not is_option_enabled or not main_hud_shown()) then
+        self.dialog:Show(false)
+        return
+    else
+        self.dialog:Show(true)
+    end
 	
 	local clist = axr_companions.list_actor_squad_by_se_obj()
+	local clist_index = #clist
+	
 	for i=1,#self.companion_info do
-		local se_obj = clist[i]
+		local se_obj
 		
-		if (main_hud_shown() and se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and not axr_companions.is_hostage(se_obj)) then
+		for j=clist_index,1,-1 do
+			clist_index = clist_index - 1
+			if (not axr_companions.is_hostage(clist[j])) then
+				se_obj = clist[j]
+				break
+			end
+		end
+		
+		if (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive()) then
 			local st = db.storage[se_obj.id]
 			local npc = st and st.object
 			local ele = self.companion_info[i]
