@@ -986,6 +986,10 @@ function sim_squad_scripted:can_switch_offline()
 	end
 	
 	-- companions
+	if (axr_companions.is_hostage_squad(self.id)) then
+		return true
+	end
+	
 	if (axr_companions.companion_squads[self.id]) then 
 		return false 
 	end
