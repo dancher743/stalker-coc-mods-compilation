@@ -2521,8 +2521,8 @@ end
 --	Initiate hostage task:
 function drx_sl_setup_sim_hostage_task( actor, npc, p )
 
-	local id = p[3] and p[3] ~= "nil" and alun_utils.load_var( db.actor,p[3] )
-	local smart = id and alife( ):object( id ) or p[2] and p[2] ~= "nil" and SIMBOARD.smarts_by_names[p[2]]
+	local id = p[3] and p[3] ~= STR_NIL and alun_utils.load_var( db.actor,p[3] )
+	local smart = id and alife( ):object( id ) or p[2] and p[2] ~= STR_NIL and SIMBOARD.smarts_by_names[p[2]]
 	if not ( smart ) then
 		return
 	end
@@ -3356,8 +3356,8 @@ end
 -- param 4 - disable level transition for the squad
 -- param 5 - is a hostage
 function setup_companion_task(actor,npc,p)
-	local id = p[3] and p[3] ~= "nil" and utils.load_var(db.actor,p[3])
-	local smart = id and alife_object(id) or p[2] and p[2] ~= "nil" and SIMBOARD.smarts_by_names[p[2]]
+	local id = p[3] and p[3] ~= STR_NIL and utils.load_var(db.actor,p[3])
+	local smart = id and alife_object(id) or p[2] and p[2] ~= STR_NIL and SIMBOARD.smarts_by_names[p[2]]
 	if not (smart) then
 		return
 	end
@@ -3579,7 +3579,7 @@ function force_talk(actor,npc,p)
 end
 
 function unlock_smart(actor,npc,p)
-	local id = p[1] and p[1] ~= "nil" and utils.load_var(db.actor,p[1])
+	local id = p[1] and p[1] ~= STR_NIL and utils.load_var(db.actor,p[1])
 	local smart = id and alife_object(id)
 	if (smart) then
 		smart.locked = nil

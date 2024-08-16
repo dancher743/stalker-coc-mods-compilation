@@ -600,7 +600,7 @@ function cmd.waypoint(me,txt,owner,p)
 	local last_index
 
 	local sim = get_alife()
-	local actor_level = wrd == "checklevel" and sim:level_name(game_graph():vertex(sim:actor().m_game_vertex_id):level_id()) or "nil"
+	local actor_level = wrd == "checklevel" and sim:level_name(game_graph():vertex(sim:actor().m_game_vertex_id):level_id()) or STR_NIL
 
 	local checked = false
 	local gg = game_graph()
@@ -645,7 +645,7 @@ function cmd.waypoint(me,txt,owner,p)
 									printf("path %s p%s:%s does not have valid game_vertex_id",name,n,ptr:name(n))
 								end
 								
-								if (actor_level ~= "nil") then 
+								if (actor_level ~= STR_NIL) then 
 									if not (alun_utils.accessible(npc,ptr:level_vertex_id(n))) then
 										t[#t+1] = strformat("path %s p%s:%s does not have valid level_vertex_id",name,n,ptr:name(n))
 										printf("path %s p%s:%s does not have valid level_vertex_id",name,n,ptr:name(n))

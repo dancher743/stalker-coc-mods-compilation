@@ -437,12 +437,12 @@ end
 
 local function get_object_levelname(obj)
 	if not (obj) then 
-		return "nil"
+		return STR_NIL
 	end 
 	
 	local gvid = obj.m_game_vertex_id or obj.game_vertex_id and obj:game_vertex_id()
 	if not (gvid) then 
-		return "nil"
+		return STR_NIL
 	end
 	
 	local gg = game_graph()
@@ -451,7 +451,7 @@ local function get_object_levelname(obj)
 		return get_alife():level_name(cvertex:level_id())
 	end
 			
-	return "nil"
+	return STR_NIL
 end
 
 

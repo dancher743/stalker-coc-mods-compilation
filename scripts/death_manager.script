@@ -156,7 +156,7 @@ function create_release_item(npc)
 		local p = xr_logic.pick_section_from_condlist(db.actor,npc,alun_utils.parse_condlist(item_by_story_id[sid]))
 		--local p = alun_utils.str_explode(item_by_story_id[sid],",")
 		--printf("sid=%s p=%s",sid,p)
-		if (p and p ~= STR_EMPTY and p ~= "nil") then
+		if (p and p ~= STR_EMPTY and p ~= STR_NIL) then
 			create_items(npc, p, 1, 100)
 		end
 	end

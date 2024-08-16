@@ -103,7 +103,7 @@ end
 -- Вызывается биндером с целью определить первую активную схему
 function determine_section_to_activate(npc, ini, section_logic, actor)
 	if not (ini and ini:section_exist(section_logic)) then
-		return "nil"
+		return STR_NIL
 	end
 	if db.offline_objects[npc:id()] and db.offline_objects[npc:id()].active_section ~= nil then
 		local sect_to_retr = db.offline_objects[npc:id()].active_section
@@ -116,14 +116,14 @@ function determine_section_to_activate(npc, ini, section_logic, actor)
 	-- Распарсить строку выбора активной секции с учетом команд, заключенных в %%
 	local active_section_cond = cfg_get_condlist(ini, section_logic, "active", npc)
 	if not (active_section_cond) then
-		return "nil"
+		return STR_NIL
 	end
 
 	local active_section = pick_section_from_condlist(actor, npc, active_section_cond.condlist)
 	if not active_section then
 -- 		printf("object '%s': section '%s': section 'active' has no conditionless else clause",npc:name(), section_logic)
 		printf( "section 'active' has no conditionless else clause" )
-		return "nil"
+		return STR_NIL
 	end
 
 	return active_section
@@ -169,9 +169,9 @@ function activate_by_section(npc, ini, section, gulag_name, loading)
 		db.storage[npc_id].activation_game_time = db.storage[npc_id].activation_game_time or game.get_game_time()
 	end
 
-	if section == "nil" then
+	if section == STR_NIL then
 		db.storage[npc_id].overrides = nil
-		reset_generic_schemes_on_scheme_switch(npc, "nil", "nil")
+		reset_generic_schemes_on_scheme_switch(npc, STR_NIL, STR_NIL)
 		db.storage[npc_id].active_section = nil
 		db.storage[npc_id].active_scheme = nil
 --'		db.storage[npc_id].pstor = nil
@@ -186,7 +186,7 @@ function activate_by_section(npc, ini, section, gulag_name, loading)
 		local t = current_gulag and current_gulag:getJob(npc_id)
 		if not (t) then
 			db.storage[npc_id].overrides = nil
-			reset_generic_schemes_on_scheme_switch(npc, "nil", "nil")
+			reset_generic_schemes_on_scheme_switch(npc, STR_NIL, STR_NIL)
 			db.storage[npc_id].active_section = nil
 			db.storage[npc_id].active_scheme = nil
 			return
@@ -924,9 +924,9 @@ function cfg_get_overrides(ini, section, npc)
 		l.min_post_combat_time,l.max_post_combat_time = utils.r_2nums( ini, section, "post_combat_time", 10, 15 )
 	end
 	if ini:line_exist(section, "on_offline") then
-		l.on_offline_condlist = xr_logic.parse_condlist(npc, section, "on_offline", ini:r_string_ex(section,"on_offline") or "nil")
+		l.on_offline_condlist = xr_logic.parse_condlist(npc, section, "on_offline", ini:r_string_ex(section,"on_offline") or STR_NIL)
 	else
-		l.on_offline_condlist =  xr_logic.parse_condlist(npc, st.section_logic, "on_offline", ini:r_string_ex(st.section_logic,"on_offline") or "nil")
+		l.on_offline_condlist =  xr_logic.parse_condlist(npc, st.section_logic, "on_offline", ini:r_string_ex(st.section_logic,"on_offline") or STR_NIL)
 	end
 
 	if string.find(section, "kamp") ~= nil then
@@ -1144,11 +1144,11 @@ function load_obj(obj, reader)
 
 	local active_section = reader:r_stringZ()
 	if active_section == STR_EMPTY then
-		active_section = "nil"
+		active_section = STR_NIL
 	end
 
 	local gulag_name = reader:r_stringZ()
-	if (gulag_name == "nil") then
+	if (gulag_name == STR_NIL) then
 		gulag_name = STR_EMPTY
 	end
 

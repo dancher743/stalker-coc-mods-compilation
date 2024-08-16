@@ -904,23 +904,23 @@ function sim_squad_scripted:STATE_Read(packet, size)
 	set_save_marker(packet, "load", false, "sim_squad_scripted")	
 
 	self.current_target_id = packet:r_stringZ()
-	if self.current_target_id == "nil" then
+	if self.current_target_id == STR_NIL then
 		self.current_target_id = nil
 	else
 		self.current_target_id = tonumber(self.current_target_id)
 	end
 	self.respawn_point_id = packet:r_stringZ()
-	if self.respawn_point_id == "nil" then
+	if self.respawn_point_id == STR_NIL then
 		self.respawn_point_id = nil
 	else
 		self.respawn_point_id = tonumber(self.respawn_point_id)
 	end
 	self.respawn_point_prop_section = packet:r_stringZ()
-	if self.respawn_point_prop_section == "nil" then
+	if self.respawn_point_prop_section == STR_NIL then
 		self.respawn_point_prop_section = nil
 	end
 	self.smart_id = packet:r_stringZ()
-	if self.smart_id == "nil" then
+	if self.smart_id == STR_NIL then
 		self.smart_id = nil
 	else
 		self.smart_id = tonumber(self.smart_id)

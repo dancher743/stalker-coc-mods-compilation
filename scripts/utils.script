@@ -139,7 +139,7 @@ function cfg_get_string(char_ini, section, field, object, mandatory, gulag_name,
 
 	--printf("DEBUG: conf_get_string: section='%s', field='%s'", section, field)
 	if section and char_ini:section_exist(section) and char_ini:line_exist(section, field) then
-		if gulag_name and gulag_name ~= STR_EMPTY and gulag_name ~= "nil" then
+		if gulag_name and gulag_name ~= STR_EMPTY and gulag_name ~= STR_NIL then
 			return gulag_name .. "_" .. char_ini:r_string_ex(section, field)
 		else
 			return char_ini:r_string_ex(section, field)
@@ -753,7 +753,7 @@ function prefix_r_string(ini,sec,key,prefix)
 	if not (rslt) then
 		return
 	end
-	if (prefix and prefix ~= STR_EMPTY and prefix ~= "nil") then
+	if (prefix and prefix ~= STR_EMPTY and prefix ~= STR_NIL) then
 		return prefix .. "_" .. rslt
 	end
 	return rslt

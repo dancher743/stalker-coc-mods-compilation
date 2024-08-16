@@ -63,8 +63,8 @@ local function init_custom_data(npc, ini, section, st, scheme)
 	st.run_cond 			= xr_logic.parse_condlist(npc, section, "run_anim", ini:r_string_ex(section,"run_anim") or def.run_cond)
 	st.delay_cond 			= xr_logic.parse_condlist(npc, section, "delay_anim", ini:r_string_ex(section,"delay_anim") or def.delay_cond)
 	
-	st.path_end 			= xr_logic.parse_condlist(npc, section, "path_end", 	ini:r_string_ex(section,"path_end") or "nil")
-	st.sound_idle			= xr_logic.parse_condlist(npc, section, "sound_idle", 	ini:r_string_ex(section, "sound_idle") or "nil")
+	st.path_end 			= xr_logic.parse_condlist(npc, section, "path_end", 	ini:r_string_ex(section,"path_end") or STR_NIL)
+	st.sound_idle			= xr_logic.parse_condlist(npc, section, "sound_idle", 	ini:r_string_ex(section, "sound_idle") or STR_NIL)
 	
 	st.use_camp			= ini:r_bool_ex(section,"use_camp",false)
 
@@ -134,7 +134,7 @@ end
 function action_beh:set_desired_target()
 	local target = xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.goto_target)
 	
-	if (target == nil or target == STR_EMPTY or target == "nil") then
+	if (target == nil or target == STR_EMPTY or target == STR_NIL) then
 		return false
 	end
 	
@@ -480,7 +480,7 @@ function action_beh:beh_path()
 		self.in_camp = nil
 	else
 		local sound = self.st.desired_target.sound_idle or self.st.sound_idle and xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.sound_idle)
-		if (sound and sound ~= "nil" and sound ~= STR_EMPTY) then
+		if (sound and sound ~= STR_NIL and sound ~= STR_EMPTY) then
 			xr_sound.set_sound_play(self.object:id(), sound)
 		end
 	end
@@ -622,7 +622,7 @@ function action_beh:increment_waypoint_index()
 		end
 	else
 		local new_section = self.st.path_end and xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.path_end)
-		if (new_section and new_section ~= "nil" and new_section ~= STR_EMPTY) then
+		if (new_section and new_section ~= STR_NIL and new_section ~= STR_EMPTY) then
 			if (new_section == "reverse") then
 				self.st.path_reverse = true
 			elseif (new_section == "loop") then

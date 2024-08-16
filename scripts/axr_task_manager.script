@@ -1011,7 +1011,7 @@ function generate_available_tasks(npc,is_sim)
 	-- Randomly not offer any quests at all for sim npcs
 	if (is_sim and st.dyn_quest_rand == nil) then
 		if ( (math.random(1,100)/100) < 0.3) then
-			st.dyn_quest_rand = "nil"
+			st.dyn_quest_rand = STR_NIL
 			return
 		end
 	end

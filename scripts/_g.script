@@ -753,7 +753,7 @@ function IsWounded(o)
 	end
 	
 	local state = tostring(utils.load_var(o, "wounded_state"))
-	if (state == "nil") then
+	if (state == STR_NIL) then
 		return false
 	end
 	
@@ -1276,7 +1276,7 @@ end
 
 -- переводит вектор в строку.
 function vec_to_str (vector)
-	if vector == nil then return "nil" end
+	if vector == nil then return STR_NIL end
 	return string.format("[%s:%s:%s]", vector.x, vector.y, vector.z)
 end
 -- выводит в лог стэк вызова функций.
@@ -1795,6 +1795,7 @@ VEC_FORWARD 	= vector():set(0,0,1)
 VEC_BACK 		= vector():set(0,0,-1)
 
 STR_EMPTY		= ""
+STR_NIL			= "nil"
 MM_OPTIONS		= "mm_options"
 -----------------------------------------
 

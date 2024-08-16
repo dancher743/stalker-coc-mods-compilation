@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 ### Framework
 * Added `list_actor_squad_by_se_obj()` function into `axr_companions.script`
 * Added `get_alife()` function with cached `alife()` allocation into `_g.script`
+* Added `STR_NIL` const into `_g.script`
 
 ## [1.4.4] - 2024-08-12
 
