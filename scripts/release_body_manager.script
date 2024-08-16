@@ -45,9 +45,9 @@ function Crelease_body:__init()
 		printf("There is no section [keep_items] in death_generic.ltx")
 	end
 	local n = snd_ini:line_count("keep_items")
-	local value = ""
+	local value = STR_EMPTY
 	for i = 0, n - 1 do
-		result, section, value  = snd_ini:r_line_ex("keep_items", i, "", "")
+		result, section, value  = snd_ini:r_line_ex("keep_items", i, STR_EMPTY, STR_EMPTY)
 		self.keep_items_table[section] = true
 	end
 end

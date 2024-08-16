@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 * Added `list_actor_squad_by_se_obj()` into `UICompanionList:CustomUpdate()` to reduce allocations
 * Removed extra allocations of `alife()` using `get_alife()` function
 * Optimized update loop in `UICompanionList:CustomUpdate()` function
+* Added missing usages of `STR_EMPTY` const
 
 ### Framework
 * Added `list_actor_squad_by_se_obj()` function into `axr_companions.script`
