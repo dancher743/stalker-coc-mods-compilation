@@ -1329,10 +1329,13 @@ end
 --=======================================< Name randomization >=======================================-
 function faction_ui:GetNameSubset()
 	local subset
-	if (self.selected_faction == "army" or self.selected_faction == "dolg") then 
+	local faction = self.selected_faction
+	if (faction == "army" or faction == "dolg") then
 		subset = random_choice("private","sergeant","senior_sergeant","lieutenant","captain")
-	else 
-		subset = random_choice("stalker","bandit","science")
+	elseif (faction == "stalker" or faction == "bandit" or faction == "science") then
+		subset = self.selected_faction
+	else
+		subset = "stalker"
 	end
 	return subset
 end
