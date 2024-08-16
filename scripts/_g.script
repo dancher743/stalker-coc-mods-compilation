@@ -71,13 +71,18 @@ function start_game_callback()
 	pda.add_quick_slot_items_on_game_start()
 end
 
+local simulation
+
 function alife_object(id)
 	if (id == nil or id >= 65535) then
 		callstack()
 		printf("ALIFE OBJECT ID IS %s!",id)
 		return
 	end
-	return alife():object(id)
+	if not (simulation) then
+		simulation = alife()
+	end
+	return simulation:object(id)
 end
 -------------------------------------------------------------------------------------------------------
 -- 											SCRIPTED CALLBACKS
