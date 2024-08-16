@@ -7,7 +7,6 @@ All notable changes to this project will be documented in this file.
 ### Improvements
 * Reworked callbacks in `jg_hud_timer.script`
 * Added more character names in Faction Select menu
-* Added switch to offline condition for hostage squad
 
 ### Fixes
 * Fixed overlapping enemy health bar by Guide job's HUD Timer
