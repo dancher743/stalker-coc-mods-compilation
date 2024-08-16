@@ -73,6 +73,13 @@ end
 
 local simulation
 
+function get_alife()
+	if not (simulation) then
+		simulation = alife()
+	end
+	return simulation
+end
+
 function alife_object(id)
 	if (id == nil or id >= 65535) then
 		callstack()
