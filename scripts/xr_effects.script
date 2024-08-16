@@ -930,7 +930,6 @@ function drx_sl_setup_bounty_hunt( actor, npc, p )
 	}
 
 	-- Reset bounty id storage:
-	axr_task_manager.bounties_by_id[p[1]] = nil
 	bounty_hunt_targets[p[1]] = nil
 
 	-- Build list of mutual enemy factions:
@@ -3223,7 +3222,6 @@ end
 --param 1 task_id
 --param 2+ factions that can be targetted; can be list
 function on_setup_bounty_hunt(actor,npc,p)
-	axr_task_manager.bounties_by_id[p[1]] = nil
 	bounty_hunt_targets[p[1]] = nil
 
 	local valid_targets = {}
