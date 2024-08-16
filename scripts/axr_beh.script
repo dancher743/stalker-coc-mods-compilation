@@ -15,7 +15,7 @@ local level = level
 local alife = alife
 -----------------------------
 
-local keep_state_min_time = 2000
+local keep_state_min_time = 1500
 
 local function angle_dir(ang)
 	return vector():setHP(ang.y,ang.x):normalize()
@@ -111,9 +111,9 @@ function action_beh:execute()
 	action_base.execute(self)
 
 	local keep_distance 		= xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.keep_distance)
-	self.st.desired_distance	= tonumber(xr_logic.pick_section_from_condlist(db.actor, self.object, self.st[keep_distance.."_desired_dist"])) or 0
+	self.st.desired_distance	= tonumber(xr_logic.pick_section_from_condlist(db.actor, self.object, self.st[keep_distance.."_desired_dist"]) or 0) or 0
 	
-	self.st.behavior 			= xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.behavior_state,"behavior_state") or "beh_wait"
+	self.st.behavior 			= xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.behavior_state, "beh_wait")
 	
 	self.st.wait_animation 		= xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.wait_cond)
 	self.st.walk_animation 		= xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.walk_cond)
@@ -163,7 +163,7 @@ function action_beh:set_desired_target()
 	
 	self.st.target = target
 
-	local t = self.st.desired_target and empty_table(self.st.desired_target) or {}
+	local t = empty_table(self.st.desired_target)
 	local function set_position_data(id)
 		local obj = level.object_by_id(id)
 		local sobj = alife_object(id)
@@ -185,24 +185,24 @@ function action_beh:set_desired_target()
 	if (obj) then
 		set_position_data(obj:id())
 	elseif (target == "actor_squad") then 
-		local sim = alife()
-		local se_obj = sim:object(self.object:id())
+		local se_obj = alife_object(self.object:id())
 		if (se_obj) then
 			local prev_squad_id = 0
 			for _id,squad in spairs(axr_companions.companion_squads, function(t,a,b) return a < b end) do
-				if (squad and squad.commander_id) then
+				if (squad and squad.commander_id and squad.online and squad.position:distance_to_sqr(db.actor:position()) < 900) then
 					local cid = squad:commander_id()
-					if not (xrs_kill_wounded.hostage_list[cid]) then
+					if not (axr_task_manager.hostages_by_id[cid]) then
+						local sim = alife()
 						if not (sim:has_info(cid,"npcx_beh_wait") or sim:has_info(cid,"npcx_beh_patrol_mode")) then 
-							if (se_obj.group_id == _id) then 
+							if (se_obj.group_id == _id) then
 								break
 							end
-							prev_squad_id = squad:commander_id()
+							prev_squad_id = cid
 						end
 					end
 				end
 			end
-			set_position_data(prev_squad_id)
+			set_position_data(prev_squad_id == 65535 and 0 or prev_squad_id)
 		end
 	elseif (target == "enemy") then
 		local st = db.storage[self.object:id()]
@@ -341,8 +341,8 @@ function action_beh:set_state()
 	self.keep_state_until = t + keep_state_min_time
 	
 	local new_state = self.st.wait_animation
-	local dist_walk	= tonumber(xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.walk_dist)) or 5
-	local dist_jog 	= tonumber(xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.jog_dist)) or 10
+	local dist_walk	= tonumber(xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.walk_dist) or 5) or 5
+	local dist_jog 	= tonumber(xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.jog_dist) or 10) or 10
 	
 	if (self.st.assist_point == nil or self.st.assist_point == self.object:level_vertex_id()) then 
 		new_state = self.st.wait_animation
@@ -479,8 +479,8 @@ function action_beh:beh_path()
 		self.camp:unregister_npc(self.object:id())
 		self.in_camp = nil
 	else
-		local sound = self.st.desired_target.sound_idle or xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.sound_idle)
-		if (sound and sound ~= "nil") then
+		local sound = self.st.desired_target.sound_idle or self.st.sound_idle and xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.sound_idle)
+		if (sound and sound ~= "nil" and sound ~= "") then
 			xr_sound.set_sound_play(self.object:id(), sound)
 		end
 	end
@@ -621,7 +621,7 @@ function action_beh:increment_waypoint_index()
 			self.st.path_reverse = nil
 		end
 	else
-		local new_section = xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.path_end)
+		local new_section = self.st.path_end and xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.path_end)
 		if (new_section and new_section ~= "nil" and new_section ~= "") then
 			if (new_section == "reverse") then
 				self.st.path_reverse = true
@@ -644,9 +644,9 @@ function action_beh:increment_waypoint_index()
 end
 
 function action_beh:fill_approved_actions(state)
-	for i=#self.st.approved_actions, 1, -1 do
-		self.st.approved_actions[i] = nil
-	end
+	local app_act = self.st.approved_actions
+	iempty_table(app_act)
+	local size_t = 0
 
 	if (state == "sit_knee") then
 		state = "sit_ass"
@@ -657,7 +657,8 @@ function action_beh:fill_approved_actions(state)
 	local t = { "eat_bread", "drink_energy", "drink_vodka", "eat_kolbasa", "guitar", "harmonica", "weapon" }
 	for i=1, 6 do
 		if (axr_beh["can_"..t[i]] and axr_beh["can_"..t[i]](self.object)) then
-			table.insert(self.st.approved_actions, { name = state.."_"..t[i] })
+			size_t = size_t + 1
+			app_act[size_t] = { name = state.."_"..t[i] }
 		end
 	end
 end
@@ -701,7 +702,6 @@ function add_to_binder(npc, ini, scheme, section, storage)
 	action:add_precondition( wp(stalker_ids.property_alive,true) )
 	action:add_precondition( wp(stalker_ids.property_enemy,false) )
 	action:add_precondition( wp(stalker_ids.property_danger,false) )
-	action:add_precondition( wp(stalker_ids.property_anomaly,false) )
 
 	modules.add_common_precondition(scheme,action)
 
