@@ -15,7 +15,7 @@ local level = level
 local alife = alife
 -----------------------------
 
-local keep_state_min_time = 1500
+local keep_state_min_time = 2000
 
 local function angle_dir(ang)
 	return vector():setHP(ang.y,ang.x):normalize()
