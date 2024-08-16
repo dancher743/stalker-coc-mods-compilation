@@ -443,7 +443,7 @@ function CPsiStormManager:kill_obj_at_pos(pos)
 		return 
 	end
 	local board = SIMBOARD
-	local sim,gg = alife(),game_graph()
+	local sim,gg = get_alife(),game_graph()
 	local immuned_to_surge_squads = {
 		["monolith"] 				= true,
 		["monster_predatory_day"] 	= true,
@@ -544,7 +544,7 @@ function CPsiStormManager:turn_to_zombie(se_obj,squad)
 	end
 	
 	squad:remove_npc(se_obj.id)
-	alife():create(zombie_type,se_obj.position,se_obj.m_level_vertex_id,se_obj.m_game_vertex_id)
+	get_alife():create(zombie_type,se_obj.position,se_obj.m_level_vertex_id,se_obj.m_game_vertex_id)
 end
 
 function CPsiStormManager:kill_crows_at_pos(pos)

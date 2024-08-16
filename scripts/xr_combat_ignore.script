@@ -132,7 +132,7 @@ function is_enemy(obj,enemy,no_memory)
 			end
 		end
 		
-		local sim = alife()
+		local sim = get_alife()
 		local is_monster = character_community(enemy) == "zombied" or IsMonster(enemy)
 		
 		-- Ignore enemies with the safe_zone flag
@@ -329,7 +329,7 @@ function action_process_enemy:enemy_callback(npc, enemy)
 
 		-- Set smart alarm (unused in coc)
 		--[[
-		local sim = alife()
+		local sim = get_alife()
 		local se_obj = sim:object(id)
 		if (se_obj and se_obj.m_smart_terrain_id ~= 65535) then
 			local smart = sim:object(se_obj.m_smart_terrain_id)
@@ -357,7 +357,7 @@ function action_process_enemy:hit_callback(obj, amount, local_direction, who, bo
 		return 
 	end
 	if (amount > 0 and who and who:id() == db.actor:id()) then
-		local sim = alife()
+		local sim = get_alife()
 		local se_obj = sim:object(obj:id())
 		if (se_obj) then 
 			local squad = se_obj.group_id and se_obj.group_id ~= 65535 and sim:object(se_obj.group_id)

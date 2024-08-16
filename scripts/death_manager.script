@@ -277,13 +277,13 @@ function keep_item(npc, item)
 	
 	local ini = npc:spawn_ini()
 	if ini and ini:section_exist("dont_keep_items") then
-		alife():release(se_item, true)
+		get_alife():release(se_item, true)
 		return
 	end
 	
 	local st = db.storage[npc:id()]
 	if (st and st.ini and st.section_logic and st.ini:line_exist(st.section_logic,"dont_keep_items")) then
-		alife():release(se_item, true)
+		get_alife():release(se_item, true)
 		return
 	end 
 	
@@ -291,7 +291,7 @@ function keep_item(npc, item)
 	if (section == "bolt" or section == "medkit_script" or section == "guitar_a" or section == "harmonica_a" or section == "wpn_binoc" or section == "anim_binoc" or section == "anim_knife" 
 		or section == "device_torch" or section == "device_pda" or section == "hand_radio" or section == "hand_radio_r" or section == "stick_bred" or section == "stick_kolbasa" or
 		section == "stick_kolbasa_bred") then
-		alife():release(se_item, true)
+		get_alife():release(se_item, true)
 		return 
 	end
 	
@@ -300,7 +300,7 @@ function keep_item(npc, item)
 		local r = math.random(0,m)
 		item:set_remaining_uses(r)
 		if (r == 0) then 
-			alife():release(se_item, true)
+			get_alife():release(se_item, true)
 		end
 		return
 	end
@@ -319,7 +319,7 @@ function keep_item(npc, item)
 		return
 	end
 	
-	alife():release(se_item, true)
+	get_alife():release(se_item, true)
 end
 
 function set_weapon_drop_condition(npc,itm)	
@@ -378,7 +378,7 @@ function create_items(npc, section, number, rnd)
 		for i=1,number do
 			--' Проверяем вероятность появить каждый объект в отдельности
 			if (math.random(1,100)/100) <=  rnd then
-				alife():create(section,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id())
+				get_alife():create(section,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id())
 			end
 		end
 	end

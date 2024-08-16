@@ -79,7 +79,7 @@ function actor_on_before_death(whoID,flags)
 	SetHudMsg(strformat(game.translate_string("st_death_count"),xr_statistic.actor_statistic.deaths),8)
 
 	-- find victims
-	local sim = alife()
+	local sim = get_alife()
 	local gg = game_graph()
 	local avail_entities = {}
 	squad_mates = {}
@@ -451,18 +451,18 @@ end
 function give_extra_supplies()
 	if azazel_customizable_config["activate_supplies"] then
 		if azazel_customizable_config["give_medkit"] > math.random(1,99) then
-			alife():create("medkit", db.actor:position(), 1, db.actor:game_vertex_id(), db.actor:id())
+			get_alife():create("medkit", db.actor:position(), 1, db.actor:game_vertex_id(), db.actor:id())
 		end
 		if azazel_customizable_config["give_bandage"] > math.random(1,99) then
-			alife():create("bandage", db.actor:position(), 1, db.actor:game_vertex_id(), db.actor:id())	
+			get_alife():create("bandage", db.actor:position(), 1, db.actor:game_vertex_id(), db.actor:id())	
 		elseif azazel_customizable_config["give_vinca"] then
-			alife():create("drug_coagulant", db.actor:position(), 1, db.actor:game_vertex_id(), db.actor:id())
+			get_alife():create("drug_coagulant", db.actor:position(), 1, db.actor:game_vertex_id(), db.actor:id())
 		end
 		if azazel_customizable_config["give_bread"] > math.random(1,99) then
-			alife():create("bread", db.actor:position(), 1, db.actor:game_vertex_id(), db.actor:id())
+			get_alife():create("bread", db.actor:position(), 1, db.actor:game_vertex_id(), db.actor:id())
 		end
 		if azazel_customizable_config["give_vodka"] > math.random(1,99) then
-			alife():create("vodka", db.actor:position(), 1, db.actor:game_vertex_id(), db.actor:id())
+			get_alife():create("vodka", db.actor:position(), 1, db.actor:game_vertex_id(), db.actor:id())
 		end
 	end
 end

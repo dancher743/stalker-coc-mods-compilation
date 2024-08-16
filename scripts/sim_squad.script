@@ -228,7 +228,7 @@ function set_target(squad, target)
 		return
 	end
 
-    local obj = target and alife():object(target)
+    local obj = target and get_alife():object(target)
 
     if (obj) then
         squad.current_action = 0
@@ -244,7 +244,7 @@ function set_target(squad, target)
             sim_tables.registered_squads[squad:get_squad_community()][squad.id] = target
         end		
 	
-		local sim = alife()
+		local sim = get_alife()
 		for k in squad:squad_members() do
 			local se_obj = k.object or k.id and sim:object(k.id)
 			if (se_obj) then

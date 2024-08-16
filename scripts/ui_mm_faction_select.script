@@ -24,7 +24,7 @@ local function on_game_load(binder)
 		return
 	end
 
-	local se_actor = alife():actor()
+	local se_actor = get_alife():actor()
 	local need_save
 	
 	-- Gameplay Options
@@ -258,7 +258,7 @@ local function on_game_load(binder)
 		
 		
 		-- Loadout
-		local sim = alife()
+		local sim = get_alife()
 		local loadout = config:r_value("character_creation","new_game_loadout",3)
 		local ammo_table = {}
 		if loadout and loadout ~= STR_EMPTY then
@@ -320,7 +320,7 @@ local function actor_on_first_update(binder,delta)
 		local squad_section = (IsSurvivalMode() and "survival_squad_"..faction) or "start_squad_"..faction
 		
 		if (ini:section_exist(squad_section) and start_pos) then
-			local sim = alife()
+			local sim = get_alife()
 			local squad = sim:create(squad_section,start_pos[3],start_pos[1],start_pos[2])
 			if (squad) then
 				axr_companions.companion_squads[squad.id] = squad

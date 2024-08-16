@@ -2171,7 +2171,7 @@ function surrender_victim_answers_bounty(a,b)
 	end
 
 	if ((math.random(1,100)/100) < 0.5) then
-		alife():create("medkit_script",npc:position(),0,0,npc:id())
+		get_alife():create("medkit_script",npc:position(),0,0,npc:id())
 		xr_wounded.unlock_medkit(npc)
 	end
 
@@ -2223,7 +2223,7 @@ function surrender_victim_answers_1(a,b)
 		relocate_item_section_to_actor(a, b, sec, 1)
 		return game.translate_string("st_surrender_victim_answer_4")
 	elseif (r == 5) then
-		alife():create("medkit_script",npc:position(),0,0,npc:id())
+		get_alife():create("medkit_script",npc:position(),0,0,npc:id())
 		xr_wounded.unlock_medkit(npc)
 		return game.translate_string("st_surrender_victim_answer_5")
 	end
@@ -2232,7 +2232,7 @@ end
 
 function surrender_victim_answers_2(a,b)
 	local npc = dialogs.who_is_npc(a,b)
-	alife():create("medkit_script",npc:position(),0,0,npc:id())
+	get_alife():create("medkit_script",npc:position(),0,0,npc:id())
 	xr_wounded.unlock_medkit(npc)
 	--npc:set_relation(game_object.enemy,db.actor)
 	local function itr(npc,itm)
@@ -2341,7 +2341,7 @@ function transfer_medkit(first_speaker, second_speaker)
 	xr_wounded.unlock_medkit(npc)
 
 	if not (npc:object("medkit_script")) then
-		alife():create("medkit_script", npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
+		get_alife():create("medkit_script", npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
 	end
 
 	local t = {"medkit","medkit_army","medkit_scientic"}
@@ -2381,7 +2381,7 @@ function relocate_item_section(victim, section, type, amount)
 				--if quest_section[section] == true and victim ~= nil and victim:object(section) ~= nil then
 				--	victim:transfer_item(victim:object(section), db.actor)
 				--else
-					alife():create(section,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
+					get_alife():create(section,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
 				--end
 			elseif type == "out" then
 				if victim == nil then
@@ -2626,7 +2626,7 @@ function relocate_item_section_to_actor(first_speaker, second_speaker, section, 
 		if npc:object(section) ~= nil then
 			npc:transfer_item(npc:object(section), db.actor)
 		else
-			alife():create(section,
+			get_alife():create(section,
 					db.actor:position(),
 					db.actor:level_vertex_id(),
 					db.actor:game_vertex_id(),
@@ -2636,7 +2636,7 @@ function relocate_item_section_to_actor(first_speaker, second_speaker, section, 
 
 	if v ~= 0 then
 		for i = 1, v do
-			alife():create(section,
+			get_alife():create(section,
 					db.actor:position(),
 					db.actor:level_vertex_id(),
 					db.actor:game_vertex_id(),

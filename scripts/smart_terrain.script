@@ -95,7 +95,7 @@ function se_smart_terrain:on_register()
 	cse_alife_smart_zone.on_register(self)
 	db.add_smart_terrain(self)
 
-	local sim = alife()
+	local sim = get_alife()
 	local gg = game_graph()
 	local actor_level = sim:level_name(gg:vertex(sim:actor().m_game_vertex_id):level_id())
 	local smart_level = sim:level_name(gg:vertex(self.m_game_vertex_id):level_id())
@@ -327,7 +327,7 @@ function se_smart_terrain:register_npc(obj)
 	end 
 	
 	-- dynamic companions cannot register
-	if (IsStalker(nil,cls) and alife():has_info(obj.id,"npcx_is_companion")) then 
+	if (IsStalker(nil,cls) and get_alife():has_info(obj.id,"npcx_is_companion")) then 
 		return 
 	end 
 	
@@ -1035,7 +1035,7 @@ function se_smart_terrain:init_npc_after_load()
 		return
 	end
 
-	local sim = alife()
+	local sim = get_alife()
 
 	-- validate and fill saved npc_info; find job by saved uid
 	for id, info in pairs(self.load_info) do
@@ -1225,7 +1225,7 @@ function se_smart_terrain:update()
 		self:try_respawn()
 	end
 	
-	local sim = alife()
+	local sim = get_alife()
 	local se_actor = sim:actor()
 	self.dist_to_actor = self.position:distance_to(se_actor.position)
 	
@@ -1361,7 +1361,7 @@ end
 -- called in xr_motivator and bind_monster net_spawn()
 function setup_gulag_and_logic_on_spawn(obj, st, se_obj, stype, loaded)
 	--alun_utils.debug_write(strformat("smart_terrain.setup_gulag_and_logic_on_spawn %s",obj and obj:name()))
-	local sim = alife()
+	local sim = get_alife()
 	
 	-- Expedite arrival and job assignment
 	local smart = se_obj.m_smart_terrain_id and se_obj.m_smart_terrain_id ~= 65535 and sim:object(se_obj.m_smart_terrain_id)
@@ -1392,7 +1392,7 @@ function setup_gulag_and_logic_on_spawn(obj, st, se_obj, stype, loaded)
 end
 
 function on_death(se_obj)
-	local sim = alife()
+	local sim = get_alife()
 	local smart = sim and se_obj.m_smart_terrain_id and se_obj.m_smart_terrain_id ~= 65535 and sim:object(se_obj.m_smart_terrain_id)
 	if (smart) then 
 		smart:clear_dead(se_obj)
@@ -1425,7 +1425,7 @@ function se_smart_terrain:am_i_reached(squad)
 end
 
 function se_smart_terrain:on_after_reach(squad)
-	local sim = alife()
+	local sim = get_alife()
 	for k in squad:squad_members() do
 		local se_obj = k.object or k.id and sim:object(k.id)
 		if (se_obj) then
@@ -1659,7 +1659,7 @@ function se_smart_terrain:try_respawn()
 					local lvid = self.m_level_vertex_id
 					local gvid = self.m_game_vertex_id
 					
-					local se_heli = alife():create(heli,pos,lvid,gvid)
+					local se_heli = get_alife():create(heli,pos,lvid,gvid)
 					
 					local visual = ini_sys:r_string_ex(heli,"visual")
 					-- required to spawn by script
@@ -1676,7 +1676,7 @@ function se_smart_terrain:try_respawn()
 						se_heli.respawn_point_id = self.id
 						se_heli.respawn_point_prop_section = sect_to_spawn
 					else
-						alife():release(se_heli,true)
+						get_alife():release(se_heli,true)
 					end
 				else
 					return

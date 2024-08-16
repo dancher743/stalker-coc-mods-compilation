@@ -396,7 +396,7 @@ function pick_section_from_condlist(actor, npc, condlist, p)
 						break
 					end
 				end
-			elseif (npc_id and alife():has_info(npc_id,infop.name)) then
+			elseif (npc_id and get_alife():has_info(npc_id,infop.name)) then
 				if not infop.required then
 					--'printf("FAILED: actor has infop '%s', which is NOT needed [%s]", infop.name, tostring(has_alife_info(infop.name)))
 					infop_conditions_met = false -- инфопоршен есть, но он не должен присутствовать
@@ -435,7 +435,7 @@ function pick_section_from_condlist(actor, npc, condlist, p)
 						xr_effects[infop.func](actor, npc)
 					end
 				elseif infop.required then
-					if (npc_id and string.find(infop.name,"npcx_") and not alife():has_info(npc_id,infop.name) ) then
+					if (npc_id and string.find(infop.name,"npcx_") and not get_alife():has_info(npc_id,infop.name) ) then
 						npc:give_info_portion(infop.name)
 					else
 						if not ( has_alife_info(infop.name)  ) then
@@ -443,7 +443,7 @@ function pick_section_from_condlist(actor, npc, condlist, p)
 						end
 					end
 				else
-					if (npc_id and string.find(infop.name,"npcx_") and alife():has_info(npc_id,infop.name) ) then
+					if (npc_id and string.find(infop.name,"npcx_") and get_alife():has_info(npc_id,infop.name) ) then
 						npc:disable_info_portion(infop.name)
 					else
 						if has_alife_info(infop.name) then
@@ -852,7 +852,7 @@ function cfg_get_npc_and_zone(ini, section, field, npc,cond_name)
 			t.npc_id = 65535
 		end
 
-		local sim = alife()
+		local sim = get_alife()
 		local se_obj = sim:object(id)
 		t.npc_id = se_obj ~= nil and se_obj.id or 65535
 	end

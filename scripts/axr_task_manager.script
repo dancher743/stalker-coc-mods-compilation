@@ -1178,7 +1178,7 @@ end
 
 function is_task_giver_valid(tsk)
 	local id = tsk.task_giver_id
-	local se_obj = id and alife():object(id)
+	local se_obj = id and get_alife():object(id)
 	if not (se_obj) then
 		--printf("is_task_giver_valid se_obj nil id=%s   %s",id,tsk.id)
 		return false

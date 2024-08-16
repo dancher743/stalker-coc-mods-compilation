@@ -104,7 +104,7 @@ function CSurgeManager:initialize()
 	end
 	
 	local level_name
-	local gg,gini,sim = game_graph(),game_ini(),alife()
+	local gg,gini,sim = game_graph(),game_ini(),get_alife()
 	for lvl in gg:levels() do
 		level_name = sim:level_name(lvl.id)
 		weather = level_name and gini:r_string_ex(level_name,"weathers")
@@ -1169,7 +1169,7 @@ end
 function check_squad_level(squad_id)
 	local squad = alife_object(squad_id)
 	if(squad) then
-		local squad_level = alife():level_name(game_graph():vertex(squad.m_game_vertex_id):level_id())
+		local squad_level = get_alife():level_name(game_graph():vertex(squad.m_game_vertex_id):level_id())
 		if(squad_level==level.name()) then
 			return true
 		end
@@ -1226,7 +1226,7 @@ function CSurgeManager:kill_obj_at_pos(pos)
 		return 
 	end
 	local board = SIMBOARD
-	local sim, gg = alife(),game_graph()
+	local sim, gg = get_alife(),game_graph()
 	local immuned_to_surge_squads = {
 					["monolith"] = true,
 					["monster_predatory_day"] 	= true,
@@ -1288,7 +1288,7 @@ function CSurgeManager:get_objects_to_kill()
 				["monster"]					= true,
 				["zombied"]					= true
 	}
-	local sim,gg = alife(),game_graph()
+	local sim,gg = get_alife(),game_graph()
 	for k,v in pairs(board.squads) do
 		local squad = v
 		if (squad:clsid() == clsid.online_offline_group_s and can_destroy_squad(squad,immuned_to_surge_squads,sim,gg)) then 
@@ -1379,7 +1379,7 @@ function CSurgeManager:turn_to_zombie(se_obj,squad)
 	end
 	
 	squad:remove_npc(se_obj.id)
-	alife():create(zombie_type,se_obj.position,se_obj.m_level_vertex_id,se_obj.m_game_vertex_id)
+	get_alife():create(zombie_type,se_obj.position,se_obj.m_level_vertex_id,se_obj.m_game_vertex_id)
 end
 
 function CSurgeManager:explode(se_obj,squad)
@@ -1427,7 +1427,7 @@ function CSurgeManager:kill_all_unhided()
 		self:delay_kill_crow(id,h)
 	end
 	local board = SIMBOARD
-	local sim,gg = alife(),game_graph()
+	local sim,gg = get_alife(),game_graph()
 	local immuned_to_surge_squads = {
 				["monolith"] = true,
 				["monster_predatory_day"] 	= true,
@@ -1523,7 +1523,7 @@ function CSurgeManager:kill_all_unhided_after_actor_death()
 					["monster"]					= true,
 					["zombied"]					= true
 	}
-	local sim,gg = alife(),game_graph()
+	local sim,gg = get_alife(),game_graph()
 	for k,v in pairs(board.squads) do
 		local squad = v
 		if (squad:clsid() == clsid.online_offline_group_s and can_destroy_squad(squad,immuned_to_surge_squads,sim,gg)) then

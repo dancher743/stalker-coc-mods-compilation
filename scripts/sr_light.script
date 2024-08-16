@@ -85,7 +85,7 @@ function check_light(stalker)
 			if (torch:attachable_item_enabled()) then
 				torch:enable_attachable_item(false)
 			end
-			local sim = alife()
+			local sim = get_alife()
 			local se_torch = sim:object(torch:id())
 			if se_torch then
 				sim:release(se_torch,true)
@@ -104,7 +104,7 @@ function check_light(stalker)
 			if (torch:attachable_item_enabled()) then
 				torch:enable_attachable_item(false)
 			end
-			local sim = alife()
+			local sim = get_alife()
 			local se_torch = sim:object(torch:id())
 			if se_torch then
 				sim:release(se_torch,true)
@@ -120,7 +120,7 @@ function check_light(stalker)
 			if (torch:attachable_item_enabled()) then
 				torch:enable_attachable_item(false)
 			end
-			local sim = alife()
+			local sim = get_alife()
 			local se_torch = sim:object(torch:id())
 			if se_torch then
 				sim:release(se_torch,true)
@@ -139,7 +139,7 @@ function check_light(stalker)
 			if (torch:attachable_item_enabled()) then
 				torch:enable_attachable_item(false)
 			end
-			local sim = alife()
+			local sim = get_alife()
 			local se_torch = sim:object(torch:id())
 			if se_torch then
 				sim:release(se_torch,true)
@@ -176,7 +176,7 @@ function check_light(stalker)
 				torch:enable_attachable_item(true)
 			end
 		else
-			local sim = alife()
+			local sim = get_alife()
 			sim:create("device_torch", VEC_ZERO, 0, 0, stalker:id())
 		end
 		st.ignore_torch_flag = false
@@ -185,7 +185,7 @@ function check_light(stalker)
 			if (torch:attachable_item_enabled()) then
 				torch:enable_attachable_item(false)
 			end
-			local sim = alife()
+			local sim = get_alife()
 			local se_torch = sim:object(torch:id())
 			if se_torch then
 				sim:release(se_torch,true)

@@ -112,7 +112,7 @@ function Crelease_body:clear(all,dist)
 		return
 	end
 
-	local sim = alife()
+	local sim = get_alife()
 	if not (sim) then
 		return
 	end

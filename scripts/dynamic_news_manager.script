@@ -747,7 +747,7 @@ function DynamicNewsManager:FindSpeakerAndTarget(not_in_combat,distance,speaker_
 	
 	-- Find an enemy to sender
 	for i=1,65534 do 
-		local se_obj = alife():object(i)
+		local se_obj = get_alife():object(i)
 		if (se_obj and se_obj.position:distance_to(sender:position()) < dis and se_obj.group_id ~= 65535) then 
 			if (IsStalker(nil,se_obj:clsid()) and se_obj:community() ~= "trader" and game_relations.is_factions_enemies(sender:character_community(), se_obj:community())) or (IsMonster(nil,se_obj:clsid())) then
 				if se_obj:alive() then
@@ -791,7 +791,7 @@ function DynamicNewsManager:PickCompanion() -- pick a random companion
 	local picked = npcs[math.random(#npcs)]
 	
 	--printf(">>> Dyn News: help PickCompanion | #npcs = " .. #npcs)
-	return alife():object(picked)
+	return get_alife():object(picked)
 end
 
 function DynamicNewsManager:PickNewCompanion() -- pick a random "new" companion
@@ -833,7 +833,7 @@ function DynamicNewsManager:PickNewCompanion() -- pick a random "new" companion
 	local picked = new_npcs[math.random(#new_npcs)]
 	
 	--printf(">>> Dyn News: help PickNewCompanion | #new_npcs = " .. #new_npcs)
-	return alife():object(picked)
+	return get_alife():object(picked)
 end
 
 function DynamicNewsManager:GetLootValue(item_tbl) -- get value of whole loot
@@ -933,7 +933,7 @@ function DynamicNewsManager:WelcomeToNetwork() -- Welcome message on new game
 	
 	-- Count the number of stalkers across the zone, except monolith and zombies
 	local c = 1
-	local sim = alife()
+	local sim = get_alife()
 	for i=1,65534 do 
 		local se_obj = sim:object(i)
 		if (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and se_obj:community() ~= "zombied" and se_obj:community() ~= "monolith" and se_obj.group_id ~= 65535) then 
@@ -1020,7 +1020,7 @@ function DynamicNewsManager:ReportDeathByStalker(victim,who) -- Death Report of 
 	local c = dynamic_news_helper.GetPointDescription(victim)
 	local who_name = who:character_name()
 	if (who:id() == db.actor:id()) then
-		local sim = alife()
+		local sim = get_alife()
 		local se_actor = sim:actor()
 		who_name = se_actor:character_name()
 	end
@@ -1952,7 +1952,7 @@ function DynamicNewsManager:CompanionAboutLife(sender) -- companion chitchat
 		return false
 	end
 	
-	local alife = alife()
+	local alife = get_alife()
 	local se_actor = alife:actor()
 	local tbl
 	if (math.random(2) == 1) and (sender:community() ~= "monolith") then
@@ -2005,7 +2005,7 @@ function DynamicNewsManager:CompanionAboutActor(sender) -- companion talk about 
 		return false
 	end
 	
-	local alife = alife()
+	local alife = get_alife()
 	local se_actor = alife:actor()
 	local a,b
 	local rep_tbl = {"terrible","really_bad","very_bad","bad","neutral","good","very_good","really_good","excellent"}

@@ -50,7 +50,7 @@ function actor_on_net_spawn()
 		con:execute("ai_aim_predict_time 0.40")
 	end
 	
-	local sim = alife()
+	local sim = get_alife()
 	for i=1,65534 do
 		local se_obj = sim:object(i)
 		if (se_obj and se_obj:clsid() == clsid.phantom) then
@@ -61,7 +61,7 @@ function actor_on_net_spawn()
 	
 	if (axr_main.config:r_value(MM_OPTIONS,"enable_heli_spawn",1,true) == false) then 
 		for k,v in pairs(se_heli.se_helicopters) do 
-			alife():release(v,true)
+			get_alife():release(v,true)
 		end
 	end
 	
@@ -213,7 +213,7 @@ end
 -- IMPORTANT: Cannot be used as callback because this needs to be done in specific order, just call script directly!
 -------------------
 function actor_on_save(binder,packet)
-	local sim,gg = alife(),game_graph()
+	local sim,gg = get_alife(),game_graph()
 	local actor_gv = sim and gg:vertex(sim:actor().m_game_vertex_id)
 	
 	if (actor_gv and actor_gv:level_id() ~= sim:level_id()) then
@@ -288,9 +288,9 @@ function actor_on_detach_vehicle(binder,obj)
 	if (obj:section() == "deployable_mgun") then 
 		local se_obj = alife_object(obj:id())
 		if (se_obj) then 
-			alife():release(se_obj)
+			get_alife():release(se_obj)
 		end
-		alife():create("itm_deployable_mgun",vector(),0,0,0)
+		get_alife():create("itm_deployable_mgun",vector(),0,0,0)
 	end
 end
 

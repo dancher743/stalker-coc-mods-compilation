@@ -30,7 +30,7 @@ function unload_weapons()
 			if (IsWeapon(itm) and not ts[itm:id()] and not ts[itm:section()]) then
 				i = itm:get_ammo_in_magazine()
 				if (i > 0) then
-					k = itm and alife():object(itm:id())
+					k = itm and get_alife():object(itm:id())
 					v = k and stpk_utils.get_weapon_data(k)
 					if (v) then
 						k = ini:r_string_ex(itm:section(),"ammo_class",STR_EMPTY)

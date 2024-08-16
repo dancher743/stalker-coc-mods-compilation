@@ -60,7 +60,7 @@ function has_burning_campfire_nearby()
 end
 
 function cook_raw_item(item)
-	local sim = alife()
+	local sim = get_alife()
 	local actor = db.actor
 
 	-- create cooked item
