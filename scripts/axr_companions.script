@@ -1007,21 +1007,21 @@ function is_barter_avaliable_obj(obj)
 	return is_barter_avaliable(se_obj)
 end
 
-local actor_se_obj_squad
-local sort_function
+local se_obj_actor_squad_list
+local se_obj_actor_squad_sorter
 
 -- includes task companions too
 function list_actor_squad_by_se_obj()
-	if (not actor_se_obj_squad) then
-		actor_se_obj_squad = {}
-		sort_function = function(t,a,b) return a < b end
-	end
+	se_obj_actor_squad_list = se_obj_actor_squad_list or {}
+	se_obj_actor_squad_sorter = se_obj_actor_squad_sorter or function(t,a,b) return a < b end
+	
 	local t = {}
-	for id,squad in spairs(companion_squads, sort_function) do 
+	
+	for id,squad in spairs(companion_squads, se_obj_actor_squad_sorter) do 
 		if (squad and squad.commander_id) then
 			if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
 				for k in squad:squad_members() do
-					local se_obj = actor_se_obj_squad[k.id]
+					local se_obj = se_obj_actor_squad_list[k.id]
 					if (not se_obj) then
 						se_obj = alife_object(k.id)
 					end
@@ -1030,5 +1030,6 @@ function list_actor_squad_by_se_obj()
 			end
 		end
 	end
+	
 	return t
 end
