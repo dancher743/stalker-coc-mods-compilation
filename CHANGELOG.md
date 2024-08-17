@@ -6,13 +6,13 @@ All notable changes to this project will be documented in this file.
 
 ### Improvements
 * Reworked callbacks in `jg_hud_timer.script`
-* Added more character names in Faction Select menu
 
 ### Fixes
 * Fixed overlapping enemy health bar by Guide job's HUD Timer
 * Removed extra ids nilling in code of setup bounty hunt target
 * Fixed companion behaviours during hostage task (code from CoC 1.5 R6)
 * Fixed empty items in Companions List HUD
+* Fixed character name selection in Faction Select menu
 
 ### Optimization
 * Replaced `squad_on_update` with `squad_on_slicing_update` callback in `axr_companions.script`
