@@ -1330,13 +1330,21 @@ end
 function faction_ui:GetNameSubset()
 	local subset
 	local faction = self.selected_faction
+	
 	if (faction == "army" or faction == "dolg") then
-		subset = random_choice("private","sergeant","senior_sergeant","lieutenant","captain")
-	elseif (faction == "stalker" or faction == "bandit" or faction == "science") then
-		subset = self.selected_faction
+		if (not self.army_subset) then
+			self.army_subset = {"private","sergeant","senior_sergeant","lieutenant","captain"}
+		end
+		subset = utils.pick_without(self.picked_army_subset, self.army_subset)
+		self.picked_army_subset = subset
+	elseif (faction == "bandit") then
+		subset = faction
+	elseif (faction == "ecolog") then
+		subset = "science"
 	else
 		subset = "stalker"
 	end
+	
 	return subset
 end
 
