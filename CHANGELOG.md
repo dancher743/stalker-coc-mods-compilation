@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.4.5] - Unreleased
+## [1.4.5] - 2024-08-18
 
 ### Improvements
 * Reworked callbacks in `jg_hud_timer.script`
