@@ -18,17 +18,17 @@ local function actor_on_slicing_update()
 	hud_timer:SetValue(left_hours, left_minutes, 0)
 end
 
-local function on_game_load()
+local function actor_on_first_update()
 	try_start()
 end
 
-local function on_game_unload()
+local function actor_on_net_destroy()
 	try_stop()
 end
 
 function on_game_start()
-	RegisterScriptCallback("on_game_load",on_game_load)
-	RegisterScriptCallback("on_game_unload",on_game_unload)
+	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
+	RegisterScriptCallback("actor_on_net_destroy",actor_on_net_destroy)
 end
 
 function try_start()
@@ -37,10 +37,19 @@ function try_start()
 	end
 	
 	hud_timer = ui_hud_timer.create()
+	local position_base = hud_timer:GetPosition()
+	local position_without_bar = vector2():set(position_base.x, position_base.y)
+	local position_with_bar = vector2():set(position_base.x, position_base.y + 45)
 	RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
 	
 	local function tickback()
-		hud_timer:Show(main_hud_shown())
+		if (main_hud_shown()) then
+			local position = ui_enemy_health.has_progress_bar_shown() and position_with_bar or position_without_bar
+			hud_timer:SetPosition(position)
+			hud_timer:Show(true)
+		else
+			hud_timer:Show(false)
+		end
 	end
 	StartTimer("jg_hud_show_timer", 1000, tickback)
 end

@@ -344,7 +344,7 @@ function npc_sound:load(thread)
 	end
 --	set_save_marker(thread, "load", false, "npc_sound")
 	local id = thread:r_stringZ()
-	if(id~="nil") then
+	if(id~=STR_NIL) then
 		self.played_id = tonumber(id)
 	else
 		self.played_id = nil
@@ -548,7 +548,7 @@ end
 function actor_sound:load(thread)
 --	set_save_marker(thread, "load", false, "actor_sound")
 	local id = thread:r_stringZ()
-	if(id~="nil") then
+	if(id~=STR_NIL) then
 		self.played_id = tonumber(id)
 	else
 		self.played_id = nil
@@ -742,7 +742,7 @@ end
 function object_sound:load(thread)
 --	set_save_marker(thread, "load", false, "object_sound")
 	local id = thread:r_stringZ()
-	if(id~="nil") then
+	if(id~=STR_NIL) then
 		self.played_id = tonumber(id)
 	else
 		self.played_id = nil

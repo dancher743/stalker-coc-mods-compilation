@@ -3,7 +3,7 @@
 	1. 	NEVER keep userdata (ie. engine classes) in global scope, instead keep track of game object id, and grab object in the scope you need it in by using level.object_by_id or db.storage table. 
 		Otherwise object can't deconstruct and you will end up with instances were script binder exists but object doesn't or level object exists but server object doesn't. This is because variables in lua are all references.
 			Ex. _G.npc = level.object_by_id(2342) 
-				alife():release(alife_object(2342))
+				get_alife():release(alife_object(2342))
 		Above, 'npc' will not be nil but se_obj will be! scripts will blow up. Pure Virtual Function calls may occur! Or quite possibly silent errors like for example when player goes to talk to npc game crashes because self.object is nil
 		Such thing is 'okay' in db.storage, but that is because on net_destroy db.storage[id] is set nil. So if you are keeping track of objects directly in a table, instead of ID 
 		then you absolutely must rid of every single reference to the userdata so that it can be destroy and garbage collected. Otherwise you end up with undetectable issues.
@@ -13,7 +13,7 @@ if (jit == nil) then
 end
 
 GAME_VERSION = "1.4.22"
-MOD_VERSION = "Dancher's Compilation 1.4.4"
+MOD_VERSION = "Dancher's Compilation 1.4.5 RC 2"
 
 if string.find(command_line(), "-dbg") then
 	DEV_DEBUG = true
@@ -71,13 +71,22 @@ function start_game_callback()
 	pda.add_quick_slot_items_on_game_start()
 end
 
+local simulation
+
+function get_alife()
+	if not (simulation) then
+		simulation = alife()
+	end
+	return simulation
+end
+
 function alife_object(id)
 	if (id == nil or id >= 65535) then
 		callstack()
 		printf("ALIFE OBJECT ID IS %s!",id)
 		return
 	end
-	return alife():object(id)
+	return get_alife():object(id)
 end
 -------------------------------------------------------------------------------------------------------
 -- 											SCRIPTED CALLBACKS
@@ -206,7 +215,7 @@ function ProcessEventQueueState(m_data,save)
 end
 
 function SetSwitchDistance(dist)
-	if (alife()) then
+	if (get_alife()) then
 		local p = net_packet()
 		p:w_begin(18)
 		p:w_float(dist or 2.0)
@@ -275,7 +284,7 @@ function JumpToLevel(new_level)
 	end
 	
 	local cvertex
-	local sim,gg = alife(),game_graph()
+	local sim,gg = get_alife(),game_graph()
 	-- first try to find a smart_terrain on specified level
 	for id,smart in pairs(db.smart_terrain_by_id) do
 		cvertex = smart and gg:vertex(smart.m_game_vertex_id)
@@ -307,12 +316,12 @@ function TeleportObject(id,pos,lvid,gvid)
 		db.offline_objects[id].level_vertex_id = nil
 	end
 	db.spawned_vertex_by_id[id] = nil
-	alife():teleport_object(id,gvid,lvid,pos)
+	get_alife():teleport_object(id,gvid,lvid,pos)
 end
 
 function TeleportSquad(squad,pos,lvid,gvid)
 	-- Requires OpenXray
-	local sim = alife()
+	local sim = get_alife()
 	sim:teleport_object(squad.id,gvid,lvid,pos)
 	for k in squad:squad_members() do
 		if (db.offline_objects[k.id]) then
@@ -521,7 +530,7 @@ end
 
 --' іроверка на инфопоршнv, даже если игрока не су	ествует
 function has_alife_info(info_id)
-	local sim = alife()
+	local sim = get_alife()
 	return sim:has_info(0, info_id)
 end
 
@@ -744,7 +753,7 @@ function IsWounded(o)
 	end
 	
 	local state = tostring(utils.load_var(o, "wounded_state"))
-	if (state == "nil") then
+	if (state == STR_NIL) then
 		return false
 	end
 	
@@ -1080,7 +1089,7 @@ end
 
 -- получить геймобжект по стори_айди.
 function level_object_by_sid( sid )
-	local sim = alife()
+	local sim = get_alife()
 	if sim then
 		local se_obj = sim:story_object( sid )
 		if se_obj then
@@ -1091,7 +1100,7 @@ function level_object_by_sid( sid )
 end
 -- Получить айдишник обьекта по стори айди.
 function id_by_sid( sid )
-	local sim = alife()
+	local sim = get_alife()
 	if sim then
 		local se_obj = sim:story_object( sid )
 		if se_obj then
@@ -1204,11 +1213,11 @@ function create_ammo(section, position, lvi, gvi, pid, num)
 	local num_in_box = ini:r_u32(section, "box_size")
 	local t = {}
 	while num > num_in_box do
-		local obj = alife():create_ammo(section, position, lvi,	gvi, pid, num_in_box)
+		local obj = get_alife():create_ammo(section, position, lvi,	gvi, pid, num_in_box)
 		table.insert(t, obj)
 		num = num - num_in_box
 	end
-	local obj = alife():create_ammo(section, position, lvi,	gvi, pid, num)
+	local obj = get_alife():create_ammo(section, position, lvi,	gvi, pid, num)
 	table.insert(t, obj)
 	return t
 end
@@ -1267,7 +1276,7 @@ end
 
 -- переводит вектор в строку.
 function vec_to_str (vector)
-	if vector == nil then return "nil" end
+	if vector == nil then return STR_NIL end
 	return string.format("[%s:%s:%s]", vector.x, vector.y, vector.z)
 end
 -- выводит в лог стэк вызова функций.
@@ -1330,7 +1339,7 @@ function get_object_squad(object,caller)
 		if (object.group_id ~= nil and object.group_id ~= 65535) then
 		return alife_object(object.group_id)
 	end
-		local sim = alife()
+		local sim = get_alife()
 	local se_obj = type(object.id) == "function" and sim:object(object:id())
 	return se_obj and se_obj.group_id ~= 65535 and sim:object(se_obj.group_id) or nil
 end
@@ -1466,7 +1475,7 @@ function CALifeUpdateManager__on_before_change_level(packet)
 	packet:r_vec3(angle)
 	-- crazy hack to help prevent crash on Trucks Cemetery
 	local gg = game_graph()
-	if (gg:valid_vertex_id(gvid) and alife():level_name(gg:vertex(gvid):level_id()) == "k02_trucks_cemetery") then
+	if (gg:valid_vertex_id(gvid) and get_alife():level_name(gg:vertex(gvid):level_id()) == "k02_trucks_cemetery") then
 		log("k02_trucks_cemetery hack r__clear_models_on_unload 1")
 		get_console():execute("r__clear_models_on_unload 1")
 	end
@@ -1518,7 +1527,7 @@ end
 function give_object_to_actor(obj,count)
   if count==nil then count=1 end
   for i=1, count do
-     alife():create(obj,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
+     get_alife():create(obj,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
   end
 end
 
@@ -1786,6 +1795,7 @@ VEC_FORWARD 	= vector():set(0,0,1)
 VEC_BACK 		= vector():set(0,0,-1)
 
 STR_EMPTY		= ""
+STR_NIL			= "nil"
 MM_OPTIONS		= "mm_options"
 -----------------------------------------
 

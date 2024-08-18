@@ -215,7 +215,7 @@ local function under_faction_control_target_id(task_id)
 		printf("task_functor.under_faction_control_target_id is nil")
 		return
 	end
-	local sim = alife()
+	local sim = get_alife()
 	local smart = smart_id and sim:object(smart_id)
 	if not (smart) then
 		printf("task_functor.under_faction_control_target_id smart by id is nil")
@@ -259,7 +259,7 @@ function get_squad_id_by_task_var(var_name,no_check_online)
 		end
 	end
 
-	local sim = alife()
+	local sim = get_alife()
 	local se_npc = sim:object(npc_id)
 	if not (se_npc) then
 		return

@@ -128,7 +128,7 @@ function drx_sl_validate_assault_local_task( actor, npc, p )
 					for k, squad in pairs( smrt.squads ) do
 						if ( squad and simulation_objects.is_on_the_same_level( squad, smart ) and squad.current_target_id and squad.current_target_id == smart.id and squad.current_action == 1 ) then
 							if ( p[3] == "true" or not squad:get_script_target( ) ) then
-								if ( p[2] == "nil" or squad.stay_time and game.get_game_time( ):diffSec( squad.stay_time ) <= tonumber( p[2] ) ) then
+								if ( p[2] == STR_NIL or squad.stay_time and game.get_game_time( ):diffSec( squad.stay_time ) <= tonumber( p[2] ) ) then
 									for h = 1, #enemy_faction_list do
 										if ( squad.player_id == enemy_faction_list[h] ) then
 											count = (count + 1)
@@ -235,7 +235,7 @@ function drx_sl_validate_assault_remote_task( actor, npc, p )
 					for k, squad in pairs( smrt.squads ) do
 						if ( squad and simulation_objects.is_on_the_same_level( squad, smart ) and squad.current_target_id and squad.current_target_id == smart.id and squad.current_action == 1 ) then
 							if ( p[3] == "true" or not squad:get_script_target( ) ) then
-								if ( p[2] == "nil" or squad.stay_time and game.get_game_time( ):diffSec( squad.stay_time ) <= tonumber( p[2] ) ) then
+								if ( p[2] == STR_NIL or squad.stay_time and game.get_game_time( ):diffSec( squad.stay_time ) <= tonumber( p[2] ) ) then
 									for h = 1, #enemy_faction_list do
 										if ( squad.player_id == enemy_faction_list[h] ) then
 											count = (count + 1)
@@ -305,7 +305,7 @@ function drx_sl_validate_assault_mutant_task( actor, npc, p )
 					for k, squad in pairs( smrt.squads ) do
 						if ( squad and simulation_objects.is_on_the_same_level( squad, smart ) and squad.current_target_id and squad.current_target_id == smart.id and squad.current_action == 1 ) then
 							if ( p[3] == "true" or not squad:get_script_target( ) ) then
-								if ( p[2] == "nil" or squad.stay_time and game.get_game_time( ):diffSec( squad.stay_time ) <= tonumber( p[2] ) ) then
+								if ( p[2] == STR_NIL or squad.stay_time and game.get_game_time( ):diffSec( squad.stay_time ) <= tonumber( p[2] ) ) then
 									if ( is_squad_monster[squad.player_id] ) then
 										count = (count + 1)
 										if ( count >= tonumber( p[1] ) ) then
@@ -655,7 +655,7 @@ function is_enemy_actor_or_companion(enemy,npc)
 	if (id == 0) then
 		return true
 	end
-	if (alife():has_info(id,"npcx_is_companion")) then
+	if (get_alife():has_info(id,"npcx_is_companion")) then
 		return true
 	end
 	return false
@@ -875,10 +875,10 @@ end
 -- !!! НЕКОРРЕКТНО РАБОТАЕТ ДЛЯ ОБЬЕКТОВ В offline'e !!!
 -- !!! ДЛЯ ГАРАНТИИ ИСПОЛЬЗОВАТЬ one_obj_in_zone !!!
 function obj_in_zone(actor, zone, p)
-	local sim = alife()
+	local sim = get_alife()
 	for i, v in pairs(p) do
 		local id = get_story_object_id(v)
-		local se_obj = id and alife():object_by_id(id)
+		local se_obj = id and get_alife():object_by_id(id)
 		if se_obj and zone:inside(se_obj.position) then
 			return true
 		end
@@ -1112,7 +1112,7 @@ end
 -- TODO: исправить ситуацию, когда выдается неправильный результат для обьектов, которые
 --       не успели проспавниться.
 function is_alive_all(actor, npc, p)
-	local sim = alife()
+	local sim = get_alife()
 	for i, v in pairs(p) do
 		local id = get_story_object_id(v)
 		local se_obj = id and sim:object(id)
@@ -1127,7 +1127,7 @@ end
 -- TODO: исправить ситуацию, когда выдается неправильный результат для обьектов, которые
 --       не успели проспавниться.
 function is_alive_one(actor, npc, p)
-	local sim = alife()
+	local sim = get_alife()
 	for i, v in pairs(p) do
 		local id = get_story_object_id(v)
 		local se_obj = id and sim:object(id)
@@ -1588,7 +1588,7 @@ function actor_on_level(actor, npc, p)
 end
 
 function npc_on_level(actor, npc, p)
-	local sim = alife()
+	local sim = get_alife()
 	local se_obj = p[1] and npc and (type(npc.id) == "function" and sim:object(npc:id()) or npc)
 	if not (se_obj) then
 		return false
@@ -1651,7 +1651,7 @@ function squad_in_zone(actor, npc, p)
 		return false
 	end
 
-	local sim = alife()
+	local sim = get_alife()
 	for k in squad:squad_members() do
 		local se_obj = k.id and sim:object(k.id)
 		if (se_obj and zone:inside(se_obj.position)) then
@@ -1702,7 +1702,7 @@ function squad_in_zone_all(actor, npc, p)
 		--printf("There is no squad with id[%s]", tostring(zone_name))
 		return false
 	end
-	local sim = alife()
+	local sim = get_alife()
 	for k in squad:squad_members() do
 		local se_obj = k.object or k.id and sim:object(k.id)
 		if (se_obj and zone:inside(se_obj.position)) then
@@ -1715,7 +1715,7 @@ end
 function squads_in_zone_b41(actor, npc, p)
 	local smart = SIMBOARD:get_smart_by_name("jup_b41")
 	local zone = db.zone_by_name["jup_b41_sr_light"]
-	local al = alife()
+	local al = get_alife()
 
 	if zone == nil then
 		return false
@@ -1740,7 +1740,7 @@ end
 function squads_in_zone_yan_smart_terrain_6_4(actor, npc, p)
 	local smart = SIMBOARD:get_smart_by_name("yan_smart_terrain_6_4")
 	local zone = db.zone_by_name["yan_smart_terrain_6_4_sr_light"]
-	local al = alife()
+	local al = get_alife()
 
 	if zone == nil then
 		return false
@@ -2241,7 +2241,7 @@ function pas_b400_actor_far_forward(actor, npc)
 
 	local squad = get_object_squad(npc)
 	if (squad) then
-		local sim = alife()
+		local sim = get_alife()
 		for k in squad:squad_members() do
 			local se_obj = k.object or k.id and sim:object(k.id)
 			if (se_obj and se_obj.position:distance_to_sqr(actor:position()) < distance) then
@@ -2274,7 +2274,7 @@ function pas_b400_actor_far_backward(actor, npc)
 
 	local squad = get_object_squad(npc)
 	if (squad) then
-		local sim = alife()
+		local sim = get_alife()
 		for k in squad:squad_members() do
 			local se_obj = k.object or k.id and sim:object(k.id)
 			if (se_obj and se_obj.position:distance_to_sqr(actor:position()) < distance) then
@@ -2305,7 +2305,7 @@ end
 function check_enemy_smart(actor , npc , p)
 	local enemy_id = db.storage[npc:id()].enemy_id
 	local enemy = db.storage[enemy_id] and db.storage[enemy_id].object
-	if enemy == nil or enemy_id == alife():actor().id then
+	if enemy == nil or enemy_id == get_alife():actor().id then
 		return false
 	end
 	local enemy_smart = xr_gulag.get_npc_smart(enemy)
@@ -2566,7 +2566,7 @@ function smart_empty(actor,npc,p)
 		return false
 	end
 	local smart_id = smart.id
-	local sim = alife()
+	local sim = get_alife()
 	for k,v in pairs(board.smarts[smart_id].squads) do
 		if (v.id and sim:object(v.id)) then
 			return false
@@ -2699,7 +2699,7 @@ function squad_on_actor_map(actor,npc,p)
 		return false
 	end
 	local gg = game_graph()
-	return gg:vertex(alife():actor().m_game_vertex_id):level_id() == gg:vertex(squad.m_game_vertex_id):level_id()
+	return gg:vertex(get_alife():actor().m_game_vertex_id):level_id() == gg:vertex(squad.m_game_vertex_id):level_id()
 end
 
 -- Returns true if squad commander's active section equals param 1
@@ -2934,7 +2934,7 @@ function smart_stayed_squad_count_ge_by_faction(actor,npc,p)
 	for k,squad in pairs(smrt.squads) do
 		if (squad and simulation_objects.is_on_the_same_level(squad, smart) and squad.current_target_id and squad.current_target_id == smart.id and squad.current_action == 1) then
 			if (p[4] == "true" or not squad:get_script_target()) then
-				if (squad.stay_time) and (p[3] == "nil" or game.get_game_time():diffSec(squad.stay_time) <= (tonumber(p[3]) or 0)) then
+				if (squad.stay_time) and (p[3] == STR_NIL or game.get_game_time():diffSec(squad.stay_time) <= (tonumber(p[3]) or 0)) then
 					for i=5,#p do
 						if (p[i] == "monster" and is_squad_monster[squad.player_id] or squad.player_id == p[i]) then
 							count = count + 1
@@ -2975,13 +2975,13 @@ end
 function all_avail_smart_stayed_squad_count_ge_by_faction_ex(actor,npc,p)
 	if (#p >= 4) then
 
-		local sim = alife()
+		local sim = get_alife()
 		local gg = game_graph()
 		local actor_level = sim:level_name(gg:vertex(sim:actor().m_game_vertex_id):level_id())
 
 		for name,v in pairs(SIMBOARD.smarts_by_names) do
 			if (v.sim_avail == nil or v.sim_avail and xr_logic.pick_section_from_condlist(actor, v, v.sim_avail) == "true") then
-				local smart_level = alife():level_name(game_graph():vertex(v.m_game_vertex_id):level_id())
+				local smart_level = get_alife():level_name(game_graph():vertex(v.m_game_vertex_id):level_id())
 				if (v.online or DEACTIVATE_SIM_ON_NON_LINKED_LEVELS ~= true or string.find(simulation_objects.config:r_value(actor_level,"target_maps",0,STR_EMPTY),smart_level)) then
 					if (smart_stayed_squad_count_ge_by_faction(actor,npc,{name,unpack(p)}) == true) then
 						return true
@@ -3404,7 +3404,7 @@ end
 function is_target_exists(actor,npc,p)
 	local result = false
 	
-	local sim = alife()
+	local sim = get_alife()
 	local target_section = "sim_default"
 	local target_communities = {}
 	

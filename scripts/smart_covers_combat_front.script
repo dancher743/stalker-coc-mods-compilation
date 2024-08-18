@@ -10,7 +10,7 @@ function get_smart_cover()
 			loopholes = {
 				-- Крауч
 				smart_covers_loophole_crouch_front_left.get_loophole	("crouch_front_left",	vector():set(-1,	0,	-0.7)),
-				smart_covers_loophole_crouch_front.get_loophole			("crouch_front",		vector():set(-1,	0,	0)),
+				smart_covers_loophole_crouch_front.get_loophole			("crouch_front",		VEC_LEFT),
 				smart_covers_loophole_crouch_front_right.get_loophole	("crouch_front_right",	vector():set(-1,	0,	0.7)),
 
 				-- Стоя

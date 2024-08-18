@@ -428,11 +428,11 @@ function load(package)
 	actor_statistic.achievements		= package:r_u16()
 
 	local str = package:r_stringZ()
-	if(str~="nil") then
+	if(str~=STR_NIL) then
 		actor_statistic.best_monster = str
 	end
 	str = package:r_stringZ()
-	if(str~="nil") then
+	if(str~=STR_NIL) then
 		actor_statistic.favorite_weapon_sect = str
 	end
 	--add read for visited level

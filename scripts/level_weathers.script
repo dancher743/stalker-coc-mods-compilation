@@ -638,7 +638,7 @@ function WeatherManager:load(F)
 	self.last_period_change_date = utils.r_CTime(F,"level_weathers");
 	self.update_time = F:r_u32();
 	local str = F:r_stringZ()
-	if(str~="nil") then
+	if(str~=STR_NIL) then
 		self.weather_fx = str
 		self.wfx_time = F:r_float()
 	end

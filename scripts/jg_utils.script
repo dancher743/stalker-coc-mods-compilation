@@ -64,12 +64,12 @@ end
 --[[
 function squad_switcher(npc_id,func,param2,param3)
 	local flag_off_on
-	local snpc = alife():object(npc_id)
+	local snpc = get_alife():object(npc_id)
 	local squad = get_object_squad(snpc)
 	if not squad then return log('СКВАД НЕ СУЩЕСТВУЕТ ИЛИ МЁРТВ!!!') end
 	if not squad.online then
-		alife():set_switch_offline (squad.id, false)
-		alife():set_switch_online (squad.id, true) -- Вывести онлайн (вернее поставить флаги для вывода)
+		get_alife():set_switch_offline (squad.id, false)
+		get_alife():set_switch_online (squad.id, true) -- Вывести онлайн (вернее поставить флаги для вывода)
 		flag_off_on = "OFF"
 		log('Первоначально: '..flag_off_on)
 	else
@@ -89,8 +89,8 @@ function squad_switcher(npc_id,func,param2,param3)
 							func(npc_id,param2,param3)
 							--------
 							if flag_off_on == "OFF" then
-								alife():set_switch_offline (squad.id, true) -- Вернуть в оффлайн
-								alife():set_switch_online (squad.id, true)
+								get_alife():set_switch_offline (squad.id, true) -- Вернуть в оффлайн
+								get_alife():set_switch_online (squad.id, true)
 								log('Возвращаем в оффлайн')
 							else
 								log('Возвращение в оффлайн не требуется')
@@ -101,7 +101,7 @@ end
 
 function npc_switcher(npc_id,func,param2,param3)
 	local flag_off_on
-	local snpc = alife():object(npc_id)
+	local snpc = get_alife():object(npc_id)
 	if not snpc:alive() then return log('НПС НЕ СУЩЕСТВУЕТ ИЛИ МЁРТВ!!!') end
 	if not snpc.online then
 		snpc:switch_online() -- Вывести онлайн (вернее поставить флаги для вывода)

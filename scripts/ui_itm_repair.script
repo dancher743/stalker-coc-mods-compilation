@@ -311,7 +311,7 @@ function repair_ui:OnButton_back_clicked()
 			self.object:set_remaining_uses(self.object:get_remaining_uses()+1)
 		end
 	else
-		alife():create(self.section,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
+		get_alife():create(self.section,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
 	end
 	self:HideDialog()
 end
@@ -341,7 +341,7 @@ function repair_ui:OnButton_repair()
 	if (self.use_condition and self.object and self.object:get_remaining_uses() <= 0) then 
 		local se_obj = alife_object(self.object:id())
 		if (se_obj) then 
-			alife():release(se_obj,true)
+			get_alife():release(se_obj,true)
 		end
 	end
 	
@@ -354,7 +354,7 @@ function repair_ui:OnButton_repair()
 			if (se_parts) then
 				local sec = se_parts:section_name()
 				bonus = ini_sys:r_float_ex(sec,"repair_part_bonus") or self.part_bonus
-				alife():release(se_parts,true)
+				get_alife():release(se_parts,true)
 			end
 		end
 	end

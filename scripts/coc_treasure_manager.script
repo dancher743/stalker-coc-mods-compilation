@@ -48,7 +48,7 @@ local function on_game_load()
 		return
 	end
 
-	local sim = alife()
+	local sim = get_alife()
 	for i=1, 65534 do
 		local se_obj = sim:object(i)
 		if (se_obj) then
@@ -152,7 +152,7 @@ function create_random_stash(no_spot,hint,bonus_items)
 
 	last_secret = true
 	
-	local sim = alife()
+	local sim = get_alife()
 
 	-- create a temporary table to use math.random
 	local t = {}
@@ -564,7 +564,7 @@ function try_spawn_treasure(box)
 	
 	local sec,ammos,ct,ammo_type,ammo_section
 	local ini = ini_sys
-	local sim = alife()
+	local sim = get_alife()
 	for i=1,#spawned_item do
 		sec = spawned_item[i]
 		if (sec ~= STR_EMPTY and ini:section_exist(sec)) then
@@ -611,7 +611,7 @@ function try_spawn_treasure(box)
 						--printf("coc_treasure_manager: item is fa- end")
 					end 
 					-- because we didn't register, we do it now, manually
-					alife():register(se_obj)
+					get_alife():register(se_obj)
 				end
 			end
 		else

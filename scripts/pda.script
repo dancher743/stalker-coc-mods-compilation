@@ -362,9 +362,9 @@ end
 -- called from info_portions.script
 function calculate_rankings()
 	local t = {}
-	local sim = alife()
+	local sim = get_alife()
 	-- add actor to list
-	t[0] = alife():actor():rank()
+	t[0] = get_alife():actor():rank()
 	
 	local sor = story_objects.get_story_objects_registry()
 	

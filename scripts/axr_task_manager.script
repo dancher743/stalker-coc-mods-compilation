@@ -1011,7 +1011,7 @@ function generate_available_tasks(npc,is_sim)
 	-- Randomly not offer any quests at all for sim npcs
 	if (is_sim and st.dyn_quest_rand == nil) then
 		if ( (math.random(1,100)/100) < 0.3) then
-			st.dyn_quest_rand = "nil"
+			st.dyn_quest_rand = STR_NIL
 			return
 		end
 	end
@@ -1178,7 +1178,7 @@ end
 
 function is_task_giver_valid(tsk)
 	local id = tsk.task_giver_id
-	local se_obj = id and alife():object(id)
+	local se_obj = id and get_alife():object(id)
 	if not (se_obj) then
 		--printf("is_task_giver_valid se_obj nil id=%s   %s",id,tsk.id)
 		return false

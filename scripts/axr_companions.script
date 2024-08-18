@@ -79,7 +79,7 @@ end
 
 local function migrate_data(squad)
 	for k in squad:squad_members() do 
-		local se_obj = k.object or alife():object(k.id)
+		local se_obj = k.object or get_alife():object(k.id)
 		if (se_obj and utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion")) then
 			-- Migrate "companion_start_time" var
 			local flag_name = "companion_start_time_to_realtime"
@@ -124,7 +124,7 @@ local function squad_on_unregister(squad)
 	companion_squads[squad.id] = nil
 end
 
-local function squad_on_update(squad)
+local function squad_on_slicing_update(squad)
 	--alun_utils.debug_write(strformat("axr_companions.squad_on_update - heli_enemy_flag"))
 	if (db.actor and not db.actor:alive()) then
 		remove_all_from_actor_squad()
@@ -214,7 +214,7 @@ function on_game_start()
 	if not (Enabled) then return end
 	
 	RegisterScriptCallback("npc_on_fighting_actor",on_fighting_actor)
-	RegisterScriptCallback("squad_on_update",squad_on_update)
+	RegisterScriptCallback("squad_on_slicing_update",squad_on_slicing_update)
 	RegisterScriptCallback("squad_on_npc_death",squad_on_npc_death)
 	RegisterScriptCallback("squad_on_register",squad_on_register)
 	RegisterScriptCallback("squad_on_unregister",squad_on_unregister)
@@ -233,7 +233,7 @@ end
 
 function companion_squad_can_teleport(squad)
 	local id = squad:commander_id()
-	local sim = alife()
+	local sim = get_alife()
 	local se_obj = sim:object(id)
 	if (se_obj) then
 		if (utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_cannot_teleport")) then 
@@ -249,7 +249,7 @@ function companion_squad_can_teleport(squad)
 end 
 
 local function teleport_companion_squad_to_actor(squad)
-	local sim = alife()
+	local sim = get_alife()
 	local se_actor = sim:actor()
 	
 	local gg = game_graph()
@@ -262,7 +262,7 @@ local function teleport_companion_squad_to_actor(squad)
 end
 
 function teleport_companions_to_actor()
-	local sim = alife()
+	local sim = get_alife()
 	
 	for id,v in pairs(companion_squads) do 
 		local squad = sim:object(id)
@@ -273,7 +273,7 @@ function teleport_companions_to_actor()
 end
 
 function teleport_companions_to_actor_in_online()
-	local sim = alife()
+	local sim = get_alife()
 	
 	local function telepor_squad(squad)
 		if (squad.online) then
@@ -333,7 +333,7 @@ function setup_companion_logic(npc,st,loaded,cannot_dismiss)
 	end
 	
 	local id = npc:id()
-	local sim = alife()
+	local sim = get_alife()
 	local se_npc = sim:object(id)
 	local unreg_id = se_npc and se_npc.m_smart_terrain_id
 	if (unreg_id and unreg_id ~= 65535) then
@@ -388,7 +388,7 @@ function remove_all_from_actor_squad()
 	for id,squad in pairs(companion_squads) do
 		if (squad) then
 			for k in squad:squad_members() do 
-				local se_obj = k.object or alife():object(k.id)
+				local se_obj = k.object or get_alife():object(k.id)
 				if (se_obj) then 
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion",nil)
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss",nil)
@@ -875,7 +875,7 @@ end
 -- Added by Dancher
 ------------------------------------------
 
-local simulation = alife()
+local simulation = get_alife()
 
 function has_companion()
 	local result = false
@@ -1005,4 +1005,31 @@ end
 function is_barter_avaliable_obj(obj)
 	local se_obj = simulation:object(obj:id())
 	return is_barter_avaliable(se_obj)
+end
+
+local se_obj_actor_squad_list
+local se_obj_actor_squad_sorter
+
+-- includes task companions too
+function list_actor_squad_by_se_obj()
+	se_obj_actor_squad_list = se_obj_actor_squad_list or {}
+	se_obj_actor_squad_sorter = se_obj_actor_squad_sorter or function(t,a,b) return a < b end
+	
+	local t = {}
+	
+	for id,squad in spairs(companion_squads, se_obj_actor_squad_sorter) do 
+		if (squad and squad.commander_id) then
+			if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
+				for k in squad:squad_members() do
+					local se_obj = se_obj_actor_squad_list[k.id]
+					if (not se_obj) then
+						se_obj = alife_object(k.id)
+					end
+					table.insert(t,se_obj)
+				end
+			end
+		end
+	end
+	
+	return t
 end

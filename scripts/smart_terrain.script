@@ -95,7 +95,7 @@ function se_smart_terrain:on_register()
 	cse_alife_smart_zone.on_register(self)
 	db.add_smart_terrain(self)
 
-	local sim = alife()
+	local sim = get_alife()
 	local gg = game_graph()
 	local actor_level = sim:level_name(gg:vertex(sim:actor().m_game_vertex_id):level_id())
 	local smart_level = sim:level_name(gg:vertex(self.m_game_vertex_id):level_id())
@@ -295,7 +295,7 @@ function se_smart_terrain:fill_npc_info(obj)
 	
 	local npc_info 			= {}
 	npc_info.se_obj			= obj
-	npc_info.need_job		= "nil"
+	npc_info.need_job		= STR_NIL
 	npc_info.job			= nil
 	npc_info.begin_job		= false
 	npc_info.stype 			= stype
@@ -327,7 +327,7 @@ function se_smart_terrain:register_npc(obj)
 	end 
 	
 	-- dynamic companions cannot register
-	if (IsStalker(nil,cls) and alife():has_info(obj.id,"npcx_is_companion")) then 
+	if (IsStalker(nil,cls) and get_alife():has_info(obj.id,"npcx_is_companion")) then 
 		return 
 	end 
 	
@@ -489,21 +489,21 @@ function se_smart_terrain:load_jobs()
 					job.alife_task = self.smart_alife_task
 					
 					if (job_type == "path_job" or job_type == "heli_path_job") then
-						path_field = "nil"
+						path_field = STR_NIL
 						
 						path_field = 	(ltx:line_exist(active_section,"path_walk") and "path_walk" 
 										or ltx:line_exist(active_section,"path_main") and "path_main" 
 										or ltx:line_exist(active_section,"path_home") and "path_home" 
 										or ltx:line_exist(active_section,"center_point") and "center_point" 
 										or ltx:line_exist(active_section,"path_move") and "path_move" 
-										or "nil")
+										or STR_NIL)
 
-						if (path_field == "nil") then
+						if (path_field == STR_NIL) then
 							printf("smart_terrain.load_jobs(): Cannot find path_field in section %s. ini_path=%s",active_section,job.ini_path)
 						else
 							prefix_name = gulag_general.get_job_prefix_name(job)
 							if (prefix_name) then 
-								path_name = (prefix_name == "nil" and STR_EMPTY or prefix_name) .. ltx:r_string_ex(active_section, path_field)
+								path_name = (prefix_name == STR_NIL and STR_EMPTY or prefix_name) .. ltx:r_string_ex(active_section, path_field)
 							else 
 								path_name = self:name() .. "_" .. ltx:r_string_ex(active_section, path_field)
 							end 
@@ -757,7 +757,7 @@ function se_smart_terrain:select_npc_job(npc_info,now,surge_started)
 		
 		-- If NPC has storage, it is online, so switch logic
 		if (st and st.object) then
-			--xr_logic.switch_to_section(st.object, self.ltx, "nil")
+			--xr_logic.switch_to_section(st.object, self.ltx, STR_NIL)
 			npc_info.begin_job = true
 			empty_table(db.offline_objects[id])
 			self:setup_logic(st.object)
@@ -823,7 +823,7 @@ function se_smart_terrain:switch_to_desired_job(npc)
 	npc_info.job = self.npc_info[changing_npc_id].job
 	self.npc_by_job_section[npc_info.job.section] = npc_id
 	npc_info.begin_job = true
-	npc_info.need_job = "nil"
+	npc_info.need_job = STR_NIL
 
 	-- setup logic
 	local st = db.storage[npc_id]
@@ -920,7 +920,7 @@ function se_smart_terrain:STATE_Write(packet)
 	alun_utils.w_stpk(packet,"u8",n,"npc_info count")
 	for id,info in pairs(self.npc_info) do
 		alun_utils.w_stpk(packet,"u16",id,"npc_info id")
-		alun_utils.w_stpk(packet,"stringZ",info.job and info.job.section or "nil","npc_info.job_section")
+		alun_utils.w_stpk(packet,"stringZ",info.job and info.job.section or STR_NIL,"npc_info.job_section")
 		alun_utils.w_stpk(packet,"bool",info.begin_job,"npc_info.begin_job")
 		alun_utils.w_stpk(packet,"stringZ",tostring(info.need_job),"npc_info.need_job")
 	end
@@ -990,7 +990,7 @@ function se_smart_terrain:STATE_Read(packet, size)
 	for i =1,n do
 		local sec = packet:r_stringZ()
 		local gt = utils.r_CTime(packet)
-		if (sec and sec ~= "nil" and sec ~= STR_EMPTY) then
+		if (sec and sec ~= STR_NIL and sec ~= STR_EMPTY) then
 			self.dead_time[sec] = gt
 		end
 	end
@@ -1003,7 +1003,7 @@ function se_smart_terrain:STATE_Read(packet, size)
 		for i = 1, n do
 			local id = packet:r_stringZ()
 			local num = packet:r_u8()
-			if (self.already_spawned and id and id ~= "nil" and id ~= STR_EMPTY) then
+			if (self.already_spawned and id and id ~= STR_NIL and id ~= STR_EMPTY) then
 				-- technically it's an error but it's makes save compatible if change respawn
 				if not (self.already_spawned[id]) then 
 					self.already_spawned[id] = {}
@@ -1035,7 +1035,7 @@ function se_smart_terrain:init_npc_after_load()
 		return
 	end
 
-	local sim = alife()
+	local sim = get_alife()
 
 	-- validate and fill saved npc_info; find job by saved uid
 	for id, info in pairs(self.load_info) do
@@ -1225,7 +1225,7 @@ function se_smart_terrain:update()
 		self:try_respawn()
 	end
 	
-	local sim = alife()
+	local sim = get_alife()
 	local se_actor = sim:actor()
 	self.dist_to_actor = self.position:distance_to(se_actor.position)
 	
@@ -1350,7 +1350,7 @@ function se_smart_terrain:setup_logic(npc)
 	xr_logic.configure_schemes(npc, ltx, ltx_name, npc_info.stype, job.section, job.prefix_name or self:name())
 
 	local sect = xr_logic.determine_section_to_activate(npc, ltx, job.section, db.actor)
-	if utils.get_scheme_by_section(job.section) == "nil" then
+	if utils.get_scheme_by_section(job.section) == STR_NIL then
 		printf("[smart_terrain %s] section=%s, don't use section 'nil'!", self:name(), sect)
 	end
 
@@ -1361,7 +1361,7 @@ end
 -- called in xr_motivator and bind_monster net_spawn()
 function setup_gulag_and_logic_on_spawn(obj, st, se_obj, stype, loaded)
 	--alun_utils.debug_write(strformat("smart_terrain.setup_gulag_and_logic_on_spawn %s",obj and obj:name()))
-	local sim = alife()
+	local sim = get_alife()
 	
 	-- Expedite arrival and job assignment
 	local smart = se_obj.m_smart_terrain_id and se_obj.m_smart_terrain_id ~= 65535 and sim:object(se_obj.m_smart_terrain_id)
@@ -1392,7 +1392,7 @@ function setup_gulag_and_logic_on_spawn(obj, st, se_obj, stype, loaded)
 end
 
 function on_death(se_obj)
-	local sim = alife()
+	local sim = get_alife()
 	local smart = sim and se_obj.m_smart_terrain_id and se_obj.m_smart_terrain_id ~= 65535 and sim:object(se_obj.m_smart_terrain_id)
 	if (smart) then 
 		smart:clear_dead(se_obj)
@@ -1425,7 +1425,7 @@ function se_smart_terrain:am_i_reached(squad)
 end
 
 function se_smart_terrain:on_after_reach(squad)
-	local sim = alife()
+	local sim = get_alife()
 	for k in squad:squad_members() do
 		local se_obj = k.object or k.id and sim:object(k.id)
 		if (se_obj) then
@@ -1659,7 +1659,7 @@ function se_smart_terrain:try_respawn()
 					local lvid = self.m_level_vertex_id
 					local gvid = self.m_game_vertex_id
 					
-					local se_heli = alife():create(heli,pos,lvid,gvid)
+					local se_heli = get_alife():create(heli,pos,lvid,gvid)
 					
 					local visual = ini_sys:r_string_ex(heli,"visual")
 					-- required to spawn by script
@@ -1676,7 +1676,7 @@ function se_smart_terrain:try_respawn()
 						se_heli.respawn_point_id = self.id
 						se_heli.respawn_point_prop_section = sect_to_spawn
 					else
-						alife():release(se_heli,true)
+						get_alife():release(se_heli,true)
 					end
 				else
 					return

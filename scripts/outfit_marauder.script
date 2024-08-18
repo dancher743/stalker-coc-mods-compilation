@@ -21,12 +21,12 @@ function npc_on_death(npc)
 	local visual = npc:get_visual_name()
 	local outfit_section, helmet_section = get_outfit_sections(visual)
 	if outfit_section and has_chance_to_create(outfit_section) then
-		local se_outfit = alife():create(outfit_section, npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
+		local se_outfit = get_alife():create(outfit_section, npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
 		curent_outfit[se_outfit.id] = get_comb_coeff(npc)
 		update_outfit()
 	end
 	if helmet_section and has_chance_to_create(helmet_section) then
-		local se_helmet = alife():create(helmet_section, npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
+		local se_helmet = get_alife():create(helmet_section, npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
 		curent_helmet[se_helmet.id] = get_comb_coeff(npc)
 		update_helmet()
 	end

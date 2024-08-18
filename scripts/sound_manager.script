@@ -160,7 +160,7 @@ function sound_manager:update()
 	self.last_playing_npc = npc
 
 	--' Произносим фразу
-	if next_phrase.theme ~= "nil" then
+	if next_phrase.theme ~= STR_NIL then
 		xr_sound.set_sound_play(npc, next_phrase.theme)
 	end
 

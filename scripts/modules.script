@@ -224,7 +224,7 @@ function reset_generic_schemes(npc,scheme,section)
 	elseif st.stype == modules.stype_mobile then
 		xr_logic.mob_release(npc)
 		if get_clsid(npc) == clsid.bloodsucker_s then
-			if scheme == "nil" then
+			if scheme == STR_NIL then
 				npc:set_manual_invisibility(false)
 			else
 				npc:set_manual_invisibility(true)
