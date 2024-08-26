@@ -168,7 +168,10 @@ local intercepts = {
 	actor_on_slicing_update			= {},
 	squad_on_slicing_update			= {},
 	
-	DeadBodySearchClosed			= {}
+	DeadBodySearchClosed			= {},
+	
+	surge_on_ended					= {},
+	psi_storm_on_ended				= {}
 	--
 }
 
