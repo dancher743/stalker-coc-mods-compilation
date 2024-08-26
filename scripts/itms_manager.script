@@ -48,7 +48,7 @@ ShowMessageTime = nil
 
 function on_game_start()
 	RegisterScriptCallback("on_game_load",on_game_load)
-	RegisterScriptCallback("actor_on_update",actor_on_update)
+	RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
 	RegisterScriptCallback("actor_on_item_drop",actor_on_item_drop)
 	RegisterScriptCallback("monster_on_actor_use_callback",monster_on_actor_use_callback)
 	RegisterScriptCallback("actor_on_item_use",actor_on_item_use)
@@ -214,7 +214,7 @@ end
 local torch_delay
 -- bind_stalker update
 local actor_fill_backpack
-function actor_on_update()
+function actor_on_slicing_update()
 	check_actor_backpack()
 
 	if (FlashlightModEnable) then

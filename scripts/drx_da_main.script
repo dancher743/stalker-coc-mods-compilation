@@ -773,15 +773,15 @@ end
 
 -- ////////////////////////////////////////////////////////////////////////////////////////////////
 --
--- drx_da_actor_on_update_callback function
+-- drx_da_surge_on_ended_callback function
 --
 -- ------------------------------------------------------------------------------------------------
 --
 --	Description:
---		- Scripts to run on actor update
+--		- Scripts to run on surge's end
 --
 --	Usage:
---		(called on actor update)
+--		(called on surge's end)
 --
 --	Parameters:
 --		none
@@ -792,11 +792,11 @@ end
 -- ------------------------------------------------------------------------------------------------
 --	Created by DoctorX
 --	for DoctorX Dynamic Anomalies 2.0
---	Last modified January 31, 2018
+--	Last modified August 26, 2024 by Dancher
 -- ------------------------------------------------------------------------------------------------
 
 -- Scripts to run when the game loads:
-local function drx_da_actor_on_update_callback( )
+local function drx_da_surge_on_ended_callback( )
 
 	-- Update dynamic anomalies:
 	drx_da_update_dynamic_anomalies( )
@@ -870,7 +870,7 @@ end
 
 -- Register callback scripts:
 function on_game_start( )
-	RegisterScriptCallback( "actor_on_update", drx_da_actor_on_update_callback )
+	RegisterScriptCallback( "surge_on_ended", drx_da_surge_on_ended_callback )
 	RegisterScriptCallback( "on_game_load", drx_da_on_game_load_callback )
 end
 

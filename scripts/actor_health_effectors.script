@@ -74,7 +74,7 @@ local function bleedcondition()
     end
 end
 
-local function update()
+local function actor_on_slicing_update()
     if db.actor then
         local tg = time_global()
         if tg > (seldom_upd_time or 100) then
@@ -85,5 +85,5 @@ local function update()
 end
 
 function on_game_start()
-    RegisterScriptCallback("actor_on_update", update)
+    RegisterScriptCallback("actor_on_slicing_update", actor_on_slicing_update)
 end

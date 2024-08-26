@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [1.5.0] - Unreleased
 
+### Optimization
+* Optimized amount of update callbacks
+
 ### Framework
 * Added `surge_on_ended` and `psi_storm_on_ended` callbacks into `axr_main.script`
 
