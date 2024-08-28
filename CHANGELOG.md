@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [1.5.0] - Unreleased
 
+### Improvements
+* Restored lore-friendly textures of NPC's backpacks
+
 ### Optimization
 * Optimized amount of update callbacks
 
