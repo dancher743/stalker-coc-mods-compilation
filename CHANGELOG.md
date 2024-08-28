@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [1.5.0] - Unreleased
 
+### Features
+* Added a few tracks from New Music in Radio mod
+
 ### Improvements
 * Restored lore-friendly NPC's backpack textures
 * Added lore-friendly NPC's portrets (1 portret from Customization Pack Adaptation [1.4.22])
