@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Improvements
 * Restored lore-friendly NPC's backpack textures
 * Added lore-friendly NPC's portrets (1 portret from Customization Pack Adaptation [1.4.22])
+* Reworked cat and zombie icons of mutant's loot window
 
 ### Optimization
 * Optimized amount of update callbacks
