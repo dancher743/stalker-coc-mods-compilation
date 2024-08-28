@@ -214,29 +214,35 @@ end
 local torch_delay
 -- bind_stalker update
 local actor_fill_backpack
+
+local enable_device_torch_info = "enable_device_torch"
+local device_torch_obj = "device_torch"
+local dev_torch_fl_obj = "dev_torch_fl"
+local device_torch_dummy_section = "device_torch_dummy"
+
 function actor_on_slicing_update()
 	check_actor_backpack()
 
 	if (FlashlightModEnable) then
 		local obj = db.actor:active_detector()
-		local torch = db.actor:object("device_torch")
 		if (obj and FlashlightSections[obj:section()]) then
-			if (has_alife_info("enable_device_torch")) then
-				db.actor:disable_info_portion("enable_device_torch")
-				get_alife():create("device_torch_dummy",db.actor:position(),0,0,0)
+			if (has_alife_info(enable_device_torch_info)) then
+				db.actor:disable_info_portion(enable_device_torch_info)
+				get_alife():create(device_torch_dummy_section,db.actor:position(),0,0,0)
 				SetHudMsg(game.translate_string("st_lamp_disconnected"),5)
 			end
-
+			local torch = db.actor:object(device_torch_obj)
 			if (torch and not torch:torch_enabled()) then
 				torch:enable_torch(true)
-				torch:attachable_item_load_attach("dev_torch_fl")
+				torch:attachable_item_load_attach(dev_torch_fl_obj)
 			end
 		else
-			if (torch and not has_alife_info("enable_device_torch")) then
+			local torch = db.actor:object(device_torch_obj)
+			if (torch and not has_alife_info(enable_device_torch_info)) then
 				if (torch:torch_enabled()) then
 					torch:enable_torch(false)
 					torch_delay = nil
-					torch:attachable_item_load_attach("device_torch")
+					torch:attachable_item_load_attach(device_torch_obj)
 				end
 			end
 		end
@@ -459,12 +465,17 @@ function actor_on_item_use(obj)
 	end
 end
 
+local actor_filled_backpack_info = "actor_filled_backpack"
+local actor_inv_backpack_id_var = "actor_inv_backpack_id"
+local actor_made_wish_for_riches_var = "actor_made_wish_for_riches"
+local itm_actor_backpack_section = "itm_actor_backpack"
+
 function check_actor_backpack()
-	if (db.actor:has_info("actor_filled_backpack"))then
+	if (db.actor:has_info(actor_filled_backpack_info))then
 		return
 	end
 
-	local id = utils.load_var(db.actor,"actor_inv_backpack_id",nil)
+	local id = utils.load_var(db.actor,actor_inv_backpack_id_var,nil)
 
 	if not (id) then
 		return
@@ -481,12 +492,12 @@ function check_actor_backpack()
 		return
 	end
 
-	if (db.actor:has_info("actor_made_wish_for_riches")) then
+	if (db.actor:has_info(actor_made_wish_for_riches_var)) then
 		return 
 	end
 	
 	local function itr_inv(temp,item)
-		local id = item and item:section() ~= "itm_actor_backpack" and ActorBackPackKeep[item:section()] == nil and item:id()
+		local id = item and item:section() ~= itm_actor_backpack_section and ActorBackPackKeep[item:section()] == nil and item:id()
 		if (id and not is_ammo_for_wpn(item:section())) then
 			local itm_slot
 			local equipped
@@ -509,7 +520,7 @@ function check_actor_backpack()
 
 	db.actor:iterate_inventory(itr_inv)
 
-	db.actor:give_info_portion("actor_filled_backpack")
+	db.actor:give_info_portion(actor_filled_backpack_info)
 end
 
 -- bind_stalker take_item_from_iventory_box
