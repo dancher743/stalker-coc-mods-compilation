@@ -5,7 +5,8 @@ All notable changes to this project will be documented in this file.
 ## [1.5.0] - Unreleased
 
 ### Improvements
-* Restored lore-friendly NPC's portrets and backpack textures
+* Restored lore-friendly NPC's backpack textures
+* Added lore-friendly NPC's portrets (1 portret from Customization Pack Adaptation [1.4.22])
 
 ### Optimization
 * Optimized amount of update callbacks
