@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixes
 * Fixed LUA error: xr_effects.script:3283: attempt to index field 'bounties_by_squad_id' (a nil value)
+* Fixed `delta` of `actor_on_slicing_update` callback
 
 ## [1.4.5] - 2024-08-18
 
