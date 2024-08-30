@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixes
 * Fixed `delta` of `actor_on_slicing_update` callback
+* Fixed low volume of `nuclear.ogg` radio track
 
 ### Optimization
 * Optimized amount of update callbacks
