@@ -3,7 +3,7 @@
 -- From SpecHUD mod
 --
 
-local seldom_upd_time
+local seldom_upd_time = 400
 local isactcondset = false
 local radeffect = false
 local ble1 = 0
@@ -74,13 +74,15 @@ local function bleedcondition()
     end
 end
 
-local function actor_on_slicing_update()
-    if db.actor then
-        local tg = time_global()
-        if tg > (seldom_upd_time or 100) then
-            seldom_upd_time = tg + 400
-            bleedcondition()
-        end
+local timer = 0
+local function actor_on_slicing_update(binder,delta)
+	if db.actor then
+        if (timer > seldom_upd_time) then
+			timer = 0
+			bleedcondition()
+        else
+			timer = timer + delta
+		end
     end
 end
 
