@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Features
 * Added a few tracks from New Music in Radio mod
+* Added original radio tracks from Clear Sky
 
 ### Improvements
 * Restored lore-friendly NPC's backpack textures
