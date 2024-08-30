@@ -28,6 +28,11 @@
 -- Location of the settings file:
 local ini = ini_file( "drx\\drx_da_config.ltx" )
 
+-- Optimization added by Dancher:
+local last_surge_time_var = "drx_da_last_surge_time"
+local anomalies_spawned_var = "drx_da_anomalies_spawned_%s"
+local anoms_need_refresh_var = "drx_da_anoms_need_refresh"
+
 -- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 
@@ -90,10 +95,10 @@ function drx_da_update_dynamic_anomalies( )
 	end
 
 	-- If current surge is a new surge then randomize anomalies:
-	local last_surge_time = utils.load_ctime( db.actor, "drx_da_last_surge_time", nil )
+	local last_surge_time = utils.load_ctime( db.actor, last_surge_time_var, nil )
 	if ( (not last_surge_time) or (surge_end_time:diffSec( last_surge_time ) > 0) ) then
 		drx_da_randomize_anomalies( )
-		utils.save_ctime( db.actor, "drx_da_last_surge_time", surge_end_time )
+		utils.save_ctime( db.actor, last_surge_time_var, surge_end_time )
 	end
 
 	-- Get the current level name:
@@ -104,11 +109,11 @@ function drx_da_update_dynamic_anomalies( )
 	end
 
 	-- Check if anomalies are spawned on the current level:
-	if ( utils.load_var( db.actor, strformat( "drx_da_anomalies_spawned_%s", level_name ), false ) == false ) then
+	if ( utils.load_var( db.actor, strformat( anomalies_spawned_var, level_name ), false ) == false ) then
 		drx_da_spawn_anomalies_current_level( )
 
 	-- Check if existing anomalies need to be refreshed:
-	elseif ( utils.load_var( db.actor, "drx_da_anoms_need_refresh", false ) == true ) then
+	elseif ( utils.load_var( db.actor, anoms_need_refresh_var, false ) == true ) then
 		drx_da_refresh_anomalies( )
 
 	end
@@ -177,7 +182,7 @@ function drx_da_spawn_anomalies_current_level( )
 	end
 
 	-- Set the anomalies spawned flag and send update to the console:
-	utils.save_var( db.actor, strformat( "drx_da_anomalies_spawned_%s", level_name ), true )
+	utils.save_var( db.actor, strformat( anomalies_spawned_var, level_name ), true )
 	printf( "DRX DA: Dynamic anomalies generated for %s", level_name )
 
 	-- Set return value:
@@ -707,7 +712,7 @@ function drx_da_refresh_anomalies( )
 	end
 
 	-- Reset the anoms need refresh flag and send update to the console:
-	utils.save_var( db.actor, "drx_da_anoms_need_refresh", false )
+	utils.save_var( db.actor, anoms_need_refresh_var, false )
 	printf( "DRX DA: Dynamic anomalies refreshed for %s", level_name )
 
 	-- Set return value:
@@ -758,7 +763,7 @@ function drx_da_set_refresh_flag( flag_status )
 	end
 
 	-- Set the refresh anomalies flag:
-	utils.save_var( db.actor, "drx_da_anoms_need_refresh", flag_status )
+	utils.save_var( db.actor, anoms_need_refresh_var, flag_status )
 
 	-- Set return value:
 	return true
