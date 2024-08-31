@@ -874,8 +874,6 @@ function drx_sl_init_bounty_hunt( actor, npc, p )
 	local target_id = bounty_hunt_targets[p[1]]
 	if (target_id) then
 		axr_task_manager.bounties_by_id[p[1]] = target_id
-		local se_obj = alife_object(target_id)
-		axr_task_manager.bounties_by_squad_id[p[1]] = se_obj.group_id
 		bounty_hunt_targets[p[1]] = nil
 	end
 end
@@ -3217,8 +3215,6 @@ function on_init_bounty_hunt(actor,npc,p)
 	local target_id = bounty_hunt_targets[p[1]]
 	if (target_id) then
 		axr_task_manager.bounties_by_id[p[1]] = target_id
-		local se_obj = alife_object(target_id)
-		axr_task_manager.bounties_by_squad_id[p[1]] = se_obj.group_id
 		bounty_hunt_targets[p[1]] = nil
 	end
 end
@@ -3280,7 +3276,6 @@ end
 
 function remove_bounty_hunt_target(actor,npc,p)
 	axr_task_manager.bounties_by_id[p[1]] = nil
-	axr_task_manager.bounties_by_squad_id[p[1]] = nil
 end
 
 function fail_task_dec_goodwill(actor,npc,p)
