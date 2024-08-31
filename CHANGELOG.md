@@ -26,6 +26,11 @@ All notable changes to this project will be documented in this file.
 ### Framework
 * Added `surge_on_ended` and `psi_storm_on_ended` callbacks into `axr_main.script`
 
+## [1.4.6] - Unreleased
+
+### Fixes
+* Fixed LUA error: xr_effects.script:3283: attempt to index field 'bounties_by_squad_id' (a nil value)
+
 ## [1.4.5] - 2024-08-18
 
 ### Improvements
