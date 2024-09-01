@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 * Added lore-friendly NPC's portrets (1 portret from Customization Pack Adaptation [1.4.22])
 * Reworked cat and zombie icons of mutant's loot window
 * Removed white rectangles from `ui_icon_equipment.dds` texture
+* Rebuilded `ui_icon_equipment.dds` texture
 
 ### Fixes
 * Fixed `delta` of `actor_on_slicing_update` callback
