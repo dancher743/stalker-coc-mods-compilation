@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 * Reworked cat and zombie icons of mutant's loot window
 * Removed white rectangles from `ui_icon_equipment.dds` texture
 * Rebuilded `ui_icon_equipment.dds` texture
+* Removed bandit squads from Dead City
 
 ### Fixes
 * Fixed `delta` of `actor_on_slicing_update` callback
