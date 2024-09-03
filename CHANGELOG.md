@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 * Added a few tracks from New Music in Radio mod
 * Added original radio tracks from Clear Sky
 * Reworked tracks of Clear Sky base's radio
+* Added vanila SoC voices for killers
 
 ### Improvements
 * Restored lore-friendly NPC's backpack textures
