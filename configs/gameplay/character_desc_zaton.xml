@@ -1582,7 +1582,7 @@
         ammo_5.56x45_ap = 1 \n
         wpn_walther \n
         ammo_9x19_pbp = 1 \n
-        grenade_f1 = 4 \n
+        grenade_f1 = 1 \n
 #include "gameplay\character_items_nd.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs_3.xml"
@@ -1611,7 +1611,7 @@
         ammo_5.56x45_ap = 1 \n
         wpn_usp = 1, silencer = 1 \n
         ammo_11.43x23_hydro = 1 \n
-        grenade_f1 = 4 \n
+        grenade_f1 = 1 \n
 #include "gameplay\character_items_nd.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs_3.xml"

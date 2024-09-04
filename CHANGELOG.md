@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 * Removed white rectangles from `ui_icon_equipment.dds` texture
 * Rebuilded `ui_icon_equipment.dds` texture
 * Removed bandit squads from Dead City
+* Balanced `grenade_f1` count from 4 to 1 for all NPC
 
 ### Fixes
 * Fixed `delta` of `actor_on_slicing_update` callback
