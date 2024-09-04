@@ -7379,6 +7379,7 @@
         wpn_usp \n
         ammo_11.43x23_hydro = 1 \n
         grenade_f1 = 1 \n
+		grenade_gd-05 = 1 \n
 #include "gameplay\character_items_nd.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs_4.xml"
@@ -7408,6 +7409,7 @@
         wpn_sig220 = 1 \n
         ammo_11.43x23_hydro = 1 \n
         grenade_f1 = 1 \n
+		grenade_gd-05 = 1 \n
 #include "gameplay\character_items_nd.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs_4.xml"
@@ -7437,6 +7439,7 @@
         wpn_usp \n
         ammo_11.43x23_hydro = 1 \n
         grenade_f1 = 1 \n
+		grenade_gd-05 = 1 \n
 #include "gameplay\character_items_nd.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs_4.xml"
@@ -7466,6 +7469,7 @@
         wpn_sig220 = 1 \n
         ammo_11.43x23_hydro = 1 \n
         grenade_f1 = 1 \n
+		grenade_gd-05 = 1 \n
 #include "gameplay\character_items_nd.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs_4.xml"
@@ -15093,6 +15097,7 @@
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
         grenade_f1 = 1 \n
+		grenade_gd-05 = 1 \n
 #include "gameplay\character_items_nd.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
@@ -15119,6 +15124,7 @@
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
         grenade_f1 = 1 \n
+		grenade_gd-05 = 1 \n
 #include "gameplay\character_items_nd.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
@@ -15145,6 +15151,7 @@
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
         grenade_f1 = 1 \n
+		grenade_gd-05 = 1 \n
 #include "gameplay\character_items_nd.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
@@ -15327,6 +15334,7 @@
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
         grenade_f1 = 1 \n
+		grenade_gd-05 = 1 \n
 #include "gameplay\character_items_nd.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
