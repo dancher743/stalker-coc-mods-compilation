@@ -5,9 +5,7 @@ All notable changes to this project will be documented in this file.
 ## [1.5.0] - Unreleased
 
 ### Features
-* Added a few tracks from New Music in Radio mod
-* Added original radio tracks from Clear Sky
-* Reworked tracks of Clear Sky base's radio
+* Reworked radio music for all factions
 * Added vanila SoC voices for killers
 * Rebalanced all grenades in NPC's equipments
 
@@ -15,6 +13,9 @@ All notable changes to this project will be documented in this file.
 * Restored lore-friendly NPC's backpack textures
 * Added lore-friendly NPC's portrets (1 portret from Customization Pack Adaptation [1.4.22])
 * Reworked cat and zombie icons of mutant's loot window
+* Added a few tracks from New Music in Radio mod
+* Added original radio tracks from Clear Sky game
+* Reworked tracks of Clear Sky base's radio
 * Removed white rectangles from `ui_icon_equipment.dds` texture
 * Rebuilded `ui_icon_equipment.dds` texture
 * Removed bandit squads from Dead City

@@ -120,4 +120,4 @@ Mods
 68. PDA Upgrades (Dancher)
 69. Next surge and/or psi storm dialog for Sakharov (Dancher)
 70. Psy dog from Build 1935 (Charsi, Ю Е Проскудин, Dancher)
-71. A few tracks from New Music in Radio mod (ROOZBAN, KisaTraxova228, Misery338)
+71. A few tracks from New Music in Radio (ROOZBAN, KisaTraxova228)
