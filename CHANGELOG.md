@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 * Added original radio tracks from Clear Sky
 * Reworked tracks of Clear Sky base's radio
 * Added vanila SoC voices for killers
+* Rebalanced all grenades in NPC's equipments
 
 ### Improvements
 * Restored lore-friendly NPC's backpack textures
