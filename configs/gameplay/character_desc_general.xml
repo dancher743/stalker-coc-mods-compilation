@@ -4589,7 +4589,7 @@
     <visual>actors\stalker_bandit\stalker_bandit_2</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74 \n
+        wpn_ak74, launcher \n
         ammo_5.45x39_fmj  = 1 \n
         wpn_beretta \n
         ammo_9x19_fmj = 1 \n
@@ -5159,7 +5159,7 @@
     <visual>actors\stalker_bandit\stalker_bandit6e</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74 \n
+        wpn_ak74, launcher \n
         ammo_5.45x39_fmj  = 1 \n
         wpn_beretta \n
         ammo_9x19_fmj = 1 \n
@@ -11509,7 +11509,7 @@
     <visual>actors\stalker_neutral\stalker_neutral2b_old</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74 = 1 \n
+        wpn_ak74 = 1, launcher \n
         ammo_5.45x39_ap = 1 \n
         wpn_beretta \n
         ammo_9x19_pbp = 1 \n
@@ -12278,7 +12278,7 @@
     <visual>actors\stalker_neutral\stalker_neutral2b_mas3</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74 \n
+        wpn_ak74, launcher \n
         ammo_5.45x39_ap = 1 \n
         wpn_beretta \n
         ammo_9x19_fmj = 1 \n
@@ -16435,7 +16435,7 @@
     <visual>actors\stalker_monolith\stalker_monolith_2</visual>
     <supplies>
         [spawn] \n
-        wpn_sig550 \n
+        wpn_sig550, launcher \n
         ammo_5.56x45_ap = 1 \n
         wpn_walther = 1 \n
         ammo_9x19_pbp = 1 \n
@@ -16544,7 +16544,7 @@
     <visual>actors\stalker_monolith\stalker_monolith3a</visual>
     <supplies>
         [spawn] \n
-        wpn_sig550 = 1 \n
+        wpn_sig550 = 1, launcher \n
         ammo_5.56x45_ap = 1 \n
         wpn_usp = 1 \n
         ammo_11.43x23_hydro = 1 \n
