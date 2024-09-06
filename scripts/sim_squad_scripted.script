@@ -685,6 +685,15 @@ function sim_squad_scripted:create_npc(spawn_smart,pos,lvid,gvid)
 		local random_count = count[1] and count[2] and math.random(count[1],count[2]) or math.random(1,2)
 		random_count = random_count - self:npc_count()
 		
+		local regular_spawn = ini:r_string_ex(settings_id,"npc_regular")
+		if regular_spawn ~= nil then
+			regular_spawn = utils.parse_names(regular_spawn)
+			for i = 1,#regular_spawn do
+				table.insert(npcs_list,self:add_squad_member(regular_spawn[i], base_spawn_position, base_lvi, base_gvi))
+				random_count = random_count - 1
+			end
+		end
+		
 		local random_id
 		for i = 1,random_count do
 			random_id = math.random(1, #random_spawn)
