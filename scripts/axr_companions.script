@@ -303,9 +303,10 @@ function get_companion_count()
 end
 
 -- includes task companions too
+local companion_squads_pairs_sorter = function(t,a,b) return a < b end
 function list_actor_squad_by_id()
 	local t = {}
-	for id,squad in spairs(companion_squads, function(t,a,b) return a < b end) do 
+	for id,squad in spairs(companion_squads, companion_squads_pairs_sorter) do 
 		if (squad and squad.commander_id) then
 			if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
 				for k in squad:squad_members() do
@@ -1007,29 +1008,46 @@ function is_barter_avaliable_obj(obj)
 	return is_barter_avaliable(se_obj)
 end
 
-local se_obj_actor_squad_list
-local se_obj_actor_squad_sorter
-
 -- includes task companions too
-function list_actor_squad_by_se_obj()
+local se_obj_actor_squad_list
+function list_actor_squad_with_se_obj()
 	se_obj_actor_squad_list = se_obj_actor_squad_list or {}
-	se_obj_actor_squad_sorter = se_obj_actor_squad_sorter or function(t,a,b) return a < b end
-	
 	local t = {}
-	
-	for id,squad in spairs(companion_squads, se_obj_actor_squad_sorter) do 
+	for id,squad in spairs(companion_squads, companion_squads_pairs_sorter) do 
 		if (squad and squad.commander_id) then
 			if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
 				for k in squad:squad_members() do
 					local se_obj = se_obj_actor_squad_list[k.id]
 					if (not se_obj) then
 						se_obj = alife_object(k.id)
+						se_obj_actor_squad_list[k.id] = se_obj
 					end
 					table.insert(t,se_obj)
 				end
 			end
 		end
 	end
-	
+	return t
+end
+
+-- includes task companions too
+local obj_actor_squad_list
+function list_actor_squad_with_obj()
+	obj_actor_squad_list = obj_actor_squad_list or {}
+	local t = {}
+	for id,squad in spairs(companion_squads, companion_squads_pairs_sorter) do 
+		if (squad and squad.commander_id) then
+			if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
+				for k in squad:squad_members() do
+					local obj = obj_actor_squad_list[k.id]
+					if (not obj) then
+						obj = db.storage[k.id] and db.storage[k.id].object or level.object_by_id(k.id)
+						obj_actor_squad_list[k.id] = obj
+					end
+					table.insert(t,obj)
+				end
+			end
+		end
+	end
 	return t
 end

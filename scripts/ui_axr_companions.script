@@ -142,7 +142,7 @@ function UICompanionList:CustomUpdate()
         self.dialog:Show(true)
     end
 	
-	local clist = axr_companions.list_actor_squad_by_se_obj()
+	local clist = axr_companions.list_actor_squad_with_se_obj()
 	local clist_index = #clist
 	
 	for i=1,#self.companion_info do
