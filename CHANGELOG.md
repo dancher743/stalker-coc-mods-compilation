@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 * Added `grenade_rgd5` into NPC's spawn
 * Rebalanced grenades in new game loadouts
 * Added grenade launchers into NPC's spawn
+* Added Clear Sky's squads on Cordon, Agroprom and Garbage
 
 ### Fixes
 * Fixed `delta` of `actor_on_slicing_update` callback
