@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 * Reworked radio music for all factions
 * Added vanila SoC voices for killers
 * Rebalanced all grenades in NPC's equipments
+* Ecolog explorer squads
 
 ### Improvements
 * Restored lore-friendly NPC's backpack textures
@@ -28,6 +29,7 @@ All notable changes to this project will be documented in this file.
 ### Fixes
 * Fixed `delta` of `actor_on_slicing_update` callback
 * Fixed low volume of `nuclear.ogg` radio track
+* Fixed simulation of `gar_smart_terrain_5_6` smart
 
 ### Optimization
 * Optimized amount of update callbacks
