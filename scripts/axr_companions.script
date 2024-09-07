@@ -1029,25 +1029,3 @@ function list_actor_squad_with_se_obj()
 	end
 	return t
 end
-
--- includes task companions too
-local obj_actor_squad_list
-function list_actor_squad_with_obj()
-	obj_actor_squad_list = obj_actor_squad_list or {}
-	local t = {}
-	for id,squad in spairs(companion_squads, companion_squads_pairs_sorter) do 
-		if (squad and squad.commander_id) then
-			if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
-				for k in squad:squad_members() do
-					local obj = obj_actor_squad_list[k.id]
-					if (not obj) then
-						obj = db.storage[k.id] and db.storage[k.id].object or level.object_by_id(k.id)
-						obj_actor_squad_list[k.id] = obj
-					end
-					table.insert(t,obj)
-				end
-			end
-		end
-	end
-	return t
-end

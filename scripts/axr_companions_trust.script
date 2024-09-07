@@ -3,24 +3,58 @@
 -- Added by Dancher
 --
 
-local timer_trust_threshold = 15 -- minutes
-local companion_timers = {}
+local database = {}
+local obj_ids_cache = {}
+
+local trust_time_threshold = 15 -- minutes
 local last_game_minute
 
-function is_companion_trust(obj_id)
-	local time = companion_timers[obj_id] or 0
-	return time > timer_trust_threshold
+function is_companion_trust_obj(id)
+	local se_id = obj_ids_cache[id]
+	
+	if (not se_id) then
+		local se_obj = alife_object(id)
+		se_id = se_obj.id
+		obj_ids_cache[id] = se_id
+	end
+	
+	is_companion_trust(se_id)
 end
 
-local function update_companion_timers()
-	local clist = axr_companions.list_actor_squad_with_obj()
-	for i=1,#clist do
-		local obj = clist[i]
-		local obj_id = obj:id()
-		local time = companion_timers[obj_id] or 0
+function is_companion_trust(se_id)
+	local is_trust = false
+	
+	local companion_data = database[se_id]
+	if (companion_data) then
+		is_trust = companion_data["trust"] or false
+	end
+	
+	-- printf(strformat(">>> Dancher: Companion trust time: %s - %s min.", se_id, time))
+	
+	return is_trust
+end
+
+function force_companion_trust(se_id)
+	local companion_data = database[se_id] or {}
+	companion_data["trust"] = true
+end
+
+local function update_companions()
+	local slist = axr_companions.list_actor_squad_with_se_obj()
+	
+	for i=1, #slist do
+		local se_obj = slist[i]
+		local companion_data = database[se_obj.id] or {}
+		
+		local time = companion_data["time"] or 0
 		time = time + 1
-		companion_timers[obj_id] = time
-		printf(strformat(">>> Dancher: axr_companions_trust -> %s - %s min.", obj:character_name(), time))
+		companion_data["time"] = time
+		
+		if (time > trust_time_threshold) then
+			companion_data["trust"] = true
+		end
+		
+		-- printf(strformat(">>> Dancher: axr_companions_trust -> ID: %s, %s - %s min.", se_obj.id, se_obj:name(), time))
 	end
 end
 
@@ -28,11 +62,12 @@ local function save_state(data)
 	if (not data.companion_trust) then
 		data.companion_trust = {}
 	end
-	data.companion_trust.timers = companion_timers
+	
+	data.companion_trust.database = database
 end
 
 local function load_state(data)
-	companion_timers = data.companion_trust and data.companion_trust.timers or {}
+	database = data.companion_trust and data.companion_trust.database or {}
 end
 
 local function actor_on_slicing_update()
@@ -42,7 +77,7 @@ local function actor_on_slicing_update()
 		return
 	end
 	
-	update_companion_timers()
+	update_companions()
 	
 	last_game_minute = current_game_minute
 end
