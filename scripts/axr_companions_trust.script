@@ -11,13 +11,13 @@ local last_game_minute
 local time_key = "time"
 local trust_key = "trust"
 
-local function get_value(se_id, key, defaultValue)
+local function get_db_value(se_id, key, defaultValue)
 	local companion_data = database[se_id]
 	local value = companion_data and companion_data[key] or defaultValue
 	return value
 end
 
-local function set_value(se_id, key, value)
+local function set_db_value(se_id, key, value)
 	local companion_data = database[se_id]
 	if (not companion_data) then
 		companion_data = {}
@@ -27,17 +27,17 @@ local function set_value(se_id, key, value)
 end
 
 function get_hours_with(se_id)
-	local total_minutes = get_value(se_id, time_key, 0)
+	local total_minutes = get_db_value(se_id, time_key, 0)
 	local hours = math.floor(total_minutes/60)
 	return hours
 end
 
 function force_trust(se_id)
-	set_value(se_id, trust_key, true)
+	set_db_value(se_id, trust_key, true)
 end
 
 function is_trust(se_id)
-	return get_value(se_id, trust_key, false)
+	return get_db_value(se_id, trust_key, false)
 end
 
 local function update_data()
@@ -47,12 +47,12 @@ local function update_data()
 		local se_obj = slist[i]
 		local se_id = se_obj.id
 		
-		local time = get_value(se_id, time_key, 0)
+		local time = get_db_value(se_id, time_key, 0)
 		time = time + 1
-		set_value(se_id, time_key, time)
+		set_db_value(se_id, time_key, time)
 		
 		if (time > trust_time_threshold) then
-			set_value(se_id, trust_key, true)
+			set_db_value(se_id, trust_key, true)
 		end
 		
 		printf(strformat(">>> Dancher: axr_companions_trust -> ID: %s, %s - %s min.", se_obj.id, se_obj:name(), time))
@@ -67,7 +67,9 @@ local function save_state(data)
 end
 
 local function load_state(data)
-	database = data.companion_trust and data.companion_trust.database or {}
+	if (data.companion_trust) then
+		database = data.companion_trust.database or database
+	end
 end
 
 local function actor_on_slicing_update()
