@@ -958,20 +958,11 @@ end
 
 function is_barter_avaliable_obj(obj)
 	local se_obj = get_se_obj(obj:id())
-	return is_barter_avaliable(se_obj)
-end
-
-function is_barter_avaliable(se_obj)
 	return axr_companions_trust.is_trust(se_obj.id)
 end
 
-function get_hours_with_companion_obj(obj)
-	local se_obj = get_se_obj(obj:id())
-    return get_hours_with_companion(se_obj)
-end
-
 function get_hours_with_companion(se_obj)
-	return axr_companions_trust.get_hours_with(se_obj.id)
+    return axr_companions_trust.get_hours_with(se_obj.id)
 end
 
 -- includes task companions too

@@ -318,7 +318,7 @@ function pda_relations_tab:autoupdate()
 
 			local s_invulnerability = axr_companions.is_invulnerable_obj(npc) and game.translate_string("st_pda_mode_true") or game.translate_string("st_pda_mode_false")
 			local s_barter = axr_companions.is_barter_avaliable_obj(npc) and game.translate_string("st_pda_mode_true") or game.translate_string("st_pda_mode_false")
-			local s_start_time = axr_companions.get_hours_with_companion_obj(npc)
+			local s_start_time = axr_companions.get_hours_with_companion(se_obj)
 
 			state_str = strformat(state_str,
 				full_name,
