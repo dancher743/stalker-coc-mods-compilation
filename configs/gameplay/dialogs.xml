@@ -605,6 +605,7 @@
 	<dialog id="dm_companion_open_inventory">
         <precondition>dialogs_axr_companion.can_dismiss_companion</precondition>
 		<precondition>dialogs_axr_companion.is_actor_companion</precondition>
+		<precondition>dialogs_axr_companion.can_open_companion_inventory</precondition>
         <phrase_list>
 			<phrase id="0">
                 <text>axr_phrase_actor_open_companion_inventory</text>
