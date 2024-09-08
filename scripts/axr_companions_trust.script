@@ -56,7 +56,7 @@ local function update_data()
 			set_db_value(se_id, trust_key, true)
 		end
 		
-		printf(strformat(">>> Dancher: axr_companions_trust -> ID: %s, %s - %s min.", se_obj.id, se_obj:name(), time))
+		-- printf(strformat(">>> Dancher: axr_companions_trust -> ID: %s, %s - %s min.", se_obj.id, se_obj:name(), time))
 	end
 end
 
