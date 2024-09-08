@@ -489,8 +489,8 @@
 		<text>Расстояние до</text>
 	</string>
 	
-	<string id="st_mm_pda_start_time">
-		<text>Реальных часов вместе</text>
+	<string id="st_mm_pda_time_together">
+		<text>Времени вместе</text>
 	</string>
 	<string id="st_mm_pda_invulnerability">
 		<text>Неуязвимость</text>

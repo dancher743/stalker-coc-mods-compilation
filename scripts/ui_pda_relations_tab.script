@@ -263,7 +263,7 @@ function pda_relations_tab:autoupdate()
 			%c[255,160,160,160]st_mm_pda_stalkers_killed:%c[default] %s \n
 			%c[255,160,160,160]st_mm_pda_mutants_killed:%c[default] %s \n
 			%c[255,160,160,160]st_mm_pda_artes_found:%c[default] %s \n
-			%c[255,160,160,160]st_mm_pda_start_time:%c[default] %s \n
+			%c[255,160,160,160]st_mm_pda_time_together:%c[default] %s \n
 			]]
 
 			if (get_alife():has_info(se_obj.id,"npcx_beh_wait")) then
@@ -318,7 +318,8 @@ function pda_relations_tab:autoupdate()
 
 			local s_invulnerability = axr_companions.is_invulnerable_obj(npc) and game.translate_string("st_pda_mode_true") or game.translate_string("st_pda_mode_false")
 			local s_barter = axr_companions.is_barter_avaliable_obj(npc) and game.translate_string("st_pda_mode_true") or game.translate_string("st_pda_mode_false")
-			local s_start_time = axr_companions.get_hours_with_companion(se_obj)
+			local hours, minutes = axr_companions.get_time_with_companion(se_obj)
+			local s_time_together = strformat("%s:%s:0",hours,minutes)
 
 			state_str = strformat(state_str,
 				full_name,
@@ -336,7 +337,7 @@ function pda_relations_tab:autoupdate()
 				s_stalker,
 				s_mutant,
 				s_arte,
-				s_start_time
+				s_time_together
 			)
 			self.companion_info[i].hint = state_str
 		else

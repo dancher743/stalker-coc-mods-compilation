@@ -5,7 +5,7 @@
 
 local database = {}
 
-local trust_time_threshold = 5 -- minutes
+local trust_time_threshold = 24*60
 local last_game_minute
 
 local time_key = "time"
@@ -26,10 +26,11 @@ local function set_db_value(se_id, key, value)
 	companion_data[key] = value
 end
 
-function get_hours_with(se_id)
+function get_time_with(se_id)
 	local total_minutes = get_db_value(se_id, time_key, 0)
 	local hours = math.floor(total_minutes/60)
-	return hours
+	local minutes = total_minutes - (hours * 60)
+	return hours, minutes
 end
 
 function force_trust(se_id)
