@@ -962,7 +962,7 @@ function is_barter_avaliable_obj(obj)
 end
 
 function get_time_with_companion(se_obj)
-    return axr_companions_trust.get_time_with(se_obj.id)
+    return axr_companions_trust.get_time(se_obj.id)
 end
 
 -- includes task companions too

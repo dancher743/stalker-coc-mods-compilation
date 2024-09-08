@@ -26,11 +26,8 @@ local function set_db_value(se_id, key, value)
 	companion_data[key] = value
 end
 
-function get_time_with(se_id)
-	local total_minutes = get_db_value(se_id, time_key, 0)
-	local hours = math.floor(total_minutes/60)
-	local minutes = total_minutes - (hours * 60)
-	return hours, minutes
+function get_time(se_id)
+	return get_db_value(se_id, time_key, 0)
 end
 
 function force_trust(se_id)

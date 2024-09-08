@@ -318,8 +318,13 @@ function pda_relations_tab:autoupdate()
 
 			local s_invulnerability = axr_companions.is_invulnerable_obj(npc) and game.translate_string("st_pda_mode_true") or game.translate_string("st_pda_mode_false")
 			local s_barter = axr_companions.is_barter_avaliable_obj(npc) and game.translate_string("st_pda_mode_true") or game.translate_string("st_pda_mode_false")
-			local hours, minutes = axr_companions.get_time_with_companion(se_obj)
-			local s_time_together = strformat("%s:%s:0",hours,minutes)
+
+			local total_minutes = axr_companions.get_time_with_companion(se_obj)
+			local hours = math.floor(total_minutes/60)
+			local minutes = total_minutes - (hours * 60)
+			local days = math.floor(hours/24)
+			hours = hours - (days*24)
+			local s_time_together = string.format("%02d:%02d:%02d",days,hours,minutes)
 
 			state_str = strformat(state_str,
 				full_name,
