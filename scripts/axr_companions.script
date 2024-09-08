@@ -94,7 +94,6 @@ local function squad_on_register(squad)
 	if (companion_squads[squad.id] ~= nil) then 
 		companion_squads[squad.id] = squad
 		squad.scripted_target = "actor"
-		migrate_data(squad)
 	end
 	
 	-- backward save compatiblity. remove later
@@ -935,8 +934,8 @@ local se_obj_cache = {}
 local function get_se_obj(obj_id)
 	local se_obj = se_obj_cache[obj_id]
 	
-    if (se_obj == nil) then
-        local se_obj = simulation:object(obj_id)
+    if (not se_obj) then
+        se_obj = simulation:object(obj_id)
         se_obj_cache[obj_id] = se_obj
     end
 	
@@ -944,8 +943,7 @@ local function get_se_obj(obj_id)
 end
 
 function is_invulnerable_obj(obj)
-	-- local se_obj = get_se_obj(obj:id())
-	local se_obj = simulation:object(obj:id())
+	local se_obj = get_se_obj(obj:id())
 	return is_invulnerable(se_obj)
 end
 
@@ -959,8 +957,7 @@ function is_invulnerable(se_obj)
 end
 
 function is_barter_avaliable_obj(obj)
-	-- local se_obj = get_se_obj(obj:id())
-	local se_obj = simulation:object(obj:id())
+	local se_obj = get_se_obj(obj:id())
 	return is_barter_avaliable(se_obj)
 end
 
@@ -969,8 +966,7 @@ function is_barter_avaliable(se_obj)
 end
 
 function get_hours_with_companion_obj(obj)
-    local se_obj = simulation:object(obj:id())
-	-- local se_obj = get_se_obj(obj:id())
+	local se_obj = get_se_obj(obj:id())
     return get_hours_with_companion(se_obj)
 end
 

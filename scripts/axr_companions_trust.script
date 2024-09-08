@@ -18,12 +18,12 @@ local function get_value(se_id, key, defaultValue)
 end
 
 local function set_value(se_id, key, value)
-	if (not database[se_id]) then
-		database[se_id] = {}
-	end
 	local companion_data = database[se_id]
+	if (not companion_data) then
+		companion_data = {}
+		database[se_id] = companion_data
+	end
 	companion_data[key] = value
-	database[se_id] = companion_data
 end
 
 function get_hours_with(se_id)
@@ -45,6 +45,7 @@ local function update_data()
 	
 	for i=1, #slist do
 		local se_obj = slist[i]
+		local se_id = se_obj.id
 		
 		local time = get_value(se_id, time_key, 0)
 		time = time + 1
@@ -62,7 +63,6 @@ local function save_state(data)
 	if (not data.companion_trust) then
 		data.companion_trust = {}
 	end
-	
 	data.companion_trust.database = database
 end
 
