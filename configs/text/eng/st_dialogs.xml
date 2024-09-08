@@ -1140,6 +1140,9 @@
 	<string id="axr_phrase_actor_acknowledge_with_custom_spot">
 		<text>Yes, I'll spot you. See ya.</text>
 	</string>
+	<string id="axr_phrase_actor_open_companion_inventory">
+		<text>Open the backpack.</text>
+	</string>
 	<string id="axr_phrase_actor_give_command_wait">
 		<text>Wait here and guard this position.</text>
 	</string>

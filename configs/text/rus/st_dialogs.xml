@@ -1135,6 +1135,9 @@
 	<string id="axr_phrase_actor_acknowledge_with_custom_spot">
 		<text>Да, я поставлю на тебя метку. Увидимся.</text>
 	</string>
+	<string id="axr_phrase_actor_open_companion_inventory">
+		<text>Покажи рюкзак.</text>
+	</string>
 	<string id="axr_phrase_actor_give_command_wait">
 		<text>Жди здесь и охраняй точку.</text>
 	</string>

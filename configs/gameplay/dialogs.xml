@@ -602,6 +602,17 @@
             </phrase>
         </phrase_list>
     </dialog>
+	<dialog id="dm_companion_open_inventory">
+        <precondition>dialogs_axr_companion.can_dismiss_companion</precondition>
+		<precondition>dialogs_axr_companion.is_actor_companion</precondition>
+        <phrase_list>
+			<phrase id="0">
+                <text>axr_phrase_actor_open_companion_inventory</text>
+				<action>dialogs_axr_companion.open_companion_inventory</action>
+				<action>dialogs.break_dialog</action>
+            </phrase>
+		</phrase_list>
+	</dialog>
 	<dialog id="neutral_companion_dialog">
 		<precondition>dialogs_axr_companion.is_non_story</precondition>
 		<precondition>dialogs_axr_companion.is_not_actor_companion</precondition>

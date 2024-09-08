@@ -618,3 +618,11 @@ function switch_companion_loot_corpses(actor,npc)
 	alun_utils.execute_script_on_squad(npc,axr_companions.switch_companion_loot_corpses)
 end
 
+-- Added by Dancher
+
+function open_companion_inventory(actor,npc)
+	local npc = dialogs.who_is_npc(actor,npc)
+	local actor = db.actor
+	npc:use(actor)
+end
+
