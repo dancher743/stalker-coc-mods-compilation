@@ -8,7 +8,7 @@ local obj = db.storage[se_obj.id] and db.storage[se_obj.id].object or level.obje
 
 2. Get offline object
 local se_obj = alife_object(obj:id())
-
+-- or --
 local sim = get_alife()
 local se_obj = sim:object(obj:id())
 
