@@ -315,13 +315,13 @@
 		<text>No</text>
 	</string>
 	<string id="st_companions_1">
-		<text>One</text>
+		<text>1</text>
 	</string>
 	<string id="st_companions_2">
-		<text>Two</text>
+		<text>2</text>
 	</string>
 	<string id="st_companions_3">
-		<text>Three</text>
+		<text>3</text>
 	</string>
 	<string id="st_cap_check_eoc">
 		<text>Extended population</text>

@@ -328,13 +328,13 @@
 		<text>нет</text>
 	</string>
 	<string id="st_companions_1">
-		<text>один</text>
+		<text>1</text>
 	</string>
 	<string id="st_companions_2">
-		<text>два</text>
+		<text>2</text>
 	</string>
 	<string id="st_companions_3">
-		<text>три</text>
+		<text>3</text>
 	</string>
 	<string id="st_cap_check_eoc">
 		<text>Продвинутая популяция</text>
