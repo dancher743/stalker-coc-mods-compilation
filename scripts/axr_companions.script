@@ -956,7 +956,7 @@ function is_invulnerable(se_obj)
 	return option and is_trust
 end
 
-function is_barter_avaliable_obj(obj)
+function can_open_inventory(obj)
 	local se_obj = get_se_obj(obj:id())
 	return axr_companions_trust.is_trust(se_obj.id)
 end

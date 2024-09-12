@@ -495,7 +495,7 @@
 	<string id="st_mm_pda_invulnerability">
 		<text>Invulnerability</text>
 	</string>
-	<string id="st_mm_pda_barter">
-		<text>Free trading</text>
+	<string id="st_mm_pda_inventory">
+		<text>Access to inventory</text>
 	</string>
 </string_table>
