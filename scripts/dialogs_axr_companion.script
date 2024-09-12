@@ -639,6 +639,6 @@ function open_arsenal_inventory(actor,npc)
 end
 
 function open_full_inventory(actor,npc)
-	npc:use(actor)
+	open_inventory(actor,npc,"open_full_inventory")
 end
 

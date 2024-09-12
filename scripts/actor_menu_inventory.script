@@ -43,36 +43,40 @@ function CUIActorMenu_OnItemFocusReceive(itm)
 	SendScriptCallback("CUIActorMenu_OnItemFocusReceive",itm)
 end
 
+local npc_is_companion_info
 local ui_pda_info
 local open_camel_inventory_info
-local open_arsenal_inventory
-local npc_is_companion_info
+local open_arsenal_inventory_info
+local open_full_inventory_info
 
 -- called from engine!
 -- useful for when doing npc:use(db.actor) when NPC is alive
 -- basically what is available in the corpse loot menu while npc is alive
 function CInventory_ItemAvailableToTrade(npc,item)
+	npc_is_companion_info = npc_is_companion_info or "npcx_is_companion"
 	ui_pda_info = ui_pda_info or "ui_pda"
 	open_camel_inventory_info = open_camel_inventory_info or "open_camel_inventory"
-	open_arsenal_inventory = open_arsenal_inventory or "open_arsenal_inventory"
-	npc_is_companion_info = npc_is_companion_info or "npcx_is_companion"
+	open_arsenal_inventory_info = open_arsenal_inventory_info or "open_arsenal_inventory"
+	open_full_inventory_info = open_full_inventory_info or "open_full_inventory"
+	
 	
 	-- if (xr_corpse_detection.lootable_table[item:section()]) then 
 		-- return true
 	-- end
 	
-	if (npc:has_info(npc_is_companion_info) and (db.actor:has_info(ui_pda_info) or npc:has_info(open_camel_inventory_info))) then
-		local m_data = alife_storage_manager.get_state()
-		if (m_data and m_data.companion_borrow_item and m_data.companion_borrow_item[item:id()]) then
+	if (npc:has_info(npc_is_companion_info)) then
+		if (npc:has_info(open_camel_inventory_info) or db.actor:has_info(ui_pda_info)) then
+			local m_data = alife_storage_manager.get_state()
+			local companion_borrow_item = m_data and m_data.companion_borrow_item
+			return (companion_borrow_item and companion_borrow_item[item:id()]) or false
+		elseif (npc:has_info(open_arsenal_inventory_info)) then
+			return IsWeapon(item)
+		elseif (npc:has_info(open_full_inventory_info)) then
 			return true
 		end
-		return false
-	elseif (npc:has_info(npc_is_companion_info) and npc:has_info(open_arsenal_inventory)) then
-		return IsWeapon(item)
-	else
-		return true
 	end
-	return false
+	
+	return true
 end
 
 -- called from engine

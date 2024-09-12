@@ -1255,25 +1255,25 @@
 		<text>What?</text>
 	</string>
 	
-	<string id="open_companion_inventory_dialog_0">
+	<string id="open_companion_inventory_phrase_0">
 		<text>Open backpack...</text>
 	</string>
-	<string id="open_companion_inventory_dialog_1">
+	<string id="open_companion_inventory_phrase_1">
 		<text>And?</text>
 	</string>
-	<string id="open_companion_inventory_dialog_20">
+	<string id="open_companion_inventory_phrase_20">
 		<text>Take my items.</text>
 	</string>
-	<string id="open_companion_inventory_dialog_21">
+	<string id="open_companion_inventory_phrase_21">
 		<text>Show weapons.</text>
 	</string>
-	<string id="open_companion_inventory_dialog_22">
+	<string id="open_companion_inventory_phrase_22">
 		<text>Get all.</text>
 	</string>
-	<string id="open_companion_inventory_dialog_23">
+	<string id="open_companion_inventory_phrase_23">
 		<text>I've changed my mind.</text>
 	</string>
-	<string id="open_companion_inventory_dialog_3">
+	<string id="open_companion_inventory_phrase_3">
 		<text>It was a waste of time to open it...</text>
 	</string>
 </string_table>
