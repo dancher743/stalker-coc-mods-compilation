@@ -9,7 +9,8 @@ All notable changes to this project will be documented in this file.
 * Added vanila SoC voices for killers
 * Rebalanced all grenades in NPC's equipments
 * Ecolog explorer squads
-* Reworked time requirement of companion's invulnerability and barter
+* Reworked time requirement of companion's invulnerability
+* Added open inventory dialog for a companion
 
 ### Improvements
 * Restored lore-friendly NPC's backpack textures
