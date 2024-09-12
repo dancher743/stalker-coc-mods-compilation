@@ -43,19 +43,32 @@ function CUIActorMenu_OnItemFocusReceive(itm)
 	SendScriptCallback("CUIActorMenu_OnItemFocusReceive",itm)
 end
 
+local ui_pda_info
+local open_camel_inventory_info
+local open_arsenal_inventory
+local npc_is_companion_info
+
 -- called from engine!
 -- useful for when doing npc:use(db.actor) when NPC is alive
 -- basically what is available in the corpse loot menu while npc is alive
 function CInventory_ItemAvailableToTrade(npc,item)
+	ui_pda_info = ui_pda_info or "ui_pda"
+	open_camel_inventory_info = open_camel_inventory_info or "open_camel_inventory"
+	open_arsenal_inventory = open_arsenal_inventory or "open_arsenal_inventory"
+	npc_is_companion_info = npc_is_companion_info or "npcx_is_companion"
+	
 	-- if (xr_corpse_detection.lootable_table[item:section()]) then 
 		-- return true
 	-- end
-	if (db.actor:has_info("ui_pda") and npc:has_info("npcx_is_companion")) then
+	
+	if (npc:has_info(npc_is_companion_info) and (db.actor:has_info(ui_pda_info) or npc:has_info(open_camel_inventory_info))) then
 		local m_data = alife_storage_manager.get_state()
 		if (m_data and m_data.companion_borrow_item and m_data.companion_borrow_item[item:id()]) then
 			return true
 		end
 		return false
+	elseif (npc:has_info(npc_is_companion_info) and npc:has_info(open_arsenal_inventory)) then
+		return IsWeapon(item)
 	else
 		return true
 	end

@@ -620,11 +620,25 @@ end
 
 -- Added by Dancher
 
-function can_open_companion_inventory(_,npc)
-	return axr_companions.is_barter_avaliable_obj(npc)
+function can_open_inventory(_,npc)
+	return axr_companions.can_open_inventory(npc)
 end
 
-function open_companion_inventory(actor,npc)
+local function open_inventory(actor,npc,info)
+	npc:give_info_portion(info)
+	npc:use(actor)
+	npc:disable_info_portion(info)
+end
+
+function open_camel_inventory(actor,npc)
+	open_inventory(actor,npc,"open_camel_inventory")
+end
+
+function open_arsenal_inventory(actor,npc)
+	open_inventory(actor,npc,"open_arsenal_inventory")
+end
+
+function open_full_inventory(actor,npc)
 	npc:use(actor)
 end
 

@@ -3393,10 +3393,6 @@ function is_companion_invulnerable(actor,npc,p)
 	return axr_companions.is_invulnerable_obj(npc)
 end
 
-function is_companion_barter_avaliable(actor,npc,p)
-	return axr_companions.is_barter_avaliable_obj(npc)
-end
-
 function is_survival_mode_enabled(actor,npc)
 	return IsSurvivalMode()
 end

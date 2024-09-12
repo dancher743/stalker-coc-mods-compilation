@@ -4,7 +4,7 @@
 <actor_dialog>friendly_companion_dialog</actor_dialog>
 <actor_dialog>friendly_companion_dialog_hostage_version</actor_dialog>
 <actor_dialog>dm_is_actor_companion_dialog</actor_dialog>
-<actor_dialog>dm_companion_open_inventory</actor_dialog>
+<actor_dialog>open_companion_inventory_dialog</actor_dialog>
 <actor_dialog>dm_companion_patrol</actor_dialog>
 <actor_dialog>dm_companion_leave</actor_dialog>
 <actor_dialog>dm_universal_dialog</actor_dialog>
