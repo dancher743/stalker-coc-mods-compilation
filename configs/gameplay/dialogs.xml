@@ -593,7 +593,7 @@
 				<action>dialogs_axr_companion.remove_companions_from_squad</action>
             </phrase>
 			<phrase id="21">
-				<precondition>custom_object_spots.dialog_precondition_has_not_spot</precondition>
+				<precondition>dialogs_axr_companion.has_not_spot</precondition>
                 <text>axr_phrase_actor_acknowledge_with_custom_spot</text>
 				<action>dialogs_axr_companion.remove_companions_from_squad_and_add_spot</action>
             </phrase>

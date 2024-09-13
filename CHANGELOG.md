@@ -29,6 +29,7 @@ All notable changes to this project will be documented in this file.
 * Added grenade launchers into NPC's spawn
 * Corrected start companion's count text in Faction Select Menu
 * Changed format of hud timer value in `jg_hud_timer.script`
+* Refactored code of adding map spot on companion before removing them from actor's squad
 
 ### Fixes
 * Fixed `delta` of `actor_on_slicing_update` callback

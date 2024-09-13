@@ -79,15 +79,6 @@ function has_spot(id)
 	return level.map_has_object_spot(id,"custom_spot") == 1
 end
 
-function dialog_precondition_has_spot(actor,npc)
-	local npc = dialogs.who_is_npc(actor,npc)
-	return has_spot(npc:id())
-end
-
-function dialog_precondition_has_not_spot(actor,npc)
-	return not dialog_precondition_has_spot(actor,npc)
-end
-
 function on_game_start()
 	RegisterScriptCallback("map_spot_menu_add_property",map_spot_menu_add_property)
 	RegisterScriptCallback("map_spot_menu_property_clicked",map_spot_menu_property_clicked)

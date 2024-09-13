@@ -620,6 +620,11 @@ end
 
 -- Added by Dancher
 
+function has_not_spot(_,npc)
+	local has_spot = custom_object_spots.has_spot(npc:id())
+	return not has_spot
+end
+
 function can_open_inventory(_,npc)
 	return axr_companions.can_open_inventory(npc)
 end
