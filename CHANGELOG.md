@@ -30,6 +30,7 @@ All notable changes to this project will be documented in this file.
 * Corrected start companion's count text in Faction Select Menu
 * Changed format of hud timer value in `jg_hud_timer.script`
 * Refactored code of adding map spot on companion before removing them from actor's squad
+* Added map spot to actor's corpse if he died in Azazel mode
 
 ### Fixes
 * Fixed `delta` of `actor_on_slicing_update` callback
