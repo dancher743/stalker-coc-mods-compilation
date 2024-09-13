@@ -177,7 +177,8 @@ function actor_on_before_death(whoID,flags)
 		se_mimic:set_profile_name(se_actor:profile_name())
 		se_mimic:kill()
 
-		local spot_text = strformat(strtransl("ui_st_aza_mode_actor_death_custom_spot_text"), se_mimic:character_name())
+		local deaths_count = xr_statistic.actor_statistic.deaths
+		local spot_text = strformat(strtransl("ui_st_aza_mode_actor_death_custom_spot_text"), deaths_count, se_mimic:character_name())
 		custom_object_spots.add_spot(se_mimic.id, spot_text)
 
 		local m_data = alife_storage_manager.get_se_obj_state(se_mimic,true)

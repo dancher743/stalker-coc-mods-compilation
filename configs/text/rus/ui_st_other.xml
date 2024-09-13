@@ -623,6 +623,6 @@
 		<text>%s, ранее был напарником.</text>
 	</string>
 	<string id="ui_st_aza_mode_actor_death_custom_spot_text">
-		<text>Вы погибли здесь как %s.</text>
+		<text>Вы погибли здесь %s раз как %s.</text>
 	</string>
 </string_table>
