@@ -36,6 +36,7 @@ All notable changes to this project will be documented in this file.
 * Fixed `delta` of `actor_on_slicing_update` callback
 * Fixed low volume of `nuclear.ogg` radio track
 * Fixed simulation of `gar_smart_terrain_5_6` smart
+* Fixed ignoring of start companions as NPC for reborn in Azazel mode
 
 ### Optimization
 * Optimized amount of update callbacks
