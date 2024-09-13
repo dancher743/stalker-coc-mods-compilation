@@ -47,6 +47,7 @@ All notable changes to this project will be documented in this file.
 * Added `npc_regular` string into `squad_descr.ltx` to add non-random squads spawn
 * Changed time format in `ui_hud_timer.script`
 * Added `IsAzazelMode()` function into `_g.script`
+* Added `npc_on_use_dead` callback into `axr_main.script`
 
 ## [1.4.6] - Unreleased
 

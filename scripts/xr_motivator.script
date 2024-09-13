@@ -397,6 +397,7 @@ function motivator_binder:use_callback(obj, who)
 		if lootmoney then
 			lootmoney.lootmoney(obj)
         end
+		SendScriptCallback("npc_on_use_dead",obj,who)
 		return
 	end
 	trade_manager.update(obj)
