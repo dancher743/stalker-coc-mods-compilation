@@ -39,7 +39,7 @@ function on_game_start()
 end
 
 function on_game_load()
-	if not (alife_storage_manager.get_state().enable_azazel_mode) then
+	if not (IsAzazelMode()) then
 		return
 	end
 
@@ -71,7 +71,7 @@ function on_game_load()
 end
 
 function actor_on_before_death(whoID,flags)
-	if not (alife_storage_manager.get_state().enable_azazel_mode) then
+	if not (IsAzazelMode()) then
 		return
 	end
 

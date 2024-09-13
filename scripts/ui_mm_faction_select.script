@@ -142,7 +142,7 @@ local function on_game_load(binder)
 			task_manager.get_task_manager():give_task("turn_off_brain_machine") -- miracle machine quest
 		
 		-- If Azazel mode is choosen, disable story, Drx Questlines and all psi-generators
-		elseif (alife_storage_manager.get_state().enable_azazel_mode) then
+		elseif (IsAzazelMode()) then
 			-- Compatibility with many story-specific mechanics.
 			give_info("story_mode_disabled")
 			-- Turn off the Miracle Machine:

@@ -45,6 +45,7 @@ All notable changes to this project will be documented in this file.
 * Added `surge_on_ended` and `psi_storm_on_ended` callbacks into `axr_main.script`
 * Added `npc_regular` string into `squad_descr.ltx` to add non-random squads spawn
 * Changed time format in `ui_hud_timer.script`
+* Added `IsAzazelMode()` function into `_g.script`
 
 ## [1.4.6] - Unreleased
 
