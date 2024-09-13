@@ -562,11 +562,8 @@ function remove_companions_from_squad(actor,npc)
 end
 
 function remove_companions_from_squad_and_add_spot(actor,npc)
-	local npc = dialogs.who_is_npc(actor,npc)
-	
-	local text = game.translate_string("ui_st_companion_custom_spot_text")
-	custom_object_spots.add_spot(npc:id(), string.format(text, npc:character_name()))
-	
+	local text = strformat(strtransl("ui_st_companion_custom_spot_text"), npc:character_name())
+    custom_object_spots.add_spot(npc:id(), text)
 	remove_companions_from_squad(actor,npc)
 end
 
