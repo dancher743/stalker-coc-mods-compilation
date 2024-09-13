@@ -201,6 +201,10 @@ function opt_menu_on_init(menu)
 					jg_hud_timer.try_stop()
 				end
 			end}
+		
+		if (IsAzazelMode()) then
+			menu.gameplay_options["death_spots"] = {default=true, debug_only=false, typ="check"}
+		end
 		--
 	end
 	
