@@ -59,7 +59,7 @@ function arrived_to_smart(se_obj, smart)
 		return true
 	end 
 	
-	local gg = game_graph()
+	local gg = get_game_graph()
 	if (gg:vertex(se_obj.m_game_vertex_id):level_id() ~= gg:vertex(smart.m_game_vertex_id):level_id()) then
 		return false
 	end
@@ -96,7 +96,7 @@ function se_smart_terrain:on_register()
 	db.add_smart_terrain(self)
 
 	local sim = get_alife()
-	local gg = game_graph()
+	local gg = get_game_graph()
 	local actor_level = sim:level_name(gg:vertex(sim:actor().m_game_vertex_id):level_id())
 	local smart_level = sim:level_name(gg:vertex(self.m_game_vertex_id):level_id())
 	
@@ -460,7 +460,7 @@ function se_smart_terrain:load_jobs()
 	
 	-- Setup Alife Tasks for smart's gulag jobs
 	local job,active_section,section,ltx, path_field, path_name, smartcover, smartcover_name, prefix_name, job_type
-	local gg, CALifeSmartTerrainTask,level = game_graph(),CALifeSmartTerrainTask,level
+	local gg, CALifeSmartTerrainTask,level = get_game_graph(),CALifeSmartTerrainTask,level
 	
 	local table_of_jobs = {self.stalker_jobs,self.monster_jobs,self.heli_jobs}
 	local tbl
@@ -589,7 +589,7 @@ function se_smart_terrain:update_jobs()
 		end
 	end 	
 
-	local gg = game_graph()
+	local gg = get_game_graph()
 	self.level_id = self.level_id or gg:vertex(self.m_game_vertex_id):level_id()
 	
 	-- Update Jobs for existing NPCs
@@ -1411,7 +1411,7 @@ function se_smart_terrain:am_i_reached(squad)
 		return true 
 	end 
 	
-	local gg = game_graph()
+	local gg = get_game_graph()
 	if (gg:vertex(squad.m_game_vertex_id):level_id() ~= gg:vertex(self.m_game_vertex_id):level_id()) then
 		return false
 	end

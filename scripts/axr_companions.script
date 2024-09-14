@@ -237,7 +237,7 @@ local function teleport_companion_squad_to_actor(squad)
 	local sim = get_alife()
 	local se_actor = sim:actor()
 	
-	local gg = game_graph()
+	local gg = get_game_graph()
 	local gvid = se_actor.m_game_vertex_id
 	local vert = gg:vertex(gvid)
 	local lvid = vert:level_vertex_id()

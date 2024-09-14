@@ -445,7 +445,7 @@ local function get_object_levelname(obj)
 		return STR_NIL
 	end
 	
-	local gg = game_graph()
+	local gg = get_game_graph()
 	if (gg:valid_vertex_id(gvid)) then
 		cvertex = gg:vertex(gvid)
 		return get_alife():level_name(cvertex:level_id())

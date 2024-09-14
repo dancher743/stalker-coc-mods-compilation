@@ -44,6 +44,7 @@ All notable changes to this project will be documented in this file.
 * Optimized RAM usage in `actor_on_slicing_update()` function in `itms_manager.script`
 * Reworked initialization of Azazel mode to not affect the normal mode
 * Optimized string allocations in find victims code in `azazel_mode.script`
+* Reduced extra allocation of `game_graph()`, using `get_game graph()` function instead
 
 ### Framework
 * Added `surge_on_ended` and `psi_storm_on_ended` callbacks into `axr_main.script`
@@ -52,6 +53,7 @@ All notable changes to this project will be documented in this file.
 * Added `IsAzazelMode()` function into `_g.script`
 * Added `npc_on_use_dead` callback into `axr_main.script`
 * Added code template for SkipFrame function into `xr_help.script`
+* Added `get_game_graph()` function into `_g.script` 
 
 ## [1.4.6] - Unreleased
 

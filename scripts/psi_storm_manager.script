@@ -447,7 +447,7 @@ function CPsiStormManager:kill_obj_at_pos(pos)
 		return 
 	end
 	local board = SIMBOARD
-	local sim,gg = get_alife(),game_graph()
+	local sim,gg = get_alife(),get_game_graph()
 	local immuned_to_surge_squads = {
 		["monolith"] 				= true,
 		["monster_predatory_day"] 	= true,

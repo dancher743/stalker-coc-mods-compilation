@@ -35,7 +35,7 @@ function smart_terrain_on_update(smart)
 	smart.last_respawn_update = curr_time
 
 	if not (smart.level_id) then
-		smart.level_id = game_graph():vertex(smart.m_game_vertex_id):level_id()
+		smart.level_id = get_game_graph():vertex(smart.m_game_vertex_id):level_id()
 	end
 	
 	if not (smart.first_update) then
@@ -413,7 +413,7 @@ function spawn_mutants(smart)
 	local mutants_on_level = sim_offline_control.get_num_squads_on_level(smart.level_id, "monster")
 	local mutants = squad_count(smart, "monster")
 	local mutant_coef = sim_brain.check_mutant_coef(smart)
-	local level = get_alife():level_name(game_graph():vertex(smart.m_game_vertex_id):level_id())
+	local level = get_alife():level_name(get_game_graph():vertex(smart.m_game_vertex_id):level_id())
 	local section	
 	
 	if level ~= l12u_control_monolith or level ~= l12u_sarcofag or level ~= l11_hospital then
@@ -495,7 +495,7 @@ end
 
 function find_targets(smart)
 
-	local level = game_graph():vertex(smart.m_game_vertex_id):level_id()
+	local level = get_game_graph():vertex(smart.m_game_vertex_id):level_id()
 	local linked = sim_tables.level_links[level]	
 	local currentLevelSmarts = sim_levels.level_information[level].smarts
 	local smartCollection = {}
@@ -528,7 +528,7 @@ function find_targets(smart)
 				local dist = smart.global_position:distance_to_sqr(other.global_position)
 				local priority = 0
 				local faction2 = other.owning_faction or "none"			
-				local otherLevel = game_graph():vertex(other.m_game_vertex_id):level_id()
+				local otherLevel = get_game_graph():vertex(other.m_game_vertex_id):level_id()
 								
 				if (other.props[faction]) then
 					priority = priority + (other.props[faction] * 2)

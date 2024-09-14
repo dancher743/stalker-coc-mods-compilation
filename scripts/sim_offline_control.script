@@ -57,7 +57,7 @@ function squad_on_update(squad)
     
 	if squad.registered_in_simultaion then
 		local sim = get_alife()
-		local gg = game_graph()
+		local gg = get_game_graph()
 
 		if not (squad.current_level_id) then
 			local lvl = gg:vertex(squad.m_game_vertex_id):level_id()

@@ -258,7 +258,7 @@ local function on_game_load()
 
 	if not (is_empty(tsmarts)) then
 		local level_name
-		local sim,gg = get_alife(),game_graph()
+		local sim,gg = get_alife(),get_game_graph()
 		for i=1,65534 do
 			local smart = sim:object(i)
 			if (smart and smart:clsid() == clsid.smart_terrain and tsmarts[smart:name()]) then

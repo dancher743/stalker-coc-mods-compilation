@@ -18,7 +18,7 @@ local function give_hunt_target_talk_message(target_id)
 		
 		local faction_name = string.format("%s: %s", game.translate_string("ui_st_community"), game.translate_string(se_obj:community()))
 		
-		local level_id = get_alife():level_name(game_graph():vertex(se_obj.m_game_vertex_id):level_id())
+		local level_id = get_alife():level_name(get_game_graph():vertex(se_obj.m_game_vertex_id):level_id())
 		local location_name = string.format("%s: %s", game.translate_string("st_mm_pda_location"), game.translate_string(level_id))
 		
 		local news_caption = string.format("%s",  game.translate_string("st_target"))
@@ -3121,7 +3121,7 @@ function find_smart_under_faction_control_ex(actor,npc,p)
 	end
 
 	local sim = get_alife()
-	local gg = game_graph()
+	local gg = get_game_graph()
 	local actor_level = sim:level_name(gg:vertex(sim:actor().m_game_vertex_id):level_id())
 
 	local target_id
@@ -3129,7 +3129,7 @@ function find_smart_under_faction_control_ex(actor,npc,p)
 		if (smart.sim_avail == nil or xr_logic.pick_section_from_condlist(actor, smart, smart.sim_avail) == "true") then
 			local smrt = SIMBOARD.smarts[smart.id]
 			if (smrt) then
-				local smart_level = get_alife():level_name(game_graph():vertex(smart.m_game_vertex_id):level_id())
+				local smart_level = get_alife():level_name(get_game_graph():vertex(smart.m_game_vertex_id):level_id())
 				if (smart.online or DEACTIVATE_SIM_ON_NON_LINKED_LEVELS ~= true or string.find(simulation_objects.config:r_value(actor_level,"target_maps",0,STR_EMPTY),smart_level)) then
 					for k,squad in pairs(smrt.squads) do
 						if (squad and squad.current_target_id and squad.current_target_id == smart.id and not squad:get_script_target()) then
@@ -7371,7 +7371,7 @@ function make_a_wish(actor,npc,p)
 --			local pos = spawn_path:point(0)
 --			local lvid = spawn_path:level_vertex_id(0)
 --			local gvid = spawn_path:game_vertex_id(0)
---			local gg = game_graph()
+--			local gg = get_game_graph()
 --			if (gvid and gg:valid_vertex_id(gvid)) then
 --				ChangeLevel(pos,lvid,gvid,VEC_ZERO)
 --			end
