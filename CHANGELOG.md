@@ -35,6 +35,7 @@ All notable changes to this project will be documented in this file.
 * Corrected localization of `show_guide_job_on_map` option
 * Reworked population factors text in Faction Select Menu
 * Corrected text in general in Faction Select Menu
+* Removed weather graphs from `dynamic_weather_graphs.ltx` due to TRX: Global Weather
 
 ### Fixes
 * Fixed `delta` of `actor_on_slicing_update` callback
