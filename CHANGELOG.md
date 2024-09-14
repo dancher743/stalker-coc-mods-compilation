@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 * Ecolog explorer squads
 * Reworked time requirement of companion's invulnerability
 * Added open inventory dialog for a companion
+* Added mosquitoes sound ambient
 
 ### Improvements
 * Restored lore-friendly NPC's backpack textures
