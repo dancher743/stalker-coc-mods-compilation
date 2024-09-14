@@ -32,6 +32,7 @@ All notable changes to this project will be documented in this file.
 * Refactored code of adding map spot on companion before removing them from actor's squad
 * Added map spot to actor's corpse if he died in Azazel mode (with option)
 * Refactored `simulation` filed in `_g.script`
+* Corrected localization of `show_guide_job_on_map` option
 
 ### Fixes
 * Fixed `delta` of `actor_on_slicing_update` callback
