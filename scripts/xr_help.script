@@ -16,4 +16,11 @@ local se_obj = sim:object(obj:id())
 3. Check is actor in combat
 local has_comabat = not (is_empty(xr_combat_ignore.fighting_with_actor_npcs))
 
+
+4. Code template for SkipFrame function
+local function postpone_for_next_frame()
+	
+end
+SkipFrame(postpone_for_next_frame)
+
 ]]
