@@ -94,7 +94,7 @@ function actor_on_before_death(whoID,flags)
 	for i=1,65534 do
 		local se_obj = sim:object(i)
 		if (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and se_obj:community() ~= "zombied" and se_obj.group_id ~= 65535) then
-			if (IsSurvivalMode() or 
+			if (get_object_story_id(se_obj.group_id) == "survival_squad" or 
 				get_object_story_id(se_obj.group_id) == "start_squad" or 
 				get_object_story_id(se_obj.group_id) == nil) 
 			then
