@@ -37,6 +37,7 @@ All notable changes to this project will be documented in this file.
 * Fixed low volume of `nuclear.ogg` radio track
 * Fixed simulation of `gar_smart_terrain_5_6` smart
 * Fixed ignoring of start companions as NPC for reborn in Azazel mode
+* Fixed "ALIFE OBJECT ID IS 65535!" message after death in Azazel mode
 
 ### Optimization
 * Optimized amount of update callbacks

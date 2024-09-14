@@ -82,6 +82,8 @@ function on_game_load()
 end
 
 function actor_on_before_death(whoID,flags)
+	UnregisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+	
 	xr_statistic.actor_statistic.deaths = xr_statistic.actor_statistic.deaths + 1
 	SetHudMsg(strformat(game.translate_string("st_death_count"),xr_statistic.actor_statistic.deaths),8)
 
@@ -384,6 +386,10 @@ function actor_on_before_death(whoID,flags)
 	end
 
 	flags.ret_value = false
+	local function postpone_for_next_frame()
+		RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+	end
+	SkipFrame(postpone_for_next_frame)
 end
 
 function cam_effector_end()
