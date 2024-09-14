@@ -35,6 +35,10 @@ local function init()
 	setup_tasks_priority()
 end
 
+local function npc_on_use_dead(obj)
+	custom_object_spots.remove_spot(obj:id())
+end
+
 function on_game_start()
 	RegisterScriptCallback("on_game_load",on_game_load)
 end
@@ -47,6 +51,7 @@ function on_game_load()
 		init()
 		RegisterScriptCallback("actor_on_before_death",actor_on_before_death)
 		RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+		RegisterScriptCallback("npc_on_use_dead",npc_on_use_dead)
 	end
 
 	if (alife_storage_manager.get_state().azazel_death) then
