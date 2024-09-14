@@ -1,46 +1,52 @@
 --- Azazel Customizable by RenanMsV for CoC 1.4.22 ---
 local addon = { version = "0.0.1", description = "Death is not the end here, get a new body after all deaths.", author = "coc1.4.22, RenanMsV"}
 
-local config_ini = ini_file("azazel_customizable.ltx")
-local azazel_customizable_config = {
-
-	fix_bleeding = alun_utils.read_from_ini(config_ini,"azazel_config", "fix_bleeding", "bool"),
-	disable_animation = alun_utils.read_from_ini(config_ini,"azazel_config", "disable_animation", "bool"),
-	invul_time = alun_utils.read_from_ini(config_ini,"azazel_config", "invul_time", "float"),
-	faction_spawn = alun_utils.read_from_ini(config_ini,"azazel_config", "faction_spawn", "bool"),
-	stay_on_map = alun_utils.read_from_ini(config_ini,"azazel_config", "stay_on_map", "bool"),
-	debugMessages = alun_utils.read_from_ini(config_ini,"azazel_config", "debugMessages", "bool"),
-	keep_tasks_squad = alun_utils.read_from_ini(config_ini,"azazel_tasks", "keep_tasks_squad", "bool"),
-	keep_tasks_faction = alun_utils.read_from_ini(config_ini,"azazel_tasks", "keep_tasks_faction", "bool"),
-	keep_tasks_always = alun_utils.read_from_ini(config_ini,"azazel_tasks", "keep_tasks_always", "bool"),
-	fail_tasks = alun_utils.read_from_ini(config_ini,"azazel_tasks", "fail_tasks", "bool"),
-	gain_money = alun_utils.read_from_ini(config_ini,"azazel_money", "gain_money", "bool"),
-	lose_all_money = alun_utils.read_from_ini(config_ini,"azazel_money", "lose_all_money", "bool"),
-	stalker_money = alun_utils.read_from_ini(config_ini,"azazel_money", "stalker_money", "bool"),
-	keep_money_squad = alun_utils.read_from_ini(config_ini,"azazel_money", "keep_money_squad", "bool"),
-	never_loose_money = alun_utils.read_from_ini(config_ini,"azazel_money", "never_loose_money", "bool"),
-	activate_supplies = alun_utils.read_from_ini(config_ini,"azazel_extra_supplies", "activate_supplies", "bool"),
-	give_medkit = alun_utils.read_from_ini(config_ini,"azazel_extra_supplies", "give_medkit", "float"),
-	give_bandage = alun_utils.read_from_ini(config_ini,"azazel_extra_supplies", "give_bandage", "float"),
-	give_bread = alun_utils.read_from_ini(config_ini,"azazel_extra_supplies", "give_bread", "float"),
-	give_vodka = alun_utils.read_from_ini(config_ini,"azazel_extra_supplies", "give_vodka", "float"),
-	give_vinca = alun_utils.read_from_ini(config_ini,"azazel_extra_supplies", "give_vinca", "bool")
-	
-}
+local config_ini
+local azazel_customizable_config
 
 local rad_count = 0
 
-function on_game_start()
-	RegisterScriptCallback("actor_on_before_death",actor_on_before_death)
-	RegisterScriptCallback("on_game_load",on_game_load)
-	RegisterScriptCallback("actor_on_update",update)
+local function init()
+	config_ini = ini_file("azazel_customizable.ltx")
+	azazel_customizable_config = {
+		fix_bleeding = alun_utils.read_from_ini(config_ini,"azazel_config", "fix_bleeding", "bool"),
+		disable_animation = alun_utils.read_from_ini(config_ini,"azazel_config", "disable_animation", "bool"),
+		invul_time = alun_utils.read_from_ini(config_ini,"azazel_config", "invul_time", "float"),
+		faction_spawn = alun_utils.read_from_ini(config_ini,"azazel_config", "faction_spawn", "bool"),
+		stay_on_map = alun_utils.read_from_ini(config_ini,"azazel_config", "stay_on_map", "bool"),
+		debugMessages = alun_utils.read_from_ini(config_ini,"azazel_config", "debugMessages", "bool"),
+		keep_tasks_squad = alun_utils.read_from_ini(config_ini,"azazel_tasks", "keep_tasks_squad", "bool"),
+		keep_tasks_faction = alun_utils.read_from_ini(config_ini,"azazel_tasks", "keep_tasks_faction", "bool"),
+		keep_tasks_always = alun_utils.read_from_ini(config_ini,"azazel_tasks", "keep_tasks_always", "bool"),
+		fail_tasks = alun_utils.read_from_ini(config_ini,"azazel_tasks", "fail_tasks", "bool"),
+		gain_money = alun_utils.read_from_ini(config_ini,"azazel_money", "gain_money", "bool"),
+		lose_all_money = alun_utils.read_from_ini(config_ini,"azazel_money", "lose_all_money", "bool"),
+		stalker_money = alun_utils.read_from_ini(config_ini,"azazel_money", "stalker_money", "bool"),
+		keep_money_squad = alun_utils.read_from_ini(config_ini,"azazel_money", "keep_money_squad", "bool"),
+		never_loose_money = alun_utils.read_from_ini(config_ini,"azazel_money", "never_loose_money", "bool"),
+		activate_supplies = alun_utils.read_from_ini(config_ini,"azazel_extra_supplies", "activate_supplies", "bool"),
+		give_medkit = alun_utils.read_from_ini(config_ini,"azazel_extra_supplies", "give_medkit", "float"),
+		give_bandage = alun_utils.read_from_ini(config_ini,"azazel_extra_supplies", "give_bandage", "float"),
+		give_bread = alun_utils.read_from_ini(config_ini,"azazel_extra_supplies", "give_bread", "float"),
+		give_vodka = alun_utils.read_from_ini(config_ini,"azazel_extra_supplies", "give_vodka", "float"),
+		give_vinca = alun_utils.read_from_ini(config_ini,"azazel_extra_supplies", "give_vinca", "bool")
+	}
 	setup_money_priority()
 	setup_tasks_priority()
 end
 
+function on_game_start()
+	RegisterScriptCallback("on_game_load",on_game_load)
+end
+
 function on_game_load()
-	if not (IsAzazelMode()) then
+	if (not IsAzazelMode()) then
+		UnregisterScriptCallback("on_game_load",on_game_load)
 		return
+	else
+		init()
+		RegisterScriptCallback("actor_on_before_death",actor_on_before_death)
+		RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
 	end
 
 	if (alife_storage_manager.get_state().azazel_death) then
@@ -71,10 +77,6 @@ function on_game_load()
 end
 
 function actor_on_before_death(whoID,flags)
-	if not (IsAzazelMode()) then
-		return
-	end
-
 	xr_statistic.actor_statistic.deaths = xr_statistic.actor_statistic.deaths + 1
 	SetHudMsg(strformat(game.translate_string("st_death_count"),xr_statistic.actor_statistic.deaths),8)
 
@@ -486,7 +488,7 @@ function debug_vars() -- return config and extra vars as strings
 	return strformat("Configs: Fix Bleeding: %s , Disable Animation: %s , Gain Money: %s , Lose All Money: %s , Stalker Money: %s", azazel_customizable_config["fix_bleeding"], azazel_customizable_config["disable_animation"], azazel_customizable_config["gain_money"], azazel_customizable_config["lose_all_money"], azazel_customizable_config["stalker_money"])
 end
 
-function update()
+function actor_on_slicing_update()
 
 	if (alife_storage_manager.get_state().azazel_db_rad) then
 		if(rad_count < 5) then

@@ -41,6 +41,7 @@ All notable changes to this project will be documented in this file.
 ### Optimization
 * Optimized amount of update callbacks
 * Optimized RAM usage in `actor_on_slicing_update()` function in `itms_manager.script`
+* Reworked initialization of Azazel mode to not affect the normal mode
 
 ### Framework
 * Added `surge_on_ended` and `psi_storm_on_ended` callbacks into `axr_main.script`
