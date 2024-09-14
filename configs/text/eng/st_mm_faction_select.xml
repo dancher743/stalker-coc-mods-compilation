@@ -212,21 +212,19 @@
 	</string>
 		<string id="st_mm_list_stalker_population_desc">
 		<text>
-			%c[0,150,150,150]Stalker population factor.
+			%c[0,150,150,150]Population factor of stalkers in the Zone at the start of the game.
 			\n
-			\nDetermines how many stalkers will be in the Zone at the very beginning of the game.
-			\n
-			\n%c[200,50,200,50]• %c[0,150,150,150]Further population is determined in the options.
+			\n%c[200,200,200,50]• %c[0,150,150,150]Choose the value "0.1" if you like the desolated Zone.
+			\n%c[200,50,200,50]• %c[0,150,150,150]Population during the game is determined in the options.
 			\nSee "Options" -> "Game". Then "Population factor (stalkers)".
 		</text>
 	</string>
 	<string id="st_mm_list_mutant_population_desc">
 		<text>
-			%c[0,150,150,150]Mutants population factor.
+			%c[0,150,150,150]Population factor of mutants in the Zone at the start of the game.
 			\n
-			\nDetermines how many mutants will be in the Zone at the very beginning of the game.
-			\n
-			\n%c[200,50,200,50]• %c[0,150,150,150]Further population is determined in the options.
+			\n%c[200,200,200,50]• %c[0,150,150,150]Choose the value "0.1" if you like the desolated Zone.
+			\n%c[200,50,200,50]• %c[0,150,150,150]Population during the game is determined in the options.
 			\nSee "Options" -> "Game". Then "Population factor (mutants)".
 		</text>
 	</string>
