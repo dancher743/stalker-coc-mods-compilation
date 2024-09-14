@@ -43,6 +43,8 @@ ini_sys	= system_ini()
 mus_vol = 0
 amb_vol = 0
 b_discard_settings_shown = false
+-- Local use
+local sim
 local gg
 ----------------------------------------------------------------------
 
@@ -72,13 +74,11 @@ function start_game_callback()
 	pda.add_quick_slot_items_on_game_start()
 end
 
-local simulation
-
 function get_alife()
-	if not (simulation) then
-		simulation = alife()
+	if not (sim) then
+		sim = alife()
 	end
-	return simulation
+	return sim
 end
 
 function alife_object(id)
