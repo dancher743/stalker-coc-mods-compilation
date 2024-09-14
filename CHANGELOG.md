@@ -34,6 +34,7 @@ All notable changes to this project will be documented in this file.
 * Refactored `simulation` filed in `_g.script`
 * Corrected localization of `show_guide_job_on_map` option
 * Reworked population factors text in Faction Select Menu
+* Corrected text in general in Faction Select Menu
 
 ### Fixes
 * Fixed `delta` of `actor_on_slicing_update` callback

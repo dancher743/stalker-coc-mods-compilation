@@ -88,10 +88,10 @@
 		<text>
 			%c[0,150,150,150]Choose whether you will be accompanied by companions from the very beginning of the game.
 			\n
-			\n%c[200,50,200,50]• %c[0,150,150,150]After 24 hours of in-game time (skipped time doesn't count), companions will become invulnerable to any type of damage and will give access to their inventories.
-			\n%c[200,50,200,50]• %c[0,150,150,150]Companions who accompany you from the very beginning of the game have these bonuses initially.
+			\n%c[200,200,200,50]• %c[0,150,150,150]After 24 hours of in-game time (skipped time doesn't count), companions will become invulnerable to any type of damage and will give access to their inventories.
+			\n%c[200,200,200,50]• %c[0,150,150,150]Companions who accompany you from the very beginning of the game have these bonuses initially.
+			\n%c[200,200,200,50]• %c[0,150,150,150]Invulnerability will be indicated by the shield icon located on his interface in the upper left corner.
 			\n%c[200,200,50,50]• %c[0,150,150,150]You will not be able to disguise yourself using a patch while you are accompanied by companions.
-			\n%c[200,50,200,50]• %c[0,150,150,150]Invulnerability will be indicated by the shield icon located on his interface in the upper left corner.
 			\n%c[200,50,200,50]• %c[0,150,150,150]You can make your companions vulnerable in your playthrough at any time.
 			\nSee "Options" -> "Game" -> "Companions invulnerability"
 		</text>
@@ -102,7 +102,6 @@
 			\n
 			\n%c[200,50,200,50]• %c[0,150,150,150]You can change gameplay difficulty in your playthrough at any time.
 			\nSee "Options" -> "Game" -> "Difficulty"
-			\n
 			\n%c[200,50,200,50]• %c[0,150,150,150]Options to make your game more difficult are also available.
 			\nSee "Options" -> "Game" -> "Hardcore AI aim", "Sleep deprivation", "Show wound effects" and etc»
 		</text>
@@ -158,12 +157,12 @@
 	<string id="st_mm_ck_conditions_desc">
 		<text>
 			%c[0,150,150,150]Agony mode will prevent you from saving your progress if you're:
-			\n%c[200,200,200,50]• %c[0,150,150,150]Injured
-			\n%c[200,200,200,50]• %c[0,150,150,150]Bleeding
-			\n%c[200,200,200,50]• %c[0,150,150,150]Irradiated
-			\n%c[200,200,200,50]• %c[0,150,150,150]In combat with enemies
-			\n%c[200,200,200,50]• %c[0,150,150,150]Under circumstances of an emission or psi-storm
-            \n%c[200,200,200,50]• %c[0,150,150,150]Near campfire (optional)
+			\n • Injured
+			\n • Bleeding
+			\n • Irradiated
+			\n • In combat with enemies
+			\n • Under circumstances of an emission or psi-storm
+            \n • Near campfire (optional)
 			\n
 			\n%c[200,50,200,50]• %c[0,150,150,150]All hardcore save modes are compatible with each other.
 			\n%c[200,50,200,50]• %c[0,150,150,150]You can add campfire saving to this mode in your playthrough at any time.
