@@ -54,6 +54,7 @@ All notable changes to this project will be documented in this file.
 * Optimized string allocations in find victims code in `azazel_mode.script`
 * Reduced extra allocation of `game_graph()`, using `get_game graph()` function instead
 * Optimized string allocations in `critical_hit_manager.script`
+* Optimized string allocations in `get_check_option` function
 
 ### Framework
 * Added `surge_on_ended` and `psi_storm_on_ended` callbacks into `axr_main.script`

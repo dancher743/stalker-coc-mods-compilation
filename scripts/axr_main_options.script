@@ -302,16 +302,17 @@ end
 ------------------------------------
 -- Added by Dancher
 ------------------------------------
+local check_option_type = "check"
 
 function get_check_option(name)
-	return get_option(name, "check", nil)
+	return get_option(name, check_option_type, nil)
 end
 
 function get_option(name, type, subtype)
 	local config = axr_main.config
 	local value = nil
 	
-	if (type == "check") then
+	if (type == check_option_type) then
 		value = config:r_value(MM_OPTIONS,"enable_"..name,1,false)
 	elseif (type == "list") then
 		if (subtype == "boolean") then
