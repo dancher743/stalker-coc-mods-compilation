@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 * Reworked time requirement of companion's invulnerability
 * Added open inventory dialog for a companion
 * Added mosquitoes sound ambient
+* NPCs can deal critical hits to other NPCs
 
 ### Improvements
 * Restored lore-friendly NPC's backpack textures
@@ -37,6 +38,7 @@ All notable changes to this project will be documented in this file.
 * Reworked population factors text in Faction Select Menu
 * Corrected text in general in Faction Select Menu
 * Removed weather graphs from `dynamic_weather_graphs.ltx` due to TRX: Global Weather
+* Refactored code of `critical_hit_manager.script`
 
 ### Fixes
 * Fixed `delta` of `actor_on_slicing_update` callback
@@ -51,6 +53,7 @@ All notable changes to this project will be documented in this file.
 * Reworked initialization of Azazel mode to not affect the normal mode
 * Optimized string allocations in find victims code in `azazel_mode.script`
 * Reduced extra allocation of `game_graph()`, using `get_game graph()` function instead
+* Optimized string allocations in `critical_hit_manager.script`
 
 ### Framework
 * Added `surge_on_ended` and `psi_storm_on_ended` callbacks into `axr_main.script`
