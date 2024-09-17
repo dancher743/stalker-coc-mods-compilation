@@ -24,7 +24,6 @@ local damage_factor = 3.0
 local crit_enabled_option_name = "can_stalker_crit_hit"
 local crit_cam_vfx_option_name = "show_crit_hit_cam_vfx"
 local crit_sound_option_name = "play_crit_hit_sound"
-local bone_index_type = "number"
 
 local function get_hit_chance(who)
 	local rank = ranks.get_obj_rank_name(who)
@@ -33,7 +32,7 @@ local function get_hit_chance(who)
 	return chance
 end
 
-local function calculate_hit_power(who, damage, chance)
+local function calculate_hit_power(damage, chance)
 	local a = damage * (1 - chance)
 	local b = damage * damage_factor * chance
 	local power = (a + b) - damage
@@ -54,32 +53,28 @@ local function create_hit(who, power, local_direction, bone_index)
 	return crit_hit
 end
 
-local function can_hit(victim, who, bone_index, chance)
-	return chance > 0 and victim:alive() and bone_index > 0 and type(bone_index) == bone_index_type and math.random() < chance
-end
-
 local function try_hit(victim, who, damage, local_direction, bone_index)
 	local hit_chance = get_hit_chance(who)
-	local can_hit = can_hit(victim, who, bone_index, hit_chance)
+	local has_hit = math.random() < hit_chance
 	
-	if (can_hit) then
-		local hit_power = calculate_hit_power(who, damage, hit_chance)
+	if (has_hit) then
+		local hit_power = calculate_hit_power(damage, hit_chance)
 		local crit_hit = create_hit(who, hit_power, local_direction, bone_index)
 		
 		victim:hit(crit_hit)
 		-- printf(string.format(">>> Dancher: critical_hit_manager.script -> Critical damage is %0.2f. Orignal damage is %0.2f.", crit_hit.power, damage))
 	end
 	
-	return can_hit
+	return has_hit
 end
 
 local function npc_or_monster_on_hit_callback(victim, damage, local_direction, who, bone_index)	
-	if (IsStalker(who) and 
+	if (victim:alive() and IsStalker(who) and
 		axr_main_options.get_check_option(crit_enabled_option_name)) 
 	then
-		local can_hit = try_hit(victim, who, damage, local_direction, bone_index)
+		local has_hit = try_hit(victim, who, damage, local_direction, bone_index)
 		
-		if (can_hit and IsActor(who)) then
+		if (has_hit and IsActor(who)) then
 			if (axr_main_options.get_check_option(crit_enabled_option_name)) then
 				ui_actor_critical_hit.show_mark()
 			end
@@ -92,12 +87,12 @@ local function npc_or_monster_on_hit_callback(victim, damage, local_direction, w
 end
 
 local function actor_on_hit_callback(victim, damage, local_direction, who, bone_index)
-	if (IsStalkerOnly(who) and 
+	if (victim:alive() and IsStalkerOnly(who) and 
 		axr_main_options.get_check_option(crit_enabled_option_name)) 
 	then
-		local can_hit = try_hit(victim, who, damage, local_direction, bone_index)
-		
-		if (can_hit) then
+		local has_hit = try_hit(victim, who, damage, local_direction, bone_index)
+
+		if (has_hit) then
 			if (axr_main_options.get_check_option(crit_cam_vfx_option_name)) then
 				ui_actor_critical_hit.show_cam_effector()
 			end
