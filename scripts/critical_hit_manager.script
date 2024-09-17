@@ -28,7 +28,6 @@ local crit_sound_option_name = "play_crit_hit_sound"
 local function get_hit_chance(who)
 	local rank = ranks.get_obj_rank_name(who)
 	local chance = hit_chance_by_rank[rank] or 0
-	
 	return chance
 end
 
@@ -36,43 +35,27 @@ local function calculate_hit_power(damage, chance)
 	local a = damage * (1 - chance)
 	local b = damage * damage_factor * chance
 	local power = (a + b) - damage
-	
 	return power
 end
 
-local function create_hit(who, power, local_direction, bone_index)
-	local crit_hit = hit()
-	
-	crit_hit.type = hit.wound
-	crit_hit.bone = bone_index
-	crit_hit.power = power
-	crit_hit.impulse = 0.0
-	crit_hit.direction = local_direction
-	crit_hit.draftsman = who
-	
-	return crit_hit
-end
-
-local function try_hit(victim, who, damage, local_direction, bone_index)
+local function try_hit(victim, damage, who)
 	local hit_chance = get_hit_chance(who)
 	local has_hit = math.random() < hit_chance
 	
 	if (has_hit) then
 		local hit_power = calculate_hit_power(damage, hit_chance)
-		local crit_hit = create_hit(who, hit_power, local_direction, bone_index)
-		
-		victim:hit(crit_hit)
-		-- printf(string.format(">>> Dancher: critical_hit_manager.script -> Critical damage is %0.2f. Orignal damage is %0.2f.", crit_hit.power, damage))
+		victim.health = -(hit_power / 100)
+		-- printf(string.format(">>> Dancher: critical_hit_manager.script -> Critical damage is %0.2f. Orignal damage is %0.2f.", hit_power, damage))
 	end
 	
 	return has_hit
 end
 
-local function npc_or_monster_on_hit_callback(victim, damage, local_direction, who, bone_index)	
+local function npc_or_monster_on_hit_callback(victim, damage, _, who, _)
 	if (victim:alive() and IsStalker(who) and
 		axr_main_options.get_check_option(crit_enabled_option_name)) 
 	then
-		local has_hit = try_hit(victim, who, damage, local_direction, bone_index)
+		local has_hit = try_hit(victim, damage, who)
 		
 		if (has_hit and IsActor(who)) then
 			if (axr_main_options.get_check_option(crit_enabled_option_name)) then
@@ -86,11 +69,11 @@ local function npc_or_monster_on_hit_callback(victim, damage, local_direction, w
 	end
 end
 
-local function actor_on_hit_callback(victim, damage, local_direction, who, bone_index)
+local function actor_on_hit_callback(victim, damage, _, who, _)
 	if (victim:alive() and IsStalkerOnly(who) and 
 		axr_main_options.get_check_option(crit_enabled_option_name)) 
 	then
-		local has_hit = try_hit(victim, who, damage, local_direction, bone_index)
+		local has_hit = try_hit(victim, damage, who)
 
 		if (has_hit) then
 			if (axr_main_options.get_check_option(crit_cam_vfx_option_name)) then
