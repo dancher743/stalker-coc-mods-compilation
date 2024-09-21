@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 * Added open inventory dialog for a companion
 * Added mosquitoes sound ambient
 * NPCs can deal critical hits to other NPCs
+* New outfits: Clear Sky exoskeleton
 
 ### Improvements
 * Restored lore-friendly NPC's backpack textures

@@ -31,6 +31,12 @@
 	<string id="csky_heavy_outfit_description">
 		<text>Once used as standard by Clear Sky assault squads. The armour is capable of stopping a pistol bullet, while the wearer is also well protected from anomalies. Comes with a built-in artefact container.</text>
 	</string>
+	<string id="cs_exo_outfit_name">
+		<text>CS-5 exoskeleton</text>
+	</string>
+	<string id="cs_exo_outfit_description">
+		<text>An Clear Sky exoskeleton. Based on a stalker exoskeleton, but modified by Novikov to suit the needs of the faction. Usually, such armored suits spend most of their time in the Clear Sky warehouse, being used only in special situations. Comes with a built-in artefact container.</text>
+	</string>
 
 <!--			-- Ecologist --				-->
 
