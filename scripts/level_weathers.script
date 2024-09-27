@@ -235,7 +235,7 @@ function WeatherManager:get_next_period(period)
         end
     end
 	
-	local available_periods = self:get_periods("available_periods")
+	local available_periods = self:get_periods("global_weather_periods")
 	local next_periods = {}
 	
 	for i=1,#available_periods do
