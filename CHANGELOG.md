@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 * Added open inventory dialog for a companion
 * Added mosquitoes sound ambient
 * NPCs can deal critical hits to other NPCs
+* Optimized global code (`_g.script`)
 
 ### Improvements
 * Restored lore-friendly NPC's backpack textures
@@ -55,9 +56,11 @@ All notable changes to this project will be documented in this file.
 * Optimized RAM usage in `actor_on_slicing_update()` function in `itms_manager.script`
 * Reworked initialization of Azazel mode to not affect the normal mode
 * Optimized string allocations in find victims code in `azazel_mode.script`
-* Reduced extra allocation of `game_graph()`, using `get_game graph()` function instead
+* Reduced extra allocations of `game_graph()` function, using `get_game_graph()` instead
 * Optimized string allocations in `critical_hit_manager.script`
 * Optimized string allocations in `get_check_option` function
+* Reduced extra allocations using `STR_USERDATA`, `STR_TRUE`, `STR_FALSE`, `STR_ZERO` and `STR_ONE` constants
+* Reduced extra allocations of `get_hud()` function, using `get_cached_hud()` instead
 
 ### Framework
 * Added `surge_on_ended` and `psi_storm_on_ended` callbacks into `axr_main.script`
