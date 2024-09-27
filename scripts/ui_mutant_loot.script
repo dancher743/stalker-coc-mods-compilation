@@ -84,26 +84,26 @@ function loot_ui:SetMutantImage()
 	-- ponney68: This table based on "species" of mutants
 	local killed_mutant_tbl =
 	{
-	cat	= {file="ui\\ui_actor_monsters_pda_2",x="0",y="0",special="0"},
-	fracture = {file="ui\\ui_actor_monsters_pda_2",x="393",y="200",special="0"},
-	bird = {file="ui\\ui_actor_monsters_pda_2",x="393",y="0",special="0"},
-	zombie = {file="ui\\ui_actor_monsters_pda_2",x="0",y="200",special="0"},
+	cat	= {file="ui\\ui_actor_monsters_pda_2",x=STR_ONE,y=STR_ONE,special=STR_ONE},
+	fracture = {file="ui\\ui_actor_monsters_pda_2",x="393",y="200",special=STR_ONE},
+	bird = {file="ui\\ui_actor_monsters_pda_2",x="393",y=STR_ONE,special=STR_ONE},
+	zombie = {file="ui\\ui_actor_monsters_pda_2",x=STR_ONE,y="200",special=STR_ONE},
 
-	snork				= {file="ui\\ui_actor_monsters_pda",x="393",y="0",special="0"},
-	dog					= {file="ui\\ui_actor_monsters_pda",x="0",y="800",special="0"},
-	pseudodog			= {file="ui\\ui_actor_monsters_pda",x="393",y="200",special="0"},
-	psy_dog				= {file="ui\\ui_actor_monsters_pda",x="393",y="200",special="0"},
-	poltergeist			= {file="ui\\ui_actor_monsters_pda",x="0",y="400",special="0"},
-	bloodsucker			= {file="ui\\ui_actor_monsters_pda",x="393",y="400",special="0"},
-	controller			= {file="ui\\ui_actor_monsters_pda",x="393",y="800",special="0"},
-	chimera				= {file="ui\\ui_actor_monsters_pda",x="0",y="600",special="0"},
-	tushkano			= {file="ui\\ui_actor_monsters_pda",x="0",y="0",special="0"},
-	rat					= {file="ui\\ui_actor_monsters_pda",x="0",y="0",special="0"},
-	flesh				= {file="ui\\ui_actor_monsters_pda",x="393",y="600",special="0"},
+	snork				= {file="ui\\ui_actor_monsters_pda",x="393",y=STR_ONE,special=STR_ONE},
+	dog					= {file="ui\\ui_actor_monsters_pda",x=STR_ONE,y="800",special=STR_ONE},
+	pseudodog			= {file="ui\\ui_actor_monsters_pda",x="393",y="200",special=STR_ONE},
+	psy_dog				= {file="ui\\ui_actor_monsters_pda",x="393",y="200",special=STR_ONE},
+	poltergeist			= {file="ui\\ui_actor_monsters_pda",x=STR_ONE,y="400",special=STR_ONE},
+	bloodsucker			= {file="ui\\ui_actor_monsters_pda",x="393",y="400",special=STR_ONE},
+	controller			= {file="ui\\ui_actor_monsters_pda",x="393",y="800",special=STR_ONE},
+	chimera				= {file="ui\\ui_actor_monsters_pda",x=STR_ONE,y="600",special=STR_ONE},
+	tushkano			= {file="ui\\ui_actor_monsters_pda",x=STR_ONE,y=STR_ONE,special=STR_ONE},
+	rat					= {file="ui\\ui_actor_monsters_pda",x=STR_ONE,y=STR_ONE,special=STR_ONE},
+	flesh				= {file="ui\\ui_actor_monsters_pda",x="393",y="600",special=STR_ONE},
 
-	burer				= {file="ui\\ui_actor_monsters_pda_1",x="0",y="0",special="0"},
-	boar				= {file="ui\\ui_actor_monsters_pda_1",x="393",y="0",special="0"},
-	giant				= {file="ui\\ui_actor_monsters_pda_1",x="0",y="200",special="0"},
+	burer				= {file="ui\\ui_actor_monsters_pda_1",x=STR_ONE,y=STR_ONE,special=STR_ONE},
+	boar				= {file="ui\\ui_actor_monsters_pda_1",x="393",y=STR_ONE,special=STR_ONE},
+	giant				= {file="ui\\ui_actor_monsters_pda_1",x=STR_ONE,y="200",special=STR_ONE},
 	}
 
 	local mutant_id = game.translate_string(ini_sys:r_string_ex(self.section,"species") or STR_EMPTY)

@@ -263,7 +263,7 @@ end
 
 local function get_name_changing_cost()
 	local ini = ini_file("plugins\\other.ltx")
-	local cost = ini:r_string_ex("actor_name_changing","cost") or "0"
+	local cost = ini:r_string_ex("actor_name_changing","cost") or STR_ZERO
 	cost = tonumber(cost)
 	return cost
 end

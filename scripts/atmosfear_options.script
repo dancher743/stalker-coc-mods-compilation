@@ -398,12 +398,12 @@ function af_options_dialog:SetCurrentValues() -- read values from "atmosfear_cur
 		self:SetRadioValue("weather_"..weather_tbl[i].."_occur", config:r_value("atmosfear_current_parameters","opt_weather_"..weather_tbl[i].."_occur",0,"3"))
 	end
 
-	self:SetCheckValue("enable_blowout",			config:r_value("atmosfear_current_parameters","opt_enable_blowout",0,"1"))
+	self:SetCheckValue("enable_blowout",			config:r_value("atmosfear_current_parameters","opt_enable_blowout",0,STR_ONE))
 	self:SetComboValue("blowout_freq",				config:r_value("atmosfear_current_parameters","opt_blowout_freq",0,"48"))
 	self:SetComboValue("blowout_fate",				config:r_value("atmosfear_current_parameters","opt_blowout_fate",0,"turntozombie"))
 	self:SetComboValue("blowout_warning",			config:r_value("atmosfear_current_parameters","opt_blowout_warning",0,"radio_siren"))
 	self:SetComboValue("blowout_task",				config:r_value("atmosfear_current_parameters","opt_blowout_task",0,"give"))
-	self:SetCheckValue("enable_psi_storm",			config:r_value("atmosfear_current_parameters","opt_enable_psi_storm",0,"1"))
+	self:SetCheckValue("enable_psi_storm",			config:r_value("atmosfear_current_parameters","opt_enable_psi_storm",0,STR_ONE))
 	self:SetComboValue("psi_storm_freq",			config:r_value("atmosfear_current_parameters","opt_psi_storm_freq",0,"24"))
 	self:SetComboValue("psi_storm_fate",			config:r_value("atmosfear_current_parameters","opt_psi_storm_fate",0,"kill"))
 	self:SetComboValue("psi_storm_warning",			config:r_value("atmosfear_current_parameters","opt_psi_storm_warning",0,"siren"))
@@ -422,12 +422,12 @@ function af_options_dialog:SetDefaultValues() -- read values from "atmosfear_def
 		self:SetRadioValue("weather_"..weather_tbl[i].."_occur", self.default_settings:r_value("atmosfear_default_parameters","opt_weather_"..weather_tbl[i].."_occur",0,"3"))
 	end
 
-	self:SetCheckValue("enable_blowout",			self.default_settings:r_value("atmosfear_default_parameters","opt_enable_blowout",0,"1"))
+	self:SetCheckValue("enable_blowout",			self.default_settings:r_value("atmosfear_default_parameters","opt_enable_blowout",0,STR_ONE))
 	self:SetComboValue("blowout_freq",				self.default_settings:r_value("atmosfear_default_parameters","opt_blowout_freq",0,"48"))
 	self:SetComboValue("blowout_fate",				self.default_settings:r_value("atmosfear_default_parameters","opt_blowout_fate",0,"turntozombie"))
 	self:SetComboValue("blowout_warning",			self.default_settings:r_value("atmosfear_default_parameters","opt_blowout_warning",0,"radio_siren"))
 	self:SetComboValue("blowout_task",				self.default_settings:r_value("atmosfear_default_parameters","opt_blowout_task",0,"give"))
-	self:SetCheckValue("enable_psi_storm",			self.default_settings:r_value("atmosfear_default_parameters","opt_enable_psi_storm",0,"1"))
+	self:SetCheckValue("enable_psi_storm",			self.default_settings:r_value("atmosfear_default_parameters","opt_enable_psi_storm",0,STR_ONE))
 	self:SetComboValue("psi_storm_freq",			self.default_settings:r_value("atmosfear_default_parameters","opt_psi_storm_freq",0,"24"))
 	self:SetComboValue("psi_storm_fate",			self.default_settings:r_value("atmosfear_default_parameters","opt_psi_storm_fate",0,"kill"))
 	self:SetComboValue("psi_storm_warning",			self.default_settings:r_value("atmosfear_default_parameters","opt_psi_storm_warning",0,"siren"))

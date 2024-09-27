@@ -1270,7 +1270,7 @@ end
 
 function action_disable_phrase(fs,ss,dn,pi)
 	local npc = dialogs.who_is_npc(fs, ss)
-	if(pi=="0") then
+	if(pi==STR_ZERO) then
 		pi = dn
 	end
 	if(disabled_phrases[npc:id()]==nil) then
@@ -1281,7 +1281,7 @@ end
 
 function action_disable_quest_phrase(fs,ss,dn,pi)
 	local npc = dialogs.who_is_npc(fs, ss)
-	if(pi=="0") then
+	if(pi==STR_ZERO) then
 		pi = dn
 	end
 	if(quest_disabled_phrases[npc:id()]==nil) then

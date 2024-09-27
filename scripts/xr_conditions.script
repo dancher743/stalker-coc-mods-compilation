@@ -2199,7 +2199,7 @@ function jup_b221_who_will_start(actor, npc, p) -- доступные параметры: ability 
 	for k,v in pairs(info_table) do
 		if k <= 6 then
 			faction_table[1] = "duty"
-			faction_table[2] = "0"
+			faction_table[2] = STR_ZERO
 		else
 			faction_table[1] = "freedom"
 			faction_table[2] = "6"

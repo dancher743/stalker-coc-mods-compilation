@@ -380,7 +380,7 @@ function WeatherManager:get_hour_as_string(h)
 		h=h-24
 	end
 	if h<10 then
-		hour_str="0"..tostring(h)..":00:00"
+		hour_str=STR_ZERO..tostring(h)..":00:00"
 	else
 		hour_str=tostring(h)..":00:00"
 	end

@@ -6625,7 +6625,7 @@ function jup_b221_play_main(actor, npc, p)
 		else
 			printf("No such theme_to_play in function 'jup_b221_play_main'")
 		end
-		utils.save_var(actor,"jup_b221_played_main_theme","0")
+		utils.save_var(actor,"jup_b221_played_main_theme",STR_ZERO)
 	end
 end
 

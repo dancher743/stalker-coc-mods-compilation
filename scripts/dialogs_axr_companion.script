@@ -145,12 +145,12 @@ end
     <dialog id="dm_companion_stealth">
         <precondition>dialogs_axr_companion.is_actor_companion</precondition>
         <phrase_list>
-            <phrase id="0">
+            <phrase id=STR_ZERO>
                 <text>axr_phrase_actor_give_command_stealth</text>
 				<precondition>dialogs_axr_companion.companion_not_stealthy</precondition>
 				<action>dialogs_axr_companion.set_companion_to_stealth_substate</action>
             </phrase>
-            <phrase id="1">
+            <phrase id=STR_ONE>
                 <text>axr_phrase_actor_give_command_stop_stealth</text>
 				<precondition>dialogs_axr_companion.companion_is_stealthy</precondition>
 				<action>dialogs_axr_companion.set_companion_to_default_substate</action>
