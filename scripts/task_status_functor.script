@@ -716,7 +716,7 @@ function hostage_task(tsk,task_id)
 		end
 	elseif (tsk.stage == 1) then
 		if not (axr_task_manager.is_task_giver_valid(tsk)) then
-			local hud = get_hud()
+			local hud = get_cached_hud()
 			if (hud) then
 				hud:HideActorMenu()
 			end

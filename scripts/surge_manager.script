@@ -989,7 +989,7 @@ function CSurgeManager:hit_power(power,hit_type)
 end
 
 function CSurgeManager:displayIndicators(power)
-	local hud = get_hud()
+	local hud = get_cached_hud()
 	if not (hud) then 
 		return 
 	end

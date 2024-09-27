@@ -3640,7 +3640,7 @@ function disable_ui(actor, npc, p)
 
 	level.disable_input()
 	level.hide_indicators_safe()
-	local hud = get_hud()
+	local hud = get_cached_hud()
 	if (hud) then
 		hud:HideActorMenu()
 		hud:HidePdaMenu()
@@ -3665,7 +3665,7 @@ function disable_ui_only(actor, npc)
 
 	level.disable_input()
 	level.hide_indicators_safe()
-	local hud = get_hud()
+	local hud = get_cached_hud()
 	if (hud) then
 		hud:HideActorMenu()
 		hud:HidePdaMenu()
@@ -3740,7 +3740,7 @@ function disable_ui_inventory(actor, npc)
 		end
 	end
 
-	local hud = get_hud()
+	local hud = get_cached_hud()
 	if (hud) then
 		hud:HidePdaMenu()
 		hud:HideActorMenu()
@@ -5653,8 +5653,8 @@ end
 --[[
 function add_custom_static(actor, npc, p)
 	if p[1] ~= nil and p[2] ~= nil then
-		get_hud():AddCustomStatic(p[1], true)
-		get_hud():GetCustomStatic(p[1]):wnd():SetTextST(p[2])
+		get_cached_hud():AddCustomStatic(p[1], true)
+		get_cached_hud():GetCustomStatic(p[1]):wnd():SetTextST(p[2])
 	else
 		printf("Invalid parameters in function add_custom_static!!!")
 	end
@@ -5662,7 +5662,7 @@ end
 
 function remove_custom_static(actor, npc, p)
 	if p[1] ~= nil then
-		get_hud():RemoveCustomStatic(p[1])
+		get_cached_hud():RemoveCustomStatic(p[1])
 	else
 		printf("Invalid parameters in function remove_custom_static!!!")
 	end
@@ -5934,7 +5934,7 @@ end
 
 function add_cs_text(actor, npc, p)
 	if p[1] then
-		local hud = get_hud()
+		local hud = get_cached_hud()
 		if (hud) then
 			local cs_text = hud:GetCustomStatic("text_on_screen_center")
 			if cs_text then
@@ -5948,7 +5948,7 @@ function add_cs_text(actor, npc, p)
 end
 
 function del_cs_text(actor, npc, p)
-	local hud = get_hud()
+	local hud = get_cached_hud()
 	if (hud) then
 		cs_text = hud:GetCustomStatic("text_on_screen_center")
 		if cs_text then
@@ -7810,7 +7810,7 @@ end
 --NEW ARENA
 
 function bar_arena_teleport (actor, npc)
-	local hud = get_hud()
+	local hud = get_cached_hud()
 	if (hud) then
 		hud:HideActorMenu()
 	end
@@ -7897,7 +7897,7 @@ function bar_arena_weapon_slot (actor,npc,p)
 end
 
 function bar_arena_teleport_2 (actor, npc)
-	local hud = get_hud()
+	local hud = get_cached_hud()
 	if (hud) then
 		hud:HideActorMenu()
 	end

@@ -70,6 +70,7 @@ All notable changes to this project will be documented in this file.
 * Added `STR_USERDATA` const into `_g.script`
 * Added `STR_TRUE` and `STR_FALSE` consts into `_g.script`
 * Added `STR_ZERO` and `STR_ONE` consts into `_g.script`
+* Added `get_cached_hud()` function into `_g.script`
 
 ## [1.4.6] - Unreleased
 

@@ -51,7 +51,7 @@ function show_input_dialog()
 		return
 	end
 
-	local hud = get_hud()
+	local hud = get_cached_hud()
 	ui_generic_dialogs.input_dialog_ui(hud, true, on_ok_button_clicked)
 end
 

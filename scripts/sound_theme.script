@@ -146,7 +146,7 @@ function npc_sound:callback(npc_id)
 
 --	printf("npc_sound:callback!!!!!!!!")
 
---	get_hud():RemoveCustomStatic("cs_subtitles_npc")
+--	get_cached_hud():RemoveCustomStatic("cs_subtitles_npc")
 
 	local st = db.storage[npc_id]
 	if st.active_scheme == nil then
@@ -433,7 +433,7 @@ function actor_sound:callback(npc_id)
 	self.snd_obj = nil
 	self.can_play_sound = true
 
---	get_hud():RemoveCustomStatic("cs_subtitles_actor")
+--	get_cached_hud():RemoveCustomStatic("cs_subtitles_actor")
 
 --	printf("actor_sound:callback from [%s]", npc_id)
 	local st   = db.storage[npc_id]
@@ -625,7 +625,7 @@ function object_sound:callback(npc_id)
 	self.can_play_sound[npc_id] = true
 
 --	printf("object_sound:callback for object !!!!!!!!")
---	get_hud():RemoveCustomStatic("cs_subtitles_object")
+--	get_cached_hud():RemoveCustomStatic("cs_subtitles_object")
 
 	local st = db.storage[npc_id]
 	if not (st) then 

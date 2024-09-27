@@ -46,6 +46,7 @@ b_discard_settings_shown = false
 -- Local use
 local sim
 local gg
+local hud
 ----------------------------------------------------------------------
 
 function start_game_callback()
@@ -96,6 +97,13 @@ function get_game_graph()
 	end
 	return gg
 end
+
+function get_cached_hud()
+	if not (hud) then
+		hud = get_hud()
+	end
+	return hud
+end
 -------------------------------------------------------------------------------------------------------
 -- 											SCRIPTED CALLBACKS
 -------------------------------------------------------------------------------------------------------
@@ -128,7 +136,7 @@ end
 --------------------------------------------
 function SetHudMsg(msg,n)
 	msg = tostring(msg)
-	local hud = get_hud()
+	local hud = get_cached_hud()
 	if (hud) then
 		hud:AddCustomStatic("not_enough_money_mine", true)
 		hud:GetCustomStatic("not_enough_money_mine"):wnd():TextControl():SetTextST(msg)
@@ -1368,7 +1376,7 @@ function in_time_interval(val1, val2)
 end
 
 function show_all_ui(show)
-	local hud = get_hud()
+	local hud = get_cached_hud()
 	if not (hud) then
 		return
 	end
@@ -1520,7 +1528,7 @@ function run_dynamic_element(folder,close_inv)
       folder:ShowDialog(true)
    elseif close_inv==true then
 		folder:ShowDialog(true)
-		local hud = get_hud()
+		local hud = get_cached_hud()
 		if (hud) then
 			hud:HideActorMenu()
 			hud:HidePdaMenu()

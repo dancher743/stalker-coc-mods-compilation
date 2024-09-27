@@ -9,7 +9,7 @@ end
 
 class "hud_timer_ui" (CUIScriptWnd)
 function hud_timer_ui:__init() super()
-	self.owner = get_hud()
+	self.owner = get_cached_hud()
 	self:InitControls()
 	self:SetValue(0,0,0)
 	self.owner:AddDialogToRender(self)

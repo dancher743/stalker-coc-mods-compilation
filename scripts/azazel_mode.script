@@ -357,7 +357,7 @@ function actor_on_before_death(whoID,flags)
 	local level_name = sim:level_name(get_game_graph():vertex(se_obj.m_game_vertex_id):level_id())
 	if (level_name == level.name()) then
 		alife_storage_manager.get_state().azazel_db_samemap = true
-		local hud = get_hud()
+		local hud = get_cached_hud()
 		hud:HidePdaMenu()
 		hud:HideActorMenu()
 		db.actor:set_actor_position(se_obj.position)

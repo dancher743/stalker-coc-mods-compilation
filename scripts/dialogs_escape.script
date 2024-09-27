@@ -286,6 +286,6 @@ function show_change_name_dialog_window(first_speaker, second_speaker)
 		dialogs.relocate_money_from_actor(first_speaker, second_speaker, cost)
 	end
 	
-	local hud = get_hud()
+	local hud = get_cached_hud()
 	ui_generic_dialogs.input_dialog_ui(hud, true, on_ok_button_clicked)
 end
