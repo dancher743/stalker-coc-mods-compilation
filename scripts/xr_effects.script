@@ -4293,7 +4293,7 @@ end
 --]]
 function hit_npc(actor, npc, p)
 	local h = hit()
-	local rev = p[6] and p[6] == 'true'
+	local rev = p[6] and p[6] == STR_TRUE
 	h.draftsman = npc
 	h.type = hit.wound
 	if p[1] ~= "self" then
