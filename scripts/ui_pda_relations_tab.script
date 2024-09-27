@@ -289,10 +289,10 @@ function pda_relations_tab:autoupdate()
 
 			if (npc) then
 				-- If looting is set false in logic
-				if (can_gather and st.gather_items and st.gather_items.gather_items_enabled and xr_logic.pick_section_from_condlist(db.actor, npc, st.gather_items.gather_items_enabled) == "false") then
+				if (can_gather and st.gather_items and st.gather_items.gather_items_enabled and xr_logic.pick_section_from_condlist(db.actor, npc, st.gather_items.gather_items_enabled) == STR_FALSE) then
 					s_gather = game.translate_string("st_pda_mode_disabled")
 				end
-				if (can_loot and st.corpse_detection and st.corpse_detection.corpse_detection_enabled and xr_logic.pick_section_from_condlist(db.actor, npc, st.corpse_detection.corpse_detection_enabled) == "false") then
+				if (can_loot and st.corpse_detection and st.corpse_detection.corpse_detection_enabled and xr_logic.pick_section_from_condlist(db.actor, npc, st.corpse_detection.corpse_detection_enabled) == STR_FALSE) then
 					s_loot = game.translate_string("st_pda_mode_disabled")
 				end
 			end

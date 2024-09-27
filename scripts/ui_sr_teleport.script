@@ -26,7 +26,7 @@ function msg_box_ui:__init(obj,disable_msg,item) super()
 	local enable = ini:r_string_ex(self.name,"enable")
 	enable = enable and xr_logic.pick_section_from_condlist(db.actor,obj,xr_logic.parse_condlist(obj,"enable",self.name,enable))
 
-	if (enable ~= "true") then
+	if (enable ~= STR_TRUE) then
 		local reject_on_disable = ini:r_bool_ex(self.name,"reject_on_disabled",false)
 		if (reject_on_disable) then
 			local warning = ini:r_string_ex(self.name,"warning")

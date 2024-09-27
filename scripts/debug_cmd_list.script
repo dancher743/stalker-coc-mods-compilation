@@ -555,7 +555,7 @@ local function parse_waypoint(pathname, wpflags, wpname, owner, tRet)
 					else
 						val = string.sub(param, t_pos + 1)
 						if not (val and val ~= STR_EMPTY) then
-							val = "true"
+							val = STR_TRUE
 						end
 
 						if fld == "a" then

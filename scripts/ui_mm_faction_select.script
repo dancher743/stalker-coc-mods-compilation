@@ -1195,11 +1195,11 @@ function faction_ui:LoadLoadout (rand)
 		local result, id, value = ini_itm:r_line(self.selected_faction .. "_loadout" , i , STR_EMPTY, STR_EMPTY)
 		if ini:section_exist(id) then
 			local t = alun_utils.str_explode(value,",")
-			if (t[1] == "false") then
+			if (t[1] == STR_FALSE) then
 				for i=1,tonumber(t[2]) do
 					self.table_inv[#self.table_inv + 1] = { ["name"] = id , ["points"] = 0 }
 				end
-			elseif (t[1] == "true") then
+			elseif (t[1] == STR_TRUE) then
 				for i=1,tonumber(t[2]) do
 					self.table_loadout[#self.table_loadout + 1] = { ["name"] = id ,  ["points"] = tonumber(t[3]) }
 				end

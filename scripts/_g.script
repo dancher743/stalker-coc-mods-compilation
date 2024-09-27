@@ -756,7 +756,7 @@ function IsWounded(o)
 		return false 
 	end
 	
-	if o:best_enemy() and utils.load_var(o, "wounded_fight") == "true" then
+	if o:best_enemy() and utils.load_var(o, "wounded_fight") == STR_TRUE then
 		return false
 	end
 	
@@ -1581,7 +1581,7 @@ if (USE_INI_MEMOIZE) then
 		local result = ini:r_string(s,k)
 		if (result) then
 			if (typ == 0) then
-				result = result == "true" or result == "1" or false
+				result = result == STR_TRUE or result == "1" or false
 			elseif (typ == 1) then
 				result = tonumber(result)
 			end
@@ -1651,7 +1651,7 @@ else
 		end
 		--printf("r_bool_ex(%s,%s)",s,k)
 		local v = ini:r_string(s,k)
-		return v == nil and def or v == "true" or v == "1" or false
+		return v == nil and def or v == STR_TRUE or v == "1" or false
 	end
 		function ini_file.r_line_ex(ini,s,k)
 		--callstack()
@@ -1688,7 +1688,7 @@ function ini_file_ex:r_value(s,k,typ,def)
 	end
 	local v = self.ini:r_string(s,k)
 	if (typ == 1) then
-		v = v == nil and def or v == "true" or false
+		v = v == nil and def or v == STR_TRUE or false
 	elseif (typ == 2) then
 		v = tonumber(v) or def
 	end
@@ -1749,7 +1749,7 @@ function ini_file_ex:r_bool_ex(s,k,def)
 		return def
 	end
 	local v = self.ini:r_string(s,k)
-	return v == nil and def or v == "true" or v == "1" or false
+	return v == nil and def or v == STR_TRUE or v == "1" or false
 end
 
 function ini_file_ex:r_float_ex(s,k)
@@ -1806,6 +1806,8 @@ STR_EMPTY		= ""
 STR_NIL			= "nil"
 MM_OPTIONS		= "mm_options"
 STR_USERDATA	= "userdata"
+STR_TRUE		= "true"
+STR_FALSE		= "false"
 -----------------------------------------
 
 function IsEocMode()

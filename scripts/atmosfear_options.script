@@ -52,7 +52,7 @@ function af_options_dialog:__init() super()
 		self.default_settings:w_value("atmosfear_default_parameters","opt_moon_phase","8days")
 		self.default_settings:w_value("atmosfear_default_parameters","opt_night_brightness","slight")
 
-		self.default_settings:w_value("atmosfear_default_parameters","opt_god_mode","false")
+		self.default_settings:w_value("atmosfear_default_parameters","opt_god_mode",STR_FALSE)
 		need_save = true
 	end
 

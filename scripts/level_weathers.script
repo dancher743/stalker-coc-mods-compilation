@@ -60,7 +60,7 @@ function atmosfear_init()
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_moon_phase","8days")
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_night_brightness","slight")
 
-		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_god_mode","false")
+		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_god_mode",STR_FALSE)
 		atmosfear_options.config:save()
 	end
 end 

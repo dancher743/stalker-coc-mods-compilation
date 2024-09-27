@@ -294,7 +294,7 @@ function parse_waypoint_data(pathname, wpflags, wpname)
 			end
 
 			if not val or val == STR_EMPTY then
-				val = "true"
+				val = STR_TRUE
 			end
 
 			if fld == "a" then

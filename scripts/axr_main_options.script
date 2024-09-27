@@ -237,7 +237,7 @@ function opt_menu_on_accept(menu,optMgr,console)
 				axr_main.config:w_value(MM_OPTIONS,"enable_"..name,v.ctrl:GetCheck())
 			elseif (v.typ=="list") then 
 				if (type(v.default) == "boolean") then
-					axr_main.config:w_value(MM_OPTIONS,name,v.ctrl:GetText()=="true" or false)
+					axr_main.config:w_value(MM_OPTIONS,name,v.ctrl:GetText()==STR_TRUE or false)
 				elseif (type(v.default) == "number") then 
 					axr_main.config:w_value(MM_OPTIONS,name,tonumber(v.ctrl:GetText()) or v.default)
 				else 
