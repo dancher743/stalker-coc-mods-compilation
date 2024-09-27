@@ -42,6 +42,7 @@ All notable changes to this project will be documented in this file.
 * Refactored code of `critical_hit_manager.script`
 * Changed text of `ui_st_hideout` string
 * Added coocked food items into debug menu
+* Refactored get period functions in `level_weathers.script`
 
 ### Fixes
 * Fixed `delta` of `actor_on_slicing_update` callback

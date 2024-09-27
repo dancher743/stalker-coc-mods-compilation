@@ -235,7 +235,7 @@ function WeatherManager:get_next_period(period)
         end
     end
 	
-	local available_periods = self:get_available_periods()
+	local available_periods = self:get_periods("available_periods")
 	local next_periods = {}
 	
 	for i=1,#available_periods do
@@ -590,20 +590,21 @@ function WeatherManager:try_get_no_panorama_weather(current_weather_section)
 	return no_panorama_weather_section or current_weather_section
 end
 
-function WeatherManager:get_available_periods()
+function WeatherManager:get_periods(section)
 	local periods = {}
 	local ini = self.graphs_ini
-	local section = "available_periods"
+	
 	local n = ini:section_exist(section) and ini:line_count(section) or 0
 	for i=0, n-1 do
-		local result, period, value = ini:r_line(section,i,STR_EMPTY,STR_EMPTY)
+		local _, period, _ = ini:r_line(section,i,STR_EMPTY,STR_EMPTY)
 		table.insert(periods,period)
 	end
+	
 	return periods
 end
 
-function WeatherManager:get_period_with_prob(weather)
-	local periods = alun_utils.parse_ini_section_to_array(self.graphs_ini,weather)
+function WeatherManager:get_period_with_prob(section)
+	local periods = alun_utils.parse_ini_section_to_array(self.graphs_ini,section)
 	
 	local sum=0
 	for _,prob in pairs(periods) do
