@@ -780,7 +780,7 @@ function fill_phrase_table()
 			temp_table.level = temp and parse_names(temp) or "not_set"
 
 			temp_table.once = tostring(cfg:r_value(section,"once",1)) or "always"
-			temp_table.wounded = tostring(cfg:r_value(section,"wounded",1)) or "false"
+			temp_table.wounded = tostring(cfg:r_value(section,"wounded",1)) or STR_FALSE
 
 			temp = cfg:r_value(section,"info")
 			if (temp and temp ~= STR_EMPTY) then
@@ -808,7 +808,7 @@ function init_start_dialogs(dialog, str)
 	local p,d
 	local script
 	for k,v in pairs(phrase_table[str]) do
-		if (v.wounded == "true") then
+		if (v.wounded == STR_TRUE) then
 			script = add_dialog(1,v.id,v.name,{"dialogs.is_wounded","dialog_manager.precondition_"..str.."_dialogs"},"dialog_manager.action_"..str.."_dialogs")
 			if (script) then
 				ph = true
@@ -977,7 +977,7 @@ function calculate_priority(PRT_subtable, PTID_subtable, npc, phrase_id)
 		end
 	end
 
-	if(PTID_subtable.wounded=="true") then
+	if(PTID_subtable.wounded==STR_TRUE) then
 		if not(xr_wounded.is_wounded(npc)) then
 			priority = -1
 		else
@@ -997,7 +997,7 @@ function calculate_priority(PRT_subtable, PTID_subtable, npc, phrase_id)
 	end
 
 	if(PRT_subtable[npc_id].ignore_once) then
-		if(PTID_subtable.once=="true") then
+		if(PTID_subtable.once==STR_TRUE) then
 			priority = -1
 		end
 	end
@@ -1035,7 +1035,7 @@ end
 
 function action(PT_subtable, PRT_subtable, cur_phrase_id, npc)
 	if not(PRT_subtable[npc:id()].ignore_once) then
-		if(PT_subtable[cur_phrase_id].once=="true") then
+		if(PT_subtable[cur_phrase_id].once==STR_TRUE) then
 			set_phrase_highest_priority(PT_subtable,PRT_subtable, npc, cur_phrase_id)
 		end
 		PRT_subtable[npc:id()].ignore_once = true
@@ -1270,7 +1270,7 @@ end
 
 function action_disable_phrase(fs,ss,dn,pi)
 	local npc = dialogs.who_is_npc(fs, ss)
-	if(pi=="0") then
+	if(pi==STR_ZERO) then
 		pi = dn
 	end
 	if(disabled_phrases[npc:id()]==nil) then
@@ -1281,7 +1281,7 @@ end
 
 function action_disable_quest_phrase(fs,ss,dn,pi)
 	local npc = dialogs.who_is_npc(fs, ss)
-	if(pi=="0") then
+	if(pi==STR_ZERO) then
 		pi = dn
 	end
 	if(quest_disabled_phrases[npc:id()]==nil) then

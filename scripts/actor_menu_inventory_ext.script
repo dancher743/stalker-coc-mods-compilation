@@ -11,7 +11,7 @@ local function update_actor_menu()
 		local se_inv_box = last_se_inv_box
 		local inv_box = last_inv_box
 		
-		local hud = get_hud()
+		local hud = get_cached_hud()
 		if (hud) then
 			hud:HideActorMenu()
 		end

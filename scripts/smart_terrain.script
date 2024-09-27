@@ -1569,7 +1569,7 @@ function se_smart_terrain:try_respawn()
 		end
 	end
 
-	if self.sim_avail ~= nil and xr_logic.pick_section_from_condlist(db.actor, self, self.sim_avail) ~= "true" then return end
+	if self.sim_avail ~= nil and xr_logic.pick_section_from_condlist(db.actor, self, self.sim_avail) ~= STR_TRUE then return end
 
 	--[[
 	local squad_count = smart_terrain_squad_count(SIMBOARD.smarts[self.id].squads)

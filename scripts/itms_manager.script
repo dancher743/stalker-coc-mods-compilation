@@ -298,10 +298,10 @@ function monster_on_actor_use_callback(obj,who)
 		utils.save_var(obj,"looted",true)
 		xr_corpse_detection.set_valuable_loot(obj:id(),false)
 	else
-		local hud = get_hud()
+		local hud = get_cached_hud()
 		if (hud) then
 			if (is_ui_enabled and ui_mutant_loot) then
-				ui_mutant_loot.loot_ui(get_hud(),obj,obj:id(),obj:section(),obj:clsid())
+				ui_mutant_loot.loot_ui(get_cached_hud(),obj,obj:id(),obj:section(),obj:clsid())
 			else
 				utils.save_var(obj,"looted",true)
 				xr_corpse_detection.set_valuable_loot(obj:id(),false)
@@ -366,7 +366,7 @@ function actor_on_item_use(obj)
 				level.map_add_object_spot_ser(se_obj.id, BackPackStashSpot, game.translate_string("st_itm_stash_of_actor").." №"..count+1)
 				show_back_pack_stash_tip()
 			else
-				local hud = get_hud()
+				local hud = get_cached_hud()
 				if (hud) then
 					local function on_ok_button_clicked(text)
 						if (text ~= STR_EMPTY) then
@@ -400,7 +400,7 @@ function actor_on_item_use(obj)
 			local se_obj = get_alife():create(ph_sec or "ph_sleepbag",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id())
 		else
 			local se_obj = get_alife():create(sec,db.actor:position(),0,0,0)
-			local hud = get_hud()
+			local hud = get_cached_hud()
 			if (hud) then
 				hud:HideActorMenu()
 			end
@@ -428,7 +428,7 @@ function actor_on_item_use(obj)
 	-- Repair mod
 	if (RepairModEnable and RepairTools[obj:section()]) then
 		if (RepairUI) then
-			local hud = get_hud()
+			local hud = get_cached_hud()
 			if (hud) then
 				--hud:HideActorMenu()
 				local ui = ui_itm_repair and ui_itm_repair.repair_ui(hud,obj,obj:section())
@@ -536,7 +536,7 @@ function actor_on_item_take_from_box(box,obj)
 	-- Backpack section
 	if (BackPackStashEnable and box:section() == "inv_backpack") then
 		if (box:is_inv_box_empty()) then
-			local hud = get_hud()
+			local hud = get_cached_hud()
 			if (hud) then
 				hud:HideActorMenu()
 			end
@@ -555,7 +555,7 @@ function actor_on_item_take_from_box(box,obj)
 	-- Actor backpack section
 	if (ActorBackPackEnable and box:section() == "inv_actor_backpack") then
 		if (box:is_inv_box_empty()) then
-			local hud = get_hud()
+			local hud = get_cached_hud()
 			if (hud) then
 				hud:HideActorMenu()
 			end
@@ -579,7 +579,7 @@ end
 -- bind_physic_object use_callback
 function physic_object_on_use_callback(obj,who)
 	if (SleepBagEnable and SleepBagPlaceableSections[obj:section()]) then
-		local hud = get_hud()
+		local hud = get_cached_hud()
 		if (hud) then
 			hud:HideActorMenu()
 		end

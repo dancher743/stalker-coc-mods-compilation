@@ -541,7 +541,7 @@ function CPsiStormManager:turn_to_zombie(se_obj,squad)
 		zombie_type="sim_default_zombied_4"
 	elseif section_number=="3" then
 		zombie_type="sim_default_zombied_3"
-	elseif section_number=="2" or section_number=="1" then
+	elseif section_number=="2" or section_number==STR_ONE then
 		zombie_type="sim_default_zombied_2"
 	else
 		zombie_type="sim_default_zombied_1"

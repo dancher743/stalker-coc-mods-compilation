@@ -118,7 +118,7 @@ function init_drop_settings()
 	local n = death_ini:line_count("keep_items")
 	for i=0,n-1 do
 		local result, id, value	= death_ini:r_line_ex("keep_items",i,STR_EMPTY,STR_EMPTY)
-		if value == "true" then
+		if value == STR_TRUE then
 			always_keep_item[id] = true
 		end
 	end

@@ -46,6 +46,7 @@ b_discard_settings_shown = false
 -- Local use
 local sim
 local gg
+local hud
 ----------------------------------------------------------------------
 
 function start_game_callback()
@@ -96,6 +97,13 @@ function get_game_graph()
 	end
 	return gg
 end
+
+function get_cached_hud()
+	if not (hud) then
+		hud = get_hud()
+	end
+	return hud
+end
 -------------------------------------------------------------------------------------------------------
 -- 											SCRIPTED CALLBACKS
 -------------------------------------------------------------------------------------------------------
@@ -128,7 +136,7 @@ end
 --------------------------------------------
 function SetHudMsg(msg,n)
 	msg = tostring(msg)
-	local hud = get_hud()
+	local hud = get_cached_hud()
 	if (hud) then
 		hud:AddCustomStatic("not_enough_money_mine", true)
 		hud:GetCustomStatic("not_enough_money_mine"):wnd():TextControl():SetTextST(msg)
@@ -387,8 +395,8 @@ function strformat(text,...)
 	local p = {...}
 	local function sr(a)
 		i = i + 1
-		if (type(p[1]) == "userdata") then
-			return "userdata"
+		if (type(p[1]) == STR_USERDATA) then
+			return STR_USERDATA
 		end
 		return tostring(p[i])
 	end
@@ -424,11 +432,11 @@ function printf(fmt,...)
 		local p = {...}
 		local function sr(a)
 			i = i + 1
-			if (type(p[i]) == 'userdata') then
+			if (type(p[i]) == STR_USERDATA) then
 				if (p[i].x and p[i].y) then
 					return vec_to_str(p[i])
 				end
-				return 'userdata'
+				return STR_USERDATA
 			end
 			return tostring(p[i])
 		end
@@ -692,7 +700,7 @@ function print_table(table, subs)
 			print_table(v, sub.."["..k.."]----->")
 		elseif type(v) == "function" then
 			printf(sub.."%s = function",k)
-		elseif type(v) == "userdata" then
+		elseif type(v) == STR_USERDATA then
 			if (v.x) then
 				printf(sub.."%s = %s",k,alun_utils.vector_to_string(v))
 			else
@@ -700,13 +708,13 @@ function print_table(table, subs)
 			end
 		elseif type(v) == "boolean" then
 					if v == true then
-							if(type(k)~="userdata") then
+							if(type(k)~=STR_USERDATA) then
 									printf(sub.."%s = true",k)
 							else
 									printf(sub.."userdata = true")
 							end
 					else
-							if(type(k)~="userdata") then
+							if(type(k)~=STR_USERDATA) then
 									printf(sub.."%s = false", k)
 							else
 									printf(sub.."userdata = false")
@@ -736,7 +744,7 @@ function store_table(table, subs)
 			store_table(v, sub.."    ")
 		elseif type(v) == "function" then
 			printf(sub.."%s = \"func\",", tostring(k))
-			elseif type(v) == "userdata" then
+			elseif type(v) == STR_USERDATA then
 					printf(sub.."%s = \"userdata\",", tostring(k))
 		elseif type(v) == "string" then
 			printf(sub.."%s = \"%s\",", tostring(k), tostring(v))
@@ -756,7 +764,7 @@ function IsWounded(o)
 		return false 
 	end
 	
-	if o:best_enemy() and utils.load_var(o, "wounded_fight") == "true" then
+	if o:best_enemy() and utils.load_var(o, "wounded_fight") == STR_TRUE then
 		return false
 	end
 	
@@ -1127,8 +1135,8 @@ function abort(msg, ...)
 		local p = {...}
 		local function sr(a)
 			i = i + 1
-			if (type(p[i]) == 'userdata') then
-				return 'userdata'
+			if (type(p[i]) == STR_USERDATA) then
+				return STR_USERDATA
 			end
 			return tostring(p[i])
 		end
@@ -1368,7 +1376,7 @@ function in_time_interval(val1, val2)
 end
 
 function show_all_ui(show)
-	local hud = get_hud()
+	local hud = get_cached_hud()
 	if not (hud) then
 		return
 	end
@@ -1520,7 +1528,7 @@ function run_dynamic_element(folder,close_inv)
       folder:ShowDialog(true)
    elseif close_inv==true then
 		folder:ShowDialog(true)
-		local hud = get_hud()
+		local hud = get_cached_hud()
 		if (hud) then
 			hud:HideActorMenu()
 			hud:HidePdaMenu()
@@ -1581,7 +1589,7 @@ if (USE_INI_MEMOIZE) then
 		local result = ini:r_string(s,k)
 		if (result) then
 			if (typ == 0) then
-				result = result == "true" or result == "1" or false
+				result = result == STR_TRUE or result == STR_ONE or false
 			elseif (typ == 1) then
 				result = tonumber(result)
 			end
@@ -1651,7 +1659,7 @@ else
 		end
 		--printf("r_bool_ex(%s,%s)",s,k)
 		local v = ini:r_string(s,k)
-		return v == nil and def or v == "true" or v == "1" or false
+		return v == nil and def or v == STR_TRUE or v == STR_ONE or false
 	end
 		function ini_file.r_line_ex(ini,s,k)
 		--callstack()
@@ -1688,7 +1696,7 @@ function ini_file_ex:r_value(s,k,typ,def)
 	end
 	local v = self.ini:r_string(s,k)
 	if (typ == 1) then
-		v = v == nil and def or v == "true" or false
+		v = v == nil and def or v == STR_TRUE or false
 	elseif (typ == 2) then
 		v = tonumber(v) or def
 	end
@@ -1749,7 +1757,7 @@ function ini_file_ex:r_bool_ex(s,k,def)
 		return def
 	end
 	local v = self.ini:r_string(s,k)
-	return v == nil and def or v == "true" or v == "1" or false
+	return v == nil and def or v == STR_TRUE or v == STR_ONE or false
 end
 
 function ini_file_ex:r_float_ex(s,k)
@@ -1805,6 +1813,11 @@ VEC_BACK 		= vector():set(0,0,-1)
 STR_EMPTY		= ""
 STR_NIL			= "nil"
 MM_OPTIONS		= "mm_options"
+STR_USERDATA	= "userdata"
+STR_TRUE		= "true"
+STR_FALSE		= "false"
+STR_ZERO		= "0"
+STR_ONE			= "1"
 -----------------------------------------
 
 function IsEocMode()

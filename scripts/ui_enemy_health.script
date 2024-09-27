@@ -73,7 +73,7 @@ function on_hit(obj,power,dir,who,bi)
 		return 
 	end
 	
-	local hud = get_hud()
+	local hud = get_cached_hud()
 	if not (hud) then 
 		return 
 	end
@@ -144,7 +144,7 @@ end
 function cs_remove()
 	last_id = nil
 	progress = nil
-	local hud = get_hud()
+	local hud = get_cached_hud()
 	local cs = hud and hud:GetCustomStatic(cs_enemy_health) 
 	if (cs) then
 		hud:RemoveCustomStatic(cs_enemy_health)

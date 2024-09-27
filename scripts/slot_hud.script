@@ -39,13 +39,13 @@ end
 function open_hud()
 	if HUD == nil then
 		HUD = slot_hud()
-		get_hud():AddDialogToRender(HUD)
+		get_cached_hud():AddDialogToRender(HUD)
 	end
 end
 
 function close_hud()
 	if HUD ~= nil then
-		get_hud():RemoveDialogToRender(HUD)
+		get_cached_hud():RemoveDialogToRender(HUD)
 		HUD:Clear()
 		HUD = nil
 	end

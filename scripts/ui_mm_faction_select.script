@@ -295,7 +295,7 @@ local function on_game_load(binder)
 
 	-- Companions
 	if (config:r_value("character_creation","new_game_companions",3)) then
-		alife_storage_manager.get_state().start_companions_count = config:r_value("character_creation","new_game_companions",3) or "0"
+		alife_storage_manager.get_state().start_companions_count = config:r_value("character_creation","new_game_companions",3) or STR_ZERO
 		config:w_value("character_creation","new_game_companions")
 		need_save = true
 	end
@@ -389,7 +389,7 @@ function faction_ui:__init(owner) super()
 	self.table_loadout = {}
 	self.table_inv = {}
 	self.table_difficulty = {"novice","stalker","veteran","master"}
-	self.table_companions = {"0","1","2","3"}
+	self.table_companions = {STR_ZERO,STR_ONE,"2","3"}
 	self.table_populations = {"0.1","0.25","0.5","1.0","1.5"}
 	
 	self.table_hardcore_lives = {}
@@ -1195,11 +1195,11 @@ function faction_ui:LoadLoadout (rand)
 		local result, id, value = ini_itm:r_line(self.selected_faction .. "_loadout" , i , STR_EMPTY, STR_EMPTY)
 		if ini:section_exist(id) then
 			local t = alun_utils.str_explode(value,",")
-			if (t[1] == "false") then
+			if (t[1] == STR_FALSE) then
 				for i=1,tonumber(t[2]) do
 					self.table_inv[#self.table_inv + 1] = { ["name"] = id , ["points"] = 0 }
 				end
-			elseif (t[1] == "true") then
+			elseif (t[1] == STR_TRUE) then
 				for i=1,tonumber(t[2]) do
 					self.table_loadout[#self.table_loadout + 1] = { ["name"] = id ,  ["points"] = tonumber(t[3]) }
 				end

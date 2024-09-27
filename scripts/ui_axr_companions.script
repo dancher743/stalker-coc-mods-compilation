@@ -7,13 +7,13 @@ local HUD = nil
 function activate_hud()
 	if HUD == nil then
 		HUD = UICompanionList()
-		get_hud():AddDialogToRender(HUD)
+		get_cached_hud():AddDialogToRender(HUD)
 	end
 end
 
 function deactivate_hud()
 	if HUD ~= nil then
-		get_hud():RemoveDialogToRender(HUD)
+		get_cached_hud():RemoveDialogToRender(HUD)
 		HUD:Clear()
 		HUD = nil
 	end

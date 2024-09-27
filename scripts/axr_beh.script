@@ -42,7 +42,7 @@ local function init_custom_data(npc, ini, section, st, scheme)
 
 	def.delay_cond	= "{+npcx_beh_substate_stealth} hide, guard"
 
-	def.use_camp_cond = "false"
+	def.use_camp_cond = STR_FALSE
 
 	
 	

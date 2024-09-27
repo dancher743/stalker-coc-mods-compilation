@@ -263,7 +263,7 @@ end
 
 local function get_name_changing_cost()
 	local ini = ini_file("plugins\\other.ltx")
-	local cost = ini:r_string_ex("actor_name_changing","cost") or "0"
+	local cost = ini:r_string_ex("actor_name_changing","cost") or STR_ZERO
 	cost = tonumber(cost)
 	return cost
 end
@@ -286,6 +286,6 @@ function show_change_name_dialog_window(first_speaker, second_speaker)
 		dialogs.relocate_money_from_actor(first_speaker, second_speaker, cost)
 	end
 	
-	local hud = get_hud()
+	local hud = get_cached_hud()
 	ui_generic_dialogs.input_dialog_ui(hud, true, on_ok_button_clicked)
 end
