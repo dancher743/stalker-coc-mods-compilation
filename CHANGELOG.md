@@ -39,6 +39,7 @@ All notable changes to this project will be documented in this file.
 * Corrected text in general in Faction Select Menu
 * Removed weather graphs from `dynamic_weather_graphs.ltx` due to TRX: Global Weather
 * Refactored code of `critical_hit_manager.script`
+* Changed text of `ui_st_hideout` string
 
 ### Fixes
 * Fixed `delta` of `actor_on_slicing_update` callback
