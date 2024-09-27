@@ -67,6 +67,7 @@ All notable changes to this project will be documented in this file.
 * Added `npc_on_use_dead` callback into `axr_main.script`
 * Added code template for SkipFrame function into `xr_help.script`
 * Added `get_game_graph()` function into `_g.script`
+* Added `STR_USERDATA` const into `_g.script`
 
 ## [1.4.6] - Unreleased
 

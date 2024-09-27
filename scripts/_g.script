@@ -387,8 +387,8 @@ function strformat(text,...)
 	local p = {...}
 	local function sr(a)
 		i = i + 1
-		if (type(p[1]) == "userdata") then
-			return "userdata"
+		if (type(p[1]) == STR_USERDATA) then
+			return STR_USERDATA
 		end
 		return tostring(p[i])
 	end
@@ -424,11 +424,11 @@ function printf(fmt,...)
 		local p = {...}
 		local function sr(a)
 			i = i + 1
-			if (type(p[i]) == 'userdata') then
+			if (type(p[i]) == STR_USERDATA) then
 				if (p[i].x and p[i].y) then
 					return vec_to_str(p[i])
 				end
-				return 'userdata'
+				return STR_USERDATA
 			end
 			return tostring(p[i])
 		end
@@ -692,7 +692,7 @@ function print_table(table, subs)
 			print_table(v, sub.."["..k.."]----->")
 		elseif type(v) == "function" then
 			printf(sub.."%s = function",k)
-		elseif type(v) == "userdata" then
+		elseif type(v) == STR_USERDATA then
 			if (v.x) then
 				printf(sub.."%s = %s",k,alun_utils.vector_to_string(v))
 			else
@@ -700,13 +700,13 @@ function print_table(table, subs)
 			end
 		elseif type(v) == "boolean" then
 					if v == true then
-							if(type(k)~="userdata") then
+							if(type(k)~=STR_USERDATA) then
 									printf(sub.."%s = true",k)
 							else
 									printf(sub.."userdata = true")
 							end
 					else
-							if(type(k)~="userdata") then
+							if(type(k)~=STR_USERDATA) then
 									printf(sub.."%s = false", k)
 							else
 									printf(sub.."userdata = false")
@@ -736,7 +736,7 @@ function store_table(table, subs)
 			store_table(v, sub.."    ")
 		elseif type(v) == "function" then
 			printf(sub.."%s = \"func\",", tostring(k))
-			elseif type(v) == "userdata" then
+			elseif type(v) == STR_USERDATA then
 					printf(sub.."%s = \"userdata\",", tostring(k))
 		elseif type(v) == "string" then
 			printf(sub.."%s = \"%s\",", tostring(k), tostring(v))
@@ -1127,8 +1127,8 @@ function abort(msg, ...)
 		local p = {...}
 		local function sr(a)
 			i = i + 1
-			if (type(p[i]) == 'userdata') then
-				return 'userdata'
+			if (type(p[i]) == STR_USERDATA) then
+				return STR_USERDATA
 			end
 			return tostring(p[i])
 		end
@@ -1805,6 +1805,7 @@ VEC_BACK 		= vector():set(0,0,-1)
 STR_EMPTY		= ""
 STR_NIL			= "nil"
 MM_OPTIONS		= "mm_options"
+STR_USERDATA	= "userdata"
 -----------------------------------------
 
 function IsEocMode()
