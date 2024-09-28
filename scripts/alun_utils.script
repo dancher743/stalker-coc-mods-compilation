@@ -29,15 +29,15 @@ function print_table(tbl,header,format_only)
 		local i = 1
 
 		for k,v in pairs(tbl) do
-			if (type(k) == "number") then
+			if (type(k) == STR_NUMBER) then
 				key = "[" .. k .. "]"
-			elseif (type(k) == "function" or type(k) == "string" or type(k) == "boolean" or type(k) == "table") then
+			elseif (type(k) == STR_FUNCTION or type(k) == STR_STRING or type(k) == STR_BOOLEAN or type(k) == STR_TABLE) then
 				key = "[\""..tostring(k) .. "\"]"
 			else 
 				key = "[____unknown_type]"
 			end
 
-			if (type(v) == "table") then
+			if (type(v) == STR_TABLE) then
 				txt = txt .. tab(depth) .. key .. " =\n"..tab(depth).."{\n"
 				depth = depth + 1
 				
@@ -47,9 +47,9 @@ function print_table(tbl,header,format_only)
 				
 				depth = depth - 1
 				txt = txt .. tab(depth) .. "}"
-			elseif (type(v) == "number" or type(v) == "boolean") then
+			elseif (type(v) == STR_NUMBER or type(v) == STR_BOOLEAN) then
 				txt = txt .. tab(depth) .. key .. " = " .. tostring(v)
-			elseif (type(v) == "userdata") then
+			elseif (type(v) == STR_USERDATA) then
 				if (v.diffSec) then 
 					local Y, M, D, h, m, s, ms = 0,0,0,0,0,0,0
 					Y, M, D, h, m, s, ms = v:get(Y, M, D, h, m, s, ms)
@@ -57,9 +57,9 @@ function print_table(tbl,header,format_only)
 				else
 					txt = txt .. tab(depth) .. key .. " = \"userdata\""
 				end
-			elseif (type(v) == "function") then
+			elseif (type(v) == STR_FUNCTION) then
 				txt = txt .. tab(depth) .. key .. " = \"" .. tostring(v) .. "\""
-			elseif (type(v) == "string") then 
+			elseif (type(v) == STR_STRING) then 
 				txt = txt .. tab(depth) .. key .. " = '" .. v .. "'"
 			else 
 				txt = txt .. tab(depth) .. key
@@ -94,7 +94,7 @@ function valid_vertex(npc,vid)
 end
 
 function accessible(npc,point)
-	if (type(point) == "number") then
+	if (type(point) == STR_NUMBER) then
 		return point < 4294967295 and npc:accessible(point)
 	end
 	return level.vertex_id(point) < 4294967295 and npc:accessible(point)
@@ -120,11 +120,11 @@ function read_from_ini(ini,section,line,var_type,default,caller)
 	end
 
 	if (section and line and ini:section_exist(section) and ini:line_exist(section,line)) then
-		if (var_type == "bool") then
+		if (var_type == STR_BOOL) then
 			return ini:r_bool_ex(section,line)
-		elseif (var_type == "string") then
+		elseif (var_type == STR_STRING) then
 			return ini:r_string_ex(section,line)
-		elseif (var_type == "float") then
+		elseif (var_type == STR_FLOAT) then
 			return ini:r_float_ex(section,line)
 		else
 			return ini:r_string_wq(section,line)
@@ -153,7 +153,7 @@ end
 
 function str_explode(str,pattern)
 	local t = {}
-	if (type(str) ~= "string") then return end
+	if (type(str) ~= STR_STRING) then return end
 	for word, pat, start in str:split(pattern) do
 		t[#t+1] = trim(word)
 		if (start and pat == pattern) then
@@ -460,9 +460,9 @@ function nearest_object(s,offline)
 		local obj = alife_object(i)
 		if (obj) then
 			is_match = false
-			if (type(s) == "string" and string.find(obj:name(),s)) then
+			if (type(s) == STR_STRING and string.find(obj:name(),s)) then
 				is_match = true
-			elseif (type(s) == "number" and s == obj:clsid()) then
+			elseif (type(s) == STR_NUMBER and s == obj:clsid()) then
 				is_match = true
 			end
 
@@ -689,7 +689,7 @@ end
 -------------------------------------------------------- DEBUG FUNCTION -------------------------------------------------
 function debug_nearest(npc,msg,...)
 	local dbg = xrs_debug_tools.get_debug_npc()
-	local id = npc and npc.id and (type(npc.id) == "function" and npc:id() or npc.id)
+	local id = npc and npc.id and (type(npc.id) == STR_FUNCTION and npc:id() or npc.id)
 	if (id and dbg and id == dbg:id()) then
 		printf("nearest=%s |"..msg,npc:name(),...)
 	end
@@ -768,7 +768,7 @@ end
 function print_packet_data(data)
 	local msg = ""
 	for kk, vv in pairs(data) do
-		if (type(vv) == "userdata" and vv.x and vv.y and vv.z) then
+		if (type(vv) == STR_USERDATA and vv.x and vv.y and vv.z) then
 			--m.debug_write("%s: vector:= %s",kk,vec_to_str(vv))
 			printf("%s: vector:= %s",kk,vec_to_str(vv))
 			msg = msg.."["..kk.."] = "..vector_to_string(vv)
@@ -1265,9 +1265,9 @@ function cfg_file:GetValue(sec,key,typ,def)
 		return def
 	end
 
-	if (typ == 1 or typ == "bool") then
+	if (typ == 1 or typ == STR_BOOL) then
 		return val == "true"
-	elseif (typ == 2 or typ == "number") then
+	elseif (typ == 2 or typ == STR_NUMBER) then
 		return tonumber(val)
 	end
 	return val
@@ -1589,10 +1589,10 @@ end
 function w_stpk(stpk,typ,n,info)
 	local isError
 
-	if (typ == "bool") then
-		if (n and type(n) == "boolean") then
+	if (typ == STR_BOOL) then
+		if (n and type(n) == STR_BOOLEAN) then
 			stpk:w_bool(n)
-		elseif (n and type(n) == "string") then
+		elseif (n and type(n) == STR_STRING) then
 			isError = true
 			if (n == "true") then
 				stpk:w_bool(true)
@@ -1608,7 +1608,7 @@ function w_stpk(stpk,typ,n,info)
 		end
 
 	elseif (typ == "s8") then
-		if (n and type(n) == "number" and n >= -128 and n <= 128) then
+		if (n and type(n) == STR_NUMBER and n >= -128 and n <= 128) then
 			stpk:w_s8(n)
 		else
 			isError = true
@@ -1616,7 +1616,7 @@ function w_stpk(stpk,typ,n,info)
 		end
 
 	elseif (typ == "s16") then
-		if (n and type(n) == "number" and n >= -32768 and n <= 32767) then
+		if (n and type(n) == STR_NUMBER and n >= -32768 and n <= 32767) then
 			stpk:w_s16(n)
 		else
 			isError = true
@@ -1624,7 +1624,7 @@ function w_stpk(stpk,typ,n,info)
 		end
 
 	elseif (typ == "s32") then										
-		if (n and type(n) == "number" and n >= -2147483648 and n <= 2147483647) then
+		if (n and type(n) == STR_NUMBER and n >= -2147483648 and n <= 2147483647) then
 			stpk:w_s32(n)
 		else
 			isError = true
@@ -1632,7 +1632,7 @@ function w_stpk(stpk,typ,n,info)
 		end
 
 	elseif (typ == "s64") then
-		if (n and type(n) == "number" and n >= -9223372036854775808 and n <= 9223372036854775808) then
+		if (n and type(n) == STR_NUMBER and n >= -9223372036854775808 and n <= 9223372036854775808) then
 			stpk:w_s64(n)
 		else
 			isError = true
@@ -1640,7 +1640,7 @@ function w_stpk(stpk,typ,n,info)
 		end
 
 	elseif (typ == "u8") then
-		if (n and type(n) == "number" and n >= 0 and n <= 255) then
+		if (n and type(n) == STR_NUMBER and n >= 0 and n <= 255) then
 			stpk:w_u8(n)
 		else
 			isError = true
@@ -1648,7 +1648,7 @@ function w_stpk(stpk,typ,n,info)
 		end
 
 	elseif (typ == "u16") then
-		if (n and type(n) == "number" and n >= 0 and n <= 65535) then
+		if (n and type(n) == STR_NUMBER and n >= 0 and n <= 65535) then
 			stpk:w_u16(n)
 		else
 			isError = true
@@ -1656,7 +1656,7 @@ function w_stpk(stpk,typ,n,info)
 		end
 
 	elseif (typ == "u32") then
-		if (n and type(n) == "number" and n >= 0 and n <= 4294967295) then
+		if (n and type(n) == STR_NUMBER and n >= 0 and n <= 4294967295) then
 			stpk:w_u32(n)
 		else
 			isError = true
@@ -1664,15 +1664,15 @@ function w_stpk(stpk,typ,n,info)
 		end
 
 	elseif (typ == "u64") then
-		if (n and type(n) == "number" and n >= 0 and n <= 18446744073709551615) then
+		if (n and type(n) == STR_NUMBER and n >= 0 and n <= 18446744073709551615) then
 			stpk:w_u64(n)
 		else
 			isError = true
 			stpk:w_u64(0)
 		end
 
-	elseif (typ == "float") then
-		if (n and type(n) == "number") then
+	elseif (typ == STR_FLOAT) then
+		if (n and type(n) == STR_NUMBER) then
 			stpk:w_float(n)
 		else
 			isError = true
@@ -1680,13 +1680,13 @@ function w_stpk(stpk,typ,n,info)
 		end
 
 	elseif (typ == "stringZ") then
-		if (n and type(n) == "string") then
+		if (n and type(n) == STR_STRING) then
 			if (string.len(n) > 255) then
 				isError = true
 				info = info .. " |-> length of string is too long for stringZ"
 			end
 			stpk:w_stringZ( string.sub(n,0,255) )
-		elseif (n and type(n) ~= "userdata") then
+		elseif (n and type(n) ~= STR_USERDATA) then
 			stpk:w_stringZ(tostring(n))
 		else
 			--isError = true
@@ -1696,7 +1696,7 @@ function w_stpk(stpk,typ,n,info)
 	elseif (typ == "CTime") then
 		utils.w_CTime(stpk,n)
 		--[[
-		if (n and type(n) == "userdata" and n.timeToString) then
+		if (n and type(n) == STR_USERDATA and n.timeToString) then
 			utils.w_CTime(stpk,n)
 		else
 			--printf("w_stpk:Debug: CTime is nil [%s]",info)
@@ -1708,23 +1708,23 @@ function w_stpk(stpk,typ,n,info)
 	end
 
 	if (isError) then
-		printf("w_stpk:CRITICAL ERROR: write %s (%s) TrueType=%s [%s]   | Packet:w_tell()=>%s",typ,type(n) ~= "userdata" and tostring(n) or "userdata",type(n),info,stpk:w_tell())
+		printf("w_stpk:CRITICAL ERROR: write %s (%s) TrueType=%s [%s]   | Packet:w_tell()=>%s",typ,type(n) ~= STR_USERDATA and tostring(n) or STR_USERDATA,type(n),info,stpk:w_tell())
 	else
-		--printf("w_stpk:DEBUG: write %s (%s) TrueType=%s [%s]   | Packet:w_tell()=>%s",typ,type(n) ~= "userdata" and tostring(n) or "userdata",type(n),info,stpk:w_tell())
+		--printf("w_stpk:DEBUG: write %s (%s) TrueType=%s [%s]   | Packet:w_tell()=>%s",typ,type(n) ~= STR_USERDATA and tostring(n) or STR_USERDATA,type(n),info,stpk:w_tell())
 	end
 end
 
 function findfunction(x,tbl)
-	assert(type(x) == "string")
+	assert(type(x) == STR_STRING)
 	local f=tbl
 	for v in x:gmatch("[^%.]+") do
-		if type(f) ~= "table" then
+		if type(f) ~= STR_TABLE then
 			printf("looking for '%s' expected table, not %s",v,type(f))
 			return
 		end
 		f=f[v]
 	end
-	if type(f) == "function" then
+	if type(f) == STR_FUNCTION then
 		return f
 	else
 		printf("expected function, not %s",type(f))
@@ -2307,7 +2307,7 @@ function sandbox_exec(file_name, function_name, ...)
 	end 
 	
 	local result = assert(loadfile(getFS():update_path('$game_scripts$', '')..file_name..'.script'))
-	if type(result) == "function" then
+	if type(result) == STR_FUNCTION then
 		if function_name then
 			result()
 			local f = loadstring("return "..function_name)

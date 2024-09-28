@@ -555,7 +555,7 @@ function try_spawn_treasure(box)
 		return 
 	end 
 
-	if not (type(caches[id]) == "string") then 
+	if not (type(caches[id]) == STR_STRING) then 
 		return
 	end
 	

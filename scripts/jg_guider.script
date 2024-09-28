@@ -250,7 +250,7 @@ end
 
 function prec_5(actor, npc)
 	local npc = dialogs.who_is_npc(actor,npc)
-	if curr_guid.target_level == level.name() and (type(npc.position) == "function" and npc:position() or npc.position):distance_to_sqr(vector():set(curr_guid.pos[1], curr_guid.pos[2], curr_guid.pos[3])) <= 25*25 then
+	if curr_guid.target_level == level.name() and (type(npc.position) == STR_FUNCTION and npc:position() or npc.position):distance_to_sqr(vector():set(curr_guid.pos[1], curr_guid.pos[2], curr_guid.pos[3])) <= 25*25 then
 		return true
 	end
 end

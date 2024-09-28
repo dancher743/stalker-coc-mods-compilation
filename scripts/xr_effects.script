@@ -3829,7 +3829,7 @@ local cam_effector_playing_object_id = nil
 function run_cam_effector(actor, npc, p)
 	if p[1] then
 		local loop, num = false, (1000 + math.random(100))
-		if p[2] and type(p[2]) == "number" and p[2] > 0 then
+		if p[2] and type(p[2]) == STR_NUMBER and p[2] > 0 then
 			num = p[2]
 		end
 		if p[3] and p[3] == STR_TRUE then
@@ -3842,18 +3842,18 @@ function run_cam_effector(actor, npc, p)
 end
 
 function stop_cam_effector(actor, npc, p)
-	if p[1] and type(p[1]) == "number" and p[1] > 0 then
+	if p[1] and type(p[1]) == STR_NUMBER and p[1] > 0 then
 		level.remove_cam_effector(p[1])
 	end
 end
 
 function run_cam_effector_global(actor, npc, p)
 	local num = 1000 + math.random(100)
-	if p[2] and type(p[2]) == "number" and p[2] > 0 then
+	if p[2] and type(p[2]) == STR_NUMBER and p[2] > 0 then
 		 num = p[2]
 	end
 	local fov = device().fov
-	if p[3] ~= nil and type(p[3]) == "number" then
+	if p[3] ~= nil and type(p[3]) == STR_NUMBER then
 		fov = p[3]
 	end
 	level.add_cam_effector2("camera_effects\\" .. p[1] .. ".anm", num, false, "xr_effects.cam_effector_callback", fov)
@@ -3882,7 +3882,7 @@ function run_postprocess(actor, npc, p)
 	if (p[1]) then
 		if(ini_sys:section_exist(p[1])) then
 			local num = 2000 + math.random(100)
-			if(p[2] and type(p[2]) == "number" and p[2]>0) then
+			if(p[2] and type(p[2]) == STR_NUMBER and p[2]>0) then
 				num = p[2]
 			end
 			printf("adding complex effector [%s], id [%s], from [%s]", p[1], tostring(p[2]), tostring(npc:name()))
@@ -3894,7 +3894,7 @@ function run_postprocess(actor, npc, p)
 end
 
 function stop_postprocess(actor, npc, p)
-	if(p[1] and type(p[1]) == "number" and p[1]>0) then
+	if(p[1] and type(p[1]) == STR_NUMBER and p[1]>0) then
 		printf("removing complex effector id [%s] from [%s]", tostring(p[1]), tostring(npc:name()))
 		level.remove_complex_effector(p[1])
 	end

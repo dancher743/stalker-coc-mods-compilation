@@ -921,12 +921,12 @@ function se_smart_terrain:STATE_Write(packet)
 	for id,info in pairs(self.npc_info) do
 		alun_utils.w_stpk(packet,"u16",id,"npc_info id")
 		alun_utils.w_stpk(packet,"stringZ",info.job and info.job.section or STR_NIL,"npc_info.job_section")
-		alun_utils.w_stpk(packet,"bool",info.begin_job,"npc_info.begin_job")
+		alun_utils.w_stpk(packet,STR_BOOL,info.begin_job,"npc_info.begin_job")
 		alun_utils.w_stpk(packet,"stringZ",tostring(info.need_job),"npc_info.need_job")
 	end
 
 	if self.respawn_point then
-		alun_utils.w_stpk(packet,"bool",true,"respawn_point")
+		alun_utils.w_stpk(packet,STR_BOOL,true,"respawn_point")
 		local n = table.size(self.already_spawned)
 
 		alun_utils.w_stpk(packet,"u8",n,"already_spawned count")
@@ -936,7 +936,7 @@ function se_smart_terrain:STATE_Write(packet)
 		end
 		alun_utils.w_stpk(packet,"CTime",self.last_respawn_update,"last_respawn_update CTime")
 	else
-		alun_utils.w_stpk(packet,"bool",false,"respawn_point")
+		alun_utils.w_stpk(packet,STR_BOOL,false,"respawn_point")
 	end
 
 	--set_save_marker(packet, "save", true, "se_smart_terrain")

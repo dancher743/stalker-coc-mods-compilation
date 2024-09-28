@@ -235,11 +235,11 @@ function action.debug_test(p)
 		--alun_utils.print_table(story_objects.get_story_objects_registry().story_id)
 		--[[ PRINT _G
 		local valid = {
-			["string"] = true,
-			["number"] = true,
-			["table"] = true,
-			["function"] = true,
-			["userdata"] = false		
+			[STR_STRING] = true,
+			[STR_NUMBER] = true,
+			[STR_TABLE] = true,
+			[STR_FUNCTION] = true,
+			[STR_USERDATA] = false
 		}
 		
 		local function addTab(s,n)
@@ -255,7 +255,7 @@ function action.debug_test(p)
 			if (valid[type(k)] == true) then 
 				txt = txt .. addTab(tostring(k),40)
 			elseif (valid[type(k)] == false) then 
-				txt = txt .. addTab("userdata",40)
+				txt = txt .. addTab(STR_USERDATA,40)
 			end
 			
 			if (valid[type(v)] == true) then 

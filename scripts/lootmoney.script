@@ -6,14 +6,14 @@
 ]]
 -- loading ini configs
 local config_ini = ini_file("lootmoney_cfg.ltx")
-local lootmoney_multiplier = alun_utils.read_from_ini(config_ini, "global_config", "lootmoney_multiplier", "float")
-local lootmoney_dropchance = alun_utils.read_from_ini(config_ini, "global_config", "lootmoney_dropchance", "float")
-local lootmoney_getstalkermoney = alun_utils.read_from_ini(config_ini,"global_config", "lootmoney_getstalkermoney", "bool")
-local lootmoney_stash = alun_utils.read_from_ini(config_ini, "global_config", "lootmoney_stash", "bool")
-local lootmoney_stashchance = alun_utils.read_from_ini(config_ini, "global_config", "lootmoney_stashchance", "float")
-local lootmoney_message = alun_utils.read_from_ini(config_ini, "global_config", "lootmoney_message", "bool")
-local lootmoney_npc_collect = alun_utils.read_from_ini(config_ini, "global_config", "lootmoney_npc_collect", "bool")
-local lootmoney_debug = alun_utils.read_from_ini(config_ini, "global_config", "lootmoney_debug", "bool")
+local lootmoney_multiplier = alun_utils.read_from_ini(config_ini, "global_config", "lootmoney_multiplier", STR_FLOAT)
+local lootmoney_dropchance = alun_utils.read_from_ini(config_ini, "global_config", "lootmoney_dropchance", STR_FLOAT)
+local lootmoney_getstalkermoney = alun_utils.read_from_ini(config_ini,"global_config", "lootmoney_getstalkermoney", STR_BOOL)
+local lootmoney_stash = alun_utils.read_from_ini(config_ini, "global_config", "lootmoney_stash", STR_BOOL)
+local lootmoney_stashchance = alun_utils.read_from_ini(config_ini, "global_config", "lootmoney_stashchance", STR_FLOAT)
+local lootmoney_message = alun_utils.read_from_ini(config_ini, "global_config", "lootmoney_message", STR_BOOL)
+local lootmoney_npc_collect = alun_utils.read_from_ini(config_ini, "global_config", "lootmoney_npc_collect", STR_BOOL)
+local lootmoney_debug = alun_utils.read_from_ini(config_ini, "global_config", "lootmoney_debug", STR_BOOL)
 
 local npc_random_indexes = {} -- where we store the data. { npc name = random value }. so npcs and player share the same random chance of getting money.
 local tableSize = 0
@@ -166,7 +166,7 @@ function util_is_key_in_array(val, array)
 end
 
 function explode_config_minmax(rank, t)
-	local ini_string = alun_utils.read_from_ini(config_ini, "rank_money", rank, "string")
+	local ini_string = alun_utils.read_from_ini(config_ini, "rank_money", rank, STR_STRING)
 	local v = alun_utils.str_explode(ini_string, ",", false)
 	if t == 1 then
 		return tonumber(v[1])
