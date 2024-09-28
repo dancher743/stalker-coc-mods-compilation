@@ -1828,6 +1828,9 @@ STR_TRUE		= "true"
 STR_FALSE		= "false"
 STR_ZERO		= "0"
 STR_ONE			= "1"
+
+-----------------------------------------
+-- Functions
 -----------------------------------------
 
 function IsEocMode()
