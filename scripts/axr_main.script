@@ -12,7 +12,7 @@ config = ini_file_ex("axr_options.ltx",true)
 
 -- load default rspec when axr_options created first time
 if not (config:section_exist("graphics")) then
-	get_console():execute("cfg_load " .. getFS():update_path('$game_config$', '').."rspec_default.ltx")
+	get_cached_console():execute("cfg_load " .. getFS():update_path('$game_config$', '').."rspec_default.ltx")
 	config:w_value("graphics","rspec_default",true)
 	config:save()
 end

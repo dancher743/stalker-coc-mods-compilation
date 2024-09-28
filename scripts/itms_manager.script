@@ -66,7 +66,7 @@ function on_game_load()
 		local actor_itm_backpack_id= utils.load_var(db.actor,"actor_itm_backpack_id",nil)
 		local actor_inv_backpack_id = utils.load_var(db.actor,"actor_inv_backpack_id",nil)
 		if (not actor_itm_backpack_id and not actor_inv_backpack_id) then
-			get_console():execute(ActorBackPackSlot.." itm_actor_backpack")
+			get_cached_console():execute(ActorBackPackSlot.." itm_actor_backpack")
 			local se_obj = get_alife():create("itm_actor_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),0)
 			if (se_obj) then
 				utils.save_var(db.actor,"actor_itm_backpack_id",se_obj.id)

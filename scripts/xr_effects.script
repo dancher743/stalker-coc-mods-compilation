@@ -4869,7 +4869,7 @@ end
 ]]--
 
 function game_disconnect(actor, npc)
-	local c = get_console()
+	local c = get_cached_console()
 	c:execute("disconnect")
 --	c:execute_deferred("main_menu off")
 --	c:execute_deferred("hide")
@@ -4884,27 +4884,27 @@ function game_over(actor, npc)
 	if db.gameover_credits_started ~= true then
 		return
 	end
-	local c = get_console()
+	local c = get_cached_console()
 	printf("main_menu on console command is executed")
 	c:execute("main_menu on")
 end
 
 function after_credits(actor, npc)
-	get_console():execute	("main_menu on")
+	get_cached_console():execute	("main_menu on")
 end
 
 function before_credits(actor, npc)
-	get_console():execute	("main_menu off")
+	get_cached_console():execute	("main_menu off")
 end
 
 function on_tutor_gameover_stop()
-	local c = get_console()
+	local c = get_cached_console()
 	printf("main_menu on console command is executed")
 	c:execute("main_menu on")
 end
 
 function on_tutor_gameover_quickload()
-	local c = get_console()
+	local c = get_cached_console()
 	c:execute("load_last_save")
 end
 
@@ -5686,7 +5686,7 @@ function change_tsg(actor, npc, p)
 end
 
 function exit_game(actor, npc)
-	get_console():execute("quit")
+	get_cached_console():execute("quit")
 end
 ]]--
 
@@ -6118,7 +6118,7 @@ function scenario_autosave(actor, npc, p)
 		local prefix = axr_misery and axr_misery.ActorClass or user_name()
 		local save_param = prefix.." - "..game.translate_string(save_name)
 
-		get_console():execute("save "..save_param)
+		get_cached_console():execute("save "..save_param)
 	end
 end
 

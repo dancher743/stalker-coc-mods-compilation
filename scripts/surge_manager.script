@@ -1821,7 +1821,7 @@ function is_actor_immune()
 	end
 	
 	-- God mode console command enabled.
-	if (get_console():get_bool("g_god")) then
+	if (get_cached_console():get_bool("g_god")) then
 		return true
 	end
 	

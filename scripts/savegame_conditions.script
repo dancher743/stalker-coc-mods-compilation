@@ -67,7 +67,7 @@ function check_and_apply (text)
 	
 	if pass then
 		SetHudMsg(str,5)
-		get_console():execute("main_menu off")
+		get_cached_console():execute("main_menu off")
 		return true
 	end
 	

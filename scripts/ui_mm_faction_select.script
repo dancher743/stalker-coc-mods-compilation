@@ -73,7 +73,7 @@ local function on_game_load(binder)
 		
 		if (config:r_value("character_creation","new_game_difficulty",3)) then
 			local diff = config:r_value("character_creation","new_game_difficulty",3) or "stalker"
-			local console = get_console()
+			local console = get_cached_console()
 			console:execute("g_game_difficulty gd_" .. diff)
 			config:w_value("character_creation","new_game_difficulty")
 			need_save = true
@@ -1888,7 +1888,7 @@ function faction_ui:OnStartGame()
 	if (selected_difficulty == nil or selected_difficulty == STR_EMPTY) then
 		selected_difficulty = self.table_difficulty[2]
 	end
-	local console = get_console()
+	local console = get_cached_console()
 	console:execute("g_game_difficulty gd_" .. selected_difficulty)
 	
 	-- preparing companions

@@ -43,7 +43,7 @@ function check_and_apply (text) -- Disable save menu while the timer is active
 			local str = strformat(game.translate_string("st_ui_no_save_timer"),game.translate_string(text))
 			SetHudMsg(str,4)
 		end
-		get_console():execute("main_menu off")
+		get_cached_console():execute("main_menu off")
 		return true
 	else
 		return false

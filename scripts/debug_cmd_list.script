@@ -1291,13 +1291,13 @@ function cmd.god(me,txt,owner,p)
 
 	if (wrd == "on") then
 		xrs_debug_tools.debug_god = true
-		--get_console():execute("g_god on")
+		--get_cached_console():execute("g_god on")
 		return "god:= invincibility enabled"
 	end
 
 	if (wrd == "off") then
 		xrs_debug_tools.debug_god = nil
-		--get_console():execute("g_god off")
+		--get_cached_console():execute("g_god off")
 		return "god:= invincibility disabled"
 	end
 

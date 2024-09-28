@@ -64,6 +64,7 @@ All notable changes to this project will be documented in this file.
 * Reduced extra allocations using `STR_USERDATA`, `STR_TRUE`, `STR_FALSE`, `STR_ZERO` and `STR_ONE` constants
 * Reduced extra allocations of `get_hud()` function, using `get_cached_hud()` instead
 * Optimized strings allocations in `printf` function in `_g.script`
+* Reduced extra allocations of `get_console()` function, using `get_cached_console()` instead
 
 ### Framework
 * Added `surge_on_ended` and `psi_storm_on_ended` callbacks into `axr_main.script`
@@ -77,6 +78,7 @@ All notable changes to this project will be documented in this file.
 * Added `STR_TRUE` and `STR_FALSE` consts into `_g.script`
 * Added `STR_ZERO` and `STR_ONE` consts into `_g.script`
 * Added `get_cached_hud()` function into `_g.script`
+* Added `get_cached_console()` function into `_g.script`
 
 ## [1.4.6] - Unreleased
 

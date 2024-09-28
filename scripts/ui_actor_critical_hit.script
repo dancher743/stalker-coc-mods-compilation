@@ -8,7 +8,7 @@ local duration = 0.2125
 local mark_ui
 
 function show_mark()
-	if (get_console():get_bool("hud_draw") == false) then
+	if (get_cached_console():get_bool("hud_draw") == false) then
 		return
 	end
 	

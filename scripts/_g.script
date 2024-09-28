@@ -47,6 +47,7 @@ b_discard_settings_shown = false
 local sim
 local gg
 local hud
+local console
 ----------------------------------------------------------------------
 
 function start_game_callback()
@@ -103,6 +104,13 @@ function get_cached_hud()
 		hud = get_hud()
 	end
 	return hud
+end
+
+function get_cached_console()
+	if not (console) then
+		console = get_console()
+	end
+	return console
 end
 -------------------------------------------------------------------------------------------------------
 -- 											SCRIPTED CALLBACKS
@@ -448,9 +456,9 @@ function printf(fmt,...)
 	end
 	if (log) then
 		log(fmt)
-		--get_console():execute("flush")
+		--get_cached_console():execute("flush")
 	else
-		get_console():execute("load ~#debug msg:"..fmt)
+		get_cached_console():execute("load ~#debug msg:"..fmt)
 	end	
 end
 
@@ -1468,7 +1476,7 @@ function CSE_ALifeDynamicObject_on_unregister(id)
 	end
 end
 
-get_console():execute("r__clear_models_on_unload 0")
+get_cached_console():execute("r__clear_models_on_unload 0")
 function CALifeUpdateManager__on_before_change_level(packet)
 --[[
 	C++:
@@ -1497,7 +1505,7 @@ function CALifeUpdateManager__on_before_change_level(packet)
 	local gg = get_game_graph()
 	if (gg:valid_vertex_id(gvid) and get_alife():level_name(gg:vertex(gvid):level_id()) == "k02_trucks_cemetery") then
 		log("k02_trucks_cemetery hack r__clear_models_on_unload 1")
-		get_console():execute("r__clear_models_on_unload 1")
+		get_cached_console():execute("r__clear_models_on_unload 1")
 	end
 	--printf("CALifeUpdateManager__on_before_change_level pos=%s gvid=%s lvid=%s angle=%s",pos,gvid,lvid,angle)
 	-- fix for car in 1.6 (TODO*kinda For some reason after loading a game ALL physic objects will not be teleported by TeleportObject need to investigate as to why, possibly something to do with object flags)
@@ -1777,17 +1785,15 @@ function round_idp(num, idp)
   return math.floor(num * mult + 0.5) / mult
 end
 
-local console = nil
 local hud_draw_command = nil
 local actor_is_sleeping_info = nil
 
 function main_hud_shown()
-	console = (console == nil and get_console()) or console
 	hud_draw_command = (hud_draw_command == nil and "hud_draw") or hud_draw_command
 	actor_is_sleeping_info = (actor_is_sleeping_info == nil and "actor_is_sleeping") or actor_is_sleeping_info
 	
 	local actor = db.actor
-	if console:get_bool(hud_draw_command) 
+	if get_cached_console():get_bool(hud_draw_command) 
 	and (not axr_main.weapon_is_zoomed) 
 	and (not actor:is_talking())
 	and (actor:alive())
