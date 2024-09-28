@@ -63,6 +63,7 @@ All notable changes to this project will be documented in this file.
 * Optimized string allocations in `get_check_option` function
 * Reduced extra allocations using `STR_USERDATA`, `STR_TRUE`, `STR_FALSE`, `STR_ZERO` and `STR_ONE` constants
 * Reduced extra allocations of `get_hud()` function, using `get_cached_hud()` instead
+* Optimized strings allocations in `printf` function in `_g.script`
 
 ### Framework
 * Added `surge_on_ended` and `psi_storm_on_ended` callbacks into `axr_main.script`

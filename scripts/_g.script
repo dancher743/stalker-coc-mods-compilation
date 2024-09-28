@@ -389,6 +389,8 @@ function is_empty(t)
 	return true
 end
 
+local fmt_pattern = "%%s"
+
 function strformat(text,...)
 	if not (text) then return end
 	local i = 0
@@ -401,7 +403,7 @@ function strformat(text,...)
 		return tostring(p[i])
 	end
 	-- so that it doesn't return gsub's multiple returns
-	local s = string.gsub(text,"%%s",sr)
+	local s = string.gsub(text,fmt_pattern,sr)
 	return s
 end
 
@@ -423,11 +425,13 @@ function LoadScheme(filename, scheme, ...)
 	end
 end
 
+local index_symbol = '#'
+
 function printf(fmt,...)
 	if not (fmt) then return end
 	local fmt = tostring(fmt)
 
-	if (select('#',...) >= 1) then
+	if (select(index_symbol,...) >= 1) then
 		local i = 0
 		local p = {...}
 		local function sr(a)
@@ -440,7 +444,7 @@ function printf(fmt,...)
 			end
 			return tostring(p[i])
 		end
-		fmt = string.gsub(fmt,"%%s",sr)
+		fmt = string.gsub(fmt,fmt_pattern,sr)
 	end
 	if (log) then
 		log(fmt)
@@ -1130,7 +1134,7 @@ function abort(msg, ...)
 	if not (msg) then return end
 	local fmt = tostring(msg)
 
-	if (select('#',...) >= 1) then
+	if (select(index_symbol,...) >= 1) then
 		local i = 0
 		local p = {...}
 		local function sr(a)
@@ -1140,7 +1144,7 @@ function abort(msg, ...)
 			end
 			return tostring(p[i])
 		end
-		fmt = string.gsub(fmt,"%%s",sr)
+		fmt = string.gsub(fmt,fmt_pattern,sr)
 	end
 		callstack()
 	log(fmt)
