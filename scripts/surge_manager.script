@@ -422,7 +422,7 @@ function CSurgeManager:calculate_best_surge_cover()
 	for name,condlist in pairs(self.covers) do
 		local zone = db.zone_by_name[name]
 		if (zone) then
-			local valid = type(condlist) == "boolean" or xr_logic.pick_section_from_condlist(db.actor, nil, condlist) ~= STR_FALSE
+			local valid = type(condlist) == STR_BOOLEAN or xr_logic.pick_section_from_condlist(db.actor, nil, condlist) ~= STR_FALSE
 			if (valid) then
 				dist = zone:position():distance_to_sqr(db.actor:position())
 				if (near_dist == nil or dist < near_dist) then 
@@ -1588,17 +1588,17 @@ function actor_on_save(binder,packet)
 	end
 	set_save_marker(packet, "save", false, "SurgeHide")
 
-	alun_utils.w_stpk(packet,"bool",mgr.finished,"CSurgeManager:finished")
-	alun_utils.w_stpk(packet,"bool",mgr.started,"CSurgeManager:started")
+	alun_utils.w_stpk(packet,STR_BOOL,mgr.finished,"CSurgeManager:finished")
+	alun_utils.w_stpk(packet,STR_BOOL,mgr.started,"CSurgeManager:started")
 	alun_utils.w_stpk(packet,"CTime",mgr.last_surge_time,"CSurgeManager:last_surge_time")
 
 	if(mgr.started) then
 		alun_utils.w_stpk(packet,"CTime",mgr.inited_time,"CSurgeManager:inited_time")
-		alun_utils.w_stpk(packet,"bool",mgr.task_given,"CSurgeManager:task_given")
-		alun_utils.w_stpk(packet,"bool",mgr.effector_set,"CSurgeManager:effector_set")
-		alun_utils.w_stpk(packet,"bool",mgr.second_message_given,"CSurgeManager:second_message_given")
-		alun_utils.w_stpk(packet,"bool",mgr.ui_disabled,"CSurgeManager:ui_disabled")
-		alun_utils.w_stpk(packet,"bool",mgr.blowout_sound,"CSurgeManager:blowout_sound")
+		alun_utils.w_stpk(packet,STR_BOOL,mgr.task_given,"CSurgeManager:task_given")
+		alun_utils.w_stpk(packet,STR_BOOL,mgr.effector_set,"CSurgeManager:effector_set")
+		alun_utils.w_stpk(packet,STR_BOOL,mgr.second_message_given,"CSurgeManager:second_message_given")
+		alun_utils.w_stpk(packet,STR_BOOL,mgr.ui_disabled,"CSurgeManager:ui_disabled")
+		alun_utils.w_stpk(packet,STR_BOOL,mgr.blowout_sound,"CSurgeManager:blowout_sound")
 
 		--alun_utils.w_stpk(packet,"stringZ",mgr.surge_message,"CSurgeManager:surge_message")
 		--alun_utils.w_stpk(packet,"stringZ",mgr.surge_task_sect,"CSurgeManager:surge_task_sect")
@@ -1821,7 +1821,7 @@ function is_actor_immune()
 	end
 	
 	-- God mode console command enabled.
-	if (get_console():get_bool("g_god")) then
+	if (get_cached_console():get_bool("g_god")) then
 		return true
 	end
 	

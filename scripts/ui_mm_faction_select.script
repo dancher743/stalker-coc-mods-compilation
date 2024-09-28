@@ -73,7 +73,7 @@ local function on_game_load(binder)
 		
 		if (config:r_value("character_creation","new_game_difficulty",3)) then
 			local diff = config:r_value("character_creation","new_game_difficulty",3) or "stalker"
-			local console = get_console()
+			local console = get_cached_console()
 			console:execute("g_game_difficulty gd_" .. diff)
 			config:w_value("character_creation","new_game_difficulty")
 			need_save = true
@@ -1111,7 +1111,7 @@ function faction_ui:LoadFaction (rand, faction)
 	end
 	
 	self.selected_faction = pick
-	local money = alun_utils.read_from_ini(ini_itm, self.selected_faction .. "_money", "money", "float")
+	local money = alun_utils.read_from_ini(ini_itm, self.selected_faction .. "_money", "money", STR_FLOAT)
 	self.selected_money = money
 	
 	self:UpdateFaction()
@@ -1612,7 +1612,7 @@ function faction_ui:UpdateMap()
 		self.box_map:InitTexture(STR_EMPTY)
 		self.box_map:Show(false)
 	else
-		local map = alun_utils.read_from_ini(ini_map, self.selected_faction .. "_start_locations", selected_map, "string")
+		local map = alun_utils.read_from_ini(ini_map, self.selected_faction .. "_start_locations", selected_map, STR_STRING)
 		self.box_map:InitTexture("ui_new_game_map_" .. map)
 		self.box_map:SetStretchTexture(true)
 		self.box_map:SetWndSize(vector2():set(self.box_map:GetWidth(),self.box_map:GetHeight()))
@@ -1863,12 +1863,12 @@ function faction_ui:OnStartGame()
 	
 	-- save modes
 	local hardcore_regen
-	if (self.selected_hardcore_regen[1]) and (type(self.selected_hardcore_regen[1]) == "number") then
+	if (self.selected_hardcore_regen[1]) and (type(self.selected_hardcore_regen[1]) == STR_NUMBER) then
 		hardcore_regen = self.selected_hardcore_regen[1]
 	end
 	
 	local timer
-	if (self.selected_timer[1]) and (type(self.selected_timer[1]) == "number") then
+	if (self.selected_timer[1]) and (type(self.selected_timer[1]) == STR_NUMBER) then
 		timer = self.selected_timer[1]
 	end
 	
@@ -1888,7 +1888,7 @@ function faction_ui:OnStartGame()
 	if (selected_difficulty == nil or selected_difficulty == STR_EMPTY) then
 		selected_difficulty = self.table_difficulty[2]
 	end
-	local console = get_console()
+	local console = get_cached_console()
 	console:execute("g_game_difficulty gd_" .. selected_difficulty)
 	
 	-- preparing companions

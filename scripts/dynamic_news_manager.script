@@ -944,7 +944,7 @@ function DynamicNewsManager:WelcomeToNetwork() -- Welcome message on new game
 	local se_actor = sim:actor()
 	
 	local Se = game.translate_string("st_dyn_news_sender_com_centre")
-	local msg = self:ReadTextKeyList( game.translate_string("st_dyn_news_welcome_stalker") , {["clr_1"]=clr_1 , ["clr_2"]=clr_2 , ["name"]=se_actor:character_name() , ["number"]=tostring(c)} )
+	local msg = self:ReadTextKeyList( game.translate_string("st_dyn_news_welcome_stalker") , {["clr_1"]=clr_1 , ["clr_2"]=clr_2 , ["name"]=se_actor:character_name() , [STR_NUMBER]=tostring(c)} )
 	
 	dynamic_news_helper.send_tip(msg,Se, 20, 20,"communication","welcome","gr")
 end

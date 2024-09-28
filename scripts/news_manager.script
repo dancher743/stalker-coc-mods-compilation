@@ -77,7 +77,7 @@ function send_tip(actor, news_id, timeout, sender, showtime, sender_id)
 
 	local texture = "ui_iconsTotal_grouping"
 	if sender ~= nil then
-		if type(sender) == "string" then
+		if type(sender) == STR_STRING then
 			if tips_icons[sender] then
 				texture = tips_icons[sender]
 			end

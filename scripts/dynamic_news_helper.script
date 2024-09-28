@@ -463,7 +463,7 @@ function GetPointDescription(obj)
 	end 
 	
 	local m_s = game.translate_string("st_dyn_news_"..level_name)
-	local point = type(obj.position) == "function" and obj:position() or obj.position
+	local point = type(obj.position) == STR_FUNCTION and obj:position() or obj.position
 	if not (point) then 
 		return m_s
 	end
@@ -725,7 +725,7 @@ function PickFaction(only_natural) -- pick a random faction
 end
 
 function GetFaction(key1,key2)
-	if key2 and (type(key2) == "string") then
+	if key2 and (type(key2) == STR_STRING) then
 		return profiles_faction[key1][key2]
 	end
 	return profiles_faction[key1]
@@ -742,7 +742,7 @@ function PickMap(excluded_map)
 end
 
 function GetMap(key1,key2)
-	if key2 and (type(key2) == "string") then
+	if key2 and (type(key2) == STR_STRING) then
 		return profiles_map[key1][key2]
 	end
 	return profiles_map[key1]
@@ -759,7 +759,7 @@ function PickMutant(tier)
 end
 
 function GetMutant(key1,key2)
-	if key2 and (type(key2) == "string") then
+	if key2 and (type(key2) == STR_STRING) then
 		return profiles_mutant[key1][key2]
 	end
 	return profiles_mutant[key1]

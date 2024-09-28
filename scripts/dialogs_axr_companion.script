@@ -26,7 +26,7 @@ function add_dialog(p_id,id,phrase_id,cond,act)
 
 	local phrase_script = phrase:GetPhraseScript()
 	if ( cond ) then
-		if ( type(cond) == "table" ) then
+		if ( type(cond) == STR_TABLE ) then
 			for key, value in pairs(cond) do
 				if (alun_utils.findfunction(value,_G)) then
 					phrase_script:AddPrecondition(value)
@@ -46,7 +46,7 @@ function add_dialog(p_id,id,phrase_id,cond,act)
 	end
 
 	if ( act ) then
-		if ( type(act) == "table" ) then
+		if ( type(act) == STR_TABLE ) then
 			for key, value in pairs(act) do
 				if (alun_utils.findfunction(value,_G)) then
 					phrase_script:AddAction(value)

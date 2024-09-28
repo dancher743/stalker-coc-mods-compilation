@@ -446,7 +446,7 @@ function set_squad_goodwill(squad_id, new_goodwill)
 	-- printf("Applying new game relation [%s] between squad [%s] and npc [%s] !", new_goodwill, squad_id, "actor")
 	local squad = get_story_squad(squad_id)
 	if squad == nil then
-		if type(squad_id) == "string" then
+		if type(squad_id) == STR_STRING then
 			-- printf("there is no story squad with id [%s]", squad_id)
 			return
 		else

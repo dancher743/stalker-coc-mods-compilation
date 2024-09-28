@@ -10,7 +10,7 @@ local function make_finish_save()
 	
 	local save_name = string.format("%s %s %s", character_name, level_name, finish_text)
 	local save_command = string.format("save %s", save_name)
-	get_console():execute(save_command)
+	get_cached_console():execute(save_command)
 end
 
 local function finish_game()

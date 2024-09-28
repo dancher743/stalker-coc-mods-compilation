@@ -37,7 +37,7 @@ end
 -- actor_on_net_spawn
 -------------------
 function actor_on_net_spawn()
-	local con = get_console()
+	local con = get_cached_console()
 	if (axr_main.config:r_value(MM_OPTIONS,"hardcore_ai_aim",1,false)) then
 		con:execute("ai_aim_max_angle 20.0")
 		con:execute("ai_aim_min_angle 17.0")
@@ -185,7 +185,7 @@ function actor_on_item_use(binder,item)
 		level.add_cam_effector("camera_effects\\surge_02.anm", 10, false, "bind_stalker_ext.anabiotic_callback")
 		level.add_pp_effector("surge_fade.ppe", 11, false)
 		give_info("anabiotic_in_process")
-		local con = get_console()
+		local con = get_cached_console()
 		_G.mus_vol = con:get_float("snd_volume_music")
 		_G.amb_vol = con:get_float("snd_volume_eff")
 		con:execute("snd_volume_music 0")
@@ -351,8 +351,8 @@ end
 
 function anabiotic_callback2()
 	xr_effects.enable_ui(db.actor, nil)
-    get_console():execute("snd_volume_music "..tostring(_G.mus_vol))
-	get_console():execute("snd_volume_eff "..tostring(_G.amb_vol))
+    get_cached_console():execute("snd_volume_music "..tostring(_G.mus_vol))
+	get_cached_console():execute("snd_volume_eff "..tostring(_G.amb_vol))
 	_G.amb_vol = 0
 	_G.mus_vol = 0
 	disable_info("anabiotic_in_process")

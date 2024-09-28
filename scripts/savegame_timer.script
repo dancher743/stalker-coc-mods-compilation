@@ -11,7 +11,7 @@ local val, duration, saved, is_active
 function on_game_start() -- callback
 	local function on_game_load()
 		val = alife_storage_manager.get_state().enable_timer_mode
-		if val and (type(val) == "number") then
+		if val and (type(val) == STR_NUMBER) then
 			duration = val*60 -- mins
 			CreateTimeEvent(0,"HardcoreTimer",level.get_time_factor()+1,timer_check)
 		else
@@ -43,7 +43,7 @@ function check_and_apply (text) -- Disable save menu while the timer is active
 			local str = strformat(game.translate_string("st_ui_no_save_timer"),game.translate_string(text))
 			SetHudMsg(str,4)
 		end
-		get_console():execute("main_menu off")
+		get_cached_console():execute("main_menu off")
 		return true
 	else
 		return false

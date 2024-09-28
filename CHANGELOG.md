@@ -43,6 +43,8 @@ All notable changes to this project will be documented in this file.
 * Refactored code of `critical_hit_manager.script`
 * Changed text of `ui_st_hideout` string
 * Added coocked food items into debug menu
+* Refactored get period functions in `level_weathers.script`
+* Refactored `dynamic_weather_graphs.ltx`
 
 ### Fixes
 * Fixed `delta` of `actor_on_slicing_update` callback
@@ -62,6 +64,9 @@ All notable changes to this project will be documented in this file.
 * Optimized string allocations in `get_check_option` function
 * Reduced extra allocations using `STR_USERDATA`, `STR_TRUE`, `STR_FALSE`, `STR_ZERO` and `STR_ONE` constants
 * Reduced extra allocations of `get_hud()` function, using `get_cached_hud()` instead
+* Optimized strings allocations in `printf` function in `_g.script`
+* Reduced extra allocations of `get_console()` function, using `get_cached_console()` instead
+* Reduced strings allocations using var types constants
 
 ### Framework
 * Added `surge_on_ended` and `psi_storm_on_ended` callbacks into `axr_main.script`
@@ -75,6 +80,8 @@ All notable changes to this project will be documented in this file.
 * Added `STR_TRUE` and `STR_FALSE` consts into `_g.script`
 * Added `STR_ZERO` and `STR_ONE` consts into `_g.script`
 * Added `get_cached_hud()` function into `_g.script`
+* Added `get_cached_console()` function into `_g.script`
+* Added var types constants into `_g.script`
 
 ## [1.4.6] - Unreleased
 

@@ -12,7 +12,7 @@ config = ini_file_ex("axr_options.ltx",true)
 
 -- load default rspec when axr_options created first time
 if not (config:section_exist("graphics")) then
-	get_console():execute("cfg_load " .. getFS():update_path('$game_config$', '').."rspec_default.ltx")
+	get_cached_console():execute("cfg_load " .. getFS():update_path('$game_config$', '').."rspec_default.ltx")
 	config:w_value("graphics","rspec_default",true)
 	config:save()
 end
@@ -200,7 +200,7 @@ end
 function make_callback(name,...)
 	if (intercepts[name]) then
 		for func_or_userdata,v in pairs(intercepts[name]) do 
-			if (type(func_or_userdata) == "function") then 
+			if (type(func_or_userdata) == STR_FUNCTION) then 
 				func_or_userdata(...)
 			elseif (func_or_userdata[name]) then
 				func_or_userdata[name](func_or_userdata,...)
