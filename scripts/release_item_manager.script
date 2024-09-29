@@ -101,5 +101,5 @@ function is_quest_item(section)
 	if (quest_item_str == nil) then
 		quest_item_str = "quest_item"
 	end
-	return ini_sys:r_bool_ex(section,quest_item_str,nil) ~= nil
+	return get_system_ini():r_bool_ex(section,quest_item_str,nil) ~= nil
 end

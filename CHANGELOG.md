@@ -44,6 +44,7 @@ All notable changes to this project will be documented in this file.
 * Added coocked food items into debug menu
 * Refactored get period functions in `level_weathers.script`
 * Refactored `dynamic_weather_graphs.ltx`
+* Replaced `ini_sys` field with `get_system_ini()` function in `_g.script`
 
 ### Fixes
 * Fixed `delta` of `actor_on_slicing_update` callback

@@ -760,7 +760,7 @@ function prefix_r_string(ini,sec,key,prefix)
 end
 
 function is_ammo(section)
-	local v = ini_sys:r_string_ex(section,"class",STR_EMPTY)
+	local v = get_system_ini():r_string_ex(section,"class",STR_EMPTY)
 	return v == "AMMO" or v == "AMMO_S"
 end
 
@@ -936,7 +936,7 @@ function get_actor_community()
 end
 
 function get_parent_section(section)
-	return ini_sys:r_string_ex(section,"parent_section")
+	return get_system_ini():r_string_ex(section,"parent_section")
 end
 
 function contains(array, value)

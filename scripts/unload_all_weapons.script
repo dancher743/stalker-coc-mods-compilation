@@ -14,7 +14,7 @@ function unload_weapons()
 		return 
 	end
 	
-	local ta, tb, ts, ini = {}, {}, {}, ini_sys
+	local ta, tb, ts, ini = {}, {}, {}, get_system_ini()
 	local i, k, v
 	ts["wpn_knife"] = true
 	ts["wpn_binoc"] = true

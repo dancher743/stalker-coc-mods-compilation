@@ -1661,7 +1661,7 @@ function se_smart_terrain:try_respawn()
 					
 					local se_heli = get_alife():create(heli,pos,lvid,gvid)
 					
-					local visual = ini_sys:r_string_ex(heli,"visual")
+					local visual = get_system_ini():r_string_ex(heli,"visual")
 					-- required to spawn by script
 					local data = stpk_utils.get_heli_data(se_heli)
 					if (data) then

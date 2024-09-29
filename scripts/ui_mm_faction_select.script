@@ -8,7 +8,7 @@
 --=======================================< Controls >=======================================--
 local ico_size = 0.7
 local ico_width = (device().width / device().height > (1024/768+0.01)) and 0.8 or 1
-local ini = ini_sys
+local ini = get_system_ini()
 local ini_ico = ini_file("plugins\\faction_portraits.ltx")
 local ini_itm = ini_file("plugins\\new_game_loadouts.ltx")
 local ini_map = ini_file("plugins\\new_game_start_locations.ltx")
