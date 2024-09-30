@@ -119,7 +119,7 @@ function init_nimble_tables()
 		for n=1,count do 
 			local value = ini:r_string_ex(sec,"item"..n)
 			if (value) then
-				local item_list = value ~= STR_EMPTY and alun_utils.str_explode(value,",") or {}
+				local item_list = value ~= STR_EMPTY and alun_utils.str_explode(value,STR_COMMA) or {}
 				table.insert(t,{item=item_list})
 			end
 		end

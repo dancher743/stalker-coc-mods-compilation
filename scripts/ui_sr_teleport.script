@@ -73,7 +73,7 @@ function msg_box_ui:OnMsgOk()
 		xr_effects.scenario_autosave(nil,nil,{ini:r_string_ex(self.name,"hint") or "moving"})
 	end
 	
-	local p = pos and alun_utils.str_explode(pos,",")
+	local p = pos and alun_utils.str_explode(pos,STR_COMMA)
 	pos = p and vector():set(tonumber(p[1]),tonumber(p[2]),tonumber(p[3]))
 
 	local allow_car = ini:r_bool_ex(self.name,"allow_vehicle",true)
@@ -95,7 +95,7 @@ function msg_box_ui:OnMsgOk()
 			local cpath = cpos == nil and ini:r_string_ex(self.name,"reject_path")
 			local cpoint = cpath and patrol(cpath)
 			
-			local cp = cpos and alun_utils.str_explode(cpos,",")
+			local cp = cpos and alun_utils.str_explode(cpos,STR_COMMA)
 			cpos = cp and vector():set(tonumber(cp[1]) or 0,tonumber(cp[2]) or 0,tonumber(cp[3]) or 0)
 
 			if (cpos or cpoint) then
@@ -135,7 +135,7 @@ function msg_box_ui:OnMsgCancel()
 		return
 	end
 
-	local p = pos and alun_utils.str_explode(pos,",")
+	local p = pos and alun_utils.str_explode(pos,STR_COMMA)
 	pos = p and vector():set(tonumber(p[1]) or 0,tonumber(p[2]) or 0,tonumber(p[3]) or 0)
 
 	db.actor:set_actor_position(pos or point and point:point(0) or db.actor:position())

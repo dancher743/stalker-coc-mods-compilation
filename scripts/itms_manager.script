@@ -639,7 +639,7 @@ function loot_mutant(obj,cls,t,npc)
 
 	local loot,sec
 	for i=1,#loot_table do
-		loot = alun_utils.str_explode(loot_table[i],",")
+		loot = alun_utils.str_explode(loot_table[i],STR_COMMA)
 		if (loot and loot[1] and loot[2]) then
 			if not (loot[3]) then
 				loot[3] = 1

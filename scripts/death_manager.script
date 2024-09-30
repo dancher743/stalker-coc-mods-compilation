@@ -106,7 +106,7 @@ function init_drop_settings()
 	local id, value = STR_EMPTY, STR_EMPTY
 	for i=0,n-1 do
 		local result, id, value	= death_ini:r_line_ex("item_count",i,STR_EMPTY,STR_EMPTY)
-		local p = alun_utils.str_explode(value,",")
+		local p = alun_utils.str_explode(value,STR_COMMA)
 		if (p) then
 			p[1] = tonumber(p[1]) or 0
 			p[2] = tonumber(p[2]) or p[1]
@@ -154,7 +154,7 @@ function create_release_item(npc)
 	local sid = item_by_story_id and get_object_story_id(npc:id())
 	if (sid and item_by_story_id[sid]) then
 		local p = xr_logic.pick_section_from_condlist(db.actor,npc,alun_utils.parse_condlist(item_by_story_id[sid]))
-		--local p = alun_utils.str_explode(item_by_story_id[sid],",")
+		--local p = alun_utils.str_explode(item_by_story_id[sid],STR_COMMA)
 		--printf("sid=%s p=%s",sid,p)
 		if (p and p ~= STR_EMPTY and p ~= STR_NIL) then
 			create_items(npc, p, 1, 100)

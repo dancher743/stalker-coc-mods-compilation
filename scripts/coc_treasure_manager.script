@@ -300,7 +300,7 @@ function create_random_stash(no_spot,hint,bonus_items)
 			level.map_add_object_spot_ser(id, "treasure", hint or STR_EMPTY)
 			news_manager.send_treasure_with_level(name, se_box)
 		end
-		caches[id] = table.concat(spawned_item,",")
+		caches[id] = table.concat(spawned_item,STR_COMMA)
 	else
 		caches[id] = false
 	end
@@ -559,7 +559,7 @@ function try_spawn_treasure(box)
 		return
 	end
 	
-	local spawned_item = alun_utils.str_explode(caches[id],",")
+	local spawned_item = alun_utils.str_explode(caches[id],STR_COMMA)
 	caches[id] = true
 	
 	local sec,ammos,ct,ammo_type,ammo_section
@@ -669,7 +669,7 @@ function get_valid_item_sections()
 	if (DEV_DEBUG_DEV) then
 		local cfg = io.open("valid_item_sections.ltx","w+")
 		for k,v in pairs(t) do 
-			cfg:write(k.."\n")
+			cfg:write(k..STR_NEWLINE)
 		end
 		cfg:close()
 	end

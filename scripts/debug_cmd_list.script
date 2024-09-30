@@ -182,39 +182,39 @@ function cmd.print(me,txt,owner,p)
 			table.sort(v)
 		end
 		
-		msg = msg .. "\n\nNUMBER" .. "\n"
+		msg = msg .. "\n\nNUMBER" .. STR_NEWLINE
 		for i=1,#list.n do
-			msg = msg .. list.n[i] .. " = " .. tostring(_G[list.n[i]]) .. "\n"
+			msg = msg .. list.n[i] .. " = " .. tostring(_G[list.n[i]]) .. STR_NEWLINE
 		end
 		
-		msg = msg .. "\n\nBOOLEAN" .. "\n"
+		msg = msg .. "\n\nBOOLEAN" .. STR_NEWLINE
 		for i=1,#list.b do
-			msg = msg .. list.b[i] .. " = " .. tostring(_G[list.b[i]]) .. "\n"
+			msg = msg .. list.b[i] .. " = " .. tostring(_G[list.b[i]]) .. STR_NEWLINE
 		end		
 		
-		msg = msg .. "\n\nSTRING" .. "\n"
+		msg = msg .. "\n\nSTRING" .. STR_NEWLINE
 		for i=1,#list.s do
-			msg = msg .. list.s[i] .. " = " .. _G[list.s[i]] .. "\n"
+			msg = msg .. list.s[i] .. " = " .. _G[list.s[i]] .. STR_NEWLINE
 		end
 		
-		msg = msg .. "\n\nTABLE" .. "\n"
+		msg = msg .. "\n\nTABLE" .. STR_NEWLINE
 		for i=1,#list.t do
-			msg = msg .. list.t[i] .. "\n"
+			msg = msg .. list.t[i] .. STR_NEWLINE
 		end
 	
-		msg = msg .. "\n\nFUNCTION" .. "\n"
+		msg = msg .. "\n\nFUNCTION" .. STR_NEWLINE
 		for i=1,#list.f do
-			msg = msg .. list.f[i] .. "\n"
+			msg = msg .. list.f[i] .. STR_NEWLINE
 		end
 		
-		msg = msg .. "\n\nUSERDATA" .. "\n"
+		msg = msg .. "\n\nUSERDATA" .. STR_NEWLINE
 		for i=1,#list.u do
-			msg = msg .. list.u[i] .. "\n"
+			msg = msg .. list.u[i] .. STR_NEWLINE
 		end
 		
-		msg = msg .. "\n\nUNKNOWN" .. "\n"
+		msg = msg .. "\n\nUNKNOWN" .. STR_NEWLINE
 		for i=1,#list.unknown do
-			msg = msg .. list.unknown[i] .. "\n"
+			msg = msg .. list.unknown[i] .. STR_NEWLINE
 		end
 		
 		local file = io.open("debug_print.txt","w")
@@ -363,7 +363,7 @@ function cmd.spawn(me,txt,owner,p)
 	else
 		if (string.find(txt,"pos:")) then
 			for s in string.gmatch(txt,"pos:([-]?%d+[.]?%d*,[-]?%d+[.]?%d*,[-]?%d+[.]?%d*)") do
-				local p = alun_utils.str_explode(s,",")
+				local p = alun_utils.str_explode(s,STR_COMMA)
 				pos = vector():set(tonumber(p[1]),tonumber(p[2]),tonumber(p[3]))
 			end
 
@@ -528,7 +528,7 @@ local function parse_waypoint(pathname, wpflags, wpname, owner, tRet)
 	--[[
 	file = io.open("axr_debug_log.txt","a+")
 	if (file) then
-		file:write(strformat("[%s] %s", pathname, wpname).."\n")
+		file:write(strformat("[%s] %s", pathname, wpname)..STR_NEWLINE)
 		file:close()
 	end
 	--]]
@@ -961,7 +961,7 @@ function cmd.teleport(me,txt,owner,p)
 
 		if (string.find(txt,"pos:")) then
 			for s in string.gmatch(txt,"pos:([-]?%d+[.]?%d*,[-]?%d+[.]?%d*,[-]?%d+[.]?%d*)") do
-				local t = alun_utils.str_explode(s,",")
+				local t = alun_utils.str_explode(s,STR_COMMA)
 				pos = vector():set(tonumber(t[1]),tonumber(t[2]),tonumber(t[3]))
 			end
 		end
@@ -1366,7 +1366,7 @@ function cmd.heli(me,txt,owner,p)
 		end
 
 		if (str and str ~= STR_EMPTY) then
-			str = str_explode(str,",")
+			str = str_explode(str,STR_COMMA)
 			str.x = tonumber(str[1])
 			str.y = tonumber(str[2])
 			str.z = tonumber(str[3])
@@ -1454,7 +1454,7 @@ function cmd.time(me,txt,owner,p)
 	local wrd = check_and_set_help(me,txt,owner,"[day,hour,minute]")
 	if not (wrd) then return end
 
-	local t = alun_utils.str_explode(txt,",")
+	local t = alun_utils.str_explode(txt,STR_COMMA)
 	if (t) then
 		--set_current_time(tonumber(t[1]),tonumber(t[2]),tonumber(t[3]))
 		level.change_game_time( tonumber(t[1]),tonumber(t[2]),tonumber(t[3]) )

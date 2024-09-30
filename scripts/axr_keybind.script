@@ -259,11 +259,11 @@ function action.debug_test(p)
 			end
 			
 			if (valid[type(v)] == true) then 
-				txt = txt ..  " = " .. tostring(v) .. "\n"
+				txt = txt ..  " = " .. tostring(v) .. STR_NEWLINE
 			elseif (valid[type(v)] == false) then 
 				txt = txt .. " = userdata\n"
 			else 
-				txt = txt .. "\n"
+				txt = txt .. STR_NEWLINE
 			end
 		end
 		
