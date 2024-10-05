@@ -3325,7 +3325,7 @@ end
 function reward_random_item(actor,npc,p)
 	if (#p > 0) then
 		local section = p[math.random(#p)]
-		if (ini_sys:section_exist(section)) then
+		if (get_system_ini():section_exist(section)) then
 			get_alife():create(section,vector(),0,0,0)
 		end
 	end
@@ -3357,7 +3357,7 @@ function setup_companion_task(actor,npc,p)
 		return
 	end
 
-	if not (ini_sys:section_exist(p[1])) then
+	if not (get_system_ini():section_exist(p[1])) then
 		printf("setup_companion_task: Trying to setup companion squad with a non-existent section!")
 		return
 	end
@@ -3409,17 +3409,17 @@ function setup_generic_fetch_task(actor,npc,p)
 	if (p[1] and p[2] and p[3]) then
 		local sec = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 		DIALOG_LAST_ID = inventory_upgrades.victim_id
-		if (sec and ini_sys:section_exist(sec)) then
-			dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(sec,"inv_name") or STR_EMPTY)
+		if (sec and get_system_ini():section_exist(sec)) then
+			dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(sec,"inv_name") or STR_EMPTY)
 		else
 			sec = #p > 3 and p[math.random(3,#p)] or p[3]
-			if (sec and ini_sys:section_exist(sec)) then
+			if (sec and get_system_ini():section_exist(sec)) then
 				utils.save_var(db.actor,p[1],sec)
 				local count = tonumber(p[2]) or 1
 				if (count > 1) then
 					utils.save_var(db.actor,p[1].."_count",count)
 				end
-				dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(sec,"inv_name") or STR_EMPTY)
+				dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(sec,"inv_name") or STR_EMPTY)
 			else
 				printf("ERROR: xr_effects:setup_generic_fetch_task - invalid section %s",sec)
 			end
@@ -3431,8 +3431,8 @@ end
 function setup_rare_mutant_fetch_task(actor,npc,p)
 	local part = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
-	if (part and ini_sys:section_exist(part)) then
-		dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(part,"inv_name") or STR_EMPTY)
+	if (part and get_system_ini():section_exist(part)) then
+		dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(part,"inv_name") or STR_EMPTY)
 	else
 		local parts = {
 		"mutant_part_controller_glass",
@@ -3445,7 +3445,7 @@ function setup_rare_mutant_fetch_task(actor,npc,p)
 		}
 		part = parts[math.random(#parts)]
 		utils.save_var(db.actor,p[1],part)
-		dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(part,"inv_name") or STR_EMPTY)
+		dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(part,"inv_name") or STR_EMPTY)
 	end
 end
 
@@ -3453,8 +3453,8 @@ end
 function setup_artefact_fetch_task(actor,npc,p)
 	local artefact = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
-	if (artefact and ini_sys:section_exist(artefact)) then
-		dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(artefact,"inv_name") or STR_EMPTY)
+	if (artefact and get_system_ini():section_exist(artefact)) then
+		dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(artefact,"inv_name") or STR_EMPTY)
 	else
 		local arts = {
 		"af_cristall",
@@ -3484,15 +3484,15 @@ function setup_artefact_fetch_task(actor,npc,p)
 
 		artefact = arts[math.random(#arts)]
 		utils.save_var(db.actor,p[1],artefact)
-		dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(artefact,"inv_name") or STR_EMPTY)
+		dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(artefact,"inv_name") or STR_EMPTY)
 	end
 end
 
 function setup_weapon_fetch_task(actor,npc,p)
 	local wpn = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
-	if (wpn and ini_sys:section_exist(wpn)) then
-		dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(wpn,"inv_name") or STR_EMPTY)
+	if (wpn and get_system_ini():section_exist(wpn)) then
+		dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(wpn,"inv_name") or STR_EMPTY)
 	else
 		local itm = {
 				"wpn_bm16",
@@ -3519,7 +3519,7 @@ function setup_weapon_fetch_task(actor,npc,p)
 				"wpn_pkm"
 		}
 		wpn = itm[math.random(#itm)]
-		dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(wpn,"inv_name") or STR_EMPTY)
+		dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(wpn,"inv_name") or STR_EMPTY)
 		utils.save_var(db.actor,p[1],wpn)
 	end
 end
@@ -3530,8 +3530,8 @@ end
 function setup_supplies_fetch_task(actor,npc,p)
 	local itm = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
-	if (itm and ini_sys:section_exist(itm)) then
-		dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(itm,"inv_name") or STR_EMPTY)
+	if (itm and get_system_ini():section_exist(itm)) then
+		dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(itm,"inv_name") or STR_EMPTY)
 	else
 		local itms = {
 					"bandage",
@@ -3554,7 +3554,7 @@ function setup_supplies_fetch_task(actor,npc,p)
 					"energy_drink"
 					}
 		itm = itms[math.random(#itms)]
-		dialogs._FETCH_TEXT = game.translate_string(ini_sys:r_string_ex(itm,"inv_name") or STR_EMPTY)
+		dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(itm,"inv_name") or STR_EMPTY)
 		utils.save_var(db.actor,p[1],itm)
 		utils.save_var(db.actor,p[1].."_count",math.random(p[2] and tonumber(p[2]) or 1,p[3] and tonumber(p[3]) or 1))
 	end
@@ -3880,7 +3880,7 @@ end
 
 function run_postprocess(actor, npc, p)
 	if (p[1]) then
-		if(ini_sys:section_exist(p[1])) then
+		if(get_system_ini():section_exist(p[1])) then
 			local num = 2000 + math.random(100)
 			if(p[2] and type(p[2]) == STR_NUMBER and p[2]>0) then
 				num = p[2]
@@ -5249,7 +5249,7 @@ function create_squad(actor, obj, p)
 		printf("Wrong smart name [NIL] in create_squad function")
 	end
 
-	local ltx = ini_sys
+	local ltx = get_system_ini()
 
 	if not ltx:section_exist(squad_id) then
 		printf("Wrong squad identificator [%s]. Squad descr doesnt exist.", tostring(squad_id))
@@ -5305,7 +5305,7 @@ function create_squad_member(actor, obj, p)
 	if p[3] ~= nil then
 		local spawn_point
 		if p[3] == "simulation_point" then
-			spawn_point = ini_sys:r_string_ex(squad:section_name(),"spawn_point")
+			spawn_point = get_system_ini():r_string_ex(squad:section_name(),"spawn_point")
 			if spawn_point == STR_EMPTY or spawn_point == nil then
 				spawn_point = xr_logic.parse_condlist(obj, "spawn_point", "spawn_point", squad_smart.spawn_point)
 			else
@@ -7319,7 +7319,7 @@ function make_a_wish(actor,npc,p)
 
 	action_list[4] = function()
 		local sim = get_alife()
-		local sysini = ini_sys
+		local sysini = get_system_ini()
 		local valid_ids = {[1] = true, [2] = true , [3] = true, [4] = true, [8] = true, [12] = true, [13] = true, [14] = true, [15] = true}
 		for k,v in pairs(ui_debug_main.id_to_spawn_table) do
 			if (valid_ids[k]) then

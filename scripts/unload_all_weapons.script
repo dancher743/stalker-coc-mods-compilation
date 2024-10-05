@@ -14,7 +14,7 @@ function unload_weapons()
 		return 
 	end
 	
-	local ta, tb, ts, ini = {}, {}, {}, ini_sys
+	local ta, tb, ts, ini = {}, {}, {}, get_system_ini()
 	local i, k, v
 	ts["wpn_knife"] = true
 	ts["wpn_binoc"] = true
@@ -35,7 +35,7 @@ function unload_weapons()
 					if (v) then
 						k = ini:r_string_ex(itm:section(),"ammo_class",STR_EMPTY)
 						if (k and k ~= STR_EMPTY) then
-							k = alun_utils.str_explode(k,",")
+							k = alun_utils.str_explode(k,STR_COMMA)
 							if (k) then
 								k = k[v.ammo_type + 1]
 								if (k and k ~= STR_EMPTY) then

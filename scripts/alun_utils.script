@@ -3,7 +3,7 @@
 --]]
 
 function get_inv_name(section)
-	return game.translate_string(system_ini():r_string_ex(section,"inv_name"))
+	return game.translate_string(get_system_ini():r_string_ex(section,"inv_name"))
 end 
 
 -- Prints a formated lua table to print_table.txt for debugging purposes
@@ -12,7 +12,7 @@ function print_table(tbl,header,format_only)
 	local depth = 1
 
 	local function tab(amt)
-		local str = ""
+		local str = STR_EMPTY
 		for i=1,amt, 1 do
 			str = str .. "\t"
 		end
@@ -66,7 +66,7 @@ function print_table(tbl,header,format_only)
 			end
 
 			if (i == size) then
-				txt = txt .. "\n"
+				txt = txt .. STR_NEWLINE
 			else
 				txt = txt .. ",\n"
 			end
@@ -113,7 +113,7 @@ end
 
 function read_from_ini(ini,section,line,var_type,default,caller)
 	if not (ini) then
-		ini = system_ini()
+		ini = get_system_ini()
 	end
 	if not (section) then 
 		printf("ERROR: alun_utils.read_from_ini trying to read nil section! line=%s var_type=%s default=%s caller=%s",line,var_type,default,caller)
@@ -133,8 +133,11 @@ function read_from_ini(ini,section,line,var_type,default,caller)
 	return default
 end
 
+local trim_search_str = "^%s*(.-)%s*$"
+local trim_replace_str = "%1"
+
 function trim(s)
-	return string.gsub(s, "^%s*(.-)%s*$", "%1")
+	return string.gsub(s, trim_search_str, trim_replace_str)
 end
 
 --[[
@@ -171,8 +174,8 @@ function parse_ini_section_to_array(ini,section)
 		tmp={}
 		local result, id, value = nil, nil, nil
 		for a=0,ini:line_count(section)-1 do
-			result, id, value = ini:r_line(section,a,"","")
-			if id~=nil and trim(id)~="" and trim(id)~=nil then
+			result, id, value = ini:r_line(section,a,STR_EMPTY,STR_EMPTY)
+			if id~=nil and trim(id)~=STR_EMPTY and trim(id)~=nil then
 				tmp[trim(id)]=trim(value)
 			end
 		end
@@ -255,7 +258,7 @@ function float2hex (n)
     end
 
     return tonumber(string.gsub(table.concat(hext),"(.)",
-                                function (c) return string.format("%02X%s",string.byte(c),"") end), 16)
+                                function (c) return string.format("%02X%s",string.byte(c),STR_EMPTY) end), 16)
 end
 
 
@@ -295,7 +298,7 @@ function parse_list(ini,key,val,convert)
 		error(strformat("alun_utils.parse_list ini is nil for key=%s val=%s",key,val))
 	end
 	local str = ini:r_string_ex(key,val)
-	local t = str and str ~= "" and str_explode(str,",")
+	local t = str and str ~= STR_EMPTY and str_explode(str,STR_COMMA)
 	if not (t) then
 		return {}
 	end
@@ -313,24 +316,27 @@ function eval_condlist(npc, condlist, p)
 	return xr_logic.pick_section_from_condlist(db.actor,npc, condlist, p)
 end
 
+local src_find_pattern = "{%s*(.*)%s*}"
+local remainings_find_pattern = "%%%s*(.*)%s*%%"
+
 function parse_condlist(str)
 	if not (str) then
 		printf("alun_utils.parse_condlist: Error no source string")
 		return
 	end
 
-	local src = str_explode(str,",")
+	local src = str_explode(str,STR_COMMA)
 	local t = {}
 	local a,b,infop_check_lst,infop_set_lst,remainings,new_sect
 	for i=1,#src do
-		a, b, infop_check_lst = string.find(src[i], "{%s*(.*)%s*}")
+		a, b, infop_check_lst = string.find(src[i], src_find_pattern)
 		if (infop_check_lst) then
 			remainings = string.sub(src[i], 1, a - 1) .. string.sub(src[i], b + 1)
 		else
 			remainings = src[i]
 		end
 
-		a, b, infop_set_lst = string.find(remainings, "%%%s*(.*)%s*%%")
+		a, b, infop_set_lst = string.find(remainings, remainings_find_pattern)
 		if (infop_set_lst) then
 			new_sect = string.sub(remainings, 1, a - 1) .. string.sub(remainings, b + 1)
 		else
@@ -357,7 +363,7 @@ function collect_sections(ini,sections)
 			local n = ini:line_count(v)
 			if n > 0 then
 				for i = 0,n-1 do
-					local res,id,val = ini:r_line(v,i,"","")
+					local res,id,val = ini:r_line(v,i,STR_EMPTY,STR_EMPTY)
 					if r[id] == nil then
 						r[id] = val
 					end
@@ -376,7 +382,7 @@ function get_rank_list()
 	if ranks then
 		return ranks
 	end
-	local tmp = parse_list(system_ini(),"game_relations","rating")
+	local tmp = parse_list(get_system_ini(),"game_relations","rating")
 	ranks = {}
 	for i,rn in ipairs(tmp) do
 		if not tonumber(rn) then
@@ -388,7 +394,7 @@ end
 
 local reputations
 function get_reputation_name(value)
-	reputations = reputations or parse_list(system_ini(),"game_relations","reputation_names")
+	reputations = reputations or parse_list(get_system_ini(),"game_relations","reputation_names")
 	local prev = nil
 	for i,rn in ipairs(reputations) do
 		local repu = tonumber(rn)
@@ -406,7 +412,7 @@ function get_communities_list()
 	if communities then
 		return communities
 	end
-	local tmp = parse_list(system_ini(),"game_relations","communities")
+	local tmp = parse_list(get_system_ini(),"game_relations","communities")
 	communities = {}
 	for i,cn in ipairs(tmp) do
 		if not tonumber(cn) then
@@ -456,13 +462,14 @@ function nearest_object(s,offline)
 	local nearest
 	local min_dist
 	local is_match
+	local type_s = type(s)
 	for i=1, 65535 do
 		local obj = alife_object(i)
 		if (obj) then
 			is_match = false
-			if (type(s) == STR_STRING and string.find(obj:name(),s)) then
+			if (type_s == STR_STRING and string.find(obj:name(),s)) then
 				is_match = true
-			elseif (type(s) == STR_NUMBER and s == obj:clsid()) then
+			elseif (type_s == STR_NUMBER and s == obj:clsid()) then
 				is_match = true
 			end
 
@@ -704,7 +711,7 @@ function printf(msg,...)
 		local p = {...}
 		local function sr(a)
 			i = i + 1
-			if (type(p[i]) == 'userdata') then
+			if (type(p[i]) == STR_USERDATA) then
 				return 'userdata'
 			end
 			return tostring(p[i])
@@ -754,10 +761,10 @@ function is_trader(...)
 end
 
 function string_to_vector(str)
-	if (str == nil or str == "") then 
+	if (str == nil or str == STR_EMPTY) then 
 		return vector()
 	end
-	local t = alun_utils.str_explode(str,",")
+	local t = alun_utils.str_explode(str,STR_COMMA)
 	return vector():set(tonumber(t[1] or 0) or 0,tonumber(t[2] or 0) or 0,tonumber(t[3] or 0) or 0)
 end
 
@@ -766,7 +773,7 @@ function vector_to_string(vec)
 end
 
 function print_packet_data(data)
-	local msg = ""
+	local msg = STR_EMPTY
 	for kk, vv in pairs(data) do
 		if (type(vv) == STR_USERDATA and vv.x and vv.y and vv.z) then
 			--m.debug_write("%s: vector:= %s",kk,vec_to_str(vv))
@@ -883,9 +890,9 @@ function collect_section(ini,section,keytable)
 		local n = ini:line_count(section)
 		if n > 0 then
 			for i = 0,n-1 do
-				local res,id,val = ini:r_line(section,i,"","")
+				local res,id,val = ini:r_line(section,i,STR_EMPTY,STR_EMPTY)
 				if (keytable) then
-					if (val == "") then
+					if (val == STR_EMPTY) then
 						val = true
 					end
 					_t[id] = val or true
@@ -914,19 +921,21 @@ function get_vertex(npc,dist)
 	end
 end
 
+local prisoner_state = "prisoner"
+local bone01_position = "bip01_spine"
 
 function in_los(npc,friend,be)
 
-	if (friend:id() ~= 0 and npc:target_body_state() ~= move.crouch and IsStalker(friend) and state_mgr.get_state(friend) ~= "prisoner") then
+	if (friend:id() ~= 0 and npc:target_body_state() ~= move.crouch and IsStalker(friend) and state_mgr.get_state(friend) ~= prisoner_state) then
 		if (friend:target_body_state() == move.crouch or friend:wounded()) then 
 			return false 
 		end	
 	end
 
-	local pos = npc:bone_position("bip01_spine")
-	local friend_pos = alun_utils.safe_bone_pos(friend,"bip01_spine")
+	local pos = npc:bone_position(bone01_position)
+	local friend_pos = alun_utils.safe_bone_pos(friend,bone01_position)
 	local friend_dist = pos:distance_to(friend_pos)
-	local be_pos = alun_utils.safe_bone_pos(be,"bip01_spine")
+	local be_pos = alun_utils.safe_bone_pos(be,bone01_position)
 	local dir_aim = vector():sub(be_pos,pos)
 	local be_dist = npc:position():distance_to(be:position())
 
@@ -1187,16 +1196,16 @@ function file_to_table(fname,parent,simple)
 	
 	local function get_section_includes(str)
 		local a = string.find(str,"]")
-		return a and " " .. string.sub(str,a+2) or ""
+		return a and " " .. string.sub(str,a+2) or STR_EMPTY
 	end
 
 	for line in io.lines(fname) do
 		line = trim(trim_comment(line))
-		if (line ~= "" and line ~= "\n") then
+		if (line ~= STR_EMPTY and line ~= STR_NEWLINE) then
 			if (startsWith(line, "#include")) then
 				if (simple ~= true and parent ~= nil) then
-					local inc = string.match(line,[["(.-)"]]) or ""
-					if (inc ~= "" and file_exists(get_path(fname)..inc)) then
+					local inc = string.match(line,[["(.-)"]]) or STR_EMPTY
+					if (inc ~= STR_EMPTY and file_exists(get_path(fname)..inc)) then
 						file_to_table(get_path(fname)..inc,parent,simple)
 					end
 				end
@@ -1210,10 +1219,10 @@ function file_to_table(fname,parent,simple)
 				root[sec] = root[sec] or {}
 
 				local inc = trim(get_section_includes(line))
-				if (inc and inc ~= "") then
+				if (inc and inc ~= STR_EMPTY) then
 					root[sec]["_____link"] = inc
 					if (simple ~= true) then
-						local a = str_explode(inc,",")
+						local a = str_explode(inc,STR_COMMA)
 						for k,v in pairs(a) do
 							if (root[v]) then
 								for kk,vv in pairs(root[v]) do
@@ -1225,9 +1234,9 @@ function file_to_table(fname,parent,simple)
 				end
 			elseif (sec) then
 				key = trim(string.match(line,"(.-)=") or line)
-				if (key ~= "") then
+				if (key ~= STR_EMPTY) then
 					root[sec] = root[sec] or {}
-					root[sec][key] = trim(string.match(line,"=(.+)") or "")
+					root[sec][key] = trim(string.match(line,"=(.+)") or STR_EMPTY)
 				end
 			end
 		end
@@ -1243,7 +1252,7 @@ end
 
 function get_comment(str)
 	local a = string.find(str,";")
-	return a and " " .. string.sub(str,a) or ""
+	return a and " " .. string.sub(str,a) or STR_EMPTY
 end
 
 class "cfg_file"
@@ -1252,7 +1261,7 @@ function cfg_file:__init(fname,simple_mode)
 	local cfg = io.open(fname,"a+")
 	cfg:close()
 	self.fname = fname
-	self.directory = fname:match("(.*\\)") or ""
+	self.directory = fname:match("(.*\\)") or STR_EMPTY
 	
 	self.root = {}
 	self.insert = {}
@@ -1266,7 +1275,7 @@ function cfg_file:GetValue(sec,key,typ,def)
 	end
 
 	if (typ == 1 or typ == STR_BOOL) then
-		return val == "true"
+		return val == STR_TRUE
 	elseif (typ == 2 or typ == STR_NUMBER) then
 		return tonumber(val)
 	end
@@ -1301,7 +1310,7 @@ function cfg_file:SetValue(sec,key,val)
 		table.insert(self.insert[sec],key)
 	end
 
-	self.root[sec][key] = val == nil and "" or tostring(val)
+	self.root[sec][key] = val == nil and STR_EMPTY or tostring(val)
 end
 
 function cfg_file:ClearValue(sec,key)
@@ -1326,7 +1335,7 @@ end
 -- Save ini by preserving original file. Cannot insert new keys or sections
 function cfg_file:SaveExt()
 	local t,sec,key,comment
-	local str = ""
+	local str = STR_EMPTY
 
 	local function addTab(s,n)
 		local padding = {}
@@ -1346,30 +1355,30 @@ function cfg_file:SaveExt()
 				for i=1,#self.insert[sec] do
 					local k = self.insert[sec][i]
 					if (k ~= "_____link") then
-						str = str .. addTab(k,40) .. " = " .. tostring(self.root[sec][k]) .. "\n"
+						str = str .. addTab(k,40) .. " = " .. tostring(self.root[sec][k]) .. STR_NEWLINE
 					end
 				end
 			end
 			
-			str = str .. ln .. "\n"
+			str = str .. ln .. STR_NEWLINE
 		elseif (sec and self.root[sec]) then
 			key = trim(trim_comment(string.match(ln,"(.-)=") or ln))
 			
 			if (key and self.root[sec][key]) then
-				comment = get_comment(ln) or ""
-				if (comment ~= "") then 
+				comment = get_comment(ln) or STR_EMPTY
+				if (comment ~= STR_EMPTY) then 
 					comment = addTab(comment,20)
 				end
-				if (self.root[sec][key] == "") then
-					str = str .. addTab(key,40) .. " =" .. comment .. "\n"
+				if (self.root[sec][key] == STR_EMPTY) then
+					str = str .. addTab(key,40) .. " =" .. comment .. STR_NEWLINE
 				else
-					str = str .. addTab(key,40) .. " = " .. tostring(self.root[sec][key]) .. comment .. "\n"
+					str = str .. addTab(key,40) .. " = " .. tostring(self.root[sec][key]) .. comment .. STR_NEWLINE
 				end
 			else 
-				str = str .. ln .. "\n"
+				str = str .. ln .. STR_NEWLINE
 			end
 		else 
-			str = str .. ln .. "\n"
+			str = str .. ln .. STR_NEWLINE
 		end
 	end
 	
@@ -1401,7 +1410,7 @@ function cfg_file:Save()
 		table.sort(_s[section])
 	end 
 	
-	local str = ""
+	local str = STR_EMPTY
 	
 	local first
 	for i,section in pairs(_s.__order) do
@@ -1413,18 +1422,18 @@ function cfg_file:Save()
 		end
 
 		if (self.root[section]["_____link"]) then 
-			str = str .. ":" .. self.root[section]["_____link"] .. "\n"
+			str = str .. ":" .. self.root[section]["_____link"] .. STR_NEWLINE
 		else 
-			str = str .. "\n"
+			str = str .. STR_NEWLINE
 		end 
 
 		for ii, key in pairs(_s[section]) do
 			if (key ~= "_____link") then
 				val = self.root[section][key]
-				if (val == "") then
-					str = str .. key .. "\n"
+				if (val == STR_EMPTY) then
+					str = str .. key .. STR_NEWLINE
 				else
-					str = str .. key .. " = " .. tostring(val) .. "\n"
+					str = str .. key .. " = " .. tostring(val) .. STR_NEWLINE
 				end
 			end
 		end 
@@ -1485,11 +1494,11 @@ function XmlParser:ParseXmlText(xmlText,path)
 		if not ni then break end
 		local text = string.sub(xmlText, i, ni-1);
 		if not string.find(text, "^%s*$") then
-			top.Value=(top.Value or "")..self:FromXmlString(text);
+			top.Value=(top.Value or STR_EMPTY)..self:FromXmlString(text);
 		end
 		if empty == "/" then  -- empty element tag
 			table.insert(top.ChildNodes, {Name=label,Value=nil,Attributes=self:ParseArgs(xarg),ChildNodes={}})
-		elseif c == "" then   -- start tag
+		elseif c == STR_EMPTY then   -- start tag
 			top = {Name=label, Value=nil, Attributes=self:ParseArgs(xarg), ChildNodes={}}
 			table.insert(stack, top)   -- new level
 		else  -- end tag
@@ -1507,7 +1516,7 @@ function XmlParser:ParseXmlText(xmlText,path)
 	end
 	local text = string.sub(xmlText, i);
 	if not string.find(text, "^%s*$") then
-		stack[#stack].Value=(stack[#stack].Value or "")..self:FromXmlString(text);
+		stack[#stack].Value=(stack[#stack].Value or STR_EMPTY)..self:FromXmlString(text);
 	end
 	if #stack > 1 then
 		printf("XmlParser: unclosed "..stack[stack.n].Name)
@@ -1586,6 +1595,17 @@ function startsWith(text,prefix)
 	return string.sub(text, 1, string.len(prefix)) == prefix
 end
 
+local type_s8 = "s8"
+local type_s16 = "s16"
+local type_s32 = "s32"
+local type_s64 = "s64"
+local type_u8 = "u8"
+local type_u16 = "u16"
+local type_u32 = "u32"
+local type_u64 = "u64"
+local type_stringZ = "stringZ"
+local type_CTime = "CTime"
+
 function w_stpk(stpk,typ,n,info)
 	local isError
 
@@ -1594,9 +1614,9 @@ function w_stpk(stpk,typ,n,info)
 			stpk:w_bool(n)
 		elseif (n and type(n) == STR_STRING) then
 			isError = true
-			if (n == "true") then
+			if (n == STR_TRUE) then
 				stpk:w_bool(true)
-			elseif (n == "false") then
+			elseif (n == STR_FALSE) then
 				stpk:w_bool(false)
 			end
 			info = info .. " |-> auto-corrected bool value from string"
@@ -1607,7 +1627,7 @@ function w_stpk(stpk,typ,n,info)
 			stpk:w_bool(false)
 		end
 
-	elseif (typ == "s8") then
+	elseif (typ == type_s8) then
 		if (n and type(n) == STR_NUMBER and n >= -128 and n <= 128) then
 			stpk:w_s8(n)
 		else
@@ -1615,7 +1635,7 @@ function w_stpk(stpk,typ,n,info)
 			stpk:w_s8(0)
 		end
 
-	elseif (typ == "s16") then
+	elseif (typ == type_s16) then
 		if (n and type(n) == STR_NUMBER and n >= -32768 and n <= 32767) then
 			stpk:w_s16(n)
 		else
@@ -1623,7 +1643,7 @@ function w_stpk(stpk,typ,n,info)
 			stpk:w_s16(0)
 		end
 
-	elseif (typ == "s32") then										
+	elseif (typ == type_s32) then
 		if (n and type(n) == STR_NUMBER and n >= -2147483648 and n <= 2147483647) then
 			stpk:w_s32(n)
 		else
@@ -1631,7 +1651,7 @@ function w_stpk(stpk,typ,n,info)
 			stpk:w_s32(0)
 		end
 
-	elseif (typ == "s64") then
+	elseif (typ == type_s64) then
 		if (n and type(n) == STR_NUMBER and n >= -9223372036854775808 and n <= 9223372036854775808) then
 			stpk:w_s64(n)
 		else
@@ -1639,7 +1659,7 @@ function w_stpk(stpk,typ,n,info)
 			stpk:w_s64(0)
 		end
 
-	elseif (typ == "u8") then
+	elseif (typ == type_u8) then
 		if (n and type(n) == STR_NUMBER and n >= 0 and n <= 255) then
 			stpk:w_u8(n)
 		else
@@ -1647,7 +1667,7 @@ function w_stpk(stpk,typ,n,info)
 			stpk:w_u8(0)
 		end
 
-	elseif (typ == "u16") then
+	elseif (typ == type_u16) then
 		if (n and type(n) == STR_NUMBER and n >= 0 and n <= 65535) then
 			stpk:w_u16(n)
 		else
@@ -1655,7 +1675,7 @@ function w_stpk(stpk,typ,n,info)
 			stpk:w_u16(0)
 		end
 
-	elseif (typ == "u32") then
+	elseif (typ == type_u32) then
 		if (n and type(n) == STR_NUMBER and n >= 0 and n <= 4294967295) then
 			stpk:w_u32(n)
 		else
@@ -1663,7 +1683,7 @@ function w_stpk(stpk,typ,n,info)
 			stpk:w_u32(0)
 		end
 
-	elseif (typ == "u64") then
+	elseif (typ == type_u64) then
 		if (n and type(n) == STR_NUMBER and n >= 0 and n <= 18446744073709551615) then
 			stpk:w_u64(n)
 		else
@@ -1679,7 +1699,7 @@ function w_stpk(stpk,typ,n,info)
 			stpk:w_float(0)
 		end
 
-	elseif (typ == "stringZ") then
+	elseif (typ == type_stringZ) then
 		if (n and type(n) == STR_STRING) then
 			if (string.len(n) > 255) then
 				isError = true
@@ -1690,10 +1710,10 @@ function w_stpk(stpk,typ,n,info)
 			stpk:w_stringZ(tostring(n))
 		else
 			--isError = true
-			stpk:w_stringZ("nil")
+			stpk:w_stringZ(STR_NIL)
 		end
 
-	elseif (typ == "CTime") then
+	elseif (typ == type_CTime) then
 		utils.w_CTime(stpk,n)
 		--[[
 		if (n and type(n) == STR_USERDATA and n.timeToString) then
@@ -1742,22 +1762,22 @@ function get_fsgame()
 	file_to_table("fsgame.ltx",root,true)
 
 	local fsgame = {}
-	fsgame["$fs_root$"] = ""
+	fsgame["$fs_root$"] = STR_EMPTY
 	local t
 	for k,v in pairs(root) do
 		t = str_explode(v,"|")
 		dir = t[3]
 
 		if not (string.find(dir,"%$")) then
-			fsgame[k] = (dir or "") .. (t[4] or "")
+			fsgame[k] = (dir or STR_EMPTY) .. (t[4] or STR_EMPTY)
 		else
-			fsgame[k] = t[4] or ""
+			fsgame[k] = t[4] or STR_EMPTY
 		end
 
 		repeat
 			t = root[dir] and str_explode(root[dir],"|")
 			dir = t and t[3]
-			fsgame[k] = (fsgame[dir] or dir or "") .. (t and t[4] or "") .. fsgame[k]
+			fsgame[k] = (fsgame[dir] or dir or STR_EMPTY) .. (t and t[4] or STR_EMPTY) .. fsgame[k]
 		until (dir == nil)
 	end
 	return fsgame
@@ -1765,11 +1785,11 @@ end
 
 function fspath(str)
 	local fsg = get_fsgame()
-	return fsg[str] or ""
+	return fsg[str] or STR_EMPTY
 end
 
 function fsgame_append(str,ap)
-	if (fspath(str) ~= "" and fspath(str) ~= nil) then
+	if (fspath(str) ~= STR_EMPTY and fspath(str) ~= nil) then
 		return
 	end
 	fsgame = nil
@@ -1777,7 +1797,7 @@ function fsgame_append(str,ap)
 	local fsg = io.open("fsgame.ltx","a+")
 	local data = fsg:read("*all")
 	if not (string.find(data,str)) then
-		fsg:write("\n"..ap)
+		fsg:write(STR_NEWLINE..ap)
 	end
 	fsg:close()
 end
@@ -1983,9 +2003,9 @@ function in_los(npc,be,friend)
 		return false 
 	end
 
-	local be_pos = alun_utils.safe_bone_pos(be,"bip01_spine")
+	local be_pos = alun_utils.safe_bone_pos(be,bone01_position)
 	local pos = npc:bone_position("bip01_spine")
-	local friend_pos = alun_utils.safe_bone_pos(friend,"bip01_spine")
+	local friend_pos = alun_utils.safe_bone_pos(friend,bone01_position)
 	local friend_dist = pos:distance_to(friend_pos)
 	local dir_aim = vector():sub(be_pos,pos)
 	local be_dist = npc:position():distance_to(be:position())
@@ -2030,10 +2050,10 @@ function friends_on_fire_line(npc,be,st)
 		local friend = id  and id ~= sid and db.storage[id] and db.storage[id].object
 	
 		if (friend and friend:alive() and npc:relation(friend) < game_object.enemy) then
-			local pos = npc:bone_position("bip01_spine")
-			local friend_pos = alun_utils.safe_bone_pos(friend,"bip01_spine")
+			local pos = npc:bone_position(bone01_position)
+			local friend_pos = alun_utils.safe_bone_pos(friend,bone01_position)
 			local friend_dist = pos:distance_to(friend_pos)
-			local be_pos = alun_utils.safe_bone_pos(be,"bip01_spine")
+			local be_pos = alun_utils.safe_bone_pos(be,bone01_position)
 			local dir_aim = vector():sub(be_pos,pos)
 			local be_dist = npc:position():distance_to(be:position())
 

@@ -45,7 +45,7 @@ end
 
 function sim_squad_scripted:init_squad()
 	--alun_utils.debug_write("sim_squad_scripted:init_squad")
-	local sys_ini			= ini_sys
+	local sys_ini			= get_system_ini()
 	local settings_id 		= self:section_name()
 	
 	self.player_id 			= sys_ini:r_string_ex(settings_id,"faction") or "stalker"
@@ -65,7 +65,7 @@ function sim_squad_scripted:init_squad()
 	
 	local s	= sys_ini:r_string_ex(settings_id, "target_random_smart")
 	if (s) then
-		self.random_targets = alun_utils.str_explode(s,",") 
+		self.random_targets = alun_utils.str_explode(s,STR_COMMA) 
 	end
 	self.idle_time			= sys_ini:r_float_ex(settings_id,"idle_time") or math.random(STAY_POINT_IDLE_MIN,STAY_POINT_IDLE_MAX)	
 	
@@ -588,7 +588,7 @@ end
 
 function sim_squad_scripted:add_squad_member(spawn_section, spawn_position, lv_id, gv_id)
 	--alun_utils.debug_write("sim_squad_scripted:add_squad_member")
-	local spawn_sections_ltx = ini_sys
+	local spawn_sections_ltx = get_system_ini()
 	
 	if not (spawn_sections_ltx:section_exist(spawn_section)) then 
 		printf("ERROR: npc section %s does not exist!",spawn_section)
@@ -618,7 +618,7 @@ end
 
 function sim_squad_scripted:create_npc(spawn_smart,pos,lvid,gvid)
 	--alun_utils.debug_write("sim_squad_scripted:create_npc")
-	local ini = ini_sys
+	local ini = get_system_ini()
 	local settings_id = self:section_name()
 	local spawn_sections = utils.parse_names(ini:r_string_ex(settings_id, "npc") or STR_EMPTY)
 	
@@ -678,7 +678,7 @@ function sim_squad_scripted:create_npc(spawn_smart,pos,lvid,gvid)
 
 		local count_string = IsEocMode() and "npc_in_squad_eoc" or "npc_in_squad"
 		local count = ini:r_string_ex(settings_id,count_string) or "1,2"
-		count = alun_utils.str_explode(count,",")
+		count = alun_utils.str_explode(count,STR_COMMA)
 		count[1] = count[1] and tonumber(count[1])
 		count[2] = count[2] and tonumber(count[2]) or count[1]
 

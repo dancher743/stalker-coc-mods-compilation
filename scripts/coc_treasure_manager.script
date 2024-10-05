@@ -188,7 +188,7 @@ function create_random_stash(no_spot,hint,bonus_items)
 		max_weight = max_weight + 30
 	end
 	
-	local ini = ini_sys
+	local ini = get_system_ini()
 	local function is_consumable(section)
 		local v = ini:r_string_ex(section,"class",STR_EMPTY)
 		return v == "S_FOOD" or v == "II_FOOD"
@@ -300,7 +300,7 @@ function create_random_stash(no_spot,hint,bonus_items)
 			level.map_add_object_spot_ser(id, "treasure", hint or STR_EMPTY)
 			news_manager.send_treasure_with_level(name, se_box)
 		end
-		caches[id] = table.concat(spawned_item,",")
+		caches[id] = table.concat(spawned_item,STR_COMMA)
 	else
 		caches[id] = false
 	end
@@ -559,11 +559,11 @@ function try_spawn_treasure(box)
 		return
 	end
 	
-	local spawned_item = alun_utils.str_explode(caches[id],",")
+	local spawned_item = alun_utils.str_explode(caches[id],STR_COMMA)
 	caches[id] = true
 	
 	local sec,ammos,ct,ammo_type,ammo_section
-	local ini = ini_sys
+	local ini = get_system_ini()
 	local sim = get_alife()
 	for i=1,#spawned_item do
 		sec = spawned_item[i]
@@ -643,7 +643,7 @@ end
 
 function get_valid_item_sections()
 	local t = {}
-	local ini = ini_sys
+	local ini = get_system_ini()
 	ini:section_for_each(function(section)
 		if not (ltx:line_exist("ignore_sections",section)) then
 			if (ini:line_exist(section,"cform")) then
@@ -669,7 +669,7 @@ function get_valid_item_sections()
 	if (DEV_DEBUG_DEV) then
 		local cfg = io.open("valid_item_sections.ltx","w+")
 		for k,v in pairs(t) do 
-			cfg:write(k.."\n")
+			cfg:write(k..STR_NEWLINE)
 		end
 		cfg:close()
 	end

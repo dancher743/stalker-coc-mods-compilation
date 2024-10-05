@@ -106,7 +106,7 @@ end
 class "slot_hud" (CUIScriptWnd)
 function slot_hud:__init() super()
 	self.slot = {}
-	self.ini = ini_sys
+	self.ini = get_system_ini()
 	self.shown = false
 	self:InitControls()
 end

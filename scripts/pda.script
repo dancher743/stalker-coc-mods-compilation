@@ -338,7 +338,7 @@ function fill_primary_objects()
 end
 
 function add_quick_slot_items_on_game_start()
-	local ini = ini_sys
+	local ini = get_system_ini()
 	for i=0,3 do
 		get_cached_console():execute( strformat("slot_%s %s",i, ini:r_string_ex("actor","quick_item_"..tostring(i+1)) or STR_EMPTY) )
 	end
@@ -501,7 +501,7 @@ function coc_rankings_set_icon(index)
 			if (axr_main.config:r_value(MM_OPTIONS,"enable_outfit_portrait",1,false) == true) then
 				local outfit = db.actor:item_in_slot(7)
 				if (outfit) then 
-					local icon = ini_sys:r_string_ex(outfit:section(),"character_portrait")
+					local icon = get_system_ini():r_string_ex(outfit:section(),"character_portrait")
 					if (icon and icon ~= STR_EMPTY) then
 						return icon
 					end

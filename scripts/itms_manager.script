@@ -88,7 +88,7 @@ end
 function on_item_focus(itm)
 	local section = itm:section()
 	if (RepairTools[section]) then 
-		local ini = ini_sys
+		local ini = get_system_ini()
 		local repair_type = ini:r_string_ex(section,"repair_type")
 		if not (repair_type) then 
 			return
@@ -127,7 +127,7 @@ function on_item_drag_dropped(itm1,itm2,from_slot,to_slot)
 		return 
 	end
 
-	local ini = ini_sys
+	local ini = get_system_ini()
 	local repair_type = ini:r_string_ex(section,"repair_type")
 	if not (repair_type) then 
 		return 
@@ -396,7 +396,7 @@ function actor_on_item_use(obj)
 	if (SleepBagEnable and SleepBagSections[obj:section()]) then
 		local sec = obj:section()
 		if (SleepBagPlaceable) then
-			local ph_sec = ini_sys:r_string_ex(sec,"placeable_section")
+			local ph_sec = get_system_ini():r_string_ex(sec,"placeable_section")
 			local se_obj = get_alife():create(ph_sec or "ph_sleepbag",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id())
 		else
 			local se_obj = get_alife():create(sec,db.actor:position(),0,0,0)
@@ -592,7 +592,7 @@ function is_ammo_for_wpn(sec)
 	for i=2,3 do
 		local wpn = db.actor:item_in_slot(i)
 		if (wpn) then
-			local ammos = alun_utils.parse_list(ini_sys,wpn:section(),"ammo_class",true)
+			local ammos = alun_utils.parse_list(get_system_ini(),wpn:section(),"ammo_class",true)
 			if (ammos[sec]) then 
 				return true 
 			end
@@ -639,7 +639,7 @@ function loot_mutant(obj,cls,t,npc)
 
 	local loot,sec
 	for i=1,#loot_table do
-		loot = alun_utils.str_explode(loot_table[i],",")
+		loot = alun_utils.str_explode(loot_table[i],STR_COMMA)
 		if (loot and loot[1] and loot[2]) then
 			if not (loot[3]) then
 				loot[3] = 1

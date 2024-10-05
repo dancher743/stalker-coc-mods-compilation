@@ -509,7 +509,7 @@ function has_completed_task_prerequisites(actor,npc,p)
 		return false
 	end
 
-	prereq = alun_utils.str_explode(prereq,",")
+	prereq = alun_utils.str_explode(prereq,STR_COMMA)
 
 	local tsk
 	for i=1,#prereq do

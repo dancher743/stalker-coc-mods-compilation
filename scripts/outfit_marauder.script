@@ -137,7 +137,7 @@ function get_comb_coeff(npc)
 end
 
 function has_chance_to_create(section)
-	local cost = ini_sys:r_string_ex(section, "cost")
+	local cost = get_system_ini():r_string_ex(section, "cost")
 	if cost == nil then
 		return false
 	end
@@ -150,7 +150,7 @@ function fill_visuals()
 	local id, value = STR_EMPTY, STR_EMPTY
 	for i=0,n-1 do
 		local result, id, value = death_visual_ini:r_line_ex("outfits_and_helms",i,STR_EMPTY,STR_EMPTY)
-		local p = alun_utils.str_explode(value,",")
+		local p = alun_utils.str_explode(value,STR_COMMA)
 		if (p) then
 			p[1] = tostring(p[1])
 			p[2] = tostring(p[2])

@@ -106,10 +106,10 @@ function loot_ui:SetMutantImage()
 	giant				= {file="ui\\ui_actor_monsters_pda_1",x=STR_ONE,y="200",special=STR_ONE},
 	}
 
-	local mutant_id = game.translate_string(ini_sys:r_string_ex(self.section,"species") or STR_EMPTY)
+	local mutant_id = game.translate_string(get_system_ini():r_string_ex(self.section,"species") or STR_EMPTY)
 
 	if mutant_id == "arena_monstr" then
-	mutant_id = game.translate_string(ini_sys:r_string_ex(self.section,"community") or STR_EMPTY)
+	mutant_id = game.translate_string(get_system_ini():r_string_ex(self.section,"community") or STR_EMPTY)
 	end
 
 	local mutant_f = killed_mutant_tbl[mutant_id].file or "ui\\ui_actor_monsters_pda_1"
@@ -258,7 +258,7 @@ end
 
 function loot_ui:AddItemToList(sec,count)
 	local _itm			= load_item(self.file_item_main_sz.y)
-	local inv_name 		= game.translate_string(ini_sys:r_string_ex(sec,"inv_name") or "none")
+	local inv_name 		= game.translate_string(get_system_ini():r_string_ex(sec,"inv_name") or "none")
 
 	_itm:SetWndSize		(self.file_item_main_sz)
 
@@ -273,7 +273,7 @@ function loot_ui:AddItemToList(sec,count)
 
 	_itm.sec = sec
 
-	local ini = ini_sys
+	local ini = get_system_ini()
 	local inv_grid_width = ini:r_float_ex(sec,"inv_grid_width") or 0
 	local inv_grid_height = ini:r_float_ex(sec,"inv_grid_height") or 0
 	local inv_grid_x = ini:r_float_ex(sec,"inv_grid_x") or 0
@@ -330,7 +330,7 @@ function loot_mutant(obj,cls,t,npc)
 
 	local loot,sec
 	for i=1,#loot_table do
-		loot = alun_utils.str_explode(loot_table[i],",")
+		loot = alun_utils.str_explode(loot_table[i],STR_COMMA)
 		if (loot and loot[1] and loot[2]) then
 			if not (loot[3]) then
 				loot[3] = 1

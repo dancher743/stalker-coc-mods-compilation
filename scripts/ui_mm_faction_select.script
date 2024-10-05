@@ -8,7 +8,7 @@
 --=======================================< Controls >=======================================--
 local ico_size = 0.7
 local ico_width = (device().width / device().height > (1024/768+0.01)) and 0.8 or 1
-local ini = ini_sys
+local ini = get_system_ini()
 local ini_ico = ini_file("plugins\\faction_portraits.ltx")
 local ini_itm = ini_file("plugins\\new_game_loadouts.ltx")
 local ini_map = ini_file("plugins\\new_game_start_locations.ltx")
@@ -262,14 +262,14 @@ local function on_game_load(binder)
 		local loadout = config:r_value("character_creation","new_game_loadout",3)
 		local ammo_table = {}
 		if loadout and loadout ~= STR_EMPTY then
-			local t = alun_utils.str_explode(loadout,",")
+			local t = alun_utils.str_explode(loadout,STR_COMMA)
 			for i=1, #t do
 				if ini:section_exist(t[i]) then
 					if ini:r_string_ex(t[i],"ammo_class") then
 						local slot = ini:r_float_ex(t[i],"slot")
 						if slot and ((slot == 1) or (slot == 2)) then -- retarded way to know that we are dealing with weapon
 							local ammo = ini:r_string_ex(t[i],"ammo_class")
-							ammo = alun_utils.str_explode(ammo,",")
+							ammo = alun_utils.str_explode(ammo,STR_COMMA)
 							ammo = ammo[1] --ammo[math.random(#ammo)]
 							local box_size = (ini:r_float_ex(ammo, "box_size") or 50)
 							local count = (box_size < 30) and 2 or 1
@@ -396,7 +396,7 @@ function faction_ui:__init(owner) super()
 	local n = ini_opt:line_count("new_game_hardcore_lives") or 0
 	for i=0, n-1 do
 		local result, id, value = ini_opt:r_line("new_game_hardcore_lives",i,STR_EMPTY,STR_EMPTY )
-		local t = alun_utils.str_explode(value,",")
+		local t = alun_utils.str_explode(value,STR_COMMA)
 		local size = #self.table_hardcore_lives + 1
 		self.table_hardcore_lives[size] = {}
 		self.table_hardcore_lives[size][1] = tonumber(t[1])
@@ -407,7 +407,7 @@ function faction_ui:__init(owner) super()
 	local n = ini_opt:line_count("new_game_hardcore_regen") or 0
 	for i=0, n-1 do
 		local result, id, value = ini_opt:r_line("new_game_hardcore_regen",i,STR_EMPTY,STR_EMPTY )
-		local t = alun_utils.str_explode(value,",")
+		local t = alun_utils.str_explode(value,STR_COMMA)
 		local size = #self.table_hardcore_regen + 1
 		self.table_hardcore_regen[size] = {}
 		self.table_hardcore_regen[size][1] = tonumber(t[1])
@@ -418,7 +418,7 @@ function faction_ui:__init(owner) super()
 	local n = ini_opt:line_count("new_game_timer") or 0
 	for i=0, n-1 do
 		local result, id, value = ini_opt:r_line("new_game_timer",i,STR_EMPTY,STR_EMPTY )
-		local t = alun_utils.str_explode(value,",")
+		local t = alun_utils.str_explode(value,STR_COMMA)
 		local size = #self.table_timer + 1
 		self.table_timer[size] = {}
 		self.table_timer[size][1] = tonumber(t[1])
@@ -1194,7 +1194,7 @@ function faction_ui:LoadLoadout (rand)
 	for i=0, n-1 do
 		local result, id, value = ini_itm:r_line(self.selected_faction .. "_loadout" , i , STR_EMPTY, STR_EMPTY)
 		if ini:section_exist(id) then
-			local t = alun_utils.str_explode(value,",")
+			local t = alun_utils.str_explode(value,STR_COMMA)
 			if (t[1] == STR_FALSE) then
 				for i=1,tonumber(t[2]) do
 					self.table_inv[#self.table_inv + 1] = { ["name"] = id , ["points"] = 0 }

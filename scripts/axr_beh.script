@@ -524,12 +524,12 @@ function action_beh:get_current_waypoint(use_var)
 	t.active_section = st.active_section
 
 	for s in string.gmatch(str,"look:(%A+)") do
-		local p = alun_utils.str_explode(s,",")
+		local p = alun_utils.str_explode(s,STR_COMMA)
 		t.look_position = vector():set(tonumber(p[1]),tonumber(p[2]),tonumber(p[3]))
 	end
 
 	for s in string.gmatch(str,"animpoint:(%A+)") do
-		local p = alun_utils.str_explode(s,",")
+		local p = alun_utils.str_explode(s,STR_COMMA)
 		t.animpoint = vector():set(tonumber(p[1]),tonumber(p[2]),tonumber(p[3]))
 		p[4] = p[4] and tonumber(p[4]) or 0
 		p[5] = p[5] and tonumber(p[5]) or 0
@@ -538,7 +538,7 @@ function action_beh:get_current_waypoint(use_var)
 	end
 
 	for s in string.gmatch(str,"pos:(%A+)") do
-		local p = alun_utils.str_explode(s,",")
+		local p = alun_utils.str_explode(s,STR_COMMA)
 		t.position = vector():set(tonumber(p[1]),tonumber(p[2]),tonumber(p[3]))
 	end
 
@@ -561,7 +561,7 @@ function action_beh:get_current_waypoint(use_var)
 	end
 
 	for s in string.gmatch(str,"look_job:(%a+)") do
-		s = alun_utils.str_explode(s,",")
+		s = alun_utils.str_explode(s,STR_COMMA)
 		local board = SIMBOARD
 		local smart = s[1] and board and board.smarts_by_names[s[1]]
 		local obj = smart and smart.npc_by_job_section["logic@"..s[2]]
@@ -573,7 +573,7 @@ function action_beh:get_current_waypoint(use_var)
 	end
 
 	local pt = alun_utils.str_explode(str,"|")
-	pt = pt[1] and alun_utils.str_explode(pt[1],",")
+	pt = pt[1] and alun_utils.str_explode(pt[1],STR_COMMA)
 
 	if not (pt) then
 		return
