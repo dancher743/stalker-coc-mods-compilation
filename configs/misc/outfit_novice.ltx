@@ -328,3 +328,61 @@ telepatic_immunity                       = 0.0
 chemical_burn_immunity                   = -0.01
 explosion_immunity                       = -0.01
 fire_wound_immunity                      = -0.005
+
+;---------------------------------------------------------------------------------------------
+;		Brown Trench Coat
+;---------------------------------------------------------------------------------------------
+[trenchcoat_brown_outfit]:outfit_novice_base
+$spawn                                   = "outfit\trenchcoat_outfit"
+visual                                   = dynamics\outfit\bandit_commander_outfit
+actor_visual                             = actors\stalker_bandit\stalker_bandit5a.ogf
+npc_visual                               = actors\stalker_bandit\stalker_bandit5a.ogf
+player_hud_section                       = actor_hud_bandit_merc
+
+inv_name                                 = trenchcoat_brown_outfit_name
+inv_name_short                           = trenchcoat_brown_outfit_name
+description                              = trenchcoat_brown_outfit_description
+inv_weight                               = 11
+
+inv_grid_height                          = 3
+inv_grid_x                               = 16
+inv_grid_y                               = 34
+
+upgr_icon_x                              = 942
+upgr_icon_y                              = 0
+upgr_icon_width                          = 303
+upgr_icon_height                         = 162
+
+cost                                     = 17500
+
+immunities_sect                          = sect_trenchcoat_brown_outfit_immunities
+
+burn_protection                          = 0.033
+shock_protection                         = 0.165
+radiation_protection                     = 0.007
+chemical_burn_protection                 = 0.033
+telepatic_protection                     = 0.0
+strike_protection                        = 0.215
+explosion_protection                     = 0.215
+wound_protection                         = 0.18
+
+bones_koeff_protection                   = actor_armor_duty_suit
+
+artefact_count                           = 1
+
+upgrades                                 = up_gr_firstab_dolg_outfit, up_gr_seconab_dolg_outfit, up_gr_thirdab_dolg_outfit
+installed_upgrades                       =
+upgrade_scheme                           = upgrade_scheme_dolg_outfit
+
+character_portrait                       = ui_inGame2_bandit_5
+
+[sect_trenchcoat_brown_outfit_immunities]
+burn_immunity                            = 0.048
+strike_immunity                          = 0.0
+shock_immunity                           = 0.02
+wound_immunity                           = 0.039
+radiation_immunity                       = 0.0
+telepatic_immunity                       = 0.0
+chemical_burn_immunity                   = 0.048
+explosion_immunity                       = 0.039
+fire_wound_immunity                      = 0.019

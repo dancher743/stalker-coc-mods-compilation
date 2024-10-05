@@ -276,11 +276,18 @@
 	</string>
 
 	<string id="trenchcoat_outfit_name">
-		<text>Leather trench coat</text>
+		<text>Trench coat</text>
 	</string>
 
 	<string id="trenchcoat_outfit_description">
 		<text>A regular black leather trench coat. Has no special purpose other than to keep the wearer warm at night or protect him from a blind dog bite. Although the trench coat is not particularly comfortable, it is often used by bandits in the Zone - either because it allows them to hide in the dark or simply due to its "cool" appearance.</text>
+	</string>
+	
+	<string id="trenchcoat_brown_outfit_name">
+		<text>Leather trench coat</text>
+	</string>
+	<string id="trenchcoat_brown_outfit_description">
+		<text>A regular trench coat that hides a stalker bodysuit underneath it. Said bodysuit comes with reinforced body armour made by bandit craftsmen providing good protection against anomalies. The suit cannot be modified with an artefact container, but may be upgraded with a combat support system instead.</text>
 	</string>
 
 	<string id="banditmerc_outfit_name">

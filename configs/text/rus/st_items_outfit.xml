@@ -283,11 +283,18 @@
 	</string>
 
 	<string id="trenchcoat_outfit_name">
-		<text>Кожаный плащ</text>
+		<text>Плащ</text>
 	</string>
 
 	<string id="trenchcoat_outfit_description">
 		<text>Обычный плащ из чёрной кожи. Особенной защиты носителю не обеспечивает, разве что не даст замёрзнуть ночью и смягчит укус слепой собаки. Достаточно неудобен, но, тем не менее, часто используется бандитами - возможно, исключительно из-за внешнего вида.</text>
+	</string>
+	
+	<string id="trenchcoat_brown_outfit_name">
+		<text>Кожаный плащ</text>
+	</string>
+	<string id="trenchcoat_brown_outfit_description">
+		<text>Плащ из натуральной кожи, скрывающий под собой комбинезон сталкера. Комбинезон усилен бандитским техником, из-за чего обеспечивает хорошую защиту от аномалий. Такие плащи часто носят местные авторитеты.</text>
 	</string>
 
 	<string id="banditmerc_outfit_name">
