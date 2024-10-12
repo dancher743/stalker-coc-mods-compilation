@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 * Added mosquitoes sound ambient
 * NPCs can deal critical hits to other NPCs
 * Optimized global code (`_g.script`)
+* Reduced saves deletion time in Ironman Mode <3
 * New outfits: Clear Sky exoskeleton & scientific outfit, bandit leather trench coat
 
 ### Improvements
