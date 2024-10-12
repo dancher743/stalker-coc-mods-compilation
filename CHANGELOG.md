@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 * Optimized global code (`_g.script`)
 * Reduced saves deletion time in Ironman Mode <3
 * New outfits: Clear Sky exoskeleton & scientific outfit, bandit leather trench coat
+* Added coocked food items to trade
 
 ### Improvements
 * Restored lore-friendly NPC's backpack textures
