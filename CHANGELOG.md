@@ -56,6 +56,7 @@ All notable changes to this project will be documented in this file.
 * Fixed ignoring of start companions as NPC for reborn in Azazel mode
 * Fixed "ALIFE OBJECT ID IS 65535!" message after death in Azazel mode
 * Fixed double crit hit
+* Reworked text of `banditmerc_outfit_description` string
 
 ### Optimization
 * Optimized amount of update callbacks

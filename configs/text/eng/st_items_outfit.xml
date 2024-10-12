@@ -291,11 +291,11 @@
 	</string>
 
 	<string id="banditmerc_outfit_name">
-		<text>Bandit mercenary suit</text>
+		<text>Bandit suit</text>
 	</string>
 
 	<string id="banditmerc_outfit_description">
-		<text>Outfit of choice for the Mercenary faction, recently "liberated" by bandits. The bandit variation suffers from external damage providing less adequate protection across the board, but is not only less costly, but easier to get a hold of.</text>
+		<text>Suit that members of the Renegades faction once held. It looks like a mercenary suit, but suffers from external damage providing less adequate protection across the board, but is not only less costly and easier to get a hold of.</text>
 	</string>
 
 	<string id="bandit_exo_outfit_name">
