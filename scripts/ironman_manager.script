@@ -41,6 +41,11 @@ end
 
 --========================================< Callbacks >========================================--
 local function save_state(m_data)
+	if (not IsIronManMode()) then
+		UnregisterScriptCallback("save_state",save_state)
+		return
+	end
+	
 	m_data.ironman_sleep_hrs = sleep_hrs
 	m_data.ironman_granted_lives = granted_lives
 	m_data.ironman_life_cycle = life_cycle
@@ -50,6 +55,11 @@ local function save_state(m_data)
 end
 
 local function load_state(m_data)
+	if (not IsIronManMode()) then
+		UnregisterScriptCallback("load_state",load_state)
+		return
+	end
+	
 	sleep_hrs = m_data.ironman_sleep_hrs or sleep_hrs
 	granted_lives = m_data.ironman_granted_lives or granted_lives
 	life_cycle = m_data.ironman_life_cycle or life_cycle
@@ -59,8 +69,8 @@ local function load_state(m_data)
 end
 
 local function on_game_load()
-	local uuid = alife_storage_manager.get_state().uuid
-	if (not uuid) or (not life_feature) then
+	if (not IsIronManMode()) or (not life_feature) then
+		UnregisterScriptCallback("on_game_load",on_game_load)
 		return
 	end
 	if _G.GAME_VERSION == "1.4.16" then
@@ -76,6 +86,7 @@ local function actor_on_before_death() -- Ironman: second wind
 	
 	local uuid = alife_storage_manager.get_state().uuid
 	if not (uuid) then
+		UnregisterScriptCallback("actor_on_before_death",actor_on_before_death)
 		return -- not in hardcore mode
 	end
 	

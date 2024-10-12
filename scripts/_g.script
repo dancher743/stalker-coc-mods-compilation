@@ -1863,6 +1863,10 @@ function IsAzazelMode()
 	return alife_storage_manager.get_state().enable_azazel_mode == true
 end
 
+function IsIronManMode()
+	return alife_storage_manager.get_state().uuid ~= nil
+end
+
 function IsActor(o,c)
 	if not (c) then
 		c = o and o:clsid()

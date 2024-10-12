@@ -60,7 +60,7 @@ All notable changes to this project will be documented in this file.
 ### Optimization
 * Optimized amount of update callbacks
 * Optimized RAM usage in `actor_on_slicing_update()` function in `itms_manager.script`
-* Reworked initialization of Azazel mode to not affect the normal mode
+* Reworked initialization of Azazel and Ironman modes to not affect the regular mode
 * Optimized string allocations in find victims code in `azazel_mode.script`
 * Reduced extra allocations of `game_graph()` function, using `get_game_graph()` instead
 * Optimized string allocations in `critical_hit_manager.script`
@@ -75,7 +75,7 @@ All notable changes to this project will be documented in this file.
 * Added `surge_on_ended` and `psi_storm_on_ended` callbacks into `axr_main.script`
 * Added `npc_regular` string into `squad_descr.ltx` to add non-random squads spawn
 * Changed time format in `ui_hud_timer.script`
-* Added `IsAzazelMode()` function into `_g.script`
+* Added `IsAzazelMode()` and `IsIronManMode()` functions into `_g.script`
 * Added `npc_on_use_dead` callback into `axr_main.script`
 * Added code template for SkipFrame function into `xr_help.script`
 * Added `get_game_graph()` function into `_g.script`
