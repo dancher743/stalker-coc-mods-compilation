@@ -618,11 +618,26 @@
 	<string id="st_companion_died_tip_reason_5">
 		<text>убит вами!</text>
 	</string>
-	
 	<string id="ui_st_companion_custom_spot_text">
 		<text>%s, ранее был напарником.</text>
 	</string>
+	
+	<!-- Aza Mode -->
 	<string id="ui_st_aza_mode_actor_death_custom_spot_text">
 		<text>Вы умерли здесь %s раз как %s.</text>
+	</string>
+	
+	<!-- Ironman Mode -->
+	<string id="ui_st_ironman_mode_live_restored">
+		<text>Вы получили дополнительную жизнь!</text>
+	</string>
+	<string id="ui_st_ironman_mode_lives_available">
+		<text>Жизней имеется: %s</text>
+	</string>
+	<string id="ui_st_ironman_mode_lives_left">
+		<text>Жизней осталось: %s</text>
+	</string>
+	<string id="ui_st_ironman_mode_saves_deleted">
+		<text>У вас не осталось жизней. Сохранения были удалены.</text>
 	</string>
 </string_table>

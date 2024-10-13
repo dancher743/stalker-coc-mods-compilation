@@ -618,11 +618,26 @@
 	<string id="st_companion_died_tip_reason_5">
 		<text>killed by you!</text>
 	</string>
-	
 	<string id="ui_st_companion_custom_spot_text">
 		<text>%s, was previously a companion.</text>
 	</string>
+	
+	<!-- Aza Mode -->
 	<string id="ui_st_aza_mode_actor_death_custom_spot_text">
 		<text>You died here % times as %s.</text>
+	</string>
+	
+	<!-- Ironman Mode -->
+	<string id="ui_st_ironman_mode_live_restored">
+		<text>You got an extra life!</text>
+	</string>
+	<string id="ui_st_ironman_mode_lives_available">
+		<text>Lives available: %s</text>
+	</string>
+	<string id="ui_st_ironman_mode_lives_left">
+		<text>Lives left: %s</text>
+	</string>
+	<string id="ui_st_ironman_mode_saves_deleted">
+		<text>You have no lives left. Saves have been deleted.</text>
 	</string>
 </string_table>

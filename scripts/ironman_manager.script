@@ -11,7 +11,17 @@ local life_cycle = 120
 local life_feature = false
 
 function set_sleep_hrs(hrs) -- called by (ui_sleep_dialog.script)
+	if (not IsIronManMode()) then
+		return
+	end
+	
 	sleep_hrs = sleep_hrs + hrs
+	
+	local death_count = alife_storage_manager.get_state().death_count or 0
+    local death_limit = alife_storage_manager.get_state().death_limit or 3
+	local msg_str = strtransl("ui_st_ironman_mode_lives_available")
+	msg_str = strformat(msg_str,death_limit-death_count)
+    SetHudMsg(msg_str,10)
 end
 
 function ironman_timer()
@@ -31,6 +41,7 @@ function ironman_timer()
 		local death_count = alife_storage_manager.get_state().death_count or 0
 		alife_storage_manager.get_state().death_count = death_count - 1
 		granted_lives = granted_lives + 1
+		SetHudMsg("ui_st_ironman_mode_live_restored",10)
 		--printf(">>> Tronex: New life granted! new lives so far: " .. granted_lives)
 	end
 	--printf(">>> Tronex: fc: " .. fc .. " | true hrs: " .. true_hrs .. " | hours: " .. hours .. " | death_count: " .. tostring(alife_storage_manager.get_state().death_count) .. " | deeath_limit: " .. tostring(alife_storage_manager.get_state().death_limit) .. " | life_feature: " .. tostring(life_feature) .. " | life_cycle: " .. tostring(life_cycle))
@@ -129,6 +140,18 @@ local function actor_on_before_death() -- Ironman: second wind
 			end
 		end
 	end
+	
+    local msg_str
+    local death_count = (alife_storage_manager.get_state().death_count or 0) + 1
+    local death_limit = alife_storage_manager.get_state().death_limit or 3
+    local has_saves_deleted = death_count >= death_limit
+    if (has_saves_deleted) then
+        msg_str = "ui_st_ironman_mode_saves_deleted"
+    else
+        msg_str = strtransl("ui_st_ironman_mode_lives_left")
+        msg_str = strformat(msg_str,death_limit-death_count)
+    end
+    SetHudMsg(msg_str,10)
 end
 
 function on_game_start()
