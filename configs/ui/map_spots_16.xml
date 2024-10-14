@@ -234,11 +234,11 @@
                 <level_map spot="treasure_quest_spot" pointer="quest_pointer"/>
                 <mini_map  spot="treasure_quest_spot_mini"/>
         </treasure_quest>
-        <treasure_quest_spot width="15" height="15" alignment="c" stretch="1">
-                <texture r="137" g="120" b="208" a="255">ui_inGame2_PDA_icon_quest_secret</texture>
+        <treasure_quest_spot width="15" height="15" alignment="c" stretch="1" location_level="5">
+                <texture r="242" g="231" b="11" a="255">ui_inGame2_PDA_icon_quest_secret</texture>
         </treasure_quest_spot>
         <treasure_quest_spot_mini width="10" height="10" alignment="c" stretch="1">
-                <texture r="137" g="120" b="208" a="255">ui_inGame2_PDA_icon_quest_secret</texture>
+                <texture r="242" g="231" b="11" a="255">ui_inGame2_PDA_icon_quest_secret</texture>
         </treasure_quest_spot_mini>
 		
 		<custom_spot>

@@ -48,6 +48,7 @@ All notable changes to this project will be documented in this file.
 * Refactored `dynamic_weather_graphs.ltx`
 * Replaced `ini_sys` field with `get_system_ini()` function in `_g.script`
 * Added HUD messages for Ironman Mode
+* Added color and `location_level` from Clear Sky for `treasure_quest` icon
 
 ### Fixes
 * Fixed `delta` of `actor_on_slicing_update` callback
