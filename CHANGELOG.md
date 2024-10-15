@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 * New outfits: Clear Sky exoskeleton & scientific outfit, bandit leather trench coat
 * Added coocked food items to trade
 * Added old new night visions: 1 gen from Clear Sky, 2 gen from SoC
+* Reworked global map texture based on Clear Sky texture
 
 ### Improvements
 * Restored lore-friendly NPC's backpack textures
