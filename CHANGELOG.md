@@ -60,6 +60,7 @@ All notable changes to this project will be documented in this file.
 * Fixed "ALIFE OBJECT ID IS 65535!" message after death in Azazel mode
 * Fixed double crit hit
 * Reworked text of `banditmerc_outfit_description` string
+* Corrected Guide job dialog rus text and position in `character_dialogs.xml`
 
 ### Optimization
 * Optimized amount of update callbacks
