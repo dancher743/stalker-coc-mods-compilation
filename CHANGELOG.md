@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Features
 * Reworked radio music for all factions
-* Added vanila SoC voices for killers
+* Added vanila voices from SoC for Mercenaries and Monoliths
 * Rebalanced all grenades in NPC's equipments
 * Ecolog explorer squads
 * Reworked time requirement of companion's invulnerability
