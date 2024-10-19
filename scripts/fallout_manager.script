@@ -1,0 +1,877 @@
+--------------------------------------------------------------------------------
+-- Fallout manager class -------------------------------------------------------
+-- Made by Cromm Cruac ---------------------------------------------------------
+-- for AtmosFear 3 -------------------------------------------------------------
+-- 25.06.2011 ------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+local fallout_manager = nil
+local prev_sec = 0
+local currentPPEfactor = 0.001
+local currentTime = 0
+--local currentIndik=nil
+local fadeFactor=0
+local immuned_to_surge_squads = {
+						["monster_predatory_day"] 	= true,
+						["monster_predatory_night"] = true,
+						["monster_vegetarian"] 		= true,
+						["monster_zombied_day"] 	= true,
+						["monster_zombied_night"] 	= true,
+						["monster_special"] 		= true,
+						["monster"]			= true,
+						["monolith"]			= true,
+						["zombied"]			= true,
+						 }
+
+class "FalloutManager"
+function FalloutManager:__init()
+	self.sect = "atmosfear_current_parameters"
+	self.surge_manager=surge_manager.get_surge_manager()
+	--self.debugMessages=debug_ui.get_debug_ui():create_elements(20)
+	--[[self.psi_storm_manager = psi_storm_manager.get_psi_storm_manager()]]
+	
+	self.effector_set=false
+	self.fallout_sound 	= false
+	self.fallout_in_progress=false
+	self.task_given = false
+	self.finished = true
+	self.phase=nil
+	self.loaded = false
+	
+	--self.ini = ini_file("misc\\surge_manager.ltx")
+	self.updateFactor=5
+	self.powerFactor=100
+	self.powerThreshold=0.001
+	self.actorRadiationThreshold=0.5
+	self.taskThreshold=0.004
+	--self.minDelayTime=12*60*60
+	--self.maxDelayTime=24*60*60
+	self.minDelayTime=3*60*60
+	self.maxDelayTime=6*60*60
+	self.minLengthTime=10*60
+	self.maxLengthTime=30*60
+	self.fadeTime=10*60
+	self.fadeFactor=0
+	
+	self.nextFalloutIn=math.random(self.minDelayTime, self.maxDelayTime)
+	self.falloutLength=math.random(self.minLengthTime, self.maxLengthTime)
+	self.inited_time = game.get_game_time()
+	self.inited_time_sec = self.inited_time
+
+	--self.count = 0
+	--self.covers = {}
+	self.surge_manager:init_surge_covers()
+	--self.fallout_message = ""
+	--self.fallout_task_sect = ""
+	--self.finished = false
+	--self.fallout_in_progress=false	
+	self.falloutType="rad"
+	self.geiger_sounds={	geiger_1 = sound_object("detectors\\geiger_1"), 
+							geiger_2 = sound_object("detectors\\geiger_2"), 
+							geiger_3 = sound_object("detectors\\geiger_3"), 
+							geiger_4 = sound_object("detectors\\geiger_4"), 
+							geiger_5 = sound_object("detectors\\geiger_5"), 
+							geiger_6 = sound_object("detectors\\geiger_6"), 
+							geiger_7 = sound_object("detectors\\geiger_7"), 
+							geiger_8 = sound_object("detectors\\geiger_8")
+							}
+end
+
+local hits = {}
+local h
+
+function FalloutManager:start(manual)
+	if atmosfear_options.config:r_value(self.sect,"opt_enable_fallout",2,1)==0 or (level.name() == "l11_hospital" or level_weathers.valid_levels[level.name()] ~= true) then
+		return self:finish()
+	elseif manual and self.fallout_in_progress==false then --for debug
+		self.nextFalloutIn = math.ceil(game.get_game_time():diffSec(self.inited_time))
+		return
+	end
+	h = hit()
+	h.impulse = 0
+	h.direction = vector():set(0,0,1)
+	h.draftsman = db.actor
+	if self.fallout_in_progress==false then
+		local rnd = math.random()
+		if rnd<0.6 then
+			self.falloutType="rad"
+		else
+			self.falloutType="acid"
+		end	
+		self.finished = false
+		self.fallout_in_progress=true
+		self.inited_time_sec = game.get_game_time()
+	end
+	self.loaded = false
+	-- start sound
+	if not(self.fallout_sound) and self.falloutType=="acid" then
+		xr_sound.play_sound_looped(db.actor:id(), "fallout_acid_rain")
+		xr_sound.set_volume_sound_looped(db.actor:id(), "fallout_acid_rain", 0)
+		self.fallout_sound=true
+	end
+	-- start effector
+	if not(self.effector_set) then
+		if self.falloutType=="rad" then
+			level.add_pp_effector("radiation.ppe", 666, true)
+			h.type = hit.radiation
+		else
+			level.add_pp_effector("acidic.ppe", 666, true)
+			h.type = hit.chemical_burn
+		end
+		level.set_pp_effector_factor(666,currentPPEfactor)
+		self.effector_set=true
+	end
+	if atmosfear_options.config:r_value(self.sect,"opt_fallout_task",0,"give")=="give" and not self.task_given then
+		db.actor:give_game_news("hide_from_fallout_"..self.falloutType.."_message_caption", "hide_from_fallout_"..self.falloutType.."_message", "ui_inGame2_Fallout_"..self.falloutType, 0, 10000)
+	end
+	self.maxDelayTime = 3600*atmosfear_options.config:r_value(self.sect,"opt_fallout_freq",2,12)
+	self.minDelayTime = self.maxDelayTime/2
+	self.nextFalloutIn=math.random(self.minDelayTime, self.maxDelayTime)
+end
+
+function FalloutManager:finish()
+	self.finished = true
+	self.fallout_in_progress=false
+	self.task_given = false
+	if atmosfear_options.config:r_value(self.sect,"opt_fallout_task",0,"give")=="give" and atmosfear_options.config:r_value(self.sect,"opt_enable_fallout",2,1)==1 and (level_weathers.valid_levels[level.name()] and level.name() ~= "l11_hospital") then
+		db.actor:give_game_news("end_fallout_"..self.falloutType.."_message_caption", "end_fallout_"..self.falloutType.."_message", "ui_inGame2_Fallout_"..self.falloutType, 0, 10000)
+	end
+	
+	self.phase=nil
+	self.fadeFactor=0
+	self.inited_time=game.get_game_time()
+	--self.atmosfear.debugMessages[5]:SetText("Fallout ended because of no rain.")
+	
+	-- end sound
+	if self.fallout_sound then
+		xr_sound.stop_sound_looped(db.actor:id(), "fallout_acid_rain")
+		self.fallout_sound=false
+	end
+	-- end effector
+	if (self.effector_set) then
+		level.remove_pp_effector(666)
+		self.effector_set=false
+		currentPPEfactor = 0.001
+	end
+	-- hide indicators
+	self.surge_manager:displayIndicators(0, self.falloutType)
+	prev_sec=0
+	h = nil
+	hits = {}
+	--debug
+	--self.atmosfear.debugMessages[1]:SetText("Fallout ended -> in progress = "..tostring(self.fallout_in_progress))
+end
+
+
+-- ###############################################################################################
+--                                  UPDATE
+-- ###############################################################################################
+
+function FalloutManager:update()
+	local g_time = game.get_game_time()
+	if not(self.phase) then
+		local diff = math.floor(self.nextFalloutIn - g_time:diffSec(self.inited_time))
+		--if diff > 0 then
+			--self.atmosfear.debugMessages[1]:SetText("Next fallout begins in "..tostring(diff).." seconds")
+			--self.atmosfear.debugMessages[5]:SetText("opt_enable_blowout="..tostring(self.atmosfear.opt_enable_blowout)..", is_started("..tostring(surge_manager.is_started())..")")
+			--self.atmosfear.debugMessages[6]:SetText("opt_enable_fallout="..tostring(self.atmosfear.opt_enable_fallout)..", is_started("..tostring(is_started())..")")
+			--self.atmosfear.debugMessages[7]:SetText("opt_enable_psi_storm="..tostring(self.atmosfear.opt_enable_psi_storm)..", is_started("..tostring(psi_storm_manager.is_started())..")")
+		--end
+		if diff < 0 then 
+			if level.rain_factor() > 0.001 then
+				self.phase="fadein"
+				self.inited_time=game.get_game_time()
+				--self.atmosfear.debugMessages[1]:SetText("Fallout begins")
+			else
+				--self.atmosfear.debugMessages[1]:SetText("Fallout can begin but waiting for rain")
+			end
+			return
+		end			
+	elseif self.phase=="fadein" then
+		local diff = math.floor(self.fadeTime - g_time:diffSec(self.inited_time))
+		self.fadeFactor = (self.fadeTime - diff) / self.fadeTime
+		--self.debugMessages[2]:SetText("fadeFactor="..tostring(self.fadeFactor))
+		if diff < 0 then 
+			self.fadeFactor=1
+			self.phase="fallout"
+			self.inited_time=game.get_game_time()
+			self.falloutLength=math.random(self.minLengthTime, self.maxLengthTime)
+			--self.atmosfear.debugMessages[2]:SetText("Fallout at full scale")
+		end			
+	elseif self.phase=="fallout" then
+		local diff = math.floor(self.falloutLength - g_time:diffSec(self.inited_time))
+		--self.atmosfear.debugMessages[3]:SetText("Fallout ends in "..tostring(diff).." seconds")
+		if diff < 0 then 
+			self.phase="fadeout"
+			self.inited_time=game.get_game_time()
+			--self.atmosfear.debugMessages[3]:SetText("Main fallout ended. Fading out.")
+		end	
+	elseif self.phase=="fadeout" then
+		local diff = math.floor(self.fadeTime - g_time:diffSec(self.inited_time))
+		self.fadeFactor = diff / self.fadeTime
+		--self.debugMessages[4]:SetText("fadeFactor="..tostring(self.fadeFactor))
+		if diff < 0 then 
+			self.phase=nil
+			self.fadeFactor=0
+			self.inited_time=game.get_game_time()
+			self.maxDelayTime = 3600*atmosfear_options.config:r_value(self.sect,"opt_fallout_freq",2,12)
+			self.minDelayTime = self.maxDelayTime/2
+			self.nextFalloutIn=math.random(self.minDelayTime, self.maxDelayTime)
+			--self.atmosfear.debugMessages[5]:SetText("Fallout ended.")
+		end	
+	end
+	local gameFactor = not (--[[self.surge_manager.started or self.psi_storm_manager.started or]] has_alife_info("bar_arena_fight"))
+	local radiationPower = level.rain_factor()/self.powerFactor*self.fadeFactor
+	local hitPower = radiationPower*self.updateFactor/2
+
+	--self.debugMessages[8]:SetText("rain_factor="..level.rain_factor())
+	--self.debugMessages[3]:SetText("db.actor.radiation="..db.actor.radiation)
+	--self.debugMessages[4]:SetText("radiationPower="..radiationPower)
+	--self.debugMessages[9]:SetText("hitPower="..hitPower)
+	
+	
+	if gameFactor and hitPower>self.powerThreshold then
+		if self.fallout_in_progress==false then
+			self:start()
+			return
+		else
+			if self.loaded then 
+				self:start()
+			end
+		-- main loop
+			--local cover = self:get_nearest_cover()
+			if(self.surge_manager.covers==nil) then
+				self.surge_manager:init_surge_covers()
+				return
+			end
+			self.surge_manager:calculate_best_surge_cover()
+			local PPEfactor
+			if not self.surge_manager.actor_in_cover then
+				--PPEfactor = level.rain_factor()-self.powerThreshold*self.powerFactor
+				PPEfactor = hitPower/2*self.powerFactor
+				if PPEfactor < 0.001 then PPEfactor = 0.001 end
+				self.surge_manager:displayIndicators(hitPower*self.powerFactor, self.falloutType)
+			else
+				PPEfactor = 0.002
+				self.surge_manager:displayIndicators(0, self.falloutType)
+			end
+			currentPPEfactor = currentPPEfactor+(PPEfactor - currentPPEfactor) * 0.01			
+			--self.debugMessages[7]:SetText("PPEfactor="..PPEfactor)
+			--self.debugMessages[8]:SetText("currentPPEfactor="..currentPPEfactor)
+			if self.fallout_sound then
+				xr_sound.set_volume_sound_looped(db.actor:id(), "fallout_acid_rain", PPEfactor/2)
+			else
+				self:geigerSound(PPEfactor*2)
+			end
+			if(self.effector_set) then
+				level.set_pp_effector_factor(666,currentPPEfactor)
+			end
+			
+			
+			local diff_sec = math.ceil(game.get_game_time():diffSec(self.inited_time_sec)/self.updateFactor)
+			--self.atmosfear.debugMessages[1]:SetText("diff_sec="..tostring(diff_sec*self.updateFactor))
+			if(prev_sec~=diff_sec) then
+				prev_sec = diff_sec
+--[[
+				local h = hit()
+				if self.falloutType=="rad" then
+					h.type = hit.radiation
+				else
+					h.type = hit.chemical_burn
+				end
+				h.power = self.atmosfear:hit_power(hitPower, h.type)
+				h.impulse = 0
+				h.direction = vector():set(0,0,1)
+				h.draftsman = db.actor
+--]]
+				if not self.surge_manager.actor_in_cover then
+					h.power = self.surge_manager:hit_power(hitPower, h.type)
+					if not(atmosfear_options.config:r_value(self.sect,"god_mode",1,false)) then
+						db.actor:hit(h)
+					end
+					if self.falloutType=="acid"  then --and (not (diff_sec % 10))
+						-- suit damage
+						local suit = db.actor:get_current_outfit()
+						if suit ~= nil then
+							local suit_obj = db.actor:object(suit:section())
+							if suit_obj ~= nil then
+								suit_obj:set_condition(suit:condition() - h.power/10)
+							end
+							--self.debugMessages[13]:SetText("suit="..tostring(suit:section()))
+						end
+						-- helmet damage
+						local helmet = db.actor:item_in_slot(12)
+						if helmet ~= nil then
+							local helmet_obj = db.actor:object(helmet:section())
+							if helmet_obj ~= nil then
+								helmet_obj:set_condition(helmet:condition() - h.power/10)
+							end
+							--self.debugMessages[14]:SetText("helmet="..tostring(helmet:section()))
+						end
+					end
+				end
+				if (atmosfear_options.config:r_value(self.sect,"opt_fallout_fate",0,"poison")=="poison") then
+					self:hit_all_unhided(hitPower)
+				end
+			end
+			if hitPower>self.taskThreshold and not(self.task_given) then
+				--self.debugMessages[6]:SetText("FIND COVER")
+				if atmosfear_options.config:r_value(self.sect,"opt_fallout_task",0,"give")=="give" then
+					self:give_fallout_hide_task()
+				end
+				if atmosfear_options.config:r_value(self.sect,"opt_fallout_warning",0,"siren")=="siren" then
+					self.surge_manager:play_siren_sound()
+				end
+				self.task_given = true
+			--elseif hitPower<=self.taskThreshold and (self.task_given) then
+				--self.debugMessages[6]:SetText("ANULOWANE")
+				--self.task_given = false
+			end
+		-- end of main loop
+		end
+	else
+		if self.fallout_in_progress==true then
+			--self.atmosfear.debugMessages[8]:SetText("rain_factor="..level.rain_factor())
+			--self.atmosfear.debugMessages[9]:SetText("hitPower="..hitPower)
+			self:finish()
+		end
+	end
+end
+
+-- ###############################################################################################
+--[[
+function FalloutManager:init_fallout_covers()
+	local ini = self.ini
+	for i = 0, ini:line_count("list")-1 do
+		temp1, id, temp2 = ini:r_line("list", i, "", "")
+		local zone = db.zone_by_name[id]
+		if zone ~= nil then
+			self.count = self.count + 1
+			self.covers[self.count] = zone
+			if(ini:line_exist(id, "condlist")) then
+				self.covers[self.count].condlist = {}
+				self.covers[self.count].condlist = xr_logic.parse_condlist(npc, id, "condlist", ini:r_string(id, "condlist"))
+			end
+		end
+	end
+end
+
+function FalloutManager:get_nearest_cover()
+	local hides = {}
+	utils.copy_table(hides, self.covers)
+	if(self.count>0) then
+		for k,v in pairs(hides) do
+			if (v.condlist) then
+				local sect = xr_logic.pick_section_from_condlist(db.actor, nil, v.condlist)
+				if(sect~="true" and sect~=nil) then
+					table.remove(hides, k)
+				end
+			end
+		end
+		local nearest_cover_id = hides[1]:id()
+		local nearest_cover_dist = hides[1]:position():distance_to(db.actor:position())
+		for k,v in pairs(hides) do
+			if db.storage[v:id()].object:inside(db.actor:position()) then
+				return v:id()
+			end
+			local dist = v:position():distance_to(db.actor:position())
+			if(dist<nearest_cover_dist) then
+				if(v.condlist) then
+					local sect = xr_logic.pick_section_from_condlist(db.actor, nil, v.condlist)
+					if(sect=="true") then
+						nearest_cover_id = v:id()
+						nearest_cover_dist = dist
+					end
+				else
+					nearest_cover_id = v:id()
+					nearest_cover_dist = dist
+				end
+			end
+		end
+		if(nearest_cover_id==hides[1]:id()) then
+			if(hides[1].condlist) then
+				local sect = xr_logic.pick_section_from_condlist(db.actor, nil, hides[1].condlist)
+				if(sect~="true" and sect~=nil) then
+					return nil
+				end
+			end
+		end
+		return nearest_cover_id
+	else
+		return nil
+	end
+end
+--]]
+function FalloutManager:hit_all_unhided(hitPower)
+--[[
+	local h = hit()
+	if self.falloutType=="rad" then
+		h.type = hit.radiation
+	else
+		h.type = hit.chemical_burn
+	end
+	h.power = hitPower
+	h.impulse = 0.0
+	h.direction = vector():set(0,0,1)
+	h.draftsman = db.actor
+--]]	local sim, gg = alife(), game_graph()
+
+	local board = sim_board.get_sim_board()
+	for k,squad in pairs(board.squads) do
+		--local squad = v
+		--if(check_squad_level(squad.id)) then
+		if squad and check_squad(squad, sim, gg) then
+			local squad_npcs = get_squad_members(squad)
+			for id in pairs(squad_npcs) do
+				local obj = sim:object(id)
+				if(obj and not(get_object_story_id(id))) then
+					if check_squad_smart_props(squad, board) or not self.surge_manager:pos_in_cover(obj.position) then
+						--printf("Releasing npc [%s] from squad [%s] because of surge!",obj:name(), squad:name())
+						local cl_obj = level.object_by_id(id)
+						if cl_obj ~= nil then
+							hits[id] = hits[id] or get_combo_k(cl_obj)
+							if self.falloutType=="rad" then
+								cl_obj.radiation = hitPower*hits[id]
+							else
+								cl_obj.health = -hitPower*hits[id]
+							end
+--[[
+								h.draftsman = cl_obj
+								cl_obj:hit(h)
+							else
+								--obj:hit(h)
+							end
+						else
+							local release = true
+							for i = 1,#self.covers do
+								local sr = self.covers[i]
+								if(sr and sr:inside(obj.position)) then
+									release = false
+								end
+							end
+							if(release) then
+								printf("Releasing npc [%s] from squad [%s] because of surge!",obj:name(), squad:name())
+								local cl_obj = level.object_by_id(obj.id)
+								if cl_obj ~= nil then
+									h.draftsman = cl_obj
+									cl_obj:hit(h)
+								else
+									--obj:hit(h)
+								end
+							end
+--]]
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+function get_squad_members(squad)
+	local npcs_tbl = {}
+	--local squad = alife():object(squad_id)
+	--if(squad) then
+		for obj in squad:squad_members() do
+			npcs_tbl[obj.id] = true
+		end
+	--end
+	return npcs_tbl
+end
+--[[
+function check_squad_level(squad_id)
+	local squad = alife():object(squad_id)
+	if(squad) then
+		local squad_level = alife():level_name(game_graph():vertex(squad.m_game_vertex_id):level_id())
+		if(squad_level==level.name()) then
+			return true
+		end
+	end
+	return false	-- can't delete squad on other level
+end
+
+function check_squad_community_and_story_id(squad_id)
+	local squad = alife():object(squad_id)
+	if(squad) then
+		if(immuned_to_surge_squads[squad.player_id]) then
+			return false	-- can't delete squad immune to surge
+		end
+		if(get_object_story_id(squad.id)) then
+			return false	-- can't delete squad with story id
+		end
+	end
+	return true
+end
+
+function check_squad_community(squad_id)
+	local squad = alife():object(squad_id)
+	if(squad) then
+		if(immuned_to_surge_squads[squad.player_id]) then
+			return false	-- can't delete squad immune to surge
+		end
+	end
+	return true
+end
+--]]
+function check_squad_smart_props(squad, board)
+	--local squad = alife():object(squad_id)
+	--if(squad) then
+		--local board = sim_board.get_sim_board()
+		if(board and squad.smart_id and board.smarts[squad.smart_id]) then
+			local smart = board.smarts[squad.smart_id].smrt
+			if(tonumber(smart.props["surge"])<=0) then
+				return true
+			end
+		end
+	--end
+	return false	-- can't delete squad in his smart if squad is in cover
+end
+
+
+
+function FalloutManager:geigerSound(hitPower) 
+	local delay = ((0.8-hitPower)*1000)
+	local rnd=math.ceil((math.random(8000-1)+1)/1000)
+	local snd_obj=self.geiger_sounds['geiger_'..tostring(rnd)]
+	if delay<=0 then delay=0 end
+	delay = delay + math.random(50)
+	--self.debugMessages[11]:SetText("delay="..delay)
+	local t=device():time_global()
+	if t>currentTime+delay then
+		if snd_obj ~= nil and snd_obj:playing() then
+			snd_obj:stop()
+		end
+		if snd_obj ~= nil then
+			snd_obj:play_at_pos(db.actor, db.actor:position())
+			snd_obj.volume = 1
+			--self.debugMessages[12]:SetText("playing: geiger_"..tostring(rnd))
+		end
+		--xr_sound.set_sound_play(db.actor:id(), "fallout_geiger_sound")
+		currentTime=t
+	end
+	
+	--self.debugMessages[8]:SetText("time="..t)
+	--xr_sound.set_sound_play(db.actor:id(), "geiger_sound")
+end
+--[[
+function FalloutManager:displayIndicators(power)
+	local indikType = self.falloutType
+	local hud = get_hud()
+	local indik
+	if power>=0.8 then indik="red"
+	elseif power>=0.6 then indik="orange"
+	elseif power>=0.4 then indik="yellow"
+	elseif power>=0.1 then indik="green"
+	else indik=nil end
+	local aspectRatio=""
+	if self.surge_manager.aspectRatio~=1 then
+		aspectRatio="_16"
+	end
+	local indikName="atm_indik_"..indikType.."_"..tostring(indik)..aspectRatio
+	local currentIndikName="atm_indik_"..indikType.."_"..tostring(currentIndik)..aspectRatio
+	
+	--remove indik if 0
+	if not indik and currentIndik~=nil then
+		local hudIndikRem = hud:GetCustomStatic(currentIndikName)
+		if hudIndikRem then
+			hud:RemoveCustomStatic(currentIndikName)
+		end
+		currentIndik=nil
+		return
+	end
+	-- display different indik 
+	if currentIndik~=indik then
+		-- first remove existing one
+		if currentIndik~=nil then
+			local hudIndik = hud:GetCustomStatic(currentIndikName)
+			if hudIndik then
+				hud:RemoveCustomStatic(currentIndikName)
+			end
+		end
+		-- now display new one
+		if indik then
+			hud:AddCustomStatic(indikName)
+			currentIndik=indik
+		end
+	end
+	--self.atmosfear.debugMessages[19]:SetText("indik="..currentIndikName)
+	
+	
+	
+end
+--]]
+
+function FalloutManager:give_fallout_hide_task()
+--[[
+	if(self.fallout_message~="empty") then
+		local mess = ""
+		if(self.fallout_message=="") then
+			local time = 0
+			mess = game.translate_string("hide_from_fallout"..self.falloutType.."_message")
+		else
+			mess = game.translate_string(self.fallout_message)
+		end
+	end
+	if(self.fallout_task_sect~="empty") then
+		if(self.fallout_task_sect=="") then
+--]]
+			task_manager.get_task_manager():give_task("hide_from_fallout_"..self.falloutType)
+--[[
+		else
+			task_manager.get_task_manager():give_task(self.fallout_task_sect)
+		end
+	end
+--]]
+end
+
+
+function FalloutManager:save(packet)
+	set_save_marker(packet, "save", false, "Fallout")
+	utils.w_CTime(packet, self.inited_time)
+	packet:w_bool(self.finished)
+	packet:w_bool(self.fallout_in_progress)
+	if(self.fallout_in_progress) then
+		packet:w_stringZ(self.phase)
+		packet:w_stringZ(self.falloutType)
+		packet:w_bool(self.task_given)
+		--packet:w_stringZ(self.fallout_message)
+		--packet:w_stringZ(self.fallout_task_sect)
+		local last_save_time = game.get_game_time()
+		utils.w_CTime(packet, last_save_time)
+	end
+	packet:w_u32(self.nextFalloutIn)
+	packet:w_u32(self.falloutLength)
+	set_save_marker(packet, "save", true, "Fallout")
+end
+
+function FalloutManager:load(packet)
+	if (USE_MARSHAL) then
+		if self.fallout_in_progress then
+			local diff=math.abs(game.get_game_time():diffSec(self.save_time))
+			local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
+			Y, M, D, h, m, s, ms = self.inited_time:get(Y, M, D, h, m, s, ms)
+			self.inited_time:set(Y, M, D, h, m, s + diff, ms)
+		end
+		self.save_time = nil	
+		return
+	end
+	set_save_marker(packet, "load", false, "Fallout")
+	self.inited_time = utils.r_CTime(packet)
+	self.finished = packet:r_bool()
+	self.fallout_in_progress = packet:r_bool()
+	if(self.fallout_in_progress) then
+		self.phase = packet:r_stringZ()
+		self.falloutType = packet:r_stringZ()
+		self.task_given = packet:r_bool()
+		--self.fallout_message = packet:r_stringZ()
+		--self.fallout_task_sect = packet:r_stringZ()
+		local last_save_time = utils.r_CTime(packet)
+		local diff=math.abs(game.get_game_time():diffSec(last_save_time))
+		local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
+		Y, M, D, h, m, s, ms = self.inited_time:get(Y, M, D, h, m, s, ms)
+		self.inited_time:set(Y, M, D, h, m, s + diff, ms)
+	end
+	self.nextFalloutIn = packet:r_u32()
+	self.falloutLength = packet:r_u32()
+	self.loaded = true
+	set_save_marker(packet, "load", true, "Fallout")
+end
+
+
+function get_fallout_manager()
+	if fallout_manager == nil then
+		fallout_manager = FalloutManager()
+	end
+	return fallout_manager
+end
+
+function is_started()
+	local m = get_fallout_manager()
+	return m.fallout_in_progress
+end
+
+function is_finished()
+	local m = get_fallout_manager()
+	return m.finished == true
+end
+--[[
+function actor_in_cover()
+	local m = get_fallout_manager()
+	local cover_id = m:get_nearest_cover()
+	if (cover_id ~= nil) and (db.storage[cover_id].object:inside(db.actor:position())) then
+		return true
+	else
+		return false
+	end
+end
+--]]
+function get_falloutType()
+	local m = get_fallout_manager()
+	return m.falloutType
+end
+
+function get_task_title()
+	local title = ""
+	local m = get_fallout_manager()
+	if(surge_manager.actor_in_cover()) then
+		title = "hide_from_fallout_"..m.falloutType.."_name_2"
+	else
+		title = "hide_from_fallout_"..m.falloutType.."_name_1"
+	end
+	return title
+end
+
+function get_task_descr()
+	local descr = ""
+	local m = get_fallout_manager()
+	if(surge_manager.actor_in_cover()) then
+		descr = game.translate_string("hide_from_fallout_"..m.falloutType.."_descr_2_a")
+	else
+		descr = game.translate_string("hide_from_fallout_"..m.falloutType.."_descr_1_a")
+	end
+	return descr
+end
+
+function get_task_target()
+	local m = surge_manager.get_surge_manager()
+	if(m.actor_in_cover) then
+		return nil
+	end
+	return m.best_cover_id
+end
+
+
+
+
+-- AtmosFear Fallout xr_conditions.script
+
+function xr_conditions.surge_complete()
+	if (psi_storm_manager and psi_storm_manager.is_loaded()) then 
+		if not (psi_storm_manager.is_finished()) then 
+			return false
+		end
+	end 
+	if (surge_manager and surge_manager.is_loaded()) then
+		if not surge_manager.is_finished() then
+			return false
+		end
+	end
+	return this.is_finished()
+end
+
+function xr_conditions.surge_started()
+	if (psi_storm_manager and psi_storm_manager.is_loaded() and psi_storm_manager.is_started()) then 
+		return true 
+	end 
+	if (surge_manager and surge_manager.is_loaded() and surge_manager.is_started()) then 
+		return true 
+	end
+	return this.is_started()
+end
+
+
+function xr_conditions.fallout_complete()
+	return this.is_finished()
+end
+
+--------------------------------------save load
+
+local function save_state(m_data)
+	m_data.FalloutManager = {}
+	local self = get_fallout_manager()
+	m_data.FalloutManager.inited_time = self.inited_time and utils.CTime_to_table(self.inited_time) or utils.CTime_to_table(game.get_game_time())
+	m_data.FalloutManager.finished = self.finished
+	m_data.FalloutManager.fallout_in_progress = self.fallout_in_progress
+	if(self.fallout_in_progress) then
+		m_data.FalloutManager.phase = self.phase
+		m_data.FalloutManager.falloutType = self.falloutType
+		m_data.FalloutManager.task_given = self.task_given
+		local last_save_time = game.get_game_time()
+		m_data.FalloutManager.save_time = utils.CTime_to_table(last_save_time)
+	end
+	m_data.FalloutManager.nextFalloutIn = self.nextFalloutIn
+	m_data.FalloutManager.falloutLength = self.falloutLength
+end
+
+local function load_state(m_data)
+	if not (m_data.FalloutManager) then 
+		return
+	end
+	local self = get_fallout_manager()
+	self.inited_time = m_data.FalloutManager.inited_time and utils.CTime_from_table(m_data.FalloutManager.inited_time) or self.inited_time
+	self.finished = m_data.FalloutManager.finished
+	self.fallout_in_progress = m_data.FalloutManager.fallout_in_progress or false
+	if(self.fallout_in_progress) then
+		self.phase = m_data.FalloutManager.phase
+		self.falloutType = m_data.FalloutManager.falloutType or self.falloutType
+		self.task_given = m_data.FalloutManager.task_given or self.task_given
+
+		local last_save_time = m_data.FalloutManager.save_time
+		self.save_time = last_save_time and utils.CTime_from_table(last_save_time) or self.inited_time
+	end
+	self.nextFalloutIn = m_data.FalloutManager.nextFalloutIn or self.nextFalloutIn
+	self.falloutLength = m_data.FalloutManager.falloutLength or self.falloutLength
+	self.loaded = true
+
+	m_data.FalloutManager = nil
+end
+
+function check_squad(squad, sim, gg)
+	if squad:clsid() ~= clsid.online_offline_group_s then 
+		return false
+	elseif not (squad.online) then 
+		return false
+	elseif (immuned_to_surge_squads[squad.player_id]) then
+		return false
+	elseif gg:vertex(squad.m_game_vertex_id):level_id() ~= sim:level_id() then 
+		return false 
+	elseif axr_companions.companion_squads[squad.id] then
+		return false
+	elseif get_object_story_id(squad.id) then
+		return false
+	end
+	return true
+end
+
+local combo_table = {
+	novice = 1.4,
+	trainee = 1.3,
+	experienced = 1.2,
+	professional = 1.1,
+	veteran = 1.0,
+	expert = 0.9,
+	master = 0.8,
+	legend = 0.7,
+
+	zombied = 1.0,
+	ecolog = 0.7,
+	bandit = 1.0,
+	freedom = 0.8,
+	stalker = 0.8,
+	csky = 0.8,
+	dolg = 0.9,
+	killer = 0.9,
+	army = 0.9,
+	monolith = 0.7,
+	}
+
+function get_combo_k(npc)
+	local rank = ranks.get_obj_rank_name(npc)
+	local comm = npc:character_community()
+	local k_rank = rank and combo_table[rank] or 1
+	local k_comm = comm and combo_table[comm] or 1
+
+	return (0.5 + math.random())*k_rank*k_comm
+end
+
+function on_game_start()
+	RegisterScriptCallback("save_state", save_state)
+	RegisterScriptCallback("load_state", load_state)
+end
+
+--debug
+function FalloutManager:end_surge(manual)
+	if self.fallout_in_progress==true then
+		self:finish()
+	end
+end

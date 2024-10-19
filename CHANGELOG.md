@@ -20,6 +20,9 @@ All notable changes to this project will be documented in this file.
 * Reworked global map texture based on Clear Sky texture
 * Restored fog ambient
 
+### Mods
+* Call of Chernobyl Fallout (CrommCruac, av661194)
+
 ### Improvements
 * Restored lore-friendly NPC's backpack textures
 * Added lore-friendly NPC's portrets (1 portret from Customization Pack Adaptation [1.4.22])
