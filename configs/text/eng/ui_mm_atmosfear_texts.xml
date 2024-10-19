@@ -59,7 +59,7 @@
 		<text>Fallouts</text>
 	</string>
 	<string id="st_list_fate_poison">
-		<text>Rad./chem. poisoning</text>
+		<text>Poisoning</text>
 	</string>
 	<string id="st_cap_check_enable_fallout">
 		<text>Fallouts enabled</text>
