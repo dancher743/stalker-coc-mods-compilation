@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 * Added coocked food items to trade
 * Added old new night visions: 1 gen from Clear Sky, 2 gen from SoC
 * Reworked global map texture based on Clear Sky texture
+* Restored fog ambient
 
 ### Improvements
 * Restored lore-friendly NPC's backpack textures
