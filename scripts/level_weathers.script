@@ -5,6 +5,7 @@
 --8.02.2016  - modified by Alundaio to USE_MARSHAL
 --7.05.2018  - modified by Tronex for global weather system
 --7.08.2024  - reworked Tronex's global weather system by Dancher (special thanks to Anomaly Developers)
+--22.10.2024 - modified by Dancher to fallouts (CrommCruac, av661194)
 --===============================================================================
 
 local weather_manager = nil
@@ -46,11 +47,11 @@ function atmosfear_init()
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_blowout_fate","turntozombie")
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_blowout_warning","radio_siren")
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_blowout_task","give")
-		-- atmosfear_options.config:w_value("atmosfear_current_parameters","opt_enable_fallout",1)
-		-- atmosfear_options.config:w_value("atmosfear_current_parameters","opt_fallout_freq",12)
-		-- atmosfear_options.config:w_value("atmosfear_current_parameters","opt_fallout_fate","poison")
-		-- atmosfear_options.config:w_value("atmosfear_current_parameters","opt_fallout_warning","siren")
-		-- atmosfear_options.config:w_value("atmosfear_current_parameters","opt_fallout_task","give")
+        atmosfear_options.config:w_value("atmosfear_current_parameters","opt_enable_fallout",1)
+        atmosfear_options.config:w_value("atmosfear_current_parameters","opt_fallout_freq",12)
+        atmosfear_options.config:w_value("atmosfear_current_parameters","opt_fallout_fate","poison")
+        atmosfear_options.config:w_value("atmosfear_current_parameters","opt_fallout_warning","siren")
+        atmosfear_options.config:w_value("atmosfear_current_parameters","opt_fallout_task","give")
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_enable_psi_storm",1)
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_psi_storm_freq",24)
 		atmosfear_options.config:w_value("atmosfear_current_parameters","opt_psi_storm_fate","kill")
