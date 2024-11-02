@@ -12,9 +12,9 @@ local function actor_on_slicing_update()
 		return
 	end
 	
-	last_game_minute = game_minute
-	
 	SendScriptCallback("level_time_on_changed",game_minute,last_game_minute)
+	
+	last_game_minute = game_minute
 end
 
 function on_game_start()
