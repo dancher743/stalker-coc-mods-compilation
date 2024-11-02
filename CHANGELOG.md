@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 * Reworked radio music for all factions
 * Added vanila voices from SoC for Mercenaries and Monoliths
 * Rebalanced all grenades in NPC's equipments
+* Unique and modified weapons in NPC's equipments
 * Ecolog explorer squads
 * Reworked time requirement of companion's invulnerability
 * Added open inventory dialog for a companion
@@ -93,6 +94,7 @@ All notable changes to this project will be documented in this file.
 * Added `get_cached_hud()` function into `_g.script`
 * Added `get_cached_console()` function into `_g.script`
 * Added var types constants into `_g.script`
+* Added `parse_ini_section_to_iarray` function into `utils.script`
 
 ## [1.4.6] - Unreleased
 
