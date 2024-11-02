@@ -173,8 +173,9 @@ local intercepts = {
 	surge_on_ended					= {},
 	psi_storm_on_ended				= {},
 	
-	npc_on_use_dead					= {}
-	--
+	npc_on_use_dead					= {},
+	
+	level_time_on_changed			= {}
 }
 
 -----------------------------------------------------------

@@ -6,7 +6,6 @@
 local database = {}
 
 local trust_time_threshold = 24*60
-local last_game_minute
 
 local time_key = "time"
 local trust_key = "trust"
@@ -70,20 +69,12 @@ local function load_state(data)
 	end
 end
 
-local function actor_on_slicing_update()
-	local current_game_minute  = level.get_time_minutes()
-	
-	if (current_game_minute == last_game_minute) then
-		return
-	end
-	
+local function level_time_on_changed()
 	update_data()
-	
-	last_game_minute = current_game_minute
 end
 
 function on_game_start()
-    RegisterScriptCallback("actor_on_slicing_update", actor_on_slicing_update)
+    RegisterScriptCallback("level_time_on_changed", level_time_on_changed)
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
 end
