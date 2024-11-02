@@ -2091,8 +2091,15 @@ function drx_sl_reward_stash( actor, npc, p )
 	-- Check if stash should be awarded:
 	if ( (p) and (p[1] ~= STR_FALSE) and (math.random( 100 ) <= 75) ) then
 
-		-- Select bonus item:
-		local bonus = {bonus_items[math.random( #bonus_items )]}
+		local bonus = {}
+		
+		-- Randomly add unique weapon to stash:
+		if ( math.random( 100 ) <= 25 ) then
+			coc_treasure_manager.try_add_unique_weapon(bonus)
+		else
+			-- Select bonus item:
+			table.insert( bonus, bonus_items[math.random( #bonus_items )] )
+		end
 
 		-- Randomly add toolkit to stash:
 		if ( math.random( 100 ) < 75 ) then
@@ -3304,6 +3311,10 @@ function reward_stash(actor,npc,p)
 		if ((math.random(1,100)/100) <= 0.35) then
 			local t = {"itm_repairkit_tier_1","itm_repairkit_tier_1","itm_repairkit_tier_1","itm_repairkit_tier_2","itm_repairkit_tier_2","itm_repairkit_tier_3"}
 			bonus = {t[math.random(#t)]}
+		end
+		if (math.random() < 0.25) then
+			bonus = bonus or {}
+			coc_treasure_manager.try_add_unique_weapon(bonus)
 		end
 		coc_treasure_manager.create_random_stash(nil,strtransl("st_itm_reward_stash"),bonus)
 	end

@@ -454,7 +454,7 @@ function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery, cus
 	loot[12] = {"wpn_spas12", "wpn_ak74u", "wpn_mp5", "wpn_ak74", "wpn_abakan", "wpn_l85", "wpn_lr300", "wpn_groza", "wpn_val", "wpn_vintorez", "helm_tactic", "helm_battle", "itm_pda_rare", "ammo_11.43x23_hydro", "ammo_5.56x45_ap", "itm_repairkit_tier_2", "itm_outfit_toolkit_tier_1"}
 
 	-- Extremely rare:
-	loot[13] = {"wpn_svu", "wpn_svd", "wpn_g36", "wpn_fn2000", "helm_m40", "wpn_pkm", "stalker_outfit", "svoboda_novice_outfit", "ecolog_guard_outfit", "banditmerc_outfit", "dolg_novice_outfit", "cs_novice_outfit", "ecolog_outfit_green", "svoboda_light_outfit", "wpn_sig550_luckygun", "af_compass", "itm_pda_rare", "itm_repairkit_tier_3"}
+	loot[13] = {"wpn_svu", "wpn_svd", "wpn_g36", "wpn_fn2000", "helm_m40", "wpn_pkm", "stalker_outfit", "svoboda_novice_outfit", "ecolog_guard_outfit", "banditmerc_outfit", "dolg_novice_outfit", "cs_novice_outfit", "ecolog_outfit_green", "svoboda_light_outfit", "af_compass", "itm_pda_rare", "itm_repairkit_tier_3"}
 	loot[14] = {"wpn_rg-6", "wpn_rpg7", "specops_outfit", "military_outfit", "scientific_outfit", "svoboda_heavy_outfit", "cs_heavy_outfit", "dolg_outfit", "itm_pda_rare", "itm_repairkit_tier_3"}
 	loot[15] = {"ammo_gauss", "exo_outfit", "dolg_heavy_outfit", "itm_pda_rare", "wpn_rg-6", "wpn_rpg7", "specops_outfit", "military_outfit", "scientific_outfit", "svoboda_heavy_outfit", "cs_heavy_outfit", "dolg_outfit", "itm_repairkit_tier_3"}
 
@@ -618,6 +618,28 @@ function try_spawn_treasure(box)
 			printf("coc_treasure_manager.script: invalid section %s",sec)
 		end
 	end
+end
+
+function try_add_unique_weapon(bonus_items)
+	if (bonus_items == nil) then
+		return
+	end
+	
+	local unique_weapons = utils.parse_ini_section_to_iarray(ltx, "unique_weapon_sections")
+	
+	if (unique_weapons == nil or #unique_weapons == 0) then
+		return
+	end
+	
+	local unique_weapon = unique_weapons[math.random(#unique_weapons)]
+	local unique_weapon_info = strformat("%s_stashed",unique_weapon)
+	
+	if (has_alife_info(unique_weapon_info)) then
+		return
+	end
+	
+	table.insert(bonus_items, unique_weapon)
+	give_info(unique_weapon_info)
 end
 
 function save(pk)

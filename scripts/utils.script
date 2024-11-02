@@ -1033,3 +1033,20 @@ function set_migration_flag(name, value)
 	
 	m_data.migration_flags[name] = value
 end
+
+function parse_ini_section_to_iarray(ini,section)
+	local t
+	
+	if (ini and ini:section_exist(section)) then
+		t = {}
+		local n = ini:line_count(section)
+		for i=0, n-1 do
+			local result, id, value = ini:r_line(section,i,STR_EMPTY,STR_EMPTY)
+			if (result and id ~= STR_EMPTY) then
+				table.insert(t, id)
+			end
+		end
+	end
+	
+	return t
+end
