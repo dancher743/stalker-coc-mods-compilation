@@ -1,0 +1,22 @@
+--
+-- Level Time Observer
+-- Added by Dancher
+--
+
+local last_game_minute
+
+local function actor_on_slicing_update()
+	local game_minute  = level.get_time_minutes()
+	
+	if (game_minute == last_game_minute) then
+		return
+	end
+	
+	last_game_minute = game_minute
+	
+	SendScriptCallback("level_time_on_changed",game_minute,last_game_minute)
+end
+
+function on_game_start()
+    RegisterScriptCallback("actor_on_slicing_update", actor_on_slicing_update)
+end
