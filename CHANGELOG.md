@@ -95,6 +95,7 @@ All notable changes to this project will be documented in this file.
 * Added `get_cached_console()` function into `_g.script`
 * Added var types constants into `_g.script`
 * Added `parse_ini_section_to_iarray` function into `utils.script`
+* Added original `lua_help.script`
 
 ## [1.4.6] - Unreleased
 
