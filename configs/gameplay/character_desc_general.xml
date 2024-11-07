@@ -1706,7 +1706,7 @@
     <visual>actors\stalker_dolg\stalker_dolgexo_4</visual>
     <supplies>
         [spawn] \n
-        wpn_abakan = 1 \n
+        wpn_abakan_up2 = 1, scope \n
         ammo_5.45x39_ap = 1 \n
         wpn_walther = 1 \n
         ammo_9x19_pbp = 1 \n
@@ -1877,7 +1877,7 @@
     <visual>actors\stalker_dolg\stalker_dolg4b</visual>
     <supplies>
         [spawn] \n
-        wpn_abakan = 1 \n
+        wpn_abakan_up2 = 1, scope, launcher \n
         ammo_5.45x39_ap = 1 \n
         wpn_sig220 = 1 \n
         ammo_11.43x23_hydro  = 1 \n
@@ -2418,7 +2418,7 @@
     <visual>actors\stalker_freedom\stalker_freedom1a</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74 \n
+        wpn_ak74_up = 1, scope \n
         ammo_5.45x39_fmj = 1 \n
         wpn_hpsa \n
         ammo_9x19_fmj = 1 \n
@@ -2601,7 +2601,7 @@
     <visual>actors\stalker_freedom\stalker_freedom_2_old</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74 \n
+        wpn_ak74_up = 1, scope \n
         ammo_5.45x39_fmj = 1 \n
         wpn_hpsa \n
         ammo_9x19_fmj = 1 \n
@@ -2863,7 +2863,7 @@
     <visual>actors\stalker_freedom\stalker_freedom2b_mas4</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74 \n
+        wpn_ak74_up = 1, scope \n
         ammo_5.45x39_fmj = 1 \n
         wpn_colt1911 \n
         ammo_11.43x23_fmj  = 1 \n
@@ -4014,7 +4014,7 @@
         [spawn] \n
         wpn_toz34  \n
         ammo_12x70_buck = 1 \n
-        wpn_pm  \n
+        wpn_pm_up  \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
 #include "gameplay\character_food.xml"
@@ -4197,7 +4197,7 @@
         [spawn] \n
         wpn_ak74u \n
         ammo_5.45x39_fmj  = 1 \n
-        wpn_pm  \n
+        wpn_pm_up  \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
 #include "gameplay\character_food.xml"
@@ -4565,7 +4565,7 @@
         [spawn] \n
         wpn_wincheaster1300 \n
         ammo_12x76_zhekan = 1 \n
-        wpn_hpsa \n
+        wpn_pm_9x19 \n
         ammo_9x19_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
 #include "gameplay\character_food.xml"
@@ -4744,7 +4744,7 @@
     <visual>actors\stalker_bandit\stalker_bandit4c</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74 \n
+        wpn_ak74_up2 \n
         ammo_5.45x39_fmj  = 1 \n
         wpn_beretta \n
         ammo_9x19_fmj = 1 \n
@@ -5319,7 +5319,7 @@
         [spawn] \n
         wpn_spas12 \n
         ammo_12x76_zhekan = 1 \n
-        wpn_beretta \n
+        wpn_pm_9x19 \n
         ammo_9x19_pbp = 1 \n
 #include "gameplay\character_items_nd.xml"
 #include "gameplay\character_food.xml"
@@ -5806,7 +5806,7 @@
     <visual>actors\stalker_bandit\stalker_bandit6d</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74 \n
+        wpn_ak74_up2 \n
         ammo_5.45x39_ap = 1 \n
         wpn_colt1911 \n
         ammo_11.43x23_fmj  = 1 \n
@@ -6984,7 +6984,7 @@
     <visual>actors\stalker_merc\stalker_merc2c</visual>
     <supplies>
         [spawn] \n
-        wpn_lr300 = 1, scope \n
+        wpn_lr300_up2 = 1, scope \n
         ammo_5.56x45_ss190 = 1 \n
         wpn_colt1911 = 1 \n
         ammo_11.43x23_fmj  = 1 \n
@@ -7167,7 +7167,7 @@
     <visual>actors\stalker_merc\stalker_merc_sun1_merc</visual>
     <supplies>
         [spawn] \n
-        wpn_lr300 = 1, scope, silencer \n
+        wpn_lr300_up2 = 1, scope, silencer \n
         ammo_5.56x45_ss190 = 1 \n
         wpn_sig220 = 1, silencer \n
         ammo_11.43x23_fmj  = 1 \n
@@ -10610,7 +10610,7 @@
         [spawn] \n
         wpn_lr300 \n
         ammo_5.56x45_ap = 1 \n
-        wpn_fort \n
+        wpn_fort_up \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_2.xml"
 #include "gameplay\character_food.xml"
@@ -10876,7 +10876,7 @@
         [spawn] \n
         wpn_lr300 \n
         ammo_5.56x45_ap = 1 \n
-        wpn_fort \n
+        wpn_fort_up \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_2.xml"
 #include "gameplay\character_food.xml"
@@ -10927,7 +10927,7 @@
     <visual>actors\stalker_neutral\stalker_neutral_2mask1</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74 \n
+        wpn_ak74_up2 \n
         ammo_5.45x39_fmj = 1 \n
         wpn_beretta \n
         ammo_9x19_pbp = 1 \n
@@ -11273,7 +11273,7 @@
     <visual>actors\stalker_neutral\stalker_neutral0f</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74 \n
+        wpn_ak74_up2 \n
         ammo_5.45x39_fmj = 1 \n
         wpn_beretta \n
         ammo_9x19_pbp = 1 \n
@@ -11457,7 +11457,7 @@
     <visual>actors\stalker_neutral\stalker_neutral_2_old</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74 \n
+        wpn_ak74_up2 \n
         ammo_5.45x39_fmj = 1 \n
         wpn_beretta \n
         ammo_9x19_pbp = 1 \n
@@ -12895,7 +12895,7 @@
         [spawn] \n
         wpn_sig550 \n
         ammo_5.56x45_ap = 1 \n
-        wpn_colt1911 = 1 \n
+        wpn_colt1911_up2 = 1 \n
         ammo_11.43x23_hydro = 1 \n
 #include "gameplay\character_items_2.xml"
 #include "gameplay\character_food.xml"
@@ -13266,7 +13266,7 @@
         [spawn] \n
         wpn_spas12 = 1 \n
         ammo_12x76_zhekan = 1 \n
-        wpn_colt1911 = 1 \n
+        wpn_colt1911_up2 = 1 \n
         ammo_11.43x23_hydro = 1 \n
 #include "gameplay\character_items_2.xml"
 #include "gameplay\character_food.xml"
@@ -16082,7 +16082,7 @@
     <visual>actors\stalker_monolith\stalker_monolith_1</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74 \n
+        wpn_ak74_up = 1, scope \n
         ammo_5.45x39_ap = 1 \n
         wpn_pm \n
         ammo_9x18_pmm = 1 \n
@@ -16284,7 +16284,7 @@
     <visual>actors\stalker_monolith\stalker_monolith_2_old</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74 \n
+        wpn_ak74_up = 1, scope, launcher \n
         ammo_5.45x39_ap = 1 \n
         wpn_pm \n
         ammo_9x18_pmm = 1 \n
@@ -16334,7 +16334,7 @@
     <visual>actors\stalker_monolith\stalker_monolith2b_old</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74 = 1 \n
+        wpn_ak74_up = 1, scope \n
         ammo_5.45x39_fmj = 1 \n
         wpn_beretta \n
         ammo_9x19_fmj = 1 \n

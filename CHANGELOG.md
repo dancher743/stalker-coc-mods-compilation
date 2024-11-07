@@ -6,8 +6,9 @@ All notable changes to this project will be documented in this file.
 
 ### Features
 * Reworked radio music for all factions
-* Added vanila SoC voices for killers
+* Added vanila voices from SoC for Mercenaries and Monoliths
 * Rebalanced all grenades in NPC's equipments
+* Unique and modified weapons in NPC's equipments
 * Ecolog explorer squads
 * Reworked time requirement of companion's invulnerability
 * Added open inventory dialog for a companion
@@ -19,6 +20,7 @@ All notable changes to this project will be documented in this file.
 * Added old new night visions: 1 gen from Clear Sky, 2 gen from SoC
 * Reworked global map texture based on Clear Sky texture
 * Restored fog ambient
+* Random stashes renewing
 
 ### Mods
 * Call of Chernobyl Fallout (CrommCruac, av661194)
@@ -96,6 +98,9 @@ All notable changes to this project will be documented in this file.
 * Added `get_cached_hud()` function into `_g.script`
 * Added `get_cached_console()` function into `_g.script`
 * Added var types constants into `_g.script`
+* Added `parse_ini_section_to_iarray` function into `utils.script`
+* Added original `lua_help.script`
+* Added `level_time_observer.script` to be able to observe game time
 
 ## [1.4.6] - Unreleased
 
