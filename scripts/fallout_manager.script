@@ -61,8 +61,8 @@ function FalloutManager:__init()
 	--self.count = 0
 	--self.covers = {}
 	self.surge_manager:init_surge_covers()
-	--self.fallout_message = ""
-	--self.fallout_task_sect = ""
+	--self.fallout_message = STR_EMPTY
+	--self.fallout_task_sect = STR_EMPTY
 	--self.finished = false
 	--self.fallout_in_progress=false	
 	self.falloutType="rad"
@@ -90,7 +90,7 @@ function FalloutManager:start(manual)
 	end
 	h = hit()
 	h.impulse = 0
-	h.direction = vector():set(0,0,1)
+	h.direction = VEC_FORWARD
 	h.draftsman = db.actor
 	if self.fallout_in_progress==false then
 		local rnd = math.random()
@@ -306,7 +306,7 @@ function FalloutManager:update()
 				end
 				h.power = self.atmosfear:hit_power(hitPower, h.type)
 				h.impulse = 0
-				h.direction = vector():set(0,0,1)
+				h.direction = VEC_FORWARD
 				h.draftsman = db.actor
 --]]
 				if not self.surge_manager.actor_in_cover then
@@ -368,7 +368,7 @@ end
 function FalloutManager:init_fallout_covers()
 	local ini = self.ini
 	for i = 0, ini:line_count("list")-1 do
-		temp1, id, temp2 = ini:r_line("list", i, "", "")
+		temp1, id, temp2 = ini:r_line("list", i, STR_EMPTY, STR_EMPTY)
 		local zone = db.zone_by_name[id]
 		if zone ~= nil then
 			self.count = self.count + 1
@@ -388,7 +388,7 @@ function FalloutManager:get_nearest_cover()
 		for k,v in pairs(hides) do
 			if (v.condlist) then
 				local sect = xr_logic.pick_section_from_condlist(db.actor, nil, v.condlist)
-				if(sect~="true" and sect~=nil) then
+				if(sect~=STR_TRUE and sect~=nil) then
 					table.remove(hides, k)
 				end
 			end
@@ -403,7 +403,7 @@ function FalloutManager:get_nearest_cover()
 			if(dist<nearest_cover_dist) then
 				if(v.condlist) then
 					local sect = xr_logic.pick_section_from_condlist(db.actor, nil, v.condlist)
-					if(sect=="true") then
+					if(sect==STR_TRUE) then
 						nearest_cover_id = v:id()
 						nearest_cover_dist = dist
 					end
@@ -416,7 +416,7 @@ function FalloutManager:get_nearest_cover()
 		if(nearest_cover_id==hides[1]:id()) then
 			if(hides[1].condlist) then
 				local sect = xr_logic.pick_section_from_condlist(db.actor, nil, hides[1].condlist)
-				if(sect~="true" and sect~=nil) then
+				if(sect~=STR_TRUE and sect~=nil) then
 					return nil
 				end
 			end
@@ -437,9 +437,10 @@ function FalloutManager:hit_all_unhided(hitPower)
 	end
 	h.power = hitPower
 	h.impulse = 0.0
-	h.direction = vector():set(0,0,1)
+	h.direction = VEC_FORWARD
 	h.draftsman = db.actor
---]]	local sim, gg = alife(), game_graph()
+--]]
+	local sim, gg = get_alife(), get_game_graph()
 
 	local board = sim_board.get_sim_board()
 	for k,squad in pairs(board.squads) do
@@ -495,7 +496,7 @@ end
 
 function get_squad_members(squad)
 	local npcs_tbl = {}
-	--local squad = alife():object(squad_id)
+	--local squad = get_alife():object(squad_id)
 	--if(squad) then
 		for obj in squad:squad_members() do
 			npcs_tbl[obj.id] = true
@@ -505,9 +506,9 @@ function get_squad_members(squad)
 end
 --[[
 function check_squad_level(squad_id)
-	local squad = alife():object(squad_id)
+	local squad = get_alife():object(squad_id)
 	if(squad) then
-		local squad_level = alife():level_name(game_graph():vertex(squad.m_game_vertex_id):level_id())
+		local squad_level = get_alife():level_name(get_game_graph():vertex(squad.m_game_vertex_id):level_id())
 		if(squad_level==level.name()) then
 			return true
 		end
@@ -516,7 +517,7 @@ function check_squad_level(squad_id)
 end
 
 function check_squad_community_and_story_id(squad_id)
-	local squad = alife():object(squad_id)
+	local squad = get_alife():object(squad_id)
 	if(squad) then
 		if(immuned_to_surge_squads[squad.player_id]) then
 			return false	-- can't delete squad immune to surge
@@ -529,7 +530,7 @@ function check_squad_community_and_story_id(squad_id)
 end
 
 function check_squad_community(squad_id)
-	local squad = alife():object(squad_id)
+	local squad = get_alife():object(squad_id)
 	if(squad) then
 		if(immuned_to_surge_squads[squad.player_id]) then
 			return false	-- can't delete squad immune to surge
@@ -539,7 +540,7 @@ function check_squad_community(squad_id)
 end
 --]]
 function check_squad_smart_props(squad, board)
-	--local squad = alife():object(squad_id)
+	--local squad = get_alife():object(squad_id)
 	--if(squad) then
 		--local board = sim_board.get_sim_board()
 		if(board and squad.smart_id and board.smarts[squad.smart_id]) then
@@ -581,14 +582,14 @@ end
 --[[
 function FalloutManager:displayIndicators(power)
 	local indikType = self.falloutType
-	local hud = get_hud()
+	local hud = get_cached_hud()
 	local indik
 	if power>=0.8 then indik="red"
 	elseif power>=0.6 then indik="orange"
 	elseif power>=0.4 then indik="yellow"
 	elseif power>=0.1 then indik="green"
 	else indik=nil end
-	local aspectRatio=""
+	local aspectRatio=STR_EMPTY
 	if self.surge_manager.aspectRatio~=1 then
 		aspectRatio="_16"
 	end
@@ -629,8 +630,8 @@ end
 function FalloutManager:give_fallout_hide_task()
 --[[
 	if(self.fallout_message~="empty") then
-		local mess = ""
-		if(self.fallout_message=="") then
+		local mess = STR_EMPTY
+		if(self.fallout_message==STR_EMPTY) then
 			local time = 0
 			mess = game.translate_string("hide_from_fallout"..self.falloutType.."_message")
 		else
@@ -638,7 +639,7 @@ function FalloutManager:give_fallout_hide_task()
 		end
 	end
 	if(self.fallout_task_sect~="empty") then
-		if(self.fallout_task_sect=="") then
+		if(self.fallout_task_sect==STR_EMPTY) then
 --]]
 			task_manager.get_task_manager():give_task("hide_from_fallout_"..self.falloutType)
 --[[
@@ -736,7 +737,7 @@ function get_falloutType()
 end
 
 function get_task_title()
-	local title = ""
+	local title = STR_EMPTY
 	local m = get_fallout_manager()
 	if(surge_manager.actor_in_cover()) then
 		title = "hide_from_fallout_"..m.falloutType.."_name_2"
@@ -747,7 +748,7 @@ function get_task_title()
 end
 
 function get_task_descr()
-	local descr = ""
+	local descr = STR_EMPTY
 	local m = get_fallout_manager()
 	if(surge_manager.actor_in_cover()) then
 		descr = game.translate_string("hide_from_fallout_"..m.falloutType.."_descr_2_a")
