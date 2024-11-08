@@ -82,8 +82,8 @@ local h
 
 function FalloutManager:start(manual)
 	if atmosfear_options.config:r_value(self.sect,"opt_enable_fallout",2,1)==0 or (level.name() == "l11_hospital" or level_weathers.valid_levels[level.name()] ~= true) or has_alife_info("bar_arena_fight") then
-		self.skip_message = false
-		return self:finish()
+		self:skip()
+		return
 	elseif manual and self.fallout_in_progress==false then --for debug
 		self.nextFalloutIn = math.ceil(game.get_game_time():diffSec(self.inited_time))
 		return
@@ -176,6 +176,10 @@ function FalloutManager:finish()
 	--self.atmosfear.debugMessages[1]:SetText("Fallout ended -> in progress = "..tostring(self.fallout_in_progress))
 end
 
+function FalloutManager:skip()
+	self.skip_message = false
+	self:finish()
+end
 
 -- ###############################################################################################
 --                                  UPDATE
@@ -188,8 +192,7 @@ function FalloutManager:update()
 		if(self.time_forwarded) then
 			self.time_forwarded = false
 			if(diff<3600) then
-                self.skip_message = false
-				self:finish()
+				self:skip()
                 return
 			end
 		end
