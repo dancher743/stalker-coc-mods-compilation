@@ -556,8 +556,11 @@
 		<text>Фонарь подключён</text>
 	</string>
 	
-	<string id="st_travel_event">
+	<string id="st_travel_combat">
 		<text>Путешествовать опасно - поблизости много врагов</text>
+	</string>
+	<string id="st_travel_cataclysm">
+		<text>Путешествовать опасно - начался катаклизм</text>
 	</string>
 	<string id="st_travel_overloaded">
 		<text>Вы слишком перегружены</text>

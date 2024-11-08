@@ -14,7 +14,7 @@
 		<text>Fast travel if damaged</text>
 	</string>
 	<string id="ui_mm_storm_travel">
-		<text>Fast travel in emissions</text>
+		<text>Fast travel during cataclysm</text>
 	</string>
 	<string id="ui_mm_guider_travel">
 		<text>Fast travel as guide</text>

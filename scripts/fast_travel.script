@@ -114,7 +114,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 	if not (combattravel) then
 		if not (is_empty(xr_combat_ignore.fighting_with_actor_npcs)) then
 			get_cached_hud():HidePdaMenu()
-			SetHudMsg(game.translate_string("st_travel_event"),4)
+			SetHudMsg(game.translate_string("st_travel_combat"),4)
 			return
 		end
 	end
@@ -150,7 +150,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 	-- Prevent fast travel if an emission or psi-storm currently ongoing.
 	if not (stormtravel) then
 		if (xr_conditions.surge_started() or psi_storm_manager.is_started()) then
-			SetHudMsg(game.translate_string("st_travel_event"),4)
+			SetHudMsg(game.translate_string("st_travel_cataclysm"),4)
 			get_cached_hud():HidePdaMenu()
 			return
 		end
