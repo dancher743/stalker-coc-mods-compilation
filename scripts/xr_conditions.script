@@ -1842,6 +1842,9 @@ function surge_complete()
 	if (surge_manager and surge_manager.is_loaded()) then
 		return surge_manager.is_finished()
 	end
+	if (fallout_manager) then
+		return fallout_manager.is_finished()
+	end
 	return true
 end
 
@@ -1850,6 +1853,9 @@ function surge_started()
 		return true
 	end
 	if (surge_manager and surge_manager.is_loaded() and surge_manager.is_started()) then
+		return true
+	end
+	if (fallout_manager and fallout_manager.is_started()) then
 		return true
 	end
 	return false

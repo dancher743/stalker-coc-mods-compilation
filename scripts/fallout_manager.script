@@ -768,37 +768,6 @@ end
 
 
 
--- AtmosFear Fallout xr_conditions.script
-
-function xr_conditions.surge_complete()
-	if (psi_storm_manager and psi_storm_manager.is_loaded()) then 
-		if not (psi_storm_manager.is_finished()) then 
-			return false
-		end
-	end 
-	if (surge_manager and surge_manager.is_loaded()) then
-		if not surge_manager.is_finished() then
-			return false
-		end
-	end
-	return this.is_finished()
-end
-
-function xr_conditions.surge_started()
-	if (psi_storm_manager and psi_storm_manager.is_loaded() and psi_storm_manager.is_started()) then 
-		return true 
-	end 
-	if (surge_manager and surge_manager.is_loaded() and surge_manager.is_started()) then 
-		return true 
-	end
-	return this.is_started()
-end
-
-
-function xr_conditions.fallout_complete()
-	return this.is_finished()
-end
-
 --------------------------------------save load
 
 local function save_state(m_data)
