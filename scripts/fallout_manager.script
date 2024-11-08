@@ -142,6 +142,9 @@ function FalloutManager:finish()
 	self.inited_time=game.get_game_time()
 	--self.atmosfear.debugMessages[5]:SetText("Fallout ended because of no rain.")
 	
+	-- inc statistic
+	xr_statistic.inc_counter("surges")
+	
 	-- end sound
 	if self.fallout_sound then
 		xr_sound.stop_sound_looped(db.actor:id(), "fallout_acid_rain")
