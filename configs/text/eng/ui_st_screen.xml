@@ -468,4 +468,7 @@
 	<string id="st_psi_storm_while_asleep">
 		<text>An psi-storm has recently occurred in the Zone.</text>
 	</string>
+	<string id="st_fallout_while_asleep">
+		<text>An fallout has recently occurred in the Zone.</text>
+	</string>
 </string_table>

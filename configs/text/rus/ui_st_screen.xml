@@ -455,4 +455,7 @@
 	<string id="st_psi_storm_while_asleep">
 		<text>В Зоне недавно произошёл пси-шторм.</text>
 	</string>
+	<string id="st_fallout_while_asleep">
+		<text>В Зоне недавно произошли осадки.</text>
+	</string>
 </string_table>

@@ -118,6 +118,7 @@ function msg_box_ui:OnMsgOk()
 		
 	surge_manager.get_surge_manager().time_forwarded = true
 	psi_storm_manager.get_psi_storm_manager().time_forwarded = true	
+	fallout_manager.get_fallout_manager().time_forwarded = true
 	level_weathers.get_weather_manager():forced_weather_change()
 ---------------------------av661194 end----------------------------
 

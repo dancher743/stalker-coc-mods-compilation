@@ -133,8 +133,17 @@ function FalloutManager:finish()
 	self.finished = true
 	self.fallout_in_progress=false
 	self.task_given = false
-	if atmosfear_options.config:r_value(self.sect,"opt_fallout_task",0,"give")=="give" and atmosfear_options.config:r_value(self.sect,"opt_enable_fallout",2,1)==1 and (level_weathers.valid_levels[level.name()] and level.name() ~= "l11_hospital") then
-		db.actor:give_game_news("end_fallout_"..self.falloutType.."_message_caption", "end_fallout_"..self.falloutType.."_message", "ui_inGame2_Fallout_"..self.falloutType, 0, 10000)
+	
+	if not self.skip_message then
+		news_manager.send_tip(db.actor, "st_fallout_while_asleep", nil, "recent_surge", nil, nil)
+		self.skip_message = true
+	else
+		if atmosfear_options.config:r_value(self.sect,"opt_fallout_task",0,"give")=="give" and 
+			atmosfear_options.config:r_value(self.sect,"opt_enable_fallout",2,1)==1 and 
+			(level_weathers.valid_levels[level.name()] and level.name() ~= "l11_hospital") 
+		then
+			db.actor:give_game_news("end_fallout_"..self.falloutType.."_message_caption", "end_fallout_"..self.falloutType.."_message", "ui_inGame2_Fallout_"..self.falloutType, 0, 10000)
+		end
 	end
 	
 	self.phase=nil
@@ -174,6 +183,14 @@ function FalloutManager:update()
 	local g_time = game.get_game_time()
 	if not(self.phase) then
 		local diff = math.floor(self.nextFalloutIn - g_time:diffSec(self.inited_time))
+		if(self.time_forwarded) then
+			self.time_forwarded = false
+			if(diff<3600) then
+                self.skip_message = false
+				self:finish()
+                return
+			end
+		end
 		--if diff > 0 then
 			--self.atmosfear.debugMessages[1]:SetText("Next fallout begins in "..tostring(diff).." seconds")
 			--self.atmosfear.debugMessages[5]:SetText("opt_enable_blowout="..tostring(self.atmosfear.opt_enable_blowout)..", is_started("..tostring(surge_manager.is_started())..")")
