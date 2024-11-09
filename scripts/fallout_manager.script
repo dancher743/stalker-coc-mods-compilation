@@ -37,6 +37,7 @@ function FalloutManager:__init()
 	self.finished = true
 	self.phase=nil
 	self.loaded = false
+	self.skip_message = true
 	
 	--self.ini = ini_file("misc\\surge_manager.ltx")
 	self.updateFactor=5
