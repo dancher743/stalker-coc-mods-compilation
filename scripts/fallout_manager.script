@@ -193,7 +193,7 @@ function FalloutManager:update()
 		local diff = math.floor(self.nextFalloutIn - g_time:diffSec(self.inited_time))
 		if(self.time_forwarded) then
 			self.time_forwarded = false
-			if(diff<3600) then
+			if(diff<3600 and xr_conditions.is_rain()) then
 				self:skip()
                 return
 			end
