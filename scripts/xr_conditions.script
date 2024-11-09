@@ -1867,7 +1867,7 @@ end
 
 -- AtmosFear Fallout
 function fallout_complete()
-	return fallout_manager and fallout_manager.is_finished() or false
+	return fallout_manager and fallout_manager.is_finished() or true
 end
 
 function signal_rocket_flying(actor, npc, p)
