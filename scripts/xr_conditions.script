@@ -1842,7 +1842,7 @@ function surge_complete()
 	if (surge_manager and surge_manager.is_loaded()) then
 		return surge_manager.is_finished()
 	end
-	if (fallout_manager) then
+	if (fallout_manager and fallout_manager.is_loaded()) then
 		return fallout_manager.is_finished()
 	end
 	return true
@@ -1855,7 +1855,7 @@ function surge_started()
 	if (surge_manager and surge_manager.is_loaded() and surge_manager.is_started()) then
 		return true
 	end
-	if (fallout_manager and fallout_manager.is_started()) then
+	if (fallout_manager and fallout_manager.is_loaded() and fallout_manager.is_started()) then
 		return true
 	end
 	return false
@@ -1867,7 +1867,10 @@ end
 
 -- AtmosFear Fallout
 function fallout_complete()
-	return fallout_manager and fallout_manager.is_finished() or false
+	if (fallout_manager and fallout_manager.is_loaded()) then
+		return fallout_manager.is_finished()
+	end
+	return true
 end
 
 function signal_rocket_flying(actor, npc, p)

@@ -720,6 +720,11 @@ function is_finished()
 	local m = get_fallout_manager()
 	return m.finished == true
 end
+
+function is_loaded()
+	return get_fallout_manager().loaded == true
+end
+
 --[[
 function actor_in_cover()
 	local m = get_fallout_manager()
