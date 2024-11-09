@@ -883,6 +883,8 @@ function DynamicNewsManager:NewsToggle() -- turn off news if there is an emissio
 			self.surge_type = "emission"
 		elseif psi_storm_manager and psi_storm_manager.is_started() then 
 			self.surge_type = "storm"
+		elseif fallout_manager and fallout_manager.is_started() then 
+			self.surge_type = "fallout"
 		end
 		
 		for ch,messages in pairs(self.queue) do
@@ -2054,7 +2056,7 @@ end
 --< Reaction News >--
 function DynamicNewsManager:GossipEmissionEnd(what) -- stalkers reacting about the surge
 	--printf(">>> Dyn News: GossipEmissionEnd - call")
-	if (not shw_reaction) or ((what ~= "emission") and (what ~= "storm")) then
+	if (not shw_reaction) or ((what ~= "emission") and (what ~= "storm") and (what ~= "fallout")) then
 		return false
 	end
 	
@@ -2073,6 +2075,8 @@ function DynamicNewsManager:GossipEmissionEnd(what) -- stalkers reacting about t
 		what_translated = game.translate_string("st_dyn_news_surge_type_emission")
 	elseif (what == "storm") then
 		what_translated = game.translate_string("st_dyn_news_surge_type_psi")
+	elseif (what == "fallout") then
+		what_translated = game.translate_string("st_dyn_news_surge_type_fallout")
 	end
 	
 	local Se = strformat("%s, %s",sender:character_name(),dynamic_news_helper.GetCommunityDescription(sender,6))

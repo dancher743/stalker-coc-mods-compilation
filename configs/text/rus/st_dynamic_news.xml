@@ -2501,6 +2501,9 @@
 	<string id="st_dyn_news_surge_type_psi">
 		<text>пси-шторм</text>
 	</string>
+	<string id="st_dyn_news_surge_type_fallout">
+		<text>осадки</text>
+	</string>
 
 	
 <!----------------------------- Reports and Responses ----------------------------->
