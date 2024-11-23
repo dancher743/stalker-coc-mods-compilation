@@ -190,6 +190,10 @@ end
 function FalloutManager:update()
 	local g_time = game.get_game_time()
 	if not(self.phase) then
+		if (surge_manager.is_started()) then 
+			self.nextFalloutIn=math.random(self.minDelayTime, self.maxDelayTime)
+			return
+		end
 		local diff = math.floor(self.nextFalloutIn - g_time:diffSec(self.inited_time))
 		if(self.time_forwarded) then
 			self.time_forwarded = false

@@ -1834,13 +1834,13 @@ function squad_npc_count_ge(actor, npc, p)
 end
 
 function surge_complete()
-	if (psi_storm_manager and psi_storm_manager.is_loaded()) then
-		if not (psi_storm_manager.is_finished()) then
+	if (fallout_manager) then
+		if not (fallout_manager.is_finished()) then
 			return false
 		end
 	end
-	if (fallout_manager) then
-		if not (fallout_manager.is_finished()) then
+	if (psi_storm_manager and psi_storm_manager.is_loaded()) then
+		if not (psi_storm_manager.is_finished()) then
 			return false
 		end
 	end
@@ -1851,10 +1851,10 @@ function surge_complete()
 end
 
 function surge_started()
-	if (psi_storm_manager and psi_storm_manager.is_loaded() and psi_storm_manager.is_started()) then
+	if (fallout_manager and fallout_manager.is_started()) then
 		return true
 	end
-	if (fallout_manager and fallout_manager.is_started()) then
+	if (psi_storm_manager and psi_storm_manager.is_loaded() and psi_storm_manager.is_started()) then
 		return true
 	end
 	if (surge_manager and surge_manager.is_loaded() and surge_manager.is_started()) then

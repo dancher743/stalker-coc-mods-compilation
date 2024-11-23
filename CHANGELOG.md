@@ -69,6 +69,7 @@ All notable changes to this project will be documented in this file.
 * Reworked text of `banditmerc_outfit_description` string
 * Corrected Guide job dialog rus text and position in `character_dialogs.xml`
 * Fixed text of prevent fast travel during a cataclysm message
+* Fixed surges overlapping
 
 ### Optimization
 * Optimized amount of update callbacks
