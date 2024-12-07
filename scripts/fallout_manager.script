@@ -103,7 +103,8 @@ function FalloutManager:start(manual)
 		end	
 		self.finished = false
 		self.fallout_in_progress=true
-		self.inited_time_sec = game.get_game_time()
+		self.phase="fadein"
+		self.inited_time=game.get_game_time()
 	end
 	self.loaded = false
 	-- start sound
@@ -195,6 +196,7 @@ function FalloutManager:update()
 			return
 		end
 		local diff = math.floor(self.nextFalloutIn - g_time:diffSec(self.inited_time))
+		printf(diff)
 		if(self.time_forwarded) then
 			self.time_forwarded = false
 			if(diff<3600 and xr_conditions.is_rain()) then
@@ -210,8 +212,11 @@ function FalloutManager:update()
 		--end
 		if diff < 0 then 
 			if level.rain_factor() > 0.001 then
-				self.phase="fadein"
-				self.inited_time=game.get_game_time()
+				if self.fallout_in_progress==false then
+					self:start()
+				elseif self.loaded then 
+					self:start()
+				end
 				--self.atmosfear.debugMessages[1]:SetText("Fallout begins")
 			else
 				--self.atmosfear.debugMessages[1]:SetText("Fallout can begin but waiting for rain")
@@ -242,6 +247,11 @@ function FalloutManager:update()
 		self.fadeFactor = diff / self.fadeTime
 		--self.debugMessages[4]:SetText("fadeFactor="..tostring(self.fadeFactor))
 		if diff < 0 then 
+			if self.fallout_in_progress==true then
+				--self.atmosfear.debugMessages[8]:SetText("rain_factor="..level.rain_factor())
+				--self.atmosfear.debugMessages[9]:SetText("hitPower="..hitPower)
+				self:finish()
+			end
 			self.phase=nil
 			self.fadeFactor=0
 			self.inited_time=game.get_game_time()
@@ -249,33 +259,42 @@ function FalloutManager:update()
 			self.minDelayTime = self.maxDelayTime/2
 			self.nextFalloutIn=math.random(self.minDelayTime, self.maxDelayTime)
 			--self.atmosfear.debugMessages[5]:SetText("Fallout ended.")
-		end	
-	end
-	local gameFactor = not (--[[self.surge_manager.started or self.psi_storm_manager.started or]] has_alife_info("bar_arena_fight"))
-	local radiationPower = level.rain_factor()/self.powerFactor*self.fadeFactor
-	local hitPower = radiationPower*self.updateFactor/2
-
-	--self.debugMessages[8]:SetText("rain_factor="..level.rain_factor())
-	--self.debugMessages[3]:SetText("db.actor.radiation="..db.actor.radiation)
-	--self.debugMessages[4]:SetText("radiationPower="..radiationPower)
-	--self.debugMessages[9]:SetText("hitPower="..hitPower)
+		end
+	end	
 	
+	if self.fallout_in_progress then
+		-- main loop started
+		
+		local radiationPower = level.rain_factor()/self.powerFactor*self.fadeFactor
+		local hitPower = radiationPower*self.updateFactor/2
 	
-	if gameFactor and hitPower>self.powerThreshold then
-		if self.fallout_in_progress==false then
-			self:start()
-			return
+		--self.debugMessages[8]:SetText("rain_factor="..level.rain_factor())
+		--self.debugMessages[3]:SetText("db.actor.radiation="..db.actor.radiation)
+		--self.debugMessages[4]:SetText("radiationPower="..radiationPower)
+		--self.debugMessages[9]:SetText("hitPower="..hitPower)
+		
+		if not(self.task_given) then
+			--self.debugMessages[6]:SetText("FIND COVER")
+			if atmosfear_options.config:r_value(self.sect,"opt_fallout_task",0,"give")=="give" then
+				self:give_fallout_hide_task()
+			end
+			if atmosfear_options.config:r_value(self.sect,"opt_fallout_warning",0,"siren")=="siren" then
+				self.surge_manager:play_siren_sound()
+			end
+			self.task_given = true
+		--elseif hitPower<=self.taskThreshold and (self.task_given) then
+			--self.debugMessages[6]:SetText("ANULOWANE")
+			--self.task_given = false
+		end
+		
+		--local cover = self:get_nearest_cover()
+		if(self.surge_manager.covers==nil) then
+			self.surge_manager:init_surge_covers()
 		else
-			if self.loaded then 
-				self:start()
-			end
-		-- main loop
-			--local cover = self:get_nearest_cover()
-			if(self.surge_manager.covers==nil) then
-				self.surge_manager:init_surge_covers()
-				return
-			end
 			self.surge_manager:calculate_best_surge_cover()
+		end
+		
+		if self.phase~="fadein" then
 			local PPEfactor
 			if not self.surge_manager.actor_in_cover then
 				--PPEfactor = level.rain_factor()-self.powerThreshold*self.powerFactor
@@ -345,27 +364,9 @@ function FalloutManager:update()
 					self:hit_all_unhided(hitPower)
 				end
 			end
-			if hitPower>self.taskThreshold and not(self.task_given) then
-				--self.debugMessages[6]:SetText("FIND COVER")
-				if atmosfear_options.config:r_value(self.sect,"opt_fallout_task",0,"give")=="give" then
-					self:give_fallout_hide_task()
-				end
-				if atmosfear_options.config:r_value(self.sect,"opt_fallout_warning",0,"siren")=="siren" then
-					self.surge_manager:play_siren_sound()
-				end
-				self.task_given = true
-			--elseif hitPower<=self.taskThreshold and (self.task_given) then
-				--self.debugMessages[6]:SetText("ANULOWANE")
-				--self.task_given = false
-			end
-		-- end of main loop
 		end
-	else
-		if self.fallout_in_progress==true then
-			--self.atmosfear.debugMessages[8]:SetText("rain_factor="..level.rain_factor())
-			--self.atmosfear.debugMessages[9]:SetText("hitPower="..hitPower)
-			self:finish()
-		end
+		
+		-- main loop ended
 	end
 end
 
