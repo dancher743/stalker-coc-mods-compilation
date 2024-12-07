@@ -51,6 +51,7 @@ function FalloutManager:__init()
 	self.maxDelayTime=6*60*60
 	self.minLengthTime=10*60
 	self.maxLengthTime=30*60
+	self.preFadeTime=5*60
 	self.fadeTime=10*60
 	self.fadeFactor=0
 	
@@ -90,10 +91,6 @@ function FalloutManager:start(manual)
 		level_weathers.set_rain_weather()
 		return
 	end
-	h = hit()
-	h.impulse = 0
-	h.direction = VEC_FORWARD
-	h.draftsman = db.actor
 	if self.fallout_in_progress==false then
 		local rnd = math.random()
 		if rnd<0.6 then
@@ -103,28 +100,10 @@ function FalloutManager:start(manual)
 		end	
 		self.finished = false
 		self.fallout_in_progress=true
-		self.phase="fadein"
+		self.phase="prefade"
 		self.inited_time=game.get_game_time()
 	end
 	self.loaded = false
-	-- start sound
-	if not(self.fallout_sound) and self.falloutType=="acid" then
-		xr_sound.play_sound_looped(db.actor:id(), "fallout_acid_rain")
-		xr_sound.set_volume_sound_looped(db.actor:id(), "fallout_acid_rain", 0)
-		self.fallout_sound=true
-	end
-	-- start effector
-	if not(self.effector_set) then
-		if self.falloutType=="rad" then
-			level.add_pp_effector("radiation.ppe", 666, true)
-			h.type = hit.radiation
-		else
-			level.add_pp_effector("acidic.ppe", 666, true)
-			h.type = hit.chemical_burn
-		end
-		level.set_pp_effector_factor(666,currentPPEfactor)
-		self.effector_set=true
-	end
 	if atmosfear_options.config:r_value(self.sect,"opt_fallout_task",0,"give")=="give" and not self.task_given then
 		db.actor:give_game_news("hide_from_fallout_"..self.falloutType.."_message_caption", "hide_from_fallout_"..self.falloutType.."_message", "ui_inGame2_Fallout_"..self.falloutType, 0, 10000)
 	end
@@ -223,6 +202,11 @@ function FalloutManager:update()
 			end
 			return
 		end			
+	elseif self.phase=="prefade" then
+		local diff = math.floor(self.preFadeTime - g_time:diffSec(self.inited_time))
+		if diff < 0 then
+			self.phase="fadein"
+		end
 	elseif self.phase=="fadein" then
 		local diff = math.floor(self.fadeTime - g_time:diffSec(self.inited_time))
 		self.fadeFactor = (self.fadeTime - diff) / self.fadeTime
@@ -265,13 +249,22 @@ function FalloutManager:update()
 	if self.fallout_in_progress then
 		-- main loop started
 		
-		local radiationPower = level.rain_factor()/self.powerFactor*self.fadeFactor
-		local hitPower = radiationPower*self.updateFactor/2
-	
-		--self.debugMessages[8]:SetText("rain_factor="..level.rain_factor())
-		--self.debugMessages[3]:SetText("db.actor.radiation="..db.actor.radiation)
-		--self.debugMessages[4]:SetText("radiationPower="..radiationPower)
-		--self.debugMessages[9]:SetText("hitPower="..hitPower)
+		-- start sound
+		if not(self.fallout_sound) and self.falloutType=="acid" then
+			xr_sound.play_sound_looped(db.actor:id(), "fallout_acid_rain")
+			xr_sound.set_volume_sound_looped(db.actor:id(), "fallout_acid_rain", 0)
+			self.fallout_sound=true
+		end
+		-- start effector
+		if not(self.effector_set) then
+			if self.falloutType=="rad" then
+				level.add_pp_effector("radiation.ppe", 666, true)
+			else
+				level.add_pp_effector("acidic.ppe", 666, true)
+			end
+			level.set_pp_effector_factor(666,currentPPEfactor)
+			self.effector_set=true
+		end
 		
 		if not(self.task_given) then
 			--self.debugMessages[6]:SetText("FIND COVER")
@@ -294,7 +287,15 @@ function FalloutManager:update()
 			self.surge_manager:calculate_best_surge_cover()
 		end
 		
-		if self.phase~="fadein" then
+		if self.phase~="prefade" then
+			local radiationPower = level.rain_factor()/self.powerFactor*self.fadeFactor
+			local hitPower = radiationPower*self.updateFactor/2
+	
+			--self.debugMessages[8]:SetText("rain_factor="..level.rain_factor())
+			--self.debugMessages[3]:SetText("db.actor.radiation="..db.actor.radiation)
+			--self.debugMessages[4]:SetText("radiationPower="..radiationPower)
+			--self.debugMessages[9]:SetText("hitPower="..hitPower)
+			
 			local PPEfactor
 			if not self.surge_manager.actor_in_cover then
 				--PPEfactor = level.rain_factor()-self.powerThreshold*self.powerFactor
@@ -335,6 +336,18 @@ function FalloutManager:update()
 				h.draftsman = db.actor
 --]]
 				if not self.surge_manager.actor_in_cover then
+					if (not h) then
+						h = hit()
+						h.impulse = 0
+						h.direction = VEC_FORWARD
+						h.draftsman = db.actor
+						if self.falloutType=="rad" then
+							h.type = hit.radiation
+						else
+							h.type = hit.chemical_burn
+						end
+					end
+					
 					h.power = self.surge_manager:hit_power(hitPower, h.type)
 					if not(atmosfear_options.config:r_value(self.sect,"god_mode",1,false)) then
 						db.actor:hit(h)
