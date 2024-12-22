@@ -318,7 +318,13 @@ function FalloutManager:update()
 				self:geigerSound(PPEfactor*2)
 			end
 			if(self.effector_set) then
-				level.set_pp_effector_factor(666,currentPPEfactor)
+				if (not self.surge_manager.actor_in_cover) then
+					level.set_pp_effector_factor(666,currentPPEfactor)
+				else
+					level.remove_pp_effector(666)
+					self.effector_set=false
+					currentPPEfactor = 0.001
+				end
 			end
 			
 			
