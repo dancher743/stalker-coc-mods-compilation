@@ -214,7 +214,7 @@ function FalloutManager:update()
 		if diff < 0 then 
 			self.fadeFactor=1
 			self.phase="fallout"
-			self.has_crows_killed = false
+			self.can_kill_crows = true
 			self.inited_time=game.get_game_time()
 			self.falloutLength=math.random(self.minLengthTime, self.maxLengthTime)
 			--self.atmosfear.debugMessages[2]:SetText("Fallout at full scale")
@@ -224,7 +224,7 @@ function FalloutManager:update()
 		--self.atmosfear.debugMessages[3]:SetText("Fallout ends in "..tostring(diff).." seconds")
 		if diff < 0 then 
 			self.phase="fadeout"
-			self.has_crows_killed = false
+			self.can_kill_crows = true
 			self.inited_time=game.get_game_time()
 			--self.atmosfear.debugMessages[3]:SetText("Main fallout ended. Fading out.")
 		end	
@@ -379,9 +379,7 @@ function FalloutManager:update()
 				if (atmosfear_options.config:r_value(self.sect,"opt_fallout_fate",0,"poison")=="poison") then
 					self:hit_all_unhided(hitPower)
 				end
-				if (self.phase == "fallout" or self.phase == "fadeout") then
-					self:kill_crows()
-				end
+				self:try_kill_crows()
 			end
 		end
 		
@@ -520,8 +518,8 @@ function FalloutManager:hit_all_unhided(hitPower)
 	end
 end
 
-function FalloutManager:kill_crows()
-	if (self.has_crows_killed) then
+function FalloutManager:try_kill_crows()
+	if (not self.can_kill_crows) then
 		return
 	end
 	
@@ -538,7 +536,7 @@ function FalloutManager:kill_crows()
 		end
 	end
 	
-	self.has_crows_killed = true
+	self.can_kill_crows = false
 end
 
 function get_squad_members(squad)
