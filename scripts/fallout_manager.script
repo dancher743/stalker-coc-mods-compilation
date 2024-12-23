@@ -51,6 +51,7 @@ function FalloutManager:__init()
 	self.maxDelayTime=6*60*60
 	self.minLengthTime=10*60
 	self.maxLengthTime=30*60
+	self.preStartTime=math.random(5,15)*60
 	self.preFadeTime=5*60
 	self.fadeTime=10*60
 	self.fadeFactor=0
@@ -107,9 +108,6 @@ function FalloutManager:start(manual)
 	if atmosfear_options.config:r_value(self.sect,"opt_fallout_task",0,"give")=="give" and not self.task_given then
 		db.actor:give_game_news("hide_from_fallout_"..self.falloutType.."_message_caption", "hide_from_fallout_"..self.falloutType.."_message", "ui_inGame2_Fallout_"..self.falloutType, 0, 10000)
 	end
-	self.maxDelayTime = 3600*atmosfear_options.config:r_value(self.sect,"opt_fallout_freq",2,12)
-	self.minDelayTime = self.maxDelayTime/2
-	self.nextFalloutIn=math.random(self.minDelayTime, self.maxDelayTime)
 end
 
 function FalloutManager:finish()
@@ -133,6 +131,10 @@ function FalloutManager:finish()
 	self.phase=nil
 	self.fadeFactor=0
 	self.inited_time=game.get_game_time()
+	self.maxDelayTime = 3600*atmosfear_options.config:r_value(self.sect,"opt_fallout_freq",2,12)
+	self.minDelayTime = self.maxDelayTime/2
+	self.nextFalloutIn=math.random(self.minDelayTime, self.maxDelayTime)
+	
 	--self.atmosfear.debugMessages[5]:SetText("Fallout ended because of no rain.")
 	
 	-- inc statistic
@@ -163,6 +165,17 @@ function FalloutManager:skip()
 	self:finish()
 end
 
+function FalloutManager:cancel()
+	if (self.phase ~= "prestart") then
+		return
+	end
+	self.phase=nil
+	self.inited_time=game.get_game_time()
+	self.maxDelayTime = 3600*atmosfear_options.config:r_value(self.sect,"opt_fallout_freq",2,12)
+	self.minDelayTime = self.maxDelayTime/2
+	self.nextFalloutIn=math.random(self.minDelayTime, self.maxDelayTime)
+end
+
 -- ###############################################################################################
 --                                  UPDATE
 -- ###############################################################################################
@@ -176,13 +189,6 @@ function FalloutManager:update()
 		end
 		local diff = math.floor(self.nextFalloutIn - g_time:diffSec(self.inited_time))
 		printf(diff)
-		if(self.time_forwarded) then
-			self.time_forwarded = false
-			if(diff<3600 and xr_conditions.is_rain()) then
-				self:skip()
-                return
-			end
-		end
 		--if diff > 0 then
 			--self.atmosfear.debugMessages[1]:SetText("Next fallout begins in "..tostring(diff).." seconds")
 			--self.atmosfear.debugMessages[5]:SetText("opt_enable_blowout="..tostring(self.atmosfear.opt_enable_blowout)..", is_started("..tostring(surge_manager.is_started())..")")
@@ -191,17 +197,29 @@ function FalloutManager:update()
 		--end
 		if diff < 0 then 
 			if level.rain_factor() > 0.001 then
-				if self.fallout_in_progress==false then
-					self:start()
-				elseif self.loaded then 
-					self:start()
-				end
+				self.phase = "prestart"
+				self.inited_time=game.get_game_time()
 				--self.atmosfear.debugMessages[1]:SetText("Fallout begins")
 			else
 				--self.atmosfear.debugMessages[1]:SetText("Fallout can begin but waiting for rain")
 			end
-			return
 		end			
+	elseif self.phase=="prestart" then
+		if(self.time_forwarded) then
+			self.time_forwarded = false
+			self:skip()
+			return
+		end
+		local diff = math.floor(self.preStartTime - g_time:diffSec(self.inited_time))
+		printf("prestart, " .. tostring(diff))
+		if diff < 0 then
+			if (level.rain_factor() > 0.001) then
+				self:start()
+			else
+				self:cancel()
+			end
+			return
+		end
 	elseif self.phase=="prefade" then
 		local diff = math.floor(self.preFadeTime - g_time:diffSec(self.inited_time))
 		if diff < 0 then
