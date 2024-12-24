@@ -165,8 +165,8 @@ function FalloutManager:skip()
 	self:finish()
 end
 
-function FalloutManager:cancel()
-	if (self.phase ~= "prestart") then
+function FalloutManager:shift()
+	if (self.fallout_in_progress) then
 		return
 	end
 	self.phase=nil
@@ -183,10 +183,6 @@ end
 function FalloutManager:update()
 	local g_time = game.get_game_time()
 	if not(self.phase) then
-		if (surge_manager.is_started()) then 
-			self.nextFalloutIn=math.random(self.minDelayTime, self.maxDelayTime)
-			return
-		end
 		local diff = math.floor(self.nextFalloutIn - g_time:diffSec(self.inited_time))
 		printf(diff)
 		--if diff > 0 then
@@ -196,6 +192,10 @@ function FalloutManager:update()
 			--self.atmosfear.debugMessages[7]:SetText("opt_enable_psi_storm="..tostring(self.atmosfear.opt_enable_psi_storm)..", is_started("..tostring(psi_storm_manager.is_started())..")")
 		--end
 		if diff < 0 then 
+			if (surge_manager.is_started() or psi_storm_manager.is_started()) then 
+				self:shift()
+				return
+			end
 			if level.rain_factor() > 0.001 then
 				self.phase = "prestart"
 				self.inited_time=game.get_game_time()
@@ -216,7 +216,7 @@ function FalloutManager:update()
 			if (level.rain_factor() > 0.001) then
 				self:start()
 			else
-				self:cancel()
+				self:shift()
 			end
 			return
 		end
