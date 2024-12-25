@@ -2504,8 +2504,11 @@
 	<string id="st_dyn_news_surge_type_psi">
 		<text>psi-storm</text>
 	</string>
-	<string id="st_dyn_news_surge_type_fallout">
-		<text>fallout</text>
+	<string id="st_dyn_news_surge_type_fallout_rad">
+		<text>radioactive fallout</text>
+	</string>
+	<string id="st_dyn_news_surge_type_fallout_acid">
+		<text>chemical fallout</text>
 	</string>
 
 	
