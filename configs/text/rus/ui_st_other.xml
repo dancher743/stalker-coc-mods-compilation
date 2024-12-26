@@ -519,7 +519,7 @@
 		<text>Вас убили. Вы уже не проснётесь.</text>
 	</string>
 	<string id="st_sleep_event">
-		<text>Это не возможно во время катаклизма</text>
+		<text>Это невозможно во время катаклизма</text>
 	</string>
 	<string id="st_sleep_exhausted">
 		<text>Вы устали и должны отдохнуть</text>

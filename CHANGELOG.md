@@ -71,6 +71,7 @@ All notable changes to this project will be documented in this file.
 * Fixed text of prevent fast travel during a cataclysm message
 * Fixed surges overlapping
 * Restored and corrected post-surge random news in rus localization
+* Fixed typo in `st_sleep_event` string in rus localization
 
 ### Optimization
 * Optimized amount of update callbacks
