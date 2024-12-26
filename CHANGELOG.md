@@ -70,6 +70,7 @@ All notable changes to this project will be documented in this file.
 * Corrected Guide job dialog rus text and position in `character_dialogs.xml`
 * Fixed text of prevent fast travel during a cataclysm message
 * Fixed surges overlapping
+* Restored and corrected post-surge random news in rus localization
 
 ### Optimization
 * Optimized amount of update callbacks
