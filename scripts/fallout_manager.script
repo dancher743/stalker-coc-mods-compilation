@@ -60,6 +60,8 @@ function FalloutManager:__init()
 	self.falloutLength=math.random(self.minLengthTime, self.maxLengthTime)
 	self.inited_time = game.get_game_time()
 	self.inited_time_sec = self.inited_time
+	self.start_time = nil
+	self.duration = nil
 
 	--self.count = 0
 	--self.covers = {}
@@ -103,6 +105,8 @@ function FalloutManager:start(manual)
 		self.fallout_in_progress=true
 		self.phase="prefade"
 		self.inited_time=game.get_game_time()
+		self.start_time=game.get_game_time()
+		self.duration = self.preFadeTime + self.fadeTime + self.falloutLength + self.fadeTime
 	end
 	self.loaded = false
 	if atmosfear_options.config:r_value(self.sect,"opt_fallout_task",0,"give")=="give" and not self.task_given then
@@ -131,6 +135,8 @@ function FalloutManager:finish()
 	self.phase=nil
 	self.fadeFactor=0
 	self.inited_time=game.get_game_time()
+	self.start_time = nil
+	self.duration = nil
 	self.maxDelayTime = 3600*atmosfear_options.config:r_value(self.sect,"opt_fallout_freq",2,12)
 	self.minDelayTime = self.maxDelayTime/2
 	self.nextFalloutIn=math.random(self.minDelayTime, self.maxDelayTime)
@@ -150,6 +156,9 @@ function FalloutManager:finish()
 		level.remove_pp_effector(666)
 		self.effector_set=false
 		currentPPEfactor = 0.001
+	end
+	if(self.time_forwarded and level.rain_factor() > 0.001) then
+		level_weathers.get_weather_manager():forced_weather_change()
 	end
 	-- hide indicators
 	self.surge_manager:displayIndicators(0, self.falloutType)
@@ -234,7 +243,6 @@ function FalloutManager:update()
 			self.phase="fallout"
 			self.can_kill_crows = true
 			self.inited_time=game.get_game_time()
-			self.falloutLength=math.random(self.minLengthTime, self.maxLengthTime)
 			--self.atmosfear.debugMessages[2]:SetText("Fallout at full scale")
 		end			
 	elseif self.phase=="fallout" then
@@ -723,6 +731,7 @@ end
 function FalloutManager:save(packet)
 	set_save_marker(packet, "save", false, "Fallout")
 	utils.w_CTime(packet, self.inited_time)
+	utils.w_CTime(packet, self.start_time)
 	packet:w_bool(self.finished)
 	packet:w_bool(self.fallout_in_progress)
 	if(self.fallout_in_progress) then
@@ -736,6 +745,7 @@ function FalloutManager:save(packet)
 	end
 	packet:w_u32(self.nextFalloutIn)
 	packet:w_u32(self.falloutLength)
+	packet:w_u32(self.duration)
 	packet:w_u32(self.fadeFactor)
 	set_save_marker(packet, "save", true, "Fallout")
 end
@@ -753,6 +763,7 @@ function FalloutManager:load(packet)
 	end
 	set_save_marker(packet, "load", false, "Fallout")
 	self.inited_time = utils.r_CTime(packet)
+	self.start_time = utils.r_CTime(packet)
 	self.finished = packet:r_bool()
 	self.fallout_in_progress = packet:r_bool()
 	if(self.fallout_in_progress) then
@@ -769,6 +780,7 @@ function FalloutManager:load(packet)
 	end
 	self.nextFalloutIn = packet:r_u32()
 	self.falloutLength = packet:r_u32()
+	self.duration = packet:r_u32()
 	self.fadeFactor = packet:r_u32()
 	self.loaded = true
 	set_save_marker(packet, "load", true, "Fallout")
@@ -846,6 +858,7 @@ local function save_state(m_data)
 	m_data.FalloutManager = {}
 	local self = get_fallout_manager()
 	m_data.FalloutManager.inited_time = self.inited_time and utils.CTime_to_table(self.inited_time) or utils.CTime_to_table(game.get_game_time())
+	m_data.FalloutManager.start_time = self.start_time and utils.CTime_to_table(self.start_time) or nil
 	m_data.FalloutManager.finished = self.finished
 	m_data.FalloutManager.fallout_in_progress = self.fallout_in_progress
 	if(self.fallout_in_progress) then
@@ -857,6 +870,7 @@ local function save_state(m_data)
 	end
 	m_data.FalloutManager.nextFalloutIn = self.nextFalloutIn
 	m_data.FalloutManager.falloutLength = self.falloutLength
+	m_data.FalloutManager.duration = self.duration
 	m_data.FalloutManager.fadeFactor = self.fadeFactor
 end
 
@@ -866,6 +880,7 @@ local function load_state(m_data)
 	end
 	local self = get_fallout_manager()
 	self.inited_time = m_data.FalloutManager.inited_time and utils.CTime_from_table(m_data.FalloutManager.inited_time) or self.inited_time
+	self.start_time = m_data.FalloutManager.start_time and utils.CTime_from_table(m_data.FalloutManager.start_time) or self.start_time
 	self.finished = m_data.FalloutManager.finished
 	self.fallout_in_progress = m_data.FalloutManager.fallout_in_progress or false
 	if(self.fallout_in_progress) then
@@ -878,6 +893,7 @@ local function load_state(m_data)
 	end
 	self.nextFalloutIn = m_data.FalloutManager.nextFalloutIn or self.nextFalloutIn
 	self.falloutLength = m_data.FalloutManager.falloutLength or self.falloutLength
+	self.duration = m_data.FalloutManager.duration or self.duration
 	self.fadeFactor = m_data.FalloutManager.fadeFactor or self.fadeFactor
 	self.loaded = true
 
