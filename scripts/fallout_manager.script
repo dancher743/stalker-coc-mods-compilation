@@ -262,22 +262,22 @@ function FalloutManager:update()
 		--self.debugMessages[4]:SetText("fadeFactor="..tostring(self.fadeFactor))
 		if diff < 0 then 
 			if self.fallout_in_progress==true then
+				--self.atmosfear.debugMessages[5]:SetText("Fallout ended.")
 				--self.atmosfear.debugMessages[8]:SetText("rain_factor="..level.rain_factor())
 				--self.atmosfear.debugMessages[9]:SetText("hitPower="..hitPower)
 				self:finish()
+				return
 			end
-			self.phase=nil
-			self.fadeFactor=0
-			self.inited_time=game.get_game_time()
-			self.maxDelayTime = 3600*atmosfear_options.config:r_value(self.sect,"opt_fallout_freq",2,12)
-			self.minDelayTime = self.maxDelayTime/2
-			self.nextFalloutIn=math.random(self.minDelayTime, self.maxDelayTime)
-			--self.atmosfear.debugMessages[5]:SetText("Fallout ended.")
 		end
 	end	
 	
 	if self.fallout_in_progress then
 		-- main loop started
+		
+		if (level.rain_factor() == 0) then
+			self:finish()
+			return
+		end
 		
 		if not(self.task_given) then
 			--self.debugMessages[6]:SetText("FIND COVER")
