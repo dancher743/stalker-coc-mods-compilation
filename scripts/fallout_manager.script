@@ -157,8 +157,10 @@ function FalloutManager:finish()
 		self.effector_set=false
 		currentPPEfactor = 0.001
 	end
-	if(self.time_forwarded and level.rain_factor() > 0.001) then
-		level_weathers.get_weather_manager():forced_weather_change()
+	for k,snd in pairs(surge_manager.SurgeManager.blowout_sounds) do
+		if snd ~= nil and snd:playing() then
+			snd:stop()
+		end
 	end
 	-- hide indicators
 	self.surge_manager:displayIndicators(0, self.falloutType)
