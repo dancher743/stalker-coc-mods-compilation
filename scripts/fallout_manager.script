@@ -392,21 +392,17 @@ function FalloutManager:update()
 					if self.falloutType=="acid"  then --and (not (diff_sec % 10))
 						-- suit damage
 						local suit = db.actor:get_current_outfit()
-						if suit ~= nil then
-							local suit_obj = db.actor:object(suit:section())
-							if suit_obj ~= nil then
-								suit_obj:set_condition(suit:condition() - h.power/10)
-							end
-							--self.debugMessages[13]:SetText("suit="..tostring(suit:section()))
-						end
+						self:damage_item(suit)
+						
 						-- helmet damage
 						local helmet = db.actor:item_in_slot(12)
-						if helmet ~= nil then
-							local helmet_obj = db.actor:object(helmet:section())
-							if helmet_obj ~= nil then
-								helmet_obj:set_condition(helmet:condition() - h.power/10)
-							end
-							--self.debugMessages[14]:SetText("helmet="..tostring(helmet:section()))
+						self:damage_item(helmet)
+
+						-- slot damage
+						local slot = db.actor:active_slot()
+						if (slot~=0) then
+							local slot_item = db.actor:item_in_slot(slot)
+							self:damage_item(slot_item)
 						end
 					end
 				end
@@ -571,6 +567,20 @@ function FalloutManager:try_kill_crows()
 	end
 	
 	self.can_kill_crows = false
+end
+
+function FalloutManager:damage_item(item)
+	if (item == nil or h == nil) then
+		return
+	end
+	
+	local item_obj = db.actor:object(item:section())
+	if item_obj == nil then
+		return
+	end
+	
+	item_obj:set_condition(item:condition() - h.power)
+	--self.debugMessages[13]:SetText("item="..tostring(item:section()))
 end
 
 function get_squad_members(squad)
