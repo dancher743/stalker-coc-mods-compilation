@@ -57,7 +57,6 @@ All notable changes to this project will be documented in this file.
 * Added removed `rnd_dark_2` sound into `restored_dark` channel
 
 ### Fixes
-* Fixed `delta` of `actor_on_slicing_update` callback
 * Fixed low volume of `nuclear.ogg` radio track
 * Fixed simulation of `gar_smart_terrain_5_6` smart
 * Fixed ignoring of start companions as NPC for reborn in Azazel mode
@@ -99,10 +98,11 @@ All notable changes to this project will be documented in this file.
 * Added original `lua_help.script`
 * Added `level_time_observer.script` to be able to observe game time
 
-## [1.4.6] - Unreleased
+## [1.4.6] - 2024-12-30
 
 ### Fixes
 * Fixed LUA error: xr_effects.script:3283: attempt to index field 'bounties_by_squad_id' (a nil value)
+* Fixed `delta` of `actor_on_slicing_update` callback
 
 ## [1.4.5] - 2024-08-18
 
