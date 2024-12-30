@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.4.6] - Unreleased
+## [1.4.6] - 2024-12-30
 
 ### Fixes
 * Fixed LUA error: xr_effects.script:3283: attempt to index field 'bounties_by_squad_id' (a nil value)
