@@ -593,6 +593,13 @@ function af_options_dialog:OnBtnAccept() -- update the values in "atmosfear_curr
 			if (psi_storm_manager) then psi_storm_manager.PsiStormManager:new_psi_storm_time(true) end
 		end
 	end
+	
+	if (config:r_value("atmosfear_current_parameters","opt_enable_fallout") == 0 and self:GetCheckValue("enable_fallout")==1) or config:r_value("atmosfear_current_parameters","opt_fallout_freq")~=tonumber(self:GetComboValue("fallout_freq")) then
+		self:SetComboOption("fallout_freq",true)
+		if (level.present()) then
+			if (fallout_manager) then fallout_manager.get_fallout_manager():new_time() end
+		end
+	end
 
 	self:SetComboOption("fallout_freq",true)
 	self:SetCheckOption("enable_blowout",true)

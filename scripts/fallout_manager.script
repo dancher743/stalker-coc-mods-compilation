@@ -137,9 +137,7 @@ function FalloutManager:finish()
 	self.inited_time=game.get_game_time()
 	self.start_time = nil
 	self.duration = nil
-	self.maxDelayTime = 3600*atmosfear_options.config:r_value(self.sect,"opt_fallout_freq",2,12)
-	self.minDelayTime = self.maxDelayTime/2
-	self.nextFalloutIn=math.random(self.minDelayTime, self.maxDelayTime)
+	self:new_time()
 	
 	--self.atmosfear.debugMessages[5]:SetText("Fallout ended because of no rain.")
 	
@@ -182,9 +180,18 @@ function FalloutManager:shift()
 	end
 	self.phase=nil
 	self.inited_time=game.get_game_time()
+	self:new_time()
+end
+
+function FalloutManager:new_time()
 	self.maxDelayTime = 3600*atmosfear_options.config:r_value(self.sect,"opt_fallout_freq",2,12)
 	self.minDelayTime = self.maxDelayTime/2
 	self.nextFalloutIn=math.random(self.minDelayTime, self.maxDelayTime)
+end
+
+function FalloutManager:get_time_left()
+	local game_time = game.get_game_time()
+	return self.fallout_in_progress and 0 or math.floor(self.nextFalloutIn - game_time:diffSec(self.inited_time))
 end
 
 -- ###############################################################################################

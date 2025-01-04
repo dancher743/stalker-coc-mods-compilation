@@ -107,7 +107,7 @@
 	</string>
 
 	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_0">
-		<text>Our equipment gives the estimation:</text>
+		<text>Our equipment gives the estimation: </text>
 	</string>
 	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_0_1">
 		<text>surge - %s h.</text>
@@ -117,6 +117,12 @@
 	</string>
 	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_0_3">
 		<text>less than 1</text>
+	</string>
+	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_0_4">
+		<text>fallout - %s h.</text>
+	</string>
+	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_0_5">
+		<text>fallout - in bad weather.</text>
 	</string>
 	
 	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_1">
