@@ -87,6 +87,7 @@ local h
 
 function FalloutManager:start(manual)
 	if atmosfear_options.config:r_value(self.sect,"opt_enable_fallout",2,1)==0 or (level.name() == "l11_hospital" or level_weathers.valid_levels[level.name()] ~= true) or has_alife_info("bar_arena_fight") then
+		self.skip_message = true
 		self:skip()
 		return
 	elseif manual and self.fallout_in_progress==false then --for debug
@@ -109,28 +110,12 @@ function FalloutManager:start(manual)
 		self.duration = self.preFadeTime + self.fadeTime + self.falloutLength + self.fadeTime
 	end
 	self.loaded = false
-	if atmosfear_options.config:r_value(self.sect,"opt_fallout_task",0,"give")=="give" and not self.task_given then
-		db.actor:give_game_news("hide_from_fallout_"..self.falloutType.."_message_caption", "hide_from_fallout_"..self.falloutType.."_message", "ui_inGame2_Fallout_"..self.falloutType, 0, 10000)
-	end
 end
 
 function FalloutManager:finish()
 	self.finished = true
 	self.fallout_in_progress=false
 	self.task_given = false
-	
-	if not self.skip_message then
-		news_manager.send_tip(db.actor, "st_fallout_while_asleep", nil, "recent_surge", nil, nil)
-		self.skip_message = true
-	else
-		if atmosfear_options.config:r_value(self.sect,"opt_fallout_task",0,"give")=="give" and 
-			atmosfear_options.config:r_value(self.sect,"opt_enable_fallout",2,1)==1 and 
-			(level_weathers.valid_levels[level.name()] and level.name() ~= "l11_hospital") and 
-			not has_alife_info("bar_arena_fight")
-		then
-			db.actor:give_game_news("end_fallout_"..self.falloutType.."_message_caption", "end_fallout_"..self.falloutType.."_message", "ui_inGame2_Fallout_"..self.falloutType, 0, 10000)
-		end
-	end
 	
 	self.phase=nil
 	self.fadeFactor=0
@@ -170,7 +155,10 @@ function FalloutManager:finish()
 end
 
 function FalloutManager:skip()
-	self.skip_message = false
+	if not self.skip_message then
+		news_manager.send_tip(db.actor, "st_fallout_while_asleep", nil, "recent_surge", nil, nil)
+		self.skip_message = true
+	end
 	self:finish()
 end
 
@@ -225,6 +213,7 @@ function FalloutManager:update()
 	elseif self.phase=="prestart" then
 		if(self.time_forwarded) then
 			self.time_forwarded = false
+			self.skip_message = false
 			self:skip()
 			return
 		end
