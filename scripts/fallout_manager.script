@@ -317,6 +317,7 @@ function FalloutManager:update()
 			
 			local radiationPower = level.rain_factor()/self.powerFactor*self.fadeFactor
 			local hitPower = radiationPower*self.updateFactor/2
+			hitPower = hitPower * (self.falloutType=="rad" and 10 or 2)
 	
 			--self.debugMessages[8]:SetText("rain_factor="..level.rain_factor())
 			--self.debugMessages[3]:SetText("db.actor.radiation="..db.actor.radiation)
