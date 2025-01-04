@@ -92,6 +92,7 @@ function FalloutManager:start(manual)
 		return
 	elseif manual and self.fallout_in_progress==false then --for debug
 		self.nextFalloutIn = math.ceil(game.get_game_time():diffSec(self.inited_time))
+		self.preStartTime = 0
 		level_weathers.set_rain_weather()
 		return
 	end
