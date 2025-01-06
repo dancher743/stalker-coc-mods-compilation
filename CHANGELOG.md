@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 * Restored fog ambient
 * Random stashes renewing
 * Added rad aura for black bloodsucker
+* Added sleep aura for cat mutant
 
 ### Mods
 * Call of Chernobyl Fallout (CrommCruac, av661194)
