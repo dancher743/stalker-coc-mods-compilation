@@ -197,7 +197,7 @@ function FalloutManager:update()
 	if not(self.phase) then
 		local g_time = game.get_game_time()
 		local diff = math.floor(self.nextFalloutIn - g_time:diffSec(self.inited_time))
-		printf(diff)
+		--printf(diff)
 		--if diff > 0 then
 			--self.atmosfear.debugMessages[1]:SetText("Next fallout begins in "..tostring(diff).." seconds")
 			--self.atmosfear.debugMessages[5]:SetText("opt_enable_blowout="..tostring(self.atmosfear.opt_enable_blowout)..", is_started("..tostring(surge_manager.is_started())..")")
@@ -226,7 +226,6 @@ function FalloutManager:update()
 		end
 		local g_time = game.get_game_time()
 		local diff = math.floor(self.preStartTime - g_time:diffSec(self.inited_time))
-		printf("prestart, " .. tostring(diff))
 		if diff < 0 then
 			if (level.rain_factor() > 0.001) then
 				self:start()
