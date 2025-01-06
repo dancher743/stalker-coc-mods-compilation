@@ -4,8 +4,11 @@
 --
 
 local apply_aura_distance_sqr = 10*10
+
 local sleep_effector_name = "yantar_underground_psi.ppe"
 local sleep_aura_prob_string_name = "sleep_aura_prob"
+
+local actor_yawn_max_sound_index = 3
 local actor_yawn_sound = nil
 
 local cat_timers = {}
@@ -15,7 +18,7 @@ local function play_yawn_sound()
 		return
 	end
 	
-	local sound_index = math.random(1,2)
+	local sound_index = math.random(1,actor_yawn_max_sound_index)
 	actor_yawn_sound = xr_sound.get_safe_sound_object("actor\\yawn_"..sound_index,sound_object.s2d)
 	actor_yawn_sound:play(db.actor,0,sound_object.s2d)
 end
@@ -51,7 +54,7 @@ local function monster_on_update(npc)
 	
 	level.remove_pp_effector(998)
 	level.add_pp_effector(sleep_effector_name, 998, false)
-	if (math.random() < 0.25) then
+	if (math.random() < 0.5) then
 		play_yawn_sound()
 	end
 	
