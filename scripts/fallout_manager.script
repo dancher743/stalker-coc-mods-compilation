@@ -327,6 +327,7 @@ function FalloutManager:update()
 			
 			local radiationPower = level.rain_factor()/self.powerFactor*self.fadeFactor
 			local hitPower = radiationPower*self.updateFactor/2
+			local hitPowerIndicator = hitPower
 			hitPower = hitPower * (self.falloutType=="rad" and 10 or 2)
 	
 			--self.debugMessages[8]:SetText("rain_factor="..level.rain_factor())
@@ -339,7 +340,7 @@ function FalloutManager:update()
 				--PPEfactor = level.rain_factor()-self.powerThreshold*self.powerFactor
 				PPEfactor = hitPower/2*self.powerFactor
 				if PPEfactor < 0.001 then PPEfactor = 0.001 end
-				self.surge_manager:displayIndicators(hitPower*self.powerFactor, self.falloutType)
+				self.surge_manager:displayIndicators(hitPowerIndicator*self.powerFactor, self.falloutType)
 			else
 				PPEfactor = 0.002
 				self.surge_manager:displayIndicators(0, self.falloutType)
