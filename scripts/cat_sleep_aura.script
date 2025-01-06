@@ -54,6 +54,10 @@ local function monster_on_update(npc)
 	if (math.random() < 0.25) then
 		play_yawn_sound()
 	end
+	
+	if (sleep_dep.feature_is_active) then
+		sleep_dep.last_sleep = sleep_dep.last_sleep + 1
+	end
 end
 
 function on_game_start()
