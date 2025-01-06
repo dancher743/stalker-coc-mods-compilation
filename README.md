@@ -121,3 +121,4 @@ Mods
 69. Next surge and/or psi storm dialog for Sakharov (Dancher)
 70. Psy dog from Build 1935 (Charsi, Ю Е Проскудин, Dancher)
 71. A few tracks from New Music in Radio (ROOZBAN, KisaTraxova228)
+72. Call of Chernobyl Fallout (CrommCruac, av661194)

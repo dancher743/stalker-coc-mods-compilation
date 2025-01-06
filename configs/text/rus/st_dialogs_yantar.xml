@@ -107,7 +107,7 @@
 	</string>
 	
 	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_0">
-		<text>Аппаратура выдаёт оценку:</text>
+		<text>Аппаратура выдаёт оценку: </text>
 	</string>
 	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_0_1">
 		<text>выброс - %s ч.</text>
@@ -117,6 +117,12 @@
 	</string>
 	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_0_3">
 		<text>менее 1</text>
+	</string>
+	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_0_4">
+		<text>осадки - %s ч.</text>
+	</string>
+	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_0_5">
+		<text>осадки - в непогоду.</text>
 	</string>
 	
 	<string id="yan_stalker_sakharov_next_surge_or_psi_storm_1_1">

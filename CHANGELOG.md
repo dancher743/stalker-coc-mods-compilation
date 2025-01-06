@@ -22,6 +22,9 @@ All notable changes to this project will be documented in this file.
 * Restored fog ambient
 * Random stashes renewing
 
+### Mods
+* Call of Chernobyl Fallout (CrommCruac, av661194)
+
 ### Improvements
 * Restored lore-friendly NPC's backpack textures
 * Added lore-friendly NPC's portrets (1 portret from Customization Pack Adaptation [1.4.22])
@@ -64,6 +67,10 @@ All notable changes to this project will be documented in this file.
 * Fixed double crit hit
 * Reworked text of `banditmerc_outfit_description` string
 * Corrected Guide job dialog rus text and position in `character_dialogs.xml`
+* Fixed text of prevent fast travel during a cataclysm message
+* Fixed surges overlapping
+* Restored and corrected post-surge random news in rus localization
+* Fixed typo in `st_sleep_event` string in rus localization
 
 ### Optimization
 * Optimized amount of update callbacks

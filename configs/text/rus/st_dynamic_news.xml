@@ -2501,6 +2501,12 @@
 	<string id="st_dyn_news_surge_type_psi">
 		<text>пси-шторм</text>
 	</string>
+	<string id="st_dyn_news_surge_type_fallout_rad">
+		<text>радиоактивный дождь</text>
+	</string>
+	<string id="st_dyn_news_surge_type_fallout_acid">
+		<text>кислотный дождь</text>
+	</string>
 
 	
 <!----------------------------- Reports and Responses ----------------------------->
@@ -3556,25 +3562,34 @@
 
 	<!-- Post-surge -->
 	<string id="st_dyn_news_surge_after_1">
-		<text>Теперь я всё сам видел...</text>
+		<text>Теперь я всё видел сам...</text>
 	</string>
 	<string id="st_dyn_news_surge_after_2">
 		<text>Мы сделали это, мы пережили $what!</text>
 	</string>
 	<string id="st_dyn_news_surge_after_3">
-		<text>Закончилось... все в порядке, парни?!</text>
+		<text>Закончилось... вы в порядке, парни?!</text>
 	</string>
 	<string id="st_dyn_news_surge_after_4">
-		<text>Все живы?!</text>
+		<text>Все целы?!</text>
 	</string>
 	<string id="st_dyn_news_surge_after_5">
-		<text>Всё, закончилось.</text>
+		<text>Закончилось, можно вернуться к своим делам.</text>
 	</string>
 	<string id="st_dyn_news_surge_after_6">
-		<text>Это был не обычный $what.</text>
+		<text>Этот $what был не таким, как другие...</text>
 	</string>
 	<string id="st_dyn_news_surge_after_7">
-		<text>Успокоилось наконец-то.</text>
+		<text>Успокоилось, наконец-то.</text>
+	</string>
+	<string id="st_dyn_news_surge_after_8">
+		<text>Блин, до сих пор стрёмно! А вам?</text>
+	</string>
+	<string id="st_dyn_news_surge_after_9">
+		<text>...ох... плохо мне...</text>
+	</string>
+	<string id="st_dyn_news_surge_after_10">
+		<text>Всё хорошо, народ. Теперь безопасно.</text>
 	</string>
 
 	<!-- Surge template -->

@@ -283,7 +283,7 @@ function CPsiStormManager:update()
 		end
 		self:start()
 		return
-	elseif (surge_manager.is_started()) then 
+	elseif (surge_manager.is_started() or fallout_manager.is_started()) then 
 		self:skip_psi_storm()
 	end
 

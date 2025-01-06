@@ -344,6 +344,19 @@ function anabiotic_callback()
 			m:finish()
 		end
 	end
+	if(fallout_manager and fallout_manager.is_started()) then
+		m = fallout_manager.get_fallout_manager()
+		-- TODO, Dancher: Should fix update time in fallout_manager
+		--[[local tf = level.get_time_factor()
+		local diff_sec = math.ceil(game.get_game_time():diffSec(m.start_time)/tf)
+		if(rnd>(m.duration-diff_sec)*tf/60) then
+			m.time_forwarded = true
+			m:finish()
+		end]]
+		rnd = math.random(55,65)
+		m.time_forwarded = true
+		m:finish()
+	end
 	level.change_game_time(0,0,rnd)
 	level_weathers.get_weather_manager():forced_weather_change()
 	--printf("anabiotic_callback: time forwarded on [%d]", rnd)

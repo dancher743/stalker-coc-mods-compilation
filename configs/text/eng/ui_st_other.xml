@@ -556,8 +556,11 @@
 		<text>Head lamp equipped</text>
 	</string>
 	
-	<string id="st_travel_event">
+	<string id="st_travel_combat">
 		<text>It would be unsafe to travel with enemies nearby</text>
+	</string>
+	<string id="st_travel_cataclysm">
+		<text>It would be unsafe to travel during cataclysm</text>
 	</string>
 	<string id="st_travel_overloaded">
 		<text>You are carrying too much weight</text>

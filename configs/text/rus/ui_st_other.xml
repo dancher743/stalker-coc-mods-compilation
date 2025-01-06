@@ -519,7 +519,7 @@
 		<text>Вас убили. Вы уже не проснётесь.</text>
 	</string>
 	<string id="st_sleep_event">
-		<text>Это не возможно во время катаклизма</text>
+		<text>Это невозможно во время катаклизма</text>
 	</string>
 	<string id="st_sleep_exhausted">
 		<text>Вы устали и должны отдохнуть</text>
@@ -556,8 +556,11 @@
 		<text>Фонарь подключён</text>
 	</string>
 	
-	<string id="st_travel_event">
+	<string id="st_travel_combat">
 		<text>Путешествовать опасно - поблизости много врагов</text>
+	</string>
+	<string id="st_travel_cataclysm">
+		<text>Путешествовать опасно - начался катаклизм</text>
 	</string>
 	<string id="st_travel_overloaded">
 		<text>Вы слишком перегружены</text>

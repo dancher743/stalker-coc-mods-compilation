@@ -1834,6 +1834,11 @@ function squad_npc_count_ge(actor, npc, p)
 end
 
 function surge_complete()
+	if (fallout_manager) then
+		if not (fallout_manager.is_finished()) then
+			return false
+		end
+	end
 	if (psi_storm_manager and psi_storm_manager.is_loaded()) then
 		if not (psi_storm_manager.is_finished()) then
 			return false
@@ -1846,6 +1851,9 @@ function surge_complete()
 end
 
 function surge_started()
+	if (fallout_manager and fallout_manager.is_started()) then
+		return true
+	end
 	if (psi_storm_manager and psi_storm_manager.is_loaded() and psi_storm_manager.is_started()) then
 		return true
 	end
@@ -1857,6 +1865,11 @@ end
 
 function surge_kill_all()
 	return surge_manager and surge_manager.is_killing_all() or false
+end
+
+-- AtmosFear Fallout
+function fallout_complete()
+	return fallout_manager.is_finished()
 end
 
 function signal_rocket_flying(actor, npc, p)
