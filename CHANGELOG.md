@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 * Reworked global map texture based on Clear Sky texture
 * Restored fog ambient
 * Random stashes renewing
+* Added rad aura for black bloodsucker
 
 ### Mods
 * Call of Chernobyl Fallout (CrommCruac, av661194)
