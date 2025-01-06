@@ -23,6 +23,12 @@ local immuned_to_surge_squads = {
 						["zombied"]			= true,
 						 }
 
+local prestart_phase_name = "prestart"
+local prefade_phase_name = "prefade"
+local fadein_phase_name = "fadein"
+local fallout_phase_name = "fallout"
+local fadeout_phase_name = "fadeout"
+
 class "FalloutManager"
 function FalloutManager:__init()
 	self.sect = "atmosfear_current_parameters"
@@ -105,7 +111,7 @@ function FalloutManager:start(manual)
 		end	
 		self.finished = false
 		self.fallout_in_progress=true
-		self.phase="prefade"
+		self.phase=prefade_phase_name
 		self.inited_time=game.get_game_time()
 		self.start_time=game.get_game_time()
 		self.duration = self.preFadeTime + self.fadeTime + self.falloutLength + self.fadeTime
@@ -188,8 +194,8 @@ end
 -- ###############################################################################################
 
 function FalloutManager:update()
-	local g_time = game.get_game_time()
 	if not(self.phase) then
+		local g_time = game.get_game_time()
 		local diff = math.floor(self.nextFalloutIn - g_time:diffSec(self.inited_time))
 		printf(diff)
 		--if diff > 0 then
@@ -204,7 +210,7 @@ function FalloutManager:update()
 				return
 			end
 			if level.rain_factor() > 0.001 then
-				self.phase = "prestart"
+				self.phase = prestart_phase_name
 				self.inited_time=game.get_game_time()
 				--self.atmosfear.debugMessages[1]:SetText("Fallout begins")
 			else
@@ -218,6 +224,7 @@ function FalloutManager:update()
 			self:skip()
 			return
 		end
+		local g_time = game.get_game_time()
 		local diff = math.floor(self.preStartTime - g_time:diffSec(self.inited_time))
 		printf("prestart, " .. tostring(diff))
 		if diff < 0 then
@@ -228,32 +235,36 @@ function FalloutManager:update()
 			end
 			return
 		end
-	elseif self.phase=="prefade" then
+	elseif self.phase==prefade_phase_name then
+		local g_time = game.get_game_time()
 		local diff = math.floor(self.preFadeTime - g_time:diffSec(self.inited_time))
 		if diff < 0 then
-			self.phase="fadein"
+			self.phase=fadein_phase_name
 		end
-	elseif self.phase=="fadein" then
+	elseif self.phase==fadein_phase_name then
+		local g_time = game.get_game_time()
 		local diff = math.floor(self.fadeTime - g_time:diffSec(self.inited_time))
 		self.fadeFactor = (self.fadeTime - diff) / self.fadeTime
 		--self.debugMessages[2]:SetText("fadeFactor="..tostring(self.fadeFactor))
 		if diff < 0 then 
 			self.fadeFactor=1
-			self.phase="fallout"
+			self.phase=fallout_phase_name
 			self.can_kill_crows = true
 			self.inited_time=game.get_game_time()
 			--self.atmosfear.debugMessages[2]:SetText("Fallout at full scale")
 		end			
-	elseif self.phase=="fallout" then
+	elseif self.phase==fallout_phase_name then
+		local g_time = game.get_game_time()
 		local diff = math.floor(self.falloutLength - g_time:diffSec(self.inited_time))
 		--self.atmosfear.debugMessages[3]:SetText("Fallout ends in "..tostring(diff).." seconds")
 		if diff < 0 then 
-			self.phase="fadeout"
+			self.phase=fadeout_phase_name
 			self.can_kill_crows = true
 			self.inited_time=game.get_game_time()
 			--self.atmosfear.debugMessages[3]:SetText("Main fallout ended. Fading out.")
 		end	
-	elseif self.phase=="fadeout" then
+	elseif self.phase==fadeout_phase_name then
+		local g_time = game.get_game_time()
 		local diff = math.floor(self.fadeTime - g_time:diffSec(self.inited_time))
 		self.fadeFactor = diff / self.fadeTime
 		--self.debugMessages[4]:SetText("fadeFactor="..tostring(self.fadeFactor))
@@ -297,7 +308,7 @@ function FalloutManager:update()
 			self.surge_manager:calculate_best_surge_cover()
 		end
 		
-		if self.phase ~= "prefade" then
+		if self.phase ~= prefade_phase_name then
 			-- start sound
 			if not(self.fallout_sound) and self.falloutType=="acid" then
 				xr_sound.play_sound_looped(db.actor:id(), "fallout_acid_rain")
