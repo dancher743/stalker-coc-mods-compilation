@@ -28,6 +28,10 @@ local prefade_phase_name = "prefade"
 local fadein_phase_name = "fadein"
 local fallout_phase_name = "fallout"
 local fadeout_phase_name = "fadeout"
+local rad_fallout_type_name = "rad"
+local acid_fallout_type_name = "acid"
+local opt_fallout_fate_name = "opt_fallout_fate"
+local opt_fallout_fate_acid_value_name = "poison"
 
 class "FalloutManager"
 function FalloutManager:__init()
@@ -76,7 +80,7 @@ function FalloutManager:__init()
 	--self.fallout_task_sect = STR_EMPTY
 	--self.finished = false
 	--self.fallout_in_progress=false	
-	self.falloutType="rad"
+	self.falloutType=rad_fallout_type_name
 	self.geiger_sounds={	geiger_1 = sound_object("detectors\\geiger_1"), 
 							geiger_2 = sound_object("detectors\\geiger_2"), 
 							geiger_3 = sound_object("detectors\\geiger_3"), 
@@ -105,9 +109,9 @@ function FalloutManager:start(manual)
 	if self.fallout_in_progress==false then
 		local rnd = math.random()
 		if rnd<0.6 then
-			self.falloutType="rad"
+			self.falloutType=rad_fallout_type_name
 		else
-			self.falloutType="acid"
+			self.falloutType=acid_fallout_type_name
 		end	
 		self.finished = false
 		self.fallout_in_progress=true
@@ -309,14 +313,14 @@ function FalloutManager:update()
 		
 		if self.phase ~= prefade_phase_name then
 			-- start sound
-			if not(self.fallout_sound) and self.falloutType=="acid" then
+			if not(self.fallout_sound) and self.falloutType==acid_fallout_type_name then
 				xr_sound.play_sound_looped(db.actor:id(), "fallout_acid_rain")
 				xr_sound.set_volume_sound_looped(db.actor:id(), "fallout_acid_rain", 0)
 				self.fallout_sound=true
 			end
 			-- start effector
 			if not(self.effector_set) then
-				if self.falloutType=="rad" then
+				if self.falloutType==rad_fallout_type_name then
 					level.add_pp_effector("radiation.ppe", 666, true)
 				else
 					level.add_pp_effector("acidic.ppe", 666, true)
@@ -328,7 +332,7 @@ function FalloutManager:update()
 			local radiationPower = level.rain_factor()/self.powerFactor*self.fadeFactor
 			local hitPower = radiationPower*self.updateFactor/2
 			local hitPowerIndicator = hitPower
-			hitPower = hitPower * (self.falloutType=="rad" and 10 or 2)
+			hitPower = hitPower * (self.falloutType==rad_fallout_type_name and 10 or 2)
 	
 			--self.debugMessages[8]:SetText("rain_factor="..level.rain_factor())
 			--self.debugMessages[3]:SetText("db.actor.radiation="..db.actor.radiation)
@@ -371,7 +375,7 @@ function FalloutManager:update()
 				prev_sec = diff_sec
 --[[
 				local h = hit()
-				if self.falloutType=="rad" then
+				if self.falloutType==rad_fallout_type_name then
 					h.type = hit.radiation
 				else
 					h.type = hit.chemical_burn
@@ -387,7 +391,7 @@ function FalloutManager:update()
 						h.impulse = 0
 						h.direction = VEC_FORWARD
 						h.draftsman = db.actor
-						if self.falloutType=="rad" then
+						if self.falloutType==rad_fallout_type_name then
 							h.type = hit.radiation
 						else
 							h.type = hit.chemical_burn
@@ -398,7 +402,7 @@ function FalloutManager:update()
 					if not(atmosfear_options.config:r_value(self.sect,"god_mode",1,false)) then
 						db.actor:hit(h)
 					end
-					if self.falloutType=="acid"  then --and (not (diff_sec % 10))
+					if self.falloutType==acid_fallout_type_name  then --and (not (diff_sec % 10))
 						-- suit damage
 						local suit = db.actor:get_current_outfit()
 						self:damage_item(suit)
@@ -415,7 +419,7 @@ function FalloutManager:update()
 						end
 					end
 				end
-				if (atmosfear_options.config:r_value(self.sect,"opt_fallout_fate",0,"poison")=="poison") then
+				if (atmosfear_options.config:r_value(self.sect,opt_fallout_fate_name,0,STR_EMPTY)==opt_fallout_fate_acid_value_name) then
 					self:hit_all_unhided(hitPower)
 				end
 				self:try_kill_crows()
@@ -493,7 +497,7 @@ end
 function FalloutManager:hit_all_unhided(hitPower)
 --[[
 	local h = hit()
-	if self.falloutType=="rad" then
+	if self.falloutType==rad_fallout_type_name then
 		h.type = hit.radiation
 	else
 		h.type = hit.chemical_burn
@@ -519,7 +523,7 @@ function FalloutManager:hit_all_unhided(hitPower)
 						local cl_obj = level.object_by_id(id)
 						if cl_obj ~= nil then
 							hits[id] = hits[id] or get_combo_k(cl_obj)
-							if self.falloutType=="rad" then
+							if self.falloutType==rad_fallout_type_name then
 								cl_obj.radiation = hitPower*hits[id]
 							else
 								cl_obj.health = -hitPower*hits[id]
