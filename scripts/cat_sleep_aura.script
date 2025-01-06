@@ -5,6 +5,7 @@
 
 local apply_aura_distance_sqr = 10*10
 local sleep_effector_name = "yantar_underground_psi.ppe"
+local sleep_aura_prob_string_name = "sleep_aura_prob"
 local actor_yawn_sound = nil
 
 local timer = 0
@@ -37,7 +38,10 @@ local function monster_on_update(npc)
 	
 	timer = time_global + 5000 + math.random(-1000,1000)
 	
-	if (math.random() < 0.5) then
+	local sleep_aura_prob = get_system_ini():r_string_ex(npc:section(),sleep_aura_prob_string_name)
+	sleep_aura_prob = tonumber(sleep_aura_prob)
+	
+	if (math.random() > sleep_aura_prob) then
 		return
 	end
 	
