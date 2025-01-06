@@ -1,0 +1,53 @@
+--
+-- Cat mutant sleep aura
+-- Added by Dancher
+--
+
+local apply_aura_distance_sqr = 10*10
+local sleep_effector_name = "yantar_underground_psi.ppe"
+local actor_yawn_sound = nil
+
+local timer = 0
+
+local function play_yawn_sound()
+	if (actor_yawn_sound == nil) then
+		actor_yawn_sound = xr_sound.get_safe_sound_object("actor\\yawn_1",sound_object.s2d)
+	end
+	
+	actor_yawn_sound:play(db.actor,0,sound_object.s2d)
+end
+
+local function monster_on_update(npc)
+	if (not npc:alive() or npc:clsid() ~= clsid.cat_s) then
+		return
+	end
+	
+	local actor = db.actor
+	local distance_to_actor = npc:position():distance_to_sqr(actor:position())
+	
+	if (distance_to_actor > apply_aura_distance_sqr) then
+		return
+	end
+	
+	local time_global = time_global()
+	
+	if (timer > time_global) then
+		return
+	end
+	
+	timer = time_global + 5000 + math.random(-1000,1000)
+	
+	if (math.random() < 0.5) then
+		return
+	end
+	
+	level.remove_pp_effector(998)
+	level.add_pp_effector(sleep_effector_name, 998, false)
+	if (math.random() < 0.5) then
+		play_yawn_sound()
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("monster_on_update",monster_on_update)
+end
