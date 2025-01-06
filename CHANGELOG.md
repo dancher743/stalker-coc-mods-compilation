@@ -104,6 +104,7 @@ All notable changes to this project will be documented in this file.
 * Added `parse_ini_section_to_iarray` function into `utils.script`
 * Added original `lua_help.script`
 * Added `level_time_observer.script` to be able to observe game time
+* Added custom time format for `ui_hud_timer.script`
 
 ## [1.4.6] - 2024-12-30
 
