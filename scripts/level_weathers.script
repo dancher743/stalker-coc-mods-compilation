@@ -84,6 +84,7 @@ function WeatherManager:__init()
 	self.period=get_random_weather()
 	self.transition_period=false
 	self.pre_blowout_period=false
+	self.levelWeather=STR_EMPTY
 	self.curr_weather=STR_EMPTY
 	self.next_weather=STR_EMPTY
 	self.far_distances={}
@@ -631,12 +632,6 @@ function WeatherManager:load(F)
 	--self.update_level  = F:r_stringZ();
 	self.levelWeather = F:r_stringZ()
 	self.period = F:r_stringZ()
-	if self.levelWeather== "atmosfear_transition" then
-		self.transition_period = true
-	end
-	if self.levelWeather== "atmosfear_pre_blowout" then
-		self.pre_blowout_period = true
-	end
 	self.last_period_change_date = utils.r_CTime(F,"level_weathers");
 	self.update_time = F:r_u32();
 	local str = F:r_stringZ()
@@ -651,7 +646,7 @@ end
 function WeatherManager:save(F)
 	set_save_marker(F, "save", false, "WeatherManager")
 	-- printf("WEATHER SAVE")
-	F:w_stringZ(self.levelWeather or "atmosfear_transition")
+	F:w_stringZ(self.levelWeather)
 	F:w_stringZ(self.period)
 	alun_utils.w_stpk(F,"CTime",self.last_period_change_date,"WeatherManager.last_period_change_date")
 	--F:w_stringZ(self.update_level);
@@ -902,12 +897,6 @@ function WeatherManager:load_state(m_data)
 	self.update_time = m_data.weather_manager.update_time
 	self.weather_fx = m_data.weather_manager.weather_fx
 	self.wfx_time = m_data.weather_manager.weather_fx_time or 0
-	
-	if (self.levelWeather == "atmosfear_transition") then 
-		self.transition_period = true
-	elseif (self.levelWeather == "atmosfear_pre_blowout") then
-		self.pre_blowout_period = true
-	end
 	
 	--alun_utils.debug_write("WeatherManager:load_state AFTER")
 end 

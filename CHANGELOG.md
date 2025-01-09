@@ -73,6 +73,7 @@ All notable changes to this project will be documented in this file.
 * Fixed surges overlapping
 * Restored and corrected post-surge random news in rus localization
 * Fixed typo in `st_sleep_event` string in rus localization
+* Fixed reselect of pre blowout weather after reload
 
 ### Optimization
 * Optimized amount of update callbacks
