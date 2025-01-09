@@ -88,6 +88,7 @@ All notable changes to this project will be documented in this file.
 * Optimized strings allocations in `printf` function in `_g.script`
 * Reduced extra allocations of `get_console()` function, using `get_cached_console()` instead
 * Reduced strings allocations using var types constants
+* Optimized RAM in `get_valid_item_sections` and `get_loot_table` functions
 
 ### Framework
 * Added `surge_on_ended` and `psi_storm_on_ended` callbacks into `axr_main.script`
