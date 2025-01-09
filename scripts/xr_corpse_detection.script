@@ -139,9 +139,10 @@ end
 function get_loot_table(ini)
 	local t = {}
 	local sysini = system_ini()
+	local cooked_food_section_prefix = "meat"
 	sysini:section_for_each(function(section)
 		if not (ini:line_exist("ignore_sections",section)) then
-			if (sysini:r_bool_ex(section,"can_trade",true) == true) then
+			if (sysini:r_bool_ex(section,"can_trade",true) == true or string.find(section, cooked_food_section_prefix)) then
 				if (sysini:r_bool_ex(section,"quest_item",false) == false) then
 					if not (string.find(section,"mp_")) then
 						local name = sysini:r_string_ex(section,"inv_name")

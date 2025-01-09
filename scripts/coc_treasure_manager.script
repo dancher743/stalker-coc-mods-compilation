@@ -694,10 +694,11 @@ end
 function get_valid_item_sections()
 	local t = {}
 	local ini = get_system_ini()
+	local cooked_food_section_prefix = "meat"
 	ini:section_for_each(function(section)
 		if not (ltx:line_exist("ignore_sections",section)) then
 			if (ini:line_exist(section,"cform")) then
-				if (ini:r_bool_ex(section,"can_trade",true) == true) then
+				if (ini:r_bool_ex(section,"can_trade",true) == true or string.find(section, cooked_food_section_prefix)) then
 					if (ini:r_bool_ex(section,"quest_item",false) == false) then
 						if not (string.find(section,"mp_")) then
 							local name = ini:r_string_ex(section,"inv_name")
