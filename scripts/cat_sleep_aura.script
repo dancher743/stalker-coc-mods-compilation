@@ -5,7 +5,7 @@
 
 local apply_aura_distance_sqr = 10*10
 
-local sleep_effector_name = "yantar_underground_psi.ppe"
+local sleep_effector_name = "deimos1.ppe"
 local sleep_aura_prob_string_name = "sleep_aura_prob"
 
 local actor_yawn_max_sound_index = 3
