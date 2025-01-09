@@ -138,7 +138,7 @@ end
 
 function get_loot_table(ini)
 	local t = {}
-	local sysini = system_ini()
+	local sysini = get_system_ini()
 	
 	local ignore_sections_string = "ignore_sections"
 	local can_trade_string = "can_trade"
@@ -364,9 +364,9 @@ function evaluator_corpse:find_valid_target()
 
 	if (corpse_npc and corpse_npc:alive() ~= true and HasValuableLoot[id] and db.storage[id] and db.storage[id].corpse_already_selected == nil) then
 		local is_stalker = IsStalker(corpse_npc)
-		local can_loot_mutants = not is_stalker and (self.a.analse_mode == "true" or self.a.enabled == "true" and MonsterLootCommunities[character_community(npc)])
+		local can_loot_mutants = not is_stalker and (self.a.analse_mode == STR_TRUE or self.a.enabled == STR_TRUE and MonsterLootCommunities[character_community(npc)])
 
-		if (self.a.enabled == "true" and is_stalker or can_loot_mutants) then
+		if (self.a.enabled == STR_TRUE and is_stalker or can_loot_mutants) then
 			local corpse_pos = alun_utils.safe_bone_pos(corpse_npc,"bip01_spine")
 			local dist = npc:position():distance_to_sqr(corpse_pos)
 
@@ -418,7 +418,7 @@ function evaluator_corpse:evaluate()
 
 	self.a.analse_mode = xr_logic.pick_section_from_condlist(db.actor, self.object, self.a.mutant_corpse_analysis)
 	self.a.enabled = xr_logic.pick_section_from_condlist(db.actor, self.object, self.a.corpse_detection_enabled)
-	if (self.a.analse_mode == "false" and self.a.enabled == "false") then
+	if (self.a.analse_mode == STR_FALSE and self.a.enabled == STR_FALSE) then
 		return false
 	end
 	
@@ -495,7 +495,7 @@ function action_search_corpse:execute()
 		state_mgr.set_state(npc,"search_corpse",nil,nil,{look_position = look_pos})
 	else
 	
-		if (self.a.analse_mode == "true" and not self.a.mutant_analysed) then 
+		if (self.a.analse_mode == STR_TRUE and not self.a.mutant_analysed) then 
 			local dist = self.object:position():distance_to_sqr(self.a.vertex_position)
 			if (dist <= 6.25) then 
 				state_mgr.set_state(npc,"scaner_crouch")
@@ -606,8 +606,8 @@ function reset_generic_scheme(npc,scheme,section,stype,st)
 	st.corpse_detection.vertex_id = nil
 	st.corpse_detection.vertex_position = nil
 
-	st.corpse_detection.mutant_corpse_analysis = xr_logic.parse_condlist(npc, section, "mutant_corpse_analysis", st.ini:r_string_ex(section,"mutant_corpse_analysis") or "false")
-	st.corpse_detection.corpse_detection_enabled = xr_logic.parse_condlist(npc, section, "corpse_detection_enabled",st.ini:r_string_ex(section,"corpse_detection_enabled") or "true")
+	st.corpse_detection.mutant_corpse_analysis = xr_logic.parse_condlist(npc, section, "mutant_corpse_analysis", st.ini:r_string_ex(section,"mutant_corpse_analysis") or STR_FALSE)
+	st.corpse_detection.corpse_detection_enabled = xr_logic.parse_condlist(npc, section, "corpse_detection_enabled",st.ini:r_string_ex(section,"corpse_detection_enabled") or STR_TRUE)
 end
 
 function is_under_corpse_detection(npc)
