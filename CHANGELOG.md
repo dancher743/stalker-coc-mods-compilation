@@ -59,6 +59,7 @@ All notable changes to this project will be documented in this file.
 * Added HUD messages for Ironman Mode
 * Added color and `location_level` from Clear Sky for `treasure_quest` icon
 * Added removed `rnd_dark_2` sound into `restored_dark` channel
+* Added cooked food into NPC's loot
 
 ### Fixes
 * Fixed low volume of `nuclear.ogg` radio track
