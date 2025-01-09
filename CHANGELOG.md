@@ -16,7 +16,6 @@ All notable changes to this project will be documented in this file.
 * NPCs can deal critical hits to other NPCs
 * Optimized global code (`_g.script`)
 * New outfits: Clear Sky exoskeleton & scientific outfit, bandit leather trench coat
-* Added coocked food items to trade
 * Added old new night visions: 1 gen from Clear Sky, 2 gen from SoC
 * Reworked global map texture based on Clear Sky texture
 * Restored fog ambient
