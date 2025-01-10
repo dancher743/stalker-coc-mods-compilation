@@ -8,7 +8,7 @@ local apply_aura_distance_sqr = 10*10
 local sleep_effector_name = "deimos1.ppe"
 local sleep_aura_prob_string_name = "sleep_aura_prob"
 local sleep_aura_effector_timer_id = "sleep_aura_effector_timer"
-local has_sleep_effector = false
+local has_aura_applied = false
 
 local actor_yawn_sound_max_index = 4
 local actor_yawn_sound = nil
@@ -23,6 +23,26 @@ local function play_yawn_sound()
 	local sound_index = math.random(1,actor_yawn_sound_max_index)
 	actor_yawn_sound = xr_sound.get_safe_sound_object("actor\\yawn_"..sound_index,sound_object.s2d)
 	actor_yawn_sound:play(db.actor,0,sound_object.s2d)
+end
+
+local function apply_sleep_aura()
+	has_aura_applied = true
+	
+	level.add_pp_effector(sleep_effector_name, 998, false)
+	if (math.random() < 0.5) then
+		play_yawn_sound()
+	end
+	
+	local function tickback()
+		level.remove_pp_effector(sleep_effector_name, 998, false)
+		has_aura_applied = false
+		StopTimer(sleep_aura_effector_timer_id)
+	end
+	StartTimer(sleep_aura_effector_timer_id, 2000, tickback)
+	
+	if (sleep_dep.feature_is_active) then
+		sleep_dep.last_sleep = sleep_dep.last_sleep + 1
+	end
 end
 
 local function monster_on_update(npc)
@@ -48,6 +68,10 @@ local function monster_on_update(npc)
 	cat_timer = time_global + 8000 + math.random(-1000,1500)
 	cat_timers[cat_id] = cat_timer
 	
+	if (has_aura_applied) then
+		return
+	end
+	
 	local sleep_aura_prob = get_system_ini():r_string_ex(npc:section(),sleep_aura_prob_string_name)
 	sleep_aura_prob = tonumber(sleep_aura_prob)
 	
@@ -55,24 +79,7 @@ local function monster_on_update(npc)
 		return
 	end
 	
-	if (not has_sleep_effector) then
-		level.add_pp_effector(sleep_effector_name, 998, false)
-		if (math.random() < 0.5) then
-			play_yawn_sound()
-		end
-		has_sleep_effector = true
-		
-		local function tickback()
-			level.remove_pp_effector(sleep_effector_name, 998, false)
-			has_sleep_effector = false
-			StopTimer(sleep_aura_effector_timer_id)
-		end
-		StartTimer(sleep_aura_effector_timer_id, 2000, tickback)
-	end
-	
-	if (sleep_dep.feature_is_active) then
-		sleep_dep.last_sleep = sleep_dep.last_sleep + 1
-	end
+	apply_sleep_aura()
 end
 
 function on_game_start()
