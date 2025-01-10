@@ -23,4 +23,11 @@ local function postpone_for_next_frame()
 end
 SkipFrame(postpone_for_next_frame)
 
+
+5. Code template for StartTimer function
+	local function tickback()
+		
+	end
+	StartTimer("some_id_here", 1000, tickback)
+
 ]]

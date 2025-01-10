@@ -110,6 +110,7 @@ All notable changes to this project will be documented in this file.
 * Added original `lua_help.script`
 * Added `level_time_observer.script` to be able to observe game time
 * Added custom time format for `ui_hud_timer.script`
+* Added code template for `StartTimer` function into `xr_help.script`
 
 ## [1.4.6] - 2024-12-30
 
