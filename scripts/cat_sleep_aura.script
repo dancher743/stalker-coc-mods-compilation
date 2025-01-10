@@ -7,6 +7,8 @@ local apply_aura_distance_sqr = 10*10
 
 local sleep_effector_name = "deimos1.ppe"
 local sleep_aura_prob_string_name = "sleep_aura_prob"
+local sleep_aura_effector_timer_id = "sleep_aura_effector_timer"
+local has_sleep_effector = false
 
 local actor_yawn_sound_max_index = 4
 local actor_yawn_sound = nil
@@ -28,14 +30,15 @@ local function monster_on_update(npc)
 		return
 	end
 	
-	local distance_to_actor = npc:position():distance_to_sqr(db.actor:position())
+	local distance_to_actor_sqr = npc:position():distance_to_sqr(db.actor:position())
 	
-	if (distance_to_actor > apply_aura_distance_sqr) then
+	if (distance_to_actor_sqr > apply_aura_distance_sqr) then
 		return
 	end
 	
 	local cat_id = npc:id()
 	local cat_timer = cat_timers[cat_id] or 0
+	
 	local time_global = time_global()
 	
 	if (cat_timer > time_global) then
@@ -52,10 +55,19 @@ local function monster_on_update(npc)
 		return
 	end
 	
-	level.remove_pp_effector(998)
-	level.add_pp_effector(sleep_effector_name, 998, false)
-	if (math.random() < 0.5) then
-		play_yawn_sound()
+	if (not has_sleep_effector) then
+		level.add_pp_effector(sleep_effector_name, 998, false)
+		if (math.random() < 0.5) then
+			play_yawn_sound()
+		end
+		has_sleep_effector = true
+		
+		local function tickback()
+			level.remove_pp_effector(sleep_effector_name, 998, false)
+			has_sleep_effector = false
+			StopTimer(sleep_aura_effector_timer_id)
+		end
+		StartTimer(sleep_aura_effector_timer_id, 2000, tickback)
 	end
 	
 	if (sleep_dep.feature_is_active) then
