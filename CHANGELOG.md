@@ -75,6 +75,7 @@ All notable changes to this project will be documented in this file.
 * Fixed typo in `st_sleep_event` string in rus localization
 * Fixed reselect of pre blowout weather after reload
 * Fixed spontaneous loss of harmonica/guitar sounds
+* Fixed stopping of ambient sound at the junction of hours
 
 ### Optimization
 * Optimized amount of update callbacks
