@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+
+<!-- 
+--	Dialog for cooking recipes
+--	Author: Dancher
+-->
+
+<game_dialogs>
+    <dialog id="cooking_recipes_dialog">
+		<precondition>dialogs_cooking_recipes.not_has_recipes</precondition>
+        <phrase_list>
+            <phrase id="1">
+                <text>st_give_cooking_recipes_dialog_1</text>
+				<next>2</next>
+            </phrase>
+			<phrase id="2">
+                <text>st_give_cooking_recipes_dialog_2</text>
+				<action>dialogs_cooking_recipes.give_recipes</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+</game_dialogs>

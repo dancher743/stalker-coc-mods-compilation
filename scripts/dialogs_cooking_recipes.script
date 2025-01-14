@@ -1,0 +1,23 @@
+--
+--	Script functions for cooking recipes dialog (dialogs_cooking_recipes.xml)
+--	Author: Dancher
+--
+
+function not_has_recipes(actor, npc)
+	local has_recipes = false
+	local profile_name = npc:profile_name()
+	
+	if (profile_name == "bar_visitors_barman_stalker_trader") then
+		has_recipes = has_info("barman_cooking_recipes")
+	end
+	
+	return has_recipes == false
+end
+
+function give_recipes(npc, actor)
+	local profile_name = npc:profile_name()
+	
+	if (profile_name == "bar_visitors_barman_stalker_trader") then
+		give_info("barman_cooking_recipes")
+	end
+end
