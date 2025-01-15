@@ -1,15 +1,14 @@
-<?xml version="1.0" encoding="windows-1251" ?>
-
 <!-- 
 --	Text for cooking recipes dialog
 --	Author: Dancher
 -->
 
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-	<string id="st_give_cooking_recipes_dialog_1">
+	<string id="st_give_cooking_recipes_dialog_0">
         <text>Обучи меня кулинарным рецептам.</text>
     </string>
-	<string id="st_give_cooking_recipes_dialog_2">
-        <text>Закинул информацию на КПК.</text>
+	<string id="st_give_cooking_recipes_dialog_1">
+        <text>Записывай.</text>
     </string>
 </string_table>
