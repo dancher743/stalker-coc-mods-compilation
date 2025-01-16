@@ -114,6 +114,7 @@ All notable changes to this project will be documented in this file.
 * Added custom time format for `ui_hud_timer.script`
 * Added code template for `StartTimer` function into `xr_help.script`
 * Added `has_info` function into `_g.script`
+* Added `news_helper.script` to help with sending custom news
 
 ## [1.4.6] - 2024-12-30
 

@@ -1,0 +1,16 @@
+--
+--	Helper for news
+--	Author: Dancher
+--
+
+function give_news(caption, text, icon, delay, show_time)
+	local actor = db.actor
+	
+	if actor:is_talking() then
+		actor:give_talk_message2(caption, text, icon, "iconed_answer_item")
+	else
+		actor:give_game_news(caption, text, icon, delay, show_time)
+	end
+	
+	xr_sound.set_sound_play(actor:id(), "pda_tips")
+end
