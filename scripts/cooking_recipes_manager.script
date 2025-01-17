@@ -15,17 +15,18 @@ end
 
 function has_actor_recipes_from(npc)
 	local ini = get_ini()
-	local section = "recipe_givers"
-	local profile_name = npc:profile_name()
-	local recipes = ini:line_exist(section,profile_name) and alun_utils.parse_list(ini,section,profile_name,true) or nil
+	local section = "recipes_givers"
+	local story_id = get_object_story_id(npc:id())
+	local recipes = story_id and ini:line_exist(section,story_id) and alun_utils.parse_list(ini,section,story_id,true) or nil
 	
 	local has_recipes = true
 	
 	if (recipes == nil) then
 		has_recipes = false
 	else
-		for k,v in pairs(recipes) do
-			has_recipes = has_info(k)
+		for recipe_section,_ in pairs(recipes) do
+			local recipe_info = ini:r_string_ex(recipe_section,"info_portion")
+			has_recipes = has_info(recipe_info)
 		end
 	end
 	
@@ -34,15 +35,23 @@ end
 
 function give_actor_recipes_from(npc)
 	local ini = get_ini()
-	local section =	"recipe_givers"
-	local profile_name = npc:profile_name()
-	local recipes = ini:line_exist(section,profile_name) and alun_utils.parse_list(ini,section,profile_name,true) or nil
+	local section =	"recipes_givers"
+	local story_id = get_object_story_id(npc:id())
+	local recipes = story_id and ini:line_exist(section,story_id) and alun_utils.parse_list(ini,section,story_id,true) or nil
 	
 	if (recipes == nil) then
 		return
 	end
 	
-	for k,v in pairs(recipes) do
-		give_info(k)
+	for recipe_section,_ in pairs(recipes) do
+		local recipe_info = ini:r_string_ex(recipe_section,"info_portion")
+		give_info(recipe_info)
+		
+		local recipe_caption = strtransl("ui_st_cooking_recipes_given_news_caption")
+		local recipe_name = strtransl(ini:r_string_ex(recipe_section,"name"))
+		local recipe_icon = ini:r_string_ex(recipe_section,"icon")
+		news_helper.give_news(recipe_caption, recipe_name, recipe_icon)
 	end
+	
+	return recipes
 end

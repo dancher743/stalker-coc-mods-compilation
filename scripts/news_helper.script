@@ -4,6 +4,9 @@
 --
 
 function give_news(caption, text, icon, delay, show_time)
+	delay = delay or 0
+	show_time = show_time or 5000
+	
 	local actor = db.actor
 	
 	if actor:is_talking() then
