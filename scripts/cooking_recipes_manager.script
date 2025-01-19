@@ -5,15 +5,10 @@
 
 local info_portion_string_name = "info_portion"
 local recipes_givers_section_name = "recipes_givers"
-
-local ini
+local ini_path = "plugins\\cooking_recipes.ltx"
 
 function get_ini()
-	if (ini == nil) then
-		ini = ini_file("plugins\\cooking_recipes.ltx")
-	end
-	
-	return ini
+	return ini_file(ini_path)
 end
 
 function has_actor_recipe(recipe_section)
