@@ -6,10 +6,10 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="ui_st_cooking_recipes_given_news_caption">
-        <text>Получен новый рецепт</text>
+        <text>Recipe received</text>
     </string>
 	
 	<string id="ui_st_cooking_recipes_absent_hudmsg">
-        <text>Вы не знаете рецепта</text>
+        <text>You don't know the recipe</text>
     </string>
 </string_table>

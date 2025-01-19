@@ -6,7 +6,7 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="ui_st_cooking_recipes_given_news_caption">
-        <text>Получен новый рецепт</text>
+        <text>Получен кулинарный рецепт</text>
     </string>
 	
 	<string id="ui_st_cooking_recipes_absent_hudmsg">
