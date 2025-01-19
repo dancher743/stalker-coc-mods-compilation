@@ -52,7 +52,7 @@ All notable changes to this project will be documented in this file.
 * Removed weather graphs from `dynamic_weather_graphs.ltx` due to TRX: Global Weather
 * Refactored code of `critical_hit_manager.script`
 * Changed text of `ui_st_hideout` string
-* Added coocked food items into debug menu
+* Added coocked food and mutant meat items into debug menu
 * Refactored get period functions in `level_weathers.script`
 * Refactored `dynamic_weather_graphs.ltx`
 * Replaced `ini_sys` field with `get_system_ini()` function in `_g.script`
