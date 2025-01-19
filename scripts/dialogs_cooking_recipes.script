@@ -9,5 +9,6 @@ function not_has_recipes(actor, npc)
 end
 
 function give_recipes(npc, actor)
-	cooking_recipes_manager.give_actor_recipes_from(npc)
+	local recipe_sections = cooking_recipes_manager.give_actor_recipes_from(npc)
+	news_cooking_recipes.give_news(recipe_sections)
 end
