@@ -21,11 +21,10 @@ function has_actor_recipe(recipe_section)
 	return has_info(recipe_info)
 end
 
-function has_actor_recipes_from(npc)
+function has_actor_recipes_from_npc(id)
 	local ini = get_ini()
-	local story_id = get_object_story_id(npc:id())
-	local recipe_sections = story_id and ini:line_exist(recipes_givers_section_name,story_id) 
-									 and alun_utils.parse_list(ini,recipes_givers_section_name,story_id) or {}
+	local recipe_sections = id and ini:line_exist(recipes_givers_section_name,id) 
+							   and alun_utils.parse_list(ini,recipes_givers_section_name,id) or {}
 	
 	local has_recipes = false
 	
@@ -36,11 +35,10 @@ function has_actor_recipes_from(npc)
 	return has_recipes
 end
 
-function give_actor_recipes_from(npc)
+function give_actor_recipes_from_npc(id)
 	local ini = get_ini()
-	local story_id = get_object_story_id(npc:id())
-	local recipe_sections = story_id and ini:line_exist(recipes_givers_section_name,story_id) 
-									 and alun_utils.parse_list(ini,recipes_givers_section_name,story_id) or {}
+	local recipe_sections = id and ini:line_exist(recipes_givers_section_name,id) 
+							   and alun_utils.parse_list(ini,recipes_givers_section_name,id) or {}
 	
 	for _,recipe_section in ipairs(recipe_sections) do
 		local recipe_info = ini:r_string_ex(recipe_section,info_portion_string_name)

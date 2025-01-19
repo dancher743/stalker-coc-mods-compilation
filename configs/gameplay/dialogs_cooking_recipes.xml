@@ -18,4 +18,17 @@
             </phrase>
         </phrase_list>
     </dialog>
+	
+	<dialog id="more_cooking_recipes_dialog">
+        <has_info>how_to_get_more_recipes</has_info>
+		<phrase_list>
+            <phrase id="0">
+                <text>st_more_cooking_recipes_dialog_0</text>
+				<next>1</next>
+            </phrase>
+			<phrase id="1">
+                <text>st_more_cooking_recipes_dialog_1</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
 </game_dialogs>

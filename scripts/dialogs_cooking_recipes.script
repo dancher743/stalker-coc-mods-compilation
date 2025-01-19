@@ -4,11 +4,19 @@
 --
 
 function not_has_recipes(actor, npc)
-	local has_recipes = cooking_recipes_manager.has_actor_recipes_from(npc)
+	local story_id = get_object_story_id(npc:id())
+	local has_recipes = cooking_recipes_manager.has_actor_recipes_from_npc(story_id)
+	
 	return has_recipes == false
 end
 
 function give_recipes(npc, actor)
-	local recipe_sections = cooking_recipes_manager.give_actor_recipes_from(npc)
+	local story_id = get_object_story_id(npc:id())
+	local recipe_sections = cooking_recipes_manager.give_actor_recipes_from_npc(story_id)
+	
 	news_cooking_recipes.give_news(recipe_sections)
+	
+	if (story_id == "bar_visitors_barman_stalker_trader") then
+		give_info("how_to_get_more_recipes")
+	end
 end

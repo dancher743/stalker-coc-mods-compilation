@@ -12,4 +12,6 @@
 	<info_portion id="meat_boar_recipe"/>
 	<info_portion id="meat_bloodsucker_recipe"/>
 	<info_portion id="meat_chimera_recipe"/>
+	
+	<info_portion id="how_to_get_more_recipes"/>
 </game_information_portions>

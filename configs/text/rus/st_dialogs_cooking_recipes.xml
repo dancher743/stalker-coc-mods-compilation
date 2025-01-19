@@ -11,4 +11,11 @@
 	<string id="st_give_cooking_recipes_dialog_1">
         <text>Записывай.</text>
     </string>
+	
+	<string id="st_more_cooking_recipes_dialog_0">
+        <text>Где я могу получить остальные рецепты?</text>
+    </string>
+	<string id="st_more_cooking_recipes_dialog_1">
+        <text>У других барменов: Холода на Болотах, Бороды на Затоне и Гавайца на «Юпитере».</text>
+    </string>
 </string_table>
