@@ -1,0 +1,21 @@
+<!-- 
+--	Text for cooking recipes dialog
+--	Author: Dancher
+-->
+
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="st_give_cooking_recipes_dialog_0">
+        <text>Teach me some cooking recipes.</text>
+    </string>
+	<string id="st_give_cooking_recipes_dialog_1">
+        <text>Write them down.</text>
+    </string>
+	
+	<string id="st_more_cooking_recipes_dialog_0">
+        <text>Where can I get the rest of the recipes?</text>
+    </string>
+	<string id="st_more_cooking_recipes_dialog_1">
+        <text>Other barmans: Cold at the Swamps, Beard at the Zaton, and Hawaiian at the Jupiter.</text>
+    </string>
+</string_table>
