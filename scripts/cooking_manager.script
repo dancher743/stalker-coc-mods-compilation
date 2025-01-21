@@ -30,11 +30,19 @@ function can_cook_all(item)
 end
 
 function cook(item)
+	if (not check_recipe(item)) then
+		return
+	end
+	
 	cook_raw_item(item)
 	play_cooking_sound()
 end
 
 function cook_all(item)
+	if (not check_recipe(item)) then
+		return
+	end
+	
 	local items = {}
 	
 	local function iterator(actor, inventory_item)
@@ -57,6 +65,20 @@ function has_burning_campfire_nearby()
 	local range = 4
 	local campfire = bind_campfire.get_nearest_campfire(db.actor, range)
 	return campfire ~= nil and campfire:is_on()
+end
+
+function check_recipe(item)
+	local recipe_section = get_system_ini():r_string_ex(item:section(),"recipe_section") or STR_NIL
+	local has_recipe = cooking_recipes_manager.has_actor_recipe(recipe_section)
+	
+	if (has_recipe) then
+		SetHudMsg(STR_EMPTY,0)
+	else
+		SetHudMsg(strtransl("ui_st_cooking_recipes_absent_hudmsg"),5)
+		get_cached_hud():HideActorMenu()
+	end
+	
+	return has_recipe
 end
 
 function cook_raw_item(item)

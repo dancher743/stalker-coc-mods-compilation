@@ -1,0 +1,16 @@
+--
+--	News for cooking recipes
+--	Author: Dancher
+--
+
+function give_news(recipe_sections)
+	local ini = cooking_recipes_manager.get_ini()
+	local section = "recipes_news"
+	local caption = strtransl(ini:r_string_ex(section,"caption"))
+	local icon = ini:r_string_ex(section,"icon")
+	
+	for _,recipe_section in ipairs(recipe_sections) do
+		local recipe_name = strtransl(ini:r_string_ex(recipe_section,"name"))
+		news_helper.give_news(caption, recipe_name, icon)
+	end
+end

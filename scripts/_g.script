@@ -1225,6 +1225,10 @@ end
 function on_actor_psy()
 end
 
+function has_info(info)
+	return db.actor:has_info(info)
+end
+
 function give_info (info)
 	db.actor:give_info_portion(info)
 	--printf("DEBUG: GIVE INFO %s",info)
