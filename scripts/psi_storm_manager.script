@@ -160,8 +160,6 @@ function CPsiStormManager:skip_psi_storm()
 	end
 	
 	level.set_time_factor(self.game_time_factor)
-	
-	SendScriptCallback("psi_storm_on_ended")
 end
 
 function CPsiStormManager:finish(manual)
@@ -212,8 +210,6 @@ function CPsiStormManager:finish(manual)
 	self.stages = empty_table(self.stages)
 
 	level.set_time_factor(self.game_time_factor)
-	
-	SendScriptCallback("psi_storm_on_ended")
 end
 
 function distance_2d(p1, p2)

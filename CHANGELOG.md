@@ -94,7 +94,6 @@ All notable changes to this project will be documented in this file.
 * Optimized string allocations in `xr_corpse_detection.script`
 
 ### Framework
-* Added `surge_on_ended` and `psi_storm_on_ended` callbacks into `axr_main.script`
 * Added `npc_regular` string into `squad_descr.ltx` to add non-random squads spawn
 * Changed time format in `ui_hud_timer.script`
 * Added `IsAzazelMode()` and `IsIronManMode()` functions into `_g.script`

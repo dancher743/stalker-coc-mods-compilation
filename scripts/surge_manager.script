@@ -289,8 +289,6 @@ function CSurgeManager:skip_surge()
 	self:displayIndicators(0)
 
 	level.set_time_factor(self.game_time_factor)
-	
-	SendScriptCallback("surge_on_ended")
 end
 
 function CSurgeManager:end_surge(manual)
@@ -357,8 +355,6 @@ function CSurgeManager:end_surge(manual)
 		v:stop_light()
 		v:stop()
 	end
-	
-	SendScriptCallback("surge_on_ended")
 end
 
 function CSurgeManager:toggle_level_artefact_respawns()
