@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 * Random stashes renewing
 * Added rad aura for black bloodsucker
 * Added sleep aura for cat mutant
+* Fixed incorrect vegetation in Truck Cemetery, Army Warehouses, Jupiter and Zaton levels
 
 ### Mods
 * Call of Chernobyl Fallout (CrommCruac, av661194)
