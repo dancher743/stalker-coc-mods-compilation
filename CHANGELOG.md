@@ -78,6 +78,7 @@ All notable changes to this project will be documented in this file.
 * Fixed reselect of pre blowout weather after reload
 * Fixed spontaneous loss of harmonica/guitar sounds
 * Fixed stopping of ambient sound at the junction of hours
+* Fixed outfits and helms as a loots from dead NPC
 
 ### Optimization
 * Optimized amount of update callbacks
