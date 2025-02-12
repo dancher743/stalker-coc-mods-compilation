@@ -79,6 +79,7 @@ All notable changes to this project will be documented in this file.
 * Fixed spontaneous loss of harmonica/guitar sounds
 * Fixed stopping of ambient sound at the junction of hours
 * Fixed outfits and helms as a loots from dead NPC
+* Fixed novices outfits in new game loadouts
 
 ### Optimization
 * Optimized amount of update callbacks
