@@ -227,21 +227,34 @@ character_portrait						 = ui_inGame2_monolit_1
 ;---------------------------------------------------------------------------------------------
 [military_novice_outfit]:outfit_novice_base
 $spawn                                   = "outfit\novice_outfit_military"
-visual                                   = dynamics\outfit\rookie_outfit
-actor_visual                             = actors\stalker_neutral\stalker_neutral_1.ogf
-npc_visual                               = actors\stalker_neutral\stalker_neutral_1.ogf
+visual                                   = dynamics\outfit\soldier_outfit
+actor_visual                             = actors\stalker_soldier\stalker_soldier_1_mask.ogf
+npc_visual                               = actors\stalker_soldier\stalker_soldier_1_mask.ogf
 player_hud_section                       = actor_hud_military_novice
 
 inv_name                                 = military_novice_outfit_name
 inv_name_short                           = military_novice_outfit_name
-description                              = novice_outfit_description
+description                              = military_novice_outfit_description
 
-upgr_icon_x                              = 935
-upgr_icon_y                              = 340
-upgr_icon_width                          = 303
-upgr_icon_height                         = 162
+inv_grid_x                               = 16
+inv_grid_y                               = 37
 
-character_portrait						 = ui_inGame2_Soldier_1
+upgr_icon_x                              = 938
+upgr_icon_y                              = 837
+upgr_icon_width                          = 302
+upgr_icon_height                         = 122
+
+character_portrait						 = ui_inGame2_Soldier_1_mask
+
+; NO RESISTANCE
+burn_protection                          = 0.0033
+shock_protection                         = 0.0033
+radiation_protection                     = 0.0020
+chemical_burn_protection                 = 0.0033
+telepatic_protection                     = 0.0
+strike_protection                        = 0.0650
+explosion_protection                     = 0.0650
+wound_protection                         = 0.0650
 
 ;---------------------------------------------------------------------------------------------
 ;		Mercenary Novice Outfit

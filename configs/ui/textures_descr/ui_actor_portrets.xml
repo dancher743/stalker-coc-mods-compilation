@@ -112,6 +112,7 @@
 	<texture id="ui_inGame2_Soldier_2" x="615" y="609" width="123" height="87"/>
 	<texture id="ui_inGame2_Soldier_3" x="615" y="696" width="123" height="87"/>
 	<texture id="ui_inGame2_Soldier_4" x="615" y="783" width="123" height="87"/>
+	<texture id="ui_inGame2_Soldier_1_mask" x="615" y="957" width="123" height="87"/>
 	<texture id="ui_inGame2_soldier_1_camo" x="1722" y="174" width="123" height="87"/>
 	<texture id="ui_inGame2_soldier_1_camo_paint" x="1722" y="87" width="123" height="87"/>
 	<texture id="ui_inGame2_soldier_3_beret" x="1107" y="435" width="123" height="87"/>
