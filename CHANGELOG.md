@@ -62,6 +62,7 @@ All notable changes to this project will be documented in this file.
 * Added removed `rnd_dark_2` sound into `restored_dark` channel
 * Added cooked food into NPC's loot and stashes
 * Added original icons from SoC, CS and CoP
+* Removed medkits and drugs from `zombied` death items (Clear Sky concept)
 
 ### Fixes
 * Fixed low volume of `nuclear.ogg` radio track
