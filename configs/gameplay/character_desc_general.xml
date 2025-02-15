@@ -14236,7 +14236,7 @@
     <!--  military novice  -->
     <specific_character id="sim_default_military_0_default_0" team_default = "1">
     <name>GENERATE_NAME_private</name>
-    <icon>ui_inGame2_soldier_1_camo_paint</icon>
+    <icon>ui_inGame2_soldier_1_mask</icon>
     <map_icon x="1" y="0"></map_icon>
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_military_0</class>
@@ -14244,7 +14244,7 @@
     <snd_config>characters_voice\human_01\military\</snd_config>
     <rank>2521</rank>
     <reputation>-2421</reputation>
-    <visual>actors\stalker_soldier\stalker_soldier_1</visual>
+    <visual>actors\stalker_soldier\stalker_soldier_1_mask</visual>
     <supplies>
         [spawn] \n
         wpn_ak74u \n

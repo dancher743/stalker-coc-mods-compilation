@@ -123,3 +123,4 @@ Mods
 71. A few tracks from New Music in Radio (ROOZBAN, KisaTraxova228)
 72. Call of Chernobyl Fallout (CrommCruac, av661194)
 73. Cat mutant sleep aura (Dancher)
+74. Military novice outfit from Comrade's Vanilla Addon (Comrade)

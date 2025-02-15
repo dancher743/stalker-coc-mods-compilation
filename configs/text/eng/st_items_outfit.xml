@@ -310,7 +310,11 @@
 <!--			-- Military --				-->
 
 	<string id="military_novice_outfit_name">
-		<text>Military leather jacket</text>
+		<text>PSZ-7 armoured suit</text>
+	</string>
+
+	<string id="military_novice_outfit_description">
+		<text>The standard set of equipment for a soldier is a light army suit. Provides a level of protection sufficient to conduct combat operations against a lightly armed enemy. The suit has no protection against anomalous activity.</text>
 	</string>
 
 	<string id="specops_outfit_name">
