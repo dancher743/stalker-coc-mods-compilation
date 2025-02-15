@@ -64,6 +64,7 @@ All notable changes to this project will be documented in this file.
 * Added original icons from SoC, CS and CoP
 * Removed medkits and drugs from `zombied` death items (Clear Sky concept)
 * Sorted faction portraits
+* Changed inner struct of `faction_portraits.ltx`
 
 ### Fixes
 * Fixed low volume of `nuclear.ogg` radio track
