@@ -84,6 +84,7 @@ All notable changes to this project will be documented in this file.
 * Fixed outfits and helms as a loots from dead NPC
 * Fixed novices outfits in new game loadouts
 * Fixed incorrect order of faction portraits
+* Fixed companion borrow item if actor take it from companion
 
 ### Optimization
 * Optimized amount of update callbacks

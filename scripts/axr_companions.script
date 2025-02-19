@@ -149,6 +149,16 @@ local function actor_on_item_drop(item)
 	end
 end
 
+local function actor_on_item_take(item)
+	if (ActorMenu.get_menu_mode() == 4) then 
+		local m_data = alife_storage_manager.get_state()
+		if not (m_data.companion_borrow_item) then
+			m_data.companion_borrow_item = {}
+		end
+		m_data.companion_borrow_item[item:id()] = false
+	end
+end
+
 local function save_state(m_data)
 	m_data.non_task_companions = non_task_companions
 	m_data.companion_squads = {}
@@ -206,6 +216,7 @@ function on_game_start()
 	RegisterScriptCallback("on_level_changing",on_level_changing)
 	RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
 	RegisterScriptCallback("actor_on_item_drop",actor_on_item_drop)
+	RegisterScriptCallback("actor_on_item_take",actor_on_item_take)
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
 	RegisterScriptCallback("on_game_load",on_game_load)
