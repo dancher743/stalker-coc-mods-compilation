@@ -1,7 +1,6 @@
 -- if return game_object then it ignores engine. If return nil, then engine tries to find item to kill
 -- called from engine!
 function update_best_weapon(npc,cur_wpn)
-	--[[
 	local st = db.storage[npc:id()]
 	if not (st) then 
 		return cur_wpn
@@ -69,10 +68,12 @@ function update_best_weapon(npc,cur_wpn)
 
 	local ini = system_ini()
 	local best_weapons = {}
+	-- companions using actor's items as best weapons fix
+	local borrow_items = alife_storage_manager.get_state().companion_borrow_item
 	
 	local function itr(npc,wpn)
 		local cls = wpn:clsid()
-		if (IsWeapon(nil,cls) ~= true) then 
+		if (IsWeapon(nil,cls) ~= true or (borrow_items and borrow_items[wpn:id()]) ~= nil) then 
 			return false
 		end
 		--if (wpn:get_ammo_in_magazine() > 0) then
@@ -87,17 +88,15 @@ function update_best_weapon(npc,cur_wpn)
 	end
 	
 	npc:iterate_inventory(itr,npc)
-
 	
 	for wpn,cost in spairs(best_weapons,function(t,a,b) return t[a] > t[b] end) do 
-		DEBUG_NPC = level.get_target_obj and level.get_target_obj()
+		--[[DEBUG_NPC = level.get_target_obj and level.get_target_obj()
 		if (DEBUG_NPC) then 
 			SetHudMsg(strformat("%s bw=%s",DEBUG_NPC:name(),wpn and wpn:name()),2)
-		end
+		end]]
 		return wpn
 	end
 
-	--]]
 	return
 end
 
