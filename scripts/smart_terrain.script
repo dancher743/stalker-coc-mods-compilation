@@ -1631,7 +1631,7 @@ function se_smart_terrain:try_respawn()
 				if (IsSurvivalMode() and not bar_smarts[self:name()] and math.random(1,100) < 90) then
 					local t = {"simulation_zombie","simulation_zombie","zombied_sim_squad_","simulation_fracture","simulation_snork"}
 					local simulation_section = t[math.random(#t)]
-					if (simulation_section == "simulation_zombie" and math.random() <= 0.01) then
+					if (simulation_section == "simulation_zombie" and math.random() < 0.1) then
 						simulation_section = "simulation_zombie_ghost"
 					elseif (simulation_section == "zombied_sim_squad_") then
 						t = {"novice","advanced","veteran"}

@@ -47,7 +47,7 @@ function try_replace_mutant(section)
 		local chance = math.random(100)
 		if (chance < get_chance_by_elapsed_hours()) then
 			result_section = survival_mutants[math.random(#survival_mutants)]
-			if (result_section == "simulation_zombie" and math.random() <= 0.01) then
+			if (result_section == "simulation_zombie" and math.random() < 0.1) then
 				result_section = "simulation_zombie_ghost"
 			end
 			print_dbg("MUTANT: %s -> %s", section, result_section)
