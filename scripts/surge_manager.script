@@ -988,7 +988,7 @@ end
 
 local currentIndik = nil
 function CSurgeManager:displayIndicators(power, indikType)
-	local hud = get_hud()
+	local hud = get_cached_hud()
 	if not (hud) then 
 		return 
 	end
