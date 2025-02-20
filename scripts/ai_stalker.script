@@ -67,7 +67,7 @@ function update_best_weapon(npc,cur_wpn)
 		prior[#prior+1] = _G.IsLauncher
 	end
 
-	local ini = system_ini()
+	local ini = get_system_ini()
 	local best_weapons = {}
 	
 	local function itr(npc,wpn)
