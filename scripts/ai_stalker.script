@@ -12,12 +12,13 @@ function update_best_weapon(npc,cur_wpn)
 		return cur_wpn
 	end 
 	
-	st._choose_bw_timer = tg+10000
+	local be = npc:best_enemy()
+	local time_delta = be and 2500 or 10000
+	st._choose_bw_timer = tg+time_delta
 	
 	-- weapon priority
 	local prior = {}
 	
-	local be = npc:best_enemy()
 	if (be) then 
 		if (IsMonster(nil,be:clsid())) then 
 			if (be:position():distance_to_sqr(npc:position()) > 2500) then 
