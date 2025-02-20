@@ -76,6 +76,15 @@ function start_game_callback()
 	pda.add_quick_slot_items_on_game_start()
 end
 
+function clear_cache()
+	ini_cache = nil
+	ini = nil
+	sim = nil
+	gg = nil
+	hud = nil
+	console = nil
+end
+
 function get_system_ini()
 	if not (ini) then
 		ini = system_ini()

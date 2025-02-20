@@ -80,6 +80,8 @@ end
 function actor_on_net_destroy(binder)
 	SendScriptCallback("actor_on_net_destroy",binder)
 	SendScriptCallback("on_game_unload",binder)
+	_G.clear_cache()
+	gc.collect("actor_on_net_destroy")
 end 
 
 -------------------
