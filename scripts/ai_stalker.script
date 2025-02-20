@@ -68,14 +68,20 @@ function update_best_weapon(npc,cur_wpn)
 
 	local ini = system_ini()
 	local best_weapons = {}
-	-- companions using actor's items as best weapons fix
-	local borrow_items = alife_storage_manager.get_state().companion_borrow_item
 	
 	local function itr(npc,wpn)
 		local cls = wpn:clsid()
-		if (IsWeapon(nil,cls) ~= true or (borrow_items and borrow_items[wpn:id()]) ~= nil) then 
+		if (IsWeapon(nil,cls) ~= true) then 
 			return false
 		end
+		-- usage actor's borrow items by a companion fix
+		if (axr_companions.is_companion(npc)) then
+			local borrow_items = alife_storage_manager.get_state().companion_borrow_item
+			if (borrow_items and borrow_items[wpn:id()] ~= nil) then
+				return false
+			end
+		end
+		
 		--if (wpn:get_ammo_in_magazine() > 0) then
 			for i=1,#prior do 
 				if (prior[i](nil,cls)) then
