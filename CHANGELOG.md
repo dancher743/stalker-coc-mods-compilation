@@ -89,6 +89,7 @@ All notable changes to this project will be documented in this file.
 * Fixed companions usage of actor's items as best weapons
 * Fixed incorrect faction portraits in Dynamic News
 * Fixed kill wounded scheme (code from CoC 1.5 R6)
+* Fixed upgrades properties of outfits
 
 ### Optimization
 * Optimized amount of update callbacks

@@ -175,7 +175,7 @@
 		<text>OK</text>
 	</string>
 	<string id="ui_inv_outfit_hit_fraction_actor">
-		<text>Защита от разрыва</text>
+		<text>Снижение повреждений</text>
 	</string>
 	<string id="ui_inv_outfit_additional_weight">
 		<text>Переносимый вес</text>
