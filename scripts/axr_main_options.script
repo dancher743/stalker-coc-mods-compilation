@@ -282,21 +282,26 @@ function opt_menu_on_set_values(menu,optMgr)
 end
 
 function get_character_icon_list()
-	local t = {}
-	local faction = character_community(db.actor):sub(7)
+	local icons = {}
+	local faction = utils.get_actor_community()
+	local section = faction .. "_portraits"
 	local ini = ini_file("plugins\\faction_portraits.ltx")
-	local section = faction.."_portraits"
 	local n = ini:section_exist(section) and ini:line_count(section) or 0
-	local def_icon = ini:r_string_ex(section, "default_portrait")
-	table.insert(t, def_icon)
+	
 	for i=0, n-1 do
-		local result, id, value = ini:r_line(section,i,STR_EMPTY,STR_EMPTY )
-		if (id ~= STR_EMPTY and id ~= "default_portrait") then
-			table.insert(t,id)
-		end
+		local _, id, icon = ini:r_line(section,i,STR_EMPTY,STR_EMPTY)
+		local number = tonumber(id)
+		icons[number] = icon
+	end
+	
+	local icon_list = {}
+	
+	local sort_functor = function(t,a,b) return a < b end
+	for _,icon in spairs(icons,sort_functor) do
+		table.insert(icon_list,icon)
 	end
 
-	return t
+	return icon_list
 end
 
 ------------------------------------

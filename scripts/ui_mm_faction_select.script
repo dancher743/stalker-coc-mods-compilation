@@ -1119,25 +1119,24 @@ function faction_ui:LoadFaction (rand, faction)
 end
 
 function faction_ui:LoadIcon (rand)
+	local icons = {}
+	local default_icon = nil
 	local section = self.selected_faction .. "_portraits"
 	local n = ini_ico:section_exist(section) and ini_ico:line_count(section) or 0
-	local ini_icons = {}
-	local default_icon = nil
+	
 	for i=0, n-1 do
-		local result, id, icon = ini_ico:r_line(section,i,STR_EMPTY,STR_EMPTY )
-		if (result and id ~= STR_EMPTY) then
-			local number = tonumber(id)
-			ini_icons[number] = icon
-			if (i == 0) then
-				default_icon = icon
-			end
+		local _, id, icon = ini_ico:r_line(section,i,STR_EMPTY,STR_EMPTY)
+		local number = tonumber(id)
+		icons[number] = icon
+		if (i == 0) then
+			default_icon = icon
 		end
 	end
 	
 	empty_table(self.table_icon)
 	local sort_functor = function(t,a,b) return a < b end
-	for _,icon in spairs(ini_icons, sort_functor) do
-		table.insert(self.table_icon, icon)
+	for _,icon in spairs(icons,sort_functor) do
+		table.insert(self.table_icon,icon)
 	end
 	
 	local pick = rand and self.table_icon[math.random(#self.table_icon)] or default_icon
