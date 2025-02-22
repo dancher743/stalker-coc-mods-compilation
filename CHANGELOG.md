@@ -87,6 +87,7 @@ All notable changes to this project will be documented in this file.
 * Fixed incorrect order of faction portraits
 * Fixed companion borrow item if actor take it from companion
 * Fixed companions usage of actor's items as best weapons
+* Fixed incorrect faction portraits in Dynamic News
 
 ### Optimization
 * Optimized amount of update callbacks

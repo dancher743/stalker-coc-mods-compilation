@@ -419,8 +419,6 @@ local invalid_maps = { -- dynamic news are off in those maps
 
 local all_direction = {"near","east","north_east","north","north_west","west","south_west","south","south_east"}
 
-local random_character_icons = nil
-
 --=================================================< Helpers >=================================================
 local function PickRandomKey(t,is_key) -- Selects a random item from a table
     local keys = {}
@@ -959,23 +957,22 @@ function send_tip(msg, header, timeout, showtime, sender, sound,icon_by) -- Send
 end
 
 function get_random_character_icon()
+	local icons = {}
 	local faction = random_choice("csky", "freedom", "stalker", "ecolog", "killer", "bandit")
-	local section = faction.."_portraits"
+	local section = faction .. "_portraits"
+	local ini = ini_file("plugins\\faction_portraits.ltx")
+	local n = ini:section_exist(section) and ini:line_count(section) or 0
 	
-	if (random_character_icons == nil) then
-		local t = {}
-		local ini = ini_file("plugins\\faction_portraits.ltx")
-		local n = ini:section_exist(section) and ini:line_count(section) or 0
-		for i=0, n-1 do
-			local result, id, value = ini:r_line(section,i,STR_EMPTY,STR_EMPTY)
-			if (id ~= STR_EMPTY and id ~= "default_portrait" and id ~= "ui_inGame2_degtyarev_ico" and 
-				id ~= "ui_inGame2_scar_ico" and id ~= "ui_inGame2_Strelok" and id ~= "ui_inGame2_strelok_ico")
-			then
-				table.insert(t,id)
-			end
+	for i=0, n-1 do
+		local _, _, value = ini:r_line(section,i,STR_EMPTY,STR_EMPTY)
+		if (value ~= "ui_inGame2_no_data" and 
+			value ~= "ui_inGame2_degtyarev_ico" and 
+			value ~= "ui_inGame2_scar_ico" and 
+			value ~= "ui_inGame2_Strelok" and value ~= "ui_inGame2_strelok_ico")
+		then
+			table.insert(icons,value)
 		end
-		random_character_icons = t
 	end
 
-	return random_character_icons[math.random(#random_character_icons)]
+	return icons[math.random(#icons)]
 end
