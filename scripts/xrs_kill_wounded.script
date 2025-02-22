@@ -8,7 +8,6 @@
 evaid = 188112
 actid = 188112
 ----------------------------------------------------------------------------------------------------------------------
-hostage_list = {}
 local ini = ini_file("ai_tweaks\\xrs_kill_wounded.ltx")
 local Enable = ini:r_bool_ex("settings","enable",false)
 local ActorKillWoundedChance = ini:r_float_ex("settings","actor_cause_surrender_chance") or 0.25
@@ -55,7 +54,7 @@ local function npc_on_update(npc,st)
 		end
 
 		if (npc:position():distance_to(db.actor:position()) >  ActorKillWoundedMaxDist) then
-		--if (alun_utils.angle_diff(db.actor:direction(), db.actor:position():sub(npc:position())) < 90 or npc:position():distance_to(db.actor:position()) >  7) then
+		--if (utils.angle_diff(db.actor:direction(), db.actor:position():sub(npc:position())) < 90 or npc:position():distance_to(db.actor:position()) >  7) then
 			return
 		end
 
@@ -80,20 +79,21 @@ end
 
 
 local function get_rand_vertex(npc,vo)
-	local dir = vector():sub(npc:position(),vo:position())
+	local dir = vec_sub(npc:position(),vo:position())
 	dir = vector_rotate_y(dir,math.random(MinVectorRotateY,MaxVectorRotateY))
 	return vo:vertex_in_direction(vo:level_vertex_id(),dir,math.random(MinDistance+1,MaxDistance))
 end
 
 local function is_wounded(npc)
-	if (hostage_list[npc:id()]) then
+	if (axr_task_manager.hostages_by_id[npc:id()]) then
 		local squad = get_object_squad(npc)
 		if (squad and squad:commander_id() == npc:id()) then
 			return true
 		end
+		return false
 	end
 	
-	if (npc:id() ~= 0 and IsStalker(npc) and npc:wounded()) then
+	if (npc:id() ~= 0 and IsStalker(npc) and IsWounded(npc)) then
 		return true 
 	end
 	
@@ -103,7 +103,7 @@ end
 local function get_hostage(npc)
 	local squad = get_object_squad(npc)
 	if (squad and squad:commander_id() == npc:id()) then
-		for id,v in pairs(hostage_list) do
+		for id,v in pairs(axr_task_manager.hostages_by_id) do
 			local vo = db.storage[id] and db.storage[id].object or level.object_by_id(id)
 			if (vo and npc:position():distance_to_sqr(vo:position()) <= 900 and  npc:relation(vo) >= game_object.enemy) then
 				return vo
@@ -113,7 +113,7 @@ local function get_hostage(npc)
 end
 
 local function validate(npc,vid)
-	if (vid and vid < 4294967295 and npc:accessible(vid) and vid ~= npc:level_vertex_id()) then 
+	if (vid and level.valid_vertex(vid) and npc:accessible(vid) and vid ~= npc:level_vertex_id()) then 
 		return db.used_level_vertex_ids[vid] == nil or db.used_level_vertex_ids[vid] == npc:id()
 	end 
 	return false
@@ -196,9 +196,6 @@ function act_kill_wounded:initialize()
 	local st = self.st 
 	
 	st.timer = nil
-
-	npc:inactualize_patrol_path()
-	npc:set_path_type(game_object.level_path)
 end
 
 function act_kill_wounded:reset()
@@ -251,11 +248,11 @@ function act_kill_wounded:execute()
 		end
 	end
 	
-	local dir = vector():sub(vo:bone_position("bip01_spine"),npc:bone_position("bip01_r_finger02"))
+	local dir = vec_sub(alun_utils.safe_bone_pos(vo,"bip01_spine"),alun_utils.safe_bone_pos(npc,"bip01_r_finger02"))
 	
 	local tg = time_global()
 	if (st.timer and tg > st.timer) then
-		if not (hostage_list[vo:id()]) then
+		if not (axr_task_manager.hostages_by_id[vo:id()]) then
 			if (npc:see(vo)) then
 				state_mgr.set_state(npc,"threat_sniper_fire",nil,nil,{look_object = vo, look_dir = dir})
 			end
@@ -302,7 +299,7 @@ function act_kill_wounded:begin_kill_wounded(vo)
 			end
 		end
 	end
-	if (hostage_list[vo:id()]) then
+	if (axr_task_manager.hostages_by_id[vo:id()]) then
 		-- force squad enemy to actor because they have a hostage
 		local squad = get_object_squad(self.object)
 		if (squad) then 
@@ -325,7 +322,7 @@ function act_kill_wounded:begin_kill_wounded(vo)
 		end
 		
 		if not (self.st.news_triggered) then
-			if (hostage_list[vo:id()]) then 
+			if (axr_task_manager.hostages_by_id[vo:id()]) then 
 				if (dynamic_news_manager and axr_main.config:r_value("mm_options","enable_dynamic_news",1)) then 
 					dynamic_news_manager.get_dynamic_news():KillWounded(self.object,vo,true)
 				end		
@@ -372,7 +369,6 @@ function add_to_binder(npc,ini,scheme,section,st,temp)
 	temp.action:add_precondition(wp(evaid,true) )
 	temp.action:add_precondition(wp(stalker_ids.property_alive,true))
 	temp.action:add_precondition(wp(stalker_ids.property_enemy,true))
-	temp.action:add_precondition(wp(stalker_ids.property_anomaly,false))
 	temp.action:add_effect(wp(evaid,false))
 	temp.action:add_effect(wp(stalker_ids.property_enemy,false))
 	
