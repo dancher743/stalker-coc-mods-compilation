@@ -304,7 +304,8 @@ function list_actor_squad_by_id()
 	local t = {}
 	for id,squad in spairs(companion_squads, companion_squads_pairs_sorter) do 
 		if (squad and squad.commander_id) then
-			if not (xrs_kill_wounded.hostage_list[squad:commander_id()] or is_hostage_squad(id)) then
+			local commander_id = squad:commander_id()
+			if not (xrs_kill_wounded.hostage_list[commander_id] or is_hostage_npc(commander_id)) then
 				for k in squad:squad_members() do
 					--printf("member %s",k.id)
 					table.insert(t,k.id)
@@ -688,8 +689,8 @@ local function move_companions_to_point()
 		_current_move_mode = 1
 		for id,squad in pairs(companion_squads) do 
 			if (squad and squad.commander_id) then
-				-- Temp workaround fix -
-				if not (is_hostage_squad(id)) then
+				local commander_id = squad:commander_id()
+				if not (xrs_kill_wounded.hostage_list[commander_id] or is_hostage_npc(commander_id)) then
 					for k in squad:squad_members() do
 						st = db.storage[k.id]
 						local member = st and st.object
@@ -872,6 +873,21 @@ end
 ------------------------------------------
 
 local simulation = get_alife()
+local option_name
+local se_obj_cache
+local se_obj_actor_squad_list
+
+local function get_se_obj(obj_id)
+	se_obj_cache = se_obj_cache or {}
+	local se_obj = se_obj_cache[obj_id]
+	
+    if (not se_obj) then
+        se_obj = simulation:object(obj_id)
+        se_obj_cache[obj_id] = se_obj
+    end
+	
+	return se_obj
+end
 
 function has_companion()
 	local result = false
@@ -890,7 +906,6 @@ function is_companion(obj)
     local result = false
 	
 	local se_obj = simulation:object(obj:id())
-	
 	if (is_hostage(se_obj) == false) then
 		result = obj:has_info("npcx_is_companion")
 		if (result == false) then
@@ -915,13 +930,17 @@ function is_hostage(se_obj)
 	return utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_is_hostage") == true
 end
 
+function is_hostage_npc(npc_id)
+	local se_obj = get_se_obj(npc_id)
+	return is_hostage(se_obj)
+end
+
 function is_hostage_squad(squad_id)
 	local result = false
-	local squad = companion_squads[squad_id]
 	
+	local squad = companion_squads[squad_id]
 	if (squad) then
-		local se_obj = alife_object(squad:commander_id())
-		if (se_obj and is_hostage(se_obj)) then
+		if (is_hostage_npc(squad:commander_id())) then
 			result = true
 		end
 	end
@@ -939,20 +958,6 @@ function get_non_hostage_companion_squads()
 	end
 	
 	return t
-end
-
-local option_name
-local se_obj_cache = {}
-
-local function get_se_obj(obj_id)
-	local se_obj = se_obj_cache[obj_id]
-	
-    if (not se_obj) then
-        se_obj = simulation:object(obj_id)
-        se_obj_cache[obj_id] = se_obj
-    end
-	
-	return se_obj
 end
 
 function is_invulnerable_obj(obj)
@@ -979,13 +984,13 @@ function get_time_with_companion(se_obj)
 end
 
 -- includes task companions too
-local se_obj_actor_squad_list
 function list_actor_squad_with_se_obj()
 	se_obj_actor_squad_list = se_obj_actor_squad_list or {}
 	local t = {}
 	for id,squad in spairs(companion_squads, companion_squads_pairs_sorter) do 
 		if (squad and squad.commander_id) then
-			if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
+			local commander_id = squad:commander_id()
+			if not (xrs_kill_wounded.hostage_list[commander_id] or is_hostage_npc(commander_id)) then
 				for k in squad:squad_members() do
 					local se_obj = se_obj_actor_squad_list[k.id]
 					if (not se_obj) then
