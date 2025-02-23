@@ -304,7 +304,7 @@ function list_actor_squad_by_id()
 	local t = {}
 	for id,squad in spairs(companion_squads, companion_squads_pairs_sorter) do 
 		if (squad and squad.commander_id) then
-			if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
+			if not (xrs_kill_wounded.hostage_list[squad:commander_id()] or is_hostage_squad(id)) then
 				for k in squad:squad_members() do
 					--printf("member %s",k.id)
 					table.insert(t,k.id)
