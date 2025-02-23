@@ -422,4 +422,15 @@ function is_under_kill_wounded(npc)
 	return current_action_id == actid
 end
 
+local function save_state(data)
+	data.hostage_list = hostage_list
+end
 
+local function load_state(data)
+	hostage_list = data.hostage_list or hostage_list
+end
+
+function on_game_start()
+	RegisterScriptCallback("save_state",save_state)
+	RegisterScriptCallback("load_state",load_state)
+end
