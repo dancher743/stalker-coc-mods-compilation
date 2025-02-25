@@ -939,25 +939,13 @@ function is_hostage_squad(squad_id)
 	local result = false
 	
 	local squad = companion_squads[squad_id]
-	if (squad) then
+	if (squad and squad.commander_id) then
 		if (is_hostage_npc(squad:commander_id())) then
 			result = true
 		end
 	end
 	
 	return result
-end
-
-function get_non_hostage_companion_squads()
-	local t = {}
-	
-	for id,squad in pairs(companion_squads) do
-		if (not is_hostage_squad(id)) then
-			t[id] = squad
-		end
-	end
-	
-	return t
 end
 
 function is_invulnerable_obj(obj)
