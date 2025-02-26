@@ -597,14 +597,16 @@ function check_actor_reputation_change()
     local clist = axr_companions.list_actor_squad_by_id()    
     for _,id in pairs(clist) do
         local npc = (db.storage[id] and db.storage[id].object) or level.object_by_id(id)
-        if (type == 0) then
-            npc:change_character_rank(value)
-			if (npc:character_rank() < 0) then npc:set_character_rank(0) end
-			if (npc:character_rank() > 28000) then npc:set_character_rank(28000) end
-        elseif (type == 1) then
-            npc:change_character_reputation(value)
-			if (npc:character_reputation() < -5000) then npc:set_character_reputation(-5000) end
-			if (npc:character_reputation() > 5000) then npc:set_character_reputation(5000) end
-        end
+		if (npc) then
+			if (type == 0) then
+				npc:change_character_rank(value)
+				if (npc:character_rank() < 0) then npc:set_character_rank(0) end
+				if (npc:character_rank() > 28000) then npc:set_character_rank(28000) end
+			elseif (type == 1) then
+				npc:change_character_reputation(value)
+				if (npc:character_reputation() < -5000) then npc:set_character_reputation(-5000) end
+				if (npc:character_reputation() > 5000) then npc:set_character_reputation(5000) end
+			end
+		end
     end
 end
