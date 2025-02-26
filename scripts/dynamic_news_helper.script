@@ -781,21 +781,8 @@ function IsInvalidMap(map)
 	return false
 end
 
-function list_actor_squad_by_id() -- This is the same function used in axr_companions in CoC 1.5, brought here to be used in all CoC variants.
-	local t = {}
-	local size_t = 0
-	for id,squad in spairs(axr_companions.companion_squads, function(t,a,b) return a < b end) do 
-		if (squad and squad.commander_id) then
-			if not (axr_task_manager.hostages_by_id[squad:commander_id()]) then
-				for k in squad:squad_members() do
-					--printf("member %s",k.id)
-					size_t = size_t + 1
-					t[size_t] = k.id
-				end
-			end
-		end
-	end
-	return t
+function list_actor_squad_by_id()
+	return axr_companions.list_actor_squad_by_id()
 end
 
 function GetCommunityDescription(obj,index) -- Return the faction of the sender (obj)

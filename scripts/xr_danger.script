@@ -155,11 +155,13 @@ function danger_in_radius(npc,best_danger,bd_type)
 end
 
 local function is_danger(npc,best_danger,script)
-	if xr_wounded.is_heavy_wounded_by_id(npc:id()) then
+	local npc_id = npc:id()
+	
+	if xr_wounded.is_heavy_wounded_by_id(npc_id) then
 		return false
 	end
 
-	if (xrs_kill_wounded and xrs_kill_wounded.hostage_list[npc:id()]) then 
+	if (xrs_kill_wounded and (xrs_kill_wounded.hostage_list[npc_id] or axr_companions.is_hostage_npc(npc_id))) then
 		return false 
 	end 
 	
@@ -206,7 +208,7 @@ local function is_danger(npc,best_danger,script)
 		return false
 	end
 
-	--if (db.storage[npc:id()].active_scheme == "camper") then
+	--if (db.storage[npc_id].active_scheme == "camper") then
 		--return false
 	--end
 

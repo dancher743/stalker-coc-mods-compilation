@@ -150,10 +150,8 @@ function UICompanionList:CustomUpdate()
 		
 		for j=clist_index,1,-1 do
 			clist_index = clist_index - 1
-			if (not axr_companions.is_hostage(clist[j])) then
-				se_obj = clist[j]
-				break
-			end
+			se_obj = clist[j]
+			break
 		end
 		
 		if (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive()) then
