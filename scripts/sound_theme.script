@@ -128,7 +128,7 @@ function npc_sound:init_npc(npc)
 				self.npc[npc_id].max = self.npc[npc_id].max + max2
 			end
 		elseif string.find(npc:section(),"sim_default") then
-			printdbg("!Sound [%s] not found for [%s]: %s", self.section, npc:section(), npc:sound_prefix()..self.path)
+			printf("!Sound [%s] not found for [%s]: %s", self.section, npc:section(), npc:sound_prefix()..self.path)
 		end
 	end
 	
