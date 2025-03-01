@@ -66,6 +66,7 @@ All notable changes to this project will be documented in this file.
 * Sorted faction portraits
 * Changed inner struct of `faction_portraits.ltx`
 * Corrected ghost zombie spawn
+* Balanced time of Guide's job appearing
 
 ### Fixes
 * Fixed low volume of `nuclear.ogg` radio track

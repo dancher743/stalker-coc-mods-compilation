@@ -53,7 +53,7 @@ function clear()
 	jg_utils.d_v("curr_guid")
 	jg_hud_timer.try_stop()
 	jg_timers.stop_g_timer('guid_fail')
-	jg_timers.g_start_timer('guid_msg',math.random(0,1),math.random(23),0,'jg_guider','prepare_follower')
+	jg_timers.g_start_timer('guid_msg',1,math.random(11,23),59,'jg_guider','prepare_follower')
 end 
 
 local function clear_guid()
@@ -126,7 +126,7 @@ function prepare_follower()
 	send_tip(npc, news_text, beep_1)
 	
 	-- Запускаем таймер следующего вызова этой функции
-	jg_timers.g_start_timer('guid_msg',math.random(0,1),math.random(23),0,'jg_guider','prepare_follower')
+	jg_timers.g_start_timer('guid_msg',0,math.random(11,23),59,'jg_guider','prepare_follower')
 end
 
 function activate()
