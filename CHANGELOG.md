@@ -67,6 +67,7 @@ All notable changes to this project will be documented in this file.
 * Changed inner struct of `faction_portraits.ltx`
 * Corrected ghost zombie spawn
 * Balanced time of Guide's job appearing
+* Changed `sun` to `clear_alt_day` of 09:00-16:00 time of clear weather
 
 ### Fixes
 * Fixed low volume of `nuclear.ogg` radio track
