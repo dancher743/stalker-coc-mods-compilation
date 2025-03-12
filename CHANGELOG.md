@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 * Added rad aura for black bloodsucker
 * Added sleep aura for cat mutant
 * Fixed incorrect vegetation in Truck Cemetery, Army Warehouses, Jupiter and Zaton levels
+* Added A-Life from CoC 1.5
 
 ### Mods
 * Call of Chernobyl Fallout (CrommCruac, av661194)
