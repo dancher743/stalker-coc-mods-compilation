@@ -74,6 +74,7 @@ function sim_squad_scripted:init_squad()
 	self.show_spot			= xr_logic.parse_condlist(self, "show_spot", "show_spot", sys_ini:r_string_ex(settings_id,"show_spot") or STR_FALSE)
 
 	self.always_arrived		= sys_ini:r_bool_ex(settings_id,"always_arrived",false)
+	self:set_location_types_section("squad_terrain")
 	self:set_location_types_section("stalker_terrain")
 	self:set_squad_sympathy()
 end
@@ -83,7 +84,7 @@ function sim_squad_scripted:init_squad_on_load()
 	self:set_squad_sympathy()
 	sim_board.get_sim_board():assign_squad_to_smart(self, self.smart_id)
 	self.current_action = 0
-	--self.need_to_reset_location_masks = true
+	self.need_to_reset_location_masks = true
 	--alun_utils.debug_write(self:name().."init_squad_on_load end")
 end
 
@@ -125,7 +126,7 @@ function sim_squad_scripted:get_script_target()
 		else 
 			return self.assigned_target_id
 		end
-	else
+	elseif (self.action_condlist) then
 		new_target = xr_logic.pick_section_from_condlist(db.actor, self, self.action_condlist)
 	end 
 	
@@ -310,7 +311,7 @@ function sim_squad_scripted:specific_update(script_target_id)
 	self.current_action = 0
 	
 	for k in self:squad_members() do
-		local se_obj = k.object or k.id and sim:object(k.id)
+		local se_obj = alife_object(k.id)
 		if (se_obj) then
 			SIMBOARD:setup_squad_and_group(se_obj)
 		end
@@ -376,7 +377,7 @@ function sim_squad_scripted:generic_update()
 	
 	local sim = get_alife()
 	for k in self:squad_members() do
-		local se_obj = k.object or k.id and sim:object(k.id)
+		local se_obj = alife_object(k.id)
 		if (se_obj) then
 			SIMBOARD:setup_squad_and_group(se_obj)
 		end
@@ -452,14 +453,22 @@ function sim_squad_scripted:remove_npc(npc_id)
 	end
 end
 
-function sim_squad_scripted:on_npc_death(npc,killer)
-	--alun_utils.debug_write(strformat("%s:on_npc_death %s",self:name(),npc and npc:name()))
-	--printf("Squad %s. Killed member %s", tostring(self.id), npc.id)
-	--self.sound_manager:unregister_npc(npc.id)
+function sim_squad_scripted:on_npc_death(se_npc,killer)
+	--alun_utils.debug_write(strformat("%s:on_npc_death %s",self:name(),se_npc and se_npc:name()))
+	--printf("Squad %s. Killed member %s", tostring(self.id), se_npc.id)
+	--self.sound_manager:unregister_npc(se_npc.id)
 		
-	self:unregister_member(npc.id)
+	local npc = db.storage[se_npc.id] and db.storage[se_npc.id].object 
+	if (npc) then
+		local npc_binder = npc:binded_object()
+		if (npc_binder) then 
+			npc_binder.squad = nil
+		end
+	end 
+	
+	self:unregister_member(se_npc.id)
 
-	SendScriptCallback("squad_on_npc_death",self,npc,killer)
+	SendScriptCallback("squad_on_npc_death",self,se_npc,killer)
 
 	if self:npc_count() > 0 then
 		self:refresh()
@@ -513,12 +522,10 @@ function sim_squad_scripted:assign_smart(smart,old_smart_id)
 	
 	local sim = get_alife()
 	for k in self:squad_members() do
-		local se_obj = k.object or k.id and sim:object(k.id)
+		local se_obj = alife_object(k.id)
 		if (se_obj) then
 			if (old_smart) then
-				if (smart == nil or smart.id ~= old_smart_id) then
-					old_smart:unregister_npc(se_obj)
-				end
+				old_smart:unregister_npc(se_obj)
 			end 
 			
 			if (smart) then 
@@ -555,6 +562,7 @@ function sim_squad_scripted:set_location_types(new_smart_name)
 	self:clear_location_types()
 	
 	self:set_location_types_section("stalker_terrain")
+	self:set_location_types_section("squad_terrain")
 	
 	local old_target = self.assigned_target_id and db.smart_terrain_by_id[self.assigned_target_id]
 	if (old_target) then 
@@ -564,10 +572,9 @@ function sim_squad_scripted:set_location_types(new_smart_name)
 	if (new_smart_name) then 
 		self:set_location_types_section(new_smart_name)
 	else
-		self:set_location_types_section("squad_terrain")
 		for id,se_obj in pairs(db.smart_terrain_by_id) do
 			local props_base = se_obj.props and se_obj.props["base"]
-			if (props_base and tonumber(props_base) == 0) then
+			if (props_base and tonumber(props_base) ~= 0) then
 				self:set_location_types_section(se_obj:name())
 			end
 		end
@@ -1261,15 +1268,11 @@ function sim_squad_scripted:get_current_task()
 	--alun_utils.debug_write("sim_self_scripted:get_current_task")
 	local se_target = self.assigned_target_id and alife_object(self.assigned_target_id)
 	if (se_target) then
-		if (se_target:clsid() == clsid.smart_terrain) then
-			local npc_info = se_target.npc_info and se_target.npc_info[self:commander_id()]
-			if (npc_info and npc_info.job) then
-				return npc_info.job.alife_task or se_target:get_alife_task() or self:get_alife_task()
-			end
+		local npc_info = se_target.npc_info and se_target.npc_info[self:commander_id()]
+		if (npc_info and npc_info.job) then
+			return npc_info.job.alife_task or se_target:get_alife_task() or self:get_alife_task()
 		end
-		if (se_target.get_alife_task) then 
-			return se_target:get_alife_task()
-		end
+		return se_target:get_alife_task()
 	end
 	return self:get_alife_task()
 end
@@ -1307,11 +1310,13 @@ local smarts_by_no_assault_zones = {
 }
 
 function sim_squad_scripted:sim_available()
+	return false 
+	--[[
 	if self.smart_id == nil then
 		return true
 	end
 
-	local smart = simulation_objects.get_sim_obj_registry().objects[self.smart_id]
+	local smart = simulation_objects.get_server_entity(self.smart_id)
 	if not (smart) then
 		return false
 	end
@@ -1322,6 +1327,7 @@ function sim_squad_scripted:sim_available()
 	end
 
 	return true
+	--]]
 end
 
 function sim_squad_scripted:target_precondition(squad)

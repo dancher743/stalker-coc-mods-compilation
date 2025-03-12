@@ -5,8 +5,8 @@
 ------------------------------
 
 -- How many jobs are checked per update per npc, for a job
-local STEP_SIZE 			= 10
-local STEP_SIZE_OFFLINE 	= 5
+local STEP_SIZE 			= 5
+local STEP_SIZE_OFFLINE 	= 1
 local locations_ini	= ini_file("misc\\smart_terrain_masks.ltx")
 nearest_to_actor_smart = {id = nil , dist = math.huge}
 
@@ -38,7 +38,7 @@ end
 
 function arrived_to_smart(se_obj, smart)
 	--alun_utils.debug_nearest(se_obj,"check arrived_to_smart %s",smart:name())
-	local squad = se_obj.group_id and SIMBOARD.squads[se_obj.group_id]
+	local squad = se_obj.group_id and se_obj.group_id ~= 65535 and alife_object(se_obj.group_id)
 	if (squad) then 
 		if (squad.current_action == 1 and squad.assigned_target_id == smart.id) then 
 			return true
@@ -142,6 +142,10 @@ function se_smart_terrain:on_unregister()
 	--if (USE_MARSHAL) then 
 	--	UnregisterScriptCallback("save_state",self)
 	--end
+	local m_data = alife_storage_manager.get_state()
+	if (m_data.se_object) then
+		m_data.se_object[self.id] = nil
+	end
 	cse_alife_smart_zone.on_unregister(self)
 end
 
@@ -435,6 +439,9 @@ local function validate_patrol_path(path_name,gg)
 				ret = false
 			end
 		end
+	else 
+		printf("validate_patrol_path ERROR: %s: path does not exist",path_name)
+		return false
 	end
 	return ret
 end 
@@ -596,12 +603,12 @@ function se_smart_terrain:update_jobs()
 	for id,info in pairs(self.npc_info) do
 		local se_obj = info.se_obj
 		if (se_obj) then
-			if (self.level_id == gg:vertex(se_obj.m_game_vertex_id):level_id()) then
+			--if (self.level_id == gg:vertex(se_obj.m_game_vertex_id):level_id()) then
 				self:select_npc_job(info)
-			else 
-				self.arriving_npc[id] = se_obj
-				self:clear_job(id,true)
-			end
+			-- else 
+				-- self.arriving_npc[id] = se_obj
+				-- self:clear_job(id,true)
+			-- end
 		else
 			self:clear_job(id,true)
 		end
@@ -626,21 +633,23 @@ function se_smart_terrain:select_npc_job(npc_info,now,surge_started)
 	end
 	
 	local new_job
+	local npc_by_job_section = self.npc_by_job_section
 	
 	-- If the NPC has an existing job link, validate it and iterate job table
 	-- for a higher priority job according to defined STEP_SIZE
 	if (npc_info.job) then
 
 		-- Make sure current job is still available
-		if (self.npc_by_job_section[npc_info.job.section] == npc_info.se_obj.id) then
+		if (npc_by_job_section[npc_info.job.section] == npc_info.se_obj.id) then
 
 			-- Make sure current job is still available
 			if (job_avail_to_npc(npc_info,npc_info.job,self)) then
 
-				if not (npc_info.current_index) then
+				if (npc_info.current_index == nil or now) then
 					npc_info.current_index = 1
 				end
 
+				local get_job_prior = gulag_general.get_job_prior
 				local itr_job
 				local npc_id
 				local step = 1
@@ -649,19 +658,20 @@ function se_smart_terrain:select_npc_job(npc_info,now,surge_started)
 
 					if (npc_info.current_index > #jobs) then
 						npc_info.current_index = 1
+						break
 					end
 
 					-- Step through job table one step at a time looking for a higher prior job
 					itr_job = jobs[npc_info.current_index]
 					npc_info.current_index = npc_info.current_index + 1
 
-					npc_id = self.npc_by_job_section[itr_job.section]
+					npc_id = npc_by_job_section[itr_job.section]
 					
 					-- Check empty job
 					--if (npc_id == nil or npc_id == npc_info.se_obj.id) then
 					if (npc_id == nil) then
 						-- Find only higher priority jobs if already linked to a job
-						if (gulag_general.get_job_prior(itr_job) > gulag_general.get_job_prior(npc_info.job)) then
+						if (get_job_prior(itr_job) > get_job_prior(npc_info.job)) then
 							if (job_avail_to_npc(npc_info, itr_job, self)) then
 								-- Only take this higher priority job if when there is either no surge or if job is not in surge cover during surge; takes exclusive no matter what
 								if (itr_job.exclusive or not xr_conditions.surge_started() or not surge_manager.job_in_surge_cover(npc_info.se_obj,npc_info.job)) then 
@@ -674,9 +684,9 @@ function se_smart_terrain:select_npc_job(npc_info,now,surge_started)
 				end
 			else
 				-- Job is no longer available, unlink job info
-				for sec,npcid in pairs(self.npc_by_job_section) do 
+				for sec,npcid in pairs(npc_by_job_section) do 
 					if (npcid == npc_info.se_obj.id) then 
-						self.npc_by_job_section[sec] = nil
+						npc_by_job_section[sec] = nil
 					end
 				end
 				npc_info.job = nil
@@ -684,9 +694,9 @@ function se_smart_terrain:select_npc_job(npc_info,now,surge_started)
 			end
 		else
 			-- Job is not linked properly, npc_id doesn't match owner se_obj
-			for sec,npcid in pairs(self.npc_by_job_section) do 
+			for sec,npcid in pairs(npc_by_job_section) do 
 				if (npcid == npc_info.se_obj.id) then 
-					self.npc_by_job_section[sec] = nil
+					npc_by_job_section[sec] = nil
 				end
 			end
 		
@@ -696,7 +706,7 @@ function se_smart_terrain:select_npc_job(npc_info,now,surge_started)
 	end
 
 	if not (npc_info.job) then
-		if not (npc_info.current_index) then
+		if (npc_info.current_index == nil or now) then
 			npc_info.current_index = 1
 		end
 
@@ -704,26 +714,27 @@ function se_smart_terrain:select_npc_job(npc_info,now,surge_started)
 		local step = 1
 		local st = db.storage[npc_info.se_obj.id]
 		local STEP_SIZE_NO_JOB = #jobs
-		while (new_job == nil and step <= (st and STEP_SIZE_NO_JOB or STEP_SIZE_OFFLINE)) do
+		while (new_job == nil and step <= (now and STEP_SIZE_NO_JOB or st and STEP_SIZE_NO_JOB or STEP_SIZE_OFFLINE)) do
 			step = step + 1
 
 			if (npc_info.current_index > STEP_SIZE_NO_JOB) then
 				npc_info.current_index = 1
+				break
 			end
 
 			-- Step through job table one step at a time looking for a high prior job
 			itr_job = jobs[npc_info.current_index]
 			npc_info.current_index = npc_info.current_index + 1
 
-			npc_id = self.npc_by_job_section[itr_job.section]
+			npc_id = npc_by_job_section[itr_job.section]
 			
 			-- validate existing job link 
 			if (npc_id and not self.npc_info[npc_id]) then 
-				self.npc_by_job_section[itr_job.section] = nil
+				npc_by_job_section[itr_job.section] = nil
 			end
 			
-			-- Check empty job
-			if (npc_id == nil and job_avail_to_npc(npc_info, itr_job, self)) then
+			-- Check empty job or re-take current job
+			if (npc_id == nil or npc_id == npc_info.se_obj.id) and (job_avail_to_npc(npc_info, itr_job, self)) then
 				new_job = itr_job
 				npc_info.current_index = 1
 			end
@@ -739,14 +750,14 @@ function se_smart_terrain:select_npc_job(npc_info,now,surge_started)
 	if (new_job and new_job ~= npc_info.job) then
 		
 		-- Unassign npc_id from old job and unreference job section
-		for sec,npcid in pairs(self.npc_by_job_section) do 
+		for sec,npcid in pairs(npc_by_job_section) do 
 			if (npcid == id) then 
-				self.npc_by_job_section[sec] = nil
+				npc_by_job_section[sec] = nil
 			end
 		end
 			
 		-- setup table that references NPCs by their job section
-		self.npc_by_job_section[new_job.section] = id
+		npc_by_job_section[new_job.section] = id
 
 		-- link up NPC info and references
 		npc_info.job = new_job
@@ -757,7 +768,7 @@ function se_smart_terrain:select_npc_job(npc_info,now,surge_started)
 		
 		-- If NPC has storage, it is online, so switch logic
 		if (st and st.object) then
-			--xr_logic.switch_to_section(st.object, self.ltx, STR_NIL)
+			--xr_logic.switch_to_section(st.object, self.ltx, "nil")
 			npc_info.begin_job = true
 			empty_table(db.offline_objects[id])
 			self:setup_logic(st.object)
@@ -1075,7 +1086,8 @@ function se_smart_terrain:stayed_squad_count()
 	local smrt = SIMBOARD.smarts[self.id]
 	if (smrt) then
 		local count = 0
-		for k,squad in pairs(smrt.squads) do
+		for k,v in pairs(smrt.squads) do
+			local squad = alife_object(k)
 			if (squad and squad.current_target_id and squad.current_target_id == self.id) then
 				count = count + 1
 			end
@@ -1087,13 +1099,13 @@ end
 
 function se_smart_terrain:get_smart_props()
 	if (self.disabled) then
-		return "deactivated\\n\\n"..self:name().."  ["..self.id.."]\\n".."squad_id = "..tostring(self.id)
+		return "deactivated\\n\\n"..self:name().."  ["..self.id.."]\\n".."squad_id = "..tostring(self.squad_id)
 	end
 
 	local props = (not self.disabled) and smart_names.get_smart_terrain_name(self)
 	if(props==nil) or (DEV_DEBUG and axr_main.config:r_value(MM_OPTIONS,"enable_debug_hud",1,false) == true) then
 		if (self.disabled) then
-			return "deactivated\\n\\n"..self:name().."  ["..self.id.."]\\n".."squad_id = "..tostring(self.id)
+			return "deactivated\\n\\n"..self:name().."  ["..self.id.."]\\n".."squad_id = "..tostring(self.squad_id)
 		end
 
 		local board = SIMBOARD
@@ -1103,15 +1115,16 @@ function se_smart_terrain:get_smart_props()
 		
 		if (self.faction_controlled) then 
 			props = props .. "Faction_controlled=" .. tostring(self.faction_controlled) .. "\\nFaction_war_in_progress=" .. tostring(self.faction_war_in_progress) .. "\\n"
+			props = props .. "Controlling_faction=".. tostring(self.faction) .. "\\n"
 		end 
 		
-		props = props .. "Controlling_faction=".. tostring(self.faction) .. "\\n".."squad_id = "..tostring(self.id).."\\n".."Capacity="..squad_count.." of "..tostring(self.max_population).."\\n"
+		props = props .. "squad_id = "..tostring(self.squad_id).."\\n".."SimCapacity="..squad_count.." of "..tostring(self.max_population).."\\n"
 
 		if self.respawn_point and self.already_spawned then
 			props = props.."\\nAlready_spawned :\n"
 			for k,v in pairs(self.already_spawned) do
 				if (v.num and self.respawn_params[k] and self.respawn_params[k].num) then
-					props = props.."["..k.."] = "..v.num.."("..xr_logic.pick_section_from_condlist(db.actor, nil,self.respawn_params[k].num)..")\\n"
+					props = props.."["..k.."] = "..v.num.."("..(xr_logic.pick_section_from_condlist(db.actor, self,self.respawn_params[k].num) or "0")..")\\n"
 				end
 			end
 		end
@@ -1126,7 +1139,7 @@ function se_smart_terrain:get_smart_props()
 			
 		--' Добавляем информацию о находящихся в смарте отрядах
 		for k,v in pairs(SIMBOARD.smarts[self.id].squads) do
-			props = props .. tostring(v.id) .. "\\n"
+			props = props .. tostring(k) .. "\\n"
 		end
 
 		if (self.props) then
@@ -1369,7 +1382,7 @@ function setup_gulag_and_logic_on_spawn(obj, st, se_obj, stype, loaded)
 		local npc_info = smart.npc_info[se_obj.id]
 		if (npc_info) then 
 			if not (npc_info.job) then
-				smart:select_npc_job(smart.npc_info[se_obj.id],true)
+				smart:select_npc_job(npc_info,true)
 				local smart_task = smart.npc_info[se_obj.id].job and smart.npc_info[se_obj.id].job.alife_task
 				if (smart_task) then 
 					db.spawned_vertex_by_id[se_obj.id] = smart_task:level_vertex_id()
@@ -1455,9 +1468,9 @@ end
 
 function smart_terrain_squad_count(board_smart_squads)
 	local count = 0
-	local pairs = pairs
-	for k,v in pairs(board_smart_squads) do
-		if v:get_script_target() == nil then
+	for id,v in pairs(board_smart_squads) do
+		local squad = alife_object(id)
+		if (squad and squad:get_script_target() == nil) then
 			count = count + 1
 		end
 	end
@@ -1505,7 +1518,7 @@ function se_smart_terrain:target_precondition(squad, ignore_population, skip_pro
 			end
 	
 			-- surge
-			if (xr_conditions.surge_started()) then
+			if (squad.player_id ~= "monolith" and xr_conditions.surge_started()) then
 				if (self.props.surge > 0) then 
 					return true 
 				end
