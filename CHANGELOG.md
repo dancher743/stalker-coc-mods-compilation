@@ -110,6 +110,7 @@ All notable changes to this project will be documented in this file.
 * Optimized RAM in `get_valid_item_sections` and `get_loot_table` functions
 * Optimized string allocations in `xr_corpse_detection.script`
 * Added RAM clearing on game unloading
+* Replaced missing `alife()` calls with `get_alife()` in `alun_utils.script`
 
 ### Framework
 * Added `npc_regular` string into `squad_descr.ltx` to add non-random squads spawn

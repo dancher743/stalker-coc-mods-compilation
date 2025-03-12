@@ -488,8 +488,8 @@ function nearest_object(s,offline)
 	end
 
 	if (nearest) then
-		if (simulation_objects.is_on_the_same_level(nearest, alife():actor())) then
-			if (offline or min_dist <= alife():switch_distance()^2) then
+		if (simulation_objects.is_on_the_same_level(nearest, get_alife():actor())) then
+			if (offline or min_dist <= get_alife():switch_distance()^2) then
 				return nearest,min_dist
 			end
 		end
@@ -573,7 +573,7 @@ function get_squad_count(npc)
 end
 
 function safe_release(p,force)
-	local sim = alife()
+	local sim = get_alife()
 	local se_obj = p[1] and sim:object(p[1])
 	if not (se_obj) then
 		return true
@@ -598,14 +598,14 @@ end
 
 function release(se_obj)
 	if (se_obj) then
-		local sim = alife()
+		local sim = get_alife()
 		sim:release(se_obj,true)
 	end
 end
 
 function create(p)
 	--printf("section=%s position=%s lvid=%s gvid=%s",p[1],vector_to_string(p[2]),p[3],p[4])
-	alife():create(p[1],p[2],p[3],p[4])
+	get_alife():create(p[1],p[2],p[3],p[4])
 end
 
 function get_current_action_id(npc)
@@ -660,7 +660,7 @@ function safe_bone_pos(npc,bone)
 end
 
 function is_level_changing()
-	local sim = alife()
+	local sim = get_alife()
 	local act = game_graph():vertex(sim:actor().m_game_vertex_id)
 	return act:level_id() ~= sim:level_id()
 end
@@ -668,7 +668,7 @@ end
 --------------------------------------switch---------------------------------------
 function switch_online(id)
 	if id == -1 then return end
-	local sim = alife()
+	local sim = get_alife()
 	if sim then
 		sim:set_switch_online(id,true)
 		sim:set_switch_offline(id,false)
@@ -676,7 +676,7 @@ function switch_online(id)
 end
 
 function switch_offline(id)
-	local sim = alife()
+	local sim = get_alife()
 	if sim then
 		sim:set_switch_online(id,false)
 		sim:set_switch_offline(id,true)
