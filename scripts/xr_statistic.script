@@ -304,7 +304,7 @@ function set_best_weapon(hit_amount)
 	-- A section called 'parent_section' is used by AO3 and STCoP.
 	-- It tells them which weapon is the 'parent' of a modified weapon.
 	-- Example: An AK-74 with an EKP sight attach has a parent_section of 'wpn_ak74'.
-	local parent_section = get_system_ini():r_string_ex(active_item:section(), "parent_section") or active_item:section()
+	local parent_section = system_ini():r_string_ex(active_item:section(), "parent_section") or active_item:section()
 
 	-- By using this section we can have stats 'stack' for weapons regardless of attached scopes.
 	-- Of course if this section does not exist then it will just default to the weapon section name instead.
@@ -319,7 +319,7 @@ end
 function get_best_weapon()
 	local weapon_name = actor_statistic.favorite_weapon_sect
 	if (weapon_name == nil) then weapon_name = "wpn_knife" end
-	return game.translate_string(get_system_ini():r_string_ex(weapon_name, "inv_name"))
+	return game.translate_string(system_ini():r_string_ex(weapon_name, "inv_name"))
 end
 
 function smart_terrain_mark_visited(smart)

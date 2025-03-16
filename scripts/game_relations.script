@@ -467,7 +467,7 @@ function set_squad_goodwill_to_npc(npc, squad_id, new_goodwill)
 	local goodwill = tonumber(new_relation) or new_relation == game_object.enemy and -1000 or new_relation == game_object.friend and 1000 or 0
 	local squad = squad_id and (get_story_squad(squad_id) or alife_object(squad_id))
 	if squad then
-		local sim = get_alife()
+		local sim = alife()
 		local se_npc = sim:object(npc:id())
 		if not (se_npc) then
 			return
@@ -558,9 +558,9 @@ function get_squad_goodwill_to_actor_by_id(squad_id)
 			return game_object.enemy
 		end
 		local goodwill = game_object.neutral
-		if(relation_registry.community_relation(squad:get_squad_community(), get_alife():actor():community())>=FRIENDS) then
+		if(relation_registry.community_relation(squad:get_squad_community(), alife():actor():community())>=FRIENDS) then
 			goodwill = game_object.friend
-		elseif(relation_registry.community_relation(squad:get_squad_community(), get_alife():actor():community())<=ENEMIES) then
+		elseif(relation_registry.community_relation(squad:get_squad_community(), alife():actor():community())<=ENEMIES) then
 			goodwill = game_object.enemy
 		end
 		return goodwill
@@ -582,9 +582,9 @@ function get_squad_goodwill_to_actor(squad_name)
 			return game_object.enemy
 		end
 		local goodwill = game_object.neutral
-		if(relation_registry.community_relation(squad:get_squad_community(), get_alife():actor():community())>=FRIENDS) then
+		if(relation_registry.community_relation(squad:get_squad_community(), alife():actor():community())>=FRIENDS) then
 			goodwill = game_object.friend
-		elseif(relation_registry.community_relation(squad:get_squad_community(), get_alife():actor():community())<=ENEMIES) then
+		elseif(relation_registry.community_relation(squad:get_squad_community(), alife():actor():community())<=ENEMIES) then
 			goodwill = game_object.enemy
 		end
 		return goodwill

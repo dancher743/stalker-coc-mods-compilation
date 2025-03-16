@@ -45,7 +45,7 @@ end
 
 function sim_squad_scripted:init_squad()
 	--alun_utils.debug_write("sim_squad_scripted:init_squad")
-	local sys_ini			= get_system_ini()
+	local sys_ini			= system_ini()
 	local settings_id 		= self:section_name()
 	
 	self.player_id 			= sys_ini:r_string_ex(settings_id,"faction") or "stalker"
@@ -155,7 +155,7 @@ function sim_squad_scripted:update()
 	if not (self.first_update) then
 		self.first_update = true
 		local skip = false
-		local sim = get_alife()
+		local sim = alife()
 		local se_actor = sim:actor()
 		local se_obj = self:commander_id() and alife_object(self:commander_id())
 		if (se_obj) then
@@ -167,7 +167,7 @@ function sim_squad_scripted:update()
 		end
 		
 		if (skip ~= true) then
-			local gg = get_game_graph()
+			local gg = game_graph()
 
 			--printf("m_game_vertex_id=%s actor.m_game_vertex_id=%s",self.m_game_vertex_id,se_actor.m_game_vertex_id)
 			if (se_actor and gg:valid_vertex_id(self.m_game_vertex_id) and gg:valid_vertex_id(se_actor.m_game_vertex_id)) then
@@ -221,7 +221,7 @@ function sim_squad_scripted:update()
 	end
 	self.frame_counter = frame_counter + 1
 
-	local sim = get_alife()
+	local sim = alife()
 	local se_actor = sim:actor()
 	self.dist_to_actor = self.position:distance_to(se_actor.position)
 
@@ -248,8 +248,8 @@ local function can_help_actor(squad)
 		return false
 	end
 
-	local gg = get_game_graph()
-	if gg:vertex(squad.m_game_vertex_id):level_id() ~= gg:vertex(get_alife():actor().m_game_vertex_id):level_id() then
+	local gg = game_graph()
+	if gg:vertex(squad.m_game_vertex_id):level_id() ~= gg:vertex(alife():actor().m_game_vertex_id):level_id() then
 		return false
 	end
 
@@ -268,7 +268,7 @@ end
 -- This update is called for all squads with a scripted smart_terrain target
 function sim_squad_scripted:specific_update(script_target_id)
 	--alun_utils.debug_write(strformat("%s:specific_update",self:name()))
-	local sim = get_alife()
+	local sim = alife()
 	local se_target = sim:object(script_target_id)
 	if not (se_target) then
 		return
@@ -375,7 +375,7 @@ function sim_squad_scripted:generic_update()
 	self.current_target_id = nil
 	self.current_action = 0
 	
-	local sim = get_alife()
+	local sim = alife()
 	for k in self:squad_members() do
 		local se_obj = alife_object(k.id)
 		if (se_obj) then
@@ -400,7 +400,7 @@ function sim_squad_scripted:remove_squad()
 		squad_npcs[k.id] = true
 	end
 	
-	local sim = get_alife()
+	local sim = alife()
 	for id,v in pairs(squad_npcs) do
 		local se_obj = sim:object(id)
 		if (se_obj) then
@@ -423,7 +423,7 @@ end
 
 function sim_squad_scripted:remove_npc(npc_id)
 	--alun_utils.debug_write(strformat("%s:remove_npc %s",self:name(),npc_id))
-	local sim = get_alife()
+	local sim = alife()
 	local se_obj = sim:object(npc_id)
 	if (se_obj) then
 		local smart_id = se_obj:smart_terrain_id()
@@ -449,7 +449,7 @@ function sim_squad_scripted:remove_npc(npc_id)
 		
 		self:hide()
 		safe_release_manager.release(self)
-		--get_alife():release(self,true)
+		--alife():release(self,true)
 	end
 end
 
@@ -485,12 +485,12 @@ function sim_squad_scripted:on_npc_death(se_npc,killer)
 
 	self:hide()
 	safe_release_manager.release(self)
-	--get_alife():release(self,true)
+	--alife():release(self,true)
 	
 	return
 end
 function sim_squad_scripted:assign_squad_member_to_smart(member_id, smart, old_smart_id)
-	local sim = get_alife()
+	local sim = alife()
 	local obj = sim:object(member_id)
 	if obj ~= nil then
 		--printf("    npc [%s] smart [%s]", obj:name(), tostring(obj.m_smart_terrain_id))
@@ -520,7 +520,7 @@ function sim_squad_scripted:assign_smart(smart,old_smart_id)
 		self.smart_id = smart.id
 	end
 	
-	local sim = get_alife()
+	local sim = alife()
 	for k in self:squad_members() do
 		local se_obj = alife_object(k.id)
 		if (se_obj) then
@@ -582,7 +582,7 @@ function sim_squad_scripted:set_location_types(new_smart_name)
 end
 
 function sim_squad_scripted:add_new_member_forced(section,pos,lvid,gvid)
-	local se_obj = get_alife():create(section,pos,lvid,gvid)
+	local se_obj = alife():create(section,pos,lvid,gvid)
 	if (se_obj) then
 		self:register_member(se_obj.id)
 		local smart = self.smart_id and db.smart_terrain_by_id[self.smart_id]
@@ -595,7 +595,7 @@ end
 
 function sim_squad_scripted:add_squad_member(spawn_section, spawn_position, lv_id, gv_id)
 	--alun_utils.debug_write("sim_squad_scripted:add_squad_member")
-	local spawn_sections_ltx = get_system_ini()
+	local spawn_sections_ltx = system_ini()
 	
 	if not (spawn_sections_ltx:section_exist(spawn_section)) then 
 		printf("ERROR: npc section %s does not exist!",spawn_section)
@@ -607,7 +607,7 @@ function sim_squad_scripted:add_squad_member(spawn_section, spawn_position, lv_i
 		printf("INCORRECT npc_spawn_section USED [%s]. You cannot use npc with custom_data in squads", spawn_section)
 	end
 
-	local sim = get_alife()
+	local sim = alife()
 	local obj = sim:create(spawn_section,spawn_position,lv_id,gv_id)
 
 	self:register_member(obj.id)
@@ -625,7 +625,7 @@ end
 
 function sim_squad_scripted:create_npc(spawn_smart,pos,lvid,gvid)
 	--alun_utils.debug_write("sim_squad_scripted:create_npc")
-	local ini = get_system_ini()
+	local ini = system_ini()
 	local settings_id = self:section_name()
 	local spawn_sections = utils.parse_names(ini:r_string_ex(settings_id, "npc") or STR_EMPTY)
 	
@@ -764,7 +764,7 @@ function sim_squad_scripted:set_squad_relation(relation)
 	local rel = relation or self.relationship
 	if(rel ~= nil) then
 		local npc
-		local sim = get_alife()
+		local sim = alife()
 		for k in self:squad_members() do
 			npc = db.storage[k.id] and db.storage[k.id].object
 			if(npc) then
@@ -827,7 +827,7 @@ function sim_squad_scripted:set_squad_position(position)
 end
 
 function sim_squad_scripted:has_detector()
-	local sim = get_alife()
+	local sim = alife()
 	for k in self:squad_members() do
 		local se_obj = sim:object(k.id)
 		if se_obj and se_obj:has_detector() then
@@ -849,7 +849,7 @@ function sim_squad_scripted:has_items_to_sell()
 	if not (self.online) then
 		return false
 	end
-	local sim = get_alife()
+	local sim = alife()
 	local st
 	for k in self:squad_members() do
 		st = db.storage[k.id]
@@ -1082,7 +1082,7 @@ function sim_squad_scripted:can_switch_online()
 		if (db.actor and db.spawned_vertex_by_id[self:commander_id()] == nil) then
 			local dist = axr_main.config:r_value(MM_OPTIONS,"excl_dist",2) or 0
 			if (dist > 0 and not db.actor:has_info("actor_is_sleeping")) then 
-				local actor = get_alife():actor()
+				local actor = alife():actor()
 				if (self.position:distance_to(actor.position) <= dist) then
 					return false
 				end
@@ -1370,9 +1370,9 @@ function sim_squad_scripted:get_squad_relation()
     end   
     local relation = 0
     if db.actor then
-  relation = db.actor:community_goodwill(self.player_id)+game_relations.get_factions_community(self.player_id, get_alife():actor():community())
+  relation = db.actor:community_goodwill(self.player_id)+game_relations.get_factions_community(self.player_id, alife():actor():community())
     else
-  relation = game_relations.get_factions_community(self.player_id, get_alife():actor():community())
+  relation = game_relations.get_factions_community(self.player_id, alife():actor():community())
     end
     
     if relation >= 1000 then

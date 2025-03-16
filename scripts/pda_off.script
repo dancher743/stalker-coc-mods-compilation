@@ -39,9 +39,9 @@ function process_pda(info_id)
 	
 	if (info_id == pda_shown_info and has_surge_or_storm and window == nil) then
 		window = PdaNoiseWnd()
-		get_cached_hud():AddDialogToRender(window)
+		get_hud():AddDialogToRender(window)
 	elseif (info_id == pda_hidden_info and window ~= nil) then
-		get_cached_hud():RemoveDialogToRender(window)
+		get_hud():RemoveDialogToRender(window)
 		window = nil
 	end
 end

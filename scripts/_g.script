@@ -3,7 +3,7 @@
 	1. 	NEVER keep userdata (ie. engine classes) in global scope, instead keep track of game object id, and grab object in the scope you need it in by using level.object_by_id or db.storage table. 
 		Otherwise object can't deconstruct and you will end up with instances were script binder exists but object doesn't or level object exists but server object doesn't. This is because variables in lua are all references.
 			Ex. _G.npc = level.object_by_id(2342) 
-				get_alife():release(alife_object(2342))
+				alife():release(alife_object(2342))
 		Above, 'npc' will not be nil but se_obj will be! scripts will blow up. Pure Virtual Function calls may occur! Or quite possibly silent errors like for example when player goes to talk to npc game crashes because self.object is nil
 		Such thing is 'okay' in db.storage, but that is because on net_destroy db.storage[id] is set nil. So if you are keeping track of objects directly in a table, instead of ID 
 		then you absolutely must rid of every single reference to the userdata so that it can be destroy and garbage collected. Otherwise you end up with undetectable issues.
@@ -23,6 +23,7 @@ if string.find(command_line(), "-dbg") then
 end
 
 USE_INI_MEMOIZE = true
+USE_FUNCTIONS_MEMOIZE = true
 
 -- Improves performance if true, by disabling update methods for squads and smart terrains on levels not linked in configs\ai_tweaks\simulation_objects.ltx
 -- But this means simulation will only be active on actor level and linked levels everything else will remain in an idle state
@@ -42,12 +43,18 @@ USE_MARSHAL = marshal ~= nil
 mus_vol = 0
 amb_vol = 0
 b_discard_settings_shown = false
--- Local use
+-- Memoization
 local ini
 local sim
 local gg
 local hud
 local console
+-- Cached functions during memoization
+local alife_function
+local system_ini_function
+local game_graph_function
+local get_hud_function
+local get_console_function
 ----------------------------------------------------------------------
 
 function start_game_callback()
@@ -55,6 +62,10 @@ function start_game_callback()
 	printf("Call of Chernobyl version %s + %s",GAME_VERSION,MOD_VERSION)
 	if (USE_MARSHAL) then
 		printf("using marshal library")
+	end
+	
+	if (USE_FUNCTIONS_MEMOIZE) then
+		memoize_functions()
 	end
 	
 	sound_theme.load_sound()
@@ -76,6 +87,15 @@ function start_game_callback()
 	pda.add_quick_slot_items_on_game_start()
 end
 
+function alife_object(id)
+	if (id == nil or id >= 65535) then
+		callstack()
+		printf("ALIFE OBJECT ID IS %s!",id)
+		return
+	end
+	return alife():object(id)
+end
+
 function clear_cache()
 	ini_cache = nil
 	ini = nil
@@ -85,46 +105,58 @@ function clear_cache()
 	console = nil
 end
 
-function get_system_ini()
-	if not (ini) then
-		ini = system_ini()
-	end
-	return ini
+-------------------------------------------------------------------------------------------------------
+-- 											FUNCTIONS MEMOIZATION
+-------------------------------------------------------------------------------------------------------
+
+function memoize_functions()
+	alife_function = alife
+	alife = _G.alife_memoized
+	
+	system_ini_function = system_ini
+	system_ini = _G.system_ini_memoized
+	
+	game_graph_function = game_graph
+	game_graph = _G.game_graph_memoized
+	
+	get_hud_function = get_hud
+	get_hud = _G.get_hud_memoized
+	
+	get_console_function = get_console
+	get_console = _G.get_console_memoized
 end
 
-function get_alife()
+function alife_memoized()
 	if not (sim) then
-		sim = alife()
+		sim = alife_function()
 	end
 	return sim
 end
 
-function alife_object(id)
-	if (id == nil or id >= 65535) then
-		callstack()
-		printf("ALIFE OBJECT ID IS %s!",id)
-		return
+function system_ini_memoized()
+	if not (ini) then
+		ini = system_ini_function()
 	end
-	return get_alife():object(id)
+	return ini
 end
 
-function get_game_graph()
+function game_graph_memoized()
 	if not (gg) then
-		gg = game_graph()
+		gg = game_graph_function()
 	end
 	return gg
 end
 
-function get_cached_hud()
+function get_hud_memoized()
 	if not (hud) then
-		hud = get_hud()
+		hud = get_hud_function()
 	end
 	return hud
 end
 
-function get_cached_console()
+function get_console_memoized()
 	if not (console) then
-		console = get_console()
+		console = get_console_function()
 	end
 	return console
 end
@@ -161,7 +193,7 @@ end
 --------------------------------------------
 function SetHudMsg(msg,n)
 	msg = tostring(msg)
-	local hud = get_cached_hud()
+	local hud = get_hud()
 	if (hud) then
 		hud:AddCustomStatic("not_enough_money_mine", true)
 		hud:GetCustomStatic("not_enough_money_mine"):wnd():TextControl():SetTextST(msg)
@@ -256,7 +288,7 @@ function ProcessEventQueueState(m_data,save)
 end
 
 function SetSwitchDistance(dist)
-	if (get_alife()) then
+	if (alife()) then
 		local p = net_packet()
 		p:w_begin(18)
 		p:w_float(dist or 2.0)
@@ -325,7 +357,7 @@ function JumpToLevel(new_level)
 	end
 	
 	local cvertex
-	local sim,gg = get_alife(),get_game_graph()
+	local sim,gg = alife(),game_graph()
 	-- first try to find a smart_terrain on specified level
 	for id,smart in pairs(db.smart_terrain_by_id) do
 		cvertex = smart and gg:vertex(smart.m_game_vertex_id)
@@ -357,12 +389,12 @@ function TeleportObject(id,pos,lvid,gvid)
 		db.offline_objects[id].level_vertex_id = nil
 	end
 	db.spawned_vertex_by_id[id] = nil
-	get_alife():teleport_object(id,gvid,lvid,pos)
+	alife():teleport_object(id,gvid,lvid,pos)
 end
 
 function TeleportSquad(squad,pos,lvid,gvid)
 	-- Requires OpenXray
-	local sim = get_alife()
+	local sim = alife()
 	sim:teleport_object(squad.id,gvid,lvid,pos)
 	for k in squad:squad_members() do
 		if (db.offline_objects[k.id]) then
@@ -473,9 +505,9 @@ function printf(fmt,...)
 	end
 	if (log) then
 		log(fmt)
-		--get_cached_console():execute("flush")
+		--get_console():execute("flush")
 	else
-		get_cached_console():execute("load ~#debug msg:"..fmt)
+		get_console():execute("load ~#debug msg:"..fmt)
 	end	
 end
 
@@ -575,7 +607,7 @@ end
 
 --' іроверка на инфопоршнv, даже если игрока не су	ествует
 function has_alife_info(info_id)
-	local sim = get_alife()
+	local sim = alife()
 	return sim:has_info(0, info_id)
 end
 
@@ -1134,7 +1166,7 @@ end
 
 -- получить геймобжект по стори_айди.
 function level_object_by_sid( sid )
-	local sim = get_alife()
+	local sim = alife()
 	if sim then
 		local se_obj = sim:story_object( sid )
 		if se_obj then
@@ -1145,7 +1177,7 @@ function level_object_by_sid( sid )
 end
 -- Получить айдишник обьекта по стори айди.
 function id_by_sid( sid )
-	local sim = get_alife()
+	local sim = alife()
 	if sim then
 		local se_obj = sim:story_object( sid )
 		if se_obj then
@@ -1257,16 +1289,16 @@ function disable_info (info)
 end
 
 function create_ammo(section, position, lvi, gvi, pid, num)
-	local ini = get_system_ini()
+	local ini = system_ini()
 
 	local num_in_box = ini:r_u32(section, "box_size")
 	local t = {}
 	while num > num_in_box do
-		local obj = get_alife():create_ammo(section, position, lvi,	gvi, pid, num_in_box)
+		local obj = alife():create_ammo(section, position, lvi,	gvi, pid, num_in_box)
 		table.insert(t, obj)
 		num = num - num_in_box
 	end
-	local obj = get_alife():create_ammo(section, position, lvi,	gvi, pid, num)
+	local obj = alife():create_ammo(section, position, lvi,	gvi, pid, num)
 	table.insert(t, obj)
 	return t
 end
@@ -1388,7 +1420,7 @@ function get_object_squad(object,caller)
 		if (object.group_id ~= nil and object.group_id ~= 65535) then
 		return alife_object(object.group_id)
 	end
-		local sim = get_alife()
+		local sim = alife()
 	local se_obj = type(object.id) == STR_FUNCTION and sim:object(object:id())
 	return se_obj and se_obj.group_id ~= 65535 and sim:object(se_obj.group_id) or nil
 end
@@ -1409,7 +1441,7 @@ function in_time_interval(val1, val2)
 end
 
 function show_all_ui(show)
-	local hud = get_cached_hud()
+	local hud = get_hud()
 	if not (hud) then
 		return
 	end
@@ -1497,7 +1529,7 @@ function CSE_ALifeDynamicObject_on_unregister(id)
 	end
 end
 
-get_cached_console():execute("r__clear_models_on_unload 0")
+get_console():execute("r__clear_models_on_unload 0")
 function CALifeUpdateManager__on_before_change_level(packet)
 --[[
 	C++:
@@ -1523,10 +1555,10 @@ function CALifeUpdateManager__on_before_change_level(packet)
 	packet:r_vec3(pos)
 	packet:r_vec3(angle)
 	-- crazy hack to help prevent crash on Trucks Cemetery
-	local gg = get_game_graph()
-	if (gg:valid_vertex_id(gvid) and get_alife():level_name(gg:vertex(gvid):level_id()) == "k02_trucks_cemetery") then
+	local gg = game_graph()
+	if (gg:valid_vertex_id(gvid) and alife():level_name(gg:vertex(gvid):level_id()) == "k02_trucks_cemetery") then
 		log("k02_trucks_cemetery hack r__clear_models_on_unload 1")
-		get_cached_console():execute("r__clear_models_on_unload 1")
+		get_console():execute("r__clear_models_on_unload 1")
 	end
 	--printf("CALifeUpdateManager__on_before_change_level pos=%s gvid=%s lvid=%s angle=%s",pos,gvid,lvid,angle)
 	-- fix for car in 1.6 (TODO*kinda For some reason after loading a game ALL physic objects will not be teleported by TeleportObject need to investigate as to why, possibly something to do with object flags)
@@ -1561,7 +1593,7 @@ function run_dynamic_element(folder,close_inv)
       folder:ShowDialog(true)
    elseif close_inv==true then
 		folder:ShowDialog(true)
-		local hud = get_cached_hud()
+		local hud = get_hud()
 		if (hud) then
 			hud:HideActorMenu()
 			hud:HidePdaMenu()
@@ -1576,7 +1608,7 @@ end
 function give_object_to_actor(obj,count)
   if count==nil then count=1 end
   for i=1, count do
-     get_alife():create(obj,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
+     alife():create(obj,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
   end
 end
 
@@ -1597,7 +1629,7 @@ function get_object_count(obj,npc)
 end
 
 -- INI Extensions
-local ini_cache = { [get_system_ini()] = {} }
+local ini_cache = { [system_ini()] = {} }
 function clear_ini_cache(ini)
 	ini_cache[ini] = empty_table(ini_cache[ini])
 end
@@ -1814,7 +1846,7 @@ function main_hud_shown()
 	actor_is_sleeping_info = (actor_is_sleeping_info == nil and "actor_is_sleeping") or actor_is_sleeping_info
 	
 	local actor = db.actor
-	if get_cached_console():get_bool(hud_draw_command) 
+	if get_console():get_bool(hud_draw_command) 
 	and (not axr_main.weapon_is_zoomed) 
 	and (not actor:is_talking())
 	and (actor:alive())

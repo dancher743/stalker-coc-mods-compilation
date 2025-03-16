@@ -109,7 +109,7 @@ function is_enemy(obj,enemy,no_memory)
 			end
 		end
 		
-		local sim = get_alife()
+		local sim = alife()
 		local is_monster = character_community(enemy) == "zombied" or IsMonster(enemy)
 		
 		-- Ignore enemies with the safe_zone flag

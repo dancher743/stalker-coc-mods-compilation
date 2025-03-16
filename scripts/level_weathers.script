@@ -297,7 +297,7 @@ end
 
 function WeatherManager:apply_dof()
 	--[[
-	local console=get_cached_console()
+	local console=get_console()
 	if string.sub(self.levelWeather,1,9)=="atmosfear" then
 		local last_hour_str=self:get_hour_as_string(self.last_hour)
 		local next_hour_str=self:get_hour_as_string(self.next_hour)

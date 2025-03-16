@@ -19,7 +19,7 @@ function actor_on_reinit(binder)
 	local function check_hud_msg()
 		-- Check HudMsg
 		if (ShowMessageTime) then
-			local hud = get_cached_hud()
+			local hud = get_hud()
 			if (hud) then
 				local custom_static = hud:GetCustomStatic("not_enough_money_mine")
 				if custom_static ~= nil and time_global() > ShowMessageTime then
@@ -37,7 +37,7 @@ end
 -- actor_on_net_spawn
 -------------------
 function actor_on_net_spawn()
-	local con = get_cached_console()
+	local con = get_console()
 	if (axr_main.config:r_value(MM_OPTIONS,"hardcore_ai_aim",1,false)) then
 		con:execute("ai_aim_max_angle 20.0")
 		con:execute("ai_aim_min_angle 17.0")
@@ -50,7 +50,7 @@ function actor_on_net_spawn()
 		con:execute("ai_aim_predict_time 0.40")
 	end
 	
-	local sim = get_alife()
+	local sim = alife()
 	for i=1,65534 do
 		local se_obj = sim:object(i)
 		if (se_obj and se_obj:clsid() == clsid.phantom) then
@@ -61,7 +61,7 @@ function actor_on_net_spawn()
 	
 	if (axr_main.config:r_value(MM_OPTIONS,"enable_heli_spawn",1,true) == false) then 
 		for k,v in pairs(se_heli.se_helicopters) do 
-			get_alife():release(v,true)
+			alife():release(v,true)
 		end
 	end
 	
@@ -187,13 +187,13 @@ function actor_on_item_use(binder,item)
 		level.add_cam_effector("camera_effects\\surge_02.anm", 10, false, "bind_stalker_ext.anabiotic_callback")
 		level.add_pp_effector("surge_fade.ppe", 11, false)
 		give_info("anabiotic_in_process")
-		local con = get_cached_console()
+		local con = get_console()
 		_G.mus_vol = con:get_float("snd_volume_music")
 		_G.amb_vol = con:get_float("snd_volume_eff")
 		con:execute("snd_volume_music 0")
 		con:execute("snd_volume_eff 0")
 	elseif (sec == "drug_psy_blockade" or sec == "drug_radioprotector" or sec == "drug_antidot") then
-		local boost_time = get_system_ini():r_float_ex(sec,"boost_time")
+		local boost_time = system_ini():r_float_ex(sec,"boost_time")
 		utils.save_var(db.actor,sec.."_expiration",utils.CTimeAddSec(game.get_game_time(),boost_time*level.get_time_factor()))
 	elseif (sec == "radio_connections_pda") then 
 		run_dynamic_element(pda_dialog.pda_dialog_box(),true)
@@ -218,7 +218,7 @@ end
 -- IMPORTANT: Cannot be used as callback because this needs to be done in specific order, just call script directly!
 -------------------
 function actor_on_save(binder,packet)
-	local sim,gg = get_alife(),get_game_graph()
+	local sim,gg = alife(),game_graph()
 	local actor_gv = sim and gg:vertex(sim:actor().m_game_vertex_id)
 	
 	if (actor_gv and actor_gv:level_id() ~= sim:level_id()) then
@@ -293,9 +293,9 @@ function actor_on_detach_vehicle(binder,obj)
 	if (obj:section() == "deployable_mgun") then 
 		local se_obj = alife_object(obj:id())
 		if (se_obj) then 
-			get_alife():release(se_obj)
+			alife():release(se_obj)
 		end
-		get_alife():create("itm_deployable_mgun",vector(),0,0,0)
+		alife():create("itm_deployable_mgun",vector(),0,0,0)
 	end
 end
 
@@ -366,8 +366,8 @@ end
 
 function anabiotic_callback2()
 	xr_effects.enable_ui(db.actor, nil)
-    get_cached_console():execute("snd_volume_music "..tostring(_G.mus_vol))
-	get_cached_console():execute("snd_volume_eff "..tostring(_G.amb_vol))
+    get_console():execute("snd_volume_music "..tostring(_G.mus_vol))
+	get_console():execute("snd_volume_eff "..tostring(_G.amb_vol))
 	_G.amb_vol = 0
 	_G.mus_vol = 0
 	disable_info("anabiotic_in_process")
@@ -386,7 +386,7 @@ function actor_item_to_slot(binder,obj)
 	if (axr_main.config:r_value(MM_OPTIONS,"enable_outfit_portrait",1,false) == true) then
 		local outfit = db.actor:item_in_slot(7)
 		if (outfit and outfit:id() == obj:id()) then 
-			local icon = get_system_ini():r_string_ex(outfit:section(),"character_portrait")
+			local icon = system_ini():r_string_ex(outfit:section(),"character_portrait")
 			if (icon) then
 				db.actor:set_character_icon(icon)
 			elseif (db.actor_binder.character_icon) then -- use default portrait if no outfit portrait exists

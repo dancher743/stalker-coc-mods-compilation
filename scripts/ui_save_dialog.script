@@ -248,7 +248,7 @@ function save_dialog:SaveFile(fileName)
 	if nil~= fileName then
 		-- clear excess corpses everytime player saves
 		--release_body_manager.get_release_body_manager():clear(nil,nil,true)
-		local console = get_cached_console()
+		local console = get_console()
 		console:execute("save " .. fileName)
 	end
 	

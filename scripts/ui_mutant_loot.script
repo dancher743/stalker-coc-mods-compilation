@@ -106,10 +106,10 @@ function loot_ui:SetMutantImage()
 	giant				= {file="ui\\ui_actor_monsters_pda_1",x=STR_ONE,y="200",special=STR_ONE},
 	}
 
-	local mutant_id = game.translate_string(get_system_ini():r_string_ex(self.section,"species") or STR_EMPTY)
+	local mutant_id = game.translate_string(system_ini():r_string_ex(self.section,"species") or STR_EMPTY)
 
 	if mutant_id == "arena_monstr" then
-	mutant_id = game.translate_string(get_system_ini():r_string_ex(self.section,"community") or STR_EMPTY)
+	mutant_id = game.translate_string(system_ini():r_string_ex(self.section,"community") or STR_EMPTY)
 	end
 
 	local mutant_f = killed_mutant_tbl[mutant_id].file or "ui\\ui_actor_monsters_pda_1"
@@ -200,7 +200,7 @@ function loot_ui:OnListItemDbClicked()
 	return
 	end
 
-	get_alife():create(booty.sec, db.actor:position(),0,0,0)
+	alife():create(booty.sec, db.actor:position(),0,0,0)
 	--news_manager.relocate_item(db.actor, "in", booty.sec, 1)
 	xr_statistic.inc_counter("field_dressings")
 
@@ -228,7 +228,7 @@ function loot_ui:OnButton_ok()
 
 	for sec,t in pairs(self.loot) do
 		for i=1,t.count do
-		get_alife():create(sec, db.actor:position(),0,0,0)
+		alife():create(sec, db.actor:position(),0,0,0)
 		xr_statistic.inc_counter("field_dressings")
 		end
 	news_manager.relocate_item(db.actor, "in", sec, t.count)
@@ -258,7 +258,7 @@ end
 
 function loot_ui:AddItemToList(sec,count)
 	local _itm			= load_item(self.file_item_main_sz.y)
-	local inv_name 		= game.translate_string(get_system_ini():r_string_ex(sec,"inv_name") or "none")
+	local inv_name 		= game.translate_string(system_ini():r_string_ex(sec,"inv_name") or "none")
 
 	_itm:SetWndSize		(self.file_item_main_sz)
 
@@ -273,7 +273,7 @@ function loot_ui:AddItemToList(sec,count)
 
 	_itm.sec = sec
 
-	local ini = get_system_ini()
+	local ini = system_ini()
 	local inv_grid_width = ini:r_float_ex(sec,"inv_grid_width") or 0
 	local inv_grid_height = ini:r_float_ex(sec,"inv_grid_height") or 0
 	local inv_grid_x = ini:r_float_ex(sec,"inv_grid_x") or 0

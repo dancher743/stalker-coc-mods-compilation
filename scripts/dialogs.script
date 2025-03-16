@@ -1582,7 +1582,7 @@ end
 -- npcs and trade and repair
 function npc_is_trader(a,b)
     local npc = who_is_npc(a, b)
-	local hud = get_cached_hud()
+	local hud = get_hud()
 	if (hud) then
 		hud:HideActorMenu()
 		npc:start_trade(db.actor)
@@ -1591,7 +1591,7 @@ end
 
 function npc_is_tech(a,b)
     local npc = who_is_npc(a,b)
-	local hud = get_cached_hud()
+	local hud = get_hud()
 	if (hud) then
 		hud:HideActorMenu()
 		npc:start_upgrade(db.actor)
@@ -1778,7 +1778,7 @@ function text_npc_has_cancel_task(a,b)
         if not (sec) then
             return text or game.translate_string("st_task_none_active")
         end
-		local name = game.translate_string(get_system_ini():r_string_ex(sec,"inv_name") or STR_EMPTY)
+		local name = game.translate_string(system_ini():r_string_ex(sec,"inv_name") or STR_EMPTY)
 		return strformat(text,name or STR_EMPTY)
 	end
 
@@ -2005,7 +2005,7 @@ function text_trade_npc_pda(a,b)
 			db.actor:transfer_item(item,npc)
 			news_manager.relocate_item(db.actor, "out", item:section())
 			relocate_money(npc, random_choice(10000,15000,20000,25000) , "in")
-			local name = game.translate_string(get_system_ini():r_string_ex(item:section(),"inv_name") or STR_EMPTY)
+			local name = game.translate_string(system_ini():r_string_ex(item:section(),"inv_name") or STR_EMPTY)
 			return strformat(game.translate_string("st_broker_trade_valuable"),name)
 		end
 	end
@@ -2171,7 +2171,7 @@ function surrender_victim_answers_bounty(a,b)
 	end
 
 	if ((math.random(1,100)/100) < 0.5) then
-		get_alife():create("medkit_script",npc:position(),0,0,npc:id())
+		alife():create("medkit_script",npc:position(),0,0,npc:id())
 		xr_wounded.unlock_medkit(npc)
 	end
 
@@ -2223,7 +2223,7 @@ function surrender_victim_answers_1(a,b)
 		relocate_item_section_to_actor(a, b, sec, 1)
 		return game.translate_string("st_surrender_victim_answer_4")
 	elseif (r == 5) then
-		get_alife():create("medkit_script",npc:position(),0,0,npc:id())
+		alife():create("medkit_script",npc:position(),0,0,npc:id())
 		xr_wounded.unlock_medkit(npc)
 		return game.translate_string("st_surrender_victim_answer_5")
 	end
@@ -2232,7 +2232,7 @@ end
 
 function surrender_victim_answers_2(a,b)
 	local npc = dialogs.who_is_npc(a,b)
-	get_alife():create("medkit_script",npc:position(),0,0,npc:id())
+	alife():create("medkit_script",npc:position(),0,0,npc:id())
 	xr_wounded.unlock_medkit(npc)
 	--npc:set_relation(game_object.enemy,db.actor)
 	local function itr(npc,itm)
@@ -2341,7 +2341,7 @@ function transfer_medkit(first_speaker, second_speaker)
 	xr_wounded.unlock_medkit(npc)
 
 	if not (npc:object("medkit_script")) then
-		get_alife():create("medkit_script", npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
+		alife():create("medkit_script", npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
 	end
 
 	local t = {"medkit","medkit_army","medkit_scientic"}
@@ -2381,7 +2381,7 @@ function relocate_item_section(victim, section, type, amount)
 				--if quest_section[section] == true and victim ~= nil and victim:object(section) ~= nil then
 				--	victim:transfer_item(victim:object(section), db.actor)
 				--else
-					get_alife():create(section,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
+					alife():create(section,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
 				--end
 			elseif type == "out" then
 				if victim == nil then
@@ -2391,7 +2391,7 @@ function relocate_item_section(victim, section, type, amount)
 			end
 		end
 		if (utils.is_ammo(section)) then
-			local ltx = get_system_ini()
+			local ltx = system_ini()
 			local box_size = ltx:r_s32(section, "box_size")
 			amount = amount * box_size
 		end
@@ -2626,7 +2626,7 @@ function relocate_item_section_to_actor(first_speaker, second_speaker, section, 
 		if npc:object(section) ~= nil then
 			npc:transfer_item(npc:object(section), db.actor)
 		else
-			get_alife():create(section,
+			alife():create(section,
 					db.actor:position(),
 					db.actor:level_vertex_id(),
 					db.actor:game_vertex_id(),
@@ -2636,7 +2636,7 @@ function relocate_item_section_to_actor(first_speaker, second_speaker, section, 
 
 	if v ~= 0 then
 		for i = 1, v do
-			get_alife():create(section,
+			alife():create(section,
 					db.actor:position(),
 					db.actor:level_vertex_id(),
 					db.actor:game_vertex_id(),
@@ -2644,7 +2644,7 @@ function relocate_item_section_to_actor(first_speaker, second_speaker, section, 
 		end
 	end
 	if (utils.is_ammo(section)) then
-		local ltx = get_system_ini()
+		local ltx = system_ini()
 		local box_size = ltx:r_s32(section, "box_size")
 		amount = amount * box_size
 	end
@@ -2719,7 +2719,7 @@ function relocate_item_section_from_actor(first_speaker, second_speaker, section
 	end
 
 	if (utils.is_ammo(section)) then
-		local ltx = get_system_ini()
+		local ltx = system_ini()
 		local box_size = ltx:r_s32(section, "box_size")
 		amount = amount * box_size
 	end

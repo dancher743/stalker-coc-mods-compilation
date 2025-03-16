@@ -73,12 +73,12 @@ end
 
 --' ¬озвращает рассто€ние между двум€ точками графа с учетом разности уровней
 function graph_distance(vid1, vid2)
-	local p1 = get_game_graph():vertex(vid1):game_point()
-	local p2 = get_game_graph():vertex(vid2):game_point()
+	local p1 = game_graph():vertex(vid1):game_point()
+	local p2 = game_graph():vertex(vid2):game_point()
 
 	--printf("GRAPH DISTANCE [%s][%s][%s] : [%s][%s][%s]", p1.x, p1.y, p1.z, p2.x, p2.y, p2.z)
 
-	return get_game_graph():vertex(vid1):game_point():distance_to(get_game_graph():vertex(vid2):game_point())
+	return game_graph():vertex(vid1):game_point():distance_to(game_graph():vertex(vid2):game_point())
 end
 
 --' —равнивает два вектора
@@ -585,13 +585,13 @@ end
 -- происходит ли в данный момент смена уровн€?
 -- нужно дл€ того, чтобы объекты знали, какую информацию записывать при сохранении, а какую нет
 function level_changing()
-	local sim = get_alife()
+	local sim = alife()
 
 	if not sim then
 		return false
 	end
 
-	local actor_gv = get_game_graph():vertex( sim:actor().m_game_vertex_id )
+	local actor_gv = game_graph():vertex( sim:actor().m_game_vertex_id )
 
 	return actor_gv:level_id() ~= sim:level_id()
 end
@@ -760,7 +760,7 @@ function prefix_r_string(ini,sec,key,prefix)
 end
 
 function is_ammo(section)
-	local v = get_system_ini():r_string_ex(section,"class",STR_EMPTY)
+	local v = system_ini():r_string_ex(section,"class",STR_EMPTY)
 	return v == "AMMO" or v == "AMMO_S"
 end
 
@@ -936,7 +936,7 @@ function get_actor_community()
 end
 
 function get_parent_section(section)
-	return get_system_ini():r_string_ex(section,"parent_section")
+	return system_ini():r_string_ex(section,"parent_section")
 end
 
 function contains(array, value)
@@ -981,8 +981,8 @@ function round_to_1000(value)
 end
 
 function get_nearest_game_vertex(target_position, target_level)
-	local sim = get_alife()
-	local gg = get_game_graph()
+	local sim = alife()
+	local gg = game_graph()
 	local vertex, lvid, pos
 	local near_lvid, near_dist, near_gvid, dist
 	local gvid = 0

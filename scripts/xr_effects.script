@@ -12,13 +12,13 @@
 -- Added by Dancher
 --
 local function give_hunt_target_talk_message(target_id)
-	local se_obj = get_alife():object(target_id)
+	local se_obj = alife():object(target_id)
 	if (se_obj) then
 		local character_name = string.format("%s %s", game.translate_string("st_mm_new_game_name"), se_obj:character_name())
 		
 		local faction_name = string.format("%s: %s", game.translate_string("ui_st_community"), game.translate_string(se_obj:community()))
 		
-		local level_id = get_alife():level_name(get_game_graph():vertex(se_obj.m_game_vertex_id):level_id())
+		local level_id = alife():level_name(game_graph():vertex(se_obj.m_game_vertex_id):level_id())
 		local location_name = string.format("%s: %s", game.translate_string("st_mm_pda_location"), game.translate_string(level_id))
 		
 		local news_caption = string.format("%s",  game.translate_string("st_target"))
@@ -118,7 +118,7 @@ function drx_sl_meet_random_honcho( actor, npc, p )
             if (disguise and disguise.has_actor_disguised()) then
                 actor_community = disguise.get_actor_default_faction()
             else
-                actor_community = get_alife():actor():community()
+                actor_community = alife():actor():community()
             end
 			for j = 2, #drx_sl_honchos_table[i] do
 				if ( relation_registry.community_relation( drx_sl_honchos_table[i][j], actor_community ) <= -1000 ) then
@@ -3127,8 +3127,8 @@ function find_smart_under_faction_control_ex(actor,npc,p)
 		return
 	end
 
-	local sim = get_alife()
-	local gg = get_game_graph()
+	local sim = alife()
+	local gg = game_graph()
 	local actor_level = sim:level_name(gg:vertex(sim:actor().m_game_vertex_id):level_id())
 
 	local target_id
@@ -3136,7 +3136,7 @@ function find_smart_under_faction_control_ex(actor,npc,p)
 		if (smart.sim_avail == nil or xr_logic.pick_section_from_condlist(actor, smart, smart.sim_avail) == STR_TRUE) then
 			local smrt = SIMBOARD.smarts[smart.id]
 			if (smrt) then
-				local smart_level = get_alife():level_name(get_game_graph():vertex(smart.m_game_vertex_id):level_id())
+				local smart_level = alife():level_name(game_graph():vertex(smart.m_game_vertex_id):level_id())
 				if (smart.online or DEACTIVATE_SIM_ON_NON_LINKED_LEVELS ~= true or string.find(simulation_objects.config:r_value(actor_level,"target_maps",0,STR_EMPTY),smart_level)) then
 					for k,squad in pairs(smrt.squads) do
 						if (squad and squad.current_target_id and squad.current_target_id == smart.id and not squad:get_script_target()) then
@@ -3233,7 +3233,7 @@ function on_setup_bounty_hunt(actor,npc,p)
 
 	local valid_targets = {}
 	local target_section = "sim_default"
-	local sim = get_alife()
+	local sim = alife()
 	local comm
 
 	local faction_lookup = {}
@@ -3336,8 +3336,8 @@ end
 function reward_random_item(actor,npc,p)
 	if (#p > 0) then
 		local section = p[math.random(#p)]
-		if (get_system_ini():section_exist(section)) then
-			get_alife():create(section,vector(),0,0,0)
+		if (system_ini():section_exist(section)) then
+			alife():create(section,vector(),0,0,0)
 		end
 	end
 end
@@ -3368,12 +3368,12 @@ function setup_companion_task(actor,npc,p)
 		return
 	end
 
-	if not (get_system_ini():section_exist(p[1])) then
+	if not (system_ini():section_exist(p[1])) then
 		printf("setup_companion_task: Trying to setup companion squad with a non-existent section!")
 		return
 	end
 
-	local sim = get_alife()
+	local sim = alife()
 	local squad = sim:create(p[1],smart.position,smart.m_level_vertex_id,smart.m_game_vertex_id)
 
 	squad:create_npc(smart)
@@ -3420,17 +3420,17 @@ function setup_generic_fetch_task(actor,npc,p)
 	if (p[1] and p[2] and p[3]) then
 		local sec = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 		DIALOG_LAST_ID = inventory_upgrades.victim_id
-		if (sec and get_system_ini():section_exist(sec)) then
-			dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(sec,"inv_name") or STR_EMPTY)
+		if (sec and system_ini():section_exist(sec)) then
+			dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(sec,"inv_name") or STR_EMPTY)
 		else
 			sec = #p > 3 and p[math.random(3,#p)] or p[3]
-			if (sec and get_system_ini():section_exist(sec)) then
+			if (sec and system_ini():section_exist(sec)) then
 				utils.save_var(db.actor,p[1],sec)
 				local count = tonumber(p[2]) or 1
 				if (count > 1) then
 					utils.save_var(db.actor,p[1].."_count",count)
 				end
-				dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(sec,"inv_name") or STR_EMPTY)
+				dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(sec,"inv_name") or STR_EMPTY)
 			else
 				printf("ERROR: xr_effects:setup_generic_fetch_task - invalid section %s",sec)
 			end
@@ -3442,8 +3442,8 @@ end
 function setup_rare_mutant_fetch_task(actor,npc,p)
 	local part = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
-	if (part and get_system_ini():section_exist(part)) then
-		dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(part,"inv_name") or STR_EMPTY)
+	if (part and system_ini():section_exist(part)) then
+		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(part,"inv_name") or STR_EMPTY)
 	else
 		local parts = {
 		"mutant_part_controller_glass",
@@ -3456,7 +3456,7 @@ function setup_rare_mutant_fetch_task(actor,npc,p)
 		}
 		part = parts[math.random(#parts)]
 		utils.save_var(db.actor,p[1],part)
-		dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(part,"inv_name") or STR_EMPTY)
+		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(part,"inv_name") or STR_EMPTY)
 	end
 end
 
@@ -3464,8 +3464,8 @@ end
 function setup_artefact_fetch_task(actor,npc,p)
 	local artefact = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
-	if (artefact and get_system_ini():section_exist(artefact)) then
-		dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(artefact,"inv_name") or STR_EMPTY)
+	if (artefact and system_ini():section_exist(artefact)) then
+		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(artefact,"inv_name") or STR_EMPTY)
 	else
 		local arts = {
 		"af_cristall",
@@ -3495,15 +3495,15 @@ function setup_artefact_fetch_task(actor,npc,p)
 
 		artefact = arts[math.random(#arts)]
 		utils.save_var(db.actor,p[1],artefact)
-		dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(artefact,"inv_name") or STR_EMPTY)
+		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(artefact,"inv_name") or STR_EMPTY)
 	end
 end
 
 function setup_weapon_fetch_task(actor,npc,p)
 	local wpn = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
-	if (wpn and get_system_ini():section_exist(wpn)) then
-		dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(wpn,"inv_name") or STR_EMPTY)
+	if (wpn and system_ini():section_exist(wpn)) then
+		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(wpn,"inv_name") or STR_EMPTY)
 	else
 		local itm = {
 				"wpn_bm16",
@@ -3530,7 +3530,7 @@ function setup_weapon_fetch_task(actor,npc,p)
 				"wpn_pkm"
 		}
 		wpn = itm[math.random(#itm)]
-		dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(wpn,"inv_name") or STR_EMPTY)
+		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(wpn,"inv_name") or STR_EMPTY)
 		utils.save_var(db.actor,p[1],wpn)
 	end
 end
@@ -3541,8 +3541,8 @@ end
 function setup_supplies_fetch_task(actor,npc,p)
 	local itm = DIALOG_LAST_ID and DIALOG_LAST_ID == inventory_upgrades.victim_id and utils.load_var(db.actor,p[1])
 	DIALOG_LAST_ID = inventory_upgrades.victim_id
-	if (itm and get_system_ini():section_exist(itm)) then
-		dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(itm,"inv_name") or STR_EMPTY)
+	if (itm and system_ini():section_exist(itm)) then
+		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(itm,"inv_name") or STR_EMPTY)
 	else
 		local itms = {
 					"bandage",
@@ -3565,7 +3565,7 @@ function setup_supplies_fetch_task(actor,npc,p)
 					"energy_drink"
 					}
 		itm = itms[math.random(#itms)]
-		dialogs._FETCH_TEXT = game.translate_string(get_system_ini():r_string_ex(itm,"inv_name") or STR_EMPTY)
+		dialogs._FETCH_TEXT = game.translate_string(system_ini():r_string_ex(itm,"inv_name") or STR_EMPTY)
 		utils.save_var(db.actor,p[1],itm)
 		utils.save_var(db.actor,p[1].."_count",math.random(p[2] and tonumber(p[2]) or 1,p[3] and tonumber(p[3]) or 1))
 	end
@@ -3651,7 +3651,7 @@ function disable_ui(actor, npc, p)
 
 	level.disable_input()
 	level.hide_indicators_safe()
-	local hud = get_cached_hud()
+	local hud = get_hud()
 	if (hud) then
 		hud:HideActorMenu()
 		hud:HidePdaMenu()
@@ -3676,7 +3676,7 @@ function disable_ui_only(actor, npc)
 
 	level.disable_input()
 	level.hide_indicators_safe()
-	local hud = get_cached_hud()
+	local hud = get_hud()
 	if (hud) then
 		hud:HideActorMenu()
 		hud:HidePdaMenu()
@@ -3751,7 +3751,7 @@ function disable_ui_inventory(actor, npc)
 		end
 	end
 
-	local hud = get_cached_hud()
+	local hud = get_hud()
 	if (hud) then
 		hud:HidePdaMenu()
 		hud:HideActorMenu()
@@ -3891,7 +3891,7 @@ end
 
 function run_postprocess(actor, npc, p)
 	if (p[1]) then
-		if(get_system_ini():section_exist(p[1])) then
+		if(system_ini():section_exist(p[1])) then
 			local num = 2000 + math.random(100)
 			if(p[2] and type(p[2]) == STR_NUMBER and p[2]>0) then
 				num = p[2]
@@ -4233,7 +4233,7 @@ end
 function give_items(actor, npc, p)
 	local pos, lv_id, gv_id, npc_id = npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id()
 	for i, v in pairs(p) do
-		get_alife():create(v, pos, lv_id, gv_id, npc_id)
+		alife():create(v, pos, lv_id, gv_id, npc_id)
 	end
 end
 
@@ -4248,7 +4248,7 @@ function give_item(actor, npc, p)
 		return
 	end
 	local pos, lv_id, gv_id, npc_id = se_npc.position, se_npc.m_level_vertex_id, se_npc.m_game_vertex_id, se_npc.id
-	get_alife():create(p[1], pos, lv_id, gv_id, npc_id)
+	alife():create(p[1], pos, lv_id, gv_id, npc_id)
 end
 
 function play_particle_on_path(actor, npc, p)
@@ -4596,7 +4596,7 @@ function remove_npc(actor, npc, p)
 		local se_obj = alife_object(npc_id)
 		if (se_obj) then
 			safe_release_manager.release(se_obj)
-			--get_alife():release(se_obj, true)
+			--alife():release(se_obj, true)
 		end
 	end
 end
@@ -4880,7 +4880,7 @@ end
 ]]--
 
 function game_disconnect(actor, npc)
-	local c = get_cached_console()
+	local c = get_console()
 	c:execute("disconnect")
 --	c:execute_deferred("main_menu off")
 --	c:execute_deferred("hide")
@@ -4895,27 +4895,27 @@ function game_over(actor, npc)
 	if db.gameover_credits_started ~= true then
 		return
 	end
-	local c = get_cached_console()
+	local c = get_console()
 	printf("main_menu on console command is executed")
 	c:execute("main_menu on")
 end
 
 function after_credits(actor, npc)
-	get_cached_console():execute	("main_menu on")
+	get_console():execute	("main_menu on")
 end
 
 function before_credits(actor, npc)
-	get_cached_console():execute	("main_menu off")
+	get_console():execute	("main_menu off")
 end
 
 function on_tutor_gameover_stop()
-	local c = get_cached_console()
+	local c = get_console()
 	printf("main_menu on console command is executed")
 	c:execute("main_menu on")
 end
 
 function on_tutor_gameover_quickload()
-	local c = get_cached_console()
+	local c = get_console()
 	c:execute("load_last_save")
 end
 
@@ -4969,7 +4969,7 @@ function spawn_object(actor, obj, p)
 	local yaw = p[4] or 0
 
 	--' printf("Spawning %s at %s, %s", tostring(p[1]), tostring(p[2]), tostring(p[3]))
-	local se_obj = get_alife():create(spawn_sect,ptr:point(index),ptr:level_vertex_id(0),ptr:game_vertex_id(0))
+	local se_obj = alife():create(spawn_sect,ptr:point(index),ptr:level_vertex_id(0),ptr:game_vertex_id(0))
 	if (se_obj) then
 		if IsStalker( nil, se_obj:clsid()) then
 			se_obj:o_torso().yaw = yaw * math.pi / 180
@@ -4994,7 +4994,7 @@ function jup_b219_save_pos()
 	end
 	sobj = alife_object(obj:id())
 	if sobj then
-		get_alife():release(sobj, true)
+		alife():release(sobj, true)
 	end
 end
 
@@ -5002,7 +5002,7 @@ function jup_b219_restore_gate()
 	local yaw = 0
 	local spawn_sect = "jup_b219_gate"
 	if jup_b219_position then
-		local se_obj = get_alife():create(spawn_sect,vector():set(jup_b219_position),jup_b219_lvid,jup_b219_gvid)
+		local se_obj = alife():create(spawn_sect,vector():set(jup_b219_position),jup_b219_lvid,jup_b219_gvid)
 		if (se_obj) then
 			se_obj:set_yaw(yaw * math.pi / 180)
 		end
@@ -5028,7 +5028,7 @@ function spawn_corpse(actor, obj, p)
 	local ptr = patrol(path_name)
 	local index = p[3] or 0
 
-	local se_obj = get_alife():create(spawn_sect,ptr:point(index),ptr:level_vertex_id(0),ptr:game_vertex_id(0))
+	local se_obj = alife():create(spawn_sect,ptr:point(index),ptr:level_vertex_id(0),ptr:game_vertex_id(0))
 	if (se_obj) then
 		se_obj:kill()
 	end
@@ -5056,7 +5056,7 @@ function spawn_object_in(actor, obj, p)
 		if box == nil then
 			printf("xr_effects.spawn_object_in There is no such object %s", p[2])
 		end
-		get_alife():create(spawn_sect,vector(),0,0,target_obj_id)
+		alife():create(spawn_sect,vector(),0,0,target_obj_id)
 	else
 		printf("xr_effects.spawn_object_in object is nil %s", tostring(p[2]))
 	end
@@ -5079,7 +5079,7 @@ function spawn_npc_in_zone(actor, obj, p)
 	end
 	local zone = db.zone_by_name[zone_name]
 --	printf("spawn_npc_in_zone: spawning %s at zone %s, squad %s", tostring(p[1]), tostring(p[2]), tostring(p[3]))
-	local spawned_obj = get_alife():create( spawn_sect,
+	local spawned_obj = alife():create( spawn_sect,
 										zone:position(),
 										zone:level_vertex_id(),
 										zone:game_vertex_id())
@@ -5108,13 +5108,13 @@ function destroy_object(actor, obj, p)
 	if (cls == clsid.online_offline_group_s or IsStalker(nil,cls) or IsMonster(nil,cls)) then
 		safe_release_manager.release(sobj)
 	else
-		get_alife():release(sobj, true)
+		alife():release(sobj, true)
 	end
 end
 
 function give_actor(actor, npc, p)
 	for k,v in pairs(p) do
-		get_alife():create(v,
+		alife():create(v,
 				db.actor:position(),
 				db.actor:level_vertex_id(),
 				db.actor:game_vertex_id(),
@@ -5260,7 +5260,7 @@ function create_squad(actor, obj, p)
 		printf("Wrong smart name [NIL] in create_squad function")
 	end
 
-	local ltx = get_system_ini()
+	local ltx = system_ini()
 
 	if not ltx:section_exist(squad_id) then
 		printf("Wrong squad identificator [%s]. Squad descr doesnt exist.", tostring(squad_id))
@@ -5281,7 +5281,7 @@ function create_squad(actor, obj, p)
 
 	--board:enter_smart(squad, smart.id)
 
-	local sim = get_alife()
+	local sim = alife()
 	for k in squad:squad_members() do
 		local se_obj = k.object or k.id and sim:object(k.id)
 		if (se_obj) then
@@ -5316,7 +5316,7 @@ function create_squad_member(actor, obj, p)
 	if p[3] ~= nil then
 		local spawn_point
 		if p[3] == "simulation_point" then
-			spawn_point = get_system_ini():r_string_ex(squad:section_name(),"spawn_point")
+			spawn_point = system_ini():r_string_ex(squad:section_name(),"spawn_point")
 			if spawn_point == STR_EMPTY or spawn_point == nil then
 				spawn_point = xr_logic.parse_condlist(obj, "spawn_point", "spawn_point", squad_smart.spawn_point)
 			else
@@ -5664,8 +5664,8 @@ end
 --[[
 function add_custom_static(actor, npc, p)
 	if p[1] ~= nil and p[2] ~= nil then
-		get_cached_hud():AddCustomStatic(p[1], true)
-		get_cached_hud():GetCustomStatic(p[1]):wnd():SetTextST(p[2])
+		get_hud():AddCustomStatic(p[1], true)
+		get_hud():GetCustomStatic(p[1]):wnd():SetTextST(p[2])
 	else
 		printf("Invalid parameters in function add_custom_static!!!")
 	end
@@ -5673,7 +5673,7 @@ end
 
 function remove_custom_static(actor, npc, p)
 	if p[1] ~= nil then
-		get_cached_hud():RemoveCustomStatic(p[1])
+		get_hud():RemoveCustomStatic(p[1])
 	else
 		printf("Invalid parameters in function remove_custom_static!!!")
 	end
@@ -5697,7 +5697,7 @@ function change_tsg(actor, npc, p)
 end
 
 function exit_game(actor, npc)
-	get_cached_console():execute("quit")
+	get_console():execute("quit")
 end
 ]]--
 
@@ -5945,7 +5945,7 @@ end
 
 function add_cs_text(actor, npc, p)
 	if p[1] then
-		local hud = get_cached_hud()
+		local hud = get_hud()
 		if (hud) then
 			local cs_text = hud:GetCustomStatic("text_on_screen_center")
 			if cs_text then
@@ -5959,7 +5959,7 @@ function add_cs_text(actor, npc, p)
 end
 
 function del_cs_text(actor, npc, p)
-	local hud = get_cached_hud()
+	local hud = get_hud()
 	if (hud) then
 		cs_text = hud:GetCustomStatic("text_on_screen_center")
 		if cs_text then
@@ -5971,7 +5971,7 @@ end
 function spawn_item_to_npc(actor, npc, p)
 	local new_item = p[1]
 	if p[1] then
-		get_alife():create(new_item,
+		alife():create(new_item,
 		npc:position(),
 		npc:level_vertex_id(),
 		npc:game_vertex_id(),
@@ -6003,7 +6003,7 @@ function relocate_item(actor, npc, p)
 		if from_obj ~= nil and from_obj:object(item) ~= nil then
 			from_obj:transfer_item(from_obj:object(item), to_obj)
 		else
-			get_alife():create(item,
+			alife():create(item,
 				to_obj:position(),
 				to_obj:level_vertex_id(),
 				to_obj:game_vertex_id(),
@@ -6097,7 +6097,7 @@ function remove_item(actor, npc, p)
 	end
 	local amt = p[2] and tonumber(p[2]) or 1
 	local removed = 0
-	local sim = get_alife()
+	local sim = alife()
 	local se_item
 	local function release_actor_item(temp, item)
 		if (item:section() == sec and amt > 0) then
@@ -6129,7 +6129,7 @@ function scenario_autosave(actor, npc, p)
 		local prefix = axr_misery and axr_misery.ActorClass or user_name()
 		local save_param = prefix.." - "..game.translate_string(save_name)
 
-		get_cached_console():execute("save "..save_param)
+		get_console():execute("save "..save_param)
 	end
 end
 
@@ -6210,7 +6210,7 @@ function relocate_item_b29(actor, npc, p)
 		if from_obj ~= nil and from_obj:object(item) ~= nil then
 			from_obj:transfer_item(from_obj:object(item), to_obj)
 		else
-			get_alife():create(item,
+			alife():create(item,
 				to_obj:position(),
 				to_obj:level_vertex_id(),
 				to_obj:game_vertex_id(),
@@ -6260,7 +6260,7 @@ function clear_box(actor, npc, p)
 	inv_box:iterate_inventory_box(add_items, inv_box)
 
 	for k,v in pairs(items_table) do
-		get_alife():release(alife_object(v:id()), true)
+		alife():release(alife_object(v:id()), true)
 	end
 end
 
@@ -6378,7 +6378,7 @@ function jup_b10_spawn_drunk_dead_items(actor, npc, p)
 					printf("There is no such object %s", p[1])
 				end
 				for i = 1,v do
-					get_alife():create(k,vector(),0,0,target_obj_id)
+					alife():create(k,vector(),0,0,target_obj_id)
 				end
 			else
 				printf("object is nil %s", tostring(p[1]))
@@ -6387,7 +6387,7 @@ function jup_b10_spawn_drunk_dead_items(actor, npc, p)
 	else
 		for k,v in pairs(items_all) do
 			for i = 1,v do
-				get_alife():create(k,
+				alife():create(k,
 					npc:position(),
 					npc:level_vertex_id(),
 					npc:game_vertex_id(),
@@ -6453,9 +6453,9 @@ function pick_artefact_from_anomaly(actor, npc, p)
 
 	anomal_zone:on_artefact_take(af_obj)
 
-	get_alife():release(af_obj, true)
+	alife():release(af_obj, true)
 	give_item(db.actor, se_obj, {af_name, p[1]})
---	get_alife():create(af_name,
+--	alife():create(af_name,
 --		npc.position,
 --		npc.level_vertex_id,
 --		npc.game_vertex_id,
@@ -7003,7 +7003,7 @@ function create_cutscene_actor_with_weapon(actor, npc, p)
 	local index = p[3] or 0
 	local yaw = p[4] or 0
 
-	local npc = get_alife():create(spawn_sect, ptr:point(index), ptr:level_vertex_id(0), ptr:game_vertex_id(0))
+	local npc = alife():create(spawn_sect, ptr:point(index), ptr:level_vertex_id(0), ptr:game_vertex_id(0))
 	if IsStalker( nil, npc:clsid()) then
 		npc:o_torso().yaw = yaw * math.pi / 180
 	else
@@ -7042,7 +7042,7 @@ function create_cutscene_actor_with_weapon(actor, npc, p)
 	end
 
 	if (active_item) then
-		local new_weapon = get_alife():create(section_name,
+		local new_weapon = alife():create(section_name,
 													ptr:point(index),
 													ptr:level_vertex_id(0),
 													ptr:game_vertex_id(0),
@@ -7314,7 +7314,7 @@ function make_a_wish(actor,npc,p)
 	end
 
 	action_list[3] = function()
-		local sim = get_alife()
+		local sim = alife()
 		local squad
 		for i=1,65534 do
 			squad = sim:object(i)
@@ -7329,8 +7329,8 @@ function make_a_wish(actor,npc,p)
 	end
 
 	action_list[4] = function()
-		local sim = get_alife()
-		local sysini = get_system_ini()
+		local sim = alife()
+		local sysini = system_ini()
 		local valid_ids = {[1] = true, [2] = true , [3] = true, [4] = true, [8] = true, [12] = true, [13] = true, [14] = true, [15] = true}
 		for k,v in pairs(ui_debug_main.id_to_spawn_table) do
 			if (valid_ids[k]) then
@@ -7350,7 +7350,7 @@ function make_a_wish(actor,npc,p)
 				if (itm:section() == "itm_actor_backpack" or itm:section() == "itm_backpack") then
 					local se_itm = alife_object(itm:id())
 					if (se_itm) then
-						get_alife():release(se_itm,true)
+						alife():release(se_itm,true)
 					end
 					return
 				end
@@ -7366,7 +7366,7 @@ function make_a_wish(actor,npc,p)
 	end
 
 	action_list[5] = function()
-		local se_actor = get_alife():actor()
+		local se_actor = alife():actor()
 		local data = stpk_utils.get_actor_data(se_actor)
 		if (data) then
 			data.specific_character = "actor_zombied"
@@ -7382,7 +7382,7 @@ function make_a_wish(actor,npc,p)
 --			local pos = spawn_path:point(0)
 --			local lvid = spawn_path:level_vertex_id(0)
 --			local gvid = spawn_path:game_vertex_id(0)
---			local gg = get_game_graph()
+--			local gg = game_graph()
 --			if (gvid and gg:valid_vertex_id(gvid)) then
 --				ChangeLevel(pos,lvid,gvid,VEC_ZERO)
 --			end
@@ -7443,7 +7443,7 @@ end
 function spawn_npc_at_position(actor,npc,p)
 	if not (p) then return end
 	local pos = vector():set(tonumber(p[2]),tonumber(p[3]),tonumber(p[4]))
-	get_alife():create(p[1],pos,p[5],p[6])
+	alife():create(p[1],pos,p[5],p[6])
 end
 
 function kill_obj_on_job(actor,npc,p)
@@ -7693,7 +7693,7 @@ function disable_monolith_zones(actor,npc,p)
 	local remove_sections = {
 		["zone_monolith"] = true
 	}
-	local sim = get_alife()
+	local sim = alife()
 	for i=1,65534 do
 		local se_obj = sim:object(i)
 		if (se_obj and remove_sections[se_obj:section_name()]) then
@@ -7709,7 +7709,7 @@ function disable_generator_zones(actor,npc,p)
 		["generator_electra"] = true,
 		["generator_dust_static"] = true
 	}
-	local sim = get_alife()
+	local sim = alife()
 	for i=1,65534 do
 		local se_obj = sim:object(i)
 		if (se_obj and remove_sections[se_obj:section_name()]) then
@@ -7821,7 +7821,7 @@ end
 --NEW ARENA
 
 function bar_arena_teleport (actor, npc)
-	local hud = get_cached_hud()
+	local hud = get_hud()
 	if (hud) then
 		hud:HideActorMenu()
 	end
@@ -7894,7 +7894,7 @@ function bar_arena_teleport (actor, npc)
 	local k,v = 0,0
 
 	for k,v in pairs(spawn_items) do
-		get_alife():create(v,
+		alife():create(v,
 						db.actor:position(),
 						db.actor:level_vertex_id(),
 						db.actor:game_vertex_id(),
@@ -7908,7 +7908,7 @@ function bar_arena_weapon_slot (actor,npc,p)
 end
 
 function bar_arena_teleport_2 (actor, npc)
-	local hud = get_cached_hud()
+	local hud = get_hud()
 	if (hud) then
 		hud:HideActorMenu()
 	end
@@ -7964,8 +7964,8 @@ function force_always_online(actor,npc,p)
 		return
 	end
 
-	get_alife():set_switch_offline(squad.id,false)
-	get_alife():set_switch_online(squad.id,true)
+	alife():set_switch_offline(squad.id,false)
+	alife():set_switch_online(squad.id,true)
 end
 
 function setup_base_defense_fail_conditions(actor,npc,p)

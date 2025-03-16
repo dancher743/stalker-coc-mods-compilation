@@ -138,7 +138,7 @@ end
 
 function get_loot_table(ini)
 	local t = {}
-	local sysini = get_system_ini()
+	local sysini = system_ini()
 	
 	local ignore_sections_string = "ignore_sections"
 	local can_trade_string = "can_trade"

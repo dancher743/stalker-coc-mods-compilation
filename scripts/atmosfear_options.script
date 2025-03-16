@@ -682,7 +682,7 @@ function af_options_dialog:Update()
 end
 
 function loadDefaultConsoleSettings()
-	local console=get_cached_console()
+	local console=get_console()
 	console:execute("r2_dof -0.400000,1.400000,500.000000")
 	console:execute("r2_dof_far 800")
 	console:execute("r2_dof_kernel 2")

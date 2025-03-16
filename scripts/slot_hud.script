@@ -39,13 +39,13 @@ end
 function open_hud()
 	if HUD == nil then
 		HUD = slot_hud()
-		get_cached_hud():AddDialogToRender(HUD)
+		get_hud():AddDialogToRender(HUD)
 	end
 end
 
 function close_hud()
 	if HUD ~= nil then
-		get_cached_hud():RemoveDialogToRender(HUD)
+		get_hud():RemoveDialogToRender(HUD)
 		HUD:Clear()
 		HUD = nil
 	end
@@ -106,7 +106,7 @@ end
 class "slot_hud" (CUIScriptWnd)
 function slot_hud:__init() super()
 	self.slot = {}
-	self.ini = get_system_ini()
+	self.ini = system_ini()
 	self.shown = false
 	self:InitControls()
 end

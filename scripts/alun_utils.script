@@ -3,7 +3,7 @@
 --]]
 
 function get_inv_name(section)
-	return game.translate_string(get_system_ini():r_string_ex(section,"inv_name"))
+	return game.translate_string(system_ini():r_string_ex(section,"inv_name"))
 end 
 
 -- Prints a formated lua table to print_table.txt for debugging purposes
@@ -113,7 +113,7 @@ end
 
 function read_from_ini(ini,section,line,var_type,default,caller)
 	if not (ini) then
-		ini = get_system_ini()
+		ini = system_ini()
 	end
 	if not (section) then 
 		printf("ERROR: alun_utils.read_from_ini trying to read nil section! line=%s var_type=%s default=%s caller=%s",line,var_type,default,caller)
@@ -382,7 +382,7 @@ function get_rank_list()
 	if ranks then
 		return ranks
 	end
-	local tmp = parse_list(get_system_ini(),"game_relations","rating")
+	local tmp = parse_list(system_ini(),"game_relations","rating")
 	ranks = {}
 	for i,rn in ipairs(tmp) do
 		if not tonumber(rn) then
@@ -394,7 +394,7 @@ end
 
 local reputations
 function get_reputation_name(value)
-	reputations = reputations or parse_list(get_system_ini(),"game_relations","reputation_names")
+	reputations = reputations or parse_list(system_ini(),"game_relations","reputation_names")
 	local prev = nil
 	for i,rn in ipairs(reputations) do
 		local repu = tonumber(rn)
@@ -412,7 +412,7 @@ function get_communities_list()
 	if communities then
 		return communities
 	end
-	local tmp = parse_list(get_system_ini(),"game_relations","communities")
+	local tmp = parse_list(system_ini(),"game_relations","communities")
 	communities = {}
 	for i,cn in ipairs(tmp) do
 		if not tonumber(cn) then
@@ -488,8 +488,8 @@ function nearest_object(s,offline)
 	end
 
 	if (nearest) then
-		if (simulation_objects.is_on_the_same_level(nearest, get_alife():actor())) then
-			if (offline or min_dist <= get_alife():switch_distance()^2) then
+		if (simulation_objects.is_on_the_same_level(nearest, alife():actor())) then
+			if (offline or min_dist <= alife():switch_distance()^2) then
 				return nearest,min_dist
 			end
 		end
@@ -573,7 +573,7 @@ function get_squad_count(npc)
 end
 
 function safe_release(p,force)
-	local sim = get_alife()
+	local sim = alife()
 	local se_obj = p[1] and sim:object(p[1])
 	if not (se_obj) then
 		return true
@@ -598,14 +598,14 @@ end
 
 function release(se_obj)
 	if (se_obj) then
-		local sim = get_alife()
+		local sim = alife()
 		sim:release(se_obj,true)
 	end
 end
 
 function create(p)
 	--printf("section=%s position=%s lvid=%s gvid=%s",p[1],vector_to_string(p[2]),p[3],p[4])
-	get_alife():create(p[1],p[2],p[3],p[4])
+	alife():create(p[1],p[2],p[3],p[4])
 end
 
 function get_current_action_id(npc)
@@ -660,7 +660,7 @@ function safe_bone_pos(npc,bone)
 end
 
 function is_level_changing()
-	local sim = get_alife()
+	local sim = alife()
 	local act = game_graph():vertex(sim:actor().m_game_vertex_id)
 	return act:level_id() ~= sim:level_id()
 end
@@ -668,7 +668,7 @@ end
 --------------------------------------switch---------------------------------------
 function switch_online(id)
 	if id == -1 then return end
-	local sim = get_alife()
+	local sim = alife()
 	if sim then
 		sim:set_switch_online(id,true)
 		sim:set_switch_offline(id,false)
@@ -676,7 +676,7 @@ function switch_online(id)
 end
 
 function switch_offline(id)
-	local sim = get_alife()
+	local sim = alife()
 	if sim then
 		sim:set_switch_online(id,false)
 		sim:set_switch_offline(id,true)

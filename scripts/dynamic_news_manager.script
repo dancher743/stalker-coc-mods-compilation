@@ -747,7 +747,7 @@ function DynamicNewsManager:FindSpeakerAndTarget(not_in_combat,distance,speaker_
 	
 	-- Find an enemy to sender
 	for i=1,65534 do 
-		local se_obj = get_alife():object(i)
+		local se_obj = alife():object(i)
 		if (se_obj and se_obj.position:distance_to(sender:position()) < dis and se_obj.group_id ~= 65535) then 
 			if (IsStalker(nil,se_obj:clsid()) and se_obj:community() ~= "trader" and game_relations.is_factions_enemies(sender:character_community(), se_obj:community())) or (IsMonster(nil,se_obj:clsid())) then
 				if se_obj:alive() then
@@ -791,7 +791,7 @@ function DynamicNewsManager:PickCompanion() -- pick a random companion
 	local picked = npcs[math.random(#npcs)]
 	
 	--printf(">>> Dyn News: help PickCompanion | #npcs = " .. #npcs)
-	return get_alife():object(picked)
+	return alife():object(picked)
 end
 
 function DynamicNewsManager:PickNewCompanion() -- pick a random "new" companion
@@ -833,7 +833,7 @@ function DynamicNewsManager:PickNewCompanion() -- pick a random "new" companion
 	local picked = new_npcs[math.random(#new_npcs)]
 	
 	--printf(">>> Dyn News: help PickNewCompanion | #new_npcs = " .. #new_npcs)
-	return get_alife():object(picked)
+	return alife():object(picked)
 end
 
 function DynamicNewsManager:GetLootValue(item_tbl) -- get value of whole loot
@@ -935,7 +935,7 @@ function DynamicNewsManager:WelcomeToNetwork() -- Welcome message on new game
 	
 	-- Count the number of stalkers across the zone, except monolith and zombies
 	local c = 1
-	local sim = get_alife()
+	local sim = alife()
 	for i=1,65534 do 
 		local se_obj = sim:object(i)
 		if (se_obj and IsStalker(nil,se_obj:clsid()) and se_obj:alive() and se_obj:community() ~= "zombied" and se_obj:community() ~= "monolith" and se_obj.group_id ~= 65535) then 
@@ -1022,7 +1022,7 @@ function DynamicNewsManager:ReportDeathByStalker(victim,who) -- Death Report of 
 	local c = dynamic_news_helper.GetPointDescription(victim)
 	local who_name = who:character_name()
 	if (who:id() == db.actor:id()) then
-		local sim = get_alife()
+		local sim = alife()
 		local se_actor = sim:actor()
 		who_name = se_actor:character_name()
 	end
@@ -1041,7 +1041,7 @@ function DynamicNewsManager:DeathByMutant(victim,who,comm) -- Found dead stalker
 	local b = game.translate_string(comm)
 	local c = dynamic_news_helper.GetPointDescription(victim)
 	local d 
-	if (get_system_ini():r_string_ex("string_table","language") == "rus") then
+	if (system_ini():r_string_ex("string_table","language") == "rus") then
 		d = dynamic_news_helper.GetMonsterDescription(who,7)
 	else
 		d = string.gsub(dynamic_news_helper.GetMonsterDescription(who,1),"(%l)?",string.upper("%1"),1)
@@ -1056,7 +1056,7 @@ function DynamicNewsManager:ReportDeathByMutant(victim,who) -- Death Report by m
 	local clr_1 = "%" .. "%c[255,160,160,190]"
 	local clr_2 = "%" .. "%c[255,220,220,220]"
 	local a
-	if (get_system_ini():r_string_ex("string_table","language") == "rus") then
+	if (system_ini():r_string_ex("string_table","language") == "rus") then
 		a = dynamic_news_helper.GetMonsterDescription(who,7)
 	else
 		a = string.gsub(dynamic_news_helper.GetMonsterDescription(who,1),"(%l)?",string.upper("%1"),1)
@@ -1339,7 +1339,7 @@ function DynamicNewsManager:FoundFood(sender,itm) -- stalker found food (Dead Ai
 		return false
 	end
 	
-	local inv_name = game.translate_string(get_system_ini():r_string_ex(itm:section(),"inv_name") or STR_EMPTY)
+	local inv_name = game.translate_string(system_ini():r_string_ex(itm:section(),"inv_name") or STR_EMPTY)
 	local tbl = self:ReadTextList("st_dyn_news_gossip_food_")
 	if (not tbl) then
 		return false
@@ -1359,7 +1359,7 @@ function DynamicNewsManager:FoundMedicine(sender,itm) -- stalker found medicine 
 		return false
 	end
 	
-	local inv_name = game.translate_string(get_system_ini():r_string_ex(itm:section(),"inv_name") or STR_EMPTY)
+	local inv_name = game.translate_string(system_ini():r_string_ex(itm:section(),"inv_name") or STR_EMPTY)
 	local tbl = self:ReadTextList("st_dyn_news_gossip_med_")
 	if (not tbl) then
 		return false
@@ -1379,7 +1379,7 @@ function DynamicNewsManager:FoundArtefact(sender,itm) -- stalker found an artifa
 		return false
 	end
 	
-	local inv_name = game.translate_string(get_system_ini():r_string_ex(itm:section(),"inv_name") or STR_EMPTY)
+	local inv_name = game.translate_string(system_ini():r_string_ex(itm:section(),"inv_name") or STR_EMPTY)
 	local tbl = self:ReadTextList("st_dyn_news_gossip_arte_")
 	if (not tbl) then
 		return false
@@ -1447,7 +1447,7 @@ end
 function DynamicNewsManager:BoughtItems(sender,who,list) -- trading
 	--printf(">>> Dyn News: BoughtItems - call")
 	local sec = list[math.random(#list)]
-	local inv_name = game.translate_string(get_system_ini():r_string_ex(sec,"inv_name") or STR_EMPTY)
+	local inv_name = game.translate_string(system_ini():r_string_ex(sec,"inv_name") or STR_EMPTY)
 	local tbl = self:ReadTextList("st_dyn_news_gossip_buy_")
 	if (not tbl) then
 		return false
@@ -1489,7 +1489,7 @@ function DynamicNewsManager:GossipLoot(sender,best_item,all_value) -- talk about
 		msg = tbl[math.random(#tbl)]
 		
 	elseif best_item then
-		local item_name = game.translate_string(get_system_ini():r_string_ex(best_item:section(),"inv_name") or STR_EMPTY)
+		local item_name = game.translate_string(system_ini():r_string_ex(best_item:section(),"inv_name") or STR_EMPTY)
 		local tbl = self:ReadTextList("st_dyn_news_loot_item_")
 		if (not tbl) then
 			return false
@@ -1617,7 +1617,7 @@ function DynamicNewsManager:ReportZoneActivity() -- report activity of squads in
 	if (not tbl_location) then
 		return false
 	end
-	if (get_system_ini():r_string_ex("string_table","language") == "rus") then
+	if (system_ini():r_string_ex("string_table","language") == "rus") then
 		map = game.translate_string("st_dyn_news_" .. map_str)
 	else
 		map = game.translate_string(map_str)
@@ -1639,7 +1639,7 @@ function DynamicNewsManager:ReportZoneActivity() -- report activity of squads in
 	if (j == 1) then -- mutants
 		target_comm = m["mutant"][math.random(#m["mutant"])]
 		target_type = "mutant"
-		if (get_system_ini():r_string_ex("string_table","language") == "rus") then
+		if (system_ini():r_string_ex("string_table","language") == "rus") then
 			target = game.translate_string("st_dyn_news_" .. target_comm .. "_6")
 		else
 			target = game.translate_string("st_dyn_news_" .. target_comm .. "_" .. math.random(6,7))
@@ -1836,7 +1836,7 @@ function DynamicNewsManager:GossipNearbyActivity() -- talk about movement of nea
 		else
 			activity = activity .. "stalker"
 		end
-		if (get_system_ini():r_string_ex("string_table","language") == "rus") then
+		if (system_ini():r_string_ex("string_table","language") == "rus") then
 			who = dynamic_news_helper.GetCommunityDescription(target,math.random(3,4))
 		else
 			who = dynamic_news_helper.GetCommunityDescription(target,math.random(1,4))
@@ -1954,7 +1954,7 @@ function DynamicNewsManager:CompanionAboutLife(sender) -- companion chitchat
 		return false
 	end
 	
-	local alife = get_alife()
+	local alife = alife()
 	local se_actor = alife:actor()
 	local tbl
 	if (math.random(2) == 1) and (sender:community() ~= "monolith") then
@@ -2007,7 +2007,7 @@ function DynamicNewsManager:CompanionAboutActor(sender) -- companion talk about 
 		return false
 	end
 	
-	local alife = get_alife()
+	local alife = alife()
 	local se_actor = alife:actor()
 	local a,b
 	local rep_tbl = {"terrible","really_bad","very_bad","bad","neutral","good","very_good","really_good","excellent"}

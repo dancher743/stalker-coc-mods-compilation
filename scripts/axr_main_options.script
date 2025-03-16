@@ -44,7 +44,7 @@ function opt_menu_on_init(menu)
 	end
 	-- Hardcore AI Aim
 	menu.gameplay_options["hardcore_ai_aim"]		= {default=false, 	debug_only=false, 	typ="check", on_accept=function(handler,optMgr,ctrl)
-		local con = get_cached_console()
+		local con = get_console()
 		if (ctrl:GetCheck()) then
 			con:execute("ai_aim_max_angle 20.0")
 			con:execute("ai_aim_min_angle 17.0")
@@ -164,7 +164,7 @@ function opt_menu_on_init(menu)
 				if (ctrl:GetCheck()) then
 					local outfit = db.actor:item_in_slot(7)
 					if (outfit) then 
-						local icon = get_system_ini():r_string_ex(outfit:section(),"character_portrait")
+						local icon = system_ini():r_string_ex(outfit:section(),"character_portrait")
 						if (icon) then 
 							db.actor_binder.character_icon = icon
 							db.actor:set_character_icon(db.actor_binder.character_icon)

@@ -72,7 +72,7 @@ function mar_base_owl_stalker_trader_task_1_give_reward(a,b)
 	local npc = dialogs.who_is_npc(a,b)
 	dialogs.relocate_item_section(npc, "mar_base_owl_stalker_trader_task_1_pda", "out", 1)
 	if (itm) then
-		local sim = get_alife()
+		local sim = alife()
 		local se_itm = sim:object(itm:id())
 		sim:release(se_itm, true)
 	end
@@ -279,13 +279,13 @@ function show_change_name_dialog_window(first_speaker, second_speaker)
 		end
 		text = text:gsub("_"," ")
 		
-		local se_actor = get_alife():actor()
+		local se_actor = alife():actor()
 		se_actor:set_character_name(text)
 		
 		local cost = get_name_changing_cost()
 		dialogs.relocate_money_from_actor(first_speaker, second_speaker, cost)
 	end
 	
-	local hud = get_cached_hud()
+	local hud = get_hud()
 	ui_generic_dialogs.input_dialog_ui(hud, true, on_ok_button_clicked)
 end

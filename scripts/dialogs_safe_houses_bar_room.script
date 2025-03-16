@@ -19,7 +19,7 @@ local function spawn_bed()
 	local z = 14.01
 	local lvid = 33618
 	local gvid = 1744
-	local se_obj = get_alife():create("bar_room_sofa",vector():set(x,y,z),lvid,gvid)
+	local se_obj = alife():create("bar_room_sofa",vector():set(x,y,z),lvid,gvid)
 	add_bed_spot(se_obj.id)
 end
 
@@ -29,7 +29,7 @@ local function spawn_safe()
 	local z = 15.81
 	local lvid = 33494
 	local gvid = 1744
-	get_alife():create("bar_room_safe",vector():set(x,y,z),lvid,gvid)
+	alife():create("bar_room_safe",vector():set(x,y,z),lvid,gvid)
 end
 
 local function spawn_furniture()
