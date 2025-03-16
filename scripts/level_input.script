@@ -64,7 +64,7 @@ function action_quick_save()
 	
 	inc = inc >= axr_main.config:r_value(MM_OPTIONS,"quicksave_cnt",2,5) and 1 or inc + 1
 	
-	get_cached_console():execute("save " .. (user_name() or STR_EMPTY) .. " - quicksave" .. inc)
+	get_console():execute("save " .. (user_name() or STR_EMPTY) .. " - quicksave" .. inc)
 	
 	if (alife_storage_manager.get_state().enable_timer_mode) then
 		savegame_timer.timer_reset() -- reset timer
@@ -89,7 +89,7 @@ function action_quick_load()
 			
 			-- grab last modified quicksave
 			if (string.match(file_name,".* %- quicksave(%d+)")) then
-				get_cached_console():execute("load " .. file_name)
+				get_console():execute("load " .. file_name)
 				return true
 			end
 		end
@@ -157,7 +157,7 @@ function action_slow_save()
 	alife_storage_manager.get_state().slow_save_count = count
 	
 	local save_command = string.format("save %s", save_name)
-	get_cached_console():execute(save_command)
+	get_console():execute(save_command)
 	
 	if (alife_storage_manager.get_state().enable_timer_mode) then
 		savegame_timer.timer_reset() -- reset timer

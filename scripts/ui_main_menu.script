@@ -111,7 +111,7 @@ function main_menu:InitCallBacks()
 end
 function main_menu:OnMsgOk()
 	if (self.mbox_mode == 2) then
-		local console = get_cached_console()
+		local console = get_console()
 		console:execute("quit")
 	end
 	self.mbox_mode = 0
@@ -135,7 +135,7 @@ function main_menu:OnMsgNo()
 end
 
 function main_menu:LoadLastSave()
-	local					console = get_cached_console()
+	local					console = get_console()
 	console:execute			("main_menu off")
 	console:execute			("load_last_save")
 end
@@ -150,7 +150,7 @@ function main_menu:OnButton_last_save()
 		end
         local file_name = string.sub(file:NameFull(), 0, (string.len(file:NameFull()) - string.len(".scop")))
        
-        local console = get_cached_console()
+        local console = get_console()
         console:execute("main_menu off")
         console:execute("start server("..file_name.."/single/alife/load) client(localhost)")
         return
@@ -187,17 +187,17 @@ function main_menu:OnButton_disconnect_clicked()
 end
 
 function main_menu:OnMessageQuitGame()
-	local console = get_cached_console()
+	local console = get_console()
 	console:execute("disconnect")
 end
 
 function main_menu:OnMessageQuitWin()
-	local console = get_cached_console()
+	local console = get_console()
 	console:execute("quit")
 end
 
 function main_menu:OnButton_return_game()
-	local console = get_cached_console()
+	local console = get_console()
 	console:execute("main_menu off")
 	SendScriptCallback("main_menu_on_quit",self)
 end
@@ -207,25 +207,25 @@ function main_menu:OnButton_new_game_clicked()
 end
 
 function main_menu:OnButton_new_novice_game()
-	local console = get_cached_console()
+	local console = get_console()
 	console:execute("g_game_difficulty gd_novice")
 	self:ShowFactionUI()
 end
 
 function main_menu:OnButton_new_stalker_game()
-	local console = get_cached_console()
+	local console = get_console()
 	console:execute("g_game_difficulty gd_stalker")
 	self:ShowFactionUI()
 end
 
 function main_menu:OnButton_new_veteran_game()
-	local console = get_cached_console()
+	local console = get_console()
 	console:execute("g_game_difficulty gd_veteran")
 	self:ShowFactionUI()
 end
 
 function main_menu:OnButton_new_master_game()
-	local console = get_cached_console()
+	local console = get_console()
 	console:execute("g_game_difficulty gd_master")
 	self:ShowFactionUI()
 end
@@ -248,7 +248,7 @@ function main_menu:ShowFactionUI()
 end 
 
 function main_menu:StartGame()
-	local console = get_cached_console()
+	local console = get_console()
 
 	if (alife() ~= nil) then
 		console:execute	("disconnect")
@@ -277,7 +277,7 @@ function main_menu:OnButton_save_clicked()
 		if not (_G.ALLOW_SAVING) then
 			local str = strformat(game.translate_string("st_ui_no_save_campfire"),game.translate_string("st_ui_save"))
 			SetHudMsg(str,4)
-			get_cached_console():execute("main_menu off")
+			get_console():execute("main_menu off")
 			return
 		end
 	end]]
@@ -350,7 +350,7 @@ end
 function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
 	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
 	local bind = dik_to_bind(dik)
-	local console = get_cached_console()
+	local console = get_console()
 
 	SendScriptCallback("main_menu_on_keyboard",dik,keyboard_action,self,level.present())
 

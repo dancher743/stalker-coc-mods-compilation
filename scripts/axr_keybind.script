@@ -169,7 +169,7 @@ function action.debug_demo_record(p)
 		return 
 	end
 	if (p==1) then
-		get_cached_console():execute("demo_record t")
+		get_console():execute("demo_record t")
 	end
 end
 

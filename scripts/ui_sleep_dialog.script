@@ -164,10 +164,10 @@ function sleep_dialog:OnButtonSleep()
 	utils.save_var(db.actor,"heli_enemy_flag",nil)
 	xr_effects.disable_ui(db.actor, nil)
 
-	_G.mus_vol = get_cached_console():get_float("snd_volume_music")
-	_G.amb_vol = get_cached_console():get_float("snd_volume_eff")
-	get_cached_console():execute("snd_volume_music 0")
-	get_cached_console():execute("snd_volume_eff 0")
+	_G.mus_vol = get_console():get_float("snd_volume_music")
+	_G.amb_vol = get_console():get_float("snd_volume_eff")
+	get_console():execute("snd_volume_music 0")
+	get_console():execute("snd_volume_eff 0")
 	
 	if self.forced then
 		level.add_cam_effector("camera_effects\\surge_02.anm", 10, false, "ui_sleep_dialog.dream_callback")
@@ -220,12 +220,12 @@ end
 function dream_callback2()
 	xr_effects.enable_ui(db.actor, nil)
 	if (_G.mus_vol > 0) then
-		get_cached_console():execute("snd_volume_music "..tostring(_G.mus_vol))
+		get_console():execute("snd_volume_music "..tostring(_G.mus_vol))
 		_G.mus_vol = 0 
 	end
 	
 	if (_G.amb_vol > 0) then
-		get_cached_console():execute("snd_volume_eff "..tostring(_G.amb_vol))
+		get_console():execute("snd_volume_eff "..tostring(_G.amb_vol))
 		_G.amb_vol = 0
 	end
 	disable_info("tutorial_sleep")
