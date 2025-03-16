@@ -684,7 +684,7 @@ end
 --[[
 function FalloutManager:displayIndicators(power)
 	local indikType = self.falloutType
-	local hud = get_cached_hud()
+	local hud = get_hud()
 	local indik
 	if power>=0.8 then indik="red"
 	elseif power>=0.6 then indik="orange"

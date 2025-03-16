@@ -19,7 +19,7 @@ function actor_on_reinit(binder)
 	local function check_hud_msg()
 		-- Check HudMsg
 		if (ShowMessageTime) then
-			local hud = get_cached_hud()
+			local hud = get_hud()
 			if (hud) then
 				local custom_static = hud:GetCustomStatic("not_enough_money_mine")
 				if custom_static ~= nil and time_global() > ShowMessageTime then

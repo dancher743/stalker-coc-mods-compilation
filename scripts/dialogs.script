@@ -1582,7 +1582,7 @@ end
 -- npcs and trade and repair
 function npc_is_trader(a,b)
     local npc = who_is_npc(a, b)
-	local hud = get_cached_hud()
+	local hud = get_hud()
 	if (hud) then
 		hud:HideActorMenu()
 		npc:start_trade(db.actor)
@@ -1591,7 +1591,7 @@ end
 
 function npc_is_tech(a,b)
     local npc = who_is_npc(a,b)
-	local hud = get_cached_hud()
+	local hud = get_hud()
 	if (hud) then
 		hud:HideActorMenu()
 		npc:start_upgrade(db.actor)

@@ -89,7 +89,7 @@ local function actor_on_item_take_from_box(box,itm)
 	if (caches[box:id()] == true) then
 		caches[box:id()] = false
 		renewing_counter = renewing_counter + 1
-		local hud = get_cached_hud()
+		local hud = get_hud()
 		if (hud and box:is_inv_box_empty()) then
 			hud:HideActorMenu()
 		end

@@ -53,6 +53,7 @@ local console
 local alife_function
 local system_ini_function
 local game_graph_function
+local get_hud_function
 ----------------------------------------------------------------------
 
 function start_game_callback()
@@ -116,6 +117,9 @@ function memoize_functions()
 	
 	game_graph_function = game_graph
 	game_graph = _G.game_graph_memoized
+	
+	get_hud_function = get_hud
+	get_hud = _G.get_hud_memoized
 end
 
 function alife_memoized()
@@ -139,9 +143,9 @@ function game_graph_memoized()
 	return gg
 end
 
-function get_cached_hud()
+function get_hud_memoized()
 	if not (hud) then
-		hud = get_hud()
+		hud = get_hud_function()
 	end
 	return hud
 end
@@ -185,7 +189,7 @@ end
 --------------------------------------------
 function SetHudMsg(msg,n)
 	msg = tostring(msg)
-	local hud = get_cached_hud()
+	local hud = get_hud()
 	if (hud) then
 		hud:AddCustomStatic("not_enough_money_mine", true)
 		hud:GetCustomStatic("not_enough_money_mine"):wnd():TextControl():SetTextST(msg)
@@ -1433,7 +1437,7 @@ function in_time_interval(val1, val2)
 end
 
 function show_all_ui(show)
-	local hud = get_cached_hud()
+	local hud = get_hud()
 	if not (hud) then
 		return
 	end
@@ -1585,7 +1589,7 @@ function run_dynamic_element(folder,close_inv)
       folder:ShowDialog(true)
    elseif close_inv==true then
 		folder:ShowDialog(true)
-		local hud = get_cached_hud()
+		local hud = get_hud()
 		if (hud) then
 			hud:HideActorMenu()
 			hud:HidePdaMenu()

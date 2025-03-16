@@ -104,7 +104,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 	-- Prevent fast travel if actor is guide.
 	if not guidertravel then
 		if jg_guider.has_guiding_started() then
-			get_cached_hud():HidePdaMenu()
+			get_hud():HidePdaMenu()
 			SetHudMsg(game.translate_string("st_travel_guider"),4)
 			return
 		end
@@ -113,7 +113,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 	-- Prevent fast travel if in combat.
 	if not (combattravel) then
 		if not (is_empty(xr_combat_ignore.fighting_with_actor_npcs)) then
-			get_cached_hud():HidePdaMenu()
+			get_hud():HidePdaMenu()
 			SetHudMsg(game.translate_string("st_travel_combat"),4)
 			return
 		end
@@ -124,7 +124,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 		local suit = db.actor:item_in_slot(7)
 		local diff = db.actor:get_total_weight() - db.actor:get_actor_max_walk_weight() - (suit and suit:get_additional_max_weight() or 0) - bbp_extra_weight()
 		if diff > 0 then
-			get_cached_hud():HidePdaMenu()
+			get_hud():HidePdaMenu()
 			SetHudMsg(game.translate_string("st_travel_overloaded"),4)
 			return
 		end
@@ -142,7 +142,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 			elseif (radiation) then
 				SetHudMsg(game.translate_string("st_sleep_irradiated"),4)
 			end
-			get_cached_hud():HidePdaMenu()
+			get_hud():HidePdaMenu()
 			return
 		end
 	end
@@ -151,7 +151,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 	if not (stormtravel) then
 		if (xr_conditions.surge_started() or psi_storm_manager.is_started()) then
 			SetHudMsg(game.translate_string("st_travel_cataclysm"),4)
-			get_cached_hud():HidePdaMenu()
+			get_hud():HidePdaMenu()
 			return
 		end
 	end
@@ -183,7 +183,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 	if (se_obj.online) then
 		TeleportActorToSmart(se_obj)
 		axr_companions.teleport_companions_to_actor_in_online()
-		get_cached_hud():HidePdaMenu()
+		get_hud():HidePdaMenu()
 	else
 		ChangeLevel(se_obj.position,se_obj.m_level_vertex_id,se_obj.m_game_vertex_id,VEC_ZERO)
 	end

@@ -24,14 +24,14 @@ end
 local function on_game_load()
 	if (mark_ui == nil) then
 		mark_ui = critical_hit_mark()
-		get_cached_hud():AddDialogToRender(mark_ui)
+		get_hud():AddDialogToRender(mark_ui)
 		mark_ui:Show(false)
 	end
 end
 
 local function actor_on_net_destroy()
 	if (mark_ui) then
-		get_cached_hud():RemoveDialogToRender(mark_ui)
+		get_hud():RemoveDialogToRender(mark_ui)
 		mark_ui = nil
 	end
 end

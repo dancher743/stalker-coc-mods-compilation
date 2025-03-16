@@ -75,7 +75,7 @@ function check_recipe(item)
 		SetHudMsg(STR_EMPTY,0)
 	else
 		SetHudMsg(strtransl("ui_st_cooking_recipes_absent_hudmsg"),5)
-		get_cached_hud():HideActorMenu()
+		get_hud():HideActorMenu()
 	end
 	
 	return has_recipe
