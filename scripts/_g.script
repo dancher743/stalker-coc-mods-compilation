@@ -52,6 +52,7 @@ local console
 -- Cached functions during memoization
 local alife_function
 local system_ini_function
+local game_graph_function
 ----------------------------------------------------------------------
 
 function start_game_callback()
@@ -106,6 +107,17 @@ end
 -- 											FUNCTIONS MEMOIZATION
 -------------------------------------------------------------------------------------------------------
 
+function memoize_functions()
+	alife_function = alife
+	alife = _G.alife_memoized
+	
+	system_ini_function = system_ini
+	system_ini = _G.system_ini_memoized
+	
+	game_graph_function = game_graph
+	game_graph = _G.game_graph_memoized
+end
+
 function alife_memoized()
 	if not (sim) then
 		sim = alife_function()
@@ -120,9 +132,9 @@ function system_ini_memoized()
 	return ini
 end
 
-function get_game_graph()
+function game_graph_memoized()
 	if not (gg) then
-		gg = game_graph()
+		gg = game_graph_function()
 	end
 	return gg
 end
@@ -139,14 +151,6 @@ function get_cached_console()
 		console = get_console()
 	end
 	return console
-end
-
-function memoize_functions()
-	alife_function = alife
-	alife = _G.alife_memoized
-	
-	system_ini_function = system_ini
-	system_ini = _G.system_ini_memoized
 end
 
 -------------------------------------------------------------------------------------------------------
@@ -345,7 +349,7 @@ function JumpToLevel(new_level)
 	end
 	
 	local cvertex
-	local sim,gg = alife(),get_game_graph()
+	local sim,gg = alife(),game_graph()
 	-- first try to find a smart_terrain on specified level
 	for id,smart in pairs(db.smart_terrain_by_id) do
 		cvertex = smart and gg:vertex(smart.m_game_vertex_id)
@@ -1543,7 +1547,7 @@ function CALifeUpdateManager__on_before_change_level(packet)
 	packet:r_vec3(pos)
 	packet:r_vec3(angle)
 	-- crazy hack to help prevent crash on Trucks Cemetery
-	local gg = get_game_graph()
+	local gg = game_graph()
 	if (gg:valid_vertex_id(gvid) and alife():level_name(gg:vertex(gvid):level_id()) == "k02_trucks_cemetery") then
 		log("k02_trucks_cemetery hack r__clear_models_on_unload 1")
 		get_cached_console():execute("r__clear_models_on_unload 1")

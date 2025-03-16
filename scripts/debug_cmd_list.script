@@ -600,10 +600,10 @@ function cmd.waypoint(me,txt,owner,p)
 	local last_index
 
 	local sim = alife()
-	local actor_level = wrd == "checklevel" and sim:level_name(get_game_graph():vertex(sim:actor().m_game_vertex_id):level_id()) or STR_NIL
+	local actor_level = wrd == "checklevel" and sim:level_name(game_graph():vertex(sim:actor().m_game_vertex_id):level_id()) or STR_NIL
 
 	local checked = false
-	local gg = get_game_graph()
+	local gg = game_graph()
 	
 	local t = {}
 	for id=1,65534 do
@@ -1618,7 +1618,7 @@ function cmd.level(me,txt,owner,p)
 	end
 
 	local sim = alife()
-	local gg = get_game_graph()
+	local gg = game_graph()
 	local level,data
 	local default_vertex
 	local function create_lc(gvid,vertex)
@@ -1703,7 +1703,7 @@ function cmd.game_graph(me,txt,owner,p)
 	if not (wrd) then return end
 
 	if (wrd == "show") then
-		local gg = get_game_graph()
+		local gg = game_graph()
 		local vertex, level_name, lvid, pos, se_obj
 		local sim = alife()
 		local gvid = 0
@@ -1725,7 +1725,7 @@ function cmd.game_graph(me,txt,owner,p)
 		end
 		return "game_graph:= spots created. There are "..lgvid.." in "..level.name().." and "..gvid.." total."
 	elseif (wrd == "near") then
-		local gg = get_game_graph()
+		local gg = game_graph()
 		local vertex, level_name, lvid, pos
 		local near_lvid, near_dist, near_gvid, dist
 		local gvid = 0
@@ -1763,7 +1763,7 @@ function cmd.game_graph(me,txt,owner,p)
 		local page = wrd ~= STR_EMPTY and tonumber(wrd) or 1
 		
 		local issues = {}
-		local gg = get_game_graph()
+		local gg = game_graph()
 		local vertex
 		local sim = alife()
 		for i=1,65534 do

@@ -221,7 +221,7 @@ function send_treasure(param, has_spot)
 end
 
 function send_treasure_with_level(stash_name, se_box)
-	local level_name = alife():level_name(get_game_graph():vertex(se_box.m_game_vertex_id):level_id())
+	local level_name = alife():level_name(game_graph():vertex(se_box.m_game_vertex_id):level_id())
 	
 	local level_point
 	if (IsUndergroundLevel(level_name)) then

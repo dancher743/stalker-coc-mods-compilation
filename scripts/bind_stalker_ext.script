@@ -218,7 +218,7 @@ end
 -- IMPORTANT: Cannot be used as callback because this needs to be done in specific order, just call script directly!
 -------------------
 function actor_on_save(binder,packet)
-	local sim,gg = alife(),get_game_graph()
+	local sim,gg = alife(),game_graph()
 	local actor_gv = sim and gg:vertex(sim:actor().m_game_vertex_id)
 	
 	if (actor_gv and actor_gv:level_id() ~= sim:level_id()) then

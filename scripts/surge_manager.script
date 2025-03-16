@@ -104,7 +104,7 @@ function CSurgeManager:initialize()
 	end
 	
 	local level_name
-	local gg,gini,sim = get_game_graph(),game_ini(),alife()
+	local gg,gini,sim = game_graph(),game_ini(),alife()
 	for lvl in gg:levels() do
 		level_name = sim:level_name(lvl.id)
 		weather = level_name and gini:r_string_ex(level_name,"weathers")
@@ -1173,7 +1173,7 @@ end
 function check_squad_level(squad_id)
 	local squad = alife_object(squad_id)
 	if(squad) then
-		local squad_level = alife():level_name(get_game_graph():vertex(squad.m_game_vertex_id):level_id())
+		local squad_level = alife():level_name(game_graph():vertex(squad.m_game_vertex_id):level_id())
 		if(squad_level==level.name()) then
 			return true
 		end
@@ -1230,7 +1230,7 @@ function CSurgeManager:kill_obj_at_pos(pos)
 		return 
 	end
 	local board = SIMBOARD
-	local sim, gg = alife(),get_game_graph()
+	local sim, gg = alife(),game_graph()
 	local immuned_to_surge_squads = {
 					["monolith"] = true,
 					["monster_predatory_day"] 	= true,
@@ -1292,7 +1292,7 @@ function CSurgeManager:get_objects_to_kill()
 				["monster"]					= true,
 				["zombied"]					= true
 	}
-	local sim,gg = alife(),get_game_graph()
+	local sim,gg = alife(),game_graph()
 	for k,v in pairs(board.squads) do
 		local squad = v
 		if (squad:clsid() == clsid.online_offline_group_s and can_destroy_squad(squad,immuned_to_surge_squads,sim,gg)) then 
@@ -1431,7 +1431,7 @@ function CSurgeManager:kill_all_unhided()
 		self:delay_kill_crow(id,h)
 	end
 	local board = SIMBOARD
-	local sim,gg = alife(),get_game_graph()
+	local sim,gg = alife(),game_graph()
 	local immuned_to_surge_squads = {
 				["monolith"] = true,
 				["monster_predatory_day"] 	= true,
@@ -1483,7 +1483,7 @@ function CSurgeManager:kill_all_unhided()
 	end
 	
 	-- don't kill actor if he isn't on a valid level
-	local actor_level = sim:level_name(get_game_graph():vertex(sim:actor().m_game_vertex_id):level_id())
+	local actor_level = sim:level_name(game_graph():vertex(sim:actor().m_game_vertex_id):level_id())
 	if (self.indoor_levels and self.indoor_levels[actor_level] or level_weathers.valid_levels[actor_level] ~= true) then 
 		return 
 	end
@@ -1527,7 +1527,7 @@ function CSurgeManager:kill_all_unhided_after_actor_death()
 					["monster"]					= true,
 					["zombied"]					= true
 	}
-	local sim,gg = alife(),get_game_graph()
+	local sim,gg = alife(),game_graph()
 	for k,v in pairs(board.squads) do
 		local squad = v
 		if (squad:clsid() == clsid.online_offline_group_s and can_destroy_squad(squad,immuned_to_surge_squads,sim,gg)) then

@@ -1594,7 +1594,7 @@ function npc_on_level(actor, npc, p)
 		return false
 	end
 
-	local gg = get_game_graph()
+	local gg = game_graph()
 	if (sim:level_name(gg:vertex(se_obj.m_game_vertex_id):level_id()) == p[1]) then
 		return true
 	end
@@ -2711,7 +2711,7 @@ function squad_on_actor_map(actor,npc,p)
 	if not (squad) then
 		return false
 	end
-	local gg = get_game_graph()
+	local gg = game_graph()
 	return gg:vertex(alife():actor().m_game_vertex_id):level_id() == gg:vertex(squad.m_game_vertex_id):level_id()
 end
 
@@ -2989,12 +2989,12 @@ function all_avail_smart_stayed_squad_count_ge_by_faction_ex(actor,npc,p)
 	if (#p >= 4) then
 
 		local sim = alife()
-		local gg = get_game_graph()
+		local gg = game_graph()
 		local actor_level = sim:level_name(gg:vertex(sim:actor().m_game_vertex_id):level_id())
 
 		for name,v in pairs(SIMBOARD.smarts_by_names) do
 			if (v.sim_avail == nil or v.sim_avail and xr_logic.pick_section_from_condlist(actor, v, v.sim_avail) == STR_TRUE) then
-				local smart_level = alife():level_name(get_game_graph():vertex(v.m_game_vertex_id):level_id())
+				local smart_level = alife():level_name(game_graph():vertex(v.m_game_vertex_id):level_id())
 				if (v.online or DEACTIVATE_SIM_ON_NON_LINKED_LEVELS ~= true or string.find(simulation_objects.config:r_value(actor_level,"target_maps",0,STR_EMPTY),smart_level)) then
 					if (smart_stayed_squad_count_ge_by_faction(actor,npc,{name,unpack(p)}) == true) then
 						return true

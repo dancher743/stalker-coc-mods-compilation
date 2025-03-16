@@ -180,7 +180,7 @@ function initialize()
 	
 	for name,smart in pairs(SIMBOARD.smarts_by_names) do
 		if (not smart.level_id) then
-			smart.level_id = get_game_graph():vertex(smart.m_game_vertex_id):level_id()
+			smart.level_id = game_graph():vertex(smart.m_game_vertex_id):level_id()
 		end
 		
 		if (not sim_levels.level_information[smart.level_id]) then
@@ -331,7 +331,7 @@ end
 
 function check_mutant_coef(smart)
 
-    local level = alife():level_name(get_game_graph():vertex(smart.m_game_vertex_id):level_id())	
+    local level = alife():level_name(game_graph():vertex(smart.m_game_vertex_id):level_id())	
 	local coef = 5
 			
 	if level == "l12u_sarcofag"       or 
@@ -358,7 +358,7 @@ end
 
 function monolith_level(smart)
 
-    local level = alife():level_name(get_game_graph():vertex(smart.m_game_vertex_id):level_id())	
+    local level = alife():level_name(game_graph():vertex(smart.m_game_vertex_id):level_id())	
 			
 	if level == "l13u_warlab"           or 
 	   level == "l12u_control_monolith" or 

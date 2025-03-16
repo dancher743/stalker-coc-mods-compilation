@@ -507,7 +507,7 @@ function FalloutManager:hit_all_unhided(hitPower)
 	h.direction = VEC_FORWARD
 	h.draftsman = db.actor
 --]]
-	local sim, gg = alife(), get_game_graph()
+	local sim, gg = alife(), game_graph()
 
 	local board = sim_board.get_sim_board()
 	for k,squad in pairs(board.squads) do
@@ -610,7 +610,7 @@ end
 function check_squad_level(squad_id)
 	local squad = alife():object(squad_id)
 	if(squad) then
-		local squad_level = alife():level_name(get_game_graph():vertex(squad.m_game_vertex_id):level_id())
+		local squad_level = alife():level_name(game_graph():vertex(squad.m_game_vertex_id):level_id())
 		if(squad_level==level.name()) then
 			return true
 		end

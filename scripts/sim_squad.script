@@ -102,7 +102,7 @@ function create_squad(smart, faction, target, type, number, param, is_survival_i
 		end
 	   
 	    if faction == "monster" then
-			local lvl = get_game_graph():vertex(squad.m_game_vertex_id):level_id()	
+			local lvl = game_graph():vertex(squad.m_game_vertex_id):level_id()	
 
 			if not sim_offline_control.squads_by_level[lvl] then
 				sim_offline_control.squads_by_level[lvl] = {}
@@ -203,7 +203,7 @@ function squad_update(squad)
 				end
 			end
 		else
-			local levelID = get_game_graph():vertex(squad.m_game_vertex_id):level_id()
+			local levelID = game_graph():vertex(squad.m_game_vertex_id):level_id()
 			
 			if (sim_levels.level_information[levelID] and sim_levels.level_information[levelID].smarts) then
 				for i,sm in pairs(sim_levels.level_information[levelID].smarts) do

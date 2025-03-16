@@ -167,7 +167,7 @@ function sim_squad_scripted:update()
 		end
 		
 		if (skip ~= true) then
-			local gg = get_game_graph()
+			local gg = game_graph()
 
 			--printf("m_game_vertex_id=%s actor.m_game_vertex_id=%s",self.m_game_vertex_id,se_actor.m_game_vertex_id)
 			if (se_actor and gg:valid_vertex_id(self.m_game_vertex_id) and gg:valid_vertex_id(se_actor.m_game_vertex_id)) then
@@ -248,7 +248,7 @@ local function can_help_actor(squad)
 		return false
 	end
 
-	local gg = get_game_graph()
+	local gg = game_graph()
 	if gg:vertex(squad.m_game_vertex_id):level_id() ~= gg:vertex(alife():actor().m_game_vertex_id):level_id() then
 		return false
 	end
