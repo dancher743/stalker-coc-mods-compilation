@@ -106,7 +106,7 @@ end
 -- 											FUNCTIONS MEMOIZATION
 -------------------------------------------------------------------------------------------------------
 
-local function alife_memoized()
+function alife_memoized()
 	if not (sim) then
 		sim = alife_function()
 	end
