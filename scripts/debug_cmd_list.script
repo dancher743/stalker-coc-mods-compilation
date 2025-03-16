@@ -321,7 +321,7 @@ function cmd.spawn(me,txt,owner,p)
 	end
 
 	if (wrd == "items") then
-		if not (get_system_ini():section_exist("inv_backpack")) then
+		if not (system_ini():section_exist("inv_backpack")) then
 			return "spawn:= requires inv_backpack from items_minimod"
 		end
 		local sim = alife()
@@ -343,7 +343,7 @@ function cmd.spawn(me,txt,owner,p)
 		end
 	end
 
-	if not (sec) or not (get_system_ini():section_exist(sec)) then
+	if not (sec) or not (system_ini():section_exist(sec)) then
 		return "spawn:= Section %s does not exist.",sec
 	end
 
@@ -1243,7 +1243,7 @@ function get_position_offset(npc,o)
 		return
 	end
 
-	local attach_bone_name = get_system_ini():r_string_ex(sec,"attach_bone_name")
+	local attach_bone_name = system_ini():r_string_ex(sec,"attach_bone_name")
 	if not (attach_bone_name) then
 		return
 	end

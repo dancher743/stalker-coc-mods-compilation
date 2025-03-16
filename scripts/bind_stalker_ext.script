@@ -193,7 +193,7 @@ function actor_on_item_use(binder,item)
 		con:execute("snd_volume_music 0")
 		con:execute("snd_volume_eff 0")
 	elseif (sec == "drug_psy_blockade" or sec == "drug_radioprotector" or sec == "drug_antidot") then
-		local boost_time = get_system_ini():r_float_ex(sec,"boost_time")
+		local boost_time = system_ini():r_float_ex(sec,"boost_time")
 		utils.save_var(db.actor,sec.."_expiration",utils.CTimeAddSec(game.get_game_time(),boost_time*level.get_time_factor()))
 	elseif (sec == "radio_connections_pda") then 
 		run_dynamic_element(pda_dialog.pda_dialog_box(),true)
@@ -386,7 +386,7 @@ function actor_item_to_slot(binder,obj)
 	if (axr_main.config:r_value(MM_OPTIONS,"enable_outfit_portrait",1,false) == true) then
 		local outfit = db.actor:item_in_slot(7)
 		if (outfit and outfit:id() == obj:id()) then 
-			local icon = get_system_ini():r_string_ex(outfit:section(),"character_portrait")
+			local icon = system_ini():r_string_ex(outfit:section(),"character_portrait")
 			if (icon) then
 				db.actor:set_character_icon(icon)
 			elseif (db.actor_binder.character_icon) then -- use default portrait if no outfit portrait exists

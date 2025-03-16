@@ -72,7 +72,7 @@ local function monster_on_update(npc)
 		return
 	end
 	
-	local sleep_aura_prob = get_system_ini():r_string_ex(npc:section(),sleep_aura_prob_string_name)
+	local sleep_aura_prob = system_ini():r_string_ex(npc:section(),sleep_aura_prob_string_name)
 	sleep_aura_prob = tonumber(sleep_aura_prob)
 	
 	if (math.random() > sleep_aura_prob) then

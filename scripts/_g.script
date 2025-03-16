@@ -51,6 +51,7 @@ local hud
 local console
 -- Cached functions during memoization
 local alife_function
+local system_ini_function
 ----------------------------------------------------------------------
 
 function start_game_callback()
@@ -112,9 +113,9 @@ local function alife_memoized()
 	return sim
 end
 
-function get_system_ini()
+function system_ini_memoized()
 	if not (ini) then
-		ini = system_ini()
+		ini = system_ini_function()
 	end
 	return ini
 end
@@ -143,6 +144,9 @@ end
 function memoize_functions()
 	alife_function = alife
 	alife = _G.alife_memoized
+	
+	system_ini_function = system_ini
+	system_ini = _G.system_ini_memoized
 end
 
 -------------------------------------------------------------------------------------------------------
@@ -1273,7 +1277,7 @@ function disable_info (info)
 end
 
 function create_ammo(section, position, lvi, gvi, pid, num)
-	local ini = get_system_ini()
+	local ini = system_ini()
 
 	local num_in_box = ini:r_u32(section, "box_size")
 	local t = {}
@@ -1613,7 +1617,7 @@ function get_object_count(obj,npc)
 end
 
 -- INI Extensions
-local ini_cache = { [get_system_ini()] = {} }
+local ini_cache = { [system_ini()] = {} }
 function clear_ini_cache(ini)
 	ini_cache[ini] = empty_table(ini_cache[ini])
 end

@@ -932,7 +932,7 @@ function CSurgeManager:hit_power(power,hit_type)
 	local helmet_protection = 0
 	local helmet = db.actor:item_in_slot(12)
 	if helmet ~= nil then
-		helmet_protection = get_system_ini():r_float_ex(helmet:section(),hit_types[hit_type+1].."_protection")*suit_factors[hit_type+1]
+		helmet_protection = system_ini():r_float_ex(helmet:section(),hit_types[hit_type+1].."_protection")*suit_factors[hit_type+1]
 	end
 
 	local ini,g_time
@@ -941,7 +941,7 @@ function CSurgeManager:hit_power(power,hit_type)
 	if (expiration) then
 		g_time = utils.CTimeToSec(game.get_game_time())
 		if g_time<expiration then
-			ini = get_system_ini()
+			ini = system_ini()
 			self.drug_telepatic_protection = ini:r_float_ex("drug_psy_blockade","boost_telepat_protection")
 		else
 			self.drug_telepatic_protection = nil
@@ -952,7 +952,7 @@ function CSurgeManager:hit_power(power,hit_type)
 	if (expiration) then
 		g_time = g_time or utils.CTimeToSec(game.get_game_time())
 		if g_time<expiration then
-			ini = ini or get_system_ini()
+			ini = ini or system_ini()
 			self.drug_radiation_protection = ini:r_float_ex("drug_radioprotector","boost_radiation_protection")
 		else
 			self.drug_radiation_protection = nil
@@ -963,7 +963,7 @@ function CSurgeManager:hit_power(power,hit_type)
 	if (expiration) then
 		g_time = g_time or utils.CTimeToSec(game.get_game_time())
 		if g_time<expiration then
-			ini = ini or get_system_ini()
+			ini = ini or system_ini()
 			self.drug_chemical_burn_protection = ini:r_float_ex("drug_antidot","boost_chemburn_protection")
 		else
 			self.drug_chemical_burn_protection = nil

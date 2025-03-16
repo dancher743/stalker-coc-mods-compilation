@@ -216,7 +216,7 @@ function create_random_stash(no_spot,hint,bonus_items)
 		max_weight = max_weight + 30
 	end
 	
-	local ini = get_system_ini()
+	local ini = system_ini()
 	local function is_consumable(section)
 		local v = ini:r_string_ex(section,"class",STR_EMPTY)
 		return v == "S_FOOD" or v == "II_FOOD"
@@ -591,7 +591,7 @@ function try_spawn_treasure(box)
 	caches[id] = true
 	
 	local sec,ammos,ct,ammo_type,ammo_section
-	local ini = get_system_ini()
+	local ini = system_ini()
 	local sim = alife()
 	for i=1,#spawned_item do
 		sec = spawned_item[i]
@@ -693,7 +693,7 @@ end
 
 function get_valid_item_sections()
 	local t = {}
-	local ini = get_system_ini()
+	local ini = system_ini()
 	
 	local ignore_sections_string = "ignore_sections"
 	local cform_string = "cform"

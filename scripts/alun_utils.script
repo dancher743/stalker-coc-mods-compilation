@@ -3,7 +3,7 @@
 --]]
 
 function get_inv_name(section)
-	return game.translate_string(get_system_ini():r_string_ex(section,"inv_name"))
+	return game.translate_string(system_ini():r_string_ex(section,"inv_name"))
 end 
 
 -- Prints a formated lua table to print_table.txt for debugging purposes
@@ -113,7 +113,7 @@ end
 
 function read_from_ini(ini,section,line,var_type,default,caller)
 	if not (ini) then
-		ini = get_system_ini()
+		ini = system_ini()
 	end
 	if not (section) then 
 		printf("ERROR: alun_utils.read_from_ini trying to read nil section! line=%s var_type=%s default=%s caller=%s",line,var_type,default,caller)
@@ -382,7 +382,7 @@ function get_rank_list()
 	if ranks then
 		return ranks
 	end
-	local tmp = parse_list(get_system_ini(),"game_relations","rating")
+	local tmp = parse_list(system_ini(),"game_relations","rating")
 	ranks = {}
 	for i,rn in ipairs(tmp) do
 		if not tonumber(rn) then
@@ -394,7 +394,7 @@ end
 
 local reputations
 function get_reputation_name(value)
-	reputations = reputations or parse_list(get_system_ini(),"game_relations","reputation_names")
+	reputations = reputations or parse_list(system_ini(),"game_relations","reputation_names")
 	local prev = nil
 	for i,rn in ipairs(reputations) do
 		local repu = tonumber(rn)
@@ -412,7 +412,7 @@ function get_communities_list()
 	if communities then
 		return communities
 	end
-	local tmp = parse_list(get_system_ini(),"game_relations","communities")
+	local tmp = parse_list(system_ini(),"game_relations","communities")
 	communities = {}
 	for i,cn in ipairs(tmp) do
 		if not tonumber(cn) then

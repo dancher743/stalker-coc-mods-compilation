@@ -194,11 +194,11 @@ function create_release_item(npc)
 end
 
 function try_spawn_ammo(npc,spawn_items)
-	local ini = get_system_ini()
+	local ini = system_ini()
 	local class,ammo_class,sec,number
 	local function itr(npc,itm)
 		if (IsWeapon(nil,itm:clsid()) and not npc:marked_dropped(itm)) then
-			class = get_system_ini():r_string_ex(itm:section(),"class")
+			class = system_ini():r_string_ex(itm:section(),"class")
 			ammo_class = alun_utils.parse_list(ini,itm:section(),"ammo_class")
 			if (class and class == "WP_KNIFE") then return end
 			-- randomly spawn only 1 ammo type per found weapon
@@ -210,7 +210,7 @@ function try_spawn_ammo(npc,spawn_items)
 					else 
 						number = math.random(1,15)
 					end
-					if (number > 0 and get_system_ini():section_exist(sec)) then
+					if (number > 0 and system_ini():section_exist(sec)) then
 						create_ammo(sec,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id(),number)
 					end
 				end
@@ -226,7 +226,7 @@ function try_spawn_ammo(npc,spawn_items)
 						else 
 							number = math.random(0,2)
 						end
-						if (number > 0 and get_system_ini():section_exist(sec)) then 
+						if (number > 0 and system_ini():section_exist(sec)) then 
 							create_ammo(sec,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id(),number)
 						end
 					end
@@ -333,7 +333,7 @@ function set_weapon_drop_condition(npc,itm)
 	itm:set_condition(condition)
 	
 	if (IsWeapon(nil,itm:clsid()) and not npc:marked_dropped(itm)) then
-		local ini = get_system_ini()
+		local ini = system_ini()
 		local sec,number
 		local ammo_class = alun_utils.parse_list(ini,itm:section(),"ammo_class")
 		-- randomly spawn only 1 ammo type per found weapon
@@ -341,7 +341,7 @@ function set_weapon_drop_condition(npc,itm)
 			sec = ammo_class[math.random(1,#ammo_class)]
 			if (sec and item_count[sec]) then 
 				number = math.random(item_count[sec][1], item_count[sec][2])
-				if (number > 0 and get_system_ini():section_exist(sec)) then
+				if (number > 0 and system_ini():section_exist(sec)) then
 					create_ammo(sec,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id(),number)
 				end
 			end
@@ -353,7 +353,7 @@ function set_weapon_drop_condition(npc,itm)
 				sec = ammo_class[i]
 				if (sec and item_count[sec]) then 
 					number = math.random(item_count[sec][1], item_count[sec][2])
-					if (number > 0 and get_system_ini():section_exist(sec)) then 
+					if (number > 0 and system_ini():section_exist(sec)) then 
 						create_ammo(sec,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id(),number)
 					end
 				end
@@ -364,7 +364,7 @@ end
 
 --' Функция спавнит необходимое число предметов
 function create_items(npc, section, number, rnd)
-	if not (get_system_ini():section_exist(section)) then 
+	if not (system_ini():section_exist(section)) then 
 		--printf("death_manager: ERROR: trying to spawn section that doesn't exist! %s",section)
 		return 
 	end 

@@ -132,7 +132,7 @@ end
 function consume_medkit(npc,medkit)
 	local ms = medkit:section()
 	npc:eat(medkit)
-	local ini = get_system_ini()
+	local ini = system_ini()
 	local time = ini:r_float_ex(ms,"boost_time") or 1
 	local health_restore = ini:r_float_ex(ms,"boost_health_restore") or 0
 	local bleeding_restore = ini:r_float_ex(ms,"boost_bleeding_restore") or 0

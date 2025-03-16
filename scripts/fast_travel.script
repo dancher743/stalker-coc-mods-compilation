@@ -39,7 +39,7 @@ local function get_spotted_object_hint(se_obj_spot)
 end
 
 local function bbp_extra_weight()
-	local w,ini = 0,get_system_ini()
+	local w,ini = 0,system_ini()
 	if (string.find(_G.GAME_VERSION,"1.5")) then
 		local x,itm = db.actor:belt_count() or 0,nil
 		for i = 0, x - 1, 1 do
