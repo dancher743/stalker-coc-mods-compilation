@@ -23,7 +23,7 @@ if string.find(command_line(), "-dbg") then
 end
 
 USE_INI_MEMOIZE = true
-USE_FUNCTION_MEMOIZE = true
+USE_FUNCTIONS_MEMOIZE = true
 
 -- Improves performance if true, by disabling update methods for squads and smart terrains on levels not linked in configs\ai_tweaks\simulation_objects.ltx
 -- But this means simulation will only be active on actor level and linked levels everything else will remain in an idle state
@@ -43,17 +43,14 @@ USE_MARSHAL = marshal ~= nil
 mus_vol = 0
 amb_vol = 0
 b_discard_settings_shown = false
--- Local use
+-- Memoization
 local ini
 local sim
 local gg
 local hud
 local console
-
-----------------------------------------------------------------------
--- Cached original functions during memoization
+-- Cached functions during memoization
 local alife_function
-
 ----------------------------------------------------------------------
 
 function start_game_callback()
@@ -63,7 +60,7 @@ function start_game_callback()
 		printf("using marshal library")
 	end
 	
-	if (USE_FUNCTION_MEMOIZE) then
+	if (USE_FUNCTIONS_MEMOIZE) then
 		memoize_functions()
 	end
 	
@@ -86,6 +83,15 @@ function start_game_callback()
 	pda.add_quick_slot_items_on_game_start()
 end
 
+function alife_object(id)
+	if (id == nil or id >= 65535) then
+		callstack()
+		printf("ALIFE OBJECT ID IS %s!",id)
+		return
+	end
+	return alife():object(id)
+end
+
 function clear_cache()
 	ini_cache = nil
 	ini = nil
@@ -95,9 +101,15 @@ function clear_cache()
 	console = nil
 end
 
-function memoize_functions()
-	alife_function = alife
-	alife = _G.alife_memoized
+-------------------------------------------------------------------------------------------------------
+-- 											FUNCTIONS MEMOIZATION
+-------------------------------------------------------------------------------------------------------
+
+local function alife_memoized()
+	if not (sim) then
+		sim = alife_function()
+	end
+	return sim
 end
 
 function get_system_ini()
@@ -105,22 +117,6 @@ function get_system_ini()
 		ini = system_ini()
 	end
 	return ini
-end
-
-function alife_memoized()
-	if not (sim) then
-		sim = alife_function()
-	end
-	return sim
-end
-
-function alife_object(id)
-	if (id == nil or id >= 65535) then
-		callstack()
-		printf("ALIFE OBJECT ID IS %s!",id)
-		return
-	end
-	return alife():object(id)
 end
 
 function get_game_graph()
@@ -142,6 +138,11 @@ function get_cached_console()
 		console = get_console()
 	end
 	return console
+end
+
+function memoize_functions()
+	alife_function = alife
+	alife = _G.alife_memoized
 end
 
 -------------------------------------------------------------------------------------------------------
