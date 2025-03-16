@@ -137,7 +137,7 @@ function action_slow_save()
 	local count = alife_storage_manager.get_state().slow_save_count or 0
 	count = count + 1
 	
-	local character_name = get_alife():actor():character_name()
+	local character_name = alife():actor():character_name()
 	local level_name = game.translate_string(level.name())
 	local y,m,d,h,min = game.get_game_time():get()
 	local day_elapsed = pda.get_time_elapsed()

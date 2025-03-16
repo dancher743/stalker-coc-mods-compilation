@@ -585,7 +585,7 @@ end
 -- происходит ли в данный момент смена уровня?
 -- нужно для того, чтобы объекты знали, какую информацию записывать при сохранении, а какую нет
 function level_changing()
-	local sim = get_alife()
+	local sim = alife()
 
 	if not sim then
 		return false
@@ -981,7 +981,7 @@ function round_to_1000(value)
 end
 
 function get_nearest_game_vertex(target_position, target_level)
-	local sim = get_alife()
+	local sim = alife()
 	local gg = get_game_graph()
 	local vertex, lvid, pos
 	local near_lvid, near_dist, near_gvid, dist

@@ -67,7 +67,7 @@ function on_game_load()
 		local actor_inv_backpack_id = utils.load_var(db.actor,"actor_inv_backpack_id",nil)
 		if (not actor_itm_backpack_id and not actor_inv_backpack_id) then
 			get_cached_console():execute(ActorBackPackSlot.." itm_actor_backpack")
-			local se_obj = get_alife():create("itm_actor_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),0)
+			local se_obj = alife():create("itm_actor_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),0)
 			if (se_obj) then
 				utils.save_var(db.actor,"actor_itm_backpack_id",se_obj.id)
 			end
@@ -78,7 +78,7 @@ function on_game_load()
 	if (SleepBagEnable and SleepBagGameStart) then
 		local sleepbag_id = utils.load_var(db.actor,"itm_sleepbag_id",nil)
 		if (not sleepbag_id) then
-			local se_obj = get_alife():create("itm_sleepbag",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),0)
+			local se_obj = alife():create("itm_sleepbag",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),0)
 			utils.save_var(db.actor,"itm_sleepbag_id",se_obj.id)
 		end
 	end
@@ -188,13 +188,13 @@ function on_item_drag_dropped(itm1,itm2,from_slot,to_slot)
 			if (r <= 0) then 
 				local se_obj = alife_object(itm1:id())
 				if (se_obj) then 
-					get_alife():release(se_obj,true)
+					alife():release(se_obj,true)
 				end
 			end
 		else 
 			local se_obj = alife_object(itm1:id())
 			if (se_obj) then 
-				get_alife():release(se_obj,true)
+				alife():release(se_obj,true)
 			end
 		end
 		
@@ -228,7 +228,7 @@ function actor_on_slicing_update()
 		if (obj and FlashlightSections[obj:section()]) then
 			if (has_alife_info(enable_device_torch_info)) then
 				db.actor:disable_info_portion(enable_device_torch_info)
-				get_alife():create(device_torch_dummy_section,db.actor:position(),0,0,0)
+				alife():create(device_torch_dummy_section,db.actor:position(),0,0,0)
 				SetHudMsg(game.translate_string("st_lamp_disconnected"),5)
 			end
 			local torch = db.actor:object(device_torch_obj)
@@ -265,14 +265,14 @@ function actor_on_item_drop(obj)
 		return
 	end
 	if (ActorBackPackEnable and ActorBackPackForced and obj:section() == "itm_actor_backpack") then
-		local se_itm = get_alife():create("itm_actor_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
+		local se_itm = alife():create("itm_actor_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
 
 		if not (se_itm) then
 			return
 		end
 
 		utils.save_var(db.actor,"actor_itm_backpack_id",se_itm.id)
-		get_alife():release( alife_object(obj:id()) )
+		alife():release( alife_object(obj:id()) )
 	end
 	
 	if (db.actor:has_info("actor_made_wish_for_riches")) then 
@@ -346,7 +346,7 @@ function actor_on_item_use(obj)
 
 			if (in_base) then
 				SetHudMsg(game.translate_string("st_stash_unsafe"),4)
-				get_alife():create("itm_backpack",db.actor:position(),0,0,0)
+				alife():create("itm_backpack",db.actor:position(),0,0,0)
 				return
 			end
 		end
@@ -357,7 +357,7 @@ function actor_on_item_use(obj)
 			end
 		end
 
-		local se_obj = get_alife():create("inv_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id())
+		local se_obj = alife():create("inv_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id())
 		if (se_obj) then
 			if not (BackPackStashEnableUi) then
 				local level_name = level.name()
@@ -377,8 +377,8 @@ function actor_on_item_use(obj)
 					end
 					
 					local function on_cancel_button_clicked()
-						get_alife():create("itm_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
-						get_alife():release(alife_object(se_obj.id) ,true)
+						alife():create("itm_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
+						alife():release(alife_object(se_obj.id) ,true)
 					end
 					
 					hud:HideActorMenu()
@@ -397,9 +397,9 @@ function actor_on_item_use(obj)
 		local sec = obj:section()
 		if (SleepBagPlaceable) then
 			local ph_sec = get_system_ini():r_string_ex(sec,"placeable_section")
-			local se_obj = get_alife():create(ph_sec or "ph_sleepbag",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id())
+			local se_obj = alife():create(ph_sec or "ph_sleepbag",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id())
 		else
-			local se_obj = get_alife():create(sec,db.actor:position(),0,0,0)
+			local se_obj = alife():create(sec,db.actor:position(),0,0,0)
 			local hud = get_cached_hud()
 			if (hud) then
 				hud:HideActorMenu()
@@ -414,11 +414,11 @@ function actor_on_item_use(obj)
 		local id = ActorBackPackForced and utils.load_var(db.actor,"actor_inv_backpack_id",nil)
 		if (id) then
 			SetHudMsg(game.translate_string("st_stash_placed"),4)
-			get_alife():create("itm_actor_backpack",db.actor:position(),0,0,0)
+			alife():create("itm_actor_backpack",db.actor:position(),0,0,0)
 			return
 		end
 
-		local se_obj = get_alife():create("inv_actor_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id())
+		local se_obj = alife():create("inv_actor_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id())
 
 		level.map_add_object_spot_ser(se_obj.id, ActorBackPackSpot, game.translate_string("st_itm_stash_of_actor"))
 
@@ -451,7 +451,7 @@ function actor_on_item_use(obj)
 		if not (has_alife_info("enable_device_torch")) then
 			give_info("enable_device_torch")
 			if not (torch) then
-				get_alife():create("device_torch",db.actor:position(),0,0,0)
+				alife():create("device_torch",db.actor:position(),0,0,0)
 			end
 			SetHudMsg(game.translate_string("st_lamp_equipped"),4)
 		end
@@ -461,7 +461,7 @@ function actor_on_item_use(obj)
 	if (obj:section() == "itm_deployable_mgun") then
 		local pos = vector():set(device().cam_pos)
 		pos:add(device().cam_dir:mul(3))
-		get_alife():create("deployable_mgun",pos,level.vertex_id(pos),db.actor:game_vertex_id())
+		alife():create("deployable_mgun",pos,level.vertex_id(pos),db.actor:game_vertex_id())
 	end
 end
 
@@ -542,9 +542,9 @@ function actor_on_item_take_from_box(box,obj)
 			end
 
 			level.map_remove_object_spot(box:id(), BackPackStashSpot)
-			get_alife():create("itm_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
+			alife():create("itm_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
 
-			get_alife():release( alife_object(box:id()) ,true)
+			alife():release( alife_object(box:id()) ,true)
 			
 			if (BackPackStashEnableTip) then
 				SetHudMsg(game.translate_string("st_stash_removed"),4)
@@ -562,9 +562,9 @@ function actor_on_item_take_from_box(box,obj)
 
 			level.map_remove_object_spot(box:id(), BackPackActorSpot)
 
-			get_alife():release( alife_object(box:id()) ,true)
+			alife():release( alife_object(box:id()) ,true)
 
-			get_alife():create("itm_actor_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
+			alife():create("itm_actor_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
 
 			utils.save_var(db.actor,"actor_inv_backpack_id",nil)
 			db.actor:disable_info_portion("actor_filled_backpack")
@@ -588,7 +588,7 @@ function physic_object_on_use_callback(obj,who)
 end
 
 function is_ammo_for_wpn(sec)
-	local sim = get_alife()
+	local sim = alife()
 	for i=2,3 do
 		local wpn = db.actor:item_in_slot(i)
 		if (wpn) then
@@ -649,11 +649,11 @@ function loot_mutant(obj,cls,t,npc)
 			for i=1,loot[2] do
 				if ((math.random(1,100)/100) <= tonumber(loot[3])) then
 					--printf("loot_mutant: section=%s",loot[1])
-					local se_obj = get_alife():create(loot[1],npc and npc:position() or db.actor:position(),0,0,npc and npc:id() or 0)
+					local se_obj = alife():create(loot[1],npc and npc:position() or db.actor:position(),0,0,npc and npc:id() or 0)
 					if (se_obj) then
 						if(has_alife_info("achieved_well_dressed") and ((math.random(1,100)/100) <= 0.2)) then
 							--printf("bonus loot")
-							get_alife():create(loot[1],npc and npc:position() or db.actor:position(),0,0,npc and npc:id() or 0)
+							alife():create(loot[1],npc and npc:position() or db.actor:position(),0,0,npc and npc:id() or 0)
 						end
 						if (t) then
 							local item_section = loot[1]

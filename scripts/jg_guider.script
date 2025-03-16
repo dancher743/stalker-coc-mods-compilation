@@ -46,7 +46,7 @@ function clear()
 		local se_obj = alife_object(spot_id)
 		if (se_obj) then
 			level.map_remove_object_spot(se_obj.id, "crlc_guide")
-			get_alife():release(se_obj)
+			alife():release(se_obj)
 		end
 	end
 	curr_guid = {}
@@ -73,7 +73,7 @@ function ins_mass_onl()
 	local mass_onl = {}
 	for k, id in pairs(db.OnlineStalkers) do
 		local npc = level.object_by_id(id)
-		if npc and jg_utils.is_not_quest_npc(get_alife():object(id)) and not (id == get_comm_id(curr_guid['squad_id'])) and dialogs_axr_companion.is_not_actor_companion(db.actor, npc) and jg_utils.is_not_enemy(db.actor, npc) and dialogs_axr_companion.is_not_hostage_task_giver(db.actor, npc) and xr_conditions.is_squad_commander(db.actor, npc) and not axr_companions.is_companion(npc) then
+		if npc and jg_utils.is_not_quest_npc(alife():object(id)) and not (id == get_comm_id(curr_guid['squad_id'])) and dialogs_axr_companion.is_not_actor_companion(db.actor, npc) and jg_utils.is_not_enemy(db.actor, npc) and dialogs_axr_companion.is_not_hostage_task_giver(db.actor, npc) and xr_conditions.is_squad_commander(db.actor, npc) and not axr_companions.is_companion(npc) then
 			mass_onl[#mass_onl + 1] = npc
 		end
 	end
@@ -143,7 +143,7 @@ function activate()
 		local pos = vector():set(curr_guid.pos[1], curr_guid.pos[2], curr_guid.pos[3])
 		local lvid = level.vertex_id(pos)
 		local gvid = utils.get_nearest_game_vertex(pos, curr_guid.target_level)
-		local se_obj = get_alife():create("guide_spot_object",pos,lvid,gvid)
+		local se_obj = alife():create("guide_spot_object",pos,lvid,gvid)
 		
 		local spot_id = se_obj.id
 		local npc = level.object_by_id(get_comm_id(curr_guid.squad_id))
@@ -184,7 +184,7 @@ function fail()
 --[[	На данный момент нет условий, при котором напарник был бы в оффлайне(они принудительно всегда в онлайне),
 		поэтому использование переключателя нецелесообразно
 	local func = function()
-					local squad = get_alife():object(curr_guid['squad_id'])
+					local squad = alife():object(curr_guid['squad_id'])
 					local commander_id = squad:commander_id()
 					local npc = level.object_by_id(commander_id)
 					news_manager.send_tip(db.actor, "Мы опоздали! Мы же договаривались!! Плати неустойку в "..curr_guid['neustoika']..' рублей.'..'. '..(npc:character_name() or ''))
@@ -195,7 +195,7 @@ function fail()
 					end
 					clear()
 				end
-	local squad = get_alife():object(curr_guid['squad_id'])
+	local squad = alife():object(curr_guid['squad_id'])
 	jg_utils.squad_switcher(squad,func) -- выкидыш при помощи переключателя
 ]]
 	local m = db.actor:money()
@@ -205,14 +205,14 @@ function fail()
 		jg_utils.change_money(m, "out")
 	end
 	xr_statistic.inc_actor_reputation(-500)
-	local snpc = get_alife():object(get_comm_id(curr_guid['squad_id']))
+	local snpc = alife():object(get_comm_id(curr_guid['squad_id']))
 	alun_utils.execute_script_on_squad(snpc,axr_companions.remove_from_actor_squad)
 	clear()
 end
 
 function get_comm_id(squad_id)
 	if squad_id == nil then return end
-	local squad = get_alife():object(squad_id)
+	local squad = alife():object(squad_id)
 	return squad and squad:commander_id()
 end
 

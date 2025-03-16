@@ -192,7 +192,7 @@ function action_beh:set_desired_target()
 				if (squad and squad.commander_id and squad.online and squad.position:distance_to_sqr(db.actor:position()) < 900) then
 					local cid = squad:commander_id()
 					if not (xrs_kill_wounded.hostage_list[cid] or axr_companions.is_hostage_npc(cid)) then
-						local sim = get_alife()
+						local sim = alife()
 						if not (sim:has_info(cid,"npcx_beh_wait") or sim:has_info(cid,"npcx_beh_patrol_mode")) then 
 							if (se_obj.group_id == _id) then
 								break

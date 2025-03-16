@@ -164,7 +164,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 			local obj = db.storage[se_obj.id] and db.storage[se_obj.id].object or level.object_by_id(se_obj.id)
 			dist = db.actor:position():distance_to(obj:position())
         else
-			local se_actor = get_alife():actor()
+			local se_actor = alife():actor()
 			dist = utils.get_sim_distance_to(se_obj, se_actor)
         end
 		
@@ -259,7 +259,7 @@ local function on_game_load()
 
 	if not (is_empty(tsmarts)) then
 		local level_name
-		local sim,gg = get_alife(),get_game_graph()
+		local sim,gg = alife(),get_game_graph()
 		for i=1,65534 do
 			local smart = sim:object(i)
 			if (smart and smart:clsid() == clsid.smart_terrain and tsmarts[smart:name()]) then

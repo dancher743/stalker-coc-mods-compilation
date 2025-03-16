@@ -280,7 +280,7 @@ function action.debug_test(p)
 			if (wpn and IsWeapon(wpn)) then 
 				local se_wpn = alife_object(wpn:id())
 				if (se_wpn) then 
-					get_alife():clone_weapon(se_wpn,se_wpn:section_name(),se_wpn.position,se_wpn.m_level_vertex_id,se_wpn.m_game_vertex_id,0)
+					alife():clone_weapon(se_wpn,se_wpn:section_name(),se_wpn.position,se_wpn.m_level_vertex_id,se_wpn.m_game_vertex_id,0)
 				end
 				
 				local function itr(section)
@@ -306,7 +306,7 @@ function action.debug_test(p)
 					squad:remove_squad()
 				elseif (IsStalker(squad)) then
 					printf("%s removing npc task giver!",k)
-					get_alife():release(squad,true)
+					alife():release(squad,true)
 				end
 			end
 		end
@@ -347,7 +347,7 @@ function action.debug_hold_action(p)
 	if (p == 1) then 
 		_G.DEV_DEBUG_HOLD_ACTION_1 = true
 		local squad
-		local sim = get_alife()
+		local sim = alife()
 		for i=1,65534 do 
 			squad = sim:object(i)
 			if (squad and squad:clsid() == clsid.online_offline_group_s) then

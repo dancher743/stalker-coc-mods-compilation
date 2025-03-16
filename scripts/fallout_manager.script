@@ -507,7 +507,7 @@ function FalloutManager:hit_all_unhided(hitPower)
 	h.direction = VEC_FORWARD
 	h.draftsman = db.actor
 --]]
-	local sim, gg = get_alife(), get_game_graph()
+	local sim, gg = alife(), get_game_graph()
 
 	local board = sim_board.get_sim_board()
 	for k,squad in pairs(board.squads) do
@@ -598,7 +598,7 @@ end
 
 function get_squad_members(squad)
 	local npcs_tbl = {}
-	--local squad = get_alife():object(squad_id)
+	--local squad = alife():object(squad_id)
 	--if(squad) then
 		for obj in squad:squad_members() do
 			npcs_tbl[obj.id] = true
@@ -608,9 +608,9 @@ function get_squad_members(squad)
 end
 --[[
 function check_squad_level(squad_id)
-	local squad = get_alife():object(squad_id)
+	local squad = alife():object(squad_id)
 	if(squad) then
-		local squad_level = get_alife():level_name(get_game_graph():vertex(squad.m_game_vertex_id):level_id())
+		local squad_level = alife():level_name(get_game_graph():vertex(squad.m_game_vertex_id):level_id())
 		if(squad_level==level.name()) then
 			return true
 		end
@@ -619,7 +619,7 @@ function check_squad_level(squad_id)
 end
 
 function check_squad_community_and_story_id(squad_id)
-	local squad = get_alife():object(squad_id)
+	local squad = alife():object(squad_id)
 	if(squad) then
 		if(immuned_to_surge_squads[squad.player_id]) then
 			return false	-- can't delete squad immune to surge
@@ -632,7 +632,7 @@ function check_squad_community_and_story_id(squad_id)
 end
 
 function check_squad_community(squad_id)
-	local squad = get_alife():object(squad_id)
+	local squad = alife():object(squad_id)
 	if(squad) then
 		if(immuned_to_surge_squads[squad.player_id]) then
 			return false	-- can't delete squad immune to surge
@@ -642,7 +642,7 @@ function check_squad_community(squad_id)
 end
 --]]
 function check_squad_smart_props(squad, board)
-	--local squad = get_alife():object(squad_id)
+	--local squad = alife():object(squad_id)
 	--if(squad) then
 		--local board = sim_board.get_sim_board()
 		if(board and squad.smart_id and board.smarts[squad.smart_id]) then

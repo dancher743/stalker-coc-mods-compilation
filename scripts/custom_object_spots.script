@@ -40,7 +40,7 @@ local function on_ok_button_clicked(text)
 	end
 	
 	local actor = db.actor
-	local se_obj = get_alife():create("custom_spot_dummy_object",actor:position(),actor:level_vertex_id(),actor:game_vertex_id())
+	local se_obj = alife():create("custom_spot_dummy_object",actor:position(),actor:level_vertex_id(),actor:game_vertex_id())
 	
 	add_spot(se_obj.id, text)
 end
@@ -71,7 +71,7 @@ function remove_spot(id)
 	
 	local se_obj = alife_object(id)
 	if (se_obj and se_obj:section_name() == "custom_spot_dummy_object") then
-		get_alife():release(se_obj)
+		alife():release(se_obj)
 	end
 end
 

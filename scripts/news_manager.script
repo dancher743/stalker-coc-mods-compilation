@@ -41,7 +41,7 @@ function send_tip(actor, news_id, timeout, sender, showtime, sender_id)
 
 	--printf("try to send tips for [%s]", tostring(sender_id))
 	if sender_id ~= nil then
-		local sim = get_alife()
+		local sim = alife()
 		if sim ~= nil then
 			local id = get_story_object_id(sender_id)
 			local npc = id and sim:object(id)
@@ -221,7 +221,7 @@ function send_treasure(param, has_spot)
 end
 
 function send_treasure_with_level(stash_name, se_box)
-	local level_name = get_alife():level_name(get_game_graph():vertex(se_box.m_game_vertex_id):level_id())
+	local level_name = alife():level_name(get_game_graph():vertex(se_box.m_game_vertex_id):level_id())
 	
 	local level_point
 	if (IsUndergroundLevel(level_name)) then

@@ -67,7 +67,7 @@ function release_actor_items()
 	if (axr_main.config:r_value(MM_OPTIONS,"enable_release_dropped_items",1,false)) then
 		local game_time = game.get_game_time()
 		local stay_time = 14400
-		local sim = get_alife()
+		local sim = alife()
 		local se_actor_id = sim:actor().id
 		for id,t in pairs(items_marked_for_removal) do 
 			local se_obj = sim:object(id)
@@ -81,7 +81,7 @@ function release_actor_items()
 end
 
 function release_item_by_parent(se_parent_id)
-	local sim = get_alife()
+	local sim = alife()
 	for id,t in pairs(items_marked_for_removal) do
 		local se_obj = sim:object(id)
 		if (se_obj and se_obj.parent_id == 65535 and se_obj:name() == t[1] and t[3] == se_parent_id) then

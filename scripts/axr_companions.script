@@ -229,7 +229,7 @@ end
 
 function companion_squad_can_teleport(squad)
 	local id = squad:commander_id()
-	local sim = get_alife()
+	local sim = alife()
 	local se_obj = sim:object(id)
 	if (se_obj) then
 		if (utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_cannot_teleport")) then 
@@ -245,7 +245,7 @@ function companion_squad_can_teleport(squad)
 end 
 
 local function teleport_companion_squad_to_actor(squad)
-	local sim = get_alife()
+	local sim = alife()
 	local se_actor = sim:actor()
 	
 	local gg = get_game_graph()
@@ -258,7 +258,7 @@ local function teleport_companion_squad_to_actor(squad)
 end
 
 function teleport_companions_to_actor()
-	local sim = get_alife()
+	local sim = alife()
 	
 	for id,v in pairs(companion_squads) do 
 		local squad = sim:object(id)
@@ -269,7 +269,7 @@ function teleport_companions_to_actor()
 end
 
 function teleport_companions_to_actor_in_online()
-	local sim = get_alife()
+	local sim = alife()
 	
 	local function telepor_squad(squad)
 		if (squad.online) then
@@ -331,7 +331,7 @@ function setup_companion_logic(npc,st,loaded,cannot_dismiss)
 	end
 	
 	local id = npc:id()
-	local sim = get_alife()
+	local sim = alife()
 	local se_npc = sim:object(id)
 	local unreg_id = se_npc and se_npc.m_smart_terrain_id
 	if (unreg_id and unreg_id ~= 65535) then
@@ -385,7 +385,7 @@ function remove_all_from_actor_squad()
 	for id,squad in pairs(companion_squads) do
 		if (squad) then
 			for k in squad:squad_members() do 
-				local se_obj = k.object or get_alife():object(k.id)
+				local se_obj = k.object or alife():object(k.id)
 				if (se_obj) then 
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion",nil)
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss",nil)
@@ -872,7 +872,7 @@ end
 -- Added by Dancher
 ------------------------------------------
 
-local simulation = get_alife()
+local simulation = alife()
 local option_name
 local se_obj_cache
 local se_obj_actor_squad_list

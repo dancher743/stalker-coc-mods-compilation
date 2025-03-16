@@ -55,7 +55,7 @@ function update_level(lvl)
 		setup_faction_table(lvl, "none")
 		
 		for i,sm in pairs(level_information[lvl].smarts) do
-			local smart = sm and get_alife():object(sm)
+			local smart = sm and alife():object(sm)
 			
 			if (smart and smart.owning_faction) then
 				if not (level_information[lvl].faction_stats[smart.owning_faction]) then

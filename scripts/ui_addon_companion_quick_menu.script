@@ -142,7 +142,7 @@ end
 
 
 function addonCompanionsContextMenu:DoesSquadHaveInfo(info)
-	if(get_alife():has_info(self.companionSquad:commander_id(),info)) then
+	if(alife():has_info(self.companionSquad:commander_id(),info)) then
 		return true
 	end
 		return false

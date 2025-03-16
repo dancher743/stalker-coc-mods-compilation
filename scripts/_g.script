@@ -3,7 +3,7 @@
 	1. 	NEVER keep userdata (ie. engine classes) in global scope, instead keep track of game object id, and grab object in the scope you need it in by using level.object_by_id or db.storage table. 
 		Otherwise object can't deconstruct and you will end up with instances were script binder exists but object doesn't or level object exists but server object doesn't. This is because variables in lua are all references.
 			Ex. _G.npc = level.object_by_id(2342) 
-				get_alife():release(alife_object(2342))
+				alife():release(alife_object(2342))
 		Above, 'npc' will not be nil but se_obj will be! scripts will blow up. Pure Virtual Function calls may occur! Or quite possibly silent errors like for example when player goes to talk to npc game crashes because self.object is nil
 		Such thing is 'okay' in db.storage, but that is because on net_destroy db.storage[id] is set nil. So if you are keeping track of objects directly in a table, instead of ID 
 		then you absolutely must rid of every single reference to the userdata so that it can be destroy and garbage collected. Otherwise you end up with undetectable issues.
@@ -23,6 +23,7 @@ if string.find(command_line(), "-dbg") then
 end
 
 USE_INI_MEMOIZE = true
+USE_FUNCTION_MEMOIZE = true
 
 -- Improves performance if true, by disabling update methods for squads and smart terrains on levels not linked in configs\ai_tweaks\simulation_objects.ltx
 -- But this means simulation will only be active on actor level and linked levels everything else will remain in an idle state
@@ -48,6 +49,11 @@ local sim
 local gg
 local hud
 local console
+
+----------------------------------------------------------------------
+-- Cached original functions during memoization
+local alife_function
+
 ----------------------------------------------------------------------
 
 function start_game_callback()
@@ -55,6 +61,10 @@ function start_game_callback()
 	printf("Call of Chernobyl version %s + %s",GAME_VERSION,MOD_VERSION)
 	if (USE_MARSHAL) then
 		printf("using marshal library")
+	end
+	
+	if (USE_FUNCTION_MEMOIZE) then
+		memoize_functions()
 	end
 	
 	sound_theme.load_sound()
@@ -85,6 +95,11 @@ function clear_cache()
 	console = nil
 end
 
+function memoize_functions()
+	alife_function = alife
+	alife = _G.alife_memoized
+end
+
 function get_system_ini()
 	if not (ini) then
 		ini = system_ini()
@@ -92,9 +107,9 @@ function get_system_ini()
 	return ini
 end
 
-function get_alife()
+function alife_memoized()
 	if not (sim) then
-		sim = alife()
+		sim = alife_function()
 	end
 	return sim
 end
@@ -105,7 +120,7 @@ function alife_object(id)
 		printf("ALIFE OBJECT ID IS %s!",id)
 		return
 	end
-	return get_alife():object(id)
+	return alife():object(id)
 end
 
 function get_game_graph()
@@ -256,7 +271,7 @@ function ProcessEventQueueState(m_data,save)
 end
 
 function SetSwitchDistance(dist)
-	if (get_alife()) then
+	if (alife()) then
 		local p = net_packet()
 		p:w_begin(18)
 		p:w_float(dist or 2.0)
@@ -325,7 +340,7 @@ function JumpToLevel(new_level)
 	end
 	
 	local cvertex
-	local sim,gg = get_alife(),get_game_graph()
+	local sim,gg = alife(),get_game_graph()
 	-- first try to find a smart_terrain on specified level
 	for id,smart in pairs(db.smart_terrain_by_id) do
 		cvertex = smart and gg:vertex(smart.m_game_vertex_id)
@@ -357,12 +372,12 @@ function TeleportObject(id,pos,lvid,gvid)
 		db.offline_objects[id].level_vertex_id = nil
 	end
 	db.spawned_vertex_by_id[id] = nil
-	get_alife():teleport_object(id,gvid,lvid,pos)
+	alife():teleport_object(id,gvid,lvid,pos)
 end
 
 function TeleportSquad(squad,pos,lvid,gvid)
 	-- Requires OpenXray
-	local sim = get_alife()
+	local sim = alife()
 	sim:teleport_object(squad.id,gvid,lvid,pos)
 	for k in squad:squad_members() do
 		if (db.offline_objects[k.id]) then
@@ -575,7 +590,7 @@ end
 
 --' іроверка на инфопоршнv, даже если игрока не су	ествует
 function has_alife_info(info_id)
-	local sim = get_alife()
+	local sim = alife()
 	return sim:has_info(0, info_id)
 end
 
@@ -1134,7 +1149,7 @@ end
 
 -- получить геймобжект по стори_айди.
 function level_object_by_sid( sid )
-	local sim = get_alife()
+	local sim = alife()
 	if sim then
 		local se_obj = sim:story_object( sid )
 		if se_obj then
@@ -1145,7 +1160,7 @@ function level_object_by_sid( sid )
 end
 -- Получить айдишник обьекта по стори айди.
 function id_by_sid( sid )
-	local sim = get_alife()
+	local sim = alife()
 	if sim then
 		local se_obj = sim:story_object( sid )
 		if se_obj then
@@ -1262,11 +1277,11 @@ function create_ammo(section, position, lvi, gvi, pid, num)
 	local num_in_box = ini:r_u32(section, "box_size")
 	local t = {}
 	while num > num_in_box do
-		local obj = get_alife():create_ammo(section, position, lvi,	gvi, pid, num_in_box)
+		local obj = alife():create_ammo(section, position, lvi,	gvi, pid, num_in_box)
 		table.insert(t, obj)
 		num = num - num_in_box
 	end
-	local obj = get_alife():create_ammo(section, position, lvi,	gvi, pid, num)
+	local obj = alife():create_ammo(section, position, lvi,	gvi, pid, num)
 	table.insert(t, obj)
 	return t
 end
@@ -1388,7 +1403,7 @@ function get_object_squad(object,caller)
 		if (object.group_id ~= nil and object.group_id ~= 65535) then
 		return alife_object(object.group_id)
 	end
-		local sim = get_alife()
+		local sim = alife()
 	local se_obj = type(object.id) == STR_FUNCTION and sim:object(object:id())
 	return se_obj and se_obj.group_id ~= 65535 and sim:object(se_obj.group_id) or nil
 end
@@ -1524,7 +1539,7 @@ function CALifeUpdateManager__on_before_change_level(packet)
 	packet:r_vec3(angle)
 	-- crazy hack to help prevent crash on Trucks Cemetery
 	local gg = get_game_graph()
-	if (gg:valid_vertex_id(gvid) and get_alife():level_name(gg:vertex(gvid):level_id()) == "k02_trucks_cemetery") then
+	if (gg:valid_vertex_id(gvid) and alife():level_name(gg:vertex(gvid):level_id()) == "k02_trucks_cemetery") then
 		log("k02_trucks_cemetery hack r__clear_models_on_unload 1")
 		get_cached_console():execute("r__clear_models_on_unload 1")
 	end
@@ -1576,7 +1591,7 @@ end
 function give_object_to_actor(obj,count)
   if count==nil then count=1 end
   for i=1, count do
-     get_alife():create(obj,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
+     alife():create(obj,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
   end
 end
 

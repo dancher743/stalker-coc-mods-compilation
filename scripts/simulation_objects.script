@@ -43,7 +43,7 @@ function simulation_objects_registry:update_avaliability(obj)
 		return
 	end 
 	
-	if (obj:sim_available() and xr_logic.pick_section_from_condlist(get_alife():actor(), obj, obj.sim_avail) == STR_TRUE) then
+	if (obj:sim_available() and xr_logic.pick_section_from_condlist(alife():actor(), obj, obj.sim_avail) == STR_TRUE) then
 		self.objects[obj.id] = obj
 	else
 		self.objects[obj.id] = nil
@@ -145,7 +145,7 @@ end
 
 function evaluate_prior(target, squad)
 
-	local sim = get_alife()
+	local sim = alife()
 	local prior = 5
 
 	if (target:clsid() == clsid.script_actor) then

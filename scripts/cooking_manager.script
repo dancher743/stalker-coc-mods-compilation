@@ -82,7 +82,7 @@ function check_recipe(item)
 end
 
 function cook_raw_item(item)
-	local sim = get_alife()
+	local sim = alife()
 	local actor = db.actor
 
 	-- create cooked item

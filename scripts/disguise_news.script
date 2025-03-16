@@ -69,7 +69,7 @@ end
 
 function send_suspicious_tip(npc)
 	local actor = db.actor
-	local actor_name = get_alife():actor():character_name()
+	local actor_name = alife():actor():character_name()
 	
 	local news_caption = strformat("%s, %s",npc:character_name(), dynamic_news_helper and dynamic_news_helper.GetCommunityDescription(npc,6) or STR_EMPTY)
 	local text = game.translate_string("st_disguise_suspicious_"..npc:character_community().."_1")

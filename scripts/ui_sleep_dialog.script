@@ -87,7 +87,7 @@ end
 
 function sleep_dialog:TestAndShow()
 	if (self.ph_sleepbag_id and self.item_section) then
-		local sim = get_alife()
+		local sim = alife()
 		sim:create(self.item_section,db.actor:position(),0,0,0)
 		local se_bag = sim:object(self.ph_sleepbag_id)
 		if (se_bag) then

@@ -11,7 +11,7 @@
 
 function give_player_bad_psi_helmet(a,b)
 	dialogs.relocate_money_from_actor(a,b,10000)
-	get_alife():create("bad_psy_helmet",vector(),0,0,0)
+	alife():create("bad_psy_helmet",vector(),0,0,0)
 	news_manager.relocate_item(db.actor, "in", "bad_psy_helmet")
 end
 
@@ -21,7 +21,7 @@ function upgrade_player_bad_psi_helmet(a,b)
 		news_manager.relocate_item(db.actor, "out", "bad_psy_helmet")
 		local se_itm = alife_object(o:id())
 		if (se_itm) then
-			get_alife():release(se_itm,true)
+			alife():release(se_itm,true)
 		end
 	end
 

@@ -200,7 +200,7 @@ function loot_ui:OnListItemDbClicked()
 	return
 	end
 
-	get_alife():create(booty.sec, db.actor:position(),0,0,0)
+	alife():create(booty.sec, db.actor:position(),0,0,0)
 	--news_manager.relocate_item(db.actor, "in", booty.sec, 1)
 	xr_statistic.inc_counter("field_dressings")
 
@@ -228,7 +228,7 @@ function loot_ui:OnButton_ok()
 
 	for sec,t in pairs(self.loot) do
 		for i=1,t.count do
-		get_alife():create(sec, db.actor:position(),0,0,0)
+		alife():create(sec, db.actor:position(),0,0,0)
 		xr_statistic.inc_counter("field_dressings")
 		end
 	news_manager.relocate_item(db.actor, "in", sec, t.count)
