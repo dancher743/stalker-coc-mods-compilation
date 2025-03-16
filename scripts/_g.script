@@ -96,15 +96,6 @@ function alife_object(id)
 	return alife():object(id)
 end
 
-function clear_cache()
-	ini_cache = nil
-	ini = nil
-	sim = nil
-	gg = nil
-	hud = nil
-	console = nil
-end
-
 -------------------------------------------------------------------------------------------------------
 -- 											FUNCTIONS MEMOIZATION
 -------------------------------------------------------------------------------------------------------
