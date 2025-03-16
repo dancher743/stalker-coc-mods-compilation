@@ -14,7 +14,6 @@ All notable changes to this project will be documented in this file.
 * Added open inventory dialog for a companion
 * Added mosquitoes sound ambient
 * NPCs can deal critical hits to other NPCs
-* Optimized global code (`_g.script`)
 * New outfits: Clear Sky exoskeleton & scientific outfit, bandit leather trench coat, military novice outfit
 * Added old new night visions: 1 gen from Clear Sky, 2 gen from SoC
 * Reworked global map texture based on Clear Sky texture
@@ -24,6 +23,7 @@ All notable changes to this project will be documented in this file.
 * Added sleep aura for cat mutant
 * Fixed incorrect vegetation in Truck Cemetery, Army Warehouses, Jupiter and Zaton levels
 * Added A-Life from CoC 1.5
+* Added memoization to global code to reduce the load on a CPU
 
 ### Mods
 * Call of Chernobyl Fallout (CrommCruac, av661194)
@@ -57,7 +57,6 @@ All notable changes to this project will be documented in this file.
 * Added coocked food and mutant meat items into debug menu
 * Refactored get period functions in `level_weathers.script`
 * Refactored `dynamic_weather_graphs.ltx`
-* Replaced `ini_sys` field with `get_system_ini()` function in `_g.script`
 * Added HUD messages for Ironman Mode
 * Added color and `location_level` from Clear Sky for `treasure_quest` icon
 * Added removed `rnd_dark_2` sound into `restored_dark` channel
@@ -100,18 +99,15 @@ All notable changes to this project will be documented in this file.
 * Optimized RAM usage in `actor_on_slicing_update()` function in `itms_manager.script`
 * Reworked initialization of Azazel and Ironman modes to not affect the regular mode
 * Optimized string allocations in find victims code in `azazel_mode.script`
-* Reduced extra allocations of `game_graph()` function, using `get_game_graph()` instead
 * Optimized string allocations in `critical_hit_manager.script`
 * Optimized string allocations in `get_check_option` function
 * Reduced extra allocations using `STR_USERDATA`, `STR_TRUE`, `STR_FALSE`, `STR_ZERO` and `STR_ONE` constants
-* Reduced extra allocations of `get_hud()` function, using `get_cached_hud()` instead
 * Optimized strings allocations in `printf` function in `_g.script`
-* Reduced extra allocations of `get_console()` function, using `get_cached_console()` instead
 * Reduced strings allocations using var types constants
 * Optimized RAM in `get_valid_item_sections` and `get_loot_table` functions
 * Optimized string allocations in `xr_corpse_detection.script`
 * Added RAM clearing on game unloading
-* Replaced missing `alife()` calls with `get_alife()` in `alun_utils.script`
+* Added global functions memoization into `_g.script`
 
 ### Framework
 * Added `npc_regular` string into `squad_descr.ltx` to add non-random squads spawn
@@ -119,13 +115,10 @@ All notable changes to this project will be documented in this file.
 * Added `IsAzazelMode()` and `IsIronManMode()` functions into `_g.script`
 * Added `npc_on_use_dead` callback into `axr_main.script`
 * Added code template for SkipFrame function into `xr_help.script`
-* Added `get_game_graph()` function into `_g.script`
 * Added `STR_USERDATA` const into `_g.script`
 * Added `STR_TRUE` and `STR_FALSE` consts into `_g.script`
 * Added `STR_ZERO` and `STR_ONE` consts into `_g.script`
 * Added `STR_COMMA` and `STR_NEWLINE` consts into `_g.script`
-* Added `get_cached_hud()` function into `_g.script`
-* Added `get_cached_console()` function into `_g.script`
 * Added var types constants into `_g.script`
 * Added `parse_ini_section_to_iarray` function into `utils.script`
 * Added original `lua_help.script`
@@ -134,6 +127,8 @@ All notable changes to this project will be documented in this file.
 * Added code template for `StartTimer` function into `xr_help.script`
 * Added `has_info` function into `_g.script`
 * Added `news_helper.script` to help with sending custom news
+* Added `USE_FUNCTIONS_MEMOIZE` const to enabled/disable functions memoization in `_g.script`
+* Added `memoize_functions()` into `_g.script` to add functions for memoization
 
 ## [1.4.6] - 2024-12-30
 
