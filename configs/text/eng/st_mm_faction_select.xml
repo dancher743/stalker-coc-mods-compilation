@@ -86,77 +86,88 @@
 	</string>
 	<string id="st_mm_list_companions_desc">
 		<text>
-			%c[0,150,150,150]Choose whether you will be accompanied by companions from the very beginning of the game.
+			%c[0,245,245,220]Choose whether you will be accompanied by companions from the very beginning of the game.
 			\n
-			\n%c[200,200,200,50]• %c[0,150,150,150]Companion who has spent 24 hours of in-game time (skipped time doesn't count) will become invulnerable to any type of damage and will give full access to his backpack.
-			\n%c[200,200,200,50]• %c[0,150,150,150]Companions who accompany you from the very beginning of the game will already have these bonuses.
-			\n%c[200,200,200,50]• %c[0,150,150,150]Invulnerability will be indicated by the shield icon located on his interface in the upper left corner.
-			\n%c[200,200,50,50]• %c[0,150,150,150]You will not be able to disguise yourself using a patch while you are accompanied by companions.
-			\n%c[200,50,200,50]• %c[0,150,150,150]You can make your companions vulnerable in your playthrough at any time.
+			\nCompanion who has spent 24 hours of in-game time (skipped time doesn't count) will become invulnerable to any type of damage and will give full access to his backpack. However, companions who accompany you from the very beginning of the game will have these bonuses from the start.
+			\n
+			\nInvulnerability will be indicated by the shield icon located on his interface in the upper left corner.
+			\n
+			\nYou will not be able to disguise yourself using a patch while you are accompanied by companions.
+			\n
+			\n%c[0,255,255,255]You can make your companions vulnerable in your playthrough at any time.
 			\nSee "Options" -> "Game" -> "Companions invulnerability"
 		</text>
 	</string>
 	<string id="st_mm_list_difficulty_desc">
 		<text>
-			%c[0,150,150,150]Gameplay difficulty affects showing wound effects, player's protection and the accuracy of weapons in general. It applies to the player and other stalkers alike.
+			%c[0,245,245,220]Gameplay difficulty affects showing wound effects, player's protection and the accuracy of weapons in general. It applies to the player and other stalkers alike.
 			\n
-			\n%c[200,50,200,50]• %c[0,150,150,150]You can change gameplay difficulty in your playthrough at any time.
+			\n%c[0,255,255,255]You can change gameplay difficulty in your playthrough at any time.
 			\nSee "Options" -> "Game" -> "Difficulty"
-			\n%c[200,50,200,50]• %c[0,150,150,150]Options to make your game more difficult are also available.
-			\nSee "Options" -> "Game" -> "Hardcore AI aim", "Sleep deprivation", "Show wound effects" and etc»
+			\n
+			\n%c[0,255,255,255]Options to make your game more difficult are also available.
+			\nSee "Options" -> "Game" -> "Hardcore AI aim", "Sleep deprivation", "Show wound effects" and etc.
 		</text>
 	</string>
 	<string id="st_mm_ck_story_desc">
 		<text>
-			%c[0,150,150,150]Story mode starts the game with the 'Mysteries of the Zone' storyline, and with the goals to disable the Brain Scorcher and Miracle Machine.\n 
+			%c[0,245,245,220]Story mode starts the game with the 'Mysteries of the Zone' storyline, and with the goals to disable the Brain Scorcher and Miracle Machine.\n 
 			\nElements from previous storylines are borrowed and recreated, so this is not for players who feel that strict story continuity is essential.\n
 			\nOnly available to Loner, Duty, Freedom, Ecologist, Mercenary and Clear Sky factions.\n
-			\n%c[200,200,50,50]• %c[0,150,150,150]Not compatible with Azazel mode.
+			\nNot compatible with Azazel mode.
 			\n
 			\n%c[0,255,255,255]Recommended for: new players.
 		</text>
 	</string>
 	<string id="st_mm_ck_hardcore_desc">
 		<text>
-			%c[0,150,150,150]Ironman mode is a feature that will remove your game saves upon death.\n
+			%c[0,245,245,220]Ironman mode is a feature that will remove your game saves upon death.
+			\n
 			\nYou are free to make as many saves as you wish but dying will result in the removal of all saves made with this character.
+			\n
+			\nCompatible with all modes.
 			\n
 			\n%c[0,255,255,255]Recommended for: advanced players.
 		</text>
 	</string>
 	<string id="st_mm_ck_hardcore_aim_desc">
 		<text>
-			%c[0,150,150,150]Hardcore AI Aim is a feature that maximizes AI aim predictability, making it more difficult for the player to dodge hits while moving.
+			%c[0,245,245,220]Hardcore AI Aim is a feature that maximizes AI aim predictability, making it more difficult for the player to dodge hits while moving.
 		</text>
 	</string>
 	<string id="st_mm_ck_survival_desc">
 		<text>
-			%c[0,150,150,150]Remember Jill Valentine from Resident Evil - there are only hordes of zombies around, ready to tear you to pieces!
+			%c[0,245,245,220]Remember Jill Valentine from Resident Evil - there are only hordes of zombies around, ready to tear you to pieces!
 			\n
 			\nSurvival mode replaces most spawns with Zombified stalkers and zombies.
 			\n
 			\nSee how long you can survive!
 			\n
-			\n%c[200,200,200,50]• %c[0,150,150,150]If Extended population mode is active, then you will have relatively safe only the first 24 hours, because the spawn activity of the living dead in the Zone will increase every hour. Use your time wisely!
+			\nIf Extended population mode is active, you will have relatively safe only the first 24 hours: the spawn activity of the living dead in the Zone will increase with each passing hours. Use your time wisely!
+			\n
+			\nCompatible with all modes.
 		</text>
 	</string>
 	<string id="st_mm_ck_azazel_mode_desc">
 		<text>
-			%c[0,150,150,150]In Azazel mode, death is not the end.\n
-			\nLike the demon Azazel you will possess a new body when you die; taking over the form of another random stalker that really exists in the Zone.\n
-			\nIf you have companions, you will become one of them. This feature compliments Ironman and/or Survival mode very well.\n
-			\n%c[200,200,50,50]• %c[0,150,150,150]Not compatible with Story mode.
+			%c[0,245,245,220]In Azazel mode, death is not the end.
+			\n
+			\nLike the demon Azazel you will possess a new body when you die; taking over the form of another random stalker that really exists in the Zone.
+			\n
+			\nIf you have companions, you will become one of them. This feature compliments Ironman and/or Survival mode very well.
+			\n
+			\nNot compatible with Story mode.
 		</text>
 	</string>
 	<string id="st_mm_ck_campfire_desc">
 		<text>
-			%c[0,150,150,150]In Campfire save mode, you can't save your progress unless if you're standing nearby campfire.
-			\n \n%c[200,50,200,50]• %c[0,150,150,150]All hardcore save modes are compatible with each other.
+			%c[0,245,245,220]In Campfire save mode, you can't save your progress unless if you're standing nearby campfire.\n
+			\n All hardcore save modes are compatible with each other.
 		</text>
 	</string>
 	<string id="st_mm_ck_conditions_desc">
 		<text>
-			%c[0,150,150,150]Agony mode will prevent you from saving your progress if you're:
+			%c[0,245,245,220]Agony mode will prevent you from saving your progress if you're:
 			\n • Injured
 			\n • Bleeding
 			\n • Irradiated
@@ -164,66 +175,73 @@
 			\n • During cataclysm
             \n • Near campfire (optional)
 			\n
-			\n%c[200,50,200,50]• %c[0,150,150,150]All hardcore save modes are compatible with each other.
-			\n%c[200,50,200,50]• %c[0,150,150,150]You can add campfire saving to this mode in your playthrough at any time.
+			\nCompatible with all modes.
+			\n
+			\n%c[0,255,255,255]You can add campfire saving to this mode in your playthrough at any time.
 			\nSee "Options" -> "Game" -> "Campfire saving"
 		</text>
 	</string>
 	<string id="st_mm_list_hardcore_lives_desc">
 		<text>
-			%c[0,150,150,150]An addition feature for Ironman mode that allows you to set how many lives you have at the beginning of your new game.
+			%c[0,245,245,220]An addition feature for Ironman mode that allows you to set how many lives you have at the beginning of your new game.
 			\n
-			\nEverytime you die, you will lose a life.
-			\nOnce you run out of lives, all the game saves of your related playthrough will be removed.
+			\nEverytime you die, you will lose a life. Once you run out of lives, all the game saves of your related playthrough will be removed.
 			\n
-			\n%c[200,200,50,50]• %c[0,150,150,150]Ironman mode must be active.
+			\nIronman mode must be active.
 		</text>
 	</string>
 	<string id="st_mm_list_hardcore_regen_desc">
 		<text>
-			%c[0,150,150,150]An addition feature for Ironman mode that allows you to set how many days it will take to grant an extra life.
+			%c[0,245,245,220]An addition feature for Ironman mode that allows you to set how many days it will take to grant an extra life.
 			\n
-			\n%c[200,200,50,50]• %c[0,150,150,150]Sleeping will not help.
-			\n%c[200,200,50,50]• %c[0,150,150,150]Ironman mode must be active.
+			\nSleeping will not help.
+			\n
+			\nIronman mode must be active.
 		</text>
 	</string>
 	<string id="st_mm_list_timer_desc">
 		<text>
-			%c[0,150,150,150]In Timer mode, you can save your game every specific amount of time. 
+			%c[0,245,245,220]In Timer mode, you can save your game every specific amount of time. 
+			\n
 			\nOnce you save your game, you cannot make another save once again until the timer is over.
-			\n \n%c[200,50,200,50]• %c[0,150,150,150]All hardcore save modes are compatible with each other.
+			\n
+			\nCompatible with all modes.
 		</text>
 	</string>
 	<string id="st_mm_ck_eoc_desc">
 		<text>
-			%c[0,150,150,150]Extended population is a mode that makes life in the Zone more active and unpredictable.
+			%c[0,245,245,220]Extended population is a mode that makes life in the Zone more active and unpredictable.
 			\n
 			\nMutants will guard their territories during the day, and at night they will gather and attack the camps of stalkers. Stalkers will begin to explore the Zone and collect resources for themselves and their faction. Factions are trying to strengthen their region and capture the neighboring one.
 			\n
-			\n%c[200,50,200,50]• %c[0,150,150,150]Compatible with all modes.
-			\n%c[200,50,200,50]• %c[0,150,150,150]You can change population activity in your playthrough at any time.
-			\nSee "Options" -> "Game". Then "Population squades activity".
-			\n%c[200,50,200,50]• %c[0,150,150,150]Some characters that don't take part in the 'Mysteries of the Zone' storyline may die. To enable their respawn 
-			\nSee "Options" -> "Game". Then "Unique NPC respawn".
+			\nCompatible with all modes.
 			\n
 			\n%c[0,255,255,255]Recommended for: advanced players who are familiar with Story mode or have played without it.
+			\n
+			\n%c[0,255,255,255]You can change population activity in your playthrough at any time.
+			\nSee "Options" -> "Game". Then "Population squades activity".
+			\n
+			\nSome characters that don't take part in the 'Mysteries of the Zone' storyline may die. To enable their respawn 
+			\nSee "Options" -> "Game". Then "Unique NPC respawn".
 		</text>
 	</string>
 		<string id="st_mm_list_stalker_population_desc">
 		<text>
-			%c[0,150,150,150]Population factor of stalkers in the Zone at the start of the game.
+			%c[0,245,245,220]Population factor of stalkers in the Zone at the start of the game.
 			\n
-			\n%c[200,200,200,50]• %c[0,150,150,150]Choose the value "0.1" if you like the desolated Zone.
-			\n%c[200,50,200,50]• %c[0,150,150,150]Population during the game is determined in the options.
+			\nChoose the value "0.1" if you like the desolated Zone.
+			\n
+			\n%c[0,255,255,255]Population during the game is determined in the options.
 			\nSee "Options" -> "Game". Then "Population factor (stalkers)".
 		</text>
 	</string>
 	<string id="st_mm_list_mutant_population_desc">
 		<text>
-			%c[0,150,150,150]Population factor of mutants in the Zone at the start of the game.
+			%c[0,245,245,220]Population factor of mutants in the Zone at the start of the game.
 			\n
-			\n%c[200,200,200,50]• %c[0,150,150,150]Choose the value "0.1" if you like the desolated Zone.
-			\n%c[200,50,200,50]• %c[0,150,150,150]Population during the game is determined in the options.
+			\nChoose the value "0.1" if you like the desolated Zone.
+			\n
+			\n%c[0,255,255,255]Population during the game is determined in the options.
 			\nSee "Options" -> "Game". Then "Population factor (mutants)".
 		</text>
 	</string>

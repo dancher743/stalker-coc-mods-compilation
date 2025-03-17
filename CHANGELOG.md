@@ -95,6 +95,7 @@ All notable changes to this project will be documented in this file.
 * Fixed upgrades properties of outfits
 * Fixed missing data of `xrs_kill_wounded.hostage_list`
 * Fixed Russian text of Dynamic News about time and weather
+* Fixed text and color of eng localization in Faction Select Menu
 
 ### Optimization
 * Optimized amount of update callbacks
