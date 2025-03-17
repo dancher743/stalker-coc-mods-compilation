@@ -5455,7 +5455,7 @@
 		<text>Ну вот, снова от зомбарей отбоя не будет. Душман, чё скажешь?</text>
 	</string>
 	<string id="st_dyn_news_time_night_16">
-		<text>Мужики, кто в комплексе на Агропроме - не тритесь у люков этих канализационных, говорят ночью снорки оттуда лезут</text>
+		<text>Мужики, кто в комплексе на Агропроме - не тритесь у люков этих канализационных, говорят ночью снорки оттуда лезут.</text>
 	</string>
 	<string id="st_dyn_news_time_night_17">
 		<text>Ну что? Кто со мной пойдёт валить стаю псевдособак? А то я боюсь ночью в палатке спать, вдруг этот тёмный водички опять попросит. Уж лучше побродить где-нибудь...</text>
@@ -5464,7 +5464,7 @@
 		<text>Луна скоро взойдёт. Чёрт, не успеваю до лагеря добраться. Мужики, есть кто поблизости? Чую, меня какая-то тварь уже преследует.</text>
 	</string>
 	<string id="st_dyn_news_time_night_19">
-		<text>Всем внимание! Учёные сообщают о подозрительной активности мутантов на Янтаре этой ночью. Всем оставаться в лагерях.</text>
+		<text>Прекрасная ночь...</text>
 	</string>
 
 	
@@ -5490,10 +5490,10 @@
 		<text>Снова вставать, эээх.</text>
 	</string>
 	<string id="st_dyn_news_time_morning_8">
-		<text>Всю ночь орали бандерлоги, как их... буреры? Не, вспомнил - изломы</text>
+		<text>Всю ночь орали бандерлоги, как их... бургеры? Не, вспомнил - изломы!</text>
 	</string>
 	<string id="st_dyn_news_time_morning_9">
-		<text>Вечер как будто</text>
+		<text>Вставай, вставай, вставай, да порточки надевай!</text>
 	</string>
 	<string id="st_dyn_news_time_morning_10">
 		<text>Уже утро? Я просто в подземке сижу.</text>
@@ -5530,10 +5530,10 @@
 	</string>
 
 	<string id="st_dyn_news_time_noon_1">
-		<text>Красиво! Будто в Севастополе а не здесь!</text>
+		<text>Скучный день.</text>
 	</string>
 	<string id="st_dyn_news_time_noon_2">
-		<text>Эх, и красиво же всё равно здесь!</text>
+		<text>День, кажется, будет длинным.</text>
 	</string>
 	<string id="st_dyn_news_time_noon_3">
 		<text>Мужики, подъём! День уже!</text>
@@ -5542,16 +5542,16 @@
 		<text>Всю ночь кирпичи делал в лагере. Жутко ночью!</text>
 	</string>
 	<string id="st_dyn_news_time_noon_5">
-		<text>Тьфу, блин, ужас, фигня намалевана</text>
+		<text>Тьфу, блин, ужас, фигня намалевана.</text>
 	</string>
 	<string id="st_dyn_news_time_noon_6">
 		<text>Хороший денёк.</text>
 	</string>
 	<string id="st_dyn_news_time_noon_7">
-		<text>Вечер как будто.</text>
+		<text>Мне не следовало не спать всю ночь, я чувствую себя фигово.</text>
 	</string>
 	<string id="st_dyn_news_time_noon_8">
-		<text>А светло-то!</text>
+		<text>День еще не закончился, а я уже запарился...</text>
 	</string>
 	<string id="st_dyn_news_time_noon_9">
 		<text>Мужики... красиво-то как.</text>
@@ -5593,7 +5593,7 @@
 
 	<!-- Weather news -->
 	<string id="st_dyn_news_weather_clear_1">
-		<text>Эх, хорошо то как, небо чистое.</text>
+		<text>Эх, хорошо-то как.</text>
 	</string>
 	<string id="st_dyn_news_weather_clear_2">
 		<text>Да, погодка в самый раз для отдыха.</text>
@@ -5602,13 +5602,13 @@
 		<text>Отличная погода, загляденье.</text>
 	</string>
 	<string id="st_dyn_news_weather_clear_4">
-		<text>Небо-то чистое какое.</text>
+		<text>Небо-то чистое какое. Почти ни облачка.</text>
 	</string>
 	<string id="st_dyn_news_weather_clear_5">
 		<text>Да, с таким солнышком и за артефактами в пекло не страшно.</text>
 	</string>
 	<string id="st_dyn_news_weather_clear_6">
-		<text>А чисто то как, прям ни облачка.</text>
+		<text>А светло-то!</text>
 	</string>
 	<string id="st_dyn_news_weather_clear_7">
 		<text>Может на рыбалку махнуть? Погодка вроде ничего.</text>
@@ -5624,7 +5624,7 @@
 		<text>Кажется, дождь будет.</text>
 	</string>
 	<string id="st_dyn_news_weather_partly_3">
-		<text>Что-то будет, пасмурно как-то.</text>
+		<text>Что-то будет, облачно как-то.</text>
 	</string>
 	<string id="st_dyn_news_weather_partly_4">
 		<text>Кажется, дождь начинается.</text>
@@ -5633,7 +5633,7 @@
 		<text>Хреновастенькая погода.</text>
 	</string>
 	<string id="st_dyn_news_weather_partly_6">
-		<text>Дождь срывается.</text>
+		<text>Дождь срывается?</text>
 	</string>
 	<string id="st_dyn_news_weather_partly_7">
 		<text>Погода портится.</text>
@@ -5643,10 +5643,10 @@
 	</string>
 	
 	<string id="st_dyn_news_weather_cloudy_1">
-		<text>Хреново, погода портится.</text>
+		<text>Вечер как будто.</text>
 	</string>
 	<string id="st_dyn_news_weather_cloudy_2">
-		<text>Во, зараза, дождь будет?.</text>
+		<text>Во, зараза, дождь будет?</text>
 	</string>
 	<string id="st_dyn_news_weather_cloudy_3">
 		<text>Тучи...</text>

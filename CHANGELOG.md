@@ -93,6 +93,7 @@ All notable changes to this project will be documented in this file.
 * Fixed kill wounded scheme (code from CoC 1.5 R6)
 * Fixed upgrades properties of outfits
 * Fixed missing data of `xrs_kill_wounded.hostage_list`
+* Fixed Russian text of Dynamic News about time and weather
 
 ### Optimization
 * Optimized amount of update callbacks
