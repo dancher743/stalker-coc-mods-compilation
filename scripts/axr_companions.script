@@ -377,7 +377,7 @@ function remove_from_actor_squad(npc)
 	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss",nil)
 	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_teleport",nil)
 	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_hostage",nil)
-	xrs_kill_wounded.hostage_list[k.id] = nil
+	xrs_kill_wounded.hostage_list[se_obj.id] = nil
 	se_obj.companion_start_time = nil
 end
 
