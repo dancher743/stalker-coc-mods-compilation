@@ -70,6 +70,7 @@ All notable changes to this project will be documented in this file.
 * Balanced time of Guide's job appearing
 * Changed `sun` to `clear_alt_day` of 09:00-16:00 time of clear weather
 * Improved mapspot position of Bar room safe-house
+* Added weapon addons into `army_loadout`
 
 ### Fixes
 * Fixed low volume of `nuclear.ogg` radio track
