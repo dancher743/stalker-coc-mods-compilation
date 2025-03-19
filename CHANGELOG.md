@@ -71,6 +71,7 @@ All notable changes to this project will be documented in this file.
 * Changed `sun` to `clear_alt_day` of 09:00-16:00 time of clear weather
 * Improved mapspot position of Bar room safe-house
 * Added weapon addons into `army_loadout`
+* Corrected title of EOC mode description
 
 ### Fixes
 * Fixed low volume of `nuclear.ogg` radio track
