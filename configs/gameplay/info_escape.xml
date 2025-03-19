@@ -106,4 +106,7 @@
 	<info_portion id="esc_2_12_told_about_item_5_1"></info_portion>
 	<info_portion id="esc_2_12_told_about_item_6_1"></info_portion>
 	<info_portion id="esc_2_12_told_about_item_7_1"></info_portion>
+	
+	<!-- Added by Dancher -->
+	<info_portion id="esc_2_12_was_actor_name_changed"></info_portion>
 </game_information_portions>

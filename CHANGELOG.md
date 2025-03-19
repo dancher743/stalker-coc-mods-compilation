@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file.
 * Fixed incorrect vegetation in Truck Cemetery, Army Warehouses, Jupiter and Zaton levels
 * Added A-Life from CoC 1.5
 * Added memoization to global code to reduce the load on a CPU
+* Reworked change actor name dialog
 
 ### Mods
 * Call of Chernobyl Fallout (CrommCruac, av661194)

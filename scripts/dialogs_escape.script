@@ -282,8 +282,12 @@ function show_change_name_dialog_window(first_speaker, second_speaker)
 		local se_actor = alife():actor()
 		se_actor:set_character_name(text)
 		
-		local cost = get_name_changing_cost()
-		dialogs.relocate_money_from_actor(first_speaker, second_speaker, cost)
+		if (has_info("esc_2_12_was_actor_name_changed")) then
+			local cost = get_name_changing_cost()
+			dialogs.relocate_money_from_actor(first_speaker, second_speaker, cost)
+		else
+			give_info("esc_2_12_was_actor_name_changed")
+		end
 	end
 	
 	local hud = get_hud()
