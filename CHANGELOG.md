@@ -61,7 +61,7 @@ All notable changes to this project will be documented in this file.
 * Added HUD messages for Ironman Mode
 * Added color and `location_level` from Clear Sky for `treasure_quest` icon
 * Added removed `rnd_dark_2` sound into `restored_dark` channel
-* Added cooked food into NPC's loot and stashes
+* Added cooked food into NPC's loot
 * Added original icons from SoC, CS and CoP
 * Removed medkits and drugs from `zombied` death items (Clear Sky concept)
 * Sorted faction portraits

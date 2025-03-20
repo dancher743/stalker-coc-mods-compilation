@@ -698,7 +698,6 @@ function get_valid_item_sections()
 	local ignore_sections_string = "ignore_sections"
 	local cform_string = "cform"
 	local can_trade_string = "can_trade"
-	local cooked_food_prefix = "meat"
 	local quest_item_string = "quest_item"
 	local mp_item_prefix = "mp_"
 	local inv_name_string = "inv_name"
@@ -708,7 +707,7 @@ function get_valid_item_sections()
 	ini:section_for_each(function(section)
 		if not (ltx:line_exist(ignore_sections_string,section)) then
 			if (ini:line_exist(section,cform_string)) then
-				if (ini:r_bool_ex(section,can_trade_string,true) == true or string.find(section,cooked_food_prefix)) then
+				if (ini:r_bool_ex(section,can_trade_string,true) == true) then
 					if (ini:r_bool_ex(section,quest_item_string,false) == false) then
 						if not (string.find(section,mp_item_prefix)) then
 							local name = ini:r_string_ex(section,inv_name_string)
