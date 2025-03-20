@@ -1,4 +1,4 @@
-local cost_string_name = "cost"
+local cost_string = "cost"
 local sort_functor = function(t,a,b) return t[a] > t[b] end
 
 -- if return game_object then it ignores engine. If return nil, then engine tries to find item to kill
@@ -92,7 +92,7 @@ function update_best_weapon(npc,cur_wpn)
 		--if (wpn:get_ammo_in_magazine() > 0) then
 			for i=1,#prior do 
 				if (prior[i](nil,cls)) then
-					best_weapons[wpn] = ini:r_float_ex(wpn:section(),cost_string_name)
+					best_weapons[wpn] = ini:r_float_ex(wpn:section(),cost_string)
 					break
 				end
 			end
