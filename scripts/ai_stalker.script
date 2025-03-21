@@ -55,7 +55,7 @@ function update_best_weapon(npc,cur_wpn)
 		return cur_wpn
 	end 
 	
-	local time_delta = math.random(500, 1500)
+	local time_delta = 1500
 	st._choose_bw_timer = tg+time_delta
 	
 	-- weapon priority
