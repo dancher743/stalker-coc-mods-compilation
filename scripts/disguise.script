@@ -8,6 +8,8 @@
 
 -- main update rate in seconds (where 1 is 1 second)
 local main_update_rate = 1
+local main_update_ev_id = "disguise"
+local main_update_act_id = "main_update"
 
 --time you need to be hidden (not seen by any npc) before changing outfit to make the disguise effective, 100 means roughly 10 seconds
 local time_to_forget = 100
@@ -102,40 +104,37 @@ local function can_sleep()
 	return not patch_in_slot and not has_actor_disguised() and is_empty(suspicion) and not has_actor_discovered() and not has_actor_in_sight()
 end
 
-local function run_updates()
-	local is_first_update = true
+local function main_update()
+	ResetTimeEvent(main_update_ev_id, main_update_act_id, main_update_rate)
 	
-	local main_update_ev_id = "disguise"
-	local main_update_act_id = "main_update"
+	patch_in_slot = get_patch_in_slot()
 	
-	local function main_update()
-		ResetTimeEvent(main_update_ev_id, main_update_act_id, main_update_rate)
-		
-		patch_in_slot = get_patch_in_slot()
-		
-		if (can_sleep()) then
-			-- printf("Disguise system is sleeping!")
-			return
-		end
-		
-		if (is_first_update) then
-			prev_patch_in_slot = patch_in_slot
-		end
-		
-		actor_community = utils.get_actor_community()
-
-		update_actor()
-		update_npc()
-		update_ui(is_first_update)
-		
-		is_first_update = false
+	if (can_sleep()) then
+		-- printf("Disguise system is sleeping!")
+		return
+	end
+	
+	if (is_first_update) then
 		prev_patch_in_slot = patch_in_slot
 	end
+	
+	actor_community = utils.get_actor_community()
+
+	update_actor()
+	update_npc()
+	update_ui(is_first_update)
+	
+	is_first_update = false
+	prev_patch_in_slot = patch_in_slot
+end
+
+local function run_updates()
+	local is_first_update = true
 	CreateTimeEvent(main_update_ev_id, main_update_act_id, main_update_rate, main_update)
 end
 
 local function stop_updates()
-	RemoveTimeEvent("disguise","main_update")
+	RemoveTimeEvent(main_update_ev_id,main_update_act_id)
 end
 
 function actor_on_first_update()
