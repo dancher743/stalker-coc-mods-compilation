@@ -54,7 +54,7 @@ function input_dialog_ui:InitTutorialControl(xml)
 	local m_data = alife_storage_manager.get_state()
 	local count = m_data.input_dialog_language_tutorial_count or 0
 	
-	if (count == 3) then
+	if (count == 2) then
 		return
 	end
 	
