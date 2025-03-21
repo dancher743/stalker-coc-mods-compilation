@@ -51,14 +51,18 @@ function input_dialog_ui:InitControls()
 end
 
 function input_dialog_ui:InitTutorialControl(xml)
-	local actor = db.actor
-	local tutorial_name = "tutorial_change_language"
+	local m_data = alife_storage_manager.get_state()
+	local count = m_data.input_dialog_language_tutorial_count or 0
 	
-	if (not actor:has_info(tutorial_name)) then
-		self.tutorial_change_language = xml:InitStatic("input_dialog:tutorial_change_language", self)
-		self.tutorial_change_language:Show(false)
-		actor:give_info_portion(tutorial_name)
+	if (count == 3) then
+		return
 	end
+	
+	self.tutorial_change_language = xml:InitStatic("input_dialog:tutorial_change_language", self)
+	self.tutorial_change_language:Show(false)
+	
+	count = count + 1
+	m_data.input_dialog_language_tutorial_count = count
 end
 
 function input_dialog_ui:SetCurrentValues()
