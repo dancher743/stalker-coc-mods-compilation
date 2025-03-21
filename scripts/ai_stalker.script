@@ -1,3 +1,35 @@
+local priority_close = {
+	_G.IsShotgun,
+	_G.IsRifle,
+	_G.IsPistol,
+	_G.IsSniper,
+	_G.IsLauncher
+}
+
+local priority_medium = {
+	_G.IsRifle,
+	_G.IsPistol,
+	_G.IsSniper,
+	_G.IsShotgun,
+	_G.IsLauncher
+}
+
+local priority_far = {
+	_G.IsSniper,
+	_G.IsRifle,
+	_G.IsPistol,
+	_G.IsShotgun,
+	_G.IsLauncher
+}
+
+local priority_heli = {
+	_G.IsLauncher,
+	_G.IsSniper,
+	_G.IsRifle,
+	_G.IsPistol,
+	_G.IsShotgun
+}
+
 local cost_string = "cost"
 local sort_functor = function(t,a,b) return t[a] > t[b] end
 
@@ -19,58 +51,23 @@ function update_best_weapon(npc,cur_wpn)
 	st._choose_bw_timer = tg+time_delta
 	
 	-- weapon priority
-	local prior = {}
-	
+	local prior
 	local be = npc:best_enemy()
 	if (be) then 
 		local be_position = be:position()
 		local npc_position = npc:position()
 		
-		if (IsMonster(nil,be:clsid())) then 
-			if (be_position:distance_to_sqr(npc_position) > 2500) then 
-				prior[#prior+1] = _G.IsRifle
-				prior[#prior+1] = _G.IsSniper
-				prior[#prior+1] = _G.IsPistol
-				prior[#prior+1] = _G.IsShotgun
-				prior[#prior+1] = _G.IsLauncher
-			else 
-				prior[#prior+1] = _G.IsShotgun 
-				prior[#prior+1] = _G.IsRifle
-				prior[#prior+1] = _G.IsPistol
-				prior[#prior+1] = _G.IsSniper
-				prior[#prior+1] = _G.IsLauncher
-			end
-		elseif (be_position:distance_to_sqr(npc_position) > 2500) then 
-			prior[#prior+1] = _G.IsSniper
-			prior[#prior+1] = _G.IsRifle
-			prior[#prior+1] = _G.IsPistol
-			prior[#prior+1] = _G.IsShotgun
-			prior[#prior+1] = _G.IsLauncher
-		elseif (be_position:distance_to_sqr(npc_position) > 1000) then 
-			prior[#prior+1] = _G.IsRifle
-			prior[#prior+1] = _G.IsSniper
-			prior[#prior+1] = _G.IsPistol
-			prior[#prior+1] = _G.IsShotgun
-			prior[#prior+1] = _G.IsLauncher
-		else 
-			prior[#prior+1] = _G.IsRifle
-			prior[#prior+1] = _G.IsShotgun
-			prior[#prior+1] = _G.IsPistol
-			prior[#prior+1] = _G.IsSniper
-			prior[#prior+1] = _G.IsLauncher
+		if (be_position:distance_to_sqr(npc_position) > 2500) then 
+			prior = priority_far
+		elseif (be_position:distance_to_sqr(npc_position) > 900) then 
+			prior = priority_medium
+		else
+			prior = priority_close
 		end
 	elseif (axr_npc_vs_heli.is_under_npc_vs_heli(npc)) then
-		prior[#prior+1] = _G.IsLauncher 
-		prior[#prior+1] = _G.IsSniper 
-		prior[#prior+1] = _G.IsRifle
-		prior[#prior+1] = _G.IsPistol
-		prior[#prior+1] = _G.IsShotgun
+		prior = priority_heli
 	else
-		prior[#prior+1] = _G.IsRifle
-		prior[#prior+1] = _G.IsSniper
-		prior[#prior+1] = _G.IsPistol
-		prior[#prior+1] = _G.IsShotgun
-		prior[#prior+1] = _G.IsLauncher
+		prior = priority_medium
 	end
 
 	local ini = system_ini()
