@@ -100,6 +100,7 @@ All notable changes to this project will be documented in this file.
 * Fixed missing data of `xrs_kill_wounded.hostage_list`
 * Fixed Russian text of Dynamic News about time and weather
 * Fixed text and color of eng localization in Faction Select Menu
+* Fixed missing tracks of military base's radio on Agroprom
 
 ### Optimization
 * Optimized amount of update callbacks
