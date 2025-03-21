@@ -30,6 +30,14 @@ local priority_heli = {
 	_G.IsShotgun
 }
 
+local priority_default = {
+	_G.IsRifle,
+	_G.IsSniper,
+	_G.IsShotgun,
+	_G.IsPistol,
+	_G.IsLauncher
+}
+
 local cost_string = "cost"
 local sort_functor = function(t,a,b) return t[a] > t[b] end
 
@@ -67,7 +75,7 @@ function update_best_weapon(npc,cur_wpn)
 	elseif (axr_npc_vs_heli.is_under_npc_vs_heli(npc)) then
 		prior = priority_heli
 	else
-		prior = priority_medium
+		prior = priority_default
 	end
 
 	local ini = system_ini()
