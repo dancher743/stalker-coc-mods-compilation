@@ -189,7 +189,7 @@ function get_next_surge_or_psi_storm_phrase_1()
 			end
 			
 			local separator = ", "
-			phase = game.translate_string("yan_stalker_sakharov_next_surge_or_psi_storm_1_0") .. " "
+			phase = game.translate_string("yan_stalker_sakharov_next_surge_or_psi_storm_1_0") .. STR_BLANK
 			
 			for i,v in ipairs(cataclysm_strings) do
 				if (i ~= 1) then

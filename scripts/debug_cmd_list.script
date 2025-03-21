@@ -1093,7 +1093,7 @@ function cmd.var(me,txt,owner,p)
 		for i=1,sz do
 			ind = (page*sz - sz) + i
 			k = ind > 0 and a[ind]
-			out = " "
+			out = STR_BLANK
 
 			if (k) then
 				local v = var_list[k]
@@ -1834,7 +1834,7 @@ function cmd.item(me,txt,owner,p)
 		for i=1,sz do
 			ind = (page*sz - sz) + i
 			k = ind > 0 and a[ind]
-			out = " "
+			out = STR_BLANK
 			if (k) then
 				out = string.format("%s [count: %s]",k,se_item.registered_items[k])
 			end
@@ -1938,7 +1938,7 @@ function cmd.info(me,txt,owner,p)
 		for i=1,sz do
 			ind = (page*sz - sz) + i
 			k = ind > 0 and a[ind]
-			owner:SendOutput(k or " ")
+			owner:SendOutput(k or STR_BLANK)
 		end
 		return
 	end

@@ -140,7 +140,7 @@ function send_sound(npc, faction, point, str, str2, delay_sound)
 			end
 		end
 --		printf("--->texture="..tostring(texture))
-		local news_caption = game.translate_string("st_tip").." "..game.translate_string(faction)
+		local news_caption = game.translate_string("st_tip")..STR_BLANK..game.translate_string(faction)
 		if point_name ~= STR_EMPTY then
 			news_caption = news_caption..". "..point_name..":"
 		else

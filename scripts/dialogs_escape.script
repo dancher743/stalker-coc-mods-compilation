@@ -277,7 +277,7 @@ function show_change_name_dialog_window(first_speaker, second_speaker)
 		if (text == STR_EMPTY) then
 			return
 		end
-		text = text:gsub("_"," ")
+		text = text:gsub("_",STR_BLANK)
 		
 		local se_actor = alife():actor()
 		se_actor:set_character_name(text)

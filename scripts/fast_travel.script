@@ -69,9 +69,9 @@ local function map_spot_menu_add_property(property_ui,id,level_name)
 	end
 	if (DEV_DEBUG_DEV) or (se_obj:clsid() == clsid.smart_terrain and tsmarts[se_obj:name()]) then
 		if (longnames) then
-				property_ui:AddItem(game.translate_string("st_pda_fast_travel_to").." ".. game.translate_string(level_name)..". "..game.translate_string(se_obj:name()))
+				property_ui:AddItem(game.translate_string("st_pda_fast_travel_to")..STR_BLANK.. game.translate_string(level_name)..". "..game.translate_string(se_obj:name()))
 		else
-				property_ui:AddItem(game.translate_string("st_pda_fast_travel_to").." "..game.translate_string(se_obj:name()))
+				property_ui:AddItem(game.translate_string("st_pda_fast_travel_to")..STR_BLANK..game.translate_string(se_obj:name()))
 		end
 	end
 	
@@ -89,9 +89,9 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 
 	local is_fast_travel_to_smart
 	if (longnames) then
-		is_fast_travel_to_smart = prop == (game.translate_string("st_pda_fast_travel_to").." "..game.translate_string(level_name)..". "..game.translate_string(se_obj:name()))
+		is_fast_travel_to_smart = prop == (game.translate_string("st_pda_fast_travel_to")..STR_BLANK..game.translate_string(level_name)..". "..game.translate_string(se_obj:name()))
 	else
-		is_fast_travel_to_smart = prop == (game.translate_string("st_pda_fast_travel_to").." "..game.translate_string(se_obj:name()))
+		is_fast_travel_to_smart = prop == (game.translate_string("st_pda_fast_travel_to")..STR_BLANK..game.translate_string(se_obj:name()))
 	end
 	
 	local spotted_object_hint = get_spotted_object_hint(se_obj)

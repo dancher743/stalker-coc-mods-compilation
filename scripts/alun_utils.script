@@ -1196,7 +1196,7 @@ function file_to_table(fname,parent,simple)
 	
 	local function get_section_includes(str)
 		local a = string.find(str,"]")
-		return a and " " .. string.sub(str,a+2) or STR_EMPTY
+		return a and STR_BLANK .. string.sub(str,a+2) or STR_EMPTY
 	end
 
 	for line in io.lines(fname) do
@@ -1252,7 +1252,7 @@ end
 
 function get_comment(str)
 	local a = string.find(str,";")
-	return a and " " .. string.sub(str,a) or STR_EMPTY
+	return a and STR_BLANK .. string.sub(str,a) or STR_EMPTY
 end
 
 class "cfg_file"
@@ -1341,7 +1341,7 @@ function cfg_file:SaveExt()
 		local padding = {}
 		local l = string.len(s)
 		for i=1,n-l do 
-			table.insert(padding," ")
+			table.insert(padding,STR_BLANK)
 		end 
 		return s .. table.concat(padding)
 	end

@@ -233,7 +233,7 @@ function drx_sl_change_factions( actor, npc, p )
 		end
 
 		-- Send dynamic news alert:
-		news_manager.send_tip( db.actor, (game.translate_string( "st_drx_questlines_joined" ) .. " " .. game.translate_string( p[1] ) .. " " .. game.translate_string( "st_drx_questlines_faction" )), nil, "completionist", nil, nil )
+		news_manager.send_tip( db.actor, (game.translate_string( "st_drx_questlines_joined" ) .. STR_BLANK .. game.translate_string( p[1] ) .. STR_BLANK .. game.translate_string( "st_drx_questlines_faction" )), nil, "completionist", nil, nil )
 
 	end
 

@@ -131,7 +131,7 @@ function actor_on_before_death(whoID,flags)
 	local t = #squad_mates > 0 and squad_mates or #faction_mates > 0 and faction_mates or avail_entities
 	--local t = #squad_mates > 0 and squad_mates or avail_entities
 	if (#t == 0) then
-		SetHudMsg(strformat(game.translate_string("st_death_count").." " .. game.translate_string("st_nobody_left_to_replace"),xr_statistic.actor_statistic.deaths),10)
+		SetHudMsg(strformat(game.translate_string("st_death_count")..STR_BLANK .. game.translate_string("st_nobody_left_to_replace"),xr_statistic.actor_statistic.deaths),10)
 		return
 	end
 

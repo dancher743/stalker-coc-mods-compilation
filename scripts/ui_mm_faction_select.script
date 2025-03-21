@@ -86,7 +86,7 @@ local function on_game_load(binder)
 		config:w_value("character_creation","new_game_character_name")
 		need_save = true
 		
-		new_character_name = new_character_name:gsub("_"," ")
+		new_character_name = new_character_name:gsub("_",STR_BLANK)
 		
 		se_actor:set_character_name(new_character_name)
 	end
@@ -1294,11 +1294,11 @@ function faction_ui:LoadHardcoreLives (rand)
 	self.list_hardcore_lives:ClearList()
 	for i=1, #self.table_hardcore_lives do
 		str = self.table_hardcore_lives[i][1] or STR_EMPTY
-		self.list_hardcore_lives:AddItem(str .. " " .. gs(self.table_hardcore_lives[i][2]), i)
+		self.list_hardcore_lives:AddItem(str .. STR_BLANK .. gs(self.table_hardcore_lives[i][2]), i)
 	end
 	local pick = rand and self.table_hardcore_lives[math.random(#self.table_hardcore_lives)] or self.table_hardcore_lives[1]
 	str = pick[1] or STR_EMPTY
-	self.list_hardcore_lives:SetText(str .. " " .. gs(pick[2])) 
+	self.list_hardcore_lives:SetText(str .. STR_BLANK .. gs(pick[2])) 
 	self.selected_hardcore_lives = pick
 end
 
@@ -1307,11 +1307,11 @@ function faction_ui:LoadHardcoreRegen (rand)
 	self.list_hardcore_regen:ClearList()
 	for i=1, #self.table_hardcore_regen do
 		str = self.table_hardcore_regen[i][1] and tostring(utils.round(self.table_hardcore_regen[i][1]/24)) or STR_EMPTY
-		self.list_hardcore_regen:AddItem(str .. " " .. gs(self.table_hardcore_regen[i][2]), i)
+		self.list_hardcore_regen:AddItem(str .. STR_BLANK .. gs(self.table_hardcore_regen[i][2]), i)
 	end
 	local pick = rand and self.table_hardcore_regen[math.random(#self.table_hardcore_regen)] or self.table_hardcore_regen[1]
 	str = pick[1] and tostring(utils.round(pick[1]/24)) or STR_EMPTY
-	self.list_hardcore_regen:SetText(str .. " " .. gs(pick[2])) 
+	self.list_hardcore_regen:SetText(str .. STR_BLANK .. gs(pick[2])) 
 	self.selected_hardcore_regen = pick
 end
 
@@ -1320,11 +1320,11 @@ function faction_ui:LoadTimer (rand)
 	self.list_timer:ClearList()
 	for i=1, #self.table_timer do
 		str = self.table_timer[i][1] or STR_EMPTY
-		self.list_timer:AddItem(str .. " " .. gs(self.table_timer[i][2]), i)
+		self.list_timer:AddItem(str .. STR_BLANK .. gs(self.table_timer[i][2]), i)
 	end
 	local pick = rand and self.table_timer[math.random(#self.table_timer)] or self.table_timer[1]
 	str = pick[1] or STR_EMPTY
-	self.list_timer:SetText(str .. " " .. gs(pick[2]))
+	self.list_timer:SetText(str .. STR_BLANK .. gs(pick[2]))
 	self.selected_timer = pick
 end
 
@@ -1368,7 +1368,7 @@ end
 function faction_ui:RandomizeName()
 	local first_name = self:GetFirstNameRandomly()
 	local last_name = self:GetLastNameRandomly()
-	self.character_name:SetText(first_name .. " " .. last_name)
+	self.character_name:SetText(first_name .. STR_BLANK .. last_name)
 	self.first_name = first_name
 	self.last_name = last_name
 end
@@ -1380,7 +1380,7 @@ function faction_ui:RandomizeFirstName()
 	if (last_name == STR_EMPTY) then
 		self.character_name:SetText(first_name)
 	else
-		self.character_name:SetText(first_name .. " " .. last_name)
+		self.character_name:SetText(first_name .. STR_BLANK .. last_name)
 	end
 	
 	self.first_name = first_name
@@ -1393,7 +1393,7 @@ function faction_ui:RandomizeLastName()
 	if (first_name == STR_EMPTY) then
 		self.character_name:SetText(last_name)
 	else
-		self.character_name:SetText(first_name .. " " .. last_name)
+		self.character_name:SetText(first_name .. STR_BLANK .. last_name)
 	end
 	
 	self.last_name = last_name
@@ -1914,7 +1914,7 @@ function faction_ui:OnStartGame()
 	axr_main.config:w_value("character_creation","new_game_timer_mode",timer or nil)
 	axr_main.config:w_value("character_creation","new_game_eoc_mode",self.ck_eoc and self.ck_eoc:GetCheck() and true or nil)
 	
-	axr_main.config:w_value("character_creation","new_game_character_name",character_name:gsub(" ","_") )
+	axr_main.config:w_value("character_creation","new_game_character_name",character_name:gsub(STR_BLANK,"_") )
 	axr_main.config:w_value("character_creation","new_game_faction",self.selected_faction or nil)
 	axr_main.config:w_value("character_creation","new_game_icon",self.selected_icon or nil)
 	axr_main.config:w_value("character_creation","new_game_loadout",loadout_str or nil)

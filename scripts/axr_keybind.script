@@ -245,7 +245,7 @@ function action.debug_test(p)
 		local function addTab(s,n)
 			local l = string.len(s)
 			for i=1,n-l do
-				s = s .. " "
+				s = s .. STR_BLANK
 			end
 			return s
 		end

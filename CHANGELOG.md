@@ -108,7 +108,7 @@ All notable changes to this project will be documented in this file.
 * Optimized string allocations in find victims code in `azazel_mode.script`
 * Optimized string allocations in `critical_hit_manager.script`
 * Optimized string allocations in `get_check_option` function
-* Reduced extra allocations using `STR_USERDATA`, `STR_TRUE`, `STR_FALSE`, `STR_ZERO` and `STR_ONE` constants
+* Reduced extra allocations using `STR_USERDATA`, `STR_TRUE`, `STR_FALSE`, `STR_ZERO`, `STR_ONE`, `STR_BLANK` constants
 * Optimized strings allocations in `printf` function in `_g.script`
 * Reduced strings allocations using var types constants
 * Optimized RAM in `get_valid_item_sections` and `get_loot_table` functions
@@ -136,6 +136,7 @@ All notable changes to this project will be documented in this file.
 * Added `news_helper.script` to help with sending custom news
 * Added `USE_FUNCTIONS_MEMOIZE` const to enabled/disable functions memoization in `_g.script`
 * Added `memoize_functions()` into `_g.script` to add functions for memoization
+* Added `STR_BLANK` const into `_g.script`
 
 ## [1.4.6] - 2024-12-30
 
