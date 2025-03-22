@@ -8,6 +8,7 @@ local apply_aura_distance_sqr = 10*10
 local sleep_effector_name = "deimos1.ppe"
 local sleep_aura_prob_string_name = "sleep_aura_prob"
 local sleep_aura_effector_timer_id = "sleep_aura_effector_timer"
+local sleep_aura_timer_tickback = nil
 local has_aura_applied = false
 
 local actor_yawn_sound_max_index = 4
@@ -34,11 +35,13 @@ local function apply_sleep_aura()
 	end
 	
 	local function tickback()
+		StopTimer(sleep_aura_effector_timer_id)
+		sleep_aura_timer_tickback = nil
 		level.remove_pp_effector(sleep_effector_name, 998, false)
 		has_aura_applied = false
-		StopTimer(sleep_aura_effector_timer_id)
 	end
-	StartTimer(sleep_aura_effector_timer_id, 2000, tickback)
+	sleep_aura_timer_tickback = tickback
+	StartTimer(sleep_aura_effector_timer_id, 2000, sleep_aura_timer_tickback)
 	
 	if (sleep_dep.feature_is_active) then
 		sleep_dep.last_sleep = sleep_dep.last_sleep + 1

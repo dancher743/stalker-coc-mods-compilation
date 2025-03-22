@@ -102,6 +102,7 @@ All notable changes to this project will be documented in this file.
 * Fixed text and color of eng localization in Faction Select Menu
 * Fixed missing tracks of military base's radio on Agroprom
 * Fixed instant appearing of angry stash owner message in Dynamic News
+* Saved tickbacks functions to script fields to prevent them from garbage collection
 
 ### Optimization
 * Optimized amount of update callbacks

@@ -25,9 +25,15 @@ SkipFrame(postpone_for_next_frame)
 
 
 5. Code template for StartTimer function
+	local timer_tickback = nil  -- save tickback function to script field to prevent it from garbage collection
+	
+	...
+	
 	local function tickback()
-		
+		StopTimer("timer_id")
+		timer_tickback = nil
 	end
-	StartTimer("some_id_here", 1000, tickback)
+	timer_tickback = tickback
+	StartTimer("timer_id", 1000, timer_tickback)
 
 ]]

@@ -4,6 +4,7 @@
 --
 
 local hud_timer
+local hud_timer_tickback
 local last_minute
 
 local function actor_on_slicing_update()
@@ -53,7 +54,8 @@ function try_start()
 			hud_timer:Show(false)
 		end
 	end
-	StartTimer("jg_hud_show_timer", 1000, tickback)
+	hud_timer_tickback = tickback
+	StartTimer("jg_hud_show_timer", 1000, hud_timer_tickback)
 end
 
 function try_stop()

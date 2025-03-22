@@ -122,10 +122,7 @@ function slot_hud:InitControls()
 		self.slot[i] = xml:InitStatic("static_slot_back:slot_"..i, self.static_back)
 		self.slot[i]:InitTexture("ui\\ui_icon_equipment")
 	end
-	local function tickback()
-		self:CustomUpdate()
-	end
-	StartTimer("slot_hud_timer", update_rate, tickback)
+	StartTimer("slot_hud_timer", update_rate, self.CustomUpdate, self)
 end
 
 function slot_hud:Clear()

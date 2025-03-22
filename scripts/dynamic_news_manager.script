@@ -1438,9 +1438,11 @@ function DynamicNewsManager:FoundStash(has_spot) -- reaction of angry stash owne
 	local timer_id = "FoundStashMsgTimer" .. math.random(100)
 	local function tickback()
 		StopTimer(timer_id)
+		self.found_stash_msg_timer_tickback = nil
 		self:PushToChannel("general",{Mg=tbl[math.random(#tbl)],Ic=Ic,Snd="beep_2",Se=Se,It=It,Ty="found_stash"})
 	end
-	StartTimer(timer_id, 2000*TimeFactor, tickback)
+	self.found_stash_msg_timer_tickback = tickback
+	StartTimer(timer_id, 2000*TimeFactor, self.found_stash_msg_timer_tickback)
 
 	return true
 end
