@@ -77,7 +77,6 @@ All notable changes to this project will be documented in this file.
 * Corrected `st_addon_companion_quick_menu_ignoreCombatButHelpMe` string in rus localization
 
 ### Fixes
-* Fixed low volume of `nuclear.ogg` radio track
 * Fixed simulation of `gar_smart_terrain_5_6` smart
 * Fixed ignoring of start companions as NPC for reborn in Azazel mode
 * Fixed "ALIFE OBJECT ID IS 65535!" message after death in Azazel mode
@@ -105,6 +104,7 @@ All notable changes to this project will be documented in this file.
 * Fixed missing tracks of military base's radio on Agroprom
 * Fixed instant appearing of angry stash owner message in Dynamic News
 * Saved tickbacks functions to script fields to prevent them from garbage collection
+* Fixed volume of `demobilization.ogg` radio track
 
 ### Optimization
 * Optimized amount of update callbacks
