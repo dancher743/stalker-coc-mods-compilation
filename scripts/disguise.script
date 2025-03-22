@@ -10,6 +10,7 @@
 local main_update_rate = 1
 local main_update_ev_id = "disguise"
 local main_update_act_id = "main_update"
+local is_first_main_update = true
 
 --time you need to be hidden (not seen by any npc) before changing outfit to make the disguise effective, 100 means roughly 10 seconds
 local time_to_forget = 100
@@ -114,7 +115,7 @@ local function main_update()
 		return
 	end
 	
-	if (is_first_update) then
+	if (is_first_main_update) then
 		prev_patch_in_slot = patch_in_slot
 	end
 	
@@ -122,27 +123,18 @@ local function main_update()
 
 	update_actor()
 	update_npc()
-	update_ui(is_first_update)
+	update_ui(is_first_main_update)
 	
-	is_first_update = false
+	is_first_main_update = false
 	prev_patch_in_slot = patch_in_slot
 end
 
-local function run_updates()
-	local is_first_update = true
+function actor_on_first_update()
 	CreateTimeEvent(main_update_ev_id, main_update_act_id, main_update_rate, main_update)
 end
 
-local function stop_updates()
-	RemoveTimeEvent(main_update_ev_id,main_update_act_id)
-end
-
-function actor_on_first_update()
-	run_updates()
-end
-
 function actor_on_before_death()
-	stop_updates()
+	RemoveTimeEvent(main_update_ev_id, main_update_act_id)
 end
 
 function update_actor()

@@ -73,6 +73,7 @@ All notable changes to this project will be documented in this file.
 * Added weapon addons into `army_loadout`
 * Corrected title of EOC mode description
 * Increased numbers of showing change language tutorial from 1 to 2
+* Refactored `is_first_update` flag in `disguise.script`
 
 ### Fixes
 * Fixed low volume of `nuclear.ogg` radio track
