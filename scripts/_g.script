@@ -1980,11 +1980,12 @@ end
 local timer_ev_id = "global_timers"
 
 function StartTimer(id, interval_in_ms, tickback, ...)
-	if (HasTimeEvent(timer_ev_id, id)) then
-		StopTimer(id)
-	end
-	
 	local interval = interval_in_ms / 1000
+	
+	if (HasTimer(id)) then
+		ResetTimeEvent(timer_ev_id, id, interval)
+		return
+	end
 	
 	local function tick(...)
 		ResetTimeEvent(timer_ev_id, id, interval)
@@ -1996,6 +1997,10 @@ end
 
 function StopTimer(id)
 	RemoveTimeEvent(timer_ev_id, id)
+end
+
+function HasTimer(id)
+	return HasTimeEvent(timer_ev_id, id) ~= nil
 end
 
 function strtransl(str)

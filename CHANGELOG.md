@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 * Added A-Life from CoC 1.5
 * Added memoization to global code to reduce the load on a CPU
 * Reworked change actor name dialog
+* Added shock hit effect: actor may hide your weapon and restore them after 2 seconds
 
 ### Mods
 * Call of Chernobyl Fallout (CrommCruac, av661194)
@@ -142,6 +143,8 @@ All notable changes to this project will be documented in this file.
 * Added `USE_FUNCTIONS_MEMOIZE` const to enabled/disable functions memoization in `_g.script`
 * Added `memoize_functions()` into `_g.script` to add functions for memoization
 * Added `STR_BLANK` const into `_g.script`
+* Added `HasTimer` function into `_g.script`
+* Added auto-reset to `StartTimer` function in `_g.script`
 
 ## [1.4.6] - 2024-12-30
 
