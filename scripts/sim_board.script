@@ -357,9 +357,19 @@ function simulation_board:get_squad_target(squad)
 			end
 		end
 	end
+	
+	-- Tronex, get target with highest prior
+	local highest_prior = 0
+	local best_target
+	for i=1,size_t do
+		if highest_prior < priority_tasks[i][2] then
+			highest_prior = priority_tasks[i][2]
+			best_target = priority_tasks[i][1]
+		end
+	end
 
 	if (size_t > 0) then
-		local target = priority_tasks[math.random(size_t)][1]
+		local target = (math.random(1,100) <= 50) and priority_tasks[math.random(size_t)][1] or best_target -- Tronex
 		--printf("squad=%s size=%s target=%s",squad:name(),size_t,target:name())
 		iempty_table(priority_tasks) -- It is better to reuse table to avoid GC
 		return target
