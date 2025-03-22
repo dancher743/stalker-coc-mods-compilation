@@ -68,7 +68,7 @@ local function monster_on_update(npc)
 		return
 	end
 	
-	cat_timer = time_global + 8000 + math.random(-1000,1500)
+	cat_timer = time_global + 5000 + math.random(-1000,1500)
 	cat_timers[cat_id] = cat_timer
 	
 	if (has_aura_applied) then
