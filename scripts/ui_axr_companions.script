@@ -65,7 +65,11 @@ function UICompanionList:__init() super()
 
 	self:InitControls()
 	
-	StartTimer("UICompanionListTimer", self.update_rate, self.CustomUpdate, self)
+	local function tickback()
+		self:CustomUpdate()
+	end
+	self.update_tickback = tickback
+	StartTimer("UICompanionListTimer", self.update_rate, self.update_tickback)
 end
 
 function UICompanionList:Clear()
