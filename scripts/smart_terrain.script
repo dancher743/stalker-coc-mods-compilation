@@ -1234,13 +1234,14 @@ function se_smart_terrain:update()
 	simulation_objects.get_sim_obj_registry():update_avaliability(self)
 	self:update_jobs()
 	
-	if self.respawn_params ~= nil then
-		self:try_respawn()
-	end
 	
 	local sim = alife()
 	local se_actor = sim:actor()
 	self.dist_to_actor = self.position:distance_to(se_actor.position)
+	
+	if self.respawn_params ~= nil then
+		self:try_respawn()
+	end
 	
 	self.__check_time = tg + 500 + math.max(500, 0.025 * self.dist_to_actor)
 	
