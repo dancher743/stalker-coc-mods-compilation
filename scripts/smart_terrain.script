@@ -84,12 +84,18 @@ function se_smart_terrain:__init(section) super(section)
 	--alun_utils.debug_write(strformat("%s:%s Init",self:name(),self.id))
 end
 function se_smart_terrain:on_before_register()
+	-- persistent storage
+	alife_storage_manager.get_se_obj_state(self,true)
+	
+	--RegisterScriptCallback("save_state",self)
+	
 	--alun_utils.debug_write(strformat("%s:%s:on_before_register BEFORE",self:name(),self.id))
 	cse_alife_smart_zone.on_before_register(self)
 	sim_board.get_sim_board():register_smart(self)
 	--alun_utils.debug_write(strformat("%s:%s:on_before_register AFTER",self:name(),self.id))
 end
 
+actor_level = nil
 function se_smart_terrain:on_register()
 	--alun_utils.debug_write(strformat("%s:%s:ON_REGISTER start",self:name(),self.id))
 	cse_alife_smart_zone.on_register(self)
@@ -97,9 +103,8 @@ function se_smart_terrain:on_register()
 
 	local sim = alife()
 	local gg = game_graph()
-	local actor_level = sim:level_name(gg:vertex(sim:actor().m_game_vertex_id):level_id())
+	actor_level = actor_level or sim:level_name(gg:vertex(sim:actor().m_game_vertex_id):level_id())
 	local smart_level = sim:level_name(gg:vertex(self.m_game_vertex_id):level_id())
-	
 	self.is_on_actor_level = actor_level == smart_level or nil
 	self.smart_alife_task = CALifeSmartTerrainTask(self.m_game_vertex_id, self.m_level_vertex_id)
 	
@@ -183,6 +188,7 @@ function se_smart_terrain:read_params()
 	self.default_faction 		= ini:r_string_ex(smart_sect,"default_faction")
 	self.faction_controlled 	= ini:r_string_ex(smart_sect,"faction_controlled")
 	self.max_population 		= tonumber(xr_logic.pick_section_from_condlist(get_story_object("actor"), nil, xr_logic.parse_condlist(nil, smart_sect, "max_population", ini:r_string_ex(smart_sect,"max_population") or STR_EMPTY))) or 0
+	self.min_population 		= tonumber(xr_logic.pick_section_from_condlist(get_story_object("actor"), nil, xr_logic.parse_condlist(nil, smart_sect, "min_population", ini:r_string_ex(smart_sect,"min_population") or STR_EMPTY))) or 0
 	self.respawn_idle 			= ini:r_float_ex(smart_sect,"respawn_idle") or 43200
 	self.respawn_only_level 	= ini:r_bool_ex(smart_sect,"respawn_only_level",false)
 	self.respawn_only_smart 	= ini:r_bool_ex(smart_sect,"respawn_only_smart",false)
@@ -1177,7 +1183,6 @@ function se_smart_terrain:hide()
 end
 
 local function is_only_monsters_on_jobs(npc_info)
-	local pairs = pairs
 	for k,v in pairs(npc_info) do
 		if not (v.stype == 1) then
 			return false
@@ -1218,8 +1223,10 @@ end
 function se_smart_terrain:update()
 	cse_alife_smart_zone.update( self )
 
+	self:show()
+	
 	if (self.disabled) then
-		return self:show()
+		return
 	end
 	
 	local tg = time_global()
@@ -1232,8 +1239,6 @@ function se_smart_terrain:update()
 	--alun_utils.debug_write(strformat("%s:update ",self:name()))
 	
 	simulation_objects.get_sim_obj_registry():update_avaliability(self)
-	self:update_jobs()
-	
 	
 	local sim = alife()
 	local se_actor = sim:actor()
@@ -1246,6 +1251,8 @@ function se_smart_terrain:update()
 	self.__check_time = tg + 500 + math.max(500, 0.025 * self.dist_to_actor)
 	
 	if (self.online) then
+		self:update_jobs()
+		
 		local old_smart = nearest_to_actor_smart.id and sim:object(nearest_to_actor_smart.id)
 		local old_dist_to_actor = old_smart and old_smart.position:distance_to(se_actor.position)
 		if (old_dist_to_actor == nil or self.dist_to_actor < old_dist_to_actor) then
@@ -1274,8 +1281,6 @@ function se_smart_terrain:update()
 		
 		self:check_smart_faction()
 	end
-	
-	self:show()
 	
 	--[[ Disabled, I think left over from Clear Sky
 	local gt = game.get_game_time()

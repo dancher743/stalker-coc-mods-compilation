@@ -41,6 +41,7 @@ function sim_squad_scripted:__init(section) super (section)
 	--if (USE_MARSHAL) then
 	--	RegisterScriptCallback("save_state",self.save_state,self)
 	--end
+	self.first_update 		= false
 end
 
 function sim_squad_scripted:init_squad()
@@ -520,7 +521,6 @@ function sim_squad_scripted:assign_smart(smart,old_smart_id)
 		self.smart_id = smart.id
 	end
 	
-	local sim = alife()
 	for k in self:squad_members() do
 		local se_obj = alife_object(k.id)
 		if (se_obj) then
@@ -748,34 +748,25 @@ function sim_squad_scripted:set_squad_sympathy(sympathy)
 	end
 end
 
-local function set_relation(npc1, npc2, new_relation)
-	local goodwill = tonumber(new_relation) or new_relation == "enemy" and -1000 or new_relation == "friend" and 1000 or 0
-	-- IMPORTANT: Don't use 'relation =' for monster squad descriptions! They are not derived from CSE_ALifeTraderAbstract!
-	-- I could just add check IsStalker but needless overhead
-	if npc1 and npc2 then
-		--printf("set_relation %s",npc1:name())
-		npc1:force_set_goodwill(goodwill, npc2.id)
-	else
-		printf("Npc not set in goodwill function!!!")
-	end
-end
 function sim_squad_scripted:set_squad_relation(relation)
 	--alun_utils.debug_write("sim_squad_scripted:set_squad_relation")
+	if (is_squad_monster[self.player_id]) then 
+		return
+	end
 	local rel = relation or self.relationship
-	if(rel ~= nil) then
-		local npc
+	if (rel and (rel == "enemy" or rel == "friend" or rel == "neutral")) then
 		local sim = alife()
 		for k in self:squad_members() do
-			npc = db.storage[k.id] and db.storage[k.id].object
-			if(npc) then
+			local npc = db.storage[k.id] and db.storage[k.id].object
+			if (npc) then
 				game_relations.set_npcs_relation(npc, db.actor, rel)
-			else
-				set_relation(sim:object(k.id), sim:actor(),rel)
+			elseif (k.object) then
+				local goodwill = rel == "enemy" and -1000 or rel == "friend" and 1000 or 0
+				k.object:force_set_goodwill(goodwill, 0)
 			end
 		end
 	end
 end
-
 
 local function reset_animation(npc)
 	--alun_utils.debug_write("sim_squad_scripted:reset_animation")
