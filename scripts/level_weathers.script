@@ -224,32 +224,41 @@ function WeatherManager:get_next_period_change_hour(period)
 	return hour
 end
 
+function WeatherManager:get_period_occur_chance(period)
+	local val = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. period .. "_occur",2,4)
+	val = tonumber(val)
+	local chance = (val == 4 and 80) or (val == 3 and 40) or (val == 2 and 20) or (val == 1 and 0)
+	return chance
+end
+
 function WeatherManager:get_next_period(period)
 	local pick_chance = math.random(100)
 	
 	-- more foggy weather if Survival mode is enabled
     if (IsSurvivalMode() and pick_chance <= 25) then
         local foggy_period = "foggy"
-        local val = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. foggy_period .. "_occur",2,4)
-        val = tonumber(val)
-        if (val ~= 1) then
+		local occur_chance = self:get_period_occur_chance(foggy_period)
+        if (occur_chance > 0) then
             return foggy_period
         end
     end
+	
+	local next_period = self:get_period_with_prob("global_weather_" .. period)
+	if (next_period and next_period ~= "all" and self:get_period_occur_chance(next_period) > 0) then
+		return next_period
+	end
 	
 	local available_periods = self:get_periods("global_weather_periods")
 	local next_periods = {}
 	
 	for i=1,#available_periods do
-		local val = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. available_periods[i] .. "_occur",2,4)
-		val = tonumber(val)
-		local occur_chance = (val == 4 and 80) or (val == 3 and 40) or (val == 2 and 20) or (val == 1 and 0)
+		local occur_chance = self:get_period_occur_chance(available_periods[i])
 		if (pick_chance <= occur_chance) then
 			next_periods[#next_periods + 1] = available_periods[i]
 		end
 	end
 	
-	local next_period = #next_periods == 0 and period or next_periods[math.random(#next_periods)]
+	next_period = #next_periods == 0 and period or next_periods[math.random(#next_periods)]
 	return next_period
 end
 
@@ -607,6 +616,10 @@ end
 
 function WeatherManager:get_period_with_prob(section)
 	local periods = alun_utils.parse_ini_section_to_array(self.graphs_ini,section)
+	
+	if not (periods) then
+		return nil
+	end
 	
 	local sum=0
 	for _,prob in pairs(periods) do
