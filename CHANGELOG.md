@@ -25,7 +25,6 @@ All notable changes to this project will be documented in this file.
 * Added A-Life from CoC 1.5
 * Added memoization to global code to reduce the load on a CPU
 * Reworked change actor name dialog
-* Added shock hit effect: actor may hide your weapon and restore them after 2 seconds
 
 ### Mods
 * Call of Chernobyl Fallout (CrommCruac, av661194)
