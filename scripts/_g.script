@@ -1131,8 +1131,15 @@ function character_community (obj)
 	if not (obj) then
 		return
 	end
-	if IsStalker(obj) then
+	if IsStalkerOnly(obj) then
 		return obj:character_community()
+	end
+	if IsActor(obj) then
+		if (disgues.has_actor_disguised()) then
+			return disgues.get_actor_default_faction()
+		else
+			return obj:character_community()
+		end
 	end
 	return "monster"
 end
