@@ -1135,8 +1135,8 @@ function character_community (obj)
 		return obj:character_community()
 	end
 	if IsActor(obj) then
-		if (disgues.has_actor_disguised()) then
-			return disgues.get_actor_default_faction()
+		if (disguise.has_actor_disguised()) then
+			return disguise.get_actor_default_faction()
 		else
 			return obj:character_community()
 		end
