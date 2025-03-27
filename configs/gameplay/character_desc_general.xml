@@ -6434,7 +6434,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_killer_0</class>
     <community>killer</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_03\killer\</snd_config>
+    <snd_config>characters_voice\human_01\killer\</snd_config>
     <rank>2683</rank>
     <money min="250" max="1750" infinitive="0"/>
     <reputation>-839</reputation>
@@ -6459,7 +6459,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_killer_0</class>
     <community>killer</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_03\killer\</snd_config>
+    <snd_config>characters_voice\human_01\killer\</snd_config>
     <rank>2539</rank>
     <money min="250" max="1750" infinitive="0"/>
     <reputation>74</reputation>
@@ -6485,7 +6485,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_killer_0</class>
     <community>killer</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_03\killer\</snd_config>
+    <snd_config>characters_voice\human_01\killer\</snd_config>
     <rank>1966</rank>
     <money min="250" max="1750" infinitive="0"/>
     <reputation>-1056</reputation>
@@ -6510,7 +6510,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_killer_0</class>
     <community>killer</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_03\killer\</snd_config>
+    <snd_config>characters_voice\human_01\killer\</snd_config>
     <rank>2146</rank>
     <money min="250" max="1750" infinitive="0"/>
     <reputation>1400</reputation>
@@ -6719,7 +6719,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_killer_1</class>
     <community>killer</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_03\killer\</snd_config>
+    <snd_config>characters_voice\human_01\killer\</snd_config>
     <rank>2758</rank>
     <money min="500" max="1750" infinitive="0"/>
     <reputation>-568</reputation>
@@ -6745,7 +6745,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_killer_1</class>
     <community>killer</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_03\killer\</snd_config>
+    <snd_config>characters_voice\human_01\killer\</snd_config>
     <rank>2588</rank>
     <money min="500" max="1750" infinitive="0"/>
     <reputation>-2470</reputation>
@@ -6772,7 +6772,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_killer_1</class>
     <community>killer</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_03\killer\</snd_config>
+    <snd_config>characters_voice\human_01\killer\</snd_config>
     <rank>2869</rank>
     <money min="500" max="1750" infinitive="0"/>
     <reputation>-2294</reputation>
@@ -6798,7 +6798,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_killer_1</class>
     <community>killer</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_03\killer\</snd_config>
+    <snd_config>characters_voice\human_01\killer\</snd_config>
     <rank>1648</rank>
     <money min="500" max="1750" infinitive="0"/>
     <reputation>-974</reputation>
@@ -7008,7 +7008,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_killer_2</class>
     <community>killer</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_03\killer\</snd_config>
+    <snd_config>characters_voice\human_01\killer\</snd_config>
     <rank>2545</rank>
     <money min="1500" max="2500" infinitive="0"/>
     <reputation>471</reputation>
@@ -7034,7 +7034,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_killer_2</class>
     <community>killer</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_03\killer\</snd_config>
+    <snd_config>characters_voice\human_01\killer\</snd_config>
     <rank>2463</rank>
     <money min="1500" max="2500" infinitive="0"/>
     <reputation>1128</reputation>
@@ -7060,7 +7060,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_killer_2</class>
     <community>killer</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_03\killer\</snd_config>
+    <snd_config>characters_voice\human_01\killer\</snd_config>
     <rank>2748</rank>
     <money min="1500" max="2500" infinitive="0"/>
     <reputation>1985</reputation>
@@ -7086,7 +7086,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_killer_2</class>
     <community>killer</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_03\killer\</snd_config>
+    <snd_config>characters_voice\human_01\killer\</snd_config>
     <rank>1885</rank>
     <money min="1500" max="2500" infinitive="0"/>
     <reputation>-1704</reputation>
