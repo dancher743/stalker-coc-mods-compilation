@@ -1081,7 +1081,7 @@ function sim_squad_scripted:can_switch_online()
 			local dist = axr_main.config:r_value(MM_OPTIONS,"excl_dist",2) or 0
 			if (dist > 0 and not db.actor:has_info("actor_is_sleeping")) then 
 				local actor = alife():actor()
-				if (self.position:distance_to(actor.position) <= dist) then
+				if (self.position:distance_to_sqr(actor.position) <= dist * dist) then
 					return false
 				end
 			end

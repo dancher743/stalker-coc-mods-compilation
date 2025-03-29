@@ -128,6 +128,7 @@ All notable changes to this project will be documented in this file.
 * Optimized string allocations in `xr_corpse_detection.script`
 * Added RAM clearing on game unloading
 * Added global functions memoization into `_g.script`
+* Replaced function `distance_to` with `distance_to_sqr` in `sim_squad_scripted:can_switch_online()`
 
 ### Framework
 * Added `npc_regular` string into `squad_descr.ltx` to add non-random squads spawn
