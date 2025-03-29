@@ -193,7 +193,8 @@ function se_smart_terrain:read_params()
 	self.respawn_only_level 	= ini:r_bool_ex(smart_sect,"respawn_only_level",false)
 	self.respawn_only_smart 	= ini:r_bool_ex(smart_sect,"respawn_only_smart",false)
 	self.respawn_point 			= false
-	self.respawn_radius  		= ini:r_float_ex(smart_sect,"respawn_radius") or 150
+	local respawn_radius = ini:r_float_ex(smart_sect,"respawn_radius") or 300
+	self.respawn_radius = respawn_radius * respawn_radius
 	self.safe_restr				= ini:r_string_ex(smart_sect,"safe_restr")	-- npc with jobs inside are invulnerable
 	self.spawn_point			= ini:r_string_ex(smart_sect,"spawn_point")
 	self.squad_id				= ini:r_float_ex(smart_sect,"squad_id") or 0	
@@ -1242,23 +1243,23 @@ function se_smart_terrain:update()
 	
 	local sim = alife()
 	local se_actor = sim:actor()
-	self.dist_to_actor = self.position:distance_to(se_actor.position)
+	self.dist_to_actor = self.position:distance_to_sqr(se_actor.position)
 	
 	if self.respawn_params ~= nil then
 		self:try_respawn()
 	end
 	
-	self.__check_time = tg + 500 + math.max(500, 0.025 * self.dist_to_actor)
+	self.__check_time = tg + 3000
 	
 	if (self.online) then
 		self:update_jobs()
 		
 		local old_smart = nearest_to_actor_smart.id and sim:object(nearest_to_actor_smart.id)
-		local old_dist_to_actor = old_smart and old_smart.position:distance_to(se_actor.position)
+		local old_dist_to_actor = old_smart and old_smart.position:distance_to_sqr(se_actor.position)
 		if (old_dist_to_actor == nil or self.dist_to_actor < old_dist_to_actor) then
 			nearest_to_actor_smart.id = self.id
 			nearest_to_actor_smart.dist = self.dist_to_actor
-			if (self.dist_to_actor <= 50) then 
+			if (self.dist_to_actor <= 50*50) then 
 				xr_statistic.smart_terrain_mark_visited(self)
 			end
 		end

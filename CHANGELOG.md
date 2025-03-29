@@ -81,6 +81,7 @@ All notable changes to this project will be documented in this file.
 * Added transitions for cloudy weather
 * Moved code of getting periods occurrancy into `WeatherManager:get_period_occur_chance` method
 * Removed more foggy weather during Survival mode
+* Refactored `respawn_radius` in `se_smart_terrain` class
 
 ### Fixes
 * Fixed simulation of `gar_smart_terrain_5_6` smart
