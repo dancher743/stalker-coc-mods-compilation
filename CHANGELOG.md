@@ -109,6 +109,7 @@ All notable changes to this project will be documented in this file.
 * Fixed instant appearing of angry stash owner message in Dynamic News
 * Saved tickbacks functions to script fields to prevent them from garbage collection
 * Fixed volume of `demobilization.ogg` radio track
+* Added saving `assigned_target_id` to fix reselect of squad target after reload
 
 ### Optimization
 * Optimized amount of update callbacks

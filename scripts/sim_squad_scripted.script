@@ -894,6 +894,7 @@ function sim_squad_scripted:STATE_Write(packet)
 	packet:w_stringZ(tostring(self.respawn_point_id))
 	packet:w_stringZ(tostring(self.respawn_point_prop_section))
 	packet:w_stringZ(tostring(self.smart_id))
+	packet:w_stringZ(tostring(self.assigned_target_id))
 
 	set_save_marker(packet, "save", true, "sim_squad_scripted")
 end
@@ -931,6 +932,12 @@ function sim_squad_scripted:STATE_Read(packet, size)
 		self.smart_id = nil
 	else
 		self.smart_id = tonumber(self.smart_id)
+	end
+	self.assigned_target_id = packet:r_stringZ()
+	if self.assigned_target_id == STR_NIL then
+		self.assigned_target_id = nil
+	else
+		self.assigned_target_id = tonumber(self.assigned_target_id)
 	end
 	self:init_squad_on_load()
 	set_save_marker(packet, "load", true, "sim_squad_scripted")
