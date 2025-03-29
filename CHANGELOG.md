@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 * Added memoization to global code to reduce the load on a CPU
 * Reworked change actor name dialog
 * Added new idle sounds to NPCs
+* Added TV from SoC
 
 ### Mods
 * Call of Chernobyl Fallout (CrommCruac, av661194)
