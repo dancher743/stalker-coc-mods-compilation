@@ -232,17 +232,6 @@ function WeatherManager:get_period_occur_chance(period)
 end
 
 function WeatherManager:get_next_period(period)
-	local pick_chance = math.random(100)
-	
-	-- more foggy weather if Survival mode is enabled
-    if (IsSurvivalMode() and pick_chance <= 25) then
-        local foggy_period = "foggy"
-		local occur_chance = self:get_period_occur_chance(foggy_period)
-        if (occur_chance > 0) then
-            return foggy_period
-        end
-    end
-	
 	local next_period = self:get_period_with_prob("global_weather_" .. period)
 	if (next_period and next_period ~= "all" and self:get_period_occur_chance(next_period) > 0) then
 		return next_period
@@ -250,6 +239,7 @@ function WeatherManager:get_next_period(period)
 	
 	local available_periods = self:get_periods("global_weather_periods")
 	local next_periods = {}
+	local pick_chance = math.random(100)
 	
 	for i=1,#available_periods do
 		local occur_chance = self:get_period_occur_chance(available_periods[i])
