@@ -283,7 +283,7 @@ end
 
 function get_character_icon_list()
 	local icons = {}
-	local faction = utils.get_actor_community()
+	local faction = actor_community()
 	local section = faction .. "_portraits"
 	local ini = ini_file("plugins\\faction_portraits.ltx")
 	local n = ini:section_exist(section) and ini:line_count(section) or 0

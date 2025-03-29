@@ -260,11 +260,7 @@ function npc_on_death_callback(victim,who)
 	inc_counter("killed_stalkers")
 	
 	local npc_faction = character_community(victim)
-	local actor_faction = character_community(who)
-	
-	if (disguise and disguise.has_actor_disguised()) then
-		actor_faction = disguise.get_actor_default_faction()
-	end
+	local actor_faction = actor_community()
 	
 	-- Kiled a friendly NPC.
 	if (xr_conditions.is_factions_friends(nil, nil, { npc_faction, actor_faction })) then

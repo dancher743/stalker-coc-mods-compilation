@@ -153,7 +153,7 @@ All notable changes to this project will be documented in this file.
 * Added `STR_BLANK` const into `_g.script`
 * Added `HasTimer` function into `_g.script`
 * Added auto-reset to `StartTimer` function in `_g.script`
-* Added disgues check into `character_community` function in `_g.script`
+* Added disguise checks into get community functions in `_g.script`
 
 ## [1.4.6] - 2024-12-30
 

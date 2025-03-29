@@ -98,6 +98,7 @@ function actor_on_before_death(whoID,flags)
 	local survival_squad = "survival_squad"
 	local start_squad = "start_squad"
 	local faction_spawn = "faction_spawn"
+	local actor_community = actor_community()
 	
 	for i=1,65534 do
 		local se_obj = sim:object(i)
@@ -109,13 +110,7 @@ function actor_on_before_death(whoID,flags)
 				if (axr_companions.companion_squads[se_obj.group_id]) then
 					table.insert(squad_mates,se_obj.id)
 				elseif azazel_customizable_config[faction_spawn] then
-					local actor_faction
-					if (disguise and disguise.has_actor_disguised()) then
-						actor_faction = disguise.get_actor_default_faction()
-					else
-						actor_faction = utils.get_actor_community()
-					end
-					if (se_obj:community() == actor_faction) then
+					if (se_obj:community() == actor_community) then
 						table.insert(faction_mates,se_obj.id)					
 					else
 					table.insert(avail_entities,se_obj.id)

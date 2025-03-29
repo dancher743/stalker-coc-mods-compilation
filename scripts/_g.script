@@ -1131,10 +1131,11 @@ function character_community (obj)
 	if not (obj) then
 		return
 	end
-	if IsStalkerOnly(obj) then
+	local clsid = obj:clsid()
+	if IsStalkerOnly(obj, clsid) then
 		return obj:character_community()
 	end
-	if IsActor(obj) then
+	if IsActor(obj, clsid) then
 		if (disguise.has_actor_disguised()) then
 			return disguise.get_actor_default_faction()
 		else
@@ -1148,16 +1149,26 @@ function alife_character_community (obj)
 	if not (obj) then
 		return
 	end
-	if IsStalker(obj, obj:clsid()) then
+	local clsid = obj:clsid()
+	if IsStalkerOnly(obj, clsid) then
 		return obj:community()
+	end
+	if IsActor(obj, clsid) then
+		if (disguise.has_actor_disguised()) then
+			return disguise.get_actor_default_faction()
+		else
+			return obj:community()
+		end
 	end
 	return "monster"
 end
 
 function actor_community()
-	local community = db.actor:character_community()
-	if (string.find(community, "actor_")) then
-		community = community:sub(7) -- remove 'actor_' prefix
+	local community
+	if (disguise.has_actor_disguised()) then
+		community = disguise.get_default_faction()
+	else
+		community = utils.get_actor_community()
 	end
 	return community
 end
