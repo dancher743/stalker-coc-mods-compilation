@@ -143,7 +143,7 @@
 			\n
 			\nSee how long you can survive!
 			\n
-			\nIf Extended population mode is active, you will have relatively safe only the first 24 hours: the spawn activity of the living dead in the Zone will increase with each passing hours. Use your time wisely!
+			\nIf Extended offline mode is active, you will have relatively safe only the first 24 hours: the spawn activity of the living dead in the Zone will increase with each passing hours. Use your time wisely!
 			\n
 			\nCompatible with all modes.
 		</text>
@@ -339,7 +339,7 @@
 		<text>3</text>
 	</string>
 	<string id="st_cap_check_eoc">
-		<text>Extended population</text>
+		<text>Extended offline</text>
 	</string>
 	
 	<string id="st_off">
