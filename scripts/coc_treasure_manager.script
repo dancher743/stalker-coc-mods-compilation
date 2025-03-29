@@ -808,9 +808,7 @@ function get_renewing_chance()
 end
 
 function renew_random_stashes()
-	if (renewing_counter == 0 or 
-		renewing_time < renewing_next_time)
-	then
+	if (renewing_time < renewing_next_time) then
 		return
 	end
 	
@@ -823,5 +821,6 @@ function renew_random_stashes()
 	end
 	
 	renewing_counter = 0
+	renewing_time = 0
 	renewing_next_time = get_renewing_next_time()
 end
