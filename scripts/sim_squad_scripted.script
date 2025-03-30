@@ -1314,7 +1314,7 @@ function sim_squad_scripted:sim_available()
 		return true
 	end
 
-	local smart = simulation_objects.get_server_entity(self.smart_id)
+	local smart = simulation_objects.get_sim_obj_registry().objects[self.smart_id]
 	if not (smart) then
 		return false
 	end
