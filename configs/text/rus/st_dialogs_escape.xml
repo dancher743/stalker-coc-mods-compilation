@@ -17,16 +17,19 @@
 		<text>Я хочу сменить имя.</text>
 	</string>
 	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_1">
-		<text>Это серьёзно. Мало того, что нужно будет кое-кого подмазать, так ещё и в техническом плане здесь предстоит работа... Хорошо, если заплатишь 20000 рублей, я посмотрю, что можно сделать.</text>
+		<text>Ты не первый, кто обращается ко мне с такой просьбой. Значит так: в первый раз сменю бесплатно, потом плати 20000 рублей за каждую смену.</text>
 	</string>
-	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_11">
-		<text>Я согласен.</text>
+	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_20">
+		<text>Давай бесплатно.</text>
 	</string>
-	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_12">
+	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_21">
+		<text>Давай за деньги.</text>
+	</string>
+	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_22">
 		<text>В другой раз.</text>
 	</string>
-	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_2">
-		<text>Введи новое имя, и всё будет сделано.</text>
+	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_3">
+		<text>Вводи новое имя.</text>
 	</string>
 <!--------------------------- esc_2_12_stalker_wolf_start ------>
 	<string id="esc_2_12_stalker_wolf_start_dialog_1">

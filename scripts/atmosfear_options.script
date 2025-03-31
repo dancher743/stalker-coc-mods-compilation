@@ -43,6 +43,11 @@ function af_options_dialog:__init() super()
 		self.default_settings:w_value("atmosfear_default_parameters","opt_blowout_fate","turntozombie")
 		self.default_settings:w_value("atmosfear_default_parameters","opt_blowout_warning","radio_siren")
 		self.default_settings:w_value("atmosfear_default_parameters","opt_blowout_task","give")
+		self.default_settings:w_value("atmosfear_default_parameters","opt_enable_fallout",0)
+		self.default_settings:w_value("atmosfear_default_parameters","opt_fallout_freq",12)
+		self.default_settings:w_value("atmosfear_default_parameters","opt_fallout_fate","poison")
+		self.default_settings:w_value("atmosfear_default_parameters","opt_fallout_warning","siren")
+		self.default_settings:w_value("atmosfear_default_parameters","opt_fallout_task","give")
 		self.default_settings:w_value("atmosfear_default_parameters","opt_enable_psi_storm",1)
 		self.default_settings:w_value("atmosfear_default_parameters","opt_psi_storm_freq",24)
 		self.default_settings:w_value("atmosfear_default_parameters","opt_psi_storm_fate","kill")
@@ -52,7 +57,7 @@ function af_options_dialog:__init() super()
 		self.default_settings:w_value("atmosfear_default_parameters","opt_moon_phase","8days")
 		self.default_settings:w_value("atmosfear_default_parameters","opt_night_brightness","slight")
 
-		self.default_settings:w_value("atmosfear_default_parameters","opt_god_mode","false")
+		self.default_settings:w_value("atmosfear_default_parameters","opt_god_mode",STR_FALSE)
 		need_save = true
 	end
 
@@ -105,6 +110,14 @@ function af_options_dialog:__init() super()
 		need_save = true
 	end
 
+
+	if not (self.default_settings:section_exist("list_fallout_fate")) then
+		self.default_settings:w_value("list_fallout_fate","list_fate_poison",0)
+		self.default_settings:w_value("list_fallout_fate","list_fate_none",1)
+		need_save = true
+	end
+
+
 	if (not self.default_settings:section_exist("list_psi_storm_fate")) then
 		self.default_settings:w_value("list_psi_storm_fate","list_fate_kill",0)
 		self.default_settings:w_value("list_psi_storm_fate","list_fate_turntozombie",1)
@@ -117,6 +130,14 @@ function af_options_dialog:__init() super()
 		self.default_settings:w_value("list_blowout_task","list_task_none",1)
 		need_save = true
 	end
+
+
+	if not (self.default_settings:section_exist("list_fallout_task")) then
+		self.default_settings:w_value("list_fallout_task","list_task_give",0)
+		self.default_settings:w_value("list_fallout_task","list_task_none",1)
+		need_save = true
+	end
+
 
 	if (not self.default_settings:section_exist("list_psi_storm_task")) then
 		self.default_settings:w_value("list_psi_storm_task","list_task_give",0)
@@ -131,6 +152,16 @@ function af_options_dialog:__init() super()
 		self.default_settings:w_value("list_blowout_freq","list_freq_96",3)
 		need_save = true
 	end
+
+
+	if not (self.default_settings:section_exist("list_fallout_freq")) then
+		self.default_settings:w_value("list_fallout_freq","list_freq_48",2)
+		self.default_settings:w_value("list_fallout_freq","list_freq_24",1)
+		self.default_settings:w_value("list_fallout_freq","list_freq_12",0)
+		self.default_settings:w_value("list_fallout_freq","list_freq_96",3)
+		need_save = true
+	end
+
 	
 	if (not self.default_settings:section_exist("list_psi_storm_freq")) then
 		self.default_settings:w_value("list_psi_storm_freq","list_freq_48",2)
@@ -139,6 +170,14 @@ function af_options_dialog:__init() super()
 		self.default_settings:w_value("list_psi_storm_freq","list_freq_96",3)
 		need_save = true
 	end
+
+
+	if not (self.default_settings:section_exist("list_fallout_warning")) then
+		self.default_settings:w_value("list_fallout_warning","list_warning_siren",0)
+		self.default_settings:w_value("list_fallout_warning","list_warning_none",1)
+		need_save = true
+	end
+
 
 	if (not self.default_settings:section_exist("list_psi_storm_warning")) then
 		self.default_settings:w_value("list_psi_storm_warning","list_warning_siren",0)
@@ -398,11 +437,16 @@ function af_options_dialog:SetCurrentValues() -- read values from "atmosfear_cur
 		self:SetRadioValue("weather_"..weather_tbl[i].."_occur", config:r_value("atmosfear_current_parameters","opt_weather_"..weather_tbl[i].."_occur",0,"3"))
 	end
 
-	self:SetCheckValue("enable_blowout",			config:r_value("atmosfear_current_parameters","opt_enable_blowout",0,"1"))
+	self:SetCheckValue("enable_blowout",			config:r_value("atmosfear_current_parameters","opt_enable_blowout",0,STR_ONE))
 	self:SetComboValue("blowout_freq",				config:r_value("atmosfear_current_parameters","opt_blowout_freq",0,"48"))
 	self:SetComboValue("blowout_fate",				config:r_value("atmosfear_current_parameters","opt_blowout_fate",0,"turntozombie"))
 	self:SetComboValue("blowout_warning",			config:r_value("atmosfear_current_parameters","opt_blowout_warning",0,"radio_siren"))
 	self:SetComboValue("blowout_task",				config:r_value("atmosfear_current_parameters","opt_blowout_task",0,"give"))
+	self:SetCheckValue("enable_fallout",			config:r_value("atmosfear_current_parameters","opt_enable_fallout",0,"0"))
+	self:SetComboValue("fallout_freq",				config:r_value("atmosfear_current_parameters","opt_fallout_freq",0,"12"))
+	self:SetComboValue("fallout_fate",				config:r_value("atmosfear_current_parameters","opt_fallout_fate",0,"poison"))
+	self:SetComboValue("fallout_warning",			config:r_value("atmosfear_current_parameters","opt_fallout_warning",0,"siren"))
+	self:SetComboValue("fallout_task",				config:r_value("atmosfear_current_parameters","opt_fallout_task",0,"give"))
 	self:SetCheckValue("enable_psi_storm",			config:r_value("atmosfear_current_parameters","opt_enable_psi_storm",0,"1"))
 	self:SetComboValue("psi_storm_freq",			config:r_value("atmosfear_current_parameters","opt_psi_storm_freq",0,"24"))
 	self:SetComboValue("psi_storm_fate",			config:r_value("atmosfear_current_parameters","opt_psi_storm_fate",0,"kill"))
@@ -422,11 +466,16 @@ function af_options_dialog:SetDefaultValues() -- read values from "atmosfear_def
 		self:SetRadioValue("weather_"..weather_tbl[i].."_occur", self.default_settings:r_value("atmosfear_default_parameters","opt_weather_"..weather_tbl[i].."_occur",0,"3"))
 	end
 
-	self:SetCheckValue("enable_blowout",			self.default_settings:r_value("atmosfear_default_parameters","opt_enable_blowout",0,"1"))
+	self:SetCheckValue("enable_blowout",			self.default_settings:r_value("atmosfear_default_parameters","opt_enable_blowout",0,STR_ONE))
 	self:SetComboValue("blowout_freq",				self.default_settings:r_value("atmosfear_default_parameters","opt_blowout_freq",0,"48"))
 	self:SetComboValue("blowout_fate",				self.default_settings:r_value("atmosfear_default_parameters","opt_blowout_fate",0,"turntozombie"))
 	self:SetComboValue("blowout_warning",			self.default_settings:r_value("atmosfear_default_parameters","opt_blowout_warning",0,"radio_siren"))
 	self:SetComboValue("blowout_task",				self.default_settings:r_value("atmosfear_default_parameters","opt_blowout_task",0,"give"))
+	self:SetCheckValue("enable_fallout",			self.default_settings:r_value("atmosfear_default_parameters","opt_enable_fallout",0,"0"))
+	self:SetComboValue("fallout_freq",				self.default_settings:r_value("atmosfear_default_parameters","opt_fallout_freq",0,"12"))
+	self:SetComboValue("fallout_fate",				self.default_settings:r_value("atmosfear_default_parameters","opt_fallout_fate",0,"poison"))
+	self:SetComboValue("fallout_warning",			self.default_settings:r_value("atmosfear_default_parameters","opt_fallout_warning",0,"siren"))
+	self:SetComboValue("fallout_task",				self.default_settings:r_value("atmosfear_default_parameters","opt_fallout_task",0,"give"))
 	self:SetCheckValue("enable_psi_storm",			self.default_settings:r_value("atmosfear_default_parameters","opt_enable_psi_storm",0,"1"))
 	self:SetComboValue("psi_storm_freq",			self.default_settings:r_value("atmosfear_default_parameters","opt_psi_storm_freq",0,"24"))
 	self:SetComboValue("psi_storm_fate",			self.default_settings:r_value("atmosfear_default_parameters","opt_psi_storm_fate",0,"kill"))
@@ -544,12 +593,24 @@ function af_options_dialog:OnBtnAccept() -- update the values in "atmosfear_curr
 			if (psi_storm_manager) then psi_storm_manager.PsiStormManager:new_psi_storm_time(true) end
 		end
 	end
+	
+	if (config:r_value("atmosfear_current_parameters","opt_enable_fallout") == 0 and self:GetCheckValue("enable_fallout")==1) or config:r_value("atmosfear_current_parameters","opt_fallout_freq")~=tonumber(self:GetComboValue("fallout_freq")) then
+		self:SetComboOption("fallout_freq",true)
+		if (level.present()) then
+			if (fallout_manager) then fallout_manager.get_fallout_manager():new_time() end
+		end
+	end
 
+	self:SetComboOption("fallout_freq",true)
 	self:SetCheckOption("enable_blowout",true)
+	self:SetCheckOption("enable_fallout",false)
 	self:SetCheckOption("enable_psi_storm",true)
 	self:SetComboOption("blowout_fate",false)
 	self:SetComboOption("blowout_warning",false)
 	self:SetComboOption("blowout_task",false)
+	self:SetComboOption("fallout_fate",false)
+	self:SetComboOption("fallout_warning",false)
+	self:SetComboOption("fallout_task",false)
 	self:SetComboOption("psi_storm_fate",false)
 	self:SetComboOption("psi_storm_warning",false)
 	self:SetComboOption("psi_storm_task",false)
@@ -672,27 +733,38 @@ function af_opt_event:InitControls(x, y, xml, handler)
 	xml:InitStatic				("event_dialog:div_1", self)
 	xml:InitStatic				("event_dialog:div_2", self)
 	xml:InitStatic				("event_dialog:cap_af_blowout", self)
+	xml:InitStatic				("event_dialog:cap_af_fallout", self)
 	xml:InitStatic				("event_dialog:cap_af_psi_storm", self)
 	xml:InitStatic				("event_dialog:cap_check_enable_blowout", self)
+	xml:InitStatic				("event_dialog:cap_check_enable_fallout", self)
 	xml:InitStatic				("event_dialog:cap_check_enable_psi_storm", self)
 	xml:InitStatic				("event_dialog:cap_blowout_freq", self)
 	xml:InitStatic				("event_dialog:cap_blowout_fate", self)
 	xml:InitStatic				("event_dialog:cap_blowout_warning", self)
 	xml:InitStatic				("event_dialog:cap_blowout_task", self)
+	xml:InitStatic				("event_dialog:cap_fallout_freq", self)
+	xml:InitStatic				("event_dialog:cap_fallout_fate", self)
+	xml:InitStatic				("event_dialog:cap_fallout_warning", self)
+	xml:InitStatic				("event_dialog:cap_fallout_task", self)
 	xml:InitStatic				("event_dialog:cap_psi_storm_freq", self)
 	xml:InitStatic				("event_dialog:cap_psi_storm_fate", self)
 	xml:InitStatic				("event_dialog:cap_psi_storm_warning", self)
 	xml:InitStatic				("event_dialog:cap_psi_storm_task", self)
 
 	handler:RegisterCheck(xml, "event_dialog", "enable_blowout", self)
+	handler:RegisterCheck(xml, "event_dialog", "enable_fallout", self)
 	handler:RegisterCheck(xml, "event_dialog", "enable_psi_storm", self)
 
 	handler:RegisterCombo(xml, "event_dialog", "blowout_freq", nil, self)
+	handler:RegisterCombo(xml, "event_dialog", "fallout_freq", nil, self)
 	handler:RegisterCombo(xml, "event_dialog", "psi_storm_freq", nil, self)
 
 	handler:RegisterCombo(xml, "event_dialog", "blowout_fate", nil, self)
 	handler:RegisterCombo(xml, "event_dialog", "blowout_warning", nil, self)
 	handler:RegisterCombo(xml, "event_dialog", "blowout_task", nil, self)
+	handler:RegisterCombo(xml, "event_dialog", "fallout_fate", nil, self)
+	handler:RegisterCombo(xml, "event_dialog", "fallout_warning", nil, self)
+	handler:RegisterCombo(xml, "event_dialog", "fallout_task", nil, self)
 	handler:RegisterCombo(xml, "event_dialog", "psi_storm_fate", nil, self)
 	handler:RegisterCombo(xml, "event_dialog", "psi_storm_warning", nil, self)
 	handler:RegisterCombo(xml, "event_dialog", "psi_storm_task", nil, self)

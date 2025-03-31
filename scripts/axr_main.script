@@ -168,8 +168,11 @@ local intercepts = {
 	actor_on_slicing_update			= {},
 	squad_on_slicing_update			= {},
 	
-	DeadBodySearchClosed			= {}
-	--
+	DeadBodySearchClosed			= {},
+	
+	npc_on_use_dead					= {},
+	
+	level_time_on_changed			= {}
 }
 
 -----------------------------------------------------------
@@ -195,7 +198,7 @@ end
 function make_callback(name,...)
 	if (intercepts[name]) then
 		for func_or_userdata,v in pairs(intercepts[name]) do 
-			if (type(func_or_userdata) == "function") then 
+			if (type(func_or_userdata) == STR_FUNCTION) then 
 				func_or_userdata(...)
 			elseif (func_or_userdata[name]) then
 				func_or_userdata[name](func_or_userdata,...)

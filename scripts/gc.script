@@ -16,12 +16,13 @@ function collect(reason)
     printf("collectgarbage after=%sKb",collectgarbage("count")*1024)
 end
 
-function start_auto_collect()
-	local function update()
-		if (collectgarbage("count") >= memory_threshold) then
-			collect("Automatic garbage collection")
-		end
+local function update()
+	if (collectgarbage("count") >= memory_threshold) then
+		collect("Automatic garbage collection")
 	end
+end
+
+function start_auto_collect()
 	StartTimer("gc_auto_collect",rate*1000,update)
 end
 

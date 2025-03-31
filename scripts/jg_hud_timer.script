@@ -4,6 +4,7 @@
 --
 
 local hud_timer
+local hud_timer_tickback
 local last_minute
 
 local function actor_on_slicing_update()
@@ -15,7 +16,7 @@ local function actor_on_slicing_update()
 	last_minute = current_minute
 	
 	local left_hours, left_minutes = jg_guider.get_time_left()
-	hud_timer:SetValue(left_hours, left_minutes, 0)
+	hud_timer:SetValue2(left_hours, left_minutes)
 end
 
 local function actor_on_first_update()
@@ -37,6 +38,8 @@ function try_start()
 	end
 	
 	hud_timer = ui_hud_timer.create()
+	local time_format = strtransl("ui_st_jg_hud_timer_format")
+	hud_timer:SetTimeFormat(time_format)
 	local position_base = hud_timer:GetPosition()
 	local position_without_bar = vector2():set(position_base.x, position_base.y)
 	local position_with_bar = vector2():set(position_base.x, position_base.y + 45)
@@ -51,7 +54,8 @@ function try_start()
 			hud_timer:Show(false)
 		end
 	end
-	StartTimer("jg_hud_show_timer", 1000, tickback)
+	hud_timer_tickback = tickback
+	StartTimer("jg_hud_show_timer", 1000, hud_timer_tickback)
 end
 
 function try_stop()

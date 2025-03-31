@@ -1249,4 +1249,26 @@
 	<string id="vanish_bounty_hunt_target_dialog_26">
 		<text>Чего?</text>
 	</string>
+	
+	<string id="open_companion_inventory_phrase_0">
+		<text>Открой рюкзак...</text>
+	</string>
+	<string id="open_companion_inventory_phrase_1">
+		<text>И?</text>
+	</string>
+	<string id="open_companion_inventory_phrase_20">
+		<text>Возьми мои вещи.</text>
+	</string>
+	<string id="open_companion_inventory_phrase_21">
+		<text>Покажи снарягу.</text>
+	</string>
+	<string id="open_companion_inventory_phrase_22">
+		<text>Покажи всё.</text>
+	</string>
+	<string id="open_companion_inventory_phrase_23">
+		<text>Я передумал.</text>
+	</string>
+	<string id="open_companion_inventory_phrase_3">
+		<text>Зря открывал только...</text>
+	</string>
 </string_table>

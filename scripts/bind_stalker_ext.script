@@ -50,7 +50,7 @@ function actor_on_net_spawn()
 		con:execute("ai_aim_predict_time 0.40")
 	end
 	
-	local sim = get_alife()
+	local sim = alife()
 	for i=1,65534 do
 		local se_obj = sim:object(i)
 		if (se_obj and se_obj:clsid() == clsid.phantom) then
@@ -61,7 +61,7 @@ function actor_on_net_spawn()
 	
 	if (axr_main.config:r_value(MM_OPTIONS,"enable_heli_spawn",1,true) == false) then 
 		for k,v in pairs(se_heli.se_helicopters) do 
-			get_alife():release(v,true)
+			alife():release(v,true)
 		end
 	end
 	
@@ -80,6 +80,7 @@ end
 function actor_on_net_destroy(binder)
 	SendScriptCallback("actor_on_net_destroy",binder)
 	SendScriptCallback("on_game_unload",binder)
+	gc.collect("actor_on_net_destroy")
 end 
 
 -------------------
@@ -191,7 +192,7 @@ function actor_on_item_use(binder,item)
 		con:execute("snd_volume_music 0")
 		con:execute("snd_volume_eff 0")
 	elseif (sec == "drug_psy_blockade" or sec == "drug_radioprotector" or sec == "drug_antidot") then
-		local boost_time = ini_sys:r_float_ex(sec,"boost_time")
+		local boost_time = system_ini():r_float_ex(sec,"boost_time")
 		utils.save_var(db.actor,sec.."_expiration",utils.CTimeAddSec(game.get_game_time(),boost_time*level.get_time_factor()))
 	elseif (sec == "radio_connections_pda") then 
 		run_dynamic_element(pda_dialog.pda_dialog_box(),true)
@@ -216,7 +217,7 @@ end
 -- IMPORTANT: Cannot be used as callback because this needs to be done in specific order, just call script directly!
 -------------------
 function actor_on_save(binder,packet)
-	local sim,gg = get_alife(),game_graph()
+	local sim,gg = alife(),game_graph()
 	local actor_gv = sim and gg:vertex(sim:actor().m_game_vertex_id)
 	
 	if (actor_gv and actor_gv:level_id() ~= sim:level_id()) then
@@ -291,9 +292,9 @@ function actor_on_detach_vehicle(binder,obj)
 	if (obj:section() == "deployable_mgun") then 
 		local se_obj = alife_object(obj:id())
 		if (se_obj) then 
-			get_alife():release(se_obj)
+			alife():release(se_obj)
 		end
-		get_alife():create("itm_deployable_mgun",vector(),0,0,0)
+		alife():create("itm_deployable_mgun",vector(),0,0,0)
 	end
 end
 
@@ -344,6 +345,19 @@ function anabiotic_callback()
 			m:finish()
 		end
 	end
+	if(fallout_manager and fallout_manager.is_started()) then
+		m = fallout_manager.get_fallout_manager()
+		-- TODO, Dancher: Should fix update time in fallout_manager
+		--[[local tf = level.get_time_factor()
+		local diff_sec = math.ceil(game.get_game_time():diffSec(m.start_time)/tf)
+		if(rnd>(m.duration-diff_sec)*tf/60) then
+			m.time_forwarded = true
+			m:finish()
+		end]]
+		rnd = math.random(55,65)
+		m.time_forwarded = true
+		m:finish()
+	end
 	level.change_game_time(0,0,rnd)
 	level_weathers.get_weather_manager():forced_weather_change()
 	--printf("anabiotic_callback: time forwarded on [%d]", rnd)
@@ -371,7 +385,7 @@ function actor_item_to_slot(binder,obj)
 	if (axr_main.config:r_value(MM_OPTIONS,"enable_outfit_portrait",1,false) == true) then
 		local outfit = db.actor:item_in_slot(7)
 		if (outfit and outfit:id() == obj:id()) then 
-			local icon = ini_sys:r_string_ex(outfit:section(),"character_portrait")
+			local icon = system_ini():r_string_ex(outfit:section(),"character_portrait")
 			if (icon) then
 				db.actor:set_character_icon(icon)
 			elseif (db.actor_binder.character_icon) then -- use default portrait if no outfit portrait exists

@@ -41,11 +41,12 @@ function sim_squad_scripted:__init(section) super (section)
 	--if (USE_MARSHAL) then
 	--	RegisterScriptCallback("save_state",self.save_state,self)
 	--end
+	self.first_update 		= false
 end
 
 function sim_squad_scripted:init_squad()
 	--alun_utils.debug_write("sim_squad_scripted:init_squad")
-	local sys_ini			= ini_sys
+	local sys_ini			= system_ini()
 	local settings_id 		= self:section_name()
 	
 	self.player_id 			= sys_ini:r_string_ex(settings_id,"faction") or "stalker"
@@ -65,15 +66,16 @@ function sim_squad_scripted:init_squad()
 	
 	local s	= sys_ini:r_string_ex(settings_id, "target_random_smart")
 	if (s) then
-		self.random_targets = alun_utils.str_explode(s,",") 
+		self.random_targets = alun_utils.str_explode(s,STR_COMMA) 
 	end
 	self.idle_time			= sys_ini:r_float_ex(settings_id,"idle_time") or math.random(STAY_POINT_IDLE_MIN,STAY_POINT_IDLE_MAX)	
 	
 	self.relationship		= self.relationship or rel
 	self.sympathy			= sys_ini:r_float_ex(settings_id,"sympathy")
-	self.show_spot			= xr_logic.parse_condlist(self, "show_spot", "show_spot", sys_ini:r_string_ex(settings_id,"show_spot") or "false")
+	self.show_spot			= xr_logic.parse_condlist(self, "show_spot", "show_spot", sys_ini:r_string_ex(settings_id,"show_spot") or STR_FALSE)
 
 	self.always_arrived		= sys_ini:r_bool_ex(settings_id,"always_arrived",false)
+	self:set_location_types_section("squad_terrain")
 	self:set_location_types_section("stalker_terrain")
 	self:set_squad_sympathy()
 end
@@ -83,7 +85,7 @@ function sim_squad_scripted:init_squad_on_load()
 	self:set_squad_sympathy()
 	sim_board.get_sim_board():assign_squad_to_smart(self, self.smart_id)
 	self.current_action = 0
-	--self.need_to_reset_location_masks = true
+	self.need_to_reset_location_masks = true
 	--alun_utils.debug_write(self:name().."init_squad_on_load end")
 end
 
@@ -125,7 +127,7 @@ function sim_squad_scripted:get_script_target()
 		else 
 			return self.assigned_target_id
 		end
-	else
+	elseif (self.action_condlist) then
 		new_target = xr_logic.pick_section_from_condlist(db.actor, self, self.action_condlist)
 	end 
 	
@@ -154,7 +156,7 @@ function sim_squad_scripted:update()
 	if not (self.first_update) then
 		self.first_update = true
 		local skip = false
-		local sim = get_alife()
+		local sim = alife()
 		local se_actor = sim:actor()
 		local se_obj = self:commander_id() and alife_object(self:commander_id())
 		if (se_obj) then
@@ -220,7 +222,7 @@ function sim_squad_scripted:update()
 	end
 	self.frame_counter = frame_counter + 1
 
-	local sim = get_alife()
+	local sim = alife()
 	local se_actor = sim:actor()
 	self.dist_to_actor = self.position:distance_to(se_actor.position)
 
@@ -248,7 +250,7 @@ local function can_help_actor(squad)
 	end
 
 	local gg = game_graph()
-	if gg:vertex(squad.m_game_vertex_id):level_id() ~= gg:vertex(get_alife():actor().m_game_vertex_id):level_id() then
+	if gg:vertex(squad.m_game_vertex_id):level_id() ~= gg:vertex(alife():actor().m_game_vertex_id):level_id() then
 		return false
 	end
 
@@ -267,7 +269,7 @@ end
 -- This update is called for all squads with a scripted smart_terrain target
 function sim_squad_scripted:specific_update(script_target_id)
 	--alun_utils.debug_write(strformat("%s:specific_update",self:name()))
-	local sim = get_alife()
+	local sim = alife()
 	local se_target = sim:object(script_target_id)
 	if not (se_target) then
 		return
@@ -310,7 +312,7 @@ function sim_squad_scripted:specific_update(script_target_id)
 	self.current_action = 0
 	
 	for k in self:squad_members() do
-		local se_obj = k.object or k.id and sim:object(k.id)
+		local se_obj = alife_object(k.id)
 		if (se_obj) then
 			SIMBOARD:setup_squad_and_group(se_obj)
 		end
@@ -374,9 +376,9 @@ function sim_squad_scripted:generic_update()
 	self.current_target_id = nil
 	self.current_action = 0
 	
-	local sim = get_alife()
+	local sim = alife()
 	for k in self:squad_members() do
-		local se_obj = k.object or k.id and sim:object(k.id)
+		local se_obj = alife_object(k.id)
 		if (se_obj) then
 			SIMBOARD:setup_squad_and_group(se_obj)
 		end
@@ -399,7 +401,7 @@ function sim_squad_scripted:remove_squad()
 		squad_npcs[k.id] = true
 	end
 	
-	local sim = get_alife()
+	local sim = alife()
 	for id,v in pairs(squad_npcs) do
 		local se_obj = sim:object(id)
 		if (se_obj) then
@@ -422,7 +424,7 @@ end
 
 function sim_squad_scripted:remove_npc(npc_id)
 	--alun_utils.debug_write(strformat("%s:remove_npc %s",self:name(),npc_id))
-	local sim = get_alife()
+	local sim = alife()
 	local se_obj = sim:object(npc_id)
 	if (se_obj) then
 		local smart_id = se_obj:smart_terrain_id()
@@ -448,18 +450,26 @@ function sim_squad_scripted:remove_npc(npc_id)
 		
 		self:hide()
 		safe_release_manager.release(self)
-		--get_alife():release(self,true)
+		--alife():release(self,true)
 	end
 end
 
-function sim_squad_scripted:on_npc_death(npc,killer)
-	--alun_utils.debug_write(strformat("%s:on_npc_death %s",self:name(),npc and npc:name()))
-	--printf("Squad %s. Killed member %s", tostring(self.id), npc.id)
-	--self.sound_manager:unregister_npc(npc.id)
+function sim_squad_scripted:on_npc_death(se_npc,killer)
+	--alun_utils.debug_write(strformat("%s:on_npc_death %s",self:name(),se_npc and se_npc:name()))
+	--printf("Squad %s. Killed member %s", tostring(self.id), se_npc.id)
+	--self.sound_manager:unregister_npc(se_npc.id)
 		
-	self:unregister_member(npc.id)
+	local npc = db.storage[se_npc.id] and db.storage[se_npc.id].object 
+	if (npc) then
+		local npc_binder = npc:binded_object()
+		if (npc_binder) then 
+			npc_binder.squad = nil
+		end
+	end 
+	
+	self:unregister_member(se_npc.id)
 
-	SendScriptCallback("squad_on_npc_death",self,npc,killer)
+	SendScriptCallback("squad_on_npc_death",self,se_npc,killer)
 
 	if self:npc_count() > 0 then
 		self:refresh()
@@ -476,12 +486,12 @@ function sim_squad_scripted:on_npc_death(npc,killer)
 
 	self:hide()
 	safe_release_manager.release(self)
-	--get_alife():release(self,true)
+	--alife():release(self,true)
 	
 	return
 end
 function sim_squad_scripted:assign_squad_member_to_smart(member_id, smart, old_smart_id)
-	local sim = get_alife()
+	local sim = alife()
 	local obj = sim:object(member_id)
 	if obj ~= nil then
 		--printf("    npc [%s] smart [%s]", obj:name(), tostring(obj.m_smart_terrain_id))
@@ -511,14 +521,11 @@ function sim_squad_scripted:assign_smart(smart,old_smart_id)
 		self.smart_id = smart.id
 	end
 	
-	local sim = get_alife()
 	for k in self:squad_members() do
-		local se_obj = k.object or k.id and sim:object(k.id)
+		local se_obj = alife_object(k.id)
 		if (se_obj) then
 			if (old_smart) then
-				if (smart == nil or smart.id ~= old_smart_id) then
-					old_smart:unregister_npc(se_obj)
-				end
+				old_smart:unregister_npc(se_obj)
 			end 
 			
 			if (smart) then 
@@ -532,7 +539,7 @@ function sim_squad_scripted:check_invulnerability()
 	if self.online ~= true then
 		return
 	end
-	local invulnerability = xr_logic.pick_section_from_condlist(db.actor, self, self.invulnerability) == "true"
+	local invulnerability = xr_logic.pick_section_from_condlist(db.actor, self, self.invulnerability) == STR_TRUE
 	if (invulnerability) then
 		for k in self:squad_members() do
 			local npc_st = db.storage[k.id]
@@ -555,6 +562,7 @@ function sim_squad_scripted:set_location_types(new_smart_name)
 	self:clear_location_types()
 	
 	self:set_location_types_section("stalker_terrain")
+	self:set_location_types_section("squad_terrain")
 	
 	local old_target = self.assigned_target_id and db.smart_terrain_by_id[self.assigned_target_id]
 	if (old_target) then 
@@ -564,10 +572,9 @@ function sim_squad_scripted:set_location_types(new_smart_name)
 	if (new_smart_name) then 
 		self:set_location_types_section(new_smart_name)
 	else
-		self:set_location_types_section("squad_terrain")
 		for id,se_obj in pairs(db.smart_terrain_by_id) do
 			local props_base = se_obj.props and se_obj.props["base"]
-			if (props_base and tonumber(props_base) == 0) then
+			if (props_base and tonumber(props_base) ~= 0) then
 				self:set_location_types_section(se_obj:name())
 			end
 		end
@@ -575,7 +582,7 @@ function sim_squad_scripted:set_location_types(new_smart_name)
 end
 
 function sim_squad_scripted:add_new_member_forced(section,pos,lvid,gvid)
-	local se_obj = get_alife():create(section,pos,lvid,gvid)
+	local se_obj = alife():create(section,pos,lvid,gvid)
 	if (se_obj) then
 		self:register_member(se_obj.id)
 		local smart = self.smart_id and db.smart_terrain_by_id[self.smart_id]
@@ -588,7 +595,7 @@ end
 
 function sim_squad_scripted:add_squad_member(spawn_section, spawn_position, lv_id, gv_id)
 	--alun_utils.debug_write("sim_squad_scripted:add_squad_member")
-	local spawn_sections_ltx = ini_sys
+	local spawn_sections_ltx = system_ini()
 	
 	if not (spawn_sections_ltx:section_exist(spawn_section)) then 
 		printf("ERROR: npc section %s does not exist!",spawn_section)
@@ -600,7 +607,7 @@ function sim_squad_scripted:add_squad_member(spawn_section, spawn_position, lv_i
 		printf("INCORRECT npc_spawn_section USED [%s]. You cannot use npc with custom_data in squads", spawn_section)
 	end
 
-	local sim = get_alife()
+	local sim = alife()
 	local obj = sim:create(spawn_section,spawn_position,lv_id,gv_id)
 
 	self:register_member(obj.id)
@@ -618,7 +625,7 @@ end
 
 function sim_squad_scripted:create_npc(spawn_smart,pos,lvid,gvid)
 	--alun_utils.debug_write("sim_squad_scripted:create_npc")
-	local ini = ini_sys
+	local ini = system_ini()
 	local settings_id = self:section_name()
 	local spawn_sections = utils.parse_names(ini:r_string_ex(settings_id, "npc") or STR_EMPTY)
 	
@@ -678,12 +685,21 @@ function sim_squad_scripted:create_npc(spawn_smart,pos,lvid,gvid)
 
 		local count_string = IsEocMode() and "npc_in_squad_eoc" or "npc_in_squad"
 		local count = ini:r_string_ex(settings_id,count_string) or "1,2"
-		count = alun_utils.str_explode(count,",")
+		count = alun_utils.str_explode(count,STR_COMMA)
 		count[1] = count[1] and tonumber(count[1])
 		count[2] = count[2] and tonumber(count[2]) or count[1]
 
 		local random_count = count[1] and count[2] and math.random(count[1],count[2]) or math.random(1,2)
 		random_count = random_count - self:npc_count()
+		
+		local regular_spawn = ini:r_string_ex(settings_id,"npc_regular")
+		if regular_spawn ~= nil then
+			regular_spawn = utils.parse_names(regular_spawn)
+			for i = 1,#regular_spawn do
+				table.insert(npcs_list,self:add_squad_member(regular_spawn[i], base_spawn_position, base_lvi, base_gvi))
+				random_count = random_count - 1
+			end
+		end
 		
 		local random_id
 		for i = 1,random_count do
@@ -732,34 +748,25 @@ function sim_squad_scripted:set_squad_sympathy(sympathy)
 	end
 end
 
-local function set_relation(npc1, npc2, new_relation)
-	local goodwill = tonumber(new_relation) or new_relation == "enemy" and -1000 or new_relation == "friend" and 1000 or 0
-	-- IMPORTANT: Don't use 'relation =' for monster squad descriptions! They are not derived from CSE_ALifeTraderAbstract!
-	-- I could just add check IsStalker but needless overhead
-	if npc1 and npc2 then
-		--printf("set_relation %s",npc1:name())
-		npc1:force_set_goodwill(goodwill, npc2.id)
-	else
-		printf("Npc not set in goodwill function!!!")
-	end
-end
 function sim_squad_scripted:set_squad_relation(relation)
 	--alun_utils.debug_write("sim_squad_scripted:set_squad_relation")
+	if (is_squad_monster[self.player_id]) then 
+		return
+	end
 	local rel = relation or self.relationship
-	if(rel ~= nil) then
-		local npc
-		local sim = get_alife()
+	if (rel and (rel == "enemy" or rel == "friend" or rel == "neutral")) then
+		local sim = alife()
 		for k in self:squad_members() do
-			npc = db.storage[k.id] and db.storage[k.id].object
-			if(npc) then
+			local npc = db.storage[k.id] and db.storage[k.id].object
+			if (npc) then
 				game_relations.set_npcs_relation(npc, db.actor, rel)
-			else
-				set_relation(sim:object(k.id), sim:actor(),rel)
+			elseif (k.object) then
+				local goodwill = rel == "enemy" and -1000 or rel == "friend" and 1000 or 0
+				k.object:force_set_goodwill(goodwill, 0)
 			end
 		end
 	end
 end
-
 
 local function reset_animation(npc)
 	--alun_utils.debug_write("sim_squad_scripted:reset_animation")
@@ -811,7 +818,7 @@ function sim_squad_scripted:set_squad_position(position)
 end
 
 function sim_squad_scripted:has_detector()
-	local sim = get_alife()
+	local sim = alife()
 	for k in self:squad_members() do
 		local se_obj = sim:object(k.id)
 		if se_obj and se_obj:has_detector() then
@@ -833,7 +840,7 @@ function sim_squad_scripted:has_items_to_sell()
 	if not (self.online) then
 		return false
 	end
-	local sim = get_alife()
+	local sim = alife()
 	local st
 	for k in self:squad_members() do
 		st = db.storage[k.id]
@@ -887,6 +894,7 @@ function sim_squad_scripted:STATE_Write(packet)
 	packet:w_stringZ(tostring(self.respawn_point_id))
 	packet:w_stringZ(tostring(self.respawn_point_prop_section))
 	packet:w_stringZ(tostring(self.smart_id))
+	packet:w_stringZ(tostring(self.assigned_target_id))
 
 	set_save_marker(packet, "save", true, "sim_squad_scripted")
 end
@@ -924,6 +932,12 @@ function sim_squad_scripted:STATE_Read(packet, size)
 		self.smart_id = nil
 	else
 		self.smart_id = tonumber(self.smart_id)
+	end
+	self.assigned_target_id = packet:r_stringZ()
+	if self.assigned_target_id == STR_NIL then
+		self.assigned_target_id = nil
+	else
+		self.assigned_target_id = tonumber(self.assigned_target_id)
 	end
 	self:init_squad_on_load()
 	set_save_marker(packet, "load", true, "sim_squad_scripted")
@@ -1066,8 +1080,8 @@ function sim_squad_scripted:can_switch_online()
 		if (db.actor and db.spawned_vertex_by_id[self:commander_id()] == nil) then
 			local dist = axr_main.config:r_value(MM_OPTIONS,"excl_dist",2) or 0
 			if (dist > 0 and not db.actor:has_info("actor_is_sleeping")) then 
-				local actor = get_alife():actor()
-				if (self.position:distance_to(actor.position) <= dist) then
+				local actor = alife():actor()
+				if (self.position:distance_to_sqr(actor.position) <= dist * dist) then
 					return false
 				end
 			end
@@ -1252,15 +1266,11 @@ function sim_squad_scripted:get_current_task()
 	--alun_utils.debug_write("sim_self_scripted:get_current_task")
 	local se_target = self.assigned_target_id and alife_object(self.assigned_target_id)
 	if (se_target) then
-		if (se_target:clsid() == clsid.smart_terrain) then
-			local npc_info = se_target.npc_info and se_target.npc_info[self:commander_id()]
-			if (npc_info and npc_info.job) then
-				return npc_info.job.alife_task or se_target:get_alife_task() or self:get_alife_task()
-			end
+		local npc_info = se_target.npc_info and se_target.npc_info[self:commander_id()]
+		if (npc_info and npc_info.job) then
+			return npc_info.job.alife_task or se_target:get_alife_task() or self:get_alife_task()
 		end
-		if (se_target.get_alife_task) then 
-			return se_target:get_alife_task()
-		end
+		return se_target:get_alife_task()
 	end
 	return self:get_alife_task()
 end
@@ -1298,6 +1308,8 @@ local smarts_by_no_assault_zones = {
 }
 
 function sim_squad_scripted:sim_available()
+	return false 
+	--[[
 	if self.smart_id == nil then
 		return true
 	end
@@ -1313,6 +1325,7 @@ function sim_squad_scripted:sim_available()
 	end
 
 	return true
+	--]]
 end
 
 function sim_squad_scripted:target_precondition(squad)
@@ -1355,9 +1368,9 @@ function sim_squad_scripted:get_squad_relation()
     end   
     local relation = 0
     if db.actor then
-  relation = db.actor:community_goodwill(self.player_id)+game_relations.get_factions_community(self.player_id, get_alife():actor():community())
+  relation = db.actor:community_goodwill(self.player_id)+game_relations.get_factions_community(self.player_id, alife():actor():community())
     else
-  relation = game_relations.get_factions_community(self.player_id, get_alife():actor():community())
+  relation = game_relations.get_factions_community(self.player_id, alife():actor():community())
     end
     
     if relation >= 1000 then

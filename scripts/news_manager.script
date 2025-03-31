@@ -41,7 +41,7 @@ function send_tip(actor, news_id, timeout, sender, showtime, sender_id)
 
 	--printf("try to send tips for [%s]", tostring(sender_id))
 	if sender_id ~= nil then
-		local sim = get_alife()
+		local sim = alife()
 		if sim ~= nil then
 			local id = get_story_object_id(sender_id)
 			local npc = id and sim:object(id)
@@ -77,7 +77,7 @@ function send_tip(actor, news_id, timeout, sender, showtime, sender_id)
 
 	local texture = "ui_iconsTotal_grouping"
 	if sender ~= nil then
-		if type(sender) == "string" then
+		if type(sender) == STR_STRING then
 			if tips_icons[sender] then
 				texture = tips_icons[sender]
 			end
@@ -140,7 +140,7 @@ function send_sound(npc, faction, point, str, str2, delay_sound)
 			end
 		end
 --		printf("--->texture="..tostring(texture))
-		local news_caption = game.translate_string("st_tip").." "..game.translate_string(faction)
+		local news_caption = game.translate_string("st_tip")..STR_BLANK..game.translate_string(faction)
 		if point_name ~= STR_EMPTY then
 			news_caption = news_caption..". "..point_name..":"
 		else
@@ -221,7 +221,7 @@ function send_treasure(param, has_spot)
 end
 
 function send_treasure_with_level(stash_name, se_box)
-	local level_name = get_alife():level_name(game_graph():vertex(se_box.m_game_vertex_id):level_id())
+	local level_name = alife():level_name(game_graph():vertex(se_box.m_game_vertex_id):level_id())
 	
 	local level_point
 	if (IsUndergroundLevel(level_name)) then
@@ -244,12 +244,12 @@ function send_treasure_with_level(stash_name, se_box)
 end
 
 function get_inv_name(section)
-	return ini_sys:r_string_ex(section,"inv_name")
+	return system_ini():r_string_ex(section,"inv_name")
 end
 
 function relocate_item(actor, type, item, amount)
 	if db.actor == nil then return false end
-	if not (item and ini_sys:section_exist(item)) then 
+	if not (item and system_ini():section_exist(item)) then 
 		printf("ERROR: relocate_item - section %s does not exist",item)
 		return false
 	end

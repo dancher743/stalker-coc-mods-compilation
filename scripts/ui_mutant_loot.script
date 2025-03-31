@@ -84,32 +84,32 @@ function loot_ui:SetMutantImage()
 	-- ponney68: This table based on "species" of mutants
 	local killed_mutant_tbl =
 	{
-	cat	= {file="ui\\ui_actor_monsters_pda_2",x="0",y="0",special="0"},
-	fracture = {file="ui\\ui_actor_monsters_pda_2",x="393",y="200",special="0"},
-	bird = {file="ui\\ui_actor_monsters_pda_2",x="393",y="0",special="0"},
-	zombie = {file="ui\\ui_actor_monsters_pda_2",x="0",y="200",special="0"},
+	cat	= {file="ui\\ui_actor_monsters_pda_2",x=STR_ONE,y=STR_ONE,special=STR_ONE},
+	fracture = {file="ui\\ui_actor_monsters_pda_2",x="393",y="200",special=STR_ONE},
+	bird = {file="ui\\ui_actor_monsters_pda_2",x="393",y=STR_ONE,special=STR_ONE},
+	zombie = {file="ui\\ui_actor_monsters_pda_2",x=STR_ONE,y="200",special=STR_ONE},
 
-	snork				= {file="ui\\ui_actor_monsters_pda",x="393",y="0",special="0"},
-	dog					= {file="ui\\ui_actor_monsters_pda",x="0",y="800",special="0"},
-	pseudodog			= {file="ui\\ui_actor_monsters_pda",x="393",y="200",special="0"},
-	psy_dog				= {file="ui\\ui_actor_monsters_pda",x="393",y="200",special="0"},
-	poltergeist			= {file="ui\\ui_actor_monsters_pda",x="0",y="400",special="0"},
-	bloodsucker			= {file="ui\\ui_actor_monsters_pda",x="393",y="400",special="0"},
-	controller			= {file="ui\\ui_actor_monsters_pda",x="393",y="800",special="0"},
-	chimera				= {file="ui\\ui_actor_monsters_pda",x="0",y="600",special="0"},
-	tushkano			= {file="ui\\ui_actor_monsters_pda",x="0",y="0",special="0"},
-	rat					= {file="ui\\ui_actor_monsters_pda",x="0",y="0",special="0"},
-	flesh				= {file="ui\\ui_actor_monsters_pda",x="393",y="600",special="0"},
+	snork				= {file="ui\\ui_actor_monsters_pda",x="393",y=STR_ONE,special=STR_ONE},
+	dog					= {file="ui\\ui_actor_monsters_pda",x=STR_ONE,y="800",special=STR_ONE},
+	pseudodog			= {file="ui\\ui_actor_monsters_pda",x="393",y="200",special=STR_ONE},
+	psy_dog				= {file="ui\\ui_actor_monsters_pda",x="393",y="200",special=STR_ONE},
+	poltergeist			= {file="ui\\ui_actor_monsters_pda",x=STR_ONE,y="400",special=STR_ONE},
+	bloodsucker			= {file="ui\\ui_actor_monsters_pda",x="393",y="400",special=STR_ONE},
+	controller			= {file="ui\\ui_actor_monsters_pda",x="393",y="800",special=STR_ONE},
+	chimera				= {file="ui\\ui_actor_monsters_pda",x=STR_ONE,y="600",special=STR_ONE},
+	tushkano			= {file="ui\\ui_actor_monsters_pda",x=STR_ONE,y=STR_ONE,special=STR_ONE},
+	rat					= {file="ui\\ui_actor_monsters_pda",x=STR_ONE,y=STR_ONE,special=STR_ONE},
+	flesh				= {file="ui\\ui_actor_monsters_pda",x="393",y="600",special=STR_ONE},
 
-	burer				= {file="ui\\ui_actor_monsters_pda_1",x="0",y="0",special="0"},
-	boar				= {file="ui\\ui_actor_monsters_pda_1",x="393",y="0",special="0"},
-	giant				= {file="ui\\ui_actor_monsters_pda_1",x="0",y="200",special="0"},
+	burer				= {file="ui\\ui_actor_monsters_pda_1",x=STR_ONE,y=STR_ONE,special=STR_ONE},
+	boar				= {file="ui\\ui_actor_monsters_pda_1",x="393",y=STR_ONE,special=STR_ONE},
+	giant				= {file="ui\\ui_actor_monsters_pda_1",x=STR_ONE,y="200",special=STR_ONE},
 	}
 
-	local mutant_id = game.translate_string(ini_sys:r_string_ex(self.section,"species") or STR_EMPTY)
+	local mutant_id = game.translate_string(system_ini():r_string_ex(self.section,"species") or STR_EMPTY)
 
 	if mutant_id == "arena_monstr" then
-	mutant_id = game.translate_string(ini_sys:r_string_ex(self.section,"community") or STR_EMPTY)
+	mutant_id = game.translate_string(system_ini():r_string_ex(self.section,"community") or STR_EMPTY)
 	end
 
 	local mutant_f = killed_mutant_tbl[mutant_id].file or "ui\\ui_actor_monsters_pda_1"
@@ -200,7 +200,7 @@ function loot_ui:OnListItemDbClicked()
 	return
 	end
 
-	get_alife():create(booty.sec, db.actor:position(),0,0,0)
+	alife():create(booty.sec, db.actor:position(),0,0,0)
 	--news_manager.relocate_item(db.actor, "in", booty.sec, 1)
 	xr_statistic.inc_counter("field_dressings")
 
@@ -228,7 +228,7 @@ function loot_ui:OnButton_ok()
 
 	for sec,t in pairs(self.loot) do
 		for i=1,t.count do
-		get_alife():create(sec, db.actor:position(),0,0,0)
+		alife():create(sec, db.actor:position(),0,0,0)
 		xr_statistic.inc_counter("field_dressings")
 		end
 	news_manager.relocate_item(db.actor, "in", sec, t.count)
@@ -258,7 +258,7 @@ end
 
 function loot_ui:AddItemToList(sec,count)
 	local _itm			= load_item(self.file_item_main_sz.y)
-	local inv_name 		= game.translate_string(ini_sys:r_string_ex(sec,"inv_name") or "none")
+	local inv_name 		= game.translate_string(system_ini():r_string_ex(sec,"inv_name") or "none")
 
 	_itm:SetWndSize		(self.file_item_main_sz)
 
@@ -273,7 +273,7 @@ function loot_ui:AddItemToList(sec,count)
 
 	_itm.sec = sec
 
-	local ini = ini_sys
+	local ini = system_ini()
 	local inv_grid_width = ini:r_float_ex(sec,"inv_grid_width") or 0
 	local inv_grid_height = ini:r_float_ex(sec,"inv_grid_height") or 0
 	local inv_grid_x = ini:r_float_ex(sec,"inv_grid_x") or 0
@@ -330,7 +330,7 @@ function loot_mutant(obj,cls,t,npc)
 
 	local loot,sec
 	for i=1,#loot_table do
-		loot = alun_utils.str_explode(loot_table[i],",")
+		loot = alun_utils.str_explode(loot_table[i],STR_COMMA)
 		if (loot and loot[1] and loot[2]) then
 			if not (loot[3]) then
 				loot[3] = 1

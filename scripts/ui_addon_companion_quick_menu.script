@@ -8,11 +8,23 @@ local addonMenu=nil
 
 function show()
 	if not(addonMenu) then
-		local i,v = next(axr_companions.get_non_hostage_companion_squads(),nil)
-		if not(v) or db.actor:is_talking() or not db.actor:alive() then 
+		if (db.actor:is_talking() or not db.actor:alive()) then 
 			return
 		end
-		addonMenu = addonCompanionsContextMenu(v)
+		
+		local companionSquad
+		for id,squad in pairs(axr_companions.companion_squads) do
+			if (not axr_companions.is_hostage_squad(id)) then
+				companionSquad = squad
+				break
+			end
+		end
+		
+		if (companionSquad == nil) then
+			return
+		end
+		
+		addonMenu = addonCompanionsContextMenu(companionSquad)
 		addonMenu:ShowDialog(true)
 		show_all_ui(true)
 	else
@@ -130,7 +142,7 @@ end
 
 
 function addonCompanionsContextMenu:DoesSquadHaveInfo(info)
-	if(get_alife():has_info(self.companionSquad:commander_id(),info)) then
+	if(alife():has_info(self.companionSquad:commander_id(),info)) then
 		return true
 	end
 		return false

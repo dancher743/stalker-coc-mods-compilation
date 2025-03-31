@@ -2,40 +2,23 @@
 ; AtmosFear 3 by Cromm Cruac
 ; Global Weather 2.2 by Tronex
 
-[clear]
-clear
-partly
-cloudy
-
-[partly]
-clear
-partly
-cloudy
-
-[cloudy]
+[global_weather_periods]
 clear
 partly
 cloudy
 rain
 storm
-
-[rain]
 foggy
-partly
-cloudy
-rain
-storm
 
-[storm]
-foggy
-cloudy
-rain
-storm
+[global_weather_partly]
+rain 		= 0.15
+storm 		= 0.05
+all 		= 0.80
 
-[foggy]
-clear
-partly
-foggy
+[global_weather_cloudy]
+rain 		= 0.2
+storm 		= 0.2
+all 		= 0.6
 
 [atmosfear_transition]
 cloudy		 		= 1
@@ -53,12 +36,3 @@ rain 				= 4
 storm 				= 4
 foggy_no_sun 		= 6
 cloudy_no_sun 		= 3
-
-
-[dynamic_default]
-clear = 0.2
-partly = 0.2
-foggy = 0.2
-cloudy = 0.2
-rain = 0.1
-thunder = 0.1

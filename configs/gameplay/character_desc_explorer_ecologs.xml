@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding="windows-1251"?>
+<xml>
+	<!------------------------- Ecolog-explorers by Dancher ------------------------------>
+	<specific_character id="sim_explorer_ecolog_orange" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>ui_inGame2_ecolog_orange</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio>Member of mobile science camp. Detailed information is missing.</bio>
+    <class>sim_explorer_ecolog_orange</class>
+    <community>ecolog</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <rank>238</rank>
+    <reputation>-400</reputation>
+    <visual>actors\stalker_ecologist\stalker_ecolog</visual>
+    <snd_config>characters_voice\human_03\ecolog\</snd_config>
+    <supplies>
+        [spawn] \n
+        wpn_sig220 \n
+        ammo_11.43x23_hydro \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_3.xml"
+#include "gameplay\character_dialogs.xml"
+    </specific_character>
+    
+    <specific_character id="sim_explorer_ecolog_blue" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>ui_inGame2_ecolog_blue</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio>Member of mobile science camp. Detailed information is missing.</bio>
+    <class>sim_explorer_ecolog_blue</class>
+    <community>ecolog</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <rank>4270</rank>
+    <reputation>-370</reputation>
+    <visual>actors\stalker_ecologist\stalker_ecolog_blue</visual>
+    <snd_config>characters_voice\human_03\ecolog\</snd_config>
+    <supplies>
+        [spawn] \n
+        wpn_walther = 1 \n
+        ammo_9x19_fmj = 1 \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_3.xml"
+#include "gameplay\character_dialogs.xml"
+    </specific_character>
+    
+    <specific_character id="sim_explorer_ecolog_brown" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>ui_inGame2_ecolog_brown</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio>Member of mobile science camp. Detailed information is missing.</bio>
+    <class>sim_explorer_ecolog_brown</class>
+    <community>ecolog</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <rank>1408</rank>
+    <reputation>-2202</reputation>
+    <visual>actors\stalker_ecologist\stalker_ecolog_brown</visual>
+    <snd_config>characters_voice\human_03\ecolog\</snd_config>
+    <supplies>
+        [spawn] \n
+        wpn_walther = 1 \n
+        ammo_9x19_fmj = 1 \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_3.xml"
+#include "gameplay\character_dialogs.xml"
+    </specific_character>
+    
+    <specific_character id="sim_explorer_ecolog_white" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>ui_inGame2_ecolog_white</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio>Member of mobile science camp. Detailed information is missing.</bio>
+    <class>sim_explorer_ecolog_white</class>
+    <community>ecolog</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <rank>7746</rank>
+    <reputation>-1001</reputation>
+    <visual>actors\stalker_ecologist\stalker_ecolog_white</visual>
+    <snd_config>characters_voice\human_03\ecolog\</snd_config>
+    <supplies>
+        [spawn] \n
+        wpn_walther = 1 \n
+        ammo_9x19_fmj = 1 \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_3.xml"
+#include "gameplay\character_dialogs.xml"
+    </specific_character>
+    
+    <specific_character id="sim_explorer_ecolog_yellow" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>ui_inGame2_ecolog_yellow</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio>Member of mobile science camp. Detailed information is missing.</bio>
+    <class>sim_explorer_ecolog_yellow</class>
+    <community>ecolog</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <rank>7458</rank>
+    <reputation>487</reputation>
+    <visual>actors\stalker_ecologist\stalker_ecolog_yellow</visual>
+    <snd_config>characters_voice\human_03\ecolog\</snd_config>
+    <supplies>
+        [spawn] \n
+        wpn_walther = 1 \n
+        ammo_9x19_fmj = 1 \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_3.xml"
+#include "gameplay\character_dialogs.xml"
+    </specific_character>
+    
+	<specific_character id="sim_explorer_ecolog_guard_0" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>ui_inGame2_ecolog_guard_blue</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio>ќпытный сталкер. ƒетальна¤ информаци¤ отсутствует.</bio>
+    <class>sim_explorer_ecolog_guard</class>
+    <community>ecolog</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_03\stalker\</snd_config>
+    <rank>3526</rank>
+    <money min="1000" max="2000" infinitive="0"/>
+    <reputation>-542</reputation>
+    <visual>actors\stalker_ecologist\stalker_ecolog_guard</visual>
+    <supplies>
+        [spawn] \n
+        wpn_l85  \n
+        ammo_5.56x45_ss190 = 1 \n
+        wpn_pm \n
+        ammo_9x18_fmj = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs_2.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+    </specific_character>
+	
+	<specific_character id="sim_explorer_ecolog_guard_1" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>ui_inGame2_ecolog_guard_blue</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio>ќпытный сталкер. ƒетальна¤ информаци¤ отсутствует.</bio>
+    <class>sim_explorer_ecolog_guard</class>
+    <community>ecolog</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_03\stalker\</snd_config>
+    <rank>4369</rank>
+    <money min="1000" max="2000" infinitive="0"/>
+    <reputation>-2018</reputation>
+    <visual>actors\stalker_ecologist\stalker_ecolog_guard</visual>
+    <supplies>
+        [spawn] \n
+        wpn_l85  \n
+        ammo_5.56x45_ss190 = 1 \n
+        wpn_pm \n
+        ammo_9x18_fmj = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs_2.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+    </specific_character>
+	
+	<specific_character id="sim_explorer_ecolog_guard_2" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>ui_inGame2_ecolog_guard_blue</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio>ќпытный сталкер. ƒетальна¤ информаци¤ отсутствует.</bio>
+    <class>sim_explorer_ecolog_guard</class>
+    <community>ecolog</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_03\stalker\</snd_config>
+    <rank>4147</rank>
+    <money min="1000" max="2000" infinitive="0"/>
+    <reputation>1960</reputation>
+    <visual>actors\stalker_ecologist\stalker_ecolog_guard</visual>
+    <supplies>
+        [spawn] \n
+        wpn_lr300  \n
+        ammo_5.56x45_ss190 = 1 \n
+        wpn_pm \n
+        ammo_9x18_fmj = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs_2.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+    </specific_character>
+</xml>

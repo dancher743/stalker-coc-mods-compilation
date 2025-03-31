@@ -3,7 +3,7 @@
         max_effect_period                = 80.0
         min_effect_period                = 50.0
         sound_channels                   = jupiter_bkg_night
-        sound_channels_dynamic           = restored_dark, restored_cricket_night, restored_drone, restored_night_amb, restored_insect, restored_mutant_night, restored_gunfire, forest_rnd_wind, restored_moans, restored_horror, owls_howls
+        sound_channels_dynamic           = restored_dark, restored_cricket_night, restored_drone, restored_night_amb, restored_insect, restored_mutant_night, restored_gunfire, forest_rnd_wind, restored_moans, restored_horror, owls_howls, rnd_mosquitoes
 
 [morning]
         effects                          = effect_0, effect_1, effect_2, effect_3, effect_4, effect_5, effect_6, effect_7, effect_8, effect_9, leaves_red
@@ -17,7 +17,7 @@
         max_effect_period                = 50.0
         min_effect_period                = 20.0
         sound_channels                   = jupiter_bkg_day
-        sound_channels_dynamic           = restored_dark, restored_drone, restored_less_dog, restored_mutant_day, restored_gunfire, restored_crow, restored_bird, restored_insect, forest_rnd_wind, restored_moans, restored_horror
+        sound_channels_dynamic           = restored_dark, restored_drone, restored_less_dog, restored_mutant_day, restored_gunfire, restored_crow, restored_bird, restored_insect, forest_rnd_wind, restored_moans, restored_horror, rnd_mosquitoes
 
 [evening]
         effects                          = effect_0, effect_1, effect_2, effect_3, effect_4, effect_5, effect_6, effect_7, effect_8, effect_9, leaves_red
@@ -70,21 +70,21 @@
 
 [tuman]
         effects                          = effect_4, effect_6
-        max_effect_period                = 90.0
-        min_effect_period                = 60.0
+        max_effect_period                = 50.0
+        min_effect_period                = 10.0
         sound_channels                   = jupiter_bkg_tuman
-        sound_channels_dynamic           = restored_mutant_night, restored_cricket, restored_drone, restored_insect, restored_gunfire, restored_dark, restored_less_dog, restored_crow, restored_moans, restored_horror
+		sound_channels_dynamic           = jupiter_tuman_drone, jupiter_tuman_gunfire, restored_dark, jupiter_tuman_crow
 
 [tuman_day]
         effects                          = effect_4, effect_6
-        max_effect_period                = 90.0
-        min_effect_period                = 60.0
+        max_effect_period                = 40.0
+        min_effect_period                = 20.0
         sound_channels                   = jupiter_bkg_tuman
-        sound_channels_dynamic           = restored_mutant_day, restored_drone, restored_insect, restored_gunfire, restored_dark, restored_less_dog, restored_bird, restored_crow, restored_moans, restored_horror
+        sound_channels_dynamic           = jupiter_tuman_mutant_day, jupiter_tuman_drone, jupiter_tuman_gunfire, restored_dark, jupiter_tuman_boar, jupiter_tuman_ambient_dog, jupiter_tuman_dog, jupiter_tuman_bird, jupiter_tuman_crow
 
 [tuman_night]
         effects                          = effect_4, effect_6
-        max_effect_period                = 90.0
-        min_effect_period                = 70.0
-        sound_channels                   = jupiter_bkg_night
-        sound_channels_dynamic           = restored_cricket_night, restored_mutant_night, restored_night_amb, restored_insect, restored_drone, restored_gunfire, restored_dark, restored_moans, restored_horror, owls_howls
+        max_effect_period                = 60.0
+        min_effect_period                = 30.0
+        sound_channels                   = jupiter_bkg_tuman
+		sound_channels_dynamic           = jupiter_tuman_cricket, jupiter_tuman_mutant_night, jupiter_tuman_night_amb, jupiter_tuman_drone, jupiter_tuman_gunfire, restored_dark, jupiter_tuman_boar, jupiter_tuman_ambient_dog

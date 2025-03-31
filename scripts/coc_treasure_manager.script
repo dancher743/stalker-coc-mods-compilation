@@ -38,17 +38,25 @@ will find the <filename>.lua in your savegame folder. Search the file for 'cache
 caches = {}
 local caches_count = 0
 
+local renewing_time = 0
+local renewing_next_time = 0
+local renewing_counter = 0
+
 local ltx = ini_file("plugins\\coc_treasure_manager.ltx")
 local valid_item_list = nil
 ------------------------------------------------------------------------------------------------------------------
 --							PRIVATE
 ------------------------------------------------------------------------------------------------------------------
 local function on_game_load()
+	if (renewing_next_time == 0) then
+		renewing_next_time = get_renewing_next_time()
+	end
+	
 	if (caches_count > 0) then
 		return
 	end
 
-	local sim = get_alife()
+	local sim = alife()
 	for i=1, 65534 do
 		local se_obj = sim:object(i)
 		if (se_obj) then
@@ -80,6 +88,7 @@ end
 local function actor_on_item_take_from_box(box,itm)
 	if (caches[box:id()] == true) then
 		caches[box:id()] = false
+		renewing_counter = renewing_counter + 1
 		local hud = get_hud()
 		if (hud and box:is_inv_box_empty()) then
 			hud:HideActorMenu()
@@ -98,6 +107,14 @@ local function actor_on_item_take_from_box(box,itm)
 	end
 end
 
+local function level_time_on_changed()
+	renewing_time = renewing_time + 1
+end
+
+local function on_level_changing()
+	renew_random_stashes()
+end
+
 local function save_state(data)
 	--alun_utils.debug_write("coc_treasure_manager.save_state")
 	if (caches_count <= 0) then
@@ -110,6 +127,9 @@ local function save_state(data)
 
 	data.coc_treasure_manager.caches_count = caches_count
 	data.coc_treasure_manager.caches = caches
+	data.coc_treasure_manager.renewing_time = renewing_time
+	data.coc_treasure_manager.renewing_next_time = renewing_next_time
+	data.coc_treasure_manager.renewing_counter = renewing_counter
 end
 
 local function load_state(data)
@@ -119,9 +139,15 @@ local function load_state(data)
 
 	caches_count = data.coc_treasure_manager.caches_count or caches_count
 	caches = data.coc_treasure_manager.caches or caches
+	renewing_time = data.coc_treasure_manager.renewing_time or renewing_time
+	renewing_next_time = data.coc_treasure_manager.renewing_next_time or renewing_next_time
+	renewing_counter = data.coc_treasure_manager.renewing_counter or renewing_counter
 
 	data.coc_treasure_manager.caches_count = nil
 	data.coc_treasure_manager.caches = nil
+	data.coc_treasure_manager.renewing_time = nil
+	data.coc_treasure_manager.renewing_next_time = nil
+	data.coc_treasure_manager.renewing_counter = nil
 end
 
 local function physic_object_on_use_callback(box,who)
@@ -135,6 +161,8 @@ end
 function on_game_start()
 	RegisterScriptCallback("on_game_load",on_game_load)
 	RegisterScriptCallback("actor_on_item_take_from_box",actor_on_item_take_from_box)
+	RegisterScriptCallback("level_time_on_changed",level_time_on_changed)
+	RegisterScriptCallback("on_level_changing",on_level_changing)
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
 	RegisterScriptCallback("physic_object_on_use_callback",physic_object_on_use_callback)
@@ -152,7 +180,7 @@ function create_random_stash(no_spot,hint,bonus_items)
 
 	last_secret = true
 	
-	local sim = get_alife()
+	local sim = alife()
 
 	-- create a temporary table to use math.random
 	local t = {}
@@ -188,7 +216,7 @@ function create_random_stash(no_spot,hint,bonus_items)
 		max_weight = max_weight + 30
 	end
 	
-	local ini = ini_sys
+	local ini = system_ini()
 	local function is_consumable(section)
 		local v = ini:r_string_ex(section,"class",STR_EMPTY)
 		return v == "S_FOOD" or v == "II_FOOD"
@@ -300,7 +328,7 @@ function create_random_stash(no_spot,hint,bonus_items)
 			level.map_add_object_spot_ser(id, "treasure", hint or STR_EMPTY)
 			news_manager.send_treasure_with_level(name, se_box)
 		end
-		caches[id] = table.concat(spawned_item,",")
+		caches[id] = table.concat(spawned_item,STR_COMMA)
 	else
 		caches[id] = false
 	end
@@ -454,7 +482,7 @@ function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery, cus
 	loot[12] = {"wpn_spas12", "wpn_ak74u", "wpn_mp5", "wpn_ak74", "wpn_abakan", "wpn_l85", "wpn_lr300", "wpn_groza", "wpn_val", "wpn_vintorez", "helm_tactic", "helm_battle", "itm_pda_rare", "ammo_11.43x23_hydro", "ammo_5.56x45_ap", "itm_repairkit_tier_2", "itm_outfit_toolkit_tier_1"}
 
 	-- Extremely rare:
-	loot[13] = {"wpn_svu", "wpn_svd", "wpn_g36", "wpn_fn2000", "helm_m40", "wpn_pkm", "stalker_outfit", "svoboda_novice_outfit", "ecolog_guard_outfit", "banditmerc_outfit", "dolg_novice_outfit", "cs_novice_outfit", "ecolog_outfit_green", "svoboda_light_outfit", "wpn_sig550_luckygun", "af_compass", "itm_pda_rare", "itm_repairkit_tier_3"}
+	loot[13] = {"wpn_svu", "wpn_svd", "wpn_g36", "wpn_fn2000", "helm_m40", "wpn_pkm", "stalker_outfit", "svoboda_novice_outfit", "ecolog_guard_outfit", "banditmerc_outfit", "dolg_novice_outfit", "cs_novice_outfit", "ecolog_outfit_green", "svoboda_light_outfit", "af_compass", "itm_pda_rare", "itm_repairkit_tier_3"}
 	loot[14] = {"wpn_rg-6", "wpn_rpg7", "specops_outfit", "military_outfit", "scientific_outfit", "svoboda_heavy_outfit", "cs_heavy_outfit", "dolg_outfit", "itm_pda_rare", "itm_repairkit_tier_3"}
 	loot[15] = {"ammo_gauss", "exo_outfit", "dolg_heavy_outfit", "itm_pda_rare", "wpn_rg-6", "wpn_rpg7", "specops_outfit", "military_outfit", "scientific_outfit", "svoboda_heavy_outfit", "cs_heavy_outfit", "dolg_outfit", "itm_repairkit_tier_3"}
 
@@ -555,16 +583,16 @@ function try_spawn_treasure(box)
 		return 
 	end 
 
-	if not (type(caches[id]) == "string") then 
+	if not (type(caches[id]) == STR_STRING) then 
 		return
 	end
 	
-	local spawned_item = alun_utils.str_explode(caches[id],",")
+	local spawned_item = alun_utils.str_explode(caches[id],STR_COMMA)
 	caches[id] = true
 	
 	local sec,ammos,ct,ammo_type,ammo_section
-	local ini = ini_sys
-	local sim = get_alife()
+	local ini = system_ini()
+	local sim = alife()
 	for i=1,#spawned_item do
 		sec = spawned_item[i]
 		if (sec ~= STR_EMPTY and ini:section_exist(sec)) then
@@ -611,13 +639,35 @@ function try_spawn_treasure(box)
 						--printf("coc_treasure_manager: item is fa- end")
 					end 
 					-- because we didn't register, we do it now, manually
-					get_alife():register(se_obj)
+					alife():register(se_obj)
 				end
 			end
 		else
 			printf("coc_treasure_manager.script: invalid section %s",sec)
 		end
 	end
+end
+
+function try_add_unique_weapon(bonus_items)
+	if (bonus_items == nil) then
+		return
+	end
+	
+	local unique_weapons = utils.parse_ini_section_to_iarray(ltx, "unique_weapon_sections")
+	
+	if (unique_weapons == nil or #unique_weapons == 0) then
+		return
+	end
+	
+	local unique_weapon = unique_weapons[math.random(#unique_weapons)]
+	local unique_weapon_info = strformat("%s_stashed",unique_weapon)
+	
+	if (has_alife_info(unique_weapon_info)) then
+		return
+	end
+	
+	table.insert(bonus_items, unique_weapon)
+	give_info(unique_weapon_info)
 end
 
 function save(pk)
@@ -643,16 +693,26 @@ end
 
 function get_valid_item_sections()
 	local t = {}
-	local ini = ini_sys
+	local ini = system_ini()
+	
+	local ignore_sections_string = "ignore_sections"
+	local cform_string = "cform"
+	local can_trade_string = "can_trade"
+	local quest_item_string = "quest_item"
+	local mp_item_prefix = "mp_"
+	local inv_name_string = "inv_name"
+	local default_string = "default"
+	local cost_string = "cost"
+	
 	ini:section_for_each(function(section)
-		if not (ltx:line_exist("ignore_sections",section)) then
-			if (ini:line_exist(section,"cform")) then
-				if (ini:r_bool_ex(section,"can_trade",true) == true) then
-					if (ini:r_bool_ex(section,"quest_item",false) == false) then
-						if not (string.find(section,"mp_")) then
-							local name = ini:r_string_ex(section,"inv_name")
-							if (name and name ~= STR_EMPTY and name ~= "default") then
-								local cost = ini:r_float_ex(section,"cost") or 0
+		if not (ltx:line_exist(ignore_sections_string,section)) then
+			if (ini:line_exist(section,cform_string)) then
+				if (ini:r_bool_ex(section,can_trade_string,true) == true) then
+					if (ini:r_bool_ex(section,quest_item_string,false) == false) then
+						if not (string.find(section,mp_item_prefix)) then
+							local name = ini:r_string_ex(section,inv_name_string)
+							if (name and name ~= STR_EMPTY and name ~= default_string) then
+								local cost = ini:r_float_ex(section,cost_string) or 0
 								if (cost > 0) then
 									t[section] = cost
 								end
@@ -669,7 +729,7 @@ function get_valid_item_sections()
 	if (DEV_DEBUG_DEV) then
 		local cfg = io.open("valid_item_sections.ltx","w+")
 		for k,v in pairs(t) do 
-			cfg:write(k.."\n")
+			cfg:write(k..STR_NEWLINE)
 		end
 		cfg:close()
 	end
@@ -728,4 +788,39 @@ function get_extended_hint(sim,stash,hint,id)
 	local extended_hint = "%c[255,255,160,0]" .. name .. "\\n%c[default]" .. descr .. "\\n%c[160,0,255,255]" .. (hint or STR_EMPTY)
 
 	return extended_hint, name
+end
+
+function get_renewing_next_time()
+	local renewing_section = "renewing"
+	local min_time = ltx:r_string_ex(renewing_section,"min_time") or STR_ZERO
+	local max_time = ltx:r_string_ex(renewing_section,"max_time") or STR_ZERO
+
+	min_time = tonumber(min_time)
+	max_time = tonumber(max_time)
+	
+	return math.random(min_time, max_time)
+end
+
+function get_renewing_chance()
+	local chance = ltx:r_string_ex("renewing","chance") or STR_ZERO
+	
+	return tonumber(chance)
+end
+
+function renew_random_stashes()
+	if (renewing_time < renewing_next_time) then
+		return
+	end
+	
+	local chance = get_renewing_chance()
+	
+	for i=1,renewing_counter do
+		if (math.random() < chance) then
+			create_random_stash(true,STR_EMPTY)
+		end
+	end
+	
+	renewing_counter = 0
+	renewing_time = 0
+	renewing_next_time = get_renewing_next_time()
 end

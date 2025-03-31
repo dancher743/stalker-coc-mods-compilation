@@ -1,0 +1,80 @@
+--
+-- Companion Trust System
+-- Added by Dancher
+--
+
+local database = {}
+
+local trust_time_threshold = 24*60
+
+local time_key = "time"
+local trust_key = "trust"
+
+local function get_db_value(se_id, key, defaultValue)
+	local companion_data = database[se_id]
+	local value = companion_data and companion_data[key] or defaultValue
+	return value
+end
+
+local function set_db_value(se_id, key, value)
+	local companion_data = database[se_id]
+	if (not companion_data) then
+		companion_data = {}
+		database[se_id] = companion_data
+	end
+	companion_data[key] = value
+end
+
+function get_time(se_id)
+	return get_db_value(se_id, time_key, 0)
+end
+
+function force_trust(se_id)
+	set_db_value(se_id, trust_key, true)
+end
+
+function is_trust(se_id)
+	return get_db_value(se_id, trust_key, false)
+end
+
+local function update_data()
+	local slist = axr_companions.list_actor_squad_with_se_obj()
+	
+	for i=1, #slist do
+		local se_obj = slist[i]
+		local se_id = se_obj.id
+		
+		local time = get_db_value(se_id, time_key, 0)
+		time = time + 1
+		set_db_value(se_id, time_key, time)
+		
+		if (time > trust_time_threshold) then
+			set_db_value(se_id, trust_key, true)
+		end
+		
+		-- printf(strformat(">>> Dancher: axr_companions_trust -> ID: %s, %s - %s min.", se_obj.id, se_obj:name(), time))
+	end
+end
+
+local function save_state(data)
+	if (not data.companion_trust) then
+		data.companion_trust = {}
+	end
+	data.companion_trust.database = database
+end
+
+local function load_state(data)
+	if (data.companion_trust) then
+		database = data.companion_trust.database or database
+	end
+end
+
+local function level_time_on_changed()
+	update_data()
+end
+
+function on_game_start()
+    RegisterScriptCallback("level_time_on_changed", level_time_on_changed)
+	RegisterScriptCallback("save_state",save_state)
+	RegisterScriptCallback("load_state",load_state)
+end

@@ -13,6 +13,7 @@ local enable_debug = false
 
 local ambients = {}
 local snd_chanels = {}
+local not_reseted_snds
 local tot_size
 local opt = {
     ambient_volume = 1
@@ -22,7 +23,10 @@ function reset_settings(level_name, ambient)
 
 	for i,ch in ipairs(snd_chanels) do
 		if ch.snd and ch.snd:playing() then
-			ch.snd:stop()
+			if (not_reseted_snds == nil) then
+				not_reseted_snds = {}
+			end
+			table.insert(not_reseted_snds, ch.snd)
 		end
 	end
 
@@ -102,6 +106,19 @@ local next_hour
 
 function update_ambient()
 	ResetTimeEvent(update_timer_ev_id,update_timer_act_id,1)
+	
+	if (not_reseted_snds ~= nil) then
+		local is_need_empty_table = true
+		for i,snd in ipairs(not_reseted_snds) do
+			if snd:playing() then
+				is_need_empty_table = false
+				break
+			end
+		end
+		if (is_need_empty_table) then
+			not_reseted_snds = nil
+		end
+	end
 	
 	local next_hour = level.get_time_hours()
 	if (next_hour ~= last_hour) then

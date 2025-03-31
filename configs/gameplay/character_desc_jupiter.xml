@@ -2366,6 +2366,7 @@
 #include "gameplay\character_drugs_4.xml"
     </supplies>
     <start_dialog>jup_a6_stalker_barmen_start_dialog</start_dialog>
+	<actor_dialog>give_cooking_recipes_dialog</actor_dialog>
     <actor_dialog>actor_break_dialog</actor_dialog>
 #include "gameplay\character_criticals_4.xml"
     </specific_character>
@@ -2564,7 +2565,7 @@
         ammo_11.43x23_hydro = 1 \n
         wpn_spas12 \n
         ammo_12x76_zhekan = 1 \n
-        grenade_f1 = 4 \n
+        grenade_f1 = 1 \n
 #include "gameplay\character_items_3.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs_4.xml"

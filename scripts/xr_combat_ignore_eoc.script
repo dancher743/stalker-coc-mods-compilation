@@ -109,14 +109,14 @@ function is_enemy(obj,enemy,no_memory)
 			end
 		end
 		
-		local sim = get_alife()
+		local sim = alife()
 		local is_monster = character_community(enemy) == "zombied" or IsMonster(enemy)
 		
 		-- Ignore enemies with the safe_zone flag
 		--[[if (is_actor ~= true) then
 		
 			-- ignore hostages
-			if (xrs_kill_wounded.hostage_list[ene_id]) then 
+			if (xrs_kill_wounded.hostage_list[ene_id] or axr_companions.is_hostage_npc(ene_id)) then 
 				return true 
 			end
 			

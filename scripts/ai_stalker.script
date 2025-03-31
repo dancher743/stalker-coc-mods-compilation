@@ -1,0 +1,119 @@
+local priority_close = {
+	_G.IsShotgun,
+	_G.IsRifle,
+	_G.IsPistol,
+	_G.IsSniper,
+	_G.IsLauncher
+}
+
+local priority_medium = {
+	_G.IsRifle,
+	_G.IsPistol,
+	_G.IsSniper,
+	_G.IsShotgun,
+	_G.IsLauncher
+}
+
+local priority_far = {
+	_G.IsSniper,
+	_G.IsRifle,
+	_G.IsPistol,
+	_G.IsShotgun,
+	_G.IsLauncher
+}
+
+local priority_heli = {
+	_G.IsLauncher,
+	_G.IsSniper,
+	_G.IsRifle,
+	_G.IsPistol,
+	_G.IsShotgun
+}
+
+local priority_default = {
+	_G.IsRifle,
+	_G.IsSniper,
+	_G.IsShotgun,
+	_G.IsPistol,
+	_G.IsLauncher
+}
+
+local cost_string = "cost"
+local sort_functor = function(t,a,b) return t[a] > t[b] end
+
+-- if return game_object then it ignores engine. If return nil, then engine tries to find item to kill
+-- called from engine!
+function update_best_weapon(npc,cur_wpn)
+	local st = db.storage[npc:id()]
+	if not (st) then 
+		return cur_wpn
+	end 
+
+	-- we want to choose new best_weapon every n seconds unless we don't have one
+	local tg = time_global()
+	if (cur_wpn and st._choose_bw_timer and tg < st._choose_bw_timer) then
+		return cur_wpn
+	end 
+	
+	local time_delta = 1500
+	st._choose_bw_timer = tg+time_delta
+	
+	-- weapon priority
+	local prior
+	local be = npc:best_enemy()
+	if (be) then 
+		local be_position = be:position()
+		local npc_position = npc:position()
+		
+		if (be_position:distance_to_sqr(npc_position) > 2500) then 
+			prior = priority_far
+		elseif (be_position:distance_to_sqr(npc_position) > 900) then 
+			prior = priority_medium
+		else
+			prior = priority_close
+		end
+	elseif (axr_npc_vs_heli.is_under_npc_vs_heli(npc)) then
+		prior = priority_heli
+	else
+		prior = priority_default
+	end
+
+	local ini = system_ini()
+	local best_weapons = {}
+	
+	local function itr(npc,wpn)
+		local cls = wpn:clsid()
+		if (IsWeapon(nil,cls) ~= true) then 
+			return false
+		end
+		-- usage actor's borrow items by a companion fix
+		if (axr_companions.is_companion(npc)) then
+			local borrow_items = alife_storage_manager.get_state().companion_borrow_item
+			if (borrow_items and borrow_items[wpn:id()] ~= nil) then
+				return false
+			end
+		end
+		
+		--if (wpn:get_ammo_in_magazine() > 0) then
+			for i=1,#prior do 
+				if (prior[i](nil,cls)) then
+					best_weapons[wpn] = ini:r_float_ex(wpn:section(),cost_string)
+					break
+				end
+			end
+		--end
+		return false
+	end
+	
+	npc:iterate_inventory(itr,npc)
+	
+	for wpn,cost in spairs(best_weapons,sort_functor) do 
+		--[[DEBUG_NPC = level.get_target_obj and level.get_target_obj()
+		if (DEBUG_NPC) then 
+			SetHudMsg(strformat("%s bw=%s",DEBUG_NPC:name(),wpn and wpn:name()),2)
+		end]]
+		return wpn
+	end
+
+	return
+end

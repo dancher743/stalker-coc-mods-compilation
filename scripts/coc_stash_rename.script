@@ -27,7 +27,7 @@ local function on_game_load()
 		return
 	end
 
-	local alife = get_alife()
+	local alife = alife()
 	for i=1, 65534 do
 		local se_obj = alife:object(i)
 		if (se_obj) then

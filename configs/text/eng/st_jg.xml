@@ -81,4 +81,8 @@
 	<string id="st_ui_pda_guider_target_spot_descr">
 		<text>%c[255,135,183,116]Guide\n%c[default]%s should be in %s. It should be right around here.</text>
 	</string>
+	
+	<string id="ui_st_jg_hud_timer_format">
+        <text>%02d:%02d</text>
+    </string>
 </string_table>

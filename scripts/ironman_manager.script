@@ -11,7 +11,17 @@ local life_cycle = 120
 local life_feature = false
 
 function set_sleep_hrs(hrs) -- called by (ui_sleep_dialog.script)
+	if (not IsIronManMode()) then
+		return
+	end
+	
 	sleep_hrs = sleep_hrs + hrs
+	
+	local death_count = alife_storage_manager.get_state().death_count or 0
+    local death_limit = alife_storage_manager.get_state().death_limit or 3
+	local msg_str = strtransl("ui_st_ironman_mode_lives_available")
+	msg_str = strformat(msg_str,death_limit-death_count)
+    SetHudMsg(msg_str,10)
 end
 
 function ironman_timer()
@@ -31,6 +41,7 @@ function ironman_timer()
 		local death_count = alife_storage_manager.get_state().death_count or 0
 		alife_storage_manager.get_state().death_count = death_count - 1
 		granted_lives = granted_lives + 1
+		SetHudMsg("ui_st_ironman_mode_live_restored",10)
 		--printf(">>> Tronex: New life granted! new lives so far: " .. granted_lives)
 	end
 	--printf(">>> Tronex: fc: " .. fc .. " | true hrs: " .. true_hrs .. " | hours: " .. hours .. " | death_count: " .. tostring(alife_storage_manager.get_state().death_count) .. " | deeath_limit: " .. tostring(alife_storage_manager.get_state().death_limit) .. " | life_feature: " .. tostring(life_feature) .. " | life_cycle: " .. tostring(life_cycle))
@@ -40,6 +51,11 @@ end
 
 --========================================< Callbacks >========================================--
 local function save_state(m_data)
+	if (not IsIronManMode()) then
+		UnregisterScriptCallback("save_state",save_state)
+		return
+	end
+	
 	m_data.ironman_sleep_hrs = sleep_hrs
 	m_data.ironman_granted_lives = granted_lives
 	m_data.ironman_life_cycle = life_cycle
@@ -47,6 +63,11 @@ local function save_state(m_data)
 end
 
 local function load_state(m_data)
+	if (not IsIronManMode()) then
+		UnregisterScriptCallback("load_state",load_state)
+		return
+	end
+	
 	sleep_hrs = m_data.ironman_sleep_hrs or sleep_hrs
 	granted_lives = m_data.ironman_granted_lives or granted_lives
 	life_cycle = m_data.ironman_life_cycle or life_cycle
@@ -55,8 +76,8 @@ local function load_state(m_data)
 end
 
 local function on_game_load()
-	local uuid = alife_storage_manager.get_state().uuid
-	if (not uuid) or (not life_feature) then
+	if (not IsIronManMode()) or (not life_feature) then
+		UnregisterScriptCallback("on_game_load",on_game_load)
 		return
 	end
 	if _G.GAME_VERSION == "1.4.16" then
@@ -72,6 +93,7 @@ local function actor_on_before_death() -- Ironman: second wind
 	
 	local uuid = alife_storage_manager.get_state().uuid
 	if not (uuid) then
+		UnregisterScriptCallback("actor_on_before_death",actor_on_before_death)
 		return -- not in hardcore mode
 	end
 	
@@ -79,15 +101,23 @@ local function actor_on_before_death() -- Ironman: second wind
 	local flist = fs:file_list_open_ex("$game_saves$",bit_or(FS.FS_ListFiles,FS.FS_RootOnly),"*.scoc")
 	local f_cnt = flist:Size()
 
+	local file_ext = ".scoc"
+	local file_path = fs:update_path('$game_saves$', '').."%s"..file_ext
+	local file_r_mode = "rb"
+	local file_r_format = "*all"
+	local file_w_mode = "wb"
+	
+	flist:Sort(FS.FS_sort_by_modif_down)
+	
 	for	it=0, f_cnt-1 	do
 		local file = flist:GetAt(it)
-		local file_name = string.sub(file:NameFull(), 0, (string.len(file:NameFull()) - string.len(".scoc")))
+		local file_name = string.sub(file:NameFull(), 0, (string.len(file:NameFull()) - string.len(file_ext)))
 
 		--printf("file_name = %s",file_name)
-		local path = fs:update_path('$game_saves$', '')..file_name..".scoc"
-		local f = io.open(path,"rb")
+		local path = string.format(file_path,file_name)
+		local f = io.open(path,file_r_mode)
 		if (f) then
-			local data = f:read("*all")
+			local data = f:read(file_r_format)
 			f:close()
 			if (data) then
 				local decoded = alife_storage_manager.decode(data)
@@ -97,7 +127,7 @@ local function actor_on_before_death() -- Ironman: second wind
 					if (decoded.death_count >= decoded.death_limit) then
 						ui_load_dialog.delete_save_game(file_name)	
 					else
-						local f = io.open(path,"wb")
+						local f = io.open(path,file_w_mode)
 						if (f) then
 							local encoded = marshal.encode(decoded)
 							if (encoded) then 
@@ -110,6 +140,18 @@ local function actor_on_before_death() -- Ironman: second wind
 			end
 		end
 	end
+	
+    local msg_str
+    local death_count = (alife_storage_manager.get_state().death_count or 0) + 1
+    local death_limit = alife_storage_manager.get_state().death_limit or 3
+    local has_saves_deleted = death_count >= death_limit
+    if (has_saves_deleted) then
+        msg_str = "ui_st_ironman_mode_saves_deleted"
+    else
+        msg_str = strtransl("ui_st_ironman_mode_lives_left")
+        msg_str = strformat(msg_str,death_limit-death_count)
+    end
+    SetHudMsg(msg_str,10)
 end
 
 function on_game_start()

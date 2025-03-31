@@ -30,7 +30,7 @@ end
 --' опирование таблицы по значению
 function copy_table(dest, src)
 	for k,v in pairs(src) do
-		if type(v) == "table" then
+		if type(v) == STR_TABLE then
 			--' рекурсивный вызов себ€ же дл€ подтаблиц
 			dest[k] = {}
 			copy_table(dest[k], v)
@@ -48,14 +48,14 @@ function print_table()
 		sub = STR_EMPTY
 	end
 	for k,v in pairs(table) do
-		if type(v) == "table" then
+		if type(v) == STR_TABLE then
 			printf(sub.."%s:", tostring(k))
 			print_table(v, sub.."    ")
-		elseif type(v) == "function" then
+		elseif type(v) == STR_FUNCTION then
 			printf(sub.."%s:function", tostring(k))
-		elseif type(v) == "userdata" then
+		elseif type(v) == STR_USERDATA then
 			printf(sub.."%s:userdata", tostring(k))
-		elseif type(v) == "boolean" then
+		elseif type(v) == STR_BOOLEAN then
 	if v == true then
 		printf(sub.."%s:true", tostring(k))
 	else
@@ -294,7 +294,7 @@ function parse_waypoint_data(pathname, wpflags, wpname)
 			end
 
 			if not val or val == STR_EMPTY then
-				val = "true"
+				val = STR_TRUE
 			end
 
 			if fld == "a" then
@@ -496,7 +496,7 @@ function get_nearest_waypoint(obj, pathname, ptr, cnt)
 end
 
 function npc_in_zone(npc, zone)
-	zone = type(zone) == "string" and db.zone_by_name[zone] or zone
+	zone = type(zone) == STR_STRING and db.zone_by_name[zone] or zone
 	return npc and zone and zone.inside and zone:inside(npc:position())
 end
 
@@ -515,7 +515,7 @@ function w_CTime(p, t, caller)
 
 	p:w_bool(true)
 
-	if not (type(t) == "userdata" and t.timeToString) then
+	if not (type(t) == STR_USERDATA and t.timeToString) then
 		t = game.get_game_time()
 	end
 
@@ -585,7 +585,7 @@ end
 -- происходит ли в данный момент смена уровн€?
 -- нужно дл€ того, чтобы объекты знали, какую информацию записывать при сохранении, а какую нет
 function level_changing()
-	local sim = get_alife()
+	local sim = alife()
 
 	if not sim then
 		return false
@@ -760,12 +760,12 @@ function prefix_r_string(ini,sec,key,prefix)
 end
 
 function is_ammo(section)
-	local v = ini_sys:r_string_ex(section,"class",STR_EMPTY)
+	local v = system_ini():r_string_ex(section,"class",STR_EMPTY)
 	return v == "AMMO" or v == "AMMO_S"
 end
 
 function pstor_is_registered_type(tv)
-	if tv ~= "boolean" and tv ~= "string" and tv ~= "number" then
+	if tv ~= STR_BOOLEAN and tv ~= STR_STRING and tv ~= STR_NUMBER then
 		return false
 	end
 	return true
@@ -793,7 +793,7 @@ function save_var(obj,varname,val)
 		end
 	end
 
-	if (type(val) == "userdata") then
+	if (type(val) == STR_USERDATA) then
 		printf("WARNING: utils.save_var ONLY USE LUA DATA TYPES!!! %s",varname)
 	else
 		db.storage[id].pstor[varname] = val
@@ -927,16 +927,12 @@ function fmod(a, b)
     return a - (math.floor(a/b)*b)
 end
 
-function is_actor_community_as(npc)
-	return (npc and IsStalker(npc) and npc:character_community() == get_actor_community()) or false
-end
-
 function get_actor_community()
 	return string.sub(db.actor:character_community(), 7)
 end
 
 function get_parent_section(section)
-	return ini_sys:r_string_ex(section,"parent_section")
+	return system_ini():r_string_ex(section,"parent_section")
 end
 
 function contains(array, value)
@@ -981,7 +977,7 @@ function round_to_1000(value)
 end
 
 function get_nearest_game_vertex(target_position, target_level)
-	local sim = get_alife()
+	local sim = alife()
 	local gg = game_graph()
 	local vertex, lvid, pos
 	local near_lvid, near_dist, near_gvid, dist
@@ -1032,4 +1028,21 @@ function set_migration_flag(name, value)
 	end
 	
 	m_data.migration_flags[name] = value
+end
+
+function parse_ini_section_to_iarray(ini,section)
+	local t
+	
+	if (ini and ini:section_exist(section)) then
+		t = {}
+		local n = ini:line_count(section)
+		for i=0, n-1 do
+			local result, id, value = ini:r_line(section,i,STR_EMPTY,STR_EMPTY)
+			if (result and id ~= STR_EMPTY) then
+				table.insert(t, id)
+			end
+		end
+	end
+	
+	return t
 end

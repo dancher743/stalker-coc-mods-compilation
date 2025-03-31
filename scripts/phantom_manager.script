@@ -43,12 +43,12 @@ local function monster_on_update(npc,st)
 		-- return 
 	-- end 
 	
-	local phantom_section = ini_sys:r_string_ex(npc:section(),"spawn_phantom")
+	local phantom_section = system_ini():r_string_ex(npc:section(),"spawn_phantom")
 	if not (phantom_section) then
 		return 
 	end
 	
-	local can_spawn = sr_psy_antenna.psy_antenna and sr_psy_antenna.psy_antenna.global_state == 1 or ini_sys:r_bool_ex(npc:section(),"can_spawn_phantom",false)
+	local can_spawn = sr_psy_antenna.psy_antenna and sr_psy_antenna.psy_antenna.global_state == 1 or system_ini():r_bool_ex(npc:section(),"can_spawn_phantom",false)
 	if not (can_spawn) then 
 		return
 	end 
@@ -61,7 +61,7 @@ local function monster_on_update(npc,st)
 		return
 	end
 	
-	local sec = ini_sys:r_string_ex(npc:section(),"spawn_phantom")
+	local sec = system_ini():r_string_ex(npc:section(),"spawn_phantom")
 	if (sec and sec ~= STR_EMPTY and phantom_manager.dynamic_phantom_count(sec) >= 1) then 
 		return
 	end

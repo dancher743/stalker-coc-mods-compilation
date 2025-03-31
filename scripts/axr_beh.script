@@ -42,7 +42,7 @@ local function init_custom_data(npc, ini, section, st, scheme)
 
 	def.delay_cond	= "{+npcx_beh_substate_stealth} hide, guard"
 
-	def.use_camp_cond = "false"
+	def.use_camp_cond = STR_FALSE
 
 	
 	
@@ -191,8 +191,8 @@ function action_beh:set_desired_target()
 			for _id,squad in spairs(axr_companions.companion_squads, function(t,a,b) return a < b end) do
 				if (squad and squad.commander_id and squad.online and squad.position:distance_to_sqr(db.actor:position()) < 900) then
 					local cid = squad:commander_id()
-					if not (axr_task_manager.hostages_by_id[cid]) then
-						local sim = get_alife()
+					if not (xrs_kill_wounded.hostage_list[cid] or axr_companions.is_hostage_npc(cid)) then
+						local sim = alife()
 						if not (sim:has_info(cid,"npcx_beh_wait") or sim:has_info(cid,"npcx_beh_patrol_mode")) then 
 							if (se_obj.group_id == _id) then
 								break
@@ -524,12 +524,12 @@ function action_beh:get_current_waypoint(use_var)
 	t.active_section = st.active_section
 
 	for s in string.gmatch(str,"look:(%A+)") do
-		local p = alun_utils.str_explode(s,",")
+		local p = alun_utils.str_explode(s,STR_COMMA)
 		t.look_position = vector():set(tonumber(p[1]),tonumber(p[2]),tonumber(p[3]))
 	end
 
 	for s in string.gmatch(str,"animpoint:(%A+)") do
-		local p = alun_utils.str_explode(s,",")
+		local p = alun_utils.str_explode(s,STR_COMMA)
 		t.animpoint = vector():set(tonumber(p[1]),tonumber(p[2]),tonumber(p[3]))
 		p[4] = p[4] and tonumber(p[4]) or 0
 		p[5] = p[5] and tonumber(p[5]) or 0
@@ -538,7 +538,7 @@ function action_beh:get_current_waypoint(use_var)
 	end
 
 	for s in string.gmatch(str,"pos:(%A+)") do
-		local p = alun_utils.str_explode(s,",")
+		local p = alun_utils.str_explode(s,STR_COMMA)
 		t.position = vector():set(tonumber(p[1]),tonumber(p[2]),tonumber(p[3]))
 	end
 
@@ -561,7 +561,7 @@ function action_beh:get_current_waypoint(use_var)
 	end
 
 	for s in string.gmatch(str,"look_job:(%a+)") do
-		s = alun_utils.str_explode(s,",")
+		s = alun_utils.str_explode(s,STR_COMMA)
 		local board = SIMBOARD
 		local smart = s[1] and board and board.smarts_by_names[s[1]]
 		local obj = smart and smart.npc_by_job_section["logic@"..s[2]]
@@ -573,7 +573,7 @@ function action_beh:get_current_waypoint(use_var)
 	end
 
 	local pt = alun_utils.str_explode(str,"|")
-	pt = pt[1] and alun_utils.str_explode(pt[1],",")
+	pt = pt[1] and alun_utils.str_explode(pt[1],STR_COMMA)
 
 	if not (pt) then
 		return

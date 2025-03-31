@@ -106,7 +106,7 @@ end
 class "slot_hud" (CUIScriptWnd)
 function slot_hud:__init() super()
 	self.slot = {}
-	self.ini = ini_sys
+	self.ini = system_ini()
 	self.shown = false
 	self:InitControls()
 end
@@ -125,7 +125,8 @@ function slot_hud:InitControls()
 	local function tickback()
 		self:CustomUpdate()
 	end
-	StartTimer("slot_hud_timer", update_rate, tickback)
+	self.update_tickback = tickback
+	StartTimer("slot_hud_timer", update_rate, self.update_tickback)
 end
 
 function slot_hud:Clear()

@@ -72,7 +72,7 @@ function mar_base_owl_stalker_trader_task_1_give_reward(a,b)
 	local npc = dialogs.who_is_npc(a,b)
 	dialogs.relocate_item_section(npc, "mar_base_owl_stalker_trader_task_1_pda", "out", 1)
 	if (itm) then
-		local sim = get_alife()
+		local sim = alife()
 		local se_itm = sim:object(itm:id())
 		sim:release(se_itm, true)
 	end
@@ -119,7 +119,7 @@ function init_nimble_tables()
 		for n=1,count do 
 			local value = ini:r_string_ex(sec,"item"..n)
 			if (value) then
-				local item_list = value ~= STR_EMPTY and alun_utils.str_explode(value,",") or {}
+				local item_list = value ~= STR_EMPTY and alun_utils.str_explode(value,STR_COMMA) or {}
 				table.insert(t,{item=item_list})
 			end
 		end
@@ -263,7 +263,7 @@ end
 
 local function get_name_changing_cost()
 	local ini = ini_file("plugins\\other.ltx")
-	local cost = ini:r_string_ex("actor_name_changing","cost") or "0"
+	local cost = ini:r_string_ex("actor_name_changing","cost") or STR_ZERO
 	cost = tonumber(cost)
 	return cost
 end
@@ -277,13 +277,17 @@ function show_change_name_dialog_window(first_speaker, second_speaker)
 		if (text == STR_EMPTY) then
 			return
 		end
-		text = text:gsub("_"," ")
+		text = text:gsub("_",STR_BLANK)
 		
-		local se_actor = get_alife():actor()
+		local se_actor = alife():actor()
 		se_actor:set_character_name(text)
 		
-		local cost = get_name_changing_cost()
-		dialogs.relocate_money_from_actor(first_speaker, second_speaker, cost)
+		if (has_info("esc_2_12_was_actor_name_changed")) then
+			local cost = get_name_changing_cost()
+			dialogs.relocate_money_from_actor(first_speaker, second_speaker, cost)
+		else
+			give_info("esc_2_12_was_actor_name_changed")
+		end
 	end
 	
 	local hud = get_hud()

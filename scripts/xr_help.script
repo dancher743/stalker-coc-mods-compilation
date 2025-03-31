@@ -8,12 +8,32 @@ local obj = db.storage[se_obj.id] and db.storage[se_obj.id].object or level.obje
 
 2. Get offline object
 local se_obj = alife_object(obj:id())
-
-local sim = get_alife()
+-- or --
+local sim = alife()
 local se_obj = sim:object(obj:id())
 
 
 3. Check is actor in combat
 local has_comabat = not (is_empty(xr_combat_ignore.fighting_with_actor_npcs))
+
+
+4. Code template for SkipFrame function
+local function postpone_for_next_frame()
+	
+end
+SkipFrame(postpone_for_next_frame)
+
+
+5. Code template for StartTimer function
+	local timer_tickback = nil  -- save tickback function to script field to prevent it from garbage collection
+	
+	...
+	
+	local function tickback()
+		StopTimer("timer_id")
+		timer_tickback = nil
+	end
+	timer_tickback = tickback
+	StartTimer("timer_id", 1000, timer_tickback)
 
 ]]

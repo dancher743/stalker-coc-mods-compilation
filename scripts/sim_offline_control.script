@@ -56,7 +56,7 @@ end
 function squad_on_update(squad)
     
 	if squad.registered_in_simultaion then
-		local sim = get_alife()
+		local sim = alife()
 		local gg = game_graph()
 
 		if not (squad.current_level_id) then
@@ -150,7 +150,7 @@ function get_num_squads_on_level(lvl, faction)
 		local count = 0
 		
 		for s,_ in pairs(squads_by_level[lvl]) do
-			local squad = get_alife():object(s)
+			local squad = alife():object(s)
 			
 			if (squad) then	
 				if (squad.get_squad_community and squad:get_squad_community() == faction) then
@@ -171,7 +171,7 @@ function calc_all_npc_on_level(lvl, faction)
 		local count = 0
 		
 		for s,_ in pairs(squads_by_level[lvl]) do
-			local squad = get_alife():object(s)
+			local squad = alife():object(s)
 			
 			if (squad) then	
 				if (squad.get_squad_community and squad:get_squad_community() == faction) then
@@ -193,12 +193,12 @@ function calc_passive_npc_on_level(lvl, faction)
 		local count = 0
 		
 		for s,_ in pairs(squads_by_level[lvl]) do
-			local squad = get_alife():object(s)
+			local squad = alife():object(s)
 			
 			if (squad) then			
 				if (squad.get_squad_community and squad:get_squad_community() == faction and squad.current_action == 1) then
 					local target = squad.current_target_id
-					local obj = target and get_alife():object(target)
+					local obj = target and alife():object(target)
 					
 					if (obj) and (obj:clsid() == clsid.smart_terrain) then
 						if (obj.owning_faction == faction and obj.props and (obj.props.base > 0 or obj.props.resource > 0)) then
@@ -221,12 +221,12 @@ function calc_active_npc_on_level(lvl, faction)
 		local count = 0
 		
 		for s,_ in pairs(squads_by_level[lvl]) do
-			local squad = get_alife():object(s)
+			local squad = alife():object(s)
 			
 			if (squad) then			
 				if (squad.get_squad_community and squad:get_squad_community() == faction and squad.current_action == 0) then
 					local target = squad.current_target_id
-					local obj = target and get_alife():object(target)
+					local obj = target and alife():object(target)
 					
 					if (obj) and (obj:clsid() == clsid.smart_terrain) then
 						if (obj.props and (obj.props.base > 0 or obj.props.resource > 0)) then

@@ -2,6 +2,159 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0] - Unreleased
+
+### Features
+* Reworked radio music for all factions
+* Added vanila SoC voices for killers
+* Rebalanced all grenades in NPC's equipments
+* Unique and modified weapons in NPC's equipments
+* Ecolog explorer squads
+* Reworked time requirement of companion's invulnerability
+* Added open inventory dialog for a companion
+* Added mosquitoes sound ambient
+* NPCs can deal critical hits to other NPCs
+* New outfits: Clear Sky exoskeleton & scientific outfit, bandit leather trench coat, military novice outfit
+* Added old new night visions: 1 gen from Clear Sky, 2 gen from SoC
+* Reworked global map texture based on Clear Sky texture
+* Restored fog ambient
+* Random stashes renewing
+* Added rad aura for black bloodsucker
+* Added sleep aura for cat mutant
+* Fixed incorrect vegetation in Truck Cemetery, Army Warehouses, Jupiter and Zaton levels
+* Added A-Life from CoC 1.5
+* Added memoization to global code to reduce the load on a CPU
+* Reworked change actor name dialog
+* Added new idle sounds to NPCs
+* Added TV from SoC
+
+### Mods
+* Call of Chernobyl Fallout (CrommCruac, av661194)
+
+### Improvements
+* Restored lore-friendly NPC's backpack textures
+* Added lore-friendly NPC's portrets (1 portret from Customization Pack Adaptation [1.4.22])
+* Reworked cat and zombie icons of mutant's loot window
+* Added a few tracks from New Music in Radio mod
+* Added original radio tracks from Clear Sky game
+* Reworked tracks of Clear Sky base's radio
+* Removed white rectangles from `ui_icon_equipment.dds` texture
+* Rebuilded `ui_icon_equipment.dds` texture
+* Removed bandit squads from Dead City
+* Balanced `grenade_f1` count from 4 to 1 for all NPC
+* Added smoke grenades for army and mercenaries NPC
+* Added `grenade_rgd5` into NPC's spawn
+* Rebalanced grenades in new game loadouts
+* Added grenade launchers into NPC's spawn
+* Corrected start companion's count text in Faction Select Menu
+* Changed format of hud timer value in `jg_hud_timer.script`
+* Refactored code of adding map spot on companion before removing them from actor's squad
+* Added map spot to actor's corpse if he died in Azazel mode (with option)
+* Refactored `simulation` filed in `_g.script`
+* Corrected localization of `show_guide_job_on_map` option
+* Reworked population factors text in Faction Select Menu
+* Corrected text in general in Faction Select Menu
+* Removed weather graphs from `dynamic_weather_graphs.ltx` due to TRX: Global Weather
+* Refactored code of `critical_hit_manager.script`
+* Changed text of `ui_st_hideout` string
+* Added coocked food and mutant meat items into debug menu
+* Refactored get period functions in `level_weathers.script`
+* Refactored `dynamic_weather_graphs.ltx`
+* Added HUD messages for Ironman Mode
+* Added color and `location_level` from Clear Sky for `treasure_quest` icon
+* Added removed `rnd_dark_2` sound into `restored_dark` channel
+* Added cooked food into NPC's loot
+* Added original icons from SoC, CS and CoP
+* Removed medkits and drugs from `zombied` death items (Clear Sky concept)
+* Sorted faction portraits
+* Changed inner struct of `faction_portraits.ltx`
+* Corrected ghost zombie spawn
+* Balanced time of Guide's job appearing
+* Changed `sun` to `clear_alt_day` of 09:00-16:00 time of clear weather
+* Improved mapspot position of Bar room safe-house
+* Added weapon addons into `army_loadout`
+* Corrected title of EOC mode description
+* Increased numbers of showing change language tutorial from 1 to 2
+* Refactored `is_first_update` flag in `disguise.script`
+* Corrected `st_addon_companion_quick_menu_ignoreCombatButHelpMe` string in rus localization
+* Added broker dialog to Agroprom army trader
+* Added transitions for cloudy weather
+* Moved code of getting periods occurrancy into `WeatherManager:get_period_occur_chance` method
+* Removed more foggy weather during Survival mode
+* Refactored `respawn_radius` in `se_smart_terrain` class
+
+### Fixes
+* Fixed simulation of `gar_smart_terrain_5_6` smart
+* Fixed ignoring of start companions as NPC for reborn in Azazel mode
+* Fixed "ALIFE OBJECT ID IS 65535!" message after death in Azazel mode
+* Fixed double crit hit
+* Reworked text of `banditmerc_outfit_description` string
+* Corrected Guide job dialog rus text and position in `character_dialogs.xml`
+* Fixed text of prevent fast travel during a cataclysm message
+* Fixed surges overlapping
+* Restored and corrected post-surge random news in rus localization
+* Fixed typo in `st_sleep_event` string in rus localization
+* Fixed reselect of pre blowout weather after reload
+* Fixed spontaneous loss of harmonica/guitar sounds
+* Fixed stopping of ambient sound at the junction of hours
+* Fixed outfits and helms as a loots from dead NPC
+* Fixed novices outfits in new game loadouts
+* Fixed incorrect order of faction portraits
+* Fixed companion borrow item if actor take it from companion
+* Fixed companions usage of actor's items as best weapons
+* Fixed incorrect faction portraits in Dynamic News
+* Fixed kill wounded scheme (code from CoC 1.5 R6)
+* Fixed upgrades properties of outfits
+* Fixed missing data of `xrs_kill_wounded.hostage_list`
+* Fixed Russian text of Dynamic News about time and weather
+* Fixed text and color of eng localization in Faction Select Menu
+* Fixed missing tracks of military base's radio on Agroprom
+* Fixed instant appearing of angry stash owner message in Dynamic News
+* Saved tickbacks functions to script fields to prevent them from garbage collection
+* Fixed volume of `demobilization.ogg` radio track
+* Added saving `assigned_target_id` to fix reselect of squad target after reload
+
+### Optimization
+* Optimized amount of update callbacks
+* Optimized RAM usage in `actor_on_slicing_update()` function in `itms_manager.script`
+* Reworked initialization of Azazel and Ironman modes to not affect the regular mode
+* Optimized string allocations in find victims code in `azazel_mode.script`
+* Optimized string allocations in `critical_hit_manager.script`
+* Optimized string allocations in `get_check_option` function
+* Reduced extra allocations using `STR_USERDATA`, `STR_TRUE`, `STR_FALSE`, `STR_ZERO`, `STR_ONE`, `STR_BLANK` constants
+* Optimized strings allocations in `printf` function in `_g.script`
+* Reduced strings allocations using var types constants
+* Optimized RAM in `get_valid_item_sections` and `get_loot_table` functions
+* Optimized string allocations in `xr_corpse_detection.script`
+* Added RAM clearing on game unloading
+* Added global functions memoization into `_g.script`
+* Replaced function `distance_to` with `distance_to_sqr` in `sim_squad_scripted:can_switch_online()`
+
+### Framework
+* Added `npc_regular` string into `squad_descr.ltx` to add non-random squads spawn
+* Changed time format in `ui_hud_timer.script`
+* Added `IsAzazelMode()` and `IsIronManMode()` functions into `_g.script`
+* Added `npc_on_use_dead` callback into `axr_main.script`
+* Added code template for SkipFrame function into `xr_help.script`
+* Added `STR_USERDATA` const into `_g.script`
+* Added `STR_TRUE` and `STR_FALSE` consts into `_g.script`
+* Added `STR_ZERO` and `STR_ONE` consts into `_g.script`
+* Added `STR_COMMA` and `STR_NEWLINE` consts into `_g.script`
+* Added var types constants into `_g.script`
+* Added `parse_ini_section_to_iarray` function into `utils.script`
+* Added original `lua_help.script`
+* Added `level_time_observer.script` to be able to observe game time
+* Added custom time format for `ui_hud_timer.script`
+* Added code template for `StartTimer` function into `xr_help.script`
+* Added `has_info` function into `_g.script`
+* Added `news_helper.script` to help with sending custom news
+* Added `USE_FUNCTIONS_MEMOIZE` const to enabled/disable functions memoization in `_g.script`
+* Added `memoize_functions()` into `_g.script` to add functions for memoization
+* Added `STR_BLANK` const into `_g.script`
+* Added `HasTimer` function into `_g.script`
+* Added auto-reset to `StartTimer` function in `_g.script`
+* Added disguise checks into get community functions in `_g.script`
+
 ## [1.4.6] - 2024-12-30
 
 ### Fixes
@@ -674,17 +827,17 @@ All notable changes to this project will be documented in this file.
 ## [1.0.0] - 2021-07-30
 
 #### Mods
-1. Original Item Models and Icons (Panzermann11)
-2. Lor's models v2.5 (Grelka)
-3. Displaying units like in Clear Sky, squads on the pda map v2 (av661194, turoff82)
-4. Stashes from SOC and CS (av661194)
-5. CoP HUD for CoC (PapaliPapali)
-6. Fast Travel (Fanzanzza)
-7. Dynamic News Revamp (4.3) (Tronex)
-8. S.W.T.C Call of Chernobyl Advanced (exDeMODER)
-9. PDA lag fix for 1.4.22 (Sanctuary)
-10. Quest Items Remove v1.1 (zon3r)
-11. Full Simulation A-Life (Aktuarus)
-12. Voice Fixes 1.0.3 (SashaRed)
-13. More Fast Travel Locations v15 (Yarmoshuk)
-14. Informative Messages of Stashes (Dancher)
+* Original Item Models and Icons (Panzermann11)
+* Lor's models v2.5 (Grelka)
+* Displaying units like in Clear Sky, squads on the pda map v2 (av661194, turoff82)
+* Stashes from SOC and CS (av661194)
+* CoP HUD for CoC (PapaliPapali)
+* Fast Travel (Fanzanzza)
+* Dynamic News Revamp (4.3) (Tronex)
+* S.W.T.C Call of Chernobyl Advanced (exDeMODER)
+* PDA lag fix for 1.4.22 (Sanctuary)
+* Quest Items Remove v1.1 (zon3r)
+* Full Simulation A-Life (Aktuarus)
+* Voice Fixes 1.0.3 (SashaRed)
+* More Fast Travel Locations v15 (Yarmoshuk)
+* Informative Messages of Stashes (Dancher)

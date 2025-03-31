@@ -102,7 +102,7 @@ function drx_sl_assault_mutant_task_status( tsk, task_id )
 	end
 
 	--in case sim_avail is set true during the player's tsk
-	if not( smart.sim_avail == nil or xr_logic.pick_section_from_condlist( actor, smart, smart.sim_avail ) == "true" ) then
+	if not( smart.sim_avail == nil or xr_logic.pick_section_from_condlist( actor, smart, smart.sim_avail ) == STR_TRUE ) then
 		return "fail"
 	end
 
@@ -114,7 +114,7 @@ function drx_sl_assault_mutant_task_status( tsk, task_id )
 
 	alun_utils.save_var( db.actor, (task_id .. "_target_id"), nil )
 
-	if ( smart.sim_avail == nil or xr_logic.pick_section_from_condlist( actor, smart, smart.sim_avail ) == "true" ) then
+	if ( smart.sim_avail == nil or xr_logic.pick_section_from_condlist( actor, smart, smart.sim_avail ) == STR_TRUE ) then
 		for id,squad in pairs( SIMBOARD.squads ) do
 			if ( squad ) and simulation_objects.is_on_the_same_level( squad, smart ) then
 				if not ( squad.first_update ) then
@@ -208,7 +208,7 @@ function drx_sl_assault_task_status( tsk, task_id )
 	end
 
 	--in case sim_avail is set true during the player's tsk
-	if not( smart.sim_avail == nil or xr_logic.pick_section_from_condlist( actor, smart, smart.sim_avail ) == "true" ) then
+	if not( smart.sim_avail == nil or xr_logic.pick_section_from_condlist( actor, smart, smart.sim_avail ) == STR_TRUE ) then
 		return "fail"
 	end
 
@@ -263,7 +263,7 @@ function drx_sl_assault_task_status( tsk, task_id )
 
 	alun_utils.save_var( db.actor, (task_id .. "_target_id"), nil )
 
-	if ( smart.sim_avail == nil or xr_logic.pick_section_from_condlist( actor, smart, smart.sim_avail ) == "true" ) then
+	if ( smart.sim_avail == nil or xr_logic.pick_section_from_condlist( actor, smart, smart.sim_avail ) == STR_TRUE ) then
 		for id,squad in pairs( SIMBOARD.squads ) do
 			if ( squad ) and simulation_objects.is_on_the_same_level( squad, smart ) then
 				if not ( squad.first_update ) then
@@ -525,7 +525,7 @@ function check_smart_under_faction_control(tsk,task_id)
 	end
 
 	--in case sim_avail is set true during the player's tsk
-	if not(smart.sim_avail == nil or xr_logic.pick_section_from_condlist(actor, smart, smart.sim_avail) == "true") then
+	if not(smart.sim_avail == nil or xr_logic.pick_section_from_condlist(actor, smart, smart.sim_avail) == STR_TRUE) then
 		return "fail"
 	end
 
@@ -539,7 +539,7 @@ function check_smart_under_faction_control(tsk,task_id)
 
 	utils.save_var(db.actor,task_id.."_target_id",nil)
 
-	if (smart.sim_avail == nil or xr_logic.pick_section_from_condlist(actor, smart, smart.sim_avail) == "true") then
+	if (smart.sim_avail == nil or xr_logic.pick_section_from_condlist(actor, smart, smart.sim_avail) == STR_TRUE) then
 		for id,squad in pairs(SIMBOARD.squads) do
 			if (squad) and simulation_objects.is_on_the_same_level(squad, smart) then
 				if not (squad.first_update) then
@@ -606,7 +606,7 @@ function specific_check_smart_under_faction_control(tsk,task_id)
 	end
 
 	--in case sim_avail is set true during the player's tsk
-	if not(smart.sim_avail == nil or xr_logic.pick_section_from_condlist(actor, smart, smart.sim_avail) == "true") then
+	if not(smart.sim_avail == nil or xr_logic.pick_section_from_condlist(actor, smart, smart.sim_avail) == STR_TRUE) then
 		return "fail"
 	end
 
@@ -618,7 +618,7 @@ function specific_check_smart_under_faction_control(tsk,task_id)
 
 	utils.save_var(db.actor,task_id.."_target_id",nil)
 
-	if (smart.sim_avail == nil or xr_logic.pick_section_from_condlist(actor, smart, smart.sim_avail) == "true") then
+	if (smart.sim_avail == nil or xr_logic.pick_section_from_condlist(actor, smart, smart.sim_avail) == STR_TRUE) then
 		for id,squad in pairs(SIMBOARD.squads) do
 			if (squad) and simulation_objects.is_on_the_same_level(squad, smart) then
 				if not (squad.first_update) then

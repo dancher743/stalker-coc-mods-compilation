@@ -178,7 +178,7 @@ function drx_sl_generate_random_sl_task( npc, skip, is_sim )
 
 	-- Build list of valid tasks:
 	local honcho_task_list = {}
-	local task_id = (sec .. "1")
+	local task_id = (sec .. STR_ONE)
 	local count = 1
 	while ( task_manager.task_ini:section_exist( task_id ) ) do
 		if ( skipped_tasks[task_id] ~= true and task_info[task_id] == nil and xr_conditions.has_completed_task_prerequisites( nil, nil, {task_id} ) ) then
@@ -251,7 +251,7 @@ function drx_sl_generate_change_factions_task( npc, skip, is_sim )
 
 	-- Build list of valid tasks:
 	local task_list = {}
-	local task_id = (sec .. "1")
+	local task_id = (sec .. STR_ONE)
 	local count = 1
 	while ( task_manager.task_ini:section_exist( task_id ) ) do
 		if ( skipped_tasks[task_id] ~= true and task_info[task_id] == nil and xr_conditions.has_completed_task_prerequisites( nil, nil, {task_id} ) ) then
@@ -354,7 +354,7 @@ function get_first_available_task( npc, skip, is_sim )
 
 	-- Build list of valid tasks:
 	local npc_task_list = {}
-	local task_id = (sec .. "1")
+	local task_id = (sec .. STR_ONE)
 	local count = 1
 	while ( task_manager.task_ini:section_exist( task_id ) ) do
 		if ( skipped_tasks[task_id] ~= true and task_info[task_id] == nil and xr_conditions.has_completed_task_prerequisites( nil, nil, {task_id} ) ) then
@@ -442,7 +442,7 @@ function drx_sl_get_mechanic_task( npc, skip, is_sim )
 
 	-- Build list of valid tasks:
 	local npc_task_list = {}
-	local task_id = (sec .. "1")
+	local task_id = (sec .. STR_ONE)
 	local count = 1
 	while ( task_manager.task_ini:section_exist( task_id ) ) do
 		if ( skipped_tasks[task_id] ~= true and task_info[task_id] == nil and xr_conditions.has_completed_task_prerequisites( nil, nil, {task_id} ) ) then
@@ -532,7 +532,7 @@ function drx_sl_get_finished_task( npc, is_sim )
 		sec = npc:section() ~= "m_trader" and ("drx_sl_" .. npc:section( ) .. "_task_") or ("drx_sl_" .. npc:name( ) .. "_task_")
 	end
 
-	local task_id = (sec .. "1")
+	local task_id = (sec .. STR_ONE)
 
 	local count = 1
 	while ( task_manager.task_ini:section_exist( task_id ) ) do
@@ -596,7 +596,7 @@ function drx_sl_get_finished_cf_task( npc, is_sim )
 		sec = npc:section() ~= "m_trader" and ("drx_sl_" .. npc:section( ) .. "_cf_task_") or ("drx_sl_" .. npc:name( ) .. "_cf_task_")
 	end
 
-	local task_id = (sec .. "1")
+	local task_id = (sec .. STR_ONE)
 
 	local count = 1
 	while ( task_manager.task_ini:section_exist( task_id ) ) do
@@ -742,7 +742,7 @@ function get_first_finished_task( npc, is_sim )
 		sec = is_sim and "simulation_task_" or npc:section( ) ~= "m_trader" and (npc:section( ) .. "_task_") or (npc:name( ) .. "_task_")
 	end
 
-	local task_id = (sec .. "1")
+	local task_id = (sec .. STR_ONE)
 
 	local count = 1
 	while ( task_manager.task_ini:section_exist( task_id ) ) do
@@ -1027,7 +1027,7 @@ function generate_available_tasks(npc,is_sim)
         sec = is_sim and "simulation_task_" or npc:section() ~= "m_trader" and npc:section().."_task_" or npc:name().."_task_"
     end
 
-    local task_id = sec.."1"
+    local task_id = sec..STR_ONE
 
 	local t
     local count = 1
@@ -1087,7 +1087,7 @@ function generate_ongoing_tasks(npc,is_sim)
         sec = is_sim and "simulation_task_" or npc:section() ~= "m_trader" and npc:section().."_task_" or npc:name().."_task_"
     end
 
-    local task_id = sec.."1"
+    local task_id = sec..STR_ONE
 
     local count = 1
     while (task_manager.task_ini:section_exist(task_id)) do
@@ -1137,7 +1137,7 @@ function generate_finished_tasks(npc,is_sim)
 		sec = is_sim and "simulation_task_" or npc:section() ~= "m_trader" and npc:section().."_task_" or npc:name().."_task_"
 	end
 
-	local task_id = sec.."1"
+	local task_id = sec..STR_ONE
 
 	local count = 1
 	while (task_manager.task_ini:section_exist(task_id)) do
@@ -1178,7 +1178,7 @@ end
 
 function is_task_giver_valid(tsk)
 	local id = tsk.task_giver_id
-	local se_obj = id and get_alife():object(id)
+	local se_obj = id and alife():object(id)
 	if not (se_obj) then
 		--printf("is_task_giver_valid se_obj nil id=%s   %s",id,tsk.id)
 		return false

@@ -77,20 +77,6 @@ local function send_companion_died_tip(npc, killer)
 	xr_sound.set_sound_play(actor:id(), "pda_sos")
 end
 
-local function migrate_data(squad)
-	for k in squad:squad_members() do 
-		local se_obj = k.object or get_alife():object(k.id)
-		if (se_obj and utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion")) then
-			-- Migrate "companion_start_time" var
-			local flag_name = "companion_start_time_to_realtime"
-			if (not utils.get_migration_flag(flag_name)) then
-				utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_start_time",realtime_manager.get_time_from_new_game_h())
-				utils.set_migration_flag(flag_name, true)
-			end
-		end
-	end
-end
-
 local function squad_on_npc_death(squad,se_npc,killer)
 	local npc = level.object_by_id(se_npc.id)
 	if (npc and is_companion(npc)) then
@@ -108,7 +94,6 @@ local function squad_on_register(squad)
 	if (companion_squads[squad.id] ~= nil) then 
 		companion_squads[squad.id] = squad
 		squad.scripted_target = "actor"
-		migrate_data(squad)
 	end
 	
 	-- backward save compatiblity. remove later
@@ -161,6 +146,16 @@ local function actor_on_item_drop(item)
 			m_data.companion_borrow_item = {}
 		end
 		m_data.companion_borrow_item[item:id()] = true
+	end
+end
+
+local function actor_on_item_take(item)
+	if (ActorMenu.get_menu_mode() == 4) then 
+		local m_data = alife_storage_manager.get_state()
+		if not (m_data.companion_borrow_item) then
+			m_data.companion_borrow_item = {}
+		end
+		m_data.companion_borrow_item[item:id()] = false
 	end
 end
 
@@ -221,6 +216,7 @@ function on_game_start()
 	RegisterScriptCallback("on_level_changing",on_level_changing)
 	RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
 	RegisterScriptCallback("actor_on_item_drop",actor_on_item_drop)
+	RegisterScriptCallback("actor_on_item_take",actor_on_item_take)
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
 	RegisterScriptCallback("on_game_load",on_game_load)
@@ -233,7 +229,7 @@ end
 
 function companion_squad_can_teleport(squad)
 	local id = squad:commander_id()
-	local sim = get_alife()
+	local sim = alife()
 	local se_obj = sim:object(id)
 	if (se_obj) then
 		if (utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_cannot_teleport")) then 
@@ -249,7 +245,7 @@ function companion_squad_can_teleport(squad)
 end 
 
 local function teleport_companion_squad_to_actor(squad)
-	local sim = get_alife()
+	local sim = alife()
 	local se_actor = sim:actor()
 	
 	local gg = game_graph()
@@ -262,7 +258,7 @@ local function teleport_companion_squad_to_actor(squad)
 end
 
 function teleport_companions_to_actor()
-	local sim = get_alife()
+	local sim = alife()
 	
 	for id,v in pairs(companion_squads) do 
 		local squad = sim:object(id)
@@ -273,7 +269,7 @@ function teleport_companions_to_actor()
 end
 
 function teleport_companions_to_actor_in_online()
-	local sim = get_alife()
+	local sim = alife()
 	
 	local function telepor_squad(squad)
 		if (squad.online) then
@@ -303,11 +299,13 @@ function get_companion_count()
 end
 
 -- includes task companions too
+local companion_squads_pairs_sorter = function(t,a,b) return a < b end
 function list_actor_squad_by_id()
 	local t = {}
-	for id,squad in spairs(companion_squads, function(t,a,b) return a < b end) do 
+	for id,squad in spairs(companion_squads, companion_squads_pairs_sorter) do 
 		if (squad and squad.commander_id) then
-			if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
+			local commander_id = squad:commander_id()
+			if not (xrs_kill_wounded.hostage_list[commander_id] or is_hostage_npc(commander_id)) then
 				for k in squad:squad_members() do
 					--printf("member %s",k.id)
 					table.insert(t,k.id)
@@ -333,7 +331,7 @@ function setup_companion_logic(npc,st,loaded,cannot_dismiss)
 	end
 	
 	local id = npc:id()
-	local sim = get_alife()
+	local sim = alife()
 	local se_npc = sim:object(id)
 	local unreg_id = se_npc and se_npc.m_smart_terrain_id
 	if (unreg_id and unreg_id ~= 65535) then
@@ -354,7 +352,6 @@ function add_to_actor_squad(npc)
 	local id = npc:id()
 	non_task_companions[id] = true
 	utils.se_obj_save_var(id,npc:name(),"companion",true)
-	utils.se_obj_save_var(id,npc:name(),"companion_start_time",realtime_manager.get_time_from_new_game_h())
 	npc:inactualize_patrol_path()
 	setup_companion_logic(npc,db.storage[id],false)
 end
@@ -380,7 +377,7 @@ function remove_from_actor_squad(npc)
 	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss",nil)
 	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_teleport",nil)
 	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_hostage",nil)
-	utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_start_time",nil)
+	xrs_kill_wounded.hostage_list[se_obj.id] = nil
 	se_obj.companion_start_time = nil
 end
 
@@ -388,13 +385,13 @@ function remove_all_from_actor_squad()
 	for id,squad in pairs(companion_squads) do
 		if (squad) then
 			for k in squad:squad_members() do 
-				local se_obj = k.object or get_alife():object(k.id)
+				local se_obj = k.object or alife():object(k.id)
 				if (se_obj) then 
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion",nil)
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss",nil)
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_cannot_teleport",nil)		
 					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_hostage",nil)
-					utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_start_time",nil)
+					xrs_kill_wounded.hostage_list[k.id] = nil
 					se_obj.companion_start_time = nil
 						
 					local member = db.storage[se_obj.id] and db.storage[se_obj.id].object or level.object_by_id(se_obj.id)
@@ -692,8 +689,8 @@ local function move_companions_to_point()
 		_current_move_mode = 1
 		for id,squad in pairs(companion_squads) do 
 			if (squad and squad.commander_id) then
-				-- Temp workaround fix -
-				if not (is_hostage_squad(id)) then
+				local commander_id = squad:commander_id()
+				if not (xrs_kill_wounded.hostage_list[commander_id] or is_hostage_npc(commander_id)) then
 					for k in squad:squad_members() do
 						st = db.storage[k.id]
 						local member = st and st.object
@@ -875,7 +872,22 @@ end
 -- Added by Dancher
 ------------------------------------------
 
-local simulation = get_alife()
+local simulation = alife()
+local option_name
+local se_obj_cache
+local se_obj_actor_squad_list
+
+local function get_se_obj(obj_id)
+	se_obj_cache = se_obj_cache or {}
+	local se_obj = se_obj_cache[obj_id]
+	
+    if (not se_obj) then
+        se_obj = simulation:object(obj_id)
+        se_obj_cache[obj_id] = se_obj
+    end
+	
+	return se_obj
+end
 
 function has_companion()
 	local result = false
@@ -894,7 +906,6 @@ function is_companion(obj)
     local result = false
 	
 	local se_obj = simulation:object(obj:id())
-	
 	if (is_hostage(se_obj) == false) then
 		result = obj:has_info("npcx_is_companion")
 		if (result == false) then
@@ -919,13 +930,17 @@ function is_hostage(se_obj)
 	return utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_is_hostage") == true
 end
 
+function is_hostage_npc(npc_id)
+	local se_obj = get_se_obj(npc_id)
+	return is_hostage(se_obj)
+end
+
 function is_hostage_squad(squad_id)
 	local result = false
-	local squad = companion_squads[squad_id]
 	
-	if (squad) then
-		local se_obj = alife_object(squad:commander_id())
-		if (se_obj and is_hostage(se_obj)) then
+	local squad = companion_squads[squad_id]
+	if (squad and squad.commander_id) then
+		if (is_hostage_npc(squad:commander_id())) then
 			result = true
 		end
 	end
@@ -933,103 +948,47 @@ function is_hostage_squad(squad_id)
 	return result
 end
 
-function get_non_hostage_companion_squads()
-	local t = {}
-	
-	for id,squad in pairs(companion_squads) do
-		if (not is_hostage_squad(id)) then
-			t[id] = squad
-		end
-	end
-	
-	return t
-end
-
-function is_invulnerable(se_obj)
-	if (se_obj.companion_is_invulnerable == nil) then
-		se_obj.companion_is_invulnerable = utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_is_invulnerable") or false
-	end
-	
-	if (not se_obj.companion_is_invulnerable and get_hours_with_companion(se_obj) >= 3) then
-		utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_invulnerable",true)
-		se_obj.companion_is_invulnerable = true
-	end
-	
-	local option = axr_main.config:r_value(MM_OPTIONS,"enable_companions_invulnerability",1,false)
-	
-	return option and se_obj.companion_is_invulnerable
-end
-
-function is_barter_avaliable(se_obj)
-	if (se_obj.companion_is_barter_avaliable == nil) then
-		se_obj.companion_is_barter_avaliable = utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_is_barter_avaliable") or false
-	end
-	
-	if (not se_obj.companion_is_barter_avaliable and get_hours_with_companion(se_obj) >= 3) then
-		utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_barter_avaliable",true)
-		se_obj.companion_is_barter_avaliable = true
-	end
-	
-	return se_obj.companion_is_barter_avaliable
-end
-
-function get_hours_with_companion(se_obj)
-	local hours = 0
-	
-	if (se_obj.companion_start_time == nil) then
-		se_obj.companion_start_time = utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_start_time")
-	end
-	
-	local companion_start_time = se_obj.companion_start_time
-	
-	if (companion_start_time) then
-		local game_elapsed_hours = realtime_manager.get_time_from_new_game_h()
-		hours = game_elapsed_hours - companion_start_time
-		-- printf(string.format(">>> Dancher | axr_companions.get_hours_with_companion(...) -> %s", hours))
-		hours = math.floor(hours)
-	end
-	
-	return hours
-end
-
-function get_hours_with_companion_obj(obj)
-    local se_obj = simulation:object(obj:id())
-    return get_hours_with_companion(se_obj)
-end
-
 function is_invulnerable_obj(obj)
-	local se_obj = simulation:object(obj:id())
+	local se_obj = get_se_obj(obj:id())
 	return is_invulnerable(se_obj)
 end
 
-function is_barter_avaliable_obj(obj)
-	local se_obj = simulation:object(obj:id())
-	return is_barter_avaliable(se_obj)
+function is_invulnerable(se_obj)
+	option_name = option_name or "enable_companions_invulnerability"
+	
+	local option = axr_main.config:r_value(MM_OPTIONS,option_name,1,false)
+	local is_trust = axr_companions_trust.is_trust(se_obj.id)
+	
+	return option and is_trust
 end
 
-local se_obj_actor_squad_list
-local se_obj_actor_squad_sorter
+function can_open_inventory(obj)
+	local se_obj = get_se_obj(obj:id())
+	return axr_companions_trust.is_trust(se_obj.id)
+end
+
+function get_time_with_companion(se_obj)
+    return axr_companions_trust.get_time(se_obj.id)
+end
 
 -- includes task companions too
-function list_actor_squad_by_se_obj()
+function list_actor_squad_with_se_obj()
 	se_obj_actor_squad_list = se_obj_actor_squad_list or {}
-	se_obj_actor_squad_sorter = se_obj_actor_squad_sorter or function(t,a,b) return a < b end
-	
 	local t = {}
-	
-	for id,squad in spairs(companion_squads, se_obj_actor_squad_sorter) do 
+	for id,squad in spairs(companion_squads, companion_squads_pairs_sorter) do 
 		if (squad and squad.commander_id) then
-			if not (xrs_kill_wounded.hostage_list[squad:commander_id()]) then
+			local commander_id = squad:commander_id()
+			if not (xrs_kill_wounded.hostage_list[commander_id] or is_hostage_npc(commander_id)) then
 				for k in squad:squad_members() do
 					local se_obj = se_obj_actor_squad_list[k.id]
 					if (not se_obj) then
 						se_obj = alife_object(k.id)
+						se_obj_actor_squad_list[k.id] = se_obj
 					end
 					table.insert(t,se_obj)
 				end
 			end
 		end
 	end
-	
 	return t
 end

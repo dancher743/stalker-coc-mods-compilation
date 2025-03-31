@@ -1688,4 +1688,23 @@
 		<class>sim_default_csky_medik</class>
 	</character>
 
+	<!-- Added by Dancher -->
+    <character id="sim_explorer_ecolog_orange">
+		<class>sim_explorer_ecolog_orange</class>
+	</character>
+	<character id="sim_explorer_ecolog_blue">
+		<class>sim_explorer_ecolog_blue</class>
+	</character>
+	<character id="sim_explorer_ecolog_brown">
+		<class>sim_explorer_ecolog_brown</class>
+	</character>
+	<character id="sim_explorer_ecolog_white">
+		<class>sim_explorer_ecolog_white</class>
+	</character>
+	<character id="sim_explorer_ecolog_yellow">
+		<class>sim_explorer_ecolog_yellow</class>
+	</character>
+	<character id="sim_explorer_ecolog_guard">
+		<class>sim_explorer_ecolog_guard</class>
+	</character>
 </xml>

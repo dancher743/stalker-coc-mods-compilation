@@ -107,6 +107,7 @@
 		<actor_dialog>dm_ordered_task_completed_dialog</actor_dialog>
 		<actor_dialog>drx_sl_mar_base_stalker_barmen_meet_dialog</actor_dialog>
 		<actor_dialog>dm_ordered_task_dialog</actor_dialog>
+		<actor_dialog>give_cooking_recipes_dialog</actor_dialog>
 		<actor_dialog>mar_smart_terrain_base_barman_background</actor_dialog>
 		<actor_dialog>actor_break_dialog</actor_dialog>
 

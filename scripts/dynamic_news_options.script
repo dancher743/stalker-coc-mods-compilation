@@ -38,7 +38,7 @@ local options = {
 			options_btn = btn_tbl[ctrl:GetText()]
 			--[[local file = io.open(game.translate_string("ui_st_dyn_news_btn_call"), "w")
 				if io.type(file) == "file" then
-					file:write(ctrl:GetText(), "\n")
+					file:write(ctrl:GetText(), STR_NEWLINE)
 					file:flush()
 					file:close()
 				end]]--

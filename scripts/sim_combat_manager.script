@@ -38,7 +38,7 @@ end
 function sim_combat_manager:find_enemy(squad)
        
 	local faction = squad:get_squad_community()	
-	local sim = get_alife()
+	local sim = alife()
 	
 	for s,t in pairs(self.squads) do
 		if s ~= squad.id then	
@@ -74,8 +74,8 @@ function sim_combat_manager:is_valid()
 	for s,t in pairs(self.squads) do
 		for s2,t2 in pairs(self.squads) do
 			if s ~= s2 then
-				local squad = get_alife():object(s)
-				local squad2 = get_alife():object(s2)
+				local squad = alife():object(s)
+				local squad2 = alife():object(s2)
 
 				if squad and squad.get_squad_community and squad2 and squad2.get_squad_community then
 					local faction = squad:get_squad_community()
@@ -111,7 +111,7 @@ function sim_combat_manager:simulate(squad)
 		return
 	end
 
-	local sim = get_alife()
+	local sim = alife()
 	local squad_power = sim_offline_control.ocs_power_table[squad.id]
 	local s2id = squad.assigned_target_id
 
@@ -188,7 +188,7 @@ end
 
 function sim_combat_manager:disband()
     
-	local sim = get_alife()
+	local sim = alife()
 
 	if not (self.disbanded) then
 		for s,t in pairs(self.squads) do

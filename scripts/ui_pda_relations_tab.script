@@ -258,47 +258,47 @@ function pda_relations_tab:autoupdate()
 			%c[255,160,160,160]st_mm_pda_dismissable:%c[default] %s \n
 			%c[255,160,160,160]st_mm_pda_level_travel:%c[default] %s \n
 			%c[255,160,160,160]st_mm_pda_invulnerability:%c[default] %s \n
-			%c[255,160,160,160]st_mm_pda_barter:%c[default] %s \n
+			%c[255,160,160,160]st_mm_pda_inventory:%c[default] %s \n
 			\n%c[255,215,215,215]st_mm_pda_statistics:%c[default] \n
 			%c[255,160,160,160]st_mm_pda_stalkers_killed:%c[default] %s \n
 			%c[255,160,160,160]st_mm_pda_mutants_killed:%c[default] %s \n
 			%c[255,160,160,160]st_mm_pda_artes_found:%c[default] %s \n
-			%c[255,160,160,160]st_mm_pda_start_time:%c[default] %s \n
+			%c[255,160,160,160]st_mm_pda_time_together:%c[default] %s \n
 			]]
 
-			if (get_alife():has_info(se_obj.id,"npcx_beh_wait")) then
+			if (alife():has_info(se_obj.id,"npcx_beh_wait")) then
 				s_move = game.translate_string("st_set_companion_to_wait_state")
-			elseif (get_alife():has_info(se_obj.id,"npcx_beh_patrol_mode")) then
+			elseif (alife():has_info(se_obj.id,"npcx_beh_patrol_mode")) then
 				s_move = game.translate_string("st_set_companion_to_patrol_state")
 			else
 				s_move = game.translate_string("st_set_companion_to_follow_state")
 			end
 
-			if (get_alife():has_info(se_obj.id,"npcx_beh_ignore_actor_enemies") and get_alife():has_info(se_obj.id,"npcx_beh_ignore_combat")) then
+			if (alife():has_info(se_obj.id,"npcx_beh_ignore_actor_enemies") and alife():has_info(se_obj.id,"npcx_beh_ignore_combat")) then
 				s_combat = game.translate_string("st_set_companion_to_ignore_combat_state")
-			elseif (get_alife():has_info(se_obj.id,"npcx_beh_ignore_combat")) then
+			elseif (alife():has_info(se_obj.id,"npcx_beh_ignore_combat")) then
 				s_combat = game.translate_string("st_set_companion_to_attack_only_actor_combat_enemy_state")
 			else
 				s_combat = game.translate_string("st_set_companion_to_attack_state")
 			end
 
-			local can_gather = get_alife():has_info(se_obj.id,"npcx_beh_gather_items")
-			local can_loot = get_alife():has_info(se_obj.id,"npcx_beh_loot_corpses")
+			local can_gather = alife():has_info(se_obj.id,"npcx_beh_gather_items")
+			local can_loot = alife():has_info(se_obj.id,"npcx_beh_loot_corpses")
 			s_gather = can_gather and game.translate_string("st_pda_mode_on") or game.translate_string("st_pda_mode_off")
 			s_loot = can_loot and game.translate_string("st_pda_mode_on") or game.translate_string("st_pda_mode_off")
 
 			if (npc) then
 				-- If looting is set false in logic
-				if (can_gather and st.gather_items and st.gather_items.gather_items_enabled and xr_logic.pick_section_from_condlist(db.actor, npc, st.gather_items.gather_items_enabled) == "false") then
+				if (can_gather and st.gather_items and st.gather_items.gather_items_enabled and xr_logic.pick_section_from_condlist(db.actor, npc, st.gather_items.gather_items_enabled) == STR_FALSE) then
 					s_gather = game.translate_string("st_pda_mode_disabled")
 				end
-				if (can_loot and st.corpse_detection and st.corpse_detection.corpse_detection_enabled and xr_logic.pick_section_from_condlist(db.actor, npc, st.corpse_detection.corpse_detection_enabled) == "false") then
+				if (can_loot and st.corpse_detection and st.corpse_detection.corpse_detection_enabled and xr_logic.pick_section_from_condlist(db.actor, npc, st.corpse_detection.corpse_detection_enabled) == STR_FALSE) then
 					s_loot = game.translate_string("st_pda_mode_disabled")
 				end
 			end
 
-			s_dist = get_alife():has_info(se_obj.id,"npcx_beh_distance_far") and game.translate_string("st_pda_mode_dist_far") or game.translate_string("st_pda_mode_dist_near")
-			s_stealth = get_alife():has_info(se_obj.id,"npcx_beh_substate_stealth") and game.translate_string("st_pda_mode_on") or game.translate_string("st_pda_mode_off")
+			s_dist = alife():has_info(se_obj.id,"npcx_beh_distance_far") and game.translate_string("st_pda_mode_dist_far") or game.translate_string("st_pda_mode_dist_near")
+			s_stealth = alife():has_info(se_obj.id,"npcx_beh_substate_stealth") and game.translate_string("st_pda_mode_on") or game.translate_string("st_pda_mode_off")
 
 			local m_data = alife_storage_manager.get_se_obj_state(se_obj)
 			if (m_data) then
@@ -310,15 +310,21 @@ function pda_relations_tab:autoupdate()
 			s_dismiss = utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_cannot_dismiss") and game.translate_string("st_pda_mode_false") or game.translate_string("st_pda_mode_true")
 			s_tele = utils.se_obj_load_var(se_obj.id,se_obj:name(),"companion_cannot_teleport") and game.translate_string("st_pda_mode_disabled") or game.translate_string("st_pda_mode_enabled")
 
-			local s_location = game.translate_string(get_alife():level_name(game_graph():vertex(se_obj.m_game_vertex_id):level_id()))
+			local s_location = game.translate_string(alife():level_name(game_graph():vertex(se_obj.m_game_vertex_id):level_id()))
 
 			for s in string.gmatch(state_str,"(st_mm_pda_[%w%d_]*)") do
 				state_str = string.gsub(state_str,s,game.translate_string(s))
 			end
 
 			local s_invulnerability = axr_companions.is_invulnerable_obj(npc) and game.translate_string("st_pda_mode_true") or game.translate_string("st_pda_mode_false")
-			local s_barter = axr_companions.is_barter_avaliable_obj(npc) and game.translate_string("st_pda_mode_true") or game.translate_string("st_pda_mode_false")
-			local s_start_time = axr_companions.get_hours_with_companion_obj(npc)
+			local s_inventory = axr_companions.can_open_inventory(npc) and game.translate_string("st_pda_mode_true") or game.translate_string("st_pda_mode_false")
+
+			local total_minutes = axr_companions.get_time_with_companion(se_obj)
+			local hours = math.floor(total_minutes/60)
+			local minutes = total_minutes - (hours * 60)
+			local days = math.floor(hours/24)
+			hours = hours - (days*24)
+			local s_time_together = string.format("%02d:%02d:%02d",days,hours,minutes)
 
 			state_str = strformat(state_str,
 				full_name,
@@ -332,11 +338,11 @@ function pda_relations_tab:autoupdate()
 				s_dismiss,
 				s_tele,
 				s_invulnerability,
-				s_barter,
+				s_inventory,
 				s_stalker,
 				s_mutant,
 				s_arte,
-				s_start_time
+				s_time_together
 			)
 			self.companion_info[i].hint = state_str
 		else

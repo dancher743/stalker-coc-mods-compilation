@@ -39,7 +39,7 @@ local function get_spotted_object_hint(se_obj_spot)
 end
 
 local function bbp_extra_weight()
-	local w,ini = 0,ini_sys
+	local w,ini = 0,system_ini()
 	if (string.find(_G.GAME_VERSION,"1.5")) then
 		local x,itm = db.actor:belt_count() or 0,nil
 		for i = 0, x - 1, 1 do
@@ -69,9 +69,9 @@ local function map_spot_menu_add_property(property_ui,id,level_name)
 	end
 	if (DEV_DEBUG_DEV) or (se_obj:clsid() == clsid.smart_terrain and tsmarts[se_obj:name()]) then
 		if (longnames) then
-				property_ui:AddItem(game.translate_string("st_pda_fast_travel_to").." ".. game.translate_string(level_name)..". "..game.translate_string(se_obj:name()))
+				property_ui:AddItem(game.translate_string("st_pda_fast_travel_to")..STR_BLANK.. game.translate_string(level_name)..". "..game.translate_string(se_obj:name()))
 		else
-				property_ui:AddItem(game.translate_string("st_pda_fast_travel_to").." "..game.translate_string(se_obj:name()))
+				property_ui:AddItem(game.translate_string("st_pda_fast_travel_to")..STR_BLANK..game.translate_string(se_obj:name()))
 		end
 	end
 	
@@ -89,9 +89,9 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 
 	local is_fast_travel_to_smart
 	if (longnames) then
-		is_fast_travel_to_smart = prop == (game.translate_string("st_pda_fast_travel_to").." "..game.translate_string(level_name)..". "..game.translate_string(se_obj:name()))
+		is_fast_travel_to_smart = prop == (game.translate_string("st_pda_fast_travel_to")..STR_BLANK..game.translate_string(level_name)..". "..game.translate_string(se_obj:name()))
 	else
-		is_fast_travel_to_smart = prop == (game.translate_string("st_pda_fast_travel_to").." "..game.translate_string(se_obj:name()))
+		is_fast_travel_to_smart = prop == (game.translate_string("st_pda_fast_travel_to")..STR_BLANK..game.translate_string(se_obj:name()))
 	end
 	
 	local spotted_object_hint = get_spotted_object_hint(se_obj)
@@ -114,7 +114,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 	if not (combattravel) then
 		if not (is_empty(xr_combat_ignore.fighting_with_actor_npcs)) then
 			get_hud():HidePdaMenu()
-			SetHudMsg(game.translate_string("st_travel_event"),4)
+			SetHudMsg(game.translate_string("st_travel_combat"),4)
 			return
 		end
 	end
@@ -150,7 +150,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 	-- Prevent fast travel if an emission or psi-storm currently ongoing.
 	if not (stormtravel) then
 		if (xr_conditions.surge_started() or psi_storm_manager.is_started()) then
-			SetHudMsg(game.translate_string("st_travel_event"),4)
+			SetHudMsg(game.translate_string("st_travel_cataclysm"),4)
 			get_hud():HidePdaMenu()
 			return
 		end
@@ -164,7 +164,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 			local obj = db.storage[se_obj.id] and db.storage[se_obj.id].object or level.object_by_id(se_obj.id)
 			dist = db.actor:position():distance_to(obj:position())
         else
-			local se_actor = get_alife():actor()
+			local se_actor = alife():actor()
 			dist = utils.get_sim_distance_to(se_obj, se_actor)
         end
 		
@@ -176,6 +176,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 		level.change_game_time(0,hours,minutes)
 		surge_manager.get_surge_manager().time_forwarded = true
 		psi_storm_manager.get_psi_storm_manager().time_forwarded = true
+		fallout_manager.get_fallout_manager().time_forwarded = true
 		level_weathers.get_weather_manager():forced_weather_change()
 	end
 
@@ -258,7 +259,7 @@ local function on_game_load()
 
 	if not (is_empty(tsmarts)) then
 		local level_name
-		local sim,gg = get_alife(),game_graph()
+		local sim,gg = alife(),game_graph()
 		for i=1,65534 do
 			local smart = sim:object(i)
 			if (smart and smart:clsid() == clsid.smart_terrain and tsmarts[smart:name()]) then

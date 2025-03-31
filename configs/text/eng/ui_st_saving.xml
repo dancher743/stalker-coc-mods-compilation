@@ -18,7 +18,7 @@
 	</string>
 	
 	<string id="st_ui_no_save_surge">
-		<text>You cannot %s during an emission or psi-storm.</text>
+		<text>You cannot %s during an cataclysm.</text>
 	</string>
 	
 	<string id="st_ui_no_save_bleed">

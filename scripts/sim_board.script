@@ -38,7 +38,7 @@ function general_squad_precondition(squad,target)
 end
 
 function general_base_precondition(squad,target)
-	local need_squads = 0
+	local need_squads = target.min_population or 0
 	
 	if (squad.player_id == "dolg") then 
 		if (target.faction == "freedom") then
@@ -169,16 +169,16 @@ end
 function simulation_board:create_squad(spawn_smart, sq_id)
 	--alun_utils.debug_write(strformat("simulation_board:create_squad spawn_smart=%s sq_id=%s",spawn_smart and spawn_smart:name(),sq_id))
 	local squad_id = tostring(sq_id)
-	-- if not (ini_sys:section_exist(squad_id)) then
+	-- if not (system_ini():section_exist(squad_id)) then
 		-- printf("squad section does not exist: %s",squad_id)
 		-- return
 	-- end
 
-	local squad = get_alife():create(squad_id,spawn_smart.position,	spawn_smart.m_level_vertex_id,spawn_smart.m_game_vertex_id)
+	local squad = alife():create(squad_id,spawn_smart.position,	spawn_smart.m_level_vertex_id,spawn_smart.m_game_vertex_id)
 	squad:create_npc(spawn_smart)
 	self:assign_squad_to_smart(squad, spawn_smart.id)
 
-	local sim = get_alife()
+	local sim = alife()
 	for k in squad:squad_members() do
 		local se_obj = k.object or k.id and sim:object(k.id)
 		if (se_obj) then
@@ -243,7 +243,7 @@ local community_groups = {}
 -- установить squad и group в соответствии с работой
 function simulation_board:setup_squad_and_group(se_obj)
 	--alun_utils.debug_write(strformat("simulation_board:setup_squad_and_group %s",obj and obj:name()))
-	local sim = get_alife()
+	local sim = alife()
 	local squad = se_obj.group_id and se_obj.group_id ~= 65535 and sim:object(se_obj.group_id)
 	if not (squad) then
 		change_team_squad_group(se_obj, se_obj.team, se_obj.squad, 0)
@@ -331,23 +331,49 @@ function get_sim_board()
 	return _G.SIMBOARD
 end
 
+local priority_tasks = {}
 function simulation_board:get_squad_target(squad)
-	local most_priority_task = nil
-	local most_priority_task_prior = nil
-	local curr_prior = 0
+	local size_t = 0
+	
 	local object_registry = simulation_objects.get_sim_obj_registry().objects
 	for k,v in pairs(object_registry) do
-		curr_prior = -1
-		if v.id ~= squad.id and not v.locked == true then
-			curr_prior = v:evaluate_prior(squad)
+		local se_target = v
+		if (not se_target.locked and se_target.id ~= squad.id) then 
+			local curr_prior = se_target:evaluate_prior(squad)
+			if (curr_prior > 0 and se_target:target_precondition(squad)) then
+				-- Prioritize 5 potential targets
+				if (size_t < 5) then 
+					size_t = size_t + 1
+					priority_tasks[size_t] = {se_target,curr_prior}
+				elseif (curr_prior > priority_tasks[size_t][2]) then 
+					for i=1,size_t do 
+						if (curr_prior > priority_tasks[i][2]) then 
+							priority_tasks[i][2] = curr_prior
+							priority_tasks[i][1] = se_target
+							break
+						end
+					end
+				end
+			end
 		end
-		if (curr_prior >= 0 and v:target_precondition(squad)) and (most_priority_task_prior == nil or curr_prior > most_priority_task_prior) then
-			most_priority_task = v 
-			most_priority_task_prior = curr_prior
+	end
+	
+	-- Tronex, get target with highest prior
+	local highest_prior = 0
+	local best_target
+	for i=1,size_t do
+		if highest_prior < priority_tasks[i][2] then
+			highest_prior = priority_tasks[i][2]
+			best_target = priority_tasks[i][1]
 		end
 	end
 
-	return most_priority_task
+	if (size_t > 0) then
+		local target = (math.random(1,100) <= 50) and priority_tasks[math.random(size_t)][1] or best_target -- Tronex
+		--printf("squad=%s size=%s target=%s",squad:name(),size_t,target:name())
+		iempty_table(priority_tasks) -- It is better to reuse table to avoid GC
+		return target
+	end
 end
 
 --' Обнуление списка на создании игры.

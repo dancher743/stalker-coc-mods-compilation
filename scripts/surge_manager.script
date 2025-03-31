@@ -46,7 +46,7 @@ local function main_loop()
 	
 	get_surge_manager():update()
 	psi_storm_manager.get_psi_storm_manager():update()
-
+	fallout_manager.get_fallout_manager():update()
 	return false
 end
 
@@ -104,7 +104,7 @@ function CSurgeManager:initialize()
 	end
 	
 	local level_name
-	local gg,gini,sim = game_graph(),game_ini(),get_alife()
+	local gg,gini,sim = game_graph(),game_ini(),alife()
 	for lvl in gg:levels() do
 		level_name = sim:level_name(lvl.id)
 		weather = level_name and gini:r_string_ex(level_name,"weathers")
@@ -134,13 +134,13 @@ function CSurgeManager:initialize()
 	self:init_surge_covers()
 
 	local ini = self.ini
-	local cond_string = "true"
+	local cond_string = STR_TRUE
 	if(ini:line_exist("settings", "condlist")) then
 		cond_string = ini:r_string_ex("settings", "condlist")
 	end
 	self.condlist = xr_logic.parse_condlist(nil, "surge_manager", "condlist", cond_string)
 
-	cond_string = "false"
+	cond_string = STR_FALSE
 	if(ini:line_exist("settings", "survive")) then
 		cond_string = ini:r_string_ex("settings", "survive")
 	end
@@ -392,7 +392,7 @@ function CSurgeManager:init_surge_covers()
 	local ini = self.ini
 	for i = 0, ini:line_count("list")-1 do
 		temp1, id, temp2 = ini:r_line("list", i, STR_EMPTY, STR_EMPTY)
-		self.covers[id] = ini:line_exist(id, "condlist") and xr_logic.parse_condlist(db.actor, id, "condlist", ini:r_string_ex(id, "condlist") or "true") or true
+		self.covers[id] = ini:line_exist(id, "condlist") and xr_logic.parse_condlist(db.actor, id, "condlist", ini:r_string_ex(id, "condlist") or STR_TRUE) or true
 	end
 end
 
@@ -418,7 +418,7 @@ function CSurgeManager:calculate_best_surge_cover()
 	for name,condlist in pairs(self.covers) do
 		local zone = db.zone_by_name[name]
 		if (zone) then
-			local valid = type(condlist) == "boolean" or xr_logic.pick_section_from_condlist(db.actor, nil, condlist) ~= "false"
+			local valid = type(condlist) == STR_BOOLEAN or xr_logic.pick_section_from_condlist(db.actor, nil, condlist) ~= STR_FALSE
 			if (valid) then
 				dist = zone:position():distance_to_sqr(db.actor:position())
 				if (near_dist == nil or dist < near_dist) then 
@@ -490,11 +490,13 @@ function CSurgeManager:update()
 		if(g_time:diffSec(self.last_surge_time) < self._delta) then
 			return
 		end
-		if(xr_logic.pick_section_from_condlist(db.actor, nil, self.condlist) ~= "true") then
+		if(xr_logic.pick_section_from_condlist(db.actor, nil, self.condlist) ~= STR_TRUE) then
 			return
 		end
 		self:start()
 		return
+	elseif (psi_storm_manager.is_started() or fallout_manager.is_started()) then 
+		self:skip_surge()
 	end
 	
 	local diff_sec = math.ceil(game.get_game_time():diffSec(self.inited_time)/level.get_time_factor())
@@ -825,7 +827,7 @@ function CSurgeManager:update()
 		            h.impulse = 0.0
 		            h.direction = VEC_FORWARD
 		            h.draftsman = db.actor
-					if(xr_logic.pick_section_from_condlist(db.actor, nil, self.survive)=="true") then
+					if(xr_logic.pick_section_from_condlist(db.actor, nil, self.survive)==STR_TRUE) then
 						if(db.actor.health<=h.power) then
 							if (db.actor.health-0.05 > 0.05) then
 								h.power = 0.05
@@ -881,7 +883,7 @@ function CSurgeManager:update()
 				            h.impulse = 0.0
 				            h.direction = VEC_FORWARD
 				            h.draftsman = db.actor
-							if(xr_logic.pick_section_from_condlist(db.actor, nil, self.survive)=="true") then
+							if(xr_logic.pick_section_from_condlist(db.actor, nil, self.survive)==STR_TRUE) then
 								if(db.actor.health<=h.power) then
 									if (db.actor.health-0.05 > 0.05) then
 										h.power = 0.05
@@ -930,7 +932,7 @@ function CSurgeManager:hit_power(power,hit_type)
 	local helmet_protection = 0
 	local helmet = db.actor:item_in_slot(12)
 	if helmet ~= nil then
-		helmet_protection = ini_sys:r_float_ex(helmet:section(),hit_types[hit_type+1].."_protection")*suit_factors[hit_type+1]
+		helmet_protection = system_ini():r_float_ex(helmet:section(),hit_types[hit_type+1].."_protection")*suit_factors[hit_type+1]
 	end
 
 	local ini,g_time
@@ -939,7 +941,7 @@ function CSurgeManager:hit_power(power,hit_type)
 	if (expiration) then
 		g_time = utils.CTimeToSec(game.get_game_time())
 		if g_time<expiration then
-			ini = ini_sys
+			ini = system_ini()
 			self.drug_telepatic_protection = ini:r_float_ex("drug_psy_blockade","boost_telepat_protection")
 		else
 			self.drug_telepatic_protection = nil
@@ -950,7 +952,7 @@ function CSurgeManager:hit_power(power,hit_type)
 	if (expiration) then
 		g_time = g_time or utils.CTimeToSec(game.get_game_time())
 		if g_time<expiration then
-			ini = ini or ini_sys
+			ini = ini or system_ini()
 			self.drug_radiation_protection = ini:r_float_ex("drug_radioprotector","boost_radiation_protection")
 		else
 			self.drug_radiation_protection = nil
@@ -961,7 +963,7 @@ function CSurgeManager:hit_power(power,hit_type)
 	if (expiration) then
 		g_time = g_time or utils.CTimeToSec(game.get_game_time())
 		if g_time<expiration then
-			ini = ini or ini_sys
+			ini = ini or system_ini()
 			self.drug_chemical_burn_protection = ini:r_float_ex("drug_antidot","boost_chemburn_protection")
 		else
 			self.drug_chemical_burn_protection = nil
@@ -984,11 +986,13 @@ function CSurgeManager:hit_power(power,hit_type)
 	return hit_power
 end
 
-function CSurgeManager:displayIndicators(power)
+local currentIndik = nil
+function CSurgeManager:displayIndicators(power, indikType)
 	local hud = get_hud()
 	if not (hud) then 
 		return 
 	end
+	indikType = indikType or "psi"
 	local indik
 	if power>=0.8 then indik="red"
 	elseif power>=0.6 then indik="orange"
@@ -999,8 +1003,8 @@ function CSurgeManager:displayIndicators(power)
 	if self.aspectRatio~=1 then
 		aspectRatio="_16"
 	end
-	local indikName="atm_indik_psi_"..tostring(indik)..aspectRatio
-	local currentIndikName="atm_indik_psi_"..tostring(currentIndik)..aspectRatio
+	local indikName="atm_indik_"..indikType.."_"..tostring(indik)..aspectRatio
+	local currentIndikName="atm_indik_"..indikType.."_"..tostring(currentIndik)..aspectRatio
 
 	--remove indik if 0
 	if not indik and currentIndik~=nil then
@@ -1169,7 +1173,7 @@ end
 function check_squad_level(squad_id)
 	local squad = alife_object(squad_id)
 	if(squad) then
-		local squad_level = get_alife():level_name(game_graph():vertex(squad.m_game_vertex_id):level_id())
+		local squad_level = alife():level_name(game_graph():vertex(squad.m_game_vertex_id):level_id())
 		if(squad_level==level.name()) then
 			return true
 		end
@@ -1226,7 +1230,7 @@ function CSurgeManager:kill_obj_at_pos(pos)
 		return 
 	end
 	local board = SIMBOARD
-	local sim, gg = get_alife(),game_graph()
+	local sim, gg = alife(),game_graph()
 	local immuned_to_surge_squads = {
 					["monolith"] = true,
 					["monster_predatory_day"] 	= true,
@@ -1288,7 +1292,7 @@ function CSurgeManager:get_objects_to_kill()
 				["monster"]					= true,
 				["zombied"]					= true
 	}
-	local sim,gg = get_alife(),game_graph()
+	local sim,gg = alife(),game_graph()
 	for k,v in pairs(board.squads) do
 		local squad = v
 		if (squad:clsid() == clsid.online_offline_group_s and can_destroy_squad(squad,immuned_to_surge_squads,sim,gg)) then 
@@ -1317,7 +1321,7 @@ function CSurgeManager:kill_actor_at_pos(pos)
 	if(db.actor and db.actor:alive() and db.actor:position().z>pos) then
 		if not (self.actor_in_cover) then
 			xr_effects.disable_ui_only(db.actor, nil)
-			if(xr_logic.pick_section_from_condlist(get_story_object("actor"), nil, self.survive)~="true") then
+			if(xr_logic.pick_section_from_condlist(get_story_object("actor"), nil, self.survive)~=STR_TRUE) then
 				self:kill_all_unhided_after_actor_death()
 				db.actor:kill(db.actor)
 				self.ui_disabled = true
@@ -1372,14 +1376,14 @@ function CSurgeManager:turn_to_zombie(se_obj,squad)
 		zombie_type="sim_default_zombied_4"
 	elseif section_number=="3" then
 		zombie_type="sim_default_zombied_3"
-	elseif section_number=="2" or section_number=="1" then
+	elseif section_number=="2" or section_number==STR_ONE then
 		zombie_type="sim_default_zombied_2"
 	else
 		zombie_type="sim_default_zombied_1"
 	end
 	
 	squad:remove_npc(se_obj.id)
-	get_alife():create(zombie_type,se_obj.position,se_obj.m_level_vertex_id,se_obj.m_game_vertex_id)
+	alife():create(zombie_type,se_obj.position,se_obj.m_level_vertex_id,se_obj.m_game_vertex_id)
 end
 
 function CSurgeManager:explode(se_obj,squad)
@@ -1427,7 +1431,7 @@ function CSurgeManager:kill_all_unhided()
 		self:delay_kill_crow(id,h)
 	end
 	local board = SIMBOARD
-	local sim,gg = get_alife(),game_graph()
+	local sim,gg = alife(),game_graph()
 	local immuned_to_surge_squads = {
 				["monolith"] = true,
 				["monster_predatory_day"] 	= true,
@@ -1493,7 +1497,7 @@ function CSurgeManager:kill_all_unhided()
 		if not(atmosfear_options.config:r_value("atmosfear_current_parameters","opt_god_mode",1,false)) then
 			xr_effects.disable_ui_only(db.actor, nil)
 		end
-		if(xr_logic.pick_section_from_condlist(get_story_object("actor"), nil, self.survive)~="true") then
+		if(xr_logic.pick_section_from_condlist(get_story_object("actor"), nil, self.survive)~=STR_TRUE) then
 			if not(atmosfear_options.config:r_value("atmosfear_current_parameters","opt_god_mode",1,false)) then
 				self:kill_all_unhided_after_actor_death()
 				db.actor:kill(db.actor)
@@ -1523,7 +1527,7 @@ function CSurgeManager:kill_all_unhided_after_actor_death()
 					["monster"]					= true,
 					["zombied"]					= true
 	}
-	local sim,gg = get_alife(),game_graph()
+	local sim,gg = alife(),game_graph()
 	for k,v in pairs(board.squads) do
 		local squad = v
 		if (squad:clsid() == clsid.online_offline_group_s and can_destroy_squad(squad,immuned_to_surge_squads,sim,gg)) then
@@ -1576,6 +1580,7 @@ function actor_on_save(binder,packet)
 	if (USE_MARSHAL) then 
 		return 
 	end 
+	fallout_manager.get_fallout_manager():save(packet)
 	-- initialize to set default values if not loaded
 	local mgr = SurgeManager
 	if not (mgr._state_loaded) then 
@@ -1584,17 +1589,17 @@ function actor_on_save(binder,packet)
 	end
 	set_save_marker(packet, "save", false, "SurgeHide")
 
-	alun_utils.w_stpk(packet,"bool",mgr.finished,"CSurgeManager:finished")
-	alun_utils.w_stpk(packet,"bool",mgr.started,"CSurgeManager:started")
+	alun_utils.w_stpk(packet,STR_BOOL,mgr.finished,"CSurgeManager:finished")
+	alun_utils.w_stpk(packet,STR_BOOL,mgr.started,"CSurgeManager:started")
 	alun_utils.w_stpk(packet,"CTime",mgr.last_surge_time,"CSurgeManager:last_surge_time")
 
 	if(mgr.started) then
 		alun_utils.w_stpk(packet,"CTime",mgr.inited_time,"CSurgeManager:inited_time")
-		alun_utils.w_stpk(packet,"bool",mgr.task_given,"CSurgeManager:task_given")
-		alun_utils.w_stpk(packet,"bool",mgr.effector_set,"CSurgeManager:effector_set")
-		alun_utils.w_stpk(packet,"bool",mgr.second_message_given,"CSurgeManager:second_message_given")
-		alun_utils.w_stpk(packet,"bool",mgr.ui_disabled,"CSurgeManager:ui_disabled")
-		alun_utils.w_stpk(packet,"bool",mgr.blowout_sound,"CSurgeManager:blowout_sound")
+		alun_utils.w_stpk(packet,STR_BOOL,mgr.task_given,"CSurgeManager:task_given")
+		alun_utils.w_stpk(packet,STR_BOOL,mgr.effector_set,"CSurgeManager:effector_set")
+		alun_utils.w_stpk(packet,STR_BOOL,mgr.second_message_given,"CSurgeManager:second_message_given")
+		alun_utils.w_stpk(packet,STR_BOOL,mgr.ui_disabled,"CSurgeManager:ui_disabled")
+		alun_utils.w_stpk(packet,STR_BOOL,mgr.blowout_sound,"CSurgeManager:blowout_sound")
 
 		--alun_utils.w_stpk(packet,"stringZ",mgr.surge_message,"CSurgeManager:surge_message")
 		--alun_utils.w_stpk(packet,"stringZ",mgr.surge_task_sect,"CSurgeManager:surge_task_sect")
@@ -1613,6 +1618,7 @@ function actor_on_load(binder,packet)
 		mgr:initialize()
 		mgr._state_loaded = true
 	end
+	fallout_manager.get_fallout_manager():load(packet)
 	if (USE_MARSHAL) then 
 		return 
 	end 

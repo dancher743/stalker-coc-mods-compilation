@@ -132,14 +132,14 @@ function is_enemy(obj,enemy,no_memory)
 			end
 		end
 		
-		local sim = get_alife()
+		local sim = alife()
 		local is_monster = character_community(enemy) == "zombied" or IsMonster(enemy)
 		
 		-- Ignore enemies with the safe_zone flag
 		if (is_actor ~= true) then
 		
 			-- ignore hostages
-			if (xrs_kill_wounded.hostage_list[ene_id]) then 
+			if (xrs_kill_wounded.hostage_list[ene_id] or axr_companions.is_hostage_npc(ene_id)) then 
 				return true 
 			end
 			
@@ -268,7 +268,7 @@ function ignore_enemy_by_overrides(obj,enemy,no_check_job)
 
 	-- combat_ignore_cond from custom data logic
 	local ignore = st and st.combat_ignore and xr_logic.pick_section_from_condlist(enemy, obj, st.combat_ignore.condlist)
-	if (ignore == "true") then
+	if (ignore == STR_TRUE) then
 		--obj:enable_memory_object(enemy,false)
 		return true
 	end
@@ -278,14 +278,14 @@ function ignore_enemy_by_overrides(obj,enemy,no_check_job)
 	local ene_st = db.storage[ene_id] and db.storage[ene_id].overrides
 	if (ene_st) then
 		ignore = ene_st.enemy_ignore and xr_logic.pick_section_from_condlist(enemy, obj, ene_st.enemy_ignore.condlist)
-		if (ignore == "true") then
+		if (ignore == STR_TRUE) then
 			--obj:enable_memory_object(enemy,false)
 			return true
 		end
 	end
 
 	-- Ignore enemies because of no_combat_job
-	if (no_check_job ~= true) and (st and st.no_combat_job and xr_logic.pick_section_from_condlist(enemy, obj, st.no_combat_job.condlist) == "true") then
+	if (no_check_job ~= true) and (st and st.no_combat_job and xr_logic.pick_section_from_condlist(enemy, obj, st.no_combat_job.condlist) == STR_TRUE) then
 		return true
 	end
 
@@ -329,7 +329,7 @@ function action_process_enemy:enemy_callback(npc, enemy)
 
 		-- Set smart alarm (unused in coc)
 		--[[
-		local sim = get_alife()
+		local sim = alife()
 		local se_obj = sim:object(id)
 		if (se_obj and se_obj.m_smart_terrain_id ~= 65535) then
 			local smart = sim:object(se_obj.m_smart_terrain_id)
@@ -357,7 +357,7 @@ function action_process_enemy:hit_callback(obj, amount, local_direction, who, bo
 		return 
 	end
 	if (amount > 0 and who and who:id() == db.actor:id()) then
-		local sim = get_alife()
+		local sim = alife()
 		local se_obj = sim:object(obj:id())
 		if (se_obj) then 
 			local squad = se_obj.group_id and se_obj.group_id ~= 65535 and sim:object(se_obj.group_id)

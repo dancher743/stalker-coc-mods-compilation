@@ -26,7 +26,7 @@ function add_dialog(p_id,id,phrase_id,cond,act)
 
 	local phrase_script = phrase:GetPhraseScript()
 	if ( cond ) then
-		if ( type(cond) == "table" ) then
+		if ( type(cond) == STR_TABLE ) then
 			for key, value in pairs(cond) do
 				if (alun_utils.findfunction(value,_G)) then
 					phrase_script:AddPrecondition(value)
@@ -46,7 +46,7 @@ function add_dialog(p_id,id,phrase_id,cond,act)
 	end
 
 	if ( act ) then
-		if ( type(act) == "table" ) then
+		if ( type(act) == STR_TABLE ) then
 			for key, value in pairs(act) do
 				if (alun_utils.findfunction(value,_G)) then
 					phrase_script:AddAction(value)
@@ -145,12 +145,12 @@ end
     <dialog id="dm_companion_stealth">
         <precondition>dialogs_axr_companion.is_actor_companion</precondition>
         <phrase_list>
-            <phrase id="0">
+            <phrase id=STR_ZERO>
                 <text>axr_phrase_actor_give_command_stealth</text>
 				<precondition>dialogs_axr_companion.companion_not_stealthy</precondition>
 				<action>dialogs_axr_companion.set_companion_to_stealth_substate</action>
             </phrase>
-            <phrase id="1">
+            <phrase id=STR_ONE>
                 <text>axr_phrase_actor_give_command_stop_stealth</text>
 				<precondition>dialogs_axr_companion.companion_is_stealthy</precondition>
 				<action>dialogs_axr_companion.set_companion_to_default_substate</action>
@@ -562,11 +562,8 @@ function remove_companions_from_squad(actor,npc)
 end
 
 function remove_companions_from_squad_and_add_spot(actor,npc)
-	local npc = dialogs.who_is_npc(actor,npc)
-	
-	local text = game.translate_string("ui_st_companion_custom_spot_text")
-	custom_object_spots.add_spot(npc:id(), string.format(text, npc:character_name()))
-	
+	local text = strformat(strtransl("ui_st_companion_custom_spot_text"), npc:character_name())
+    custom_object_spots.add_spot(npc:id(), text)
 	remove_companions_from_squad(actor,npc)
 end
 
@@ -616,5 +613,34 @@ end
 function switch_companion_loot_corpses(actor,npc)
 	local npc = dialogs.who_is_npc(actor,npc)
 	alun_utils.execute_script_on_squad(npc,axr_companions.switch_companion_loot_corpses)
+end
+
+-- Added by Dancher
+
+function has_not_spot(_,npc)
+	local has_spot = custom_object_spots.has_spot(npc:id())
+	return not has_spot
+end
+
+function can_open_inventory(_,npc)
+	return axr_companions.can_open_inventory(npc)
+end
+
+local function open_inventory(actor,npc,info)
+	npc:give_info_portion(info)
+	npc:use(actor)
+	npc:disable_info_portion(info)
+end
+
+function open_camel_inventory(actor,npc)
+	open_inventory(actor,npc,"open_camel_inventory")
+end
+
+function open_arsenal_inventory(actor,npc)
+	open_inventory(actor,npc,"open_arsenal_inventory")
+end
+
+function open_full_inventory(actor,npc)
+	open_inventory(actor,npc,"open_full_inventory")
 end
 

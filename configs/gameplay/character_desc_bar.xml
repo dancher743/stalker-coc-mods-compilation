@@ -30,6 +30,8 @@
     <supplies></supplies>
         <start_dialog>bar_visitors_barman_stalker_trader_start_dialog</start_dialog>
         <actor_dialog>barman_safe_houses_bar_room_dialog</actor_dialog>
+		<actor_dialog>give_cooking_recipes_dialog</actor_dialog>
+		<actor_dialog>more_cooking_recipes_dialog</actor_dialog>
 		<actor_dialog>dm_broker_dialog</actor_dialog>
         <actor_dialog>actor_break_dialog</actor_dialog>
         </specific_character>

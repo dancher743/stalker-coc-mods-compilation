@@ -87,7 +87,7 @@ end
 
 function sleep_dialog:TestAndShow()
 	if (self.ph_sleepbag_id and self.item_section) then
-		local sim = get_alife()
+		local sim = alife()
 		sim:create(self.item_section,db.actor:position(),0,0,0)
 		local se_bag = sim:object(self.ph_sleepbag_id)
 		if (se_bag) then
@@ -208,6 +208,7 @@ function dream_callback()
 	
 	surge_manager.get_surge_manager().time_forwarded = true
 	psi_storm_manager.get_psi_storm_manager().time_forwarded = true
+	fallout_manager.get_fallout_manager().time_forwarded = true
 		
 	if(surge_manager.is_started() and level_weathers.get_weather_manager().weather_fx) then
 		level.stop_weather_fx()

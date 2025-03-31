@@ -577,12 +577,15 @@
 		<text>Show wound effects</text>
 	</string>
 	<string id="ui_mm_show_guide_job_on_map">
-		<text>Show guide job on map</text>
+		<text>Set guide job spots</text>
 	</string>
 	<string id="ui_mm_show_guide_job_hud_timer">
 		<text>Show guide job timer</text>
 	</string>
 	<string id="ui_mm_alife_switch_dist">
 		<text>Online switch distance</text>
+	</string>
+	<string id="ui_mm_death_spots">
+		<text>Death spots</text>
 	</string>
 </string_table>

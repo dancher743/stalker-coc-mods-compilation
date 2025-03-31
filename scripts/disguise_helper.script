@@ -94,3 +94,7 @@ function is_outfit_fits_community(npc_community, outfit_section)
 	
 	return outfit_community == npc_community
 end
+
+function is_actor_community_as(npc)
+	return (npc and IsStalker(npc) and npc:character_community() == utils.get_actor_community()) or false
+end

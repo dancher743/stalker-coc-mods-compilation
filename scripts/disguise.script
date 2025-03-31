@@ -8,6 +8,9 @@
 
 -- main update rate in seconds (where 1 is 1 second)
 local main_update_rate = 1
+local main_update_ev_id = "disguise"
+local main_update_act_id = "main_update"
+local is_first_main_update = true
 
 --time you need to be hidden (not seen by any npc) before changing outfit to make the disguise effective, 100 means roughly 10 seconds
 local time_to_forget = 100
@@ -67,7 +70,7 @@ local function get_patch_faction(patch_section)
 end
 
 local function npc_on_death_callback(victim,who)
-	if (IsActor(who) and has_actor_disguised() and utils.is_actor_community_as(victim)) then
+	if (IsActor(who) and has_actor_disguised() and disguise_helper.is_actor_community_as(victim)) then
 		discover()
 	end
 end
@@ -102,48 +105,36 @@ local function can_sleep()
 	return not patch_in_slot and not has_actor_disguised() and is_empty(suspicion) and not has_actor_discovered() and not has_actor_in_sight()
 end
 
-local function run_updates()
-	local is_first_update = true
+local function main_update()
+	ResetTimeEvent(main_update_ev_id, main_update_act_id, main_update_rate)
 	
-	local main_update_ev_id = "disguise"
-	local main_update_act_id = "main_update"
+	patch_in_slot = get_patch_in_slot()
 	
-	local function main_update()
-		ResetTimeEvent(main_update_ev_id, main_update_act_id, main_update_rate)
-		
-		patch_in_slot = get_patch_in_slot()
-		
-		if (can_sleep()) then
-			-- printf("Disguise system is sleeping!")
-			return
-		end
-		
-		if (is_first_update) then
-			prev_patch_in_slot = patch_in_slot
-		end
-		
-		actor_community = utils.get_actor_community()
-
-		update_actor()
-		update_npc()
-		update_ui(is_first_update)
-		
-		is_first_update = false
+	if (can_sleep()) then
+		-- printf("Disguise system is sleeping!")
+		return
+	end
+	
+	if (is_first_main_update) then
 		prev_patch_in_slot = patch_in_slot
 	end
-	CreateTimeEvent(main_update_ev_id, main_update_act_id, main_update_rate, main_update)
-end
+	
+	actor_community = utils.get_actor_community()
 
-local function stop_updates()
-	RemoveTimeEvent("disguise","main_update")
+	update_actor()
+	update_npc()
+	update_ui(is_first_main_update)
+	
+	is_first_main_update = false
+	prev_patch_in_slot = patch_in_slot
 end
 
 function actor_on_first_update()
-	run_updates()
+	CreateTimeEvent(main_update_ev_id, main_update_act_id, main_update_rate, main_update)
 end
 
 function actor_on_before_death()
-	stop_updates()
+	RemoveTimeEvent(main_update_ev_id, main_update_act_id)
 end
 
 function update_actor()
@@ -320,7 +311,7 @@ function suspicion_increase(distance)
 		local has_outfit_hides = outfit and (outfit:condition() > min_condition_o)
 		
 		if not has_helm_hides and has_outfit_hides then
-			has_helm_hides = alun_utils.read_from_ini(nil,outfit:section(),"helmet_avaliable","bool",false)
+			has_helm_hides = alun_utils.read_from_ini(nil,outfit:section(),"helmet_avaliable",STR_BOOL,false)
 		end
 		
 		if has_helm_hides then
@@ -402,4 +393,8 @@ end
 
 function get_actor_default_faction()
 	return "actor_"..default_faction
+end
+
+function get_default_faction()
+	return default_faction
 end

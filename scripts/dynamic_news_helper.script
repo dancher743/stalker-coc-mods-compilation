@@ -419,8 +419,6 @@ local invalid_maps = { -- dynamic news are off in those maps
 
 local all_direction = {"near","east","north_east","north","north_west","west","south_west","south","south_east"}
 
-local random_character_icons = nil
-
 --=================================================< Helpers >=================================================
 local function PickRandomKey(t,is_key) -- Selects a random item from a table
     local keys = {}
@@ -448,7 +446,7 @@ local function get_object_levelname(obj)
 	local gg = game_graph()
 	if (gg:valid_vertex_id(gvid)) then
 		cvertex = gg:vertex(gvid)
-		return get_alife():level_name(cvertex:level_id())
+		return alife():level_name(cvertex:level_id())
 	end
 			
 	return STR_NIL
@@ -463,7 +461,7 @@ function GetPointDescription(obj)
 	end 
 	
 	local m_s = game.translate_string("st_dyn_news_"..level_name)
-	local point = type(obj.position) == "function" and obj:position() or obj.position
+	local point = type(obj.position) == STR_FUNCTION and obj:position() or obj.position
 	if not (point) then 
 		return m_s
 	end
@@ -725,7 +723,7 @@ function PickFaction(only_natural) -- pick a random faction
 end
 
 function GetFaction(key1,key2)
-	if key2 and (type(key2) == "string") then
+	if key2 and (type(key2) == STR_STRING) then
 		return profiles_faction[key1][key2]
 	end
 	return profiles_faction[key1]
@@ -742,7 +740,7 @@ function PickMap(excluded_map)
 end
 
 function GetMap(key1,key2)
-	if key2 and (type(key2) == "string") then
+	if key2 and (type(key2) == STR_STRING) then
 		return profiles_map[key1][key2]
 	end
 	return profiles_map[key1]
@@ -759,7 +757,7 @@ function PickMutant(tier)
 end
 
 function GetMutant(key1,key2)
-	if key2 and (type(key2) == "string") then
+	if key2 and (type(key2) == STR_STRING) then
 		return profiles_mutant[key1][key2]
 	end
 	return profiles_mutant[key1]
@@ -783,21 +781,8 @@ function IsInvalidMap(map)
 	return false
 end
 
-function list_actor_squad_by_id() -- This is the same function used in axr_companions in CoC 1.5, brought here to be used in all CoC variants.
-	local t = {}
-	local size_t = 0
-	for id,squad in spairs(axr_companions.companion_squads, function(t,a,b) return a < b end) do 
-		if (squad and squad.commander_id) then
-			if not (axr_task_manager.hostages_by_id[squad:commander_id()]) then
-				for k in squad:squad_members() do
-					--printf("member %s",k.id)
-					size_t = size_t + 1
-					t[size_t] = k.id
-				end
-			end
-		end
-	end
-	return t
+function list_actor_squad_by_id()
+	return axr_companions.list_actor_squad_by_id()
 end
 
 function GetCommunityDescription(obj,index) -- Return the faction of the sender (obj)
@@ -959,23 +944,22 @@ function send_tip(msg, header, timeout, showtime, sender, sound,icon_by) -- Send
 end
 
 function get_random_character_icon()
+	local icons = {}
 	local faction = random_choice("csky", "freedom", "stalker", "ecolog", "killer", "bandit")
-	local section = faction.."_portraits"
+	local section = faction .. "_portraits"
+	local ini = ini_file("plugins\\faction_portraits.ltx")
+	local n = ini:section_exist(section) and ini:line_count(section) or 0
 	
-	if (random_character_icons == nil) then
-		local t = {}
-		local ini = ini_file("plugins\\faction_portraits.ltx")
-		local n = ini:section_exist(section) and ini:line_count(section) or 0
-		for i=0, n-1 do
-			local result, id, value = ini:r_line(section,i,STR_EMPTY,STR_EMPTY)
-			if (id ~= STR_EMPTY and id ~= "default_portrait" and id ~= "ui_inGame2_degtyarev_ico" and 
-				id ~= "ui_inGame2_scar_ico" and id ~= "ui_inGame2_Strelok" and id ~= "ui_inGame2_strelok_ico")
-			then
-				table.insert(t,id)
-			end
+	for i=0, n-1 do
+		local _, _, value = ini:r_line(section,i,STR_EMPTY,STR_EMPTY)
+		if (value ~= "ui_inGame2_no_data" and 
+			value ~= "ui_inGame2_degtyarev_ico" and 
+			value ~= "ui_inGame2_scar_ico" and 
+			value ~= "ui_inGame2_Strelok" and value ~= "ui_inGame2_strelok_ico")
+		then
+			table.insert(icons,value)
 		end
-		random_character_icons = t
 	end
 
-	return random_character_icons[math.random(#random_character_icons)]
+	return icons[math.random(#icons)]
 end

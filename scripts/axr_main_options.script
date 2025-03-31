@@ -164,7 +164,7 @@ function opt_menu_on_init(menu)
 				if (ctrl:GetCheck()) then
 					local outfit = db.actor:item_in_slot(7)
 					if (outfit) then 
-						local icon = ini_sys:r_string_ex(outfit:section(),"character_portrait")
+						local icon = system_ini():r_string_ex(outfit:section(),"character_portrait")
 						if (icon) then 
 							db.actor_binder.character_icon = icon
 							db.actor:set_character_icon(db.actor_binder.character_icon)
@@ -201,6 +201,10 @@ function opt_menu_on_init(menu)
 					jg_hud_timer.try_stop()
 				end
 			end}
+		
+		if (IsAzazelMode()) then
+			menu.gameplay_options["death_spots"] = {default=true, debug_only=false, typ="check"}
+		end
 		--
 	end
 	
@@ -232,9 +236,9 @@ function opt_menu_on_accept(menu,optMgr,console)
 			if (v.typ=="check") then
 				axr_main.config:w_value(MM_OPTIONS,"enable_"..name,v.ctrl:GetCheck())
 			elseif (v.typ=="list") then 
-				if (type(v.default) == "boolean") then
-					axr_main.config:w_value(MM_OPTIONS,name,v.ctrl:GetText()=="true" or false)
-				elseif (type(v.default) == "number") then 
+				if (type(v.default) == STR_BOOLEAN) then
+					axr_main.config:w_value(MM_OPTIONS,name,v.ctrl:GetText()==STR_TRUE or false)
+				elseif (type(v.default) == STR_NUMBER) then 
 					axr_main.config:w_value(MM_OPTIONS,name,tonumber(v.ctrl:GetText()) or v.default)
 				else 
 					axr_main.config:w_value(MM_OPTIONS,name,v.ctrl:GetText())
@@ -256,9 +260,9 @@ function opt_menu_on_set_values(menu,optMgr)
 				v.ctrl:SetCheck(axr_main.config:r_value(MM_OPTIONS,"enable_"..name,1,v.default))
 			elseif (v.typ=="list") then
 				-- so proper type is cached when reading
-				if (type(v.default) == "boolean") then
+				if (type(v.default) == STR_BOOLEAN) then
 					v.ctrl:SetText(axr_main.config:r_value(MM_OPTIONS,name,1,v.default))
-				elseif (type(v.default) == "number") then 
+				elseif (type(v.default) == STR_NUMBER) then 
 					v.ctrl:SetText(axr_main.config:r_value(MM_OPTIONS,name,2,v.default))
 				else 
 					-- Dancher: Workaround fix for "char_portrait" option to restore portraits on a different characters.
@@ -278,41 +282,47 @@ function opt_menu_on_set_values(menu,optMgr)
 end
 
 function get_character_icon_list()
-	local t = {}
-	local faction = character_community(db.actor):sub(7)
+	local icons = {}
+	local faction = actor_community()
+	local section = faction .. "_portraits"
 	local ini = ini_file("plugins\\faction_portraits.ltx")
-	local section = faction.."_portraits"
 	local n = ini:section_exist(section) and ini:line_count(section) or 0
-	local def_icon = ini:r_string_ex(section, "default_portrait")
-	table.insert(t, def_icon)
+	
 	for i=0, n-1 do
-		local result, id, value = ini:r_line(section,i,STR_EMPTY,STR_EMPTY )
-		if (id ~= STR_EMPTY and id ~= "default_portrait") then
-			table.insert(t,id)
-		end
+		local _, id, icon = ini:r_line(section,i,STR_EMPTY,STR_EMPTY)
+		local number = tonumber(id)
+		icons[number] = icon
+	end
+	
+	local icon_list = {}
+	
+	local sort_functor = function(t,a,b) return a < b end
+	for _,icon in spairs(icons,sort_functor) do
+		table.insert(icon_list,icon)
 	end
 
-	return t
+	return icon_list
 end
 
 ------------------------------------
 -- Added by Dancher
 ------------------------------------
+local check_option_type = "check"
 
 function get_check_option(name)
-	return get_option(name, "check", nil)
+	return get_option(name, check_option_type, nil)
 end
 
 function get_option(name, type, subtype)
 	local config = axr_main.config
 	local value = nil
 	
-	if (type == "check") then
+	if (type == check_option_type) then
 		value = config:r_value(MM_OPTIONS,"enable_"..name,1,false)
 	elseif (type == "list") then
-		if (subtype == "boolean") then
+		if (subtype == STR_BOOLEAN) then
 			value = config:r_value(MM_OPTIONS,name,1,false)
-		elseif (subtype == "number") then
+		elseif (subtype == STR_NUMBER) then
 			value = config:r_value(MM_OPTIONS,name,2,-1)
 		else
 			value = config:r_value(MM_OPTIONS,name,0,STR_EMPTY)

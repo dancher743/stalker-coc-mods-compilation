@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+
+<!-- AtmosFear Fallout -->
+	<!-- ATMOSFEAR RADIOACTIVE FALLOUT MESSAGES -->
+	<string id="hide_from_fallout_rad_message_caption">
+		<text>Attention!</text>
+	</string>
+	<string id="hide_from_fallout_rad_message">
+		<text>Radioactive fallout begins.</text>
+	</string>
+	<string id="hide_from_fallout_rad_descr_1_a">
+		<text>The level of radiation is dangerous. You should hide from the radioactive fallout.</text>
+	</string>
+	<string id="hide_from_fallout_rad_descr_2_a">
+		<text>You shouldn't leave the shelter during the radioactive fallout.</text>
+	</string>
+	<string id="hide_from_fallout_rad_name_1">
+		<text>Radioactive fallout: Find shelter</text>
+	</string>
+	<string id="hide_from_fallout_rad_name_2">
+		<text>Radioactive fallout: Stay sheltered</text>
+	</string>
+	<string id="end_fallout_rad_message_caption">
+		<text>Attention!</text>
+	</string>
+	<string id="end_fallout_rad_message">
+		<text>Radioactive fallout has ended</text>
+	</string>
+
+
+	<!-- ATMOSFEAR CHEMICAL FALLOUT MESSAGES -->
+	<string id="hide_from_fallout_acid_message_caption">
+		<text>Attention!</text>
+	</string>
+	<string id="hide_from_fallout_acid_message">
+		<text>Chemical fallout begins.</text>
+	</string>
+	<string id="hide_from_fallout_acid_descr_1_a">
+		<text>The level of contamination is dangerous. You should hide from the chemical fallout.</text>
+	</string>
+	<string id="hide_from_fallout_acid_descr_2_a">
+		<text>You shouldn't leave the shelter during the chemical fallout.</text>
+	</string>
+	<string id="hide_from_fallout_acid_name_1">
+		<text>Chemical fallout: Find shelter</text>
+	</string>
+	<string id="hide_from_fallout_acid_name_2">
+		<text>Chemical fallout: Stay sheltered</text>
+	</string>
+	<string id="end_fallout_acid_message_caption">
+		<text>Attention!</text>
+	</string>
+	<string id="end_fallout_acid_message">
+		<text>Chemical fallout has ended</text>
+	</string>
+
+	<string id="st_cap_af_fallout">
+		<text>Fallouts</text>
+	</string>
+	<string id="st_list_fate_poison">
+		<text>Poisoning</text>
+	</string>
+	<string id="st_cap_check_enable_fallout">
+		<text>Fallouts enabled</text>
+	</string>
+
+
+</string_table>

@@ -260,11 +260,7 @@ function npc_on_death_callback(victim,who)
 	inc_counter("killed_stalkers")
 	
 	local npc_faction = character_community(victim)
-	local actor_faction = character_community(who)
-	
-	if (disguise and disguise.has_actor_disguised()) then
-		actor_faction = disguise.get_actor_default_faction()
-	end
+	local actor_faction = actor_community()
 	
 	-- Kiled a friendly NPC.
 	if (xr_conditions.is_factions_friends(nil, nil, { npc_faction, actor_faction })) then
@@ -304,7 +300,7 @@ function set_best_weapon(hit_amount)
 	-- A section called 'parent_section' is used by AO3 and STCoP.
 	-- It tells them which weapon is the 'parent' of a modified weapon.
 	-- Example: An AK-74 with an EKP sight attach has a parent_section of 'wpn_ak74'.
-	local parent_section = ini_sys:r_string_ex(active_item:section(), "parent_section") or active_item:section()
+	local parent_section = system_ini():r_string_ex(active_item:section(), "parent_section") or active_item:section()
 
 	-- By using this section we can have stats 'stack' for weapons regardless of attached scopes.
 	-- Of course if this section does not exist then it will just default to the weapon section name instead.
@@ -319,7 +315,7 @@ end
 function get_best_weapon()
 	local weapon_name = actor_statistic.favorite_weapon_sect
 	if (weapon_name == nil) then weapon_name = "wpn_knife" end
-	return game.translate_string(ini_sys:r_string_ex(weapon_name, "inv_name"))
+	return game.translate_string(system_ini():r_string_ex(weapon_name, "inv_name"))
 end
 
 function smart_terrain_mark_visited(smart)
@@ -597,14 +593,16 @@ function check_actor_reputation_change()
     local clist = axr_companions.list_actor_squad_by_id()    
     for _,id in pairs(clist) do
         local npc = (db.storage[id] and db.storage[id].object) or level.object_by_id(id)
-        if (type == 0) then
-            npc:change_character_rank(value)
-			if (npc:character_rank() < 0) then npc:set_character_rank(0) end
-			if (npc:character_rank() > 28000) then npc:set_character_rank(28000) end
-        elseif (type == 1) then
-            npc:change_character_reputation(value)
-			if (npc:character_reputation() < -5000) then npc:set_character_reputation(-5000) end
-			if (npc:character_reputation() > 5000) then npc:set_character_reputation(5000) end
-        end
+		if (npc) then
+			if (type == 0) then
+				npc:change_character_rank(value)
+				if (npc:character_rank() < 0) then npc:set_character_rank(0) end
+				if (npc:character_rank() > 28000) then npc:set_character_rank(28000) end
+			elseif (type == 1) then
+				npc:change_character_reputation(value)
+				if (npc:character_reputation() < -5000) then npc:set_character_reputation(-5000) end
+				if (npc:character_reputation() > 5000) then npc:set_character_reputation(5000) end
+			end
+		end
     end
 end

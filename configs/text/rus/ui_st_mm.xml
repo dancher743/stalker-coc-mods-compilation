@@ -580,12 +580,15 @@
 		<text>Показ. эффекты ранений</text>
 	</string>
 	<string id="ui_mm_show_guide_job_on_map">
-		<text>Показ. метки проводника</text>
+		<text>Ставить метки проводника</text>
 	</string>
 	<string id="ui_mm_show_guide_job_hud_timer">
 		<text>Показ. таймер проводника</text>
 	</string>
 	<string id="ui_mm_alife_switch_dist">
 		<text>Радиус жизни на локации</text>
+	</string>
+	<string id="ui_mm_death_spots">
+		<text>Метки смертей</text>
 	</string>
 </string_table>

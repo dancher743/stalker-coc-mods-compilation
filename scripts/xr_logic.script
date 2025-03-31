@@ -364,7 +364,7 @@ function pick_section_from_condlist(actor, npc, condlist, p)
 
 	local npc_id -- npc not actor
 	if (npc) then
-		npc_id = type(npc.id) == "function" and npc:id() or npc.id
+		npc_id = type(npc.id) == STR_FUNCTION and npc:id() or npc.id
 		if (npc_id == 0) then
 			npc_id = nil
 		end
@@ -396,7 +396,7 @@ function pick_section_from_condlist(actor, npc, condlist, p)
 						break
 					end
 				end
-			elseif (npc_id and get_alife():has_info(npc_id,infop.name)) then
+			elseif (npc_id and alife():has_info(npc_id,infop.name)) then
 				if not infop.required then
 					--'printf("FAILED: actor has infop '%s', which is NOT needed [%s]", infop.name, tostring(has_alife_info(infop.name)))
 					infop_conditions_met = false -- инфопоршен есть, но он не должен присутствовать
@@ -435,7 +435,7 @@ function pick_section_from_condlist(actor, npc, condlist, p)
 						xr_effects[infop.func](actor, npc)
 					end
 				elseif infop.required then
-					if (npc_id and string.find(infop.name,"npcx_") and not get_alife():has_info(npc_id,infop.name) ) then
+					if (npc_id and string.find(infop.name,"npcx_") and not alife():has_info(npc_id,infop.name) ) then
 						npc:give_info_portion(infop.name)
 					else
 						if not ( has_alife_info(infop.name)  ) then
@@ -443,7 +443,7 @@ function pick_section_from_condlist(actor, npc, condlist, p)
 						end
 					end
 				else
-					if (npc_id and string.find(infop.name,"npcx_") and get_alife():has_info(npc_id,infop.name) ) then
+					if (npc_id and string.find(infop.name,"npcx_") and alife():has_info(npc_id,infop.name) ) then
 						npc:disable_info_portion(infop.name)
 					else
 						if has_alife_info(infop.name) then
@@ -694,7 +694,7 @@ end
 --   2 = { infop_check = { 1 = {"infop3" = true}, 2 = {"infop4" = false} }, infop_set = {}, section = "section2" },
 -- }
 function parse_condlist(npc, section, field, src)
-	if (src == nil or type(src) == "boolean") then
+	if (src == nil or type(src) == STR_BOOLEAN) then
 		callstack()
 -- 		printf("ERROR!! xr_logic.parse_condlist npc=%s section=%s field=%s src=%s",npc:name(),section,field,src)
 		printf( "ERROR!! xr_logic.parse_condlist" )
@@ -852,7 +852,7 @@ function cfg_get_npc_and_zone(ini, section, field, npc,cond_name)
 			t.npc_id = 65535
 		end
 
-		local sim = get_alife()
+		local sim = alife()
 		local se_obj = sim:object(id)
 		t.npc_id = se_obj ~= nil and se_obj.id or 65535
 	end
@@ -996,15 +996,15 @@ function pstor_save_all(obj, packet)
 		--printf("pstor_save_all:%s: %s=%s",obj:name(),k,v)
 		alun_utils.w_stpk(packet,"stringZ",k,obj:name()..":pstor_save_all")
 		local tv = type(v)
-		if tv == "number" then
+		if tv == STR_NUMBER then
 			packet:w_u8(pstor_number)
-			alun_utils.w_stpk(packet,"float",v,obj:name()..":pstor_save_all")
-		elseif tv == "string" then
+			alun_utils.w_stpk(packet,STR_FLOAT,v,obj:name()..":pstor_save_all")
+		elseif tv == STR_STRING then
 			packet:w_u8(pstor_string)
 			alun_utils.w_stpk(packet,"stringZ",v,obj:name()..":pstor_save_all")
-		elseif tv == "boolean" then
+		elseif tv == STR_BOOLEAN then
 			packet:w_u8(pstor_boolean)
-			alun_utils.w_stpk(packet,"bool",v,obj:name()..":pstor_save_all")
+			alun_utils.w_stpk(packet,STR_BOOL,v,obj:name()..":pstor_save_all")
 		else
 -- 			printf("xr_logic: pstor_save_all: not registered type '%s' encountered", tv)
 			printf( "xr_logic: pstor_save_all: not registered type encountered" )

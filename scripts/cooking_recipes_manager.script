@@ -1,0 +1,44 @@
+--
+--	Cooking recipes manager
+--	Author: Dancher
+--
+
+local info_portion_string_name = "info_portion"
+local recipes_givers_section_name = "recipes_givers"
+local ini_path = "plugins\\cooking_recipes.ltx"
+
+function get_ini()
+	return ini_file(ini_path)
+end
+
+function has_actor_recipe(recipe_section)
+	local recipe_info = get_ini():r_string_ex(recipe_section,info_portion_string_name) or STR_NIL
+	return has_info(recipe_info)
+end
+
+function has_actor_recipes_from_npc(id)
+	local ini = get_ini()
+	local recipe_sections = id and ini:line_exist(recipes_givers_section_name,id) 
+							   and alun_utils.parse_list(ini,recipes_givers_section_name,id) or {}
+	
+	local has_recipes = false
+	
+	for _,recipe_section in ipairs(recipe_sections) do
+		has_recipes = has_actor_recipe(recipe_section)
+	end
+	
+	return has_recipes
+end
+
+function give_actor_recipes_from_npc(id)
+	local ini = get_ini()
+	local recipe_sections = id and ini:line_exist(recipes_givers_section_name,id) 
+							   and alun_utils.parse_list(ini,recipes_givers_section_name,id) or {}
+	
+	for _,recipe_section in ipairs(recipe_sections) do
+		local recipe_info = ini:r_string_ex(recipe_section,info_portion_string_name)
+		give_info(recipe_info)
+	end
+	
+	return recipe_sections
+end

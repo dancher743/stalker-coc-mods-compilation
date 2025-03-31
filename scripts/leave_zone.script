@@ -4,7 +4,7 @@
 --
 
 local function make_finish_save()
-	local character_name = get_alife():actor():character_name()
+	local character_name = alife():actor():character_name()
 	local level_name = game.translate_string(level.name())
 	local finish_text = game.translate_string("ui_st_leave_zone_finish_save")
 	
@@ -30,7 +30,7 @@ local function spawn_on_l13_generators()
 	local z = -52.50
 	local lvid = 281868
 	local gvid = 3611
-	get_alife():create("leave_zone_object",vector():set(x,y,z),lvid,gvid)
+	alife():create("leave_zone_object",vector():set(x,y,z),lvid,gvid)
 end
 
 local function physic_object_on_use_callback(obj,who) 

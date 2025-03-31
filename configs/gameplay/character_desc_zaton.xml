@@ -768,6 +768,7 @@
 		<actor_dialog>dm_ordered_task_completed_dialog</actor_dialog>
 		<actor_dialog>drx_sl_zat_a2_stalker_barmen_meet_dialog</actor_dialog>
 		<actor_dialog>dm_ordered_task_dialog</actor_dialog>
+		<actor_dialog>give_cooking_recipes_dialog</actor_dialog>
 		<actor_dialog>zat_a2_stalker_barmen_actor_info</actor_dialog>
 		<actor_dialog>actor_break_dialog</actor_dialog>
 
@@ -1582,7 +1583,7 @@
         ammo_5.56x45_ap = 1 \n
         wpn_walther \n
         ammo_9x19_pbp = 1 \n
-        grenade_f1 = 4 \n
+        grenade_f1 = 1 \n
 #include "gameplay\character_items_nd.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs_3.xml"
@@ -1611,7 +1612,7 @@
         ammo_5.56x45_ap = 1 \n
         wpn_usp = 1, silencer = 1 \n
         ammo_11.43x23_hydro = 1 \n
-        grenade_f1 = 4 \n
+        grenade_f1 = 1 \n
 #include "gameplay\character_items_nd.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs_3.xml"

@@ -18,7 +18,7 @@
 	</string>
 	
 	<string id="st_ui_no_save_surge">
-		<text>Нельзя %s во время выброса или пси-шторма.</text>
+		<text>Нельзя %s во время катаклизма.</text>
 	</string>
 	
 	<string id="st_ui_no_save_bleed">
