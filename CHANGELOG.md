@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.5.0] - Unreleased
+## [1.5.0] - 2025-03-31
 
 ### Features
 * Reworked radio music for all factions
