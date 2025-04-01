@@ -8,18 +8,18 @@ local priority_close = {
 
 local priority_medium = {
 	_G.IsRifle,
-	_G.IsPistol,
+	_G.IsLauncher,
 	_G.IsSniper,
-	_G.IsShotgun,
-	_G.IsLauncher
+	_G.IsPistol,
+	_G.IsShotgun
 }
 
 local priority_far = {
 	_G.IsSniper,
+	_G.IsLauncher,
 	_G.IsRifle,
 	_G.IsPistol,
-	_G.IsShotgun,
-	_G.IsLauncher
+	_G.IsShotgun
 }
 
 local priority_heli = {
