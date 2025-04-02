@@ -38,7 +38,7 @@ end
 
 function arrived_to_smart(se_obj, smart)
 	--alun_utils.debug_nearest(se_obj,"check arrived_to_smart %s",smart:name())
-	local squad = se_obj.group_id and se_obj.group_id ~= 65535 and alife_object(se_obj.group_id)
+	local squad = se_obj.group_id and se_obj.group_id ~= 65535 and SIMBOARD.squads[se_obj.group_id]
 	if (squad) then 
 		if (squad.current_action == 1 and squad.assigned_target_id == smart.id) then 
 			return true
@@ -84,11 +84,6 @@ function se_smart_terrain:__init(section) super(section)
 	--alun_utils.debug_write(strformat("%s:%s Init",self:name(),self.id))
 end
 function se_smart_terrain:on_before_register()
-	-- persistent storage
-	alife_storage_manager.get_se_obj_state(self,true)
-	
-	--RegisterScriptCallback("save_state",self)
-	
 	--alun_utils.debug_write(strformat("%s:%s:on_before_register BEFORE",self:name(),self.id))
 	cse_alife_smart_zone.on_before_register(self)
 	sim_board.get_sim_board():register_smart(self)
@@ -610,12 +605,12 @@ function se_smart_terrain:update_jobs()
 	for id,info in pairs(self.npc_info) do
 		local se_obj = info.se_obj
 		if (se_obj) then
-			--if (self.level_id == gg:vertex(se_obj.m_game_vertex_id):level_id()) then
+			if (self.level_id == gg:vertex(se_obj.m_game_vertex_id):level_id()) then
 				self:select_npc_job(info)
-			-- else 
-				-- self.arriving_npc[id] = se_obj
-				-- self:clear_job(id,true)
-			-- end
+			else 
+				self.arriving_npc[id] = se_obj
+				self:clear_job(id,true)
+			end
 		else
 			self:clear_job(id,true)
 		end
@@ -775,7 +770,7 @@ function se_smart_terrain:select_npc_job(npc_info,now,surge_started)
 		
 		-- If NPC has storage, it is online, so switch logic
 		if (st and st.object) then
-			--xr_logic.switch_to_section(st.object, self.ltx, "nil")
+			--xr_logic.switch_to_section(st.object, self.ltx, STR_NIL)
 			npc_info.begin_job = true
 			empty_table(db.offline_objects[id])
 			self:setup_logic(st.object)

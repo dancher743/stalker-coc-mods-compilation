@@ -8,6 +8,9 @@ All notable changes to this project will be documented in this file.
 * Improved `update_best_weapon` function in `ai_stalker.script` (from CoC 1.5)
 * Added higher priority to grenade launcher in medium and far tables in `ai_stalker.script`
 
+### Fixes
+* Revert some code of A-Life from CoC 1.5 feature to stabilize it
+
 ## [1.5.0] - 2025-03-31
 
 ### Features
