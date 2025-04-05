@@ -322,16 +322,23 @@ function has_time_bonus()
 	local result = false
 	local bonus_hours = get_bonus_hours()
 	if (bonus_hours > 0) then
-		local minutes_left = jg_timers.get_g_timer_left_time('guid_fail')
+		local seconds_left = jg_timers.get_g_timer_left_time('guid_fail')
+		local minutes_left = math.floor(seconds_left / 60)
 		result = minutes_left > bonus_hours * 60
 	end
 	return result
 end
 
 function get_time_left()
-	local minutes_total = jg_timers.get_g_timer_left_time('guid_fail')
-	local hours = math.floor(minutes_total / 60)
-	local minutes = minutes_total - (hours * 60)
+	local hours, minutes = 0,0
+	local seconds_total = jg_timers.get_g_timer_left_time('guid_fail')
+	
+	if (seconds_total > 0) then
+		local minutes_total = math.floor(seconds_total / 60)
+		hours = math.floor(minutes_total / 60)
+		minutes = minutes_total - (hours * 60)
+	end
+	
 	return hours, minutes
 end
 
