@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 ### Fixes
 * Revert some code of A-Life from CoC 1.5 feature to stabilize it
 * Changed format of Guider job's timers to prevent overflow of last day in a month
+* Fixed disguise checks in get community functions in `_g.script`
 
 ## [1.5.0] - 2025-03-31
 

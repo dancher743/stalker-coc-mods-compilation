@@ -1132,6 +1132,9 @@ function character_community (obj)
 		return
 	end
 	if IsStalker(obj) then
+		if (obj:id() == 0 and disguise.has_actor_disguised()) then
+			return disguise.get_actor_default_faction()
+		end
 		return obj:character_community()
 	end
 	return "monster"
@@ -1142,6 +1145,9 @@ function alife_character_community (obj)
 		return
 	end
 	if IsStalker(obj, obj:clsid()) then
+		if (obj.id == 0 and disguise.has_actor_disguised()) then
+			return disguise.get_actor_default_faction()
+		end
 		return obj:community()
 	end
 	return "monster"
