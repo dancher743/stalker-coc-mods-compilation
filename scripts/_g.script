@@ -1129,44 +1129,22 @@ end
 
 function character_community (obj)
 	if not (obj) then
-		return nil
+		return
 	end
-	local clsid = obj:clsid()
-	if IsStalkerOnly(obj, clsid) then
+	if IsStalker(obj) then
 		return obj:character_community()
 	end
-	if IsActor(obj, clsid) then
-		if (disguise.has_actor_disguised()) then
-			return disguise.get_actor_default_faction()
-		else
-			return obj:character_community()
-		end
-	end
-	if (IsMonster(obj, clsid)) then
-		return "monster"
-	end
-	return nil
+	return "monster"
 end
 
 function alife_character_community (obj)
 	if not (obj) then
-		return nil
+		return
 	end
-	local clsid = obj:clsid()
-	if IsStalkerOnly(obj, clsid) then
+	if IsStalker(obj, obj:clsid()) then
 		return obj:community()
 	end
-	if IsActor(obj, clsid) then
-		if (disguise.has_actor_disguised()) then
-			return disguise.get_actor_default_faction()
-		else
-			return obj:community()
-		end
-	end
-	if (IsMonster(obj, clsid)) then
-		return "monster"
-	end
-	return nil
+	return "monster"
 end
 
 function actor_community()
