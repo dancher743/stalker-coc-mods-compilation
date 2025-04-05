@@ -383,7 +383,7 @@ function actor_on_item_use(obj)
 					
 					hud:HideActorMenu()
 					SetHudMsg(STR_EMPTY,0)
-					ui_generic_dialogs.input_dialog_ui(hud, true, on_ok_button_clicked, on_cancel_button_clicked)
+					ui_dialog_input.dialog(hud, true, on_ok_button_clicked, on_cancel_button_clicked)
 				end
 			end
 		end

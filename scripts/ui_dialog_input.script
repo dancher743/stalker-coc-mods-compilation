@@ -1,0 +1,127 @@
+--================ Input Dialog ================
+-- Based on "backpack_ui" window (Alundaio)
+
+class "dialog" (CUIScriptWnd)
+function dialog:__init(owner, show_after_init, on_ok_clicked, on_cancel_clicked) super()
+	self.owner = owner
+	
+	self.on_ok_clicked = on_ok_clicked
+	self.on_cancel_clicked = on_cancel_clicked
+	
+	self:InitControls()
+	self:InitCallBacks()
+	
+	if (show_after_init == true) then
+		self:Show(true)
+	end
+end
+
+function dialog:__finalize()
+	self:StopTutorial()
+end
+
+function dialog:InitControls()
+	self:SetWndRect(Frect():set(0,0,1024,768))
+	if(device().width/device().height>(1024/768+0.01)) then
+		wide = true
+	end
+	self:SetAutoDelete(true)
+	self:Enable(true)
+
+	local xml					= CScriptXmlInit()
+	xml:ParseFile				("ui_dialog_input.xml")
+
+	self.back					= xml:InitStatic("input_dialog:background", self)
+
+	self.input = xml:InitEditBox("input_dialog:input",self)
+	self:Register(self.input,"fld_input")
+
+	btn = xml:Init3tButton("input_dialog:btn_ok", self.back)
+	self:Register(btn,"btn_ok")
+
+	local btn = xml:Init3tButton("input_dialog:btn_cancel", self.back)
+	self:Register(btn,"btn_cancel")
+	
+	self:InitTutorialControl(xml)
+end
+
+function dialog:InitTutorialControl(xml)
+	local m_data = alife_storage_manager.get_state()
+	local count = m_data.input_dialog_language_tutorial_count or 0
+	
+	if (count == 2) then
+		return
+	end
+	
+	self.tutorial_change_language = xml:InitStatic("input_dialog:tutorial_change_language", self)
+	self.tutorial_change_language:Show(false)
+	
+	count = count + 1
+	m_data.input_dialog_language_tutorial_count = count
+end
+
+function dialog:SetCurrentValues()
+end
+
+function dialog:Update()
+	CUIScriptWnd.Update(self)
+end
+
+function dialog:InitCallBacks()
+	self:AddCallback("btn_ok", ui_events.BUTTON_CLICKED, self.OnOk, self)
+	self:AddCallback("btn_cancel", ui_events.BUTTON_CLICKED, self.OnCancel, self)
+end
+
+function dialog:ShowTutorial()
+	if (self.tutorial_change_language) then
+		self.tutorial_change_language:Show(true)
+	end
+end
+
+function dialog:HideTutorial()
+	if (self.tutorial_change_language) then
+		self.tutorial_change_language:Show(false)
+	end
+end
+
+function dialog:Show(value)
+	self:ShowDialog(value)
+	self:ShowTutorial()
+	axr_keybind.enabled = false
+end
+
+function dialog:Hide()
+	self:HideDialog()
+	self:HideTutorial()
+	axr_keybind.enabled = true
+end
+
+function dialog:GetText()
+	local text = self.input:GetText()
+	
+	if (text == nil) then
+		text = STR_EMPTY
+	end
+	
+	return text
+end
+
+function dialog:OnOk()
+	local text = self:GetText()
+	
+	if (self.on_ok_clicked ~= nil) then
+		self.on_ok_clicked(text)
+	end
+	
+	self:Hide()
+end
+
+function dialog:OnCancel()
+	local text = self:GetText()
+	
+	if (self.on_cancel_clicked ~= nil) then
+		self.on_cancel_clicked(text)
+	end
+	
+	self:Hide()
+end

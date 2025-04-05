@@ -15,6 +15,9 @@ All notable changes to this project will be documented in this file.
 * Changed format of Guider job's timers to prevent overflow of last day in a month
 * Fixed disguise checks in get community functions in `_g.script`
 
+### Framework
+* Moved UI dialogs from `ui_generic_dialogs.script` to own scripts
+
 ## [1.5.0] - 2025-03-31
 
 ### Features

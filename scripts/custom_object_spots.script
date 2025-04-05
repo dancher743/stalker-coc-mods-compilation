@@ -52,7 +52,7 @@ function show_input_dialog()
 	end
 
 	local hud = get_hud()
-	ui_generic_dialogs.input_dialog_ui(hud, true, on_ok_button_clicked)
+	ui_dialog_input.dialog(hud, true, on_ok_button_clicked)
 end
 
 function add_spot(id, text)

@@ -42,7 +42,7 @@ local function physic_object_on_use_callback(obj,who)
 		finish_game()
 	end
 	
-	ui_generic_dialogs.confirm_dialog_ui("ui_st_leave_zone_confirm", on_yes_button_clicked)
+	ui_dialog_confirm.dialog("ui_st_leave_zone_confirm", on_yes_button_clicked)
 end
 
 local function on_game_first_load()
