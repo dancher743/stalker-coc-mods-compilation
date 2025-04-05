@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 * Revert some code of A-Life from CoC 1.5 feature to stabilize it
 * Changed format of Guider job's timers to prevent overflow of last day in a month
 * Fixed disguise checks in get community functions in `_g.script`
+* Added `unmemoize_functions()` into `_g.script` to fix `ALife simulator has not been started yet` error
 
 ### Framework
 * Moved UI dialogs from `ui_generic_dialogs.script` to own scripts

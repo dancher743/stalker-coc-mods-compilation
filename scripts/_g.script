@@ -117,6 +117,23 @@ function memoize_functions()
 	get_console = _G.get_console_memoized
 end
 
+function unmemoize_functions()
+	alife = alife_function
+	alife_function = nil
+	
+	system_ini = system_ini_function
+	system_ini_function = nil
+	
+	game_graph = game_graph_function
+	game_graph_function = nil
+	
+	get_hud = get_hud_function
+	get_hud_function = nil
+	
+	get_console = get_console_function
+	get_console_function = nil
+end
+
 function alife_memoized()
 	if not (sim) then
 		sim = alife_function()
