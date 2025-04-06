@@ -83,7 +83,6 @@ function actor_on_net_destroy(binder)
 	if (USE_FUNCTIONS_MEMOIZE) then
 		_G.unmemoize_functions()
 	end
-	gc.collect("actor_on_net_destroy")
 end 
 
 -------------------
