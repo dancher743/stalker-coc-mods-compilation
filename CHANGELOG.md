@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 * Added `unmemoize_functions()` into `_g.script` to fix `ALife simulator has not been started yet` error
 * Revert RAM clearing on game unloading
 * Fixed NPC idle sounds about north levels
+* Fixed icon of `sim_default_military_0_default_0` character
 
 ### Framework
 * Moved UI dialogs from `ui_generic_dialogs.script` to own scripts
