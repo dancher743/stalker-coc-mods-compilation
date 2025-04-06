@@ -112,7 +112,7 @@ function prepare_follower()
 	guid.zarplata		= utils.round_to_1000(2*(math.ceil(size * math.random(stdzarplata * 0.5, stdzarplata * 1.5))))
 	guid.neustoika		= utils.round_to_1000(guid.zarplata * math.random(25,75)/100)
 	guid.nadbavka_cf	= 0.2
-	guid.bonus_time_cf	= 0.2
+	guid.bonus_time_cf	= math.random(0,3)*0.1
 	
 	if (axr_main_options.get_check_option("show_guide_job_on_map")) then
 		local spot_id = guid.squad_id
@@ -161,9 +161,8 @@ function complete(actor,npc)
 	local zarplata = curr_guid['zarplata']
 	dialogs.relocate_money(actor,zarplata,"in")
 	
-	local nadbavka_cf = curr_guid.nadbavka_cf
-	if (has_time_bonus() and nadbavka_cf) then
-		dialogs.relocate_money(actor,zarplata * nadbavka_cf,"in")
+	if (get_bonus_hours() > 0) then
+		dialogs.relocate_money(actor,get_nadbavka(),"in")
 	end
 	
 	xr_statistic.inc_actor_reputation(100)
@@ -257,8 +256,9 @@ end
 
 function get_phrase_1()
 	local str = string.format(game.translate_string('st_jg_16'), guid['timer'], guid.description, guid['zarplata'], guid['neustoika'])
-	if (has_time_bonus()) then
-		local bonus_str = strformat(strtransl("st_jg_161"), get_bonus_hours())
+	local bonus_hours = get_bonus_hours()
+	if (bonus_hours > 0) then
+		local bonus_str = strformat(strtransl("st_jg_161"), guid['timer'] - bonus_hours, get_nadbavka())
 		str = strformat("%s %s", str, bonus_str)
 	end
 	if jg_guider.debug == true then
@@ -282,8 +282,9 @@ end
 function get_phrase4()
 	local left_hours, left_minutes = get_time_left()
 	local phrase = strformat(strtransl('st_jg_21'), left_hours, left_minutes)
-	if (has_time_bonus()) then
-		local bonus_phrase = strformat(strtransl("st_jg_211"), get_bonus_hours())
+	local bonus_hours = get_bonus_hours()
+	if (bonus_hours > 0) then
+		local bonus_phrase = strformat(strtransl("st_jg_211"), bonus_hours)
 		phrase = strformat("%s %s", phrase, bonus_phrase)
 	end
 	return phrase
@@ -291,7 +292,7 @@ end
 
 function get_phrase5()
 	local phrase
-	if (has_time_bonus()) then
+	if (get_bonus_hours() > 0) then
 		phrase = strformat("%s %s", strtransl("st_jg_9"), strtransl("st_jg_91"))
 	else
 		phrase = strtransl("st_jg_9")
@@ -323,10 +324,6 @@ function is_squad_need_guider(squad_id)
 	return guid.squad_id == squad_id
 end
 
-function has_time_bonus()
-	return get_bonus_hours() > 0
-end
-
 function get_time_left()
 	local hours, minutes = 0,0
 	local seconds_total = jg_timers.get_g_timer_left_time('guid_fail')
@@ -343,8 +340,19 @@ end
 function get_bonus_hours()
 	local hours = 0
 	local guid_data = has_guiding_started() and curr_guid or guid
-	if (guid_data) then
-		hours = math.floor(guid_data.timer * guid_data.bonus_time_cf)
+	if (guid_data and guid_data.bonus_time_cf) then
+		if (guid_data.bonus_time_cf > 0) then
+			hours = math.floor(guid_data.timer * guid_data.bonus_time_cf)
+		end
 	end
 	return hours
+end
+
+function get_nadbavka()
+	local nadbavka = 0
+	local guid_data = has_guiding_started() and curr_guid or guid
+	if (guid_data) then
+		nadbavka = guid_data.zarplata * guid_data.nadbavka_cf
+	end
+	return nadbavka
 end
