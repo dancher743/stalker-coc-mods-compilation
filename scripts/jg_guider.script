@@ -256,9 +256,11 @@ function prec_5(actor, npc)
 end
 
 function get_phrase_1()
-	local timer = guid['timer']
-	local bonus_hours = timer - get_bonus_hours()
-	local str = string.format(game.translate_string('st_jg_16'), timer, guid.description, guid['zarplata'], guid['neustoika'], bonus_hours)
+	local str = string.format(game.translate_string('st_jg_16'), guid['timer'], guid.description, guid['zarplata'], guid['neustoika'])
+	if (has_time_bonus()) then
+		local bonus_str = strformat(strtransl("st_jg_161"), get_bonus_hours())
+		str = strformat("%s %s", str, bonus_str)
+	end
 	if jg_guider.debug == true then
 		str = string.format('%s\\n\\n%s %s', str, game.translate_string('st_jg_19'), guid['size'])
 	end
@@ -279,15 +281,18 @@ end
 
 function get_phrase4()
 	local left_hours, left_minutes = get_time_left()
-	local bonus_hours = get_bonus_hours()
-	local phrase = strformat(strtransl('st_jg_21'), left_hours, left_minutes, bonus_hours)
+	local phrase = strformat(strtransl('st_jg_21'), left_hours, left_minutes)
+	if (has_time_bonus()) then
+		local bonus_phrase = strformat(strtransl("st_jg_211"), get_bonus_hours())
+		phrase = strformat("%s %s", phrase, bonus_phrase)
+	end
 	return phrase
 end
 
 function get_phrase5()
 	local phrase
 	if (has_time_bonus()) then
-		phrase = strformat("%s %s", strtransl("st_jg_9"), strtransl("st_jg_22"))
+		phrase = strformat("%s %s", strtransl("st_jg_9"), strtransl("st_jg_91"))
 	else
 		phrase = strtransl("st_jg_9")
 	end
@@ -319,14 +324,7 @@ function is_squad_need_guider(squad_id)
 end
 
 function has_time_bonus()
-	local result = false
-	local bonus_hours = get_bonus_hours()
-	if (bonus_hours > 0) then
-		local seconds_left = jg_timers.get_g_timer_left_time('guid_fail')
-		local minutes_left = math.floor(seconds_left / 60)
-		result = minutes_left > bonus_hours * 60
-	end
-	return result
+	return get_bonus_hours() > 0
 end
 
 function get_time_left()
@@ -345,7 +343,7 @@ end
 function get_bonus_hours()
 	local hours = 0
 	local guid_data = has_guiding_started() and curr_guid or guid
-	if (guid_data and guid_data.timer and guid_data.bonus_time_cf) then
+	if (guid_data) then
 		hours = math.floor(guid_data.timer * guid_data.bonus_time_cf)
 	end
 	return hours
