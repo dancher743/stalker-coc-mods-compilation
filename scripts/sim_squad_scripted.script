@@ -299,7 +299,7 @@ function sim_squad_scripted:specific_update(script_target_id)
 			end
 			return
 		elseif (self.current_action == 1 and self.current_target_id == self.assigned_target_id) then
-			if (self.stay_time == nil or game.get_game_time():diffSec(self.stay_time) < self.idle_time or self:can_stay_at_night()) then
+			if (self.stay_time == nil or game.get_game_time():diffSec(self.stay_time) < self.idle_time) then
 				return
 			end
 		end
@@ -349,7 +349,7 @@ function sim_squad_scripted:generic_update()
 				end
 				return
 			elseif (self.current_action == 1 and self.current_target_id == self.assigned_target_id) then
-				if (se_target.locked == true) or (self.stay_time and game.get_game_time():diffSec(self.stay_time) < self.idle_time) or self:can_stay_at_night() then 
+				if (se_target.locked == true) or (self.stay_time and game.get_game_time():diffSec(self.stay_time) < self.idle_time) then 
 					return
 				end
 			end
@@ -1393,8 +1393,3 @@ function sim_squad_scripted:get_squad_relation()
     end
 end
 --xrSanya-----------------------------------------------
-
--- Added by Dancher
-function sim_squad_scripted:can_stay_at_night()
-	return is_squad_monster[self.player_id] == false and xr_conditions.is_day() == false
-end

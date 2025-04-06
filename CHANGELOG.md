@@ -9,7 +9,6 @@ All notable changes to this project will be documented in this file.
 * Added higher priority to grenade launcher in medium and far tables in `ai_stalker.script`
 * Added original colors to health bar of Companions List HUD
 * Reworked bonus time reward calculation and dialogs of Guide job
-* Added stay squad on target at night condition
 
 ### Fixes
 * Revert some code of A-Life from CoC 1.5 feature to stabilize it
