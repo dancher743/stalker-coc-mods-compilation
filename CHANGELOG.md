@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 * Added higher priority to grenade launcher in medium and far tables in `ai_stalker.script`
 * Added original colors to health bar of Companions List HUD
 * Reworked bonus time reward calculation and dialogs of Guide job
+* Added changes to `xrs_kill_wounded.script` from Anomaly 1.5.1.2 to fix killing the wounded
 
 ### Fixes
 * Revert some code of A-Life from CoC 1.5 feature to stabilize it
