@@ -869,3 +869,11 @@ function init_npc_sound(npc)
 		end
 	end
 end
+
+function is_community_avail(sound, npc)
+	local snd_theme = sound_theme.theme[sound]
+	if (snd_theme and snd_theme.avail_communities) then
+		return snd_theme.avail_communities[character_community(npc)]
+	end
+	return false
+end
