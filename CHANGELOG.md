@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 * Reworked bonus time reward calculation and dialogs of Guide job
 * Added changes to `xrs_kill_wounded.script` from Anomaly 1.5.1.2 to fix killing the wounded
 * Corrected text of `scientific_outfit_description` string in Rus localization
+* Rebalanced probabilities of rain and storm transitions
 
 ### Fixes
 * Revert some code of A-Life from CoC 1.5 feature to stabilize it
