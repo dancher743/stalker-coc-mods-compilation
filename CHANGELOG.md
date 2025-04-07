@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 * Revert RAM clearing on game unloading
 * Fixed NPC idle sounds about north levels
 * Fixed icon of `sim_default_military_0_default_0` character
+* Disabled simulation of ecolog non-explorer squads
 
 ### Framework
 * Moved UI dialogs from `ui_generic_dialogs.script` to own scripts
