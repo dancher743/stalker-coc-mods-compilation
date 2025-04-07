@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.5.1] - Unreleased
+## [1.5.1] - 2025-04-07
 
 ### Improvements
 * Improved `update_best_weapon` function in `ai_stalker.script` (from CoC 1.5)
