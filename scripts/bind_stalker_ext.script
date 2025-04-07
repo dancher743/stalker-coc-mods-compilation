@@ -80,7 +80,9 @@ end
 function actor_on_net_destroy(binder)
 	SendScriptCallback("actor_on_net_destroy",binder)
 	SendScriptCallback("on_game_unload",binder)
-	gc.collect("actor_on_net_destroy")
+	if (USE_FUNCTIONS_MEMOIZE) then
+		_G.unmemoize_functions()
+	end
 end 
 
 -------------------

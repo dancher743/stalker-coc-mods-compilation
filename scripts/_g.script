@@ -13,7 +13,7 @@ if (jit == nil) then
 end
 
 GAME_VERSION = "1.4.22"
-MOD_VERSION = "Dancher's Compilation 1.5.0"
+MOD_VERSION = "Dancher's Compilation 1.5.1 RC 1"
 
 if string.find(command_line(), "-dbg") then
 	DEV_DEBUG = true
@@ -115,6 +115,23 @@ function memoize_functions()
 	
 	get_console_function = get_console
 	get_console = _G.get_console_memoized
+end
+
+function unmemoize_functions()
+	alife = alife_function
+	alife_function = nil
+	
+	system_ini = system_ini_function
+	system_ini_function = nil
+	
+	game_graph = game_graph_function
+	game_graph_function = nil
+	
+	get_hud = get_hud_function
+	get_hud_function = nil
+	
+	get_console = get_console_function
+	get_console_function = nil
 end
 
 function alife_memoized()
@@ -1129,44 +1146,28 @@ end
 
 function character_community (obj)
 	if not (obj) then
-		return nil
+		return
 	end
-	local clsid = obj:clsid()
-	if IsStalkerOnly(obj, clsid) then
+	if IsStalker(obj) then
+		if (obj:id() == 0 and disguise.has_actor_disguised()) then
+			return disguise.get_actor_default_faction()
+		end
 		return obj:character_community()
 	end
-	if IsActor(obj, clsid) then
-		if (disguise.has_actor_disguised()) then
-			return disguise.get_actor_default_faction()
-		else
-			return obj:character_community()
-		end
-	end
-	if (IsMonster(obj, clsid)) then
-		return "monster"
-	end
-	return nil
+	return "monster"
 end
 
 function alife_character_community (obj)
 	if not (obj) then
-		return nil
+		return
 	end
-	local clsid = obj:clsid()
-	if IsStalkerOnly(obj, clsid) then
+	if IsStalker(obj, obj:clsid()) then
+		if (obj.id == 0 and disguise.has_actor_disguised()) then
+			return disguise.get_actor_default_faction()
+		end
 		return obj:community()
 	end
-	if IsActor(obj, clsid) then
-		if (disguise.has_actor_disguised()) then
-			return disguise.get_actor_default_faction()
-		else
-			return obj:community()
-		end
-	end
-	if (IsMonster(obj, clsid)) then
-		return "monster"
-	end
-	return nil
+	return "monster"
 end
 
 function actor_community()

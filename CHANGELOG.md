@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.1] - Unreleased
+
+### Improvements
+* Improved `update_best_weapon` function in `ai_stalker.script` (from CoC 1.5)
+* Added higher priority to grenade launcher in medium and far tables in `ai_stalker.script`
+* Added original colors to health bar of Companions List HUD
+* Reworked bonus time reward calculation and dialogs of Guide job
+* Added changes to `xrs_kill_wounded.script` from Anomaly 1.5.1.2 to fix killing the wounded
+* Corrected text of `scientific_outfit_description` string in Rus localization
+* Rebalanced probabilities of rain and storm transitions
+
+### Fixes
+* Revert some code of A-Life from CoC 1.5 feature to stabilize it
+* Changed format of Guider job's timers to prevent overflow of last day in a month
+* Fixed disguise checks in get community functions in `_g.script`
+* Added `unmemoize_functions()` into `_g.script` to fix `ALife simulator has not been started yet` error
+* Revert RAM clearing on game unloading
+* Fixed NPC idle sounds about north levels
+* Fixed icon of `sim_default_military_0_default_0` character
+* Disabled simulation of ecolog non-explorer squads
+* Enabled simulation of ecolog explorer squads in EOC mode
+
+### Framework
+* Moved UI dialogs from `ui_generic_dialogs.script` to own scripts
+
 ## [1.5.0] - 2025-03-31
 
 ### Features

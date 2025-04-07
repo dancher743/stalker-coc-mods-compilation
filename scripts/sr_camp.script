@@ -113,6 +113,13 @@ local sr_camp_states = {
 						},
 }
 
+local north_levels = {
+	zaton = true,
+	jupiter = true,
+	pripyat = true
+}
+local state_north_chance = 0.05
+
 --------------------------------------------------------------------------------
 -- Класс CCampManager
 --------------------------------------------------------------------------------
@@ -160,6 +167,7 @@ function CCampManager:update()
 	-- Если кто-то говорит айдловую фразу, ждем пока он договорит.
 	if(self.idle_talker~=nil) then
 		if(xr_sound.sound_table[self.idle_talker]) then
+			self.idle_talker_sound = nil
 			return
 		else
 			self.idle_talker = nil
@@ -206,7 +214,20 @@ function CCampManager:update()
 		end
 		if(npc_count~=0) then
 			self.idle_talker = talkers[math.random(#talkers)]
-			xr_sound.set_sound_play(self.idle_talker, "state")
+			if (self.idle_talker_sound == nil) then
+				if (north_levels[level.name()] and math.random() < state_north_chance) then
+					local state_north_name = "state_north"
+					local npc = db.storage[self.idle_talker] and db.storage[self.idle_talker].object
+					if (npc and sound_theme.is_community_avail(state_north_name, npc)) then
+						self.idle_talker_sound = state_north_name
+					else
+						self.idle_talker_sound = "state"
+					end
+				else
+					self.idle_talker_sound = "state"
+				end
+			end
+			xr_sound.set_sound_play(self.idle_talker, self.idle_talker_sound)
 		end
 	end
 end

@@ -23,8 +23,6 @@ function npc_sound:__init(snd_ini, section)
 		--' Параметры вычитывания звука
 	self.prefix = snd_ini:r_bool_ex(section,"npc_prefix",false)
 	self.path = snd_ini:r_string_ex(section,"path") or STR_EMPTY
-	self.path_north_levels = snd_ini:r_string_ex(section,"path_north_levels") or STR_EMPTY
-	self.north_levels = snd_ini:line_exist(section,"north_levels") and alun_utils.parse_list(snd_ini,section,"north_levels",true) or {}
 	self.shuffle = snd_ini:r_string_ex(section,"shuffle") or "rnd"
 	self.group_snd = snd_ini:r_bool_ex(section,"group_snd",false)
 	self.play_always = snd_ini:r_bool_ex(section,"play_always",false)
@@ -104,15 +102,6 @@ function npc_sound:init_npc(npc)
 			self.sound_path[npc_id][num] = npc:sound_prefix()..self.path..num
 			num = num + 1
 		end
-		local max2 = 0
-		if (self.north_levels[level.name()]) then
-			while f:exist("$game_sounds$",npc:sound_prefix()..self.path_north_levels..num..".ogg") do
---				printf("adding sound ["..npc:sound_prefix()..self.path_north_levels..num.."] to table id = "..num)
-				self.sound_path[npc_id][num] = npc:sound_prefix()..self.path_north_levels..num
-				num = num + 1
-				max2 = max2 + 1
-			end
-		end
 		if (num > 1) then 
 			self.npc[npc_id] = {}
 			self.npc[npc_id].id = id()
@@ -122,10 +111,6 @@ function npc_sound:init_npc(npc)
 				self.npc[npc_id].max = npc:add_combat_sound(self.path, 64, snd_type.talk, 2, 1, self.npc[npc_id].id,"bip01_head") - 1
 			else
 				self.npc[npc_id].max = npc:add_sound(self.path, 64, snd_type.talk, 2, 1, self.npc[npc_id].id) - 1
-			end
-			
-			if (max2 > 0) then
-				self.npc[npc_id].max = self.npc[npc_id].max + max2
 			end
 		elseif DEV_DEBUG and string.find(npc:section(),"sim_default") then
 			printf("!Sound [%s] not found for [%s]: %s", self.section, npc:section(), npc:sound_prefix()..self.path)
@@ -883,4 +868,12 @@ function init_npc_sound(npc)
 			end
 		end
 	end
+end
+
+function is_community_avail(sound, npc)
+	local snd_theme = sound_theme.theme[sound]
+	if (snd_theme and snd_theme.avail_communities) then
+		return snd_theme.avail_communities[character_community(npc)]
+	end
+	return false
 end

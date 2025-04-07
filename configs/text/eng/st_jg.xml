@@ -27,6 +27,9 @@
 	<string id="st_jg_9">
 		<text>At last! Thank you, stalker, you did a good job. This money is your now.</text>
 	</string>
+	<string id="st_jg_91">
+        <text>And since you did it much earlier, take the bonus as well.</text>
+    </string>
 	<string id="st_jg_10">
 		<text>I refuse the task.</text>
 	</string>
@@ -46,8 +49,11 @@
 		<text>We are late! We have agreed : pay the penalty of %s rubles.</text>
 	</string>
 	<string id="st_jg_16">
-		<text>Yes. I`m going to visit some place. The reward will be worth. After %s hours I`ll have to get into %s, I`ll pay %s rubles. Just remember, if we do not arrive in time, I`ll take %s as the penalty. If you do it much earlier, I'll give you a bonus.</text>
+		<text>Yes. I`m going to visit some place. The reward will be worth. After %s hours I`ll have to get into %s, I`ll pay %s rubles. Just remember, if we do not arrive in time, I`ll take %s as the penalty.</text> 
 	</string>
+	<string id="st_jg_161">
+        <text>If you do it for %s hours, I'll give you %s rubles as a bonus.</text>
+    </string>
 	<string id="st_jg_17">
 		<text>I should be in</text>
 	</string>
@@ -57,16 +63,14 @@
 	<string id="st_jg_19">
 		<text>Size way (Include the start and end level): </text>
 	</string>
-	
 	<string id="st_jg_20">
         <text>How much time is left?</text>
     </string>
 	<string id="st_jg_21">
         <text>%s hours and %s minutes.</text>
     </string>
-	
-	<string id="st_jg_22">
-        <text>And since you did it much earlier, take the bonus as well.</text>
+	<string id="st_jg_211">
+        <text>Bonus for %s hours before the end.</text>
     </string>
 	
 	<string id="st_travel_guider">

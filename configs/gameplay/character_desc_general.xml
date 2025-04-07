@@ -14236,7 +14236,7 @@
     <!--  military novice  -->
     <specific_character id="sim_default_military_0_default_0" team_default = "1">
     <name>GENERATE_NAME_private</name>
-    <icon>ui_inGame2_soldier_1_mask</icon>
+    <icon>ui_inGame2_Soldier_1_mask</icon>
     <map_icon x="1" y="0"></map_icon>
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_military_0</class>

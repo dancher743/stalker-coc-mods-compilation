@@ -40,13 +40,13 @@ local function npc_on_update(npc,st)
 		return
 	end
 	
-	if (st.victim_surrender == nil or st.victim_surrender == 65534) then -- override NPC roll
+	if not (st.victim_surrender) or (st.victim_surrender ~= 0 and st.victim_surrender ~= 65535) then -- override NPC roll
 		local active_item = db.actor:active_item()
 		if not (active_item and IsWeapon(active_item)) then
 			return
 		end
 
-		if (npc:character_community() == "zombied" or character_community(npc) == "monolith") then
+		if (character_community(npc) == "zombied" or character_community(npc) == "monolith") then
 			return
 		end
 
@@ -55,7 +55,7 @@ local function npc_on_update(npc,st)
 		end
 
 		if (npc:position():distance_to(db.actor:position()) >  ActorKillWoundedMaxDist) then
-		--if (utils.angle_diff(db.actor:direction(), db.actor:position():sub(npc:position())) < 90 or npc:position():distance_to(db.actor:position()) >  7) then
+		--if (alun_utils.angle_diff(db.actor:direction(), db.actor:position():sub(npc:position())) < 90 or npc:position():distance_to(db.actor:position()) >  7) then
 			return
 		end
 
@@ -91,10 +91,9 @@ local function is_wounded(npc)
 		if (squad and squad:commander_id() == npc:id()) then
 			return true
 		end
-		return false
 	end
 	
-	if (npc:id() ~= 0 and IsStalker(npc) and IsWounded(npc)) then
+	if (npc:id() ~= 0 and IsStalker(npc) and npc:wounded()) then
 		return true 
 	end
 	
@@ -197,13 +196,13 @@ function act_kill_wounded:initialize()
 	local st = self.st 
 	
 	st.timer = nil
+
+	npc:inactualize_patrol_path()
+	npc:set_path_type(game_object.level_path)
 end
 
 function act_kill_wounded:reset()
 	self.st.timer = nil
-	if (self.st.vertex_id) then 
-		db.used_level_vertex_ids[self.st.vertex_id] = nil
-	end
 	self.st.vertex_id = nil 
 	self.st.vertex_position = nil
 end 
@@ -227,10 +226,7 @@ function act_kill_wounded:execute()
 
 	local dist = npc:position():distance_to(vo:position())
 	if (dist < MinDistance) then
-		--self:reset()
-		state_mgr.set_state(npc,"raid",nil,nil,{look_object = vo})
-		alun_utils.try_go_backward(npc,6)
-		return
+		self:reset()
 	end
 	
 	local dst = db.storage[npc:id()]
@@ -292,7 +288,7 @@ function act_kill_wounded:begin_kill_wounded(vo)
 	
 	if not (vst.victim_surrender) then
 		if (character_community(vo) ~= "monolith" and character_community(vo) ~= "zombied") then
-			if (CauseSurrenderCommunities[character_community(self.object)] and SurrenderChance >= (math.random(1,100)/100) ) then
+			if (CauseSurrenderCommunities[character_community(self.object)] and SurrenderChance > (math.random(1,100)/100) ) then
 				vst.victim_surrender = self.object:id()
 				printf("victim surrender to %s",vst.victim_surrender)
 			else
@@ -355,21 +351,27 @@ function setup_generic_scheme(npc,ini,scheme,section,stype,temp)
 end
 
 function add_to_binder(npc,ini,scheme,section,st,temp)
+	if not npc then return end
 	local manager = npc:motivation_action_manager()
+	if not manager then return end
 
-	if (not npc:alive()) or (Enable ~= true or npc:character_community() == "zombied" or npc:section() == "actor_visual_stalker") then
+	if (not npc:alive()) or (Enable ~= true or character_community(npc) == "zombied" or npc:section() == "actor_visual_stalker") then
 		manager:add_evaluator(evaid,property_evaluator_const(false))
-		--temp.needs_configured = false
-	else 
-		manager:add_evaluator(evaid,eva_kill_wounded("eva_kill_wounded",st))
-	end
-	
+		temp.needs_configured = false
+		return 
+	end 
+
+	local evaluator = eva_kill_wounded("eva_kill_wounded",st)
 	temp.action = act_kill_wounded("act_kill_wounded",st)
+
+	if not evaluator or not temp.action then return end
+	manager:add_evaluator(evaid,evaluator)
 	
 	local wp = world_property
 	temp.action:add_precondition(wp(evaid,true) )
 	temp.action:add_precondition(wp(stalker_ids.property_alive,true))
 	temp.action:add_precondition(wp(stalker_ids.property_enemy,true))
+	temp.action:add_precondition(wp(stalker_ids.property_anomaly,false))
 	temp.action:add_effect(wp(evaid,false))
 	temp.action:add_effect(wp(stalker_ids.property_enemy,false))
 	
@@ -377,6 +379,10 @@ function add_to_binder(npc,ini,scheme,section,st,temp)
 end
 
 function configure_actions(npc,ini,scheme,section,stype,temp)
+	if not npc then return end
+	local manager = npc:motivation_action_manager()
+	if not manager or not temp.action then return end
+
 	local wp = world_property
 	
 	--temp.action:add_precondition(wp(xr_evaluators_id.state_mgr + 2,true))
@@ -390,7 +396,6 @@ function configure_actions(npc,ini,scheme,section,stype,temp)
 	end
 	--]]
 	
-	local manager = npc:motivation_action_manager()
 	local action
 	
 	local p = {
@@ -403,18 +408,19 @@ function configure_actions(npc,ini,scheme,section,stype,temp)
 	}
 	for i=1,#p do
 		action = manager:action(p[i])
-		action:add_precondition( wp(evaid,false) )
+		if action then action:add_precondition( wp(evaid,false) ) end
 	end
 end
 
--- function add_common_precondition(action)
-	-- action:add_precondition(world_property(evaid,false))
--- end
+function add_common_precondition(action)
+	if not action then return end
+	action:add_precondition(world_property(evaid,false))
+end
 
 function is_under_kill_wounded(npc)
 	local mgr = npc:motivation_action_manager()
 
-	if not mgr:initialized() then
+	if not mgr or not mgr:initialized() then
 		return false
 	end
 
