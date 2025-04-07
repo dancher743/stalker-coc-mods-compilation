@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.2] - Unreleased
+
 ## [1.5.1] - 2025-04-07
 
 ### Improvements
