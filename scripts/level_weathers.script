@@ -82,6 +82,7 @@ function WeatherManager:__init()
 	end
 	self.dof_factor=1
 	self.period=get_random_weather()
+	self.period_next=get_random_weather()
 	self.transition_period=false
 	self.pre_blowout_period=false
 	self.levelWeather=STR_EMPTY
@@ -281,7 +282,8 @@ function WeatherManager:change_period()
 	end
 
 	if (self:can_change_period(self.period)) then
-		self.period = self:get_next_period(self.period)
+		self.period = self.period_next
+		self.period_next = self:get_next_period(self.period)
 		self:reset_last_period_change_date(true)
 		-- Dancher: disabled
 		self.transition_period=false
@@ -300,10 +302,10 @@ function WeatherManager:apply_dof()
 	if string.sub(self.levelWeather,1,9)=="atmosfear" then
 		local last_hour_str=self:get_hour_as_string(self.last_hour)
 		local next_hour_str=self:get_hour_as_string(self.next_hour)
-		local last_dist=self.far_distances[self.curr_weather][last_hour_str]
-		local next_dist=self.far_distances[self.next_weather][next_hour_str]
-		local last_dof_kernel=self.dof_kernels[self.curr_weather]
-		local next_dof_kernel=self.dof_kernels[self.next_weather]
+		local last_dist=self.far_distances[self.period][last_hour_str]
+		local next_dist=self.far_distances[self.period_next][next_hour_str]
+		local last_dof_kernel=self.dof_kernels[self.period]
+		local next_dof_kernel=self.dof_kernels[self.period_next]
 		local m=level.get_time_minutes()
 		local current_dof_far=math.ceil(((next_dist - last_dist) * m / 60 + last_dist)*self.dof_factor)
 		local current_dof_kernel=self:round((next_dof_kernel - last_dof_kernel) * m / 60 + last_dof_kernel,2)
@@ -364,8 +366,8 @@ function WeatherManager:apply_dof()
 		--self.debugMessages[8]:SetText("fx_dof_far: no DOF")
 		--self.debugMessages[9]:SetText("fx_dof_ker: no DOF")
 	end
-	--self.debugMessages[2]:SetText("current weather: default_"..self.curr_weather)
-	--self.debugMessages[3]:SetText("next weather: default_"..self.next_weather)
+	--self.debugMessages[2]:SetText("current weather: default_"..self.period)
+	--self.debugMessages[3]:SetText("next weather: default_"..self.period_next)
 	--self.debugMessages[4]:SetText("last_hour: "..self:get_hour_as_string(self.last_hour))
 	--self.debugMessages[5]:SetText("next_hour: "..self:get_hour_as_string(self.next_hour))
 	--self.debugMessages[6]:SetText("last_hour_distance: "..last_dist)
@@ -492,13 +494,6 @@ function WeatherManager:select_weather(now)
 			weather_section_name = self:try_get_no_panorama_weather(weather_section_name)
 		end
 		--atmosfear.debugMessages[6]:SetText("weather_section_name= "..tostring(weather_section_name))
-		if now then
-			self.curr_weather=self.period
-			self.next_weather=self.period
-		else
-			self.curr_weather=self.next_weather
-			self.next_weather=self.period
-		end
 	else
 		weather_section_name = weather
 	end
@@ -722,7 +717,7 @@ function WeatherManager:stop_meteorites()
 end
 
 function WeatherManager:meteorites()
-	if (level.get_time_hours()>=22 or level.get_time_hours()<4) and ((self.curr_weather=="clear" and level.get_time_minutes()<=30) or (self.next_weather=="clear" and level.get_time_minutes()>=30)) and not level.is_wfx_playing() then
+	if (level.get_time_hours()>=22 or level.get_time_hours()<4) and ((self.period=="clear" and level.get_time_minutes()<=30) or (self.period_next=="clear" and level.get_time_minutes()>=30)) and not level.is_wfx_playing() then
 		if self.meteorites_particle==nil then
 			self:launch_meteorites()
 		else
@@ -742,7 +737,7 @@ end
 function WeatherManager:distant_storm()
 	--atmosfear.debugMessages[1]:SetText("diff_sec ="..tostring(diff_sec))
 
-	if self.distant_storm_on==nil and (self.next_weather=="cloudy"  and level.get_time_minutes()>=30) then
+	if self.distant_storm_on==nil and (self.period_next=="storm" and level.get_time_minutes()>=30) then
 		local rnd = (math.random(1,100)/100)
 		if rnd<=self.distant_storm_prob then
 			self.distant_storm_on = true
@@ -776,7 +771,7 @@ function WeatherManager:distant_storm()
 		end
 	end
 	
-	if self.distant_storm_on==true and ((self.curr_weather=="cloudy" and level.get_time_minutes()<=30) or (self.next_weather=="cloudy"  and level.get_time_minutes()>=30)) and not level.is_wfx_playing() then
+	if self.distant_storm_on==true and ((self.period=="storm" and level.get_time_minutes()<=30) or (self.period_next=="storm" and level.get_time_minutes()>=30)) and not level.is_wfx_playing() then
 		--atmosfear.debugMessages[2]:SetText("storm on")
 		if self.next_thunder_at == nil then
 			self.next_thunder_at = diff_sec + math.random(5, 10)
@@ -788,7 +783,7 @@ function WeatherManager:distant_storm()
 		--atmosfear.debugMessages[5]:SetText("next thunder ("..tostring(self.thunder_index)..") at= "..tostring(self.next_thunder_at))
 	end
 
-	if self.distant_storm_on~=nil and (self.next_weather~="cloudy" and level.get_time_minutes()>=30) then
+	if self.distant_storm_on~=nil and (self.period_next~="storm" and level.get_time_minutes()>=30) then
 		self.distant_storm_on=nil
 		self.next_thunder_at=nil
 		--atmosfear.debugMessages[2]:SetText("storm ended")
@@ -835,8 +830,8 @@ function WeatherManager:lightning()
 	--atmosfear.debugMessages[12]:SetText("direction("..tostring(self.thunder_index)..")= "..tostring(angle_dec))
 	local last_hour_str=self:get_hour_as_string(self.last_hour)
 	local next_hour_str=self:get_hour_as_string(self.next_hour)
-	local last_dist=self.far_distances[self.curr_weather][last_hour_str]
-	local next_dist=self.far_distances[self.next_weather][next_hour_str]
+	local last_dist=self.far_distances[self.period][last_hour_str]
+	local next_dist=self.far_distances[self.period_next][next_hour_str]
 	local m=level.get_time_minutes()
 	local current_far_distance=math.ceil(350*self.dof_factor)
 
@@ -876,6 +871,7 @@ function WeatherManager:save_state(m_data)
 	m_data.weather_manager = {}
 	m_data.weather_manager.levelWeather = self.levelWeather
 	m_data.weather_manager.period = self.period
+	m_data.weather_manager.period_next = self.period_next
 	m_data.weather_manager.last_period_change_date = self.last_period_change_date
 	m_data.weather_manager.update_time = self.update_time
 	
@@ -900,6 +896,8 @@ function WeatherManager:load_state(m_data)
 	self.update_time = m_data.weather_manager.update_time
 	self.weather_fx = m_data.weather_manager.weather_fx
 	self.wfx_time = m_data.weather_manager.weather_fx_time or 0
+	self.period = m_data.weather_manager.period or self.period
+	self.period_next = m_data.weather_manager.period_next or self.period_next
 	
 	--alun_utils.debug_write("WeatherManager:load_state AFTER")
 end 
