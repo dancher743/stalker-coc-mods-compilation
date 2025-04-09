@@ -71,8 +71,6 @@ function WeatherManager:__init()
 	self.wfx_time = 0
 	self.weather_fx = nil
 	self.weatherType = "[default]"
-	self.update_time = 0
-	self.update_level = STR_EMPTY
 	self.forced_weather_change_on_time_change = false
 	self.last_hour = 0
 	self.next_hour=0
@@ -85,20 +83,15 @@ function WeatherManager:__init()
 	self.period_next=get_random_weather()
 	self.transition_period=false
 	self.pre_blowout_period=false
-	self.levelWeather=STR_EMPTY
-	self.curr_weather=STR_EMPTY
-	self.next_weather=STR_EMPTY
+	self.levelWeather="atmosfear"
 	self.far_distances={}
 	self.dof_kernels={}
 	self.fx_started=nil
 	self.fx_ended=nil
 	self.last_period_change_date=game.get_game_time()
-	--self.fallout=fallout_manager.get_fallout_manager()
 	--self.debugMessages[1]:SetText("Weather system initialized")
 	self.inited_time = 0
 	self.dof_enable=false
-	self.static_ini = ini_file("environment\\static1.ltx")
-	self.static_test=false
 	self.meteorites_particle=nil
 	self.meteorites_on=false
 	self.boundaries =
@@ -209,10 +202,6 @@ function WeatherManager:round(n, precision)
   return math.floor(m*n + 0.5)/m
 end
 
-function WeatherManager:get_level_name()
-
-end
-
 function WeatherManager:get_next_period_change_hour(period)
 	local hour = 0
 	local len = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. period .. "_period",2,6)
@@ -289,7 +278,6 @@ function WeatherManager:change_period()
 		self.transition_period=false
 	end
 end
-
 
 function WeatherManager:forced_weather_change()
 	self.forced_weather_change_on_time_change = true
@@ -624,38 +612,6 @@ function WeatherManager:get_period_with_prob(section)
 	return next_period
 end
 
-function WeatherManager:load(F)
-	set_save_marker(F, "load", false, "WeatherManager")
-	-- printf("WEATHER LOAD")
-	--self.update_level  = F:r_stringZ();
-	self.levelWeather = F:r_stringZ()
-	self.period = F:r_stringZ()
-	self.last_period_change_date = utils.r_CTime(F,"level_weathers");
-	self.update_time = F:r_u32();
-	local str = F:r_stringZ()
-	if(str~=STR_NIL) then
-		self.weather_fx = str
-		self.wfx_time = F:r_float()
-	end
-	set_save_marker(F, "load", true, "WeatherManager")
-
-end
-
-function WeatherManager:save(F)
-	set_save_marker(F, "save", false, "WeatherManager")
-	-- printf("WEATHER SAVE")
-	F:w_stringZ(self.levelWeather)
-	F:w_stringZ(self.period)
-	alun_utils.w_stpk(F,"CTime",self.last_period_change_date,"WeatherManager.last_period_change_date")
-	--F:w_stringZ(self.update_level);
-	F:w_u32(self.update_time)
-	F:w_stringZ(tostring(self.weather_fx))
-	if(self.weather_fx) then
-		F:w_float(level.get_wfx_time())
-	end
-	set_save_marker(F, "save", true, "WeatherManager")
-end
-
 --##################################################################################################
 --##									HELPERS
 --##################################################################################################
@@ -668,20 +624,21 @@ function get_weather_manager ()
 end
 
 function get_random_weather()
-	local tbl = {}
+	local random_weather
 	local ini = ini_file_ex("atmosfear_options.ltx",true)
 	if (ini:section_exist("atmosfear_current_parameters")) then
+		local tbl = {}
 		for i=1,#weather_tbl do
-			local a = ini:r_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur",2,4)
-			if (a > 1) then
+			local val = ini:r_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur",2,4)
+			if (val > 1) then
 				tbl[#tbl+1] = weather_tbl[i]
 			end
 		end
 		if (#tbl > 0) then
-			return tbl[math.random(#tbl)]
+			random_weather = tbl[math.random(#tbl)]
 		end
 	end
-	return weather_tbl[math.random(#weather_tbl)]
+	return random_weather or "clear"
 end
 
 function set_rain_weather()
@@ -808,7 +765,6 @@ function WeatherManager:inside_boundaries(x, y)
 	return inside
 end
 
-
 function WeatherManager:lightning()
 	local effect=particles_object("crommcruac\\thunderbolts_distant_00")
 	local sound=sound_object(self.distant_sounds[math.random(1,#self.distant_sounds)])
@@ -863,22 +819,23 @@ function WeatherManager:lightning()
 	end
 end
 
+--##################################################################################################
+--##									SAVE/LOAD
+--##################################################################################################
+
 function WeatherManager:save_state(m_data)
-	if (bLevelUnderground) then 
-		return 
-	end
 	--alun_utils.debug_write("WeatherManager:save_state BEFORE")
 	m_data.weather_manager = {}
 	m_data.weather_manager.levelWeather = self.levelWeather
 	m_data.weather_manager.period = self.period
 	m_data.weather_manager.period_next = self.period_next
 	m_data.weather_manager.last_period_change_date = self.last_period_change_date
-	m_data.weather_manager.update_time = self.update_time
 	
-	if (level.is_wfx_playing()) then
+	if (not bLevelUnderground and level.is_wfx_playing()) then
 		m_data.weather_manager.weather_fx = level.get_weather()
 		m_data.weather_manager.weather_fx_time = level.get_wfx_time() or 0
 	end
+	
 	--alun_utils.debug_write("WeatherManager:save_state AFTER")
 end 
 
@@ -886,18 +843,23 @@ function WeatherManager:load_state(m_data)
 	if not (m_data.weather_manager) then 
 		return
 	end
-	if (bLevelUnderground) then 
-		return 
-	end
+
 	--alun_utils.debug_write("WeatherManager:load_state BEFORE")
-	self.levelWeather = m_data.weather_manager.levelWeather
-	self.period = m_data.weather_manager.period
-	self.last_period_change_date = m_data.weather_manager.last_period_change_date
-	self.update_time = m_data.weather_manager.update_time
-	self.weather_fx = m_data.weather_manager.weather_fx
-	self.wfx_time = m_data.weather_manager.weather_fx_time or 0
+	self.levelWeather = m_data.weather_manager.levelWeather or self.levelWeather
 	self.period = m_data.weather_manager.period or self.period
 	self.period_next = m_data.weather_manager.period_next or self.period_next
+	self.last_period_change_date = m_data.weather_manager.last_period_change_date or self.last_period_change_date
+	
+	if (not bLevelUnderground) then 
+		self.weather_fx = m_data.weather_manager.weather_fx
+		self.wfx_time = m_data.weather_manager.weather_fx_time or 0
+	end
+	
+	if (self.levelWeather == "atmosfear_transition") then 
+		self.transition_period = true
+	elseif (self.levelWeather == "atmosfear_pre_blowout") then
+		self.pre_blowout_period = true
+	end
 	
 	--alun_utils.debug_write("WeatherManager:load_state AFTER")
 end 

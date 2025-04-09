@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Improvements
 * Reworked code of distant storms in `level_weathers.script`
+* Made clean up in `level_weathers.script`
 
 ## [1.5.1] - 2025-04-07
 
