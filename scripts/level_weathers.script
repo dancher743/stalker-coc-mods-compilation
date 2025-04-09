@@ -829,7 +829,7 @@ function WeatherManager:save_state(m_data)
 	m_data.weather_manager.levelWeather = self.levelWeather
 	m_data.weather_manager.period = self.period
 	m_data.weather_manager.period_next = self.period_next
-	m_data.weather_manager.last_period_change_date = self.last_period_change_date
+	m_data.weather_manager.last_period_change_date = utils.CTime_to_table(self.last_period_change_date)
 	
 	if (not bLevelUnderground and level.is_wfx_playing()) then
 		m_data.weather_manager.weather_fx = level.get_weather()
@@ -849,6 +849,10 @@ function WeatherManager:load_state(m_data)
 	self.period = m_data.weather_manager.period or self.period
 	self.period_next = m_data.weather_manager.period_next or self.period_next
 	self.last_period_change_date = m_data.weather_manager.last_period_change_date or self.last_period_change_date
+	-- new format check
+	if (type(self.last_period_change_date) == STR_TABLE) then
+		self.last_period_change_date = utils.CTime_from_table(self.last_period_change_date)
+	end
 	
 	if (not bLevelUnderground) then 
 		self.weather_fx = m_data.weather_manager.weather_fx

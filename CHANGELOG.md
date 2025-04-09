@@ -8,6 +8,9 @@ All notable changes to this project will be documented in this file.
 * Reworked code of distant storms in `level_weathers.script`
 * Made clean up in `level_weathers.script`
 
+### Fixes
+* Changed last period change date format for saves in `level_weathers.script`
+
 ## [1.5.1] - 2025-04-07
 
 ### Improvements
