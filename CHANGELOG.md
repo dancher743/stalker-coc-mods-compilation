@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Improvements
 * Reworked code of distant storms in `level_weathers.script`
 * Made clean up in `level_weathers.script`
+* Moved UI strings of Guide job to a new `us_st_jg.xml` file
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`

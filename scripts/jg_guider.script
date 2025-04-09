@@ -117,7 +117,7 @@ function prepare_follower()
 	if (axr_main_options.get_check_option("show_guide_job_on_map")) then
 		local spot_id = guid.squad_id
 		local spot_icon = "ui_pda2_need_guider_location_level_map"
-		local spot_descr = strformat(strtransl("st_ui_pda_need_guider_spot_descr"), npc:character_name())
+		local spot_descr = strformat(strtransl("ui_st_pda_need_guider_spot_descr"), npc:character_name())
 		level.map_add_object_spot_ser(spot_id, spot_icon, spot_descr)
 		guid.spot_id = spot_id
 	end
@@ -147,7 +147,7 @@ function activate()
 		
 		local spot_id = se_obj.id
 		local npc = level.object_by_id(get_comm_id(curr_guid.squad_id))
-		local spot_descr = strformat(strtransl("st_ui_pda_guider_target_spot_descr"),npc:character_name(),curr_guid.description)
+		local spot_descr = strformat(strtransl("ui_st_pda_guider_target_spot_descr"),npc:character_name(),curr_guid.description)
 		level.map_add_object_spot_ser(spot_id, "crlc_guide", spot_descr)
 		-- level.map_add_object_spot_ser(guid.squad_id, 'storyline_task_location', 'Сталкеру необходимо попасть '..description)
 		
