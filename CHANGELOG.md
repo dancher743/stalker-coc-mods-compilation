@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Mods
 * [ND fix NPC guitar position coc 1.4.22](https://www.moddb.com/mods/call-of-chernobyl/addons/nd-fix-npc-guitar-position-coc1-4-22)
+* [Disappearing Rain Sound Fix](https://www.moddb.com/mods/doctorx-call-of-the-zone/addons/disappearing-rain-sound-fix)
 
 ### Improvements
 * Reworked code of distant storms in `level_weathers.script`

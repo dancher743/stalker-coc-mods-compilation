@@ -16,6 +16,8 @@ function actor_binder:__init (obj) super(obj)
 	--self.last_level_name = "nil" -- Not used for anything
 	self.deimos_intensity = nil
 
+	--GoozE rain sound fix part 1 (yes its hacky but it works)
+	level.set_weather("[default]",true)
 	self.last_detective_achievement_spawn_time 	= nil
 	self.last_mutant_hunter_achievement_spawn_time	= nil
 
@@ -38,7 +40,8 @@ function actor_binder:net_spawn(data)
 	db.add_actor(self.object)
 	db.add_enemy(self.object)
 
-	level_weathers.get_weather_manager():reset()
+	--GoozE rain fix part 2, move reset weather manager to first update, not sure why this is necessary but moving the call 100ms later stops the sound engine from being naughty
+	--level_weathers.get_weather_manager():reset()
 	
 	db.actor.deimos_intensity = self.deimos_intensity
 	self.deimos_intensity = nil
@@ -233,6 +236,8 @@ function actor_binder:update(delta)
 		collectgarbage("collect")
 		printf("collectgarbage after=%sKb",collectgarbage("count")*1024)
 		--alun_utils.debug_write("actor first_update END")
+		--GoozE rain fix part 3
+		level_weathers.get_weather_manager():reset()
 	end
 	
 	task_manager.get_task_manager():update()
