@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [1.5.2] - Unreleased
 
+### Mods
+* [ND fix NPC guitar position coc 1.4.22](https://www.moddb.com/mods/call-of-chernobyl/addons/nd-fix-npc-guitar-position-coc1-4-22)
+
 ### Improvements
 * Reworked code of distant storms in `level_weathers.script`
 * Made clean up in `level_weathers.script`
