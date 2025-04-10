@@ -1515,27 +1515,34 @@ end
 function DynamicNewsManager:ReportNextEmission() --  news about expected surge's date
 	--printf(">>> Dyn News: ReportNextEmission - call")
 	local SM, SurgeType, last_surge_time, AccuracyTier, comm, Se, It, clr, msg, a, b, c, d, Tbl_msg
-	local IsEmission, IsPsiStorm = false, false
+	local IsEmission, IsPsiStorm, IsFallout = false, false, false
 	
-	-- %50 chance to pick blowout or psi-storm
-	if (math.random(2) == 1) then 
+	-- %33 chance to pick blowout or psi-storm or fallout
+	if (math.random(3) == 1) then
 		SurgeType = game.translate_string("st_dyn_news_surge_type_emission")
 		SM = surge_manager and surge_manager.SurgeManager
 		if (atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_blowout",2,1)==1) and (SM ~= nil and SM._delta ~= nil and not SM.started) then	-- if blowouts are enabled
 			last_surge_time = SM and SM.last_surge_time or game.get_game_time()
 			IsEmission = true
 		end
-	else
+	elseif (math.random(3) == 2) then
 		SurgeType = game.translate_string("st_dyn_news_surge_type_psi")
 		SM = psi_storm_manager and psi_storm_manager.PsiStormManager
 		if (atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_psi_storm",2,1)==1) and (SM ~= nil and SM._delta ~= nil and not SM.started) then
 			last_surge_time = SM and SM.last_psi_storm_time or game.get_game_time()
 			IsPsiStorm = true
 		end
+	else
+		SurgeType = game.translate_string("st_dyn_news_surge_type_fallout")
+		SM = fallout_manager and fallout_manager.get_fallout_manager()
+		if (atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_fallout",2,1)==1) and (SM ~= nil and SM._delta ~= nil and not SM.is_started()) then
+			last_surge_time = SM and SM.last_fallout_time or game.get_game_time()
+			IsPsiStorm = true
+		end
 	end
 	
 	-- preparing the news
-	if IsEmission or IsPsiStorm then
+	if IsEmission or IsPsiStorm or IsFallout then
 		local g_time = game.get_game_time()
 		local surge_start = SM and math.floor(SM._delta - g_time:diffSec(last_surge_time))	-- time "till" next blowout (in second) = ( time of next surge[SCOPED] - (current time - last surge time)[SCOPED] )
 		

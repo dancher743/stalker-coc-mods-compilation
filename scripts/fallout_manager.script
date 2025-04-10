@@ -90,6 +90,9 @@ function FalloutManager:__init()
 							geiger_7 = sound_object("detectors\\geiger_7"), 
 							geiger_8 = sound_object("detectors\\geiger_8")
 							}
+	-- for compatibility with other cataclysm managers
+	self._delta = self.nextFalloutIn
+	self.last_fallout_time = self.inited_time
 end
 
 local hits = {}
