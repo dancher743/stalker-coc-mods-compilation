@@ -5,6 +5,9 @@
 
 --' Таблица содержит менеджеры историй
 local sound_managers = {}
+--' Файл с описанием озвученных историй
+local story_ltx = ini_file("misc\\sound_stories.ltx")
+
 --' Создать новый саунд-менеджер. Нужно передать уникальный айдишник
 function get_sound_manager(id)
 	if sound_managers[id] == nil then
@@ -13,7 +16,6 @@ function get_sound_manager(id)
 	return sound_managers[id]
 end
 
-local story_ltx = ini_file("misc\\sound_stories.ltx")
 --' Звуковой менеджер содержит в себе список персонажей, которые могут рассказать историю по ролям.
 class "sound_manager"
 function sound_manager:__init(id)
@@ -182,7 +184,7 @@ function sound_manager:update()
 	self.last_playing_npc = npc
 
 	--' Произносим фразу
-	if next_phrase.theme ~= "nil" then
+	if next_phrase.theme ~= STR_NIL then
 		xr_sound.set_sound_play(npc, next_phrase.theme)
 	end
 
@@ -219,10 +221,10 @@ function CStory:__init(story_id)
 	--' Вычитываем шаблон истории из ini файла
 
 	local n = story_ltx:line_count(story_id)
-	local id, value = "",""
+	local id, value = STR_EMPTY,STR_EMPTY
 
 	for i=0,n-1 do
-		result, id, value	= story_ltx:r_line(story_id,i,"","")
+		result, id, value	= story_ltx:r_line(story_id,i,STR_EMPTY,STR_EMPTY)
 
 		local t = parse_names(value)
 
