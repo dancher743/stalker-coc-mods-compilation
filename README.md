@@ -126,3 +126,4 @@ Mods
 74. Military novice outfit from Comrade's Vanilla Addon (Comrade)
 75. ND fix NPC guitar position coc 1.4.22 (TheLostStalker88, VodkaChicken)
 76. Disappearing Rain Sound Fix (ZRP team, GoozE, woopersnaper). Special thanks to TheLostStalker88 for the tip!
+77. Jokes Restoration + Script Fix [CoC 1.5R7] (party-50, FudgeBomb, fontar)
