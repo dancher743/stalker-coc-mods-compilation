@@ -1535,7 +1535,8 @@ function DynamicNewsManager:ReportNextEmission() --  news about expected surge's
 	else
 		SurgeType = game.translate_string("st_dyn_news_surge_type_fallout")
 		SM = fallout_manager and fallout_manager.get_fallout_manager()
-		if (atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_fallout",2,1)==1) and (SM ~= nil and SM._delta ~= nil and not SM.is_started()) then
+		local started = fallout_manager and fallout_manager.is_started()
+		if (atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_fallout",2,1)==1) and (SM ~= nil and SM._delta ~= nil and not started) then
 			last_surge_time = SM and SM.last_fallout_time or game.get_game_time()
 			IsPsiStorm = true
 		end
