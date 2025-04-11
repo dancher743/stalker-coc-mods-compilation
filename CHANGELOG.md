@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 * Moved UI strings of Guide job to a new `us_st_jg.xml` file
 * Refactored next cataclysm dialog
 * Added Fallout into report about next emission of Dynamic News
+* Replaced removed bandit squads in Dead City with merc squads
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`
