@@ -80,7 +80,7 @@ local sr_camp_states = {
 							timeout = 0,
 							transitions = {"idle","harmonica","guitar","story"},
 							precondition = function (camp)
-								if(#story_table>0) then
+								if(#story_table>0 or #joke_table>0) then
 									local n = 0
 									for k,v in pairs(camp.npc) do
 										n = n + 1
@@ -274,9 +274,7 @@ function CCampManager:set_story()
 		if (math.random() < 0.7) then
 			story = joke_table[math.random(#joke_table)]
 		else
-			if (#story_table == 0) then
-				story = "test_story"
-			elseif (#story_table == 1) then
+			if (#story_table == 1) then
 				story = story_table[1]
 			elseif (#story_table > 1) then
 				story = utils.pick_without(self.last_story, story_table)
