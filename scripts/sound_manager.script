@@ -5,9 +5,16 @@
 
 --' Таблица содержит менеджеры историй
 local sound_managers = {}
-
+--' Файл с описанием озвученных историй
 local story_ltx = ini_file("misc\\sound_stories.ltx")
 
+--' Создать новый саунд-менеджер. Нужно передать уникальный айдишник
+function get_sound_manager(id)
+	if sound_managers[id] == nil then
+		sound_managers[id] = sound_manager(id)
+	end
+	return sound_managers[id]
+end
 
 --' Звуковой менеджер содержит в себе список персонажей, которые могут рассказать историю по ролям.
 class "sound_manager"
@@ -23,7 +30,12 @@ end
 --' Зарегистрировать НПС.
 function sound_manager:register_npc(npc_id)
 	--printf("Register sm npc [%s]:[%s]", self.id, npc_id)
-	table.insert(self.npc, {npc_id = npc_id})
+	for k,v in pairs(self.npc) do
+		if v.npc_id == npc_id then
+			return
+		end
+	end
+	self.npc[#self.npc+1] = {npc_id = npc_id}
 	--print_table(self.npc)
 end
 --' Отрегистрировать нпс
@@ -118,14 +130,26 @@ function sound_manager:update()
 
 	elseif next_phrase.who == "reaction" then
 		--' Фраза кого угодно, кроме рассказчика
-		local npc_ids = {}
-		for _,v in ipairs(self.npc) do
-			local npc_id = v.npc_id
-			if npc_id ~= self.storyteller then
-				table.insert(npc_ids, npc_id)
+		if tn == 1 then
+			return
+		end
+		local teller_id = 0
+		for k,v in pairs(self.npc) do
+			if v.npc_id == self.storyteller then
+				teller_id = k
+				break
 			end
 		end
-		npc = utils.pick(npc_ids)
+
+		if tn >= 2 then
+			local id = math.random(1,tn-1)
+			if id >= teller_id then
+				id = id + 1
+			end
+			npc = self.npc[id].npc_id
+		else
+			npc = self.npc[1].npc_id
+		end
 	elseif next_phrase.who == "reaction_all" then
 		local npc_id = nil
 		for k,v in pairs(self.npc) do
@@ -184,22 +208,6 @@ function sound_manager:set_story(story_id)
 	--printf("Set story sm [%s] = [%s]", self.id, story_id)
 end
 
-
-
---' Создать новый саунд-менеджер. Нужно передать уникальный айдишник
-function get_sound_manager(id)
-	if sound_managers[id] == nil then
-		sound_managers[id] = sound_manager(id)
-	end
-	return sound_managers[id]
-end
-
-
-
-
-
-
-
 --' Класс "история". Содержит дерево фраз. У каждой фразы указано должен ли ее говорить рассказчик или слушатели.
 class "CStory"
 function CStory:__init(story_id)
@@ -224,7 +232,7 @@ function CStory:__init(story_id)
 			abort("Wrong fist field [%s] in story [%s]", tostring(t[1]), tostring(story_id))
 		end
 
-		self.replics[i] = {who = t[1], theme = t[2], timeout = t[3]}
+		self.replics[tonumber(id)] = {who = t[1], theme = t[2], timeout = t[3]}
 	end
 		self.id = tostring(story_id)
 	self.max_phrase_count = n-1
