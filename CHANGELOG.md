@@ -20,6 +20,9 @@ All notable changes to this project will be documented in this file.
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`
 
+### Optimization
+* Added `npc_count` into `CCampManager` to optimize update calls (from [[EN/RU] More campfire jokes and stories](https://www.moddb.com/mods/stalker-anomaly/addons/enru-more-campfire-jokes-and-stories) mod)
+
 ## [1.5.1] - 2025-04-07
 
 ### Improvements

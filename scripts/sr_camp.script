@@ -119,6 +119,7 @@ function CCampManager:__init(object)
 	self.object = object
 
 	self.npc = {}
+	self.npc_count = 0
 	self.schemes = {}
 	-- Хранилище для режиссера лагеря. Режиссерем является сталкер, затеявший необычное поведение
 	self.director = nil
@@ -136,6 +137,9 @@ function CCampManager:__init(object)
 end
 -- Переключает состояния кемпа
 function CCampManager:update()
+	if (self.npc_count == 0) then
+		return
+	end
 
 	-- Если саундменеджер говорит какую то историю - ждем окончания.
 	if not self.sound_manager:is_finished() then
@@ -303,6 +307,7 @@ function CCampManager:register_npc(npc_id)
 --	local npc_id = npc:id()
 	--printf("Register NPC to camp %s", self.object:id())
 	self.npc[npc_id] = {state = self.active_state}
+	self.npc_count = self.npc_count + 1
 	db.storage[npc_id].registred_camp = self.object:id()
 
 	-- При регистрации персонажа, проверяем какие роли он может выполнять.
@@ -334,6 +339,7 @@ function CCampManager:unregister_npc(npc_id)
 
 	db.storage[npc_id].registred_camp = nil
 	self.npc[npc_id] = nil
+	self.npc_count = self.npc_count - 1
 	self.sound_manager:unregister_npc(npc_id)
 end
 function CCampManager:get_npc_role(npc_id, state)
