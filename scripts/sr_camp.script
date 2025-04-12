@@ -1,8 +1,9 @@
 local npc_role = {noone=0, listener=1, director=2}
 local camp_ini = ini_file("scripts\\camp.ltx")
-local story_table = parse_names(camp_ini:r_string_ex("camp", "stories") or "test_story")
+local story_table = parse_names(camp_ini:r_string_ex("camp", "story_themes") or "test_story")
 local guitar_table = parse_names(camp_ini:r_string_ex("camp", "guitar_themes") or "test_guitar")
 local harmonica_table = parse_names(camp_ini:r_string_ex("camp", "harmonica_themes") or "test_harmonica")
+local joke_table = parse_names(camp_ini:r_string_ex("camp", "joke_themes") or "test_joke")
 local sr_camp_states = {
 				idle = {
 							director_state = nil,
@@ -270,17 +271,21 @@ end
 function CCampManager:set_story()
 	if(self.active_state=="story") then
 		local story = nil
-		if (#story_table == 0) then
-			story = "test_story"
-		elseif (#story_table == 1) then
-			story = story_table[1]
-		elseif (#story_table > 1) then
-			story = utils.pick_without(self.last_story, story_table)
+		if (math.random() < 0.7) then
+			story = joke_table[math.random(#joke_table)]
+		else
+			if (#story_table == 0) then
+				story = "test_story"
+			elseif (#story_table == 1) then
+				story = story_table[1]
+			elseif (#story_table > 1) then
+				story = utils.pick_without(self.last_story, story_table)
+			end
+			self.last_story = story
 		end
 		self.sound_manager:set_storyteller(self.director)
 		self.sound_manager:set_story(story)
 		self.sound_manager_started = true
-		self.last_story = story
 	elseif(self.active_state=="idle") then
 		self.sound_manager_started = true
 	end
