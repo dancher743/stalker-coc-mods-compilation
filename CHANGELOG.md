@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`
 * Restored bad reaction sounds to jokes
+* Added `l10_limansk` into `levels_without_panorama` table
 
 ### Optimization
 * Added `npc_count` into `CCampManager` to optimize update calls (from [[EN/RU] More campfire jokes and stories](https://www.moddb.com/mods/stalker-anomaly/addons/enru-more-campfire-jokes-and-stories) mod)

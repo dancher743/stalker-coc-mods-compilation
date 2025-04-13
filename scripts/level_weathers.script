@@ -17,6 +17,7 @@ bLevelUnderground = false
 weather_tbl = atmosfear_options.weather_tbl
 
 local levels_without_panorama = {
+	l10_limansk = true,
 	l11_pripyat = true,
 	l12_stancia = true,
 	l12_stancia_2 = true,
