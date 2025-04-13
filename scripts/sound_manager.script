@@ -232,7 +232,7 @@ function CStory:__init(story_id)
 			abort("Wrong fist field [%s] in story [%s]", tostring(t[1]), tostring(story_id))
 		end
 
-		self.replics[tonumber(id)] = {who = t[1], theme = t[2], timeout = t[3]}
+		self.replics[i] = {who = t[1], theme = t[2], timeout = t[3]}
 	end
 		self.id = tostring(story_id)
 	self.max_phrase_count = n-1

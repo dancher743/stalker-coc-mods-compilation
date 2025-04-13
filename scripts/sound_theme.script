@@ -129,23 +129,20 @@ function npc_sound:init_npc(npc)
 	if self.prefix == false then
 		npc:sound_prefix(character_prefix)
 	end
-	if self.group_snd then
+
+	if (self.group_snd) then
 		self.can_play_group_sound = true
-	else
-		if can_play_sound[npc_id] ~= false then
-			can_play_sound[npc_id] = true
-		end
 	end
+	can_play_sound[npc_id] = true
 end
 function npc_sound:callback(npc_id)
 	self.played_time = time_global()
 	self.idle_time = math.random(self.min_idle, self.max_idle) * 1000
 
-	if self.group_snd then
+	if (self.group_snd) then
 		self.can_play_group_sound = true
-	else
-		can_play_sound[npc_id] = true
 	end
+	can_play_sound[npc_id] = true
 
 --	printf("npc_sound:callback!!!!!!!!")
 
@@ -225,11 +222,10 @@ function npc_sound:play(npc_id, faction, point)
 	--printf("snd_path is "..tostring(self.sound_path[npc_id][table_id]))
 	local snd_st, num_copy = string.gsub(snd, "\\", "_")
 
-	if self.group_snd then
+	if (self.group_snd) then
 		self.can_play_group_sound = false
-	else
-		can_play_sound[npc_id] = false
 	end
+	can_play_sound[npc_id] = false
 
 	if not closecaption.sound(snd, sound_object(snd):length(), npc, faction, point, self.delay_sound) then
 		if game.translate_string(snd_st) ~= snd_st then

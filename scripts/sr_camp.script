@@ -288,6 +288,7 @@ function CCampManager:set_story()
 		self.sound_manager:set_storyteller(self.director)
 		self.sound_manager:set_story(story)
 		self.sound_manager_started = true
+		self.sound_manager:update()
 	elseif(self.active_state=="idle") then
 		self.sound_manager_started = true
 	end
