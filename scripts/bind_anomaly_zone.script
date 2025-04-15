@@ -234,7 +234,7 @@ function anomaly_zone_binder:spawn_artefact_randomly()
 		rnd_artefact = self.start_artefacts_table[layer][#self.start_artefacts_table[layer]]
 		self.forced_spawn = false
 	else
-		local spawn_chance = has_alife_info("achieved_geologist") and 30 or 25
+		local spawn_chance = has_alife_info("achieved_geologist") and 20 or 15
 		if math.random(1,100) > spawn_chance then
 			return
 		end
