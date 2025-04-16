@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 * Refactored next cataclysm dialog
 * Added Fallout into report about next emission of Dynamic News
 * Replaced removed bandit squads in Dead City with merc squads
+* Replaced counter with random count in stashes renewing
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`

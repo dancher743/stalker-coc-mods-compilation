@@ -40,7 +40,6 @@ local caches_count = 0
 
 local renewing_time = 0
 local renewing_next_time = 0
-local renewing_counter = 0
 
 local ltx = ini_file("plugins\\coc_treasure_manager.ltx")
 local valid_item_list = nil
@@ -88,7 +87,6 @@ end
 local function actor_on_item_take_from_box(box,itm)
 	if (caches[box:id()] == true) then
 		caches[box:id()] = false
-		renewing_counter = renewing_counter + 1
 		local hud = get_hud()
 		if (hud and box:is_inv_box_empty()) then
 			hud:HideActorMenu()
@@ -112,7 +110,7 @@ local function level_time_on_changed()
 end
 
 local function on_level_changing()
-	renew_random_stashes()
+	try_renew_stashes()
 end
 
 local function save_state(data)
@@ -129,7 +127,6 @@ local function save_state(data)
 	data.coc_treasure_manager.caches = caches
 	data.coc_treasure_manager.renewing_time = renewing_time
 	data.coc_treasure_manager.renewing_next_time = renewing_next_time
-	data.coc_treasure_manager.renewing_counter = renewing_counter
 end
 
 local function load_state(data)
@@ -141,13 +138,11 @@ local function load_state(data)
 	caches = data.coc_treasure_manager.caches or caches
 	renewing_time = data.coc_treasure_manager.renewing_time or renewing_time
 	renewing_next_time = data.coc_treasure_manager.renewing_next_time or renewing_next_time
-	renewing_counter = data.coc_treasure_manager.renewing_counter or renewing_counter
 
 	data.coc_treasure_manager.caches_count = nil
 	data.coc_treasure_manager.caches = nil
 	data.coc_treasure_manager.renewing_time = nil
 	data.coc_treasure_manager.renewing_next_time = nil
-	data.coc_treasure_manager.renewing_counter = nil
 end
 
 local function physic_object_on_use_callback(box,who)
@@ -792,35 +787,44 @@ end
 
 function get_renewing_next_time()
 	local renewing_section = "renewing"
-	local min_time = ltx:r_string_ex(renewing_section,"min_time") or STR_ZERO
-	local max_time = ltx:r_string_ex(renewing_section,"max_time") or STR_ZERO
+	local time_min = ltx:r_string_ex(renewing_section,"time_min") or STR_ZERO
+	local time_max = ltx:r_string_ex(renewing_section,"time_max") or STR_ZERO
 
-	min_time = tonumber(min_time)
-	max_time = tonumber(max_time)
+	time_min = tonumber(time_min)
+	time_max = tonumber(time_max)
 	
-	return math.random(min_time, max_time)
+	return math.random(time_min, time_max)
+end
+
+function get_renewing_count()
+	local count_min = ltx:r_string_ex("renewing","count_min") or STR_ZERO
+	local count_max = ltx:r_string_ex("renewing","count_max") or STR_ZERO
+	
+	count_min = tonumber(count_min)
+	count_max = tonumber(count_max)
+	
+	return math.random(count_min, count_max)
 end
 
 function get_renewing_chance()
 	local chance = ltx:r_string_ex("renewing","chance") or STR_ZERO
-	
 	return tonumber(chance)
 end
 
-function renew_random_stashes()
+function try_renew_stashes()
 	if (renewing_time < renewing_next_time) then
 		return
 	end
 	
+	local count = get_renewing_count()
 	local chance = get_renewing_chance()
 	
-	for i=1,renewing_counter do
+	for i=1,count do
 		if (math.random() < chance) then
 			create_random_stash(true,STR_EMPTY)
 		end
 	end
 	
-	renewing_counter = 0
 	renewing_time = 0
 	renewing_next_time = get_renewing_next_time()
 end
