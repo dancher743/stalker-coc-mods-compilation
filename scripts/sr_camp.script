@@ -275,15 +275,16 @@ end
 function CCampManager:set_story()
 	if(self.active_state=="story") then
 		local story = nil
-		if (math.random() < 0.7) then
-			story = joke_table[math.random(#joke_table)]
-		else
+		local story_chance = xr_conditions.is_day() and 0 or 0.3
+		if (math.random() < story_chance) then
 			if (#story_table == 1) then
 				story = story_table[1]
 			elseif (#story_table > 1) then
 				story = utils.pick_without(self.last_story, story_table)
 			end
 			self.last_story = story
+		else
+			story = joke_table[math.random(#joke_table)]
 		end
 		self.sound_manager:set_storyteller(self.director)
 		self.sound_manager:set_story(story)
