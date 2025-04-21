@@ -311,7 +311,7 @@ function suspicion_increase(distance)
 		local has_outfit_hides = outfit and (outfit:condition() > min_condition_o)
 		
 		if not has_helm_hides and has_outfit_hides then
-			has_helm_hides = alun_utils.read_from_ini(nil,outfit:section(),"helmet_avaliable",STR_BOOL,false)
+			has_helm_hides = alun_utils.read_from_ini(nil,outfit:section(),"helmet_avaliable",STR_BOOL,true) == false
 		end
 		
 		if has_helm_hides then
