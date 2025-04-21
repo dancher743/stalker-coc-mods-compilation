@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 * Replaced counter with random count in stashes renewing
 * Changed daytime of telling campfire stories (only at evenings)
 * Added few new tracks for radios
+* Added higher priority to shotgun in medium table in `ai_stalker.script`
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`

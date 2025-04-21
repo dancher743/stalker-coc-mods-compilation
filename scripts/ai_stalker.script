@@ -10,8 +10,8 @@ local priority_medium = {
 	_G.IsRifle,
 	_G.IsLauncher,
 	_G.IsSniper,
-	_G.IsPistol,
-	_G.IsShotgun
+	_G.IsShotgun,
+	_G.IsPistol
 }
 
 local priority_far = {
