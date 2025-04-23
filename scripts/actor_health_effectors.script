@@ -3,67 +3,56 @@
 -- From SpecHUD mod
 --
 
-local seldom_upd_time = 400
-local isactcondset = false
-local radeffect = false
+local option_name = "show_health_effectors"
+local update_time = 400
+
+local hp_effect = false
+local rad_effect = false
 local ble1 = 0
 local ble2 = false
-
-local last_reaction_sound
-
-local option_name = "show_health_effectors"
-
-local function has_option()
-	return axr_main_options.get_check_option(option_name)
-end
-
-local function stop_reaction_sound()
-	if (last_reaction_sound and last_reaction_sound:playing()) then
-		last_reaction_sound:stop()
-		last_reaction_sound = nil
-	end
-end
+local last_reaction_snd = nil
 
 local function play_reaction_sound(snd_obj)
 	if (not snd_obj) then
 		return
 	end
-	stop_reaction_sound()
+	if (last_reaction_snd and last_reaction_snd:playing()) then
+		last_reaction_snd:stop()
+	end
 	snd_obj:play(db.actor,0,sound_object.s2d)
-	last_reaction_sound = snd_obj
+	last_reaction_snd = snd_obj
 end
 
-local function bleedcondition()
-    local show_health_effectors = has_option()
+local function check_effectors()
+    local has_option_enabled = axr_main_options.get_check_option(option_name)
 	
-	if show_health_effectors and db.actor.health < 0.3 and isactcondset ~= true then
+	if has_option_enabled and db.actor.health < 0.3 and hp_effect ~= true then
         level.add_pp_effector("cherno.ppe", 2012, true)
-        isactcondset = true
+        hp_effect = true
     end
-    if db.actor.health > 0.3 and isactcondset ~= false then
+    if db.actor.health > 0.3 and hp_effect ~= false then
         level.remove_pp_effector(2012)
-        isactcondset = false
+        hp_effect = false
     end
     
-	if show_health_effectors and db.actor.radiation > 0.3 and radeffect ~= true then
+	if has_option_enabled and db.actor.radiation > 0.3 and rad_effect ~= true then
         level.add_pp_effector("cherno.ppe", 2013, true)
 		local sound_path = strformat("actor\\radiation_%s", math.random(3))
 		local rad_reaction_sound = sound_object(sound_path)
 		play_reaction_sound(rad_reaction_sound)
-        radeffect = true
+        rad_effect = true
     end
-    if db.actor.radiation == 0 and radeffect ~= false then
+    if db.actor.radiation == 0 and rad_effect ~= false then
         level.remove_pp_effector(2013)
-        radeffect = false
-		stop_reaction_sound()
+        rad_effect = false
     end
 
-	if show_health_effectors and db.actor.bleeding > 0.5 and db.actor.health < 0.4 and ble1 < time_global() then
+	if has_option_enabled and db.actor.bleeding > 0.5 and db.actor.health < 0.4 and ble1 < time_global() then
         level.add_pp_effector("deimos1.ppe", 2014, false)
         ble1 = time_global() + math.random(4000, 10000)
     end
     
-	if show_health_effectors and db.actor.bleeding > 0.4 and db.actor.power < 0.35 and ble2 ~= true then
+	if has_option_enabled and db.actor.bleeding > 0.4 and db.actor.power < 0.35 and ble2 ~= true then
         level.add_cam_effector("camera_effects\\pripyat_horror.anm", 1001, false, STR_EMPTY)
         level.add_pp_effector("snd_shock.ppe", 2015, true)
         ble2 = true
@@ -75,15 +64,13 @@ local function bleedcondition()
 end
 
 local timer = 0
-local function actor_on_slicing_update(binder,delta)
-	if db.actor then
-        if (timer > seldom_upd_time) then
-			timer = 0
-			bleedcondition()
-        else
-			timer = timer + delta
-		end
-    end
+local function actor_on_slicing_update(_,delta)
+	timer = timer + delta
+	if (timer < update_time) then
+		return
+	end
+	timer = 0
+	check_effectors()
 end
 
 function on_game_start()
