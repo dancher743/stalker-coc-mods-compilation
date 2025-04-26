@@ -1,0 +1,70 @@
+--
+-- Offline Alife for squads
+-- Added by Dancher
+-- Special thanks to AMK Offline Alife and EOC mod!
+--
+
+local combat_distance = 30*30
+
+local function process_combat(squad, squad2)
+	local distance = squad.position:distance_to_sqr(squad2.position)
+	
+	if (distance > combat_distance or
+		(squad:npc_count() == 0 or squad2:npc_count() == 0) or
+		(get_object_story_id(squad.id) or get_object_story_id(squad2.id)) or
+		(squad:alive() == false or squad2:alive() == false)) then
+		return
+	end
+	
+	local chance = math.random()
+	if (chance < 0.1) then
+		game_relations.drx_df_faction_npc_on_death(squad:get_squad_community(), squad2:get_squad_community())
+		for k in squad2:squad_members() do
+			local se_obj = alife_object(k.id)
+			if (se_obj) then
+				se_obj.health = 0
+			end
+		end
+		printf("### Dancher: %s has killed by %s ###", squad2:name(), squad:name())
+		return
+	end
+	
+	chance = math.random()
+	if (chance < 0.1) then
+		game_relations.drx_df_faction_npc_on_death(squad2:get_squad_community(), squad:get_squad_community())
+		for k in squad:squad_members() do
+			local se_obj = alife_object(k.id)
+			if (se_obj) then
+				se_obj.health = 0
+			end
+		end
+		printf("### Dancher: %s has killed by %s ###", squad2:name(), squad:name())
+	end
+end
+
+local function squad_on_slicing_update(squad)
+	if (squad.online) then
+		return
+	end
+	
+	local tg = time_global()
+	if (squad.offline_alife_timer and tg < squad.offline_alife_timer) then
+		return
+	end
+	squad.offline_alife_timer = tg + 5000 + math.random(10000)
+	
+	for _,squad2 in pairs(SIMBOARD.squads) do
+		if (squad2 and not squad2.online and simulation_objects.is_on_the_same_level(squad, squad2) and squad2.first_update) then
+			local squad_community = squad:get_squad_community()
+			local squad2_community = squad2:get_squad_community()
+			local are_enemies = game_relations.is_factions_enemies(squad_community, squad2_community)
+			if (are_enemies) then
+				process_combat(squad, squad2)
+			end
+		end
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("squad_on_slicing_update",squad_on_slicing_update)
+end

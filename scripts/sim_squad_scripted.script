@@ -1393,3 +1393,13 @@ function sim_squad_scripted:get_squad_relation()
     end
 end
 --xrSanya-----------------------------------------------
+
+function sim_squad_scripted:alive()
+	for k in self:squad_members() do
+		local se_obj = alife_object(k.id)
+		if (se_obj and se_obj:alive()) then
+			return true
+		end
+	end
+	return false
+end
