@@ -5,12 +5,13 @@
 --
 
 local combat_distance = 30*30
+local inc_rank_points = 20
+local handicap_chance = 0.2
 
 local update_timer
 local updated_levels = {}
 local squads_to_levels
 local squads_to_combat
-local add_rank_points
 
 local rank_power = {
 	novice = 10,
@@ -36,7 +37,7 @@ local function calculate_squad_power(squad)
 			power = power + rank_power[rank_name] or 0
 		end
 	end
-	if (math.random() < 0.1) then
+	if (math.random() < handicap_chance) then
 		power = power * 2
 	end
 	return power
@@ -59,10 +60,6 @@ local function process_combat(squad1, squad2)
 		return
 	end
 	
-	if (squad1:alive() == false or squad2:alive() == false) then
-		return
-	end
-	
 	local killer_squad, victim_squad
 	local squad1_power = calculate_squad_power(squad1)
 	local squad2_power = calculate_squad_power(squad2)
@@ -70,11 +67,11 @@ local function process_combat(squad1, squad2)
 	if (squad1_power > squad2_power) then
 		killer_squad = squad1
 		victim_squad = squad2
-		printf("### Dancher: %s(%s) kill %s(%s) ###", squad1:name(), squad1_power, squad2:name(), squad2_power)
+		printf("### Dancher: %s(%s) kills %s(%s) ###", squad1:name(), squad1_power, squad2:name(), squad2_power)
 	elseif (squad1_power < squad2_power) then
 		killer_squad = squad2
 		victim_squad = squad1
-		printf("### Dancher: %s(%s) kill %s(%s) ###", squad2:name(), squad2_power, squad1:name(), squad1_power)
+		printf("### Dancher: %s(%s) kills %s(%s) ###", squad2:name(), squad2_power, squad1:name(), squad1_power)
 	else
 		printf("### Dancher: %s(%s) tie %s(%s) ###", squad1:name(), squad1_power, squad2:name(), squad2_power)
 		return
@@ -90,9 +87,11 @@ local function process_combat(squad1, squad2)
 	
 	for k in killer_squad:squad_members() do
 		if (se_obj and not IsMonster(nil,se_obj:clsid())) then
-			se_obj:set_rank(se_obj:rank() + add_rank_points)
+			se_obj:set_rank(se_obj:rank() + inc_rank_points)
 		end
 	end
+	
+	return victim_squad.id
 end
 
 local function process_squads_combat()
@@ -101,18 +100,28 @@ local function process_squads_combat()
 	for i=1,squads_count do
 		local squad1 = squads_to_combat[i]
 		
-		for j=1,squads_count do
-			local squad2 = squads_to_combat[j]
-			
-			if (squad1.id ~= squad2.id and simulation_objects.is_on_the_same_level(squad1, squad2)) then
-				process_combat(squad1,squad2)
+		if (squad1) then
+			for j=1,squads_count do
+				local squad2 = squads_to_combat[j]
+				
+				if (squad2 and squad1.id ~= squad2.id and 
+					simulation_objects.is_on_the_same_level(squad1, squad2)) 
+				then
+					local victim_id = process_combat(squad1,squad2)
+					
+					if (victim_id == squad1.id) then
+						squads_to_combat[i] = nil
+						break
+					elseif (victim_id == squad2.id) then
+						squads_to_combat[j] = nil
+					end
+				end
 			end
 		end
 	end
 end
 
 local function actor_on_first_update()
-	add_rank_points = xr_statistic.rank_rep_offline["killed_enemy"]["rnk"]
 	update_timer = time_global() + 1000
 end
 
@@ -123,12 +132,12 @@ local function actor_on_slicing_update()
 		return
 	end
 	
-	update_timer = tg + math.random(5000,10000)
+	update_timer = tg + math.random(10000,15000)
 	
 	if (squads_to_levels == nil) then
 		squads_to_levels = {}
 		for _,squad in pairs(SIMBOARD.squads) do
-			if (squad and not squad.online and squad.first_update) then
+			if (squad and not squad.online and squad.first_update and squad:alive()) then
 				local level_id = simulation_objects.get_level_id(squad)
 				if (squads_to_levels[level_id] == nil) then
 					squads_to_levels[level_id] = {}
