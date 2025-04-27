@@ -1395,11 +1395,9 @@ end
 --xrSanya-----------------------------------------------
 
 function sim_squad_scripted:alive()
-	for k in self:squad_members() do
-		local se_obj = alife_object(k.id)
-		if (se_obj and se_obj:alive()) then
-			return true
-		end
+	local se_obj = alife_object(self:commander_id())
+	if (se_obj and se_obj:alive()) then
+		return true
 	end
 	return false
 end

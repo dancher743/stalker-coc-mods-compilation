@@ -135,6 +135,10 @@ rank_rep = {
 			bounty_hunt_peace	=	{rnk=0,		rpt=20,		comps = true}
 }
 
+rank_rep_offline = {
+			killed_enemy		=	{rnk=20,	rpt=0}
+}
+
 weapons_table = {}
 
 artefacts_table = {

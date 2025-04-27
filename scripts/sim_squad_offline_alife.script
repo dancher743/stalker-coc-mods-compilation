@@ -10,48 +10,88 @@ local update_timer
 local updated_levels = {}
 local squads_to_levels
 local squads_to_combat
+local add_rank_points
+
+local rank_power = {
+	novice = 10,
+	trainee = 20,
+	experienced = 30,
+	professional = 40,
+	veteran = 50,
+	expert = 60,
+	master = 70,
+	legend = 80,
+	-- monsters
+	weak = 20,
+	normal = 40,
+	strong = 60
+}
+
+local function calculate_squad_power(squad)
+	local power = 0
+	for k in squad:squad_members() do
+		local se_obj = alife():object(k.id)
+		if (se_obj) then
+			local rank_name = ranks.get_se_obj_rank_name(se_obj)
+			power = power + rank_power[rank_name] or 0
+		end
+	end
+	if (math.random() < 0.1) then
+		power = power * 2
+	end
+	return power
+end
 
 local function process_combat(squad1, squad2)
 	local squad1_community = squad1:get_squad_community()
 	local squad2_community = squad2:get_squad_community()
 	local are_enemies = game_relations.is_factions_enemies(squad1_community, squad2_community)
-	
 	if (not are_enemies) then
 		return
 	end
 	
 	local distance = squad1.position:distance_to_sqr(squad2.position)
-	
-	if (distance > combat_distance or
-		(squad1:npc_count() == 0 or squad2:npc_count() == 0) or
-		(get_object_story_id(squad1.id) or get_object_story_id(squad2.id)) or
-		(squad1:alive() == false or squad2:alive() == false)) then
+	if (distance > combat_distance) then
 		return
 	end
 	
-	local chance = math.random()
-	if (chance < 0.1) then
-		game_relations.drx_df_faction_npc_on_death(squad1:get_squad_community(), squad2:get_squad_community())
-		for k in squad2:squad_members() do
-			local se_obj = alife_object(k.id)
-			if (se_obj) then
-				se_obj.health = 0
-			end
-		end
-		printf("### Dancher: %s has killed by %s ###", squad2:name(), squad1:name())
+	if (get_object_story_id(squad1.id) or get_object_story_id(squad2.id)) then
 		return
 	end
 	
-	chance = math.random()
-	if (chance < 0.1) then
-		game_relations.drx_df_faction_npc_on_death(squad2:get_squad_community(), squad1:get_squad_community())
-		for k in squad1:squad_members() do
-			local se_obj = alife_object(k.id)
-			if (se_obj) then
-				se_obj.health = 0
-			end
+	if (squad1:alive() == false or squad2:alive() == false) then
+		return
+	end
+	
+	local killer_squad, victim_squad
+	local squad1_power = calculate_squad_power(squad1)
+	local squad2_power = calculate_squad_power(squad2)
+	
+	if (squad1_power > squad2_power) then
+		killer_squad = squad1
+		victim_squad = squad2
+		printf("### Dancher: %s(%s) kill %s(%s) ###", squad1:name(), squad1_power, squad2:name(), squad2_power)
+	elseif (squad1_power < squad2_power) then
+		killer_squad = squad2
+		victim_squad = squad1
+		printf("### Dancher: %s(%s) kill %s(%s) ###", squad2:name(), squad2_power, squad1:name(), squad1_power)
+	else
+		printf("### Dancher: %s(%s) tie %s(%s) ###", squad1:name(), squad1_power, squad2:name(), squad2_power)
+		return
+	end
+	
+	game_relations.drx_df_faction_npc_on_death(killer_squad:get_squad_community(), victim_squad:get_squad_community())
+	for k in victim_squad:squad_members() do
+		local se_obj = alife_object(k.id)
+		if (se_obj) then
+			se_obj.health = 0
 		end
-		printf("### Dancher: %s has killed by %s ###", squad2:name(), squad1:name())
+	end
+	
+	for k in killer_squad:squad_members() do
+		if (se_obj and not IsMonster(nil,se_obj:clsid())) then
+			se_obj:set_rank(se_obj:rank() + add_rank_points)
+		end
 	end
 end
 
@@ -72,6 +112,7 @@ local function process_squads_combat()
 end
 
 local function actor_on_first_update()
+	add_rank_points = xr_statistic.rank_rep_offline["killed_enemy"]["rnk"]
 	update_timer = time_global() + 1000
 end
 
