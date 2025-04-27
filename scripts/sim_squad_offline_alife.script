@@ -4,46 +4,12 @@
 -- Special thanks to AMK Offline Alife and EOC mod!
 --
 
-local squads_to_combat_per_level = 10
 local combat_distance = 30*30
+
 local update_timer
-local available_levels = 
-{
-	["k00_marsh"] = true,
-	["k01_darkscape"] = true,
-	["k02_trucks_cemetery"] = true,
-	["l01_escape"] = true,
-	["l02_garbage"] = true,
-	["l03_agroprom"] = true,
-	["l04_darkvalley"] = true,
-	["l05_bar"] = true,
-	["l06_rostok"] = true,
-	["l07_military"] = true,
-	["l08_yantar"] = true,
-	["l09_deadcity"] = true,
-	["l10_limansk"] = true,
-	["l10_radar"] = true,
-	["l10_red_forest"] = true,
-	["l11_hospital"] = true,
-	["l11_pripyat"] = true,
-	["l12_stancia"] = true,
-	["l12_stancia_2"] = true,
-	["l13_generators"] = true,
-	["zaton"] = true,
-	["jupiter"] = true,
-	["pripyat"] = true,
-	["jupiter_underground"] = true,
-	["labx8"] = true,
-	["l03u_agr_underground"] = true,
-	["l04u_labx18"] = true,
-	["l08u_brainlab"] = true,
-	["l10u_bunker"] = true,
-	["l12u_control_monolith"] = true,
-	["l12u_sarcofag"] = true,
-	["l13u_warlab"] = true
-}
 local updated_levels = {}
-local squads_to_combat = {}
+local squads_to_levels
+local squads_to_combat
 
 local function process_combat(squad1, squad2)
 	local squad1_community = squad1:get_squad_community()
@@ -98,24 +64,42 @@ local function process_squads_combat()
 		for j=1,squads_count do
 			local squad2 = squads_to_combat[j]
 			
-			if (squad1.id ~= squad2.id) then
+			if (squad1.id ~= squad2.id and simulation_objects.is_on_the_same_level(squad1, squad2)) then
 				process_combat(squad1,squad2)
 			end
 		end
 	end
 end
 
+local function actor_on_first_update()
+	update_timer = time_global() + 1000
+end
+
 local function actor_on_slicing_update()
 	local tg = time_global()
 	
-	if (update_timer and tg < update_timer) then
+	if (tg < update_timer) then
 		return
 	end
-	update_timer = tg + 5000
+	
+	update_timer = tg + math.random(5000,10000)
+	
+	if (squads_to_levels == nil) then
+		squads_to_levels = {}
+		for _,squad in pairs(SIMBOARD.squads) do
+			if (squad and not squad.online and squad.first_update) then
+				local level_id = simulation_objects.get_level_id(squad)
+				if (squads_to_levels[level_id] == nil) then
+					squads_to_levels[level_id] = {}
+				end
+				table.insert(squads_to_levels[level_id], squad)
+			end
+		end
+	end
 	
 	local level_to_update
 	
-	for id,_ in pairs(available_levels) do
+	for id,_ in pairs(squads_to_levels) do
 		if (updated_levels[id] == nil) then
 			level_to_update = id
 			break
@@ -128,46 +112,18 @@ local function actor_on_slicing_update()
 		return
 	end
 	
-	iempty_table(squads_to_combat)
-	
-	local counter = 0
-	for id,squad in pairs(SIMBOARD.squads) do
-		if (squad and not squad.online and squad.first_update) then
-			local level = simulation_objects.get_level_name(squad)
-			if (level == level_to_update) then
-				table.insert(squads_to_combat, squad)
-				counter = counter + 1
-			end
-		end
-		if (counter == squads_to_combat_per_level) then
-			break
-		end
-	end
+	squads_to_combat = squads_to_levels[level_to_update]
 	
 	if (#squads_to_combat > 0) then
 		printf("### Dancher: process offline squads combat on %s ###", level_to_update)
 		process_squads_combat()
 	end
 	
+	squads_to_combat = nil
 	updated_levels[level_to_update] = true
 end
 
-local function save_state(data)
-	if (data.squads_offline_combat == nil) then
-		data.squads_offline_combat = {}
-	end
-	data.squads_offline_combat.updated_levels = updated_levels
-end
-
-local function load_state(data)
-	local squads_offline_combat = data.squads_offline_combat
-	if (squads_offline_combat and squads_offline_combat.updated_levels) then
-		updated_levels = squads_offline_combat.updated_levels
-	end
-end
-
 function on_game_start()
+	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
 	RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
-	RegisterScriptCallback("save_state",save_state)
-	RegisterScriptCallback("load_state",load_state)
 end
