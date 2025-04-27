@@ -945,6 +945,21 @@ function contains(array, value)
     return false
 end
 
+-- from Anomaly 1.5.1.2
+local function swap(array, index1, index2)
+    array[index1], array[index2] = array[index2], array[index1]
+end
+
+function shuffle_table(t)
+    local counter = #t
+    while counter > 1 do
+        local index = math.random(counter)
+        swap(t, index, counter)
+        counter = counter - 1
+    end
+end
+--
+
 function get_hours_elapsed()
 	local start_time = level.get_start_time()
 	local seconds = tonumber(game.get_game_time():diffSec(start_time))
