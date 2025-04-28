@@ -1,7 +1,7 @@
 --
--- Offline Alife for squads
+-- Offline Alife for non-EOC mode squads
 -- Added by Dancher
--- Special thanks to AMK Offline Alife and EOC mod!
+-- Special thanks to offline alife of AMK, EOC and Anomaly!
 --
 
 local combat_distance = 30*30
@@ -9,9 +9,11 @@ local inc_rank_points = 20
 local handicap_chance = 0.2
 
 local update_timer
-local updated_levels = {}
+local updated_levels
 local squads_to_levels
 local squads_to_combat
+
+last_stalker_victim = nil
 
 local rank_power = {
 	novice = 10,
@@ -65,43 +67,54 @@ local function process_combat(squad1, squad2)
 		return
 	end
 	
-	if (get_object_story_id(squad1.id) or get_object_story_id(squad2.id)) then
-		return
-	end
-	
 	local killer_squad, victim_squad
 	local squad1_power = calculate_squad_power(squad1)
 	local squad2_power = calculate_squad_power(squad2)
+	local level_name
 	
 	if (squad1_power > squad2_power) then
 		killer_squad = squad1
 		victim_squad = squad2
-		printf("### Dancher: %s(%s) kills %s(%s) (%s) ###", squad1:name(), squad1_power, squad2:name(), squad2_power, simulation_objects.get_level_name(squad1))
+		level_name = simulation_objects.get_level_name(killer_squad)
+		printf("### Dancher: %s(%s) kills %s(%s) (%s) ###", squad1:name(), squad1_power, squad2:name(), squad2_power, level_name)
 	elseif (squad1_power < squad2_power) then
 		killer_squad = squad2
 		victim_squad = squad1
-		printf("### Dancher: %s(%s) kills %s(%s) (%s) ###", squad2:name(), squad2_power, squad1:name(), squad1_power, simulation_objects.get_level_name(squad2))
+		level_name = simulation_objects.get_level_name(killer_squad)
+		printf("### Dancher: %s(%s) kills %s(%s) (%s) ###", squad2:name(), squad2_power, squad1:name(), squad1_power, level_name)
 	else
 		printf("### Dancher: %s(%s) tie %s(%s) (%s) ###", squad1:name(), squad1_power, squad2:name(), squad2_power, simulation_objects.get_level_name(squad1))
 		return
 	end
 	
 	game_relations.drx_df_faction_npc_on_death(killer_squad:get_squad_community(), victim_squad:get_squad_community())
+	local victim_id = victim_squad.id
+	
 	local se_killer = get_random_npc(killer_squad)
+	local se_victim = nil
 	for k in victim_squad:squad_members() do
-		local se_obj = alife_object(k.id)
-		if (se_obj) then
-			se_obj:on_death(se_killer)
+		se_victim = alife_object(k.id)
+		if (se_victim) then
+			se_victim:on_death(se_killer)
 		end
 	end
 	
+	if (se_victim and IsStalker(se_victim)) then
+		if (last_stalker_victim == nil) then
+			last_stalker_victim = {}
+		end
+		last_stalker_victim["name"] = se_victim:character_name()
+		last_stalker_victim["level"] = level_name
+		last_stalker_victim["killer"] = se_killer:clsid()
+	end
+	
 	for k in killer_squad:squad_members() do
-		if (se_obj and not IsMonster(nil,se_obj:clsid())) then
+		if (se_obj and not IsStalker(se_obj)) then
 			se_obj:set_rank(se_obj:rank() + inc_rank_points)
 		end
 	end
 	
-	return victim_squad.id
+	return victim_id
 end
 
 local function process_squads_combat()
@@ -131,8 +144,30 @@ local function process_squads_combat()
 	end
 end
 
-local function actor_on_first_update()
-	update_timer = time_global() + 1000
+local function is_squad_valid(squad)
+	if (not squad:alive() or 
+		get_object_story_id(squad.id) or 
+		xrs_kill_wounded.hostage_list[squad:commander_id()]) 
+	then
+		return false
+	end
+	
+	for k in squad:squad_members() do
+		if (axr_task_manager.bounties_npcs) then
+			for _,npc_id in pairs(axr_task_manager.bounties_npcs) do
+				if (npc_id == k.id) then
+					return false
+				end
+			end
+		end
+		for _,v in pairs(task_manager.get_task_manager().task_info) do
+			if (v.task_giver_id and v.task_giver_id == k.id) then
+				return false
+			end
+		end
+    end
+	
+	return true
 end
 
 local function actor_on_slicing_update()
@@ -147,7 +182,7 @@ local function actor_on_slicing_update()
 	if (squads_to_levels == nil) then
 		squads_to_levels = {}
 		for _,squad in pairs(SIMBOARD.squads) do
-			if (squad and not squad.online and squad.first_update and squad:alive()) then
+			if (squad and not squad.online and squad.first_update and is_squad_valid(squad)) then
 				local level_id = simulation_objects.get_level_id(squad)
 				if (squads_to_levels[level_id] == nil) then
 					squads_to_levels[level_id] = {}
@@ -184,7 +219,22 @@ local function actor_on_slicing_update()
 	updated_levels[level_to_update] = true
 end
 
+local function actor_on_first_update()
+	if (IsEocMode()) then
+		UnregisterScriptCallback("actor_on_first_update",actor_on_first_update)
+		return
+	end
+	
+	updated_levels = {}
+	update_timer = time_global() + 1000
+	
+	RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+end
+
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
-	RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+end
+
+function is_enabled()
+	return IsEocMode() == false
 end
