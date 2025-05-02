@@ -4,16 +4,20 @@
 -- Special thanks to offline alife of AMK, EOC and Anomaly!
 --
 
-local combat_distance = 30*30
+local day_distance = 30*30
+local night_distance = 15*15
 local inc_rank_points = 20
 local handicap_chance = 0.2
+local victim_key = "victim"
+local killer_key = "killer"
+local level_id_key = "level_id"
 
 local update_timer
 local updated_levels
 local squads_to_levels
 local squads_to_combat
 
-last_stalker_victim = nil
+last_killed_stalker = nil
 
 local rank_power = {
 	novice = 10,
@@ -54,7 +58,7 @@ local function get_random_npc(squad)
 	return alife_object(squad_npcs[math.random(#squad_npcs)])
 end
 
-local function process_combat(squad1, squad2)
+local function process_combat(squad1, squad2, level_id, combat_distance)
 	local squad1_community = squad1:get_squad_community()
 	local squad2_community = squad2:get_squad_community()
 	local are_enemies = game_relations.is_factions_enemies(squad1_community, squad2_community)
@@ -70,20 +74,17 @@ local function process_combat(squad1, squad2)
 	local killer_squad, victim_squad
 	local squad1_power = calculate_squad_power(squad1)
 	local squad2_power = calculate_squad_power(squad2)
-	local level_name
 	
 	if (squad1_power > squad2_power) then
 		killer_squad = squad1
 		victim_squad = squad2
-		level_name = simulation_objects.get_level_name(killer_squad)
-		printf("### Dancher: %s(%s) kills %s(%s) (%s) ###", squad1:name(), squad1_power, squad2:name(), squad2_power, level_name)
+		printf("### Dancher: %s(%s) kills %s(%s) (%s) ###", squad1:name(), squad1_power, squad2:name(), squad2_power, alife():level_name(level_id))
 	elseif (squad1_power < squad2_power) then
 		killer_squad = squad2
 		victim_squad = squad1
-		level_name = simulation_objects.get_level_name(killer_squad)
-		printf("### Dancher: %s(%s) kills %s(%s) (%s) ###", squad2:name(), squad2_power, squad1:name(), squad1_power, level_name)
+		printf("### Dancher: %s(%s) kills %s(%s) (%s) ###", squad2:name(), squad2_power, squad1:name(), squad1_power, alife():level_name(level_id))
 	else
-		printf("### Dancher: %s(%s) tie %s(%s) (%s) ###", squad1:name(), squad1_power, squad2:name(), squad2_power, simulation_objects.get_level_name(squad1))
+		printf("### Dancher: %s(%s) tie %s(%s) (%s) ###", squad1:name(), squad1_power, squad2:name(), squad2_power, alife():level_name(level_id))
 		return
 	end
 	
@@ -100,12 +101,12 @@ local function process_combat(squad1, squad2)
 	end
 	
 	if (se_victim and IsStalker(se_victim)) then
-		if (last_stalker_victim == nil) then
-			last_stalker_victim = {}
+		if (last_killed_stalker == nil) then
+			last_killed_stalker = {}
 		end
-		last_stalker_victim["name"] = se_victim:character_name()
-		last_stalker_victim["level"] = level_name
-		last_stalker_victim["killer"] = se_killer:clsid()
+		last_killed_stalker[victim_key] = se_victim
+		last_killed_stalker[killer_key] = se_killer
+		last_killed_stalker[level_id_key] = level_id
 	end
 	
 	for k in killer_squad:squad_members() do
@@ -117,7 +118,8 @@ local function process_combat(squad1, squad2)
 	return victim_id
 end
 
-local function process_squads_combat()
+local function process_squads_combat(level_id)
+	local combat_distance = xr_conditions.is_day() and day_distance or night_distance
 	local squads_count = #squads_to_combat
 	
 	for i=1,squads_count do
@@ -130,7 +132,7 @@ local function process_squads_combat()
 				if (squad2 and squad1.id ~= squad2.id and 
 					simulation_objects.is_on_the_same_level(squad1, squad2)) 
 				then
-					local victim_id = process_combat(squad1,squad2)
+					local victim_id = process_combat(squad1,squad2,level_id,combat_distance)
 					
 					if (victim_id == squad1.id) then
 						squads_to_combat[i] = nil
@@ -170,7 +172,7 @@ local function is_squad_valid(squad)
 	return true
 end
 
-local function actor_on_slicing_update()
+local function update()
 	local tg = time_global()
 	
 	if (tg < update_timer) then
@@ -181,6 +183,7 @@ local function actor_on_slicing_update()
 	
 	if (squads_to_levels == nil) then
 		squads_to_levels = {}
+		
 		for _,squad in pairs(SIMBOARD.squads) do
 			if (squad and not squad.online and squad.first_update and is_squad_valid(squad)) then
 				local level_id = simulation_objects.get_level_id(squad)
@@ -190,6 +193,11 @@ local function actor_on_slicing_update()
 				table.insert(squads_to_levels[level_id], squad)
 			end
 		end
+		
+		for _,squads in ipairs(squads_to_levels) do
+			utils.shuffle_table(squads)
+		end
+		
 		utils.shuffle_table(squads_to_levels)
 	end
 	
@@ -211,8 +219,8 @@ local function actor_on_slicing_update()
 	squads_to_combat = squads_to_levels[level_to_update]
 	
 	if (#squads_to_combat > 0) then
-		printf("### Dancher: process offline squads combat ###", level_to_update)
-		process_squads_combat()
+		printf("### Dancher: process offline squads combat ###")
+		process_squads_combat(level_to_update)
 	end
 	
 	squads_to_combat = nil
@@ -227,8 +235,7 @@ local function actor_on_first_update()
 	
 	updated_levels = {}
 	update_timer = time_global() + 1000
-	
-	RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+	AddUniqueCall(update)
 end
 
 function on_game_start()
