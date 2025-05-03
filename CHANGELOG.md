@@ -32,6 +32,7 @@ All notable changes to this project will be documented in this file.
 * Fixed error messages about missing killer panic sounds
 * Fixed ignoring of built-in helmet of some outfits in `disguise.script`
 * Balanced appearing of low health effector: from 30% to 5%
+* Fixed non-gathering by other NPCs faction patch
 
 ### Optimization
 * Added `npc_count` into `CCampManager` to optimize update calls (from [[EN/RU] More campfire jokes and stories](https://www.moddb.com/mods/stalker-anomaly/addons/enru-more-campfire-jokes-and-stories) mod)
