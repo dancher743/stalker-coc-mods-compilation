@@ -5,13 +5,12 @@
 --
 
 local combats_per_level = 5
-local day_distance = 35*35
-local night_distance = 15*15
-local inc_rank_points = 20
+local day_distance = 15*15
+local night_distance = 8*8
+local add_rank_points = 20
 local handicap_chance = 0.2
 local victim_id_key = "victim_id"
 local killer_id_key = "killer_id"
-local level_id_key = "level_id"
 
 local update_timer
 local updated_levels
@@ -73,24 +72,25 @@ local function process_combat(squad1, squad2, level_id, combat_distance)
 	end
 	
 	local killer_squad, victim_squad
+	local has_tie = false
 	local squad1_power = calculate_squad_power(squad1)
 	local squad2_power = calculate_squad_power(squad2)
 	
 	if (squad1_power > squad2_power) then
 		killer_squad = squad1
 		victim_squad = squad2
-		printf("### Dancher: %s(%s) kills %s(%s) (%s) ###", squad1:name(), squad1_power, squad2:name(), squad2_power, alife():level_name(level_id))
+		-- printf("### Dancher: %s(%s) kills %s(%s) (%s) ###", squad1:name(), squad1_power, squad2:name(), squad2_power, alife():level_name(level_id))
 	elseif (squad1_power < squad2_power) then
 		killer_squad = squad2
 		victim_squad = squad1
-		printf("### Dancher: %s(%s) kills %s(%s) (%s) ###", squad2:name(), squad2_power, squad1:name(), squad1_power, alife():level_name(level_id))
-	else
-		printf("### Dancher: %s(%s) tie %s(%s) (%s) ###", squad1:name(), squad1_power, squad2:name(), squad2_power, alife():level_name(level_id))
-		return
+		-- printf("### Dancher: %s(%s) kills %s(%s) (%s) ###", squad2:name(), squad2_power, squad1:name(), squad1_power, alife():level_name(level_id))
+	elseif (squad1_power == squad2_power) then
+		-- printf("### Dancher: %s(%s) tie %s(%s) (%s) ###", squad1:name(), squad1_power, squad2:name(), squad2_power, alife():level_name(level_id))
+		has_tie = true
+		return nil,has_tie
 	end
 	
 	game_relations.drx_df_faction_npc_on_death(killer_squad:get_squad_community(), victim_squad:get_squad_community())
-	local victim_squad_id = victim_squad.id
 	
 	local se_killer = get_random_npc(killer_squad)
 	local se_victim = nil
@@ -99,8 +99,11 @@ local function process_combat(squad1, squad2, level_id, combat_distance)
 		se_victim = alife_object(k.id)
 		if (se_victim) then
 			se_victim:on_death(se_killer)
+			if (IsStalker(se_killer)) then
+				se_killer:set_rank(se_killer:rank() + add_rank_points)
+			end
 		end
-		if (loot_items[se_victim.id] and loot_items[se_killer.id]) then
+		if (se_victim and loot_items[se_victim.id] and loot_items[se_killer.id]) then
 			local victim_items = loot_items[se_victim.id]
 			for i=1,#victim_items do
 				local victim_item = alife_object(victim_items[i])
@@ -121,16 +124,9 @@ local function process_combat(squad1, squad2, level_id, combat_distance)
 		end
 		last_killed_stalker[victim_id_key] = se_victim.id
 		last_killed_stalker[killer_id_key] = se_killer.id
-		last_killed_stalker[level_id_key] = level_id
 	end
 	
-	for k in killer_squad:squad_members() do
-		if (se_obj and not IsStalker(se_obj)) then
-			se_obj:set_rank(se_obj:rank() + inc_rank_points)
-		end
-	end
-	
-	return victim_squad_id
+	return victim_squad,has_tie
 end
 
 local function process_squads_combat(squads)
@@ -144,36 +140,38 @@ local function process_squads_combat(squads)
 	local combats_count = 0
 	
 	for i=1,squads_count do
+		if (combats_count == combats_per_level) then
+			break
+		end
+		
 		local squad1 = squads[i]
 		
 		if (squad1) then
 			for j=1,squads_count do
+				if (combats_count == combats_per_level) then
+					break
+				end
+				
 				local squad2 = squads[j]
 				
 				if (squad2 and squad1.id ~= squad2.id and 
 					simulation_objects.is_on_the_same_level(squad1, squad2)) 
 				then
-					local victim_id = process_combat(squad1,squad2,level_id,combat_distance)
+					local victim_squad,has_tie = process_combat(squad1,squad2,level_id,combat_distance)
 					
-					if (victim_id ~= nil) then
+					if (victim_squad) then
 						combats_count = combats_count + 1
-					end
-					
-					if (victim_id == squad1.id) then
-						squads[i] = nil
-					elseif (victim_id == squad2.id) then
-						squads[j] = nil
-					end
-					
-					if (squads[i] == nil or combats_count == combats_per_level) then
-						break
+						if (victim_squad.id == squad1.id) then
+							squads[i] = nil
+							break
+						elseif (victim_squad.id == squad2.id) then
+							squads[j] = nil
+						end
+					elseif (has_tie) then
+						combats_count = combats_count + 1
 					end
 				end
 			end
-		end
-		
-		if (combats_count == combats_per_level) then
-			break
 		end
 	end
 end
@@ -205,7 +203,7 @@ local function is_squad_valid(squad)
 	return true
 end
 
-local function update()
+local function actor_on_slicing_update()
 	local tg = time_global()
 	
 	if (tg < update_timer) then
@@ -259,13 +257,13 @@ local function update()
 	
 	if (level_to_update == nil) then
 		empty_table(updated_levels)
-		printf("### Dancher: restart offline squads combat ###")
+		-- printf("### Dancher: restart offline squads combat ###")
 		return
 	end
 	
 	local squads_to_combat = squads_to_levels[level_to_update]
 	process_squads_combat(squads_to_combat)
-	printf("### Dancher: process offline squads combat ###")
+	-- printf("### Dancher: process offline squads combat ###")
 	
 	updated_levels[level_to_update] = true
 end
@@ -279,7 +277,7 @@ local function actor_on_first_update()
 	loot_items = {}
 	updated_levels = {}
 	update_timer = time_global() + 1000
-	AddUniqueCall(update)
+	RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
 end
 
 function on_game_start()

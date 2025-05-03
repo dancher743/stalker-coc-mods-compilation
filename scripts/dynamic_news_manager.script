@@ -169,6 +169,7 @@ function DynamicNewsManager:__init()
 	CreateTimeEvent("DynamicNewsManager","TickTask",10*TimeFactor,self.TickTask,self)
 	CreateTimeEvent("DynamicNewsManager","TickRandom",10*TimeFactor,self.TickRandom,self)
 	CreateTimeEvent("DynamicNewsManager","TickCompanion",10*TimeFactor,self.TickCompanion,self)
+	CreateTimeEvent("DynamicNewsManager","TickOfflineCombat",math.random(240,360)*TimeFactor,self.TickOfflineCombat,self)
 	
 	RegisterScriptCallback("monster_on_death_callback",self)
 	--RegisterScriptCallback("monster_on_net_spawn",self)
@@ -185,6 +186,7 @@ function DynamicNewsManager:destroy()
 	RemoveTimeEvent("DynamicNewsManager","TickTask")
 	RemoveTimeEvent("DynamicNewsManager","TickRandom")
 	RemoveTimeEvent("DynamicNewsManager","TickCompanion")
+	RemoveTimeEvent("DynamicNewsManager","TickOfflineCombat")
 	
 	UnregisterScriptCallback("monster_on_death_callback",self)
 	--UnregisterScriptCallback("monster_on_net_spawn",self)
@@ -402,8 +404,7 @@ function DynamicNewsManager:TickRandom()
 	end
 		
 	-- pick news
-	local shw_offline_combat_report = sim_squad_offline_combat.is_enabled()
-	local pick_tbl = {shw_surge, shw_factions_report, shw_zone_activity, shw_found_dead, shw_random_msg, shw_offline_combat_report}
+	local pick_tbl = {shw_surge, shw_factions_report, shw_zone_activity, shw_found_dead, shw_random_msg}
 	local picked_tbl = {}
 	for i=1,#pick_tbl do
 		if (pick_tbl[i] == true) then
@@ -425,8 +426,6 @@ function DynamicNewsManager:TickRandom()
 		self:FoundDead()
 	elseif (pick == 5) then
 		self:SpamRandom()
-	elseif (pick == 6) then
-		self:ReportDeathByOfflineCombat()
 	end
 	
 	return false
@@ -475,6 +474,28 @@ function DynamicNewsManager:TickCompanion()
 			self:CompanionAboutLife(sender)
 		end
 	end
+	
+	return false
+end
+
+function DynamicNewsManager:TickOfflineCombat()
+	if (axr_main.config:r_value(MM_OPTIONS,"enable_dynamic_news",1,true) == false) then
+		return true
+	end
+	
+	if not sim_squad_offline_combat.is_enabled() then
+		return true
+	end
+	
+	ResetTimeEvent("DynamicNewsManager","TickOfflineCombat",math.random(240,360)*TimeFactor)
+	--printf(">>> Dyn News: TickOfflineCombat call")
+	
+	-- news state check
+	if self:NewsToggle() then
+		return false
+	end
+	
+	self:ReportDeathByOfflineCombat()
 	
 	return false
 end
@@ -1767,20 +1788,19 @@ function DynamicNewsManager:ReportDeathByOfflineCombat() -- Report offline comba
 	
 	local clr_1 = "%" .. "%c[255,160,160,190]"
 	local clr_2 = "%" .. "%c[255,220,220,220]"
-	local map = alife():level_name(victim_data["level_id"])
-    map = strtransl(map)
 	local who = killer
 	
 	if IsStalker(who) then
 		local a = game.translate_string(who:community())
 		local b = game.translate_string(victim:community())
-		local c = map
+		local c = dynamic_news_helper.GetPointDescription(victim)
 		local who_name = who:character_name()
 		
 		local Se = game.translate_string("st_dyn_news_sender_obituary")
 		local msg = self:ReadTextKeyList( game.translate_string("st_dyn_news_spc_obituary_s") , {["clr_1"]=clr_1 , ["clr_2"]=clr_2 , ["who_name"]=who_name , ["who_comm"]=a , ["victim_name"]=victim:character_name() , ["victim_comm"]=b , ["where"]=c} )
 		
-		self:PushToChannel("general",{Mg=msg,Ic="death",Snd="no_sound",Se=Se,It="gr",Ty="death_by_stalker"})
+		local Ty = math.random() < 0.33 and "death_by_stalker" or STR_EMPTY
+		self:PushToChannel("general",{Mg=msg,Ic="death",Snd="no_sound",Se=Se,It="gr",Ty=Ty})
 	elseif IsMonster(who) then
 		local a
 		if (system_ini():r_string_ex("string_table","language") == "rus") then
@@ -1789,12 +1809,13 @@ function DynamicNewsManager:ReportDeathByOfflineCombat() -- Report offline comba
 			a = string.gsub(dynamic_news_helper.GetMonsterDescription(nil,1,who:section_name(),who:clsid()),"(%l)?",string.upper("%1"),1)
 		end
 		local b = game.translate_string(victim:community())
-		local c = map
+		local c = dynamic_news_helper.GetPointDescription(victim)
 		
 		local Se = game.translate_string("st_dyn_news_sender_obituary")
 		local msg = self:ReadTextKeyList( game.translate_string("st_dyn_news_spc_obituary_m") , {["clr_1"]=clr_1 , ["clr_2"]=clr_2 , ["victim_name"]=victim:character_name() , ["victim_comm"]=b , ["who"]=a , ["where"]=c} )
 		
-		self:PushToChannel("general",{Mg=msg,Ic="death",Snd="no_sound",Se=Se,It="gr",Ty="death_by_mutant"})
+		local Ty = math.random() < 0.33 and "death_by_mutant" or STR_EMPTY
+		self:PushToChannel("general",{Mg=msg,Ic="death",Snd="no_sound",Se=Se,It="gr",Ty=Ty})
 	end
 	
 	return true
