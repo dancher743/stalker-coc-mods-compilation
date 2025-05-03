@@ -9,8 +9,8 @@ local day_distance = 35*35
 local night_distance = 15*15
 local inc_rank_points = 20
 local handicap_chance = 0.2
-local victim_key = "victim"
-local killer_key = "killer"
+local victim_id_key = "victim_id"
+local killer_id_key = "killer_id"
 local level_id_key = "level_id"
 
 local update_timer
@@ -18,7 +18,7 @@ local updated_levels
 local squads_to_levels
 local loot_items
 
-last_killed_stalker = nil
+local last_killed_stalker
 
 local rank_power = {
 	novice = 10,
@@ -38,7 +38,7 @@ local rank_power = {
 local function calculate_squad_power(squad)
 	local power = 0
 	for k in squad:squad_members() do
-		local se_obj = alife():object(k.id)
+		local se_obj = alife_object(k.id)
 		if (se_obj) then
 			local rank_name = ranks.get_se_obj_rank_name(se_obj)
 			power = power + rank_power[rank_name] or 0
@@ -90,7 +90,7 @@ local function process_combat(squad1, squad2, level_id, combat_distance)
 	end
 	
 	game_relations.drx_df_faction_npc_on_death(killer_squad:get_squad_community(), victim_squad:get_squad_community())
-	local victim_id = victim_squad.id
+	local victim_squad_id = victim_squad.id
 	
 	local se_killer = get_random_npc(killer_squad)
 	local se_victim = nil
@@ -103,7 +103,7 @@ local function process_combat(squad1, squad2, level_id, combat_distance)
 		if (loot_items[se_victim.id] and loot_items[se_killer.id]) then
 			local victim_items = loot_items[se_victim.id]
 			for i=1,#victim_items do
-				local victim_item = alife():object(victim_items[i])
+				local victim_item = alife_object(victim_items[i])
 				table.remove(loot_items[se_victim.id], victim_item.id)
 				
 				local killer_item = alife():create(victim_item:section_name(), se_killer.position, se_killer.m_level_vertex_id, se_killer.m_game_vertex_id, se_killer.id)
@@ -119,8 +119,8 @@ local function process_combat(squad1, squad2, level_id, combat_distance)
 		if (last_killed_stalker == nil) then
 			last_killed_stalker = {}
 		end
-		last_killed_stalker[victim_key] = se_victim
-		last_killed_stalker[killer_key] = se_killer
+		last_killed_stalker[victim_id_key] = se_victim.id
+		last_killed_stalker[killer_id_key] = se_killer.id
 		last_killed_stalker[level_id_key] = level_id
 	end
 	
@@ -130,7 +130,7 @@ local function process_combat(squad1, squad2, level_id, combat_distance)
 		end
 	end
 	
-	return victim_id
+	return victim_squad_id
 end
 
 local function process_squads_combat(squads)
@@ -238,7 +238,7 @@ local function update()
 		utils.shuffle_table(squads_to_levels)
 		
 		for i=1,65534 do
-			local se_obj = alife():object(i)
+			local se_obj = alife_object(i)
 			if (se_obj and se_obj.parent_id and loot_items[se_obj.parent_id]) then
 				table.insert(loot_items[se_obj.parent_id], se_obj.id)
 				-- printf("### Dancher: loot added (%s) ###", tostring(se_obj.id))
@@ -288,4 +288,10 @@ end
 
 function is_enabled()
 	return IsEocMode() == false
+end
+
+function pop_last_killed_stalker_data()
+	local data = last_killed_stalker
+	last_killed_stalker = nil
+	return data
 end

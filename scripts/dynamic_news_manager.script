@@ -402,7 +402,8 @@ function DynamicNewsManager:TickRandom()
 	end
 		
 	-- pick news
-	local pick_tbl = {shw_surge, shw_factions_report, shw_zone_activity, shw_found_dead, shw_random_msg}
+	local shw_offline_combat_report = sim_squad_offline_combat.is_enabled()
+	local pick_tbl = {shw_surge, shw_factions_report, shw_zone_activity, shw_found_dead, shw_random_msg, shw_offline_combat_report}
 	local picked_tbl = {}
 	for i=1,#pick_tbl do
 		if (pick_tbl[i] == true) then
@@ -424,6 +425,8 @@ function DynamicNewsManager:TickRandom()
 		self:FoundDead()
 	elseif (pick == 5) then
 		self:SpamRandom()
+	elseif (pick == 6) then
+		self:ReportDeathByOfflineCombat()
 	end
 	
 	return false
@@ -1745,6 +1748,54 @@ function DynamicNewsManager:FoundDead() -- report dead body findings
 	local msg = self:ReadTextKeyList( "$clr_1$death_report -$clr_2 $fname $sname, $map, $death_reason, $y1$y2-$z1$z2$z3" , {["clr_1"]=clr_1 , ["clr_2"]=clr_2 , ["death_report"]=game.translate_string("st_dyn_news_spc_death_report") , ["fname"]=a2 , ["sname"]=b2 , ["map"]=c , ["death_reason"]=tbl[math.random(#tbl)] , ["y1"]=y1 , ["y2"]=y2 , ["z1"]=z1 , ["z2"]=z2 , ["z3"]=z3})
 	
 	dynamic_news_helper.send_tip(msg,Se, Ic, msg_duration,nil,"no_sound",It)
+	
+	return true
+end
+
+function DynamicNewsManager:ReportDeathByOfflineCombat() -- Report offline combat death
+	--printf(">>> Dyn News: ReportDeathByOfflineCombat - call")
+	local victim_data = sim_squad_offline_combat.pop_last_killed_stalker_data()
+	if (not victim_data) then
+		return false
+	end
+	
+	local victim = alife_object(victim_data["victim_id"])
+	local killer = alife_object(victim_data["killer_id"])
+	if (not victim or not killer) then
+		return false
+	end
+	
+	local clr_1 = "%" .. "%c[255,160,160,190]"
+	local clr_2 = "%" .. "%c[255,220,220,220]"
+	local map = alife():level_name(victim_data["level_id"])
+    map = strtransl(map)
+	local who = killer
+	
+	if IsStalker(who) then
+		local a = game.translate_string(who:community())
+		local b = game.translate_string(victim:community())
+		local c = map
+		local who_name = who:character_name()
+		
+		local Se = game.translate_string("st_dyn_news_sender_obituary")
+		local msg = self:ReadTextKeyList( game.translate_string("st_dyn_news_spc_obituary_s") , {["clr_1"]=clr_1 , ["clr_2"]=clr_2 , ["who_name"]=who_name , ["who_comm"]=a , ["victim_name"]=victim:character_name() , ["victim_comm"]=b , ["where"]=c} )
+		
+		self:PushToChannel("general",{Mg=msg,Ic="death",Snd="no_sound",Se=Se,It="gr",Ty="death_by_stalker"})
+	elseif IsMonster(who) then
+		local a
+		if (system_ini():r_string_ex("string_table","language") == "rus") then
+			a = dynamic_news_helper.GetMonsterDescription(nil,7,who:section_name(),who:clsid())
+		else
+			a = string.gsub(dynamic_news_helper.GetMonsterDescription(nil,1,who:section_name(),who:clsid()),"(%l)?",string.upper("%1"),1)
+		end
+		local b = game.translate_string(victim:community())
+		local c = map
+		
+		local Se = game.translate_string("st_dyn_news_sender_obituary")
+		local msg = self:ReadTextKeyList( game.translate_string("st_dyn_news_spc_obituary_m") , {["clr_1"]=clr_1 , ["clr_2"]=clr_2 , ["victim_name"]=victim:character_name() , ["victim_comm"]=b , ["who"]=a , ["where"]=c} )
+		
+		self:PushToChannel("general",{Mg=msg,Ic="death",Snd="no_sound",Se=Se,It="gr",Ty="death_by_mutant"})
+	end
 	
 	return true
 end
