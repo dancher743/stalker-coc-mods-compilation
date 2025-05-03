@@ -4,7 +4,8 @@
 -- Special thanks to offline alife of AMK, EOC and Anomaly!
 --
 
-local day_distance = 30*30
+local combats_per_level = 5
+local day_distance = 35*35
 local night_distance = 15*15
 local inc_rank_points = 20
 local handicap_chance = 0.2
@@ -15,7 +16,7 @@ local level_id_key = "level_id"
 local update_timer
 local updated_levels
 local squads_to_levels
-local squads_to_combat
+local loot_items
 
 last_killed_stalker = nil
 
@@ -29,9 +30,9 @@ local rank_power = {
 	master = 70,
 	legend = 80,
 	-- monsters
-	weak = 20,
-	normal = 40,
-	strong = 60
+	weak = 30,
+	normal = 60,
+	strong = 90
 }
 
 local function calculate_squad_power(squad)
@@ -59,15 +60,15 @@ local function get_random_npc(squad)
 end
 
 local function process_combat(squad1, squad2, level_id, combat_distance)
+	local distance = squad1.position:distance_to_sqr(squad2.position)
+	if (distance > combat_distance) then
+		return
+	end
+	
 	local squad1_community = squad1:get_squad_community()
 	local squad2_community = squad2:get_squad_community()
 	local are_enemies = game_relations.is_factions_enemies(squad1_community, squad2_community)
 	if (not are_enemies) then
-		return
-	end
-	
-	local distance = squad1.position:distance_to_sqr(squad2.position)
-	if (distance > combat_distance) then
 		return
 	end
 	
@@ -94,9 +95,23 @@ local function process_combat(squad1, squad2, level_id, combat_distance)
 	local se_killer = get_random_npc(killer_squad)
 	local se_victim = nil
 	for k in victim_squad:squad_members() do
+		se_killer = math.random(2) == 1 and se_killer or get_random_npc(killer_squad)
 		se_victim = alife_object(k.id)
 		if (se_victim) then
 			se_victim:on_death(se_killer)
+		end
+		if (loot_items[se_victim.id] and loot_items[se_killer.id]) then
+			local victim_items = loot_items[se_victim.id]
+			for i=1,#victim_items do
+				local victim_item = alife():object(victim_items[i])
+				table.remove(loot_items[se_victim.id], victim_item.id)
+				
+				local killer_item = alife():create(victim_item:section_name(), se_killer.position, se_killer.m_level_vertex_id, se_killer.m_game_vertex_id, se_killer.id)
+				table.insert(loot_items[se_killer.id], killer_item.id)
+				
+				safe_release_manager.release(victim_item)
+				-- printf("### Dancher: loot relocated!")
+			end
 		end
 	end
 	
@@ -118,30 +133,47 @@ local function process_combat(squad1, squad2, level_id, combat_distance)
 	return victim_id
 end
 
-local function process_squads_combat(level_id)
+local function process_squads_combat(squads)
+	if (#squads == 0) then
+		return
+	end
+
 	local combat_distance = xr_conditions.is_day() and day_distance or night_distance
-	local squads_count = #squads_to_combat
+	local level_id = simulation_objects.get_level_id(squads[1])
+	local squads_count = #squads
+	local combats_count = 0
 	
 	for i=1,squads_count do
-		local squad1 = squads_to_combat[i]
+		local squad1 = squads[i]
 		
 		if (squad1) then
 			for j=1,squads_count do
-				local squad2 = squads_to_combat[j]
+				local squad2 = squads[j]
 				
 				if (squad2 and squad1.id ~= squad2.id and 
 					simulation_objects.is_on_the_same_level(squad1, squad2)) 
 				then
 					local victim_id = process_combat(squad1,squad2,level_id,combat_distance)
 					
+					if (victim_id ~= nil) then
+						combats_count = combats_count + 1
+					end
+					
 					if (victim_id == squad1.id) then
-						squads_to_combat[i] = nil
-						break
+						squads[i] = nil
 					elseif (victim_id == squad2.id) then
-						squads_to_combat[j] = nil
+						squads[j] = nil
+					end
+					
+					if (squads[i] == nil or combats_count == combats_per_level) then
+						break
 					end
 				end
 			end
+		end
+		
+		if (combats_count == combats_per_level) then
+			break
 		end
 	end
 end
@@ -154,16 +186,17 @@ local function is_squad_valid(squad)
 		return false
 	end
 	
+	local task_info = task_manager.get_task_manager().task_info
 	for k in squad:squad_members() do
-		if (axr_task_manager.bounties_npcs) then
-			for _,npc_id in pairs(axr_task_manager.bounties_npcs) do
+		if (axr_task_manager.bounties_by_id) then
+			for _,npc_id in pairs(axr_task_manager.bounties_by_id) do
 				if (npc_id == k.id) then
 					return false
 				end
 			end
 		end
-		for _,v in pairs(task_manager.get_task_manager().task_info) do
-			if (v.task_giver_id and v.task_giver_id == k.id) then
+		for _,task in pairs(task_info) do
+			if (task.task_giver_id and task.task_giver_id == k.id) then
 				return false
 			end
 		end
@@ -191,14 +224,28 @@ local function update()
 					squads_to_levels[level_id] = {}
 				end
 				table.insert(squads_to_levels[level_id], squad)
+				if not squad:is_monster() then
+					for k in squad:squad_members() do
+						loot_items[k.id] = {}
+					end
+				end
 			end
 		end
 		
 		for _,squads in ipairs(squads_to_levels) do
 			utils.shuffle_table(squads)
 		end
-		
 		utils.shuffle_table(squads_to_levels)
+		
+		for i=1,65534 do
+			local se_obj = alife():object(i)
+			if (se_obj and se_obj.parent_id and loot_items[se_obj.parent_id]) then
+				table.insert(loot_items[se_obj.parent_id], se_obj.id)
+				-- printf("### Dancher: loot added (%s) ###", tostring(se_obj.id))
+			end
+		end
+		
+		gc.collect("offline squads combat init")
 	end
 	
 	local level_to_update
@@ -216,14 +263,10 @@ local function update()
 		return
 	end
 	
-	squads_to_combat = squads_to_levels[level_to_update]
+	local squads_to_combat = squads_to_levels[level_to_update]
+	process_squads_combat(squads_to_combat)
+	printf("### Dancher: process offline squads combat ###")
 	
-	if (#squads_to_combat > 0) then
-		printf("### Dancher: process offline squads combat ###")
-		process_squads_combat(level_to_update)
-	end
-	
-	squads_to_combat = nil
 	updated_levels[level_to_update] = true
 end
 
@@ -233,6 +276,7 @@ local function actor_on_first_update()
 		return
 	end
 	
+	loot_items = {}
 	updated_levels = {}
 	update_timer = time_global() + 1000
 	AddUniqueCall(update)

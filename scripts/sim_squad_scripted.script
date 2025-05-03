@@ -1394,10 +1394,18 @@ function sim_squad_scripted:get_squad_relation()
 end
 --xrSanya-----------------------------------------------
 
+----------------------------
+-- Added by Dancher
+----------------------------
+
 function sim_squad_scripted:alive()
 	local se_obj = alife_object(self:commander_id())
 	if (se_obj and se_obj:alive()) then
 		return true
 	end
 	return false
+end
+
+function sim_squad_scripted:is_monster()
+	return is_squad_monster[self.player_id] == true
 end
