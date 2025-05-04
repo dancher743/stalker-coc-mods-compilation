@@ -35,6 +35,8 @@ All notable changes to this project will be documented in this file.
 * Balanced appearing of low health effector: from 30% to 5%
 * Fixed non-gathering by other NPCs faction patch
 * Fixed incorect chance of angry stash owner message in case of quest treasure
+* Included weapon's condition into reward of find weapon for stalker task
+* Fixed premature fallout skipping in `FalloutManager:update()` method
 * Fixed changing of faction relations if actor killed NPC under disguise
 
 ### Optimization
@@ -61,8 +63,6 @@ All notable changes to this project will be documented in this file.
 * Fixed icon of `sim_default_military_0_default_0` character
 * Disabled simulation of ecolog non-explorer squads
 * Enabled simulation of ecolog explorer squads in EOC mode
-* Included weapon's condition into reward of find weapon for stalker task
-* Fixed premature fallout skipping in `FalloutManager:update()` method
 
 ### Framework
 * Moved UI dialogs from `ui_generic_dialogs.script` to own scripts
