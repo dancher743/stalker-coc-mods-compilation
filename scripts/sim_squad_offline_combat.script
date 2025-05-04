@@ -197,8 +197,10 @@ local function is_squad_valid(squad)
 				end
 			end
 		end
+		local se_obj = alife_object(k.id)
 		for _,task in pairs(task_info) do
-			if (task.task_giver_id and task.task_giver_id == k.id) then
+			local giver_id = task.task_giver_id
+			if (se_obj and giver_id and (giver_id == se_obj.group_id or giver_id == se_obj.id)) then
 				return false
 			end
 		end
