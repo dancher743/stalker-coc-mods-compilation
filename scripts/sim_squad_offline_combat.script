@@ -8,7 +8,7 @@ local combats_per_level = 5
 local day_distance = 15*15
 local night_distance = 8*8
 local add_rank_points = 20
-local handicap_chance = 0.2
+local handicap_chance = 0.33
 local victim_id_key = "victim_id"
 local killer_id_key = "killer_id"
 
@@ -50,12 +50,15 @@ local function calculate_squad_power(squad)
 end
 
 -- from Anomaly 1.5.1.2
+local squad_npcs
 local function get_random_npc(squad)
-	local squad_npcs = {}
+	squad_npcs = squad_npcs or {}
 	for k in squad:squad_members() do
-		squad_npcs[#squad_npcs+1] = k.id
+		table.insert(squad_npcs, k.id)
 	end
-	return alife_object(squad_npcs[math.random(#squad_npcs)])
+	local se_npc = alife_object(squad_npcs[math.random(#squad_npcs)])
+	iempty_table(squad_npcs)
+	return se_npc
 end
 
 local function process_combat(squad1, squad2, level_id, combat_distance)
@@ -94,12 +97,13 @@ local function process_combat(squad1, squad2, level_id, combat_distance)
 	
 	local se_killer = get_random_npc(killer_squad)
 	local se_victim = nil
+	local is_stalker_squad = killer_squad:is_stalker()
 	for k in victim_squad:squad_members() do
 		se_killer = math.random(2) == 1 and se_killer or get_random_npc(killer_squad)
 		se_victim = alife_object(k.id)
 		if (se_victim) then
 			se_victim:on_death(se_killer)
-			if (IsStalker(se_killer)) then
+			if (is_stalker_squad) then
 				se_killer:set_rank(se_killer:rank() + add_rank_points)
 			end
 		end
@@ -244,6 +248,7 @@ local function actor_on_slicing_update()
 		end
 		
 		gc.collect("offline squads combat init")
+		return
 	end
 	
 	local level_to_update

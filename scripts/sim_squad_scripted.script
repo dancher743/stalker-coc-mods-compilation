@@ -1409,3 +1409,7 @@ end
 function sim_squad_scripted:is_monster()
 	return is_squad_monster[self.player_id] == true
 end
+
+function sim_squad_scripted:is_stalker()
+	return is_squad_monster[self.player_id] == false
+end
