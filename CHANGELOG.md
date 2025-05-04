@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 * Added few new tracks for radios
 * Added higher priority to shotgun in medium table in `ai_stalker.script`
 * Refactored `actor_health_effectors.script`
+* Restored original `printf` afrer disabling debug messages in `game_relations.script` (783a008)
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`
