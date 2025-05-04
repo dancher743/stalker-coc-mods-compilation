@@ -1322,6 +1322,8 @@ local smarts_by_no_assault_zones = {
 }
 
 function sim_squad_scripted:sim_available()
+	return false
+	--[[
 	if self.smart_id == nil then
 		return true
 	end
@@ -1337,6 +1339,7 @@ function sim_squad_scripted:sim_available()
 	end
 
 	return true
+	--]]
 end
 
 function sim_squad_scripted:target_precondition(squad)
