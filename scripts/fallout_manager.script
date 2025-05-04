@@ -212,10 +212,6 @@ function FalloutManager:update()
 			--self.atmosfear.debugMessages[7]:SetText("opt_enable_psi_storm="..tostring(self.atmosfear.opt_enable_psi_storm)..", is_started("..tostring(psi_storm_manager.is_started())..")")
 		--end
 		if diff < 0 then 
-			if (surge_manager.is_started() or psi_storm_manager.is_started()) then 
-				self:shift()
-				return
-			end
 			if level.rain_factor() > 0.001 then
 				self.phase = prestart_phase_name
 				self.inited_time=game.get_game_time()
@@ -224,7 +220,7 @@ function FalloutManager:update()
 				--self.atmosfear.debugMessages[1]:SetText("Fallout can begin but waiting for rain")
 			end
 		end			
-	elseif self.phase=="prestart" then
+	elseif self.phase==prestart_phase_name then
 		if(self.time_forwarded) then
 			self.time_forwarded = false
 			self.skip_message = false
@@ -234,7 +230,8 @@ function FalloutManager:update()
 		local g_time = game.get_game_time()
 		local diff = math.floor(self.preStartTime - g_time:diffSec(self.inited_time))
 		if diff < 0 then
-			if (level.rain_factor() > 0.001) then
+			local has_cataclysm = surge_manager.is_started() or psi_storm_manager.is_started()
+			if (level.rain_factor() > 0.001 and not has_cataclysm) then
 				self:start()
 			else
 				self:shift()
