@@ -294,7 +294,7 @@ function sim_squad_scripted:specific_update(script_target_id)
 				se_target:on_after_reach(self)
 				self.current_target_id = self.assigned_target_id
 				self.current_action = 1
-				
+				self.idle_time = system_ini():r_float_ex(self:section_name(),"idle_time") or math.random(STAY_POINT_IDLE_MIN,STAY_POINT_IDLE_MAX)
 				self.stay_time = game.get_game_time()
 			end
 			return
@@ -310,6 +310,8 @@ function sim_squad_scripted:specific_update(script_target_id)
 	self.assigned_target_id = nil
 	self.current_target_id = nil
 	self.current_action = 0
+	self.idle_time = nil
+	self.stay_time = nil
 	
 	for k in self:squad_members() do
 		local se_obj = alife_object(k.id)
@@ -345,6 +347,7 @@ function sim_squad_scripted:generic_update()
 					se_target:on_after_reach(self)
 					self.current_target_id = self.assigned_target_id
 					self.current_action = 1
+					self.idle_time = system_ini():r_float_ex(self:section_name(),"idle_time") or math.random(STAY_POINT_IDLE_MIN,STAY_POINT_IDLE_MAX)
 					self.stay_time = game.get_game_time()
 				end
 				return
@@ -366,6 +369,8 @@ function sim_squad_scripted:generic_update()
 		self.assigned_target_id = nil
 		self.current_target_id = nil
 		self.current_action = nil
+		self.idle_time = nil
+		self.stay_time = nil
 		self.__lock = true
 		return 
 	end
@@ -375,6 +380,8 @@ function sim_squad_scripted:generic_update()
 	self.assigned_target_id = target.id
 	self.current_target_id = nil
 	self.current_action = 0
+	self.idle_time = nil
+	self.stay_time = nil
 	
 	local sim = alife()
 	for k in self:squad_members() do
@@ -905,6 +912,8 @@ function sim_squad_scripted:STATE_Write(packet)
 	packet:w_stringZ(tostring(self.respawn_point_prop_section))
 	packet:w_stringZ(tostring(self.smart_id))
 	packet:w_stringZ(tostring(self.assigned_target_id))
+	packet:w_stringZ(tostring(self.idle_time))
+	utils.w_CTime(packet,self.stay_time)
 
 	set_save_marker(packet, "save", true, "sim_squad_scripted")
 end
@@ -949,6 +958,11 @@ function sim_squad_scripted:STATE_Read(packet, size)
 	else
 		self.assigned_target_id = tonumber(self.assigned_target_id)
 	end
+	local idle_time = packet:r_stringZ()
+	if idle_time ~= STR_NIL then
+		self.idle_time = tonumber(idle_time)
+	end
+	self.stay_time = utils.r_CTime(packet)
 	self:init_squad_on_load()
 	set_save_marker(packet, "load", true, "sim_squad_scripted")
 	--alun_utils.debug_write( strformat("%s:STATE_Read end",self:name()) )
