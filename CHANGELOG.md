@@ -34,6 +34,7 @@ All notable changes to this project will be documented in this file.
 * Balanced appearing of low health effector: from 30% to 5%
 * Fixed non-gathering by other NPCs faction patch
 * Fixed incorect chance of angry stash owner message in case of quest treasure
+* Fixed changing of faction relations if actor killed NPC under disguise
 
 ### Optimization
 * Added `npc_count` into `CCampManager` to optimize update calls (from [[EN/RU] More campfire jokes and stories](https://www.moddb.com/mods/stalker-anomaly/addons/enru-more-campfire-jokes-and-stories) mod)
