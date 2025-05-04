@@ -15,24 +15,42 @@ local killer_id_key = "killer_id"
 local update_timer
 local updated_levels
 local squads_to_levels
-local loot_items
-
-local last_killed_stalker
 
 local rank_power = {
-	novice = 10,
-	trainee = 20,
-	experienced = 30,
-	professional = 40,
-	veteran = 50,
-	expert = 60,
-	master = 70,
-	legend = 80,
+	["novice"] = 10,
+	["trainee"] = 20,
+	["experienced"] = 30,
+	["professional"] = 40,
+	["veteran"] = 50,
+	["expert"] = 60,
+	["master"] = 70,
+	["legend"] = 80,
 	-- monsters
-	weak = 30,
-	normal = 60,
-	strong = 90
+	["weak"] = 30,
+	["normal"] = 60,
+	["strong"] = 90
 }
+
+local loot_items
+local loot_ignore_list = {
+		["bolt"] = true,
+		["device_torch"] = true,
+		["device_pda"] = true,
+		["wpn_binoc"] = true,
+		["medkit_script"] = true,
+		["guitar_a"] = true,
+		["harmonica_a"] = true,
+		["anim_binoc"] = true,
+		["anim_knife"] = true,
+		["hand_radio"] = true,
+		["hand_radio_r"] = true,
+		["stick_bred"] = true,
+		["stick_kolbasa"] = true,
+		["stick_kolbasa_bred"] = true,
+		["wpn_knife"] = true
+}
+
+local last_killed_stalker
 
 local function calculate_squad_power(squad)
 	local power = 0
@@ -180,6 +198,11 @@ local function process_squads_combat(squads)
 	end
 end
 
+function is_item_valid(se_item)
+	local section = se_item:section_name()
+	return loot_ignore_list[section] == nil
+end
+
 local function is_squad_valid(squad)
 	if (not squad:alive() or 
 		get_object_story_id(squad.id) or 
@@ -209,7 +232,7 @@ local function is_squad_valid(squad)
 	return true
 end
 
-local function actor_on_slicing_update()
+local function update()
 	local tg = time_global()
 	
 	if (tg < update_timer) then
@@ -243,11 +266,12 @@ local function actor_on_slicing_update()
 		
 		for i=1,65534 do
 			local se_obj = alife_object(i)
-			if (se_obj and se_obj.parent_id and loot_items[se_obj.parent_id]) then
+			if (se_obj and se_obj.parent_id and loot_items[se_obj.parent_id] and is_item_valid(se_obj)) then
 				table.insert(loot_items[se_obj.parent_id], se_obj.id)
 				-- printf("### Dancher: loot added (%s) ###", tostring(se_obj.id))
 			end
 		end
+		loot_ignore_list = nil
 		
 		gc.collect("offline squads combat init")
 		return
@@ -284,7 +308,7 @@ local function actor_on_first_update()
 	loot_items = {}
 	updated_levels = {}
 	update_timer = time_global() + 1000
-	RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+	AddUniqueCall(update)
 end
 
 function on_game_start()

@@ -169,7 +169,7 @@ function DynamicNewsManager:__init()
 	CreateTimeEvent("DynamicNewsManager","TickTask",10*TimeFactor,self.TickTask,self)
 	CreateTimeEvent("DynamicNewsManager","TickRandom",10*TimeFactor,self.TickRandom,self)
 	CreateTimeEvent("DynamicNewsManager","TickCompanion",10*TimeFactor,self.TickCompanion,self)
-	CreateTimeEvent("DynamicNewsManager","TickOfflineCombat",math.random(240,360)*TimeFactor,self.TickOfflineCombat,self)
+	CreateTimeEvent("DynamicNewsManager","TickOfflineCombat",30*TimeFactor,self.TickOfflineCombat,self)
 	
 	RegisterScriptCallback("monster_on_death_callback",self)
 	--RegisterScriptCallback("monster_on_net_spawn",self)
