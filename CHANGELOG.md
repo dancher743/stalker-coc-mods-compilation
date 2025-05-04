@@ -59,6 +59,8 @@ All notable changes to this project will be documented in this file.
 * Fixed icon of `sim_default_military_0_default_0` character
 * Disabled simulation of ecolog non-explorer squads
 * Enabled simulation of ecolog explorer squads in EOC mode
+* Included weapon's condition into reward of find weapon for stalker task
+* Fixed premature fallout skipping in `FalloutManager:update()` method
 
 ### Framework
 * Moved UI dialogs from `ui_generic_dialogs.script` to own scripts
