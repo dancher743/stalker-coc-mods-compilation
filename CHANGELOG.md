@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 * Added few new tracks for radios
 * Added higher priority to shotgun in medium table in `ai_stalker.script`
 * Refactored `actor_health_effectors.script`
+* Restored original `printf` afrer disabling debug messages in `game_relations.script` (783a008)
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`
@@ -34,6 +35,9 @@ All notable changes to this project will be documented in this file.
 * Balanced appearing of low health effector: from 30% to 5%
 * Fixed non-gathering by other NPCs faction patch
 * Fixed incorect chance of angry stash owner message in case of quest treasure
+* Included weapon's condition into reward of find weapon for stalker task
+* Fixed premature fallout skipping in `FalloutManager:update()` method
+* Fixed changing of faction relations if actor killed NPC under disguise
 
 ### Optimization
 * Added `npc_count` into `CCampManager` to optimize update calls (from [[EN/RU] More campfire jokes and stories](https://www.moddb.com/mods/stalker-anomaly/addons/enru-more-campfire-jokes-and-stories) mod)
@@ -59,8 +63,6 @@ All notable changes to this project will be documented in this file.
 * Fixed icon of `sim_default_military_0_default_0` character
 * Disabled simulation of ecolog non-explorer squads
 * Enabled simulation of ecolog explorer squads in EOC mode
-* Included weapon's condition into reward of find weapon for stalker task
-* Fixed premature fallout skipping in `FalloutManager:update()` method
 
 ### Framework
 * Moved UI dialogs from `ui_generic_dialogs.script` to own scripts
