@@ -22,7 +22,8 @@ All notable changes to this project will be documented in this file.
 * Added few new tracks for radios
 * Added higher priority to shotgun in medium table in `ai_stalker.script`
 * Refactored `actor_health_effectors.script`
-* Restored original `printf` afrer disabling debug messages in `game_relations.script` (783a008)
+* Restored original `printf` after disabling debug messages in `game_relations.script` (783a008)
+* Corrected chance of picking squad target
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`
@@ -38,9 +39,16 @@ All notable changes to this project will be documented in this file.
 * Included weapon's condition into reward of find weapon for stalker task
 * Fixed premature fallout skipping in `FalloutManager:update()` method
 * Fixed changing of faction relations if actor killed NPC under disguise
+* Disabled `sim_squad_scripted:sim_available()` function to prevent oversimulation
+* Saved `idle_time` and `stay_time` to fix reselection after reload in `sim_squad_scripted.script`
 
 ### Optimization
 * Added `npc_count` into `CCampManager` to optimize update calls (from [[EN/RU] More campfire jokes and stories](https://www.moddb.com/mods/stalker-anomaly/addons/enru-more-campfire-jokes-and-stories) mod)
+
+### Framework
+* Added `alive()`, `is_monster()` and `is_stalker()` methods into `sim_squad_scripted.script`
+* Added `get_level_id(obj)` and `get_level_name(obj)` functions into `simulation_objects.script`
+* Added `shuffle_table(t)` function into `utils.script` (from Anomaly 1.5.1.2)
 
 ## [1.5.1] - 2025-04-07
 
