@@ -29,6 +29,8 @@ All notable changes to this project will be documented in this file.
 * Restored original `printf` after disabling debug messages in `game_relations.script` (783a008)
 * Corrected chance of picking squad target
 * Corrected bandits `faction_boost` value from 5 to 8 in `sim_offline_control.script` (EOC mode)
+* Added more gunfire ambients during EOC
+* Refactored ambient configs: `eoc.ltx` and `survival.ltx`
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`

@@ -50,11 +50,20 @@ function reset_settings(level_name, ambient)
 		return false
 	end
 	
-	if (IsSurvivalMode() and not IsUndergroundLevel()) then
-		local ini_surv = ini_file("environment\\ambients\\survival.ltx")
-		local channels_surv = alun_utils.parse_list(ini_surv,ambient,"sound_channels_dynamic")
-		for i=1,#channels_surv do
-			table.insert(channels,channels_surv[i]);
+	if (not IsUndergroundLevel()) then
+		local ambients_mode = nil
+		
+		if (IsSurvivalMode()) then
+			ambients_mode = ini_file("environment\\ambients\\survival.ltx")
+		elseif (IsEocMode()) then
+			ambients_mode = ini_file("environment\\ambients\\eoc.ltx")
+		end
+		
+		if (ambients_mode) then
+			local channels_mode = alun_utils.parse_list(ambients_mode,ambient,"sound_channels_dynamic")
+			for i=1,#channels_mode do
+				table.insert(channels,channels_mode[i]);
+			end
 		end
 	end
 	
