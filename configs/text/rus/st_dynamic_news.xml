@@ -7209,7 +7209,7 @@
 	
 	<!-- Special -->
 	<string id="st_dyn_news_spc_obituary_s">
-		<text>$clr_1$who_name ($who_comm)$clr_2 убил сталкера $clr_1$victim_name ($victim_comm)$clr_2.\n$clr_1Локация: $clr_2$where.</text>
+		<text>$clr_1$who_name ($who_comm)$clr_2 убил сталкера $clr_1$victim_name ($victim_comm)$clr_2.\n$clr_1Локация: $clr_2$where</text>
 	</string>
 	<string id="st_dyn_news_spc_obituary_m">
 		<text>$clr_1Погиб $clr_2$victim_name ($victim_comm). $who.\n$clr_1Локация: $clr_2$where</text>
