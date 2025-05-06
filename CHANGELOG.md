@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [1.5.2] - Unreleased
 
+### Features
+* Added Offline Combat to basic mode
+* Reworked Survival mode with EOC
+
 ### Mods
 * [ND fix NPC guitar position coc 1.4.22](https://www.moddb.com/mods/call-of-chernobyl/addons/nd-fix-npc-guitar-position-coc1-4-22)
 * [Disappearing Rain Sound Fix](https://www.moddb.com/mods/doctorx-call-of-the-zone/addons/disappearing-rain-sound-fix)
@@ -24,6 +28,7 @@ All notable changes to this project will be documented in this file.
 * Refactored `actor_health_effectors.script`
 * Restored original `printf` after disabling debug messages in `game_relations.script` (783a008)
 * Corrected chance of picking squad target
+* Corrected bandits `faction_boost` value from 5 to 8 in `sim_offline_control.script` (EOC mode)
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`
@@ -41,6 +46,7 @@ All notable changes to this project will be documented in this file.
 * Fixed changing of faction relations if actor killed NPC under disguise
 * Disabled `sim_squad_scripted:sim_available()` function to prevent oversimulation
 * Saved `idle_time` and `stay_time` to fix reselection after reload in `sim_squad_scripted.script`
+* Fixed and refactored `are_factions_zombied_or_monster` function in `sim_survival.script`
 
 ### Optimization
 * Added `npc_count` into `CCampManager` to optimize update calls (from [[EN/RU] More campfire jokes and stories](https://www.moddb.com/mods/stalker-anomaly/addons/enru-more-campfire-jokes-and-stories) mod)
