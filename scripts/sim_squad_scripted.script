@@ -1428,5 +1428,5 @@ function sim_squad_scripted:is_monster()
 end
 
 function sim_squad_scripted:is_stalker()
-	return is_squad_monster[self.player_id] == false
+	return is_squad_monster[self.player_id] == nil
 end

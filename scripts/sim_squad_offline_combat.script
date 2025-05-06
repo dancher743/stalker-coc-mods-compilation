@@ -115,16 +115,18 @@ local function process_combat(squad1, squad2, level_id, combat_distance)
 	
 	local se_killer = get_random_npc(killer_squad)
 	local se_victim = nil
-	local is_stalker_squad = killer_squad:is_stalker()
+	local is_killer_stalker = killer_squad:is_stalker()
+	
 	for k in victim_squad:squad_members() do
 		se_killer = math.random(2) == 1 and se_killer or get_random_npc(killer_squad)
 		se_victim = alife_object(k.id)
 		if (se_victim) then
 			se_victim:on_death(se_killer)
-			if (is_stalker_squad) then
+			if (is_killer_stalker) then
 				se_killer:set_rank(se_killer:rank() + add_rank_points)
 			end
 		end
+		
 		if (se_victim and loot_items[se_victim.id] and loot_items[se_killer.id]) then
 			local victim_items = loot_items[se_victim.id]
 			for i=1,#victim_items do
@@ -140,7 +142,7 @@ local function process_combat(squad1, squad2, level_id, combat_distance)
 		end
 	end
 	
-	if (se_victim and IsStalker(se_victim)) then
+	if (se_victim and victim_squad:is_stalker()) then
 		if (last_killed_stalker == nil) then
 			last_killed_stalker = {}
 		end
