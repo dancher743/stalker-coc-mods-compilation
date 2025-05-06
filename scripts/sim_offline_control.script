@@ -32,7 +32,7 @@ function calculate_squad_power(squad)
 	if faction == "stalker" then
 	   faction_boost = 8
 	elseif faction == "bandit" then
-	   faction_boost = 5
+	   faction_boost = 8
 	elseif faction == "csky" then
 	   faction_boost = 10
 	elseif faction == "army" then
@@ -47,6 +47,8 @@ function calculate_squad_power(squad)
 	   faction_boost = 10
 	elseif faction == "monolith" then
 	   faction_boost = 15
+	elseif faction == "zombied" and IsSurvivalMode() then
+	   faction_boost = 10
 	end
 
 	power = power + faction_boost
