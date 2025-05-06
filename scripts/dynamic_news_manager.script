@@ -169,7 +169,9 @@ function DynamicNewsManager:__init()
 	CreateTimeEvent("DynamicNewsManager","TickTask",10*TimeFactor,self.TickTask,self)
 	CreateTimeEvent("DynamicNewsManager","TickRandom",10*TimeFactor,self.TickRandom,self)
 	CreateTimeEvent("DynamicNewsManager","TickCompanion",10*TimeFactor,self.TickCompanion,self)
-	CreateTimeEvent("DynamicNewsManager","TickOfflineCombat",30*TimeFactor,self.TickOfflineCombat,self)
+	if (sim_squad_offline_combat.is_enabled()) then
+		CreateTimeEvent("DynamicNewsManager","TickOfflineCombat",30*TimeFactor,self.TickOfflineCombat,self)
+	end
 	
 	RegisterScriptCallback("monster_on_death_callback",self)
 	--RegisterScriptCallback("monster_on_net_spawn",self)
