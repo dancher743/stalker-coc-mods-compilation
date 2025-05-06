@@ -49,6 +49,7 @@ All notable changes to this project will be documented in this file.
 * Disabled `sim_squad_scripted:sim_available()` function to prevent oversimulation
 * Saved `idle_time` and `stay_time` to fix reselection after reload in `sim_squad_scripted.script`
 * Fixed and refactored `are_factions_zombied_or_monster` function in `sim_survival.script`
+* Added bloodsuckers into Bloodsucker village (¯\_(ツ)_/¯)
 
 ### Optimization
 * Added `npc_count` into `CCampManager` to optimize update calls (from [[EN/RU] More campfire jokes and stories](https://www.moddb.com/mods/stalker-anomaly/addons/enru-more-campfire-jokes-and-stories) mod)
