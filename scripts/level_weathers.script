@@ -76,7 +76,6 @@ function WeatherManager:__init()
 	self.last_hour = 0
 	self.next_hour=0
 	self.graphs_ini = ini_file("environment\\dynamic_weather_graphs.ltx")
-	self.subperiods_ini = ini_file("environment\\dynamic_weather_subperiods.ltx")
 	if not self.graphs_ini then
 		printf("error when open weather_dynamic_graphs.ltx")
 	end
@@ -227,7 +226,7 @@ function WeatherManager:get_next_period(period)
 		return next_period
 	end
 	
-	local available_periods = self:get_periods(self.graphs_ini, "global_weather_periods")
+	local available_periods = self:get_periods("global_weather_periods")
 	local next_periods = {}
 	local pick_chance = math.random(100)
 	
@@ -243,18 +242,25 @@ function WeatherManager:get_next_period(period)
 end
 
 function WeatherManager:get_subperiod(period)
-	local subperiods = alun_utils.parse_ini_section_to_array(self.subperiods_ini,"subperiods")
-	local subperiods_ids = {}
+	local subperiod = nil
+	local subperiods = alun_utils.parse_ini_section_to_array(self.graphs_ini,"subperiods")
 	
+	local subperiods_ids = {}
+	table.insert(subperiods_ids, 0)
 	for id,_ in pairs(subperiods) do
 		table.insert(subperiods_ids, id)
 	end
 	
 	local subperiod_id = subperiods_ids[math.random(#subperiods_ids)]
-	local subperiod_name = subperiods[subperiod_id]
-	local subperiod_periods = self:get_periods(self.subperiods_ini, subperiod_name)
+	if (subperiod_id ~= 0) then
+		local subperiod_name = subperiods[subperiod_id]
+		local subperiod_periods = self:get_periods(subperiod_name)
+		if (utils.contains(subperiod_periods, period)) then
+			subperiod = subperiod_name
+		end
+	end
 	
-	return utils.contains(subperiod_periods, period) and subperiod_name or nil
+	return subperiod
 end
 
 function WeatherManager:reset_last_period_change_date(period_change, delta_s)
@@ -516,8 +522,9 @@ function WeatherManager:try_get_no_panorama_weather(current_weather_section)
 	return no_panorama_weather_section or current_weather_section
 end
 
-function WeatherManager:get_periods(ini,section)
+function WeatherManager:get_periods(section)
 	local periods = {}
+	local ini = self.graphs_ini
 	
 	local n = ini:section_exist(section) and ini:line_count(section) or 0
 	for i=0, n-1 do
