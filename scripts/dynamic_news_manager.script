@@ -489,7 +489,7 @@ function DynamicNewsManager:TickOfflineCombat()
 		return true
 	end
 	
-	ResetTimeEvent("DynamicNewsManager","TickOfflineCombat",math.random(240,360)*TimeFactor)
+	ResetTimeEvent("DynamicNewsManager","TickOfflineCombat",90*TimeFactor)
 	--printf(">>> Dyn News: TickOfflineCombat call")
 	
 	-- news state check
@@ -497,7 +497,9 @@ function DynamicNewsManager:TickOfflineCombat()
 		return false
 	end
 	
-	self:ReportDeathByOfflineCombat()
+	if (math.random() < 0.33) then
+		self:ReportDeathByOfflineCombat()
+	end
 	
 	return false
 end
@@ -1801,8 +1803,7 @@ function DynamicNewsManager:ReportDeathByOfflineCombat() -- Report offline comba
 		local Se = game.translate_string("st_dyn_news_sender_obituary")
 		local msg = self:ReadTextKeyList( game.translate_string("st_dyn_news_spc_obituary_s") , {["clr_1"]=clr_1 , ["clr_2"]=clr_2 , ["who_name"]=who_name , ["who_comm"]=a , ["victim_name"]=victim:character_name() , ["victim_comm"]=b , ["where"]=c} )
 		
-		local Ty = math.random() < 0.33 and "death_by_stalker" or STR_EMPTY
-		self:PushToChannel("general",{Mg=msg,Ic="death",Snd="no_sound",Se=Se,It="gr",Ty=Ty})
+		self:PushToChannel("general",{Mg=msg,Ic="death",Snd="no_sound",Se=Se,It="gr",Ty=STR_EMPTY})
 	elseif IsMonster(who) then
 		local a
 		if (system_ini():r_string_ex("string_table","language") == "rus") then
@@ -1816,8 +1817,7 @@ function DynamicNewsManager:ReportDeathByOfflineCombat() -- Report offline comba
 		local Se = game.translate_string("st_dyn_news_sender_obituary")
 		local msg = self:ReadTextKeyList( game.translate_string("st_dyn_news_spc_obituary_m") , {["clr_1"]=clr_1 , ["clr_2"]=clr_2 , ["victim_name"]=victim:character_name() , ["victim_comm"]=b , ["who"]=a , ["where"]=c} )
 		
-		local Ty = math.random() < 0.33 and "death_by_mutant" or STR_EMPTY
-		self:PushToChannel("general",{Mg=msg,Ic="death",Snd="no_sound",Se=Se,It="gr",Ty=Ty})
+		self:PushToChannel("general",{Mg=msg,Ic="death",Snd="no_sound",Se=Se,It="gr",Ty=STR_EMPTY})
 	end
 	
 	return true
