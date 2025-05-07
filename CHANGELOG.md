@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 * [Disappearing Rain Sound Fix](https://www.moddb.com/mods/doctorx-call-of-the-zone/addons/disappearing-rain-sound-fix)
 * [Jokes Restoration + Script Fix [CoC 1.5R7]](https://www.moddb.com/mods/call-of-chernobyl/addons/jokes-restoration-script-fix-coc-15r7)
 * [Fixed Artefact Collision and Visuals [1.5.3]](https://www.moddb.com/mods/stalker-anomaly/addons/fixed-artefact-collision-and-visuals-152)
+* [ND DRXCoCDynamicAnomalies21 Remix](https://www.moddb.com/mods/call-of-chernobyl/addons/nd-drxcocdynamicanomalies21-remix)
 
 ### Improvements
 * Reworked code of distant storms in `level_weathers.script`

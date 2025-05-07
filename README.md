@@ -128,3 +128,4 @@ Mods
 76. Disappearing Rain Sound Fix (ZRP team, GoozE, woopersnaper). Special thanks to TheLostStalker88 for the tip!
 77. Jokes Restoration + Script Fix [CoC 1.5R7] (party-50, FudgeBomb, fontar)
 78. Fixed Artefact Collision and Visuals [1.5.3] (Longreed, SoulCrystal) Special thanks to TheLostStalker88 for the tip!
+79. ND DRXCoCDynamicAnomalies21 Remix (TheLostStalker88, DoctorX)
