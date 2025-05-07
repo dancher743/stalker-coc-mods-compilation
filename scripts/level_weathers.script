@@ -76,12 +76,14 @@ function WeatherManager:__init()
 	self.last_hour = 0
 	self.next_hour=0
 	self.graphs_ini = ini_file("environment\\dynamic_weather_graphs.ltx")
+	self.subperiods_ini = ini_file("environment\\dynamic_weather_subperiods.ltx")
 	if not self.graphs_ini then
 		printf("error when open weather_dynamic_graphs.ltx")
 	end
 	self.dof_factor=1
 	self.period=get_random_weather()
 	self.period_next=get_random_weather()
+	self.subperiod=nil
 	self.transition_period=false
 	self.pre_blowout_period=false
 	self.levelWeather="atmosfear"
@@ -225,7 +227,7 @@ function WeatherManager:get_next_period(period)
 		return next_period
 	end
 	
-	local available_periods = self:get_periods("global_weather_periods")
+	local available_periods = self:get_periods(self.graphs_ini, "global_weather_periods")
 	local next_periods = {}
 	local pick_chance = math.random(100)
 	
@@ -238,6 +240,21 @@ function WeatherManager:get_next_period(period)
 	
 	next_period = #next_periods == 0 and period or next_periods[math.random(#next_periods)]
 	return next_period
+end
+
+function WeatherManager:get_subperiod(period)
+	local subperiods = alun_utils.parse_ini_section_to_array(self.subperiods_ini,"subperiods")
+	local subperiods_ids = {}
+	
+	for id,_ in pairs(subperiods) do
+		table.insert(subperiods_ids, id)
+	end
+	
+	local subperiod_id = subperiods_ids[math.random(#subperiods_ids)]
+	local subperiod_name = subperiods[subperiod_id]
+	local subperiod_periods = self:get_periods(self.subperiods_ini, subperiod_name)
+	
+	return utils.contains(subperiod_periods, period) and subperiod_name or nil
 end
 
 function WeatherManager:reset_last_period_change_date(period_change, delta_s)
@@ -270,6 +287,7 @@ function WeatherManager:change_period()
 
 	if (self:can_change_period(self.period)) then
 		self.period = self.period_next
+		self.subperiod = self:get_subperiod(self.period)
 		self.period_next = self:get_next_period(self.period)
 		self:reset_last_period_change_date(true)
 		-- Dancher: disabled
@@ -399,7 +417,7 @@ function WeatherManager:select_weather(now)
 		if self.period=="clear" or self.period=="partly" then
 			weather_section_name = weather_section_name.."_"..self:get_moon_phase()
 		end
-		if (self:is_level_without_panorama()) then
+		if (self.subperiod == nil and self:is_level_without_panorama()) then
 			weather_section_name = self:try_get_no_panorama_weather(weather_section_name)
 		end
 		--atmosfear.debugMessages[6]:SetText("weather_section_name= "..tostring(weather_section_name))
@@ -425,6 +443,9 @@ function WeatherManager:select_weather(now)
 		self.weather_fx = nil 
 		self.wfx_time = 0
 	else
+		if (self.subperiod) then
+			weather_section_name = strformat("%s\\%s",self.subperiod,weather_section_name)
+		end
 		level.set_weather(weather_section_name,now)
 	end
 	--self.debugMessages[15]:SetText("WEATHER: '"..weather_section_name.."' now '"..tostring(now).."'")
@@ -495,9 +516,8 @@ function WeatherManager:try_get_no_panorama_weather(current_weather_section)
 	return no_panorama_weather_section or current_weather_section
 end
 
-function WeatherManager:get_periods(section)
+function WeatherManager:get_periods(ini,section)
 	local periods = {}
-	local ini = self.graphs_ini
 	
 	local n = ini:section_exist(section) and ini:line_count(section) or 0
 	for i=0, n-1 do
@@ -749,6 +769,7 @@ function WeatherManager:save_state(m_data)
 	m_data.weather_manager = {}
 	m_data.weather_manager.levelWeather = self.levelWeather
 	m_data.weather_manager.period = self.period
+	m_data.weather_manager.subperiod = self.subperiod
 	m_data.weather_manager.period_next = self.period_next
 	m_data.weather_manager.last_period_change_date = utils.CTime_to_table(self.last_period_change_date)
 	
@@ -768,6 +789,7 @@ function WeatherManager:load_state(m_data)
 	--alun_utils.debug_write("WeatherManager:load_state BEFORE")
 	self.levelWeather = m_data.weather_manager.levelWeather or self.levelWeather
 	self.period = m_data.weather_manager.period or self.period
+	self.subperiod = m_data.weather_manager.subperiod or self.subperiod
 	self.period_next = m_data.weather_manager.period_next or self.period_next
 	self.last_period_change_date = m_data.weather_manager.last_period_change_date or self.last_period_change_date
 	-- new format check
