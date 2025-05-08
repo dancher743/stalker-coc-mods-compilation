@@ -234,6 +234,7 @@ function actor_binder:update(delta)
 		
 		printf("collectgarbage before=%sKb",collectgarbage("count")*1024)
 		collectgarbage("collect")
+		collectgarbage("collect")
 		printf("collectgarbage after=%sKb",collectgarbage("count")*1024)
 		--alun_utils.debug_write("actor first_update END")
 		--GoozE rain fix part 3

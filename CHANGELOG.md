@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Features
 * Added Offline Combat to basic mode
 * Reworked Survival mode with EOC
+* Reworked automatic garbage collection
 
 ### Mods
 * [ND fix NPC guitar position coc 1.4.22](https://www.moddb.com/mods/call-of-chernobyl/addons/nd-fix-npc-guitar-position-coc1-4-22)

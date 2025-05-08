@@ -197,6 +197,8 @@ function main_menu:OnMessageQuitWin()
 end
 
 function main_menu:OnButton_return_game()
+	gc.collect("Unpause game garbage collection")
+	
 	local console = get_console()
 	console:execute("main_menu off")
 	SendScriptCallback("main_menu_on_quit",self)
