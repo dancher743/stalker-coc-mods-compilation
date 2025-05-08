@@ -573,9 +573,6 @@
 	<string id="ui_mm_conditions_mode_campfire">
 		<text>Cохранения у костров</text>
 	</string>
-	<string id="ui_mm_auto_garbage_collection">
-		<text>Автоочистка памяти</text>
-	</string>
 	<string id="ui_mm_show_health_effectors">
 		<text>Показ. эффекты ранений</text>
 	</string>
