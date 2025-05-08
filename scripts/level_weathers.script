@@ -423,7 +423,7 @@ function WeatherManager:select_weather(now)
 		if self.period=="clear" or self.period=="partly" then
 			weather_section_name = weather_section_name.."_"..self:get_moon_phase()
 		end
-		if (self.subperiod == nil and self:is_level_without_panorama()) then
+		if (self:is_level_without_panorama()) then
 			weather_section_name = self:try_get_no_panorama_weather(weather_section_name)
 		end
 		--atmosfear.debugMessages[6]:SetText("weather_section_name= "..tostring(weather_section_name))
