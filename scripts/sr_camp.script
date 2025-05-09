@@ -275,7 +275,7 @@ end
 function CCampManager:set_story()
 	if(self.active_state=="story") then
 		local story = nil
-		local story_chance = xr_conditions.is_day() and 0 or 0.3
+		local story_chance = xr_conditions.is_night() and 0.33 or 0
 		if (math.random() < story_chance) then
 			if (#story_table == 1) then
 				story = story_table[1]
