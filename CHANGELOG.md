@@ -34,6 +34,7 @@ All notable changes to this project will be documented in this file.
 * Added more gunfire ambients during EOC
 * Refactored ambient configs: `eoc.ltx` and `survival.ltx`
 * Added `mark_fradkin_doroga_na_berlin` track to `esc_sidorovich_radio`
+* Reworked weather period occurrences and next period picking
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`

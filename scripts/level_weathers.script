@@ -215,7 +215,7 @@ end
 function WeatherManager:get_period_occur_chance(period)
 	local val = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. period .. "_occur",2,4)
 	val = tonumber(val)
-	local chance = (val == 4 and 80) or (val == 3 and 50) or (val == 2 and 20) or (val == 1 and 0)
+	local chance = (val == 4 and 0.8) or (val == 3 and 0.4) or (val == 2 and 0.2) or (val == 1 and 0)
 	return chance
 end
 
@@ -227,16 +227,15 @@ function WeatherManager:get_next_period(period)
 	
 	local available_periods = self:get_periods("global_weather_periods")
 	local next_periods = {}
-	local pick_chance = math.random(100)
 	
 	for i=1,#available_periods do
 		local occur_chance = self:get_period_occur_chance(available_periods[i])
-		if (pick_chance <= occur_chance) then
+		if (math.random() < occur_chance) then
 			next_periods[#next_periods + 1] = available_periods[i]
 		end
 	end
 	
-	next_period = #next_periods == 0 and period or next_periods[math.random(#next_periods)]
+	next_period = #next_periods > 0 and next_periods[math.random(#next_periods)] or period
 	return next_period
 end
 
