@@ -15,6 +15,7 @@ local killer_id_key = "killer_id"
 local update_timer
 local updated_levels
 local squads_to_levels
+local processed_squads
 local combats_queue
 
 local rank_power = {
@@ -153,11 +154,13 @@ local function process_squads_combat(squads)
 	for i=1,squads_count do
 		local squad1 = squads[i]
 		
-		if (squad1) then
+		if (squad1 and not processed_squads[squad1.id]) then
 			for j=1,squads_count do
 				local squad2 = squads[j]
 				
-				if (squad2 and squad1.id ~= squad2.id and simulation_objects.is_on_the_same_level(squad1, squad2)) then
+				if (squad2 and squad1.id ~= squad2.id and not processed_squads[squad2.id] and 
+					simulation_objects.is_on_the_same_level(squad1, squad2)) 
+				then
 					local distance = squad1.position:distance_to_sqr(squad2.position)
 					
 					if (distance <= combat_distance) then
@@ -166,11 +169,11 @@ local function process_squads_combat(squads)
 						local are_enemies = game_relations.is_factions_enemies(squad1_community, squad2_community)
 						
 						if (are_enemies) then
-							table.insert(combats_queue, {squad1, squad2, squads, i, j})
+							table.insert(combats_queue, {squads, i, j})
+							processed_squads[squad1.id] = true
+							processed_squads[squad2.id] = true
+							-- printf("### Dancher: added to queue: %s, %s###", squad1:name(), squad2:name())
 							combats_count = combats_count + 1
-						end
-						
-						if (combats_count == combats_per_level) then
 							break
 						end
 					end
@@ -182,6 +185,8 @@ local function process_squads_combat(squads)
 			break
 		end
 	end
+	
+	empty_table(processed_squads)
 end
 
 function is_item_valid(se_item)
@@ -226,11 +231,15 @@ local function update_queue()
 	local combat = combats_queue[1]
 	table.remove(combats_queue, 1)
 	
-	local squad1 = combat[1]
-	local squad2 = combat[2]
-	local squads = combat[3]
-	local squad1_index = combat[4]
-	local squad2_index = combat[5]
+	local squads = combat[1]
+	local squad1_index = combat[2]
+	local squad2_index = combat[3]
+	local squad1 = squads[squad1_index]
+	local squad2 = squads[squad2_index]
+	
+	if (squad1 == nil or squad2 == nil) then
+		return
+	end
 	
 	local level_id = simulation_objects.get_level_id(squad1)
 	local victim_squad = process_combat(squad1, squad2, level_id)
@@ -319,6 +328,7 @@ local function actor_on_first_update()
 	
 	loot_items = {}
 	updated_levels = {}
+	processed_squads = {}
 	combats_queue = {}
 	update_timer = time_global() + 1000
 	AddUniqueCall(update)
