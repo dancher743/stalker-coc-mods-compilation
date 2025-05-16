@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 * Added Offline Combat to basic mode
 * Reworked Survival mode with EOC
 * Reworked automatic garbage collection
+* Weather sub-periods: now can extend current weather by adding a configs from other weatherpacks
 
 ### Mods
 * [ND fix NPC guitar position coc 1.4.22](https://www.moddb.com/mods/call-of-chernobyl/addons/nd-fix-npc-guitar-position-coc1-4-22)
@@ -15,6 +16,7 @@ All notable changes to this project will be documented in this file.
 * [Jokes Restoration + Script Fix [CoC 1.5R7]](https://www.moddb.com/mods/call-of-chernobyl/addons/jokes-restoration-script-fix-coc-15r7)
 * [Fixed Artefact Collision and Visuals [1.5.3]](https://www.moddb.com/mods/stalker-anomaly/addons/fixed-artefact-collision-and-visuals-152)
 * [ND DRXCoCDynamicAnomalies21 Remix](https://www.moddb.com/mods/call-of-chernobyl/addons/nd-drxcocdynamicanomalies21-remix)
+* [CoC OL pack v1.3](https://www.moddb.com/mods/call-of-chernobyl/addons/coc-ol-pack-v1-2)
 
 ### Improvements
 * Reworked code of distant storms in `level_weathers.script`
