@@ -82,6 +82,7 @@ function WeatherManager:__init()
 	self.dof_factor=1
 	self.period=get_random_weather()
 	self.period_next=get_random_weather()
+	self.subperiod=nil
 	self.transition_period=false
 	self.pre_blowout_period=false
 	self.levelWeather="atmosfear"
@@ -239,6 +240,28 @@ function WeatherManager:get_next_period(period)
 	return next_period
 end
 
+function WeatherManager:get_subperiod(period)
+	local subperiod = nil
+	local subperiods = alun_utils.parse_ini_section_to_array(self.graphs_ini,"subperiods")
+	
+	local subperiods_ids = {}
+	table.insert(subperiods_ids, 0)
+	for id,_ in pairs(subperiods) do
+		table.insert(subperiods_ids, id)
+	end
+	
+	local subperiod_id = subperiods_ids[math.random(#subperiods_ids)]
+	if (subperiod_id ~= 0) then
+		local subperiod_name = subperiods[subperiod_id]
+		local subperiod_periods = self:get_periods(subperiod_name)
+		if (utils.contains(subperiod_periods, period)) then
+			subperiod = subperiod_name
+		end
+	end
+	
+	return subperiod
+end
+
 function WeatherManager:reset_last_period_change_date(period_change, delta_s)
 	--printf("reset_last_period_change_date = %s",tostring(period_change))
 	local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
@@ -269,6 +292,7 @@ function WeatherManager:change_period()
 
 	if (self:can_change_period(self.period)) then
 		self.period = self.period_next
+		self.subperiod = self:get_subperiod(self.period)
 		self.period_next = self:get_next_period(self.period)
 		self:reset_last_period_change_date(true)
 		-- Dancher: disabled
@@ -424,6 +448,9 @@ function WeatherManager:select_weather(now)
 		self.weather_fx = nil 
 		self.wfx_time = 0
 	else
+		if (self.subperiod) then
+			weather_section_name = strformat("%s\\%s",self.subperiod,weather_section_name)
+		end
 		level.set_weather(weather_section_name,now)
 	end
 	--self.debugMessages[15]:SetText("WEATHER: '"..weather_section_name.."' now '"..tostring(now).."'")
@@ -748,6 +775,7 @@ function WeatherManager:save_state(m_data)
 	m_data.weather_manager = {}
 	m_data.weather_manager.levelWeather = self.levelWeather
 	m_data.weather_manager.period = self.period
+	m_data.weather_manager.subperiod = self.subperiod
 	m_data.weather_manager.period_next = self.period_next
 	m_data.weather_manager.last_period_change_date = utils.CTime_to_table(self.last_period_change_date)
 	
@@ -767,6 +795,7 @@ function WeatherManager:load_state(m_data)
 	--alun_utils.debug_write("WeatherManager:load_state BEFORE")
 	self.levelWeather = m_data.weather_manager.levelWeather or self.levelWeather
 	self.period = m_data.weather_manager.period or self.period
+	self.subperiod = m_data.weather_manager.subperiod or self.subperiod
 	self.period_next = m_data.weather_manager.period_next or self.period_next
 	self.last_period_change_date = m_data.weather_manager.last_period_change_date or self.last_period_change_date
 	-- new format check
