@@ -237,7 +237,8 @@ local function update_queue()
 	local squad1 = squads[squad1_index]
 	local squad2 = squads[squad2_index]
 	
-	if (squad1 == nil or squad2 == nil) then
+	if (squad1 == nil or squad2 == nil or 
+		squad1:alive() == false or squad2:alive() == false) then
 		return
 	end
 	
