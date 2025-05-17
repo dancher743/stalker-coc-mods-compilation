@@ -261,9 +261,15 @@ function esc_2_12_hasnt_item_cost(first_speaker, second_speaker)
 	return not esc_2_12_has_item_cost(first_speaker, second_speaker)
 end
 
+function get_name_changing_phrase_1()
+	local number = has_info("esc_2_12_was_actor_name_changed") and 1 or 0
+	return strtransl("esc_2_12_stalker_trader_change_actor_name_dialog_1"..number)
+end
+
 local function get_name_changing_cost()
 	local ini = ini_file("plugins\\other.ltx")
-	local cost = ini:r_string_ex("actor_name_changing","cost") or STR_ZERO
+	local number = has_info("esc_2_12_was_actor_name_changed") and 2 or 1
+	local cost = ini:r_string_ex("actor_name_changing","cost"..number) or STR_ZERO
 	cost = tonumber(cost)
 	return cost
 end
@@ -282,12 +288,9 @@ function show_change_name_dialog_window(first_speaker, second_speaker)
 		local se_actor = alife():actor()
 		se_actor:set_character_name(text)
 		
-		if (has_info("esc_2_12_was_actor_name_changed")) then
-			local cost = get_name_changing_cost()
-			dialogs.relocate_money_from_actor(first_speaker, second_speaker, cost)
-		else
-			give_info("esc_2_12_was_actor_name_changed")
-		end
+		local cost = get_name_changing_cost()
+		dialogs.relocate_money_from_actor(first_speaker, second_speaker, cost)
+		give_info("esc_2_12_was_actor_name_changed")
 	end
 	
 	local hud = get_hud()

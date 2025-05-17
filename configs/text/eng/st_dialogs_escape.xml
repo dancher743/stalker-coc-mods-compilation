@@ -16,16 +16,19 @@
 	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_0">
 		<text>I want to change my name.</text>
 	</string>
-	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_1">
-		<text>You are not the first one who has approached me with this request. So here it is: I will change for free the first time, then pay 20,000 RU per change.</text>
+	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_10">
+		<text>You are not the first one who has approached me with this request. So I will change your name for 5,000 RU for the first time, then pay 15,000 RU for each next change.</text>
 	</string>
 	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_11">
+		<text>Pay 15,000 RU and I will change your name.</text>
+	</string>
+	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_20">
 		<text>I agree.</text>
 	</string>
-	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_12">
+	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_21">
 		<text>Next time.</text>
 	</string>
-	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_2">
+	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_3">
 		<text>Enter a new name.</text>
 	</string>
 <!--------------------------- esc_2_12_stalker_wolf_start ------>
