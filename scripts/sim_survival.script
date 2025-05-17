@@ -6,7 +6,7 @@
 local delay_hours = 24
 local zombied_squads_count = 3
 local max_zombied_chance = 0.5
-local max_mutant_chance = 0.8
+local max_mutant_chance = 0.9
 
 local enable_debug = false
 
