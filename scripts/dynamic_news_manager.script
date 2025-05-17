@@ -497,7 +497,7 @@ function DynamicNewsManager:TickOfflineCombat()
 		return false
 	end
 	
-	if (math.random() < 0.33) then
+	if (math.random() < 0.25) then
 		self:ReportDeathByOfflineCombat()
 	end
 	
