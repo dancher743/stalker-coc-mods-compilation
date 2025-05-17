@@ -294,8 +294,12 @@ function sim_squad_scripted:specific_update(script_target_id)
 				se_target:on_after_reach(self)
 				self.current_target_id = self.assigned_target_id
 				self.current_action = 1
-				self.idle_time = system_ini():r_float_ex(self:section_name(),"idle_time") or math.random(STAY_POINT_IDLE_MIN,STAY_POINT_IDLE_MAX)
-				self.stay_time = game.get_game_time()
+				if (self.idle_time == nil) then
+					self.idle_time = system_ini():r_float_ex(self:section_name(),"idle_time") or math.random(STAY_POINT_IDLE_MIN,STAY_POINT_IDLE_MAX)
+				end
+				if (self.stay_time == nil) then
+					self.stay_time = game.get_game_time()
+				end
 			end
 			return
 		elseif (self.current_action == 1 and self.current_target_id == self.assigned_target_id) then
@@ -347,8 +351,12 @@ function sim_squad_scripted:generic_update()
 					se_target:on_after_reach(self)
 					self.current_target_id = self.assigned_target_id
 					self.current_action = 1
-					self.idle_time = system_ini():r_float_ex(self:section_name(),"idle_time") or math.random(STAY_POINT_IDLE_MIN,STAY_POINT_IDLE_MAX)
-					self.stay_time = game.get_game_time()
+					if (self.idle_time == nil) then
+						self.idle_time = system_ini():r_float_ex(self:section_name(),"idle_time") or math.random(STAY_POINT_IDLE_MIN,STAY_POINT_IDLE_MAX)
+					end
+					if (self.stay_time == nil) then
+						self.stay_time = game.get_game_time()
+					end
 				end
 				return
 			elseif (self.current_action == 1 and self.current_target_id == self.assigned_target_id) then
