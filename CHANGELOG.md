@@ -65,6 +65,7 @@ All notable changes to this project will be documented in this file.
 * Added `alive()`, `is_monster()` and `is_stalker()` methods into `sim_squad_scripted.script`
 * Added `get_level_id(obj)` and `get_level_name(obj)` functions into `simulation_objects.script`
 * Added `shuffle_table(t)` function into `utils.script` (from Anomaly 1.5.1.2)
+* Added `is_foggy` function into `xr_conditions.script`
 
 ## [1.5.1] - 2025-04-07
 

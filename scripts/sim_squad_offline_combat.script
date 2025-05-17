@@ -5,10 +5,15 @@
 --
 
 local combats_per_level = 5
-local day_distance = 15*15
-local night_distance = 8*8
+local good_distances = {
+	25*25,
+	20*20,
+	15*15
+}
+local bad_distance = 10*10
 local add_rank_points = 20
 local handicap_chance = 0.33
+local remove_squad_chance = 0.33
 local victim_id_key = "victim_id"
 local killer_id_key = "killer_id"
 
@@ -53,6 +58,19 @@ local loot_ignore_list = {
 }
 
 local last_killed_stalker
+
+local function get_combat_distance()
+	local distance
+	local conds = xr_conditions
+	
+	if (conds.is_night() or conds.is_rain() or conds.is_foggy()) then
+		distance = bad_distance
+	else
+		distance = good_distances[math.random(#good_distances)]
+	end
+	
+	return distance
+end
 
 local function calculate_squad_power(squad)
 	local power = 0
@@ -146,8 +164,7 @@ local function process_squads_combat(squads)
 	if (#squads == 0) then
 		return
 	end
-
-	local combat_distance = xr_conditions.is_day() and day_distance or night_distance
+	
 	local squads_count = #squads
 	local combats_count = 0
 	
@@ -163,7 +180,7 @@ local function process_squads_combat(squads)
 				then
 					local distance = squad1.position:distance_to_sqr(squad2.position)
 					
-					if (distance <= combat_distance) then
+					if (distance <= get_combat_distance()) then
 						local squad1_community = squad1:get_squad_community()
 						local squad2_community = squad2:get_squad_community()
 						local are_enemies = game_relations.is_factions_enemies(squad1_community, squad2_community)
@@ -250,6 +267,9 @@ local function update_queue()
 			squads[squad1_index] = nil
 		elseif (victim_squad.id == squad2.id) then
 			squads[squad2_index] = nil
+		end
+		if (victim_squad.smart_id and math.random() < remove_squad_chance) then
+			victim_squad:remove_squad()
 		end
 	end
 end

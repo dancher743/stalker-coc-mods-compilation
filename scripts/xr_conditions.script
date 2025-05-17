@@ -1550,6 +1550,10 @@ function is_night (actor, npc)
 	return db.actor ~= nil and (level.get_time_hours() < 5 or level.get_time_hours() > 19)
 end
 
+function is_foggy (actor, npc)
+	return db.actor ~= nil and level_weathers.is_foggy()
+end
+
 function is_jup_a12_mercs_time (actor, npc)
 	return db.actor ~= nil and (level.get_time_hours() >= 1 and level.get_time_hours() < 5)
 end

@@ -590,9 +590,14 @@ end
 
 function set_rain_weather()
 	local weather_manager = get_weather_manager()
-	weather_manager.period = "rain"
+	weather_manager.period = weather_tbl[4]
 	weather_manager:reset_last_period_change_date(true)
 	weather_manager:select_weather(true)
+end
+
+function is_foggy()
+	local weather_manager = get_weather_manager()
+	return weather_manager.period == weather_tbl[6]
 end
 
 --##################################################################################################
