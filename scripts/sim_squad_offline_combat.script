@@ -295,7 +295,8 @@ local function update()
 		end
 		loot_ignore_list = nil
 		
-		gc.collect("offline squads combat init")
+		-- Dancher: disabled
+		-- gc.collect("offline squads combat init")
 		return
 	end
 	
