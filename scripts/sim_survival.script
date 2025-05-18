@@ -54,8 +54,8 @@ function try_replace_mutant(section)
 	return result_section
 end
 
-function contains_faction_prop(prop_name, prop_count)
-	return sim_tables.factions_to_zombied_props[prop_name] and prop_count > 0
+function contains_faction_prop(prop_count, prop_name)
+	return prop_count > 0 and sim_tables.factions_to_zombied_props[prop_name]
 end
 
 function are_factions_zombied_and_monster(f1, f2)

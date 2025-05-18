@@ -58,6 +58,7 @@ local loot_ignore_list = {
 }
 
 local last_killed_stalker
+local is_survival_mode
 
 local function get_combat_distance()
 	local distance
@@ -181,9 +182,15 @@ local function process_squads_combat(squads)
 					local distance = squad1.position:distance_to_sqr(squad2.position)
 					
 					if (distance <= get_combat_distance()) then
-						local squad1_community = squad1:get_squad_community()
-						local squad2_community = squad2:get_squad_community()
-						local are_enemies = game_relations.is_factions_enemies(squad1_community, squad2_community)
+						local community1 = squad1:get_squad_community()
+						local community2 = squad2:get_squad_community()
+						local are_enemies = nil
+						if (is_survival_mode and sim_survival.are_factions_zombied_and_monster(community1, community2)) then
+							-- from Survival-EOC
+							are_enemies = false
+						else
+							are_enemies = game_relations.is_factions_enemies(community1, community2)
+						end
 						
 						if (are_enemies) then
 							table.insert(combats_queue, {squads, i, j})
@@ -353,6 +360,7 @@ local function actor_on_first_update()
 	processed_squads = {}
 	combats_queue = {}
 	update_timer = time_global() + 1000
+	is_survival_mode = IsSurvivalMode()
 	AddUniqueCall(update)
 	StartTimer("offline_combat_update_queue", 500, update_queue)
 end

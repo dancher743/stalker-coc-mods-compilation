@@ -98,8 +98,12 @@ function simulation_objects_registry:get_props(obj)
 		else
 			local prop_count = tonumber(prop_condlist)
 			obj.props[prop_name] = prop_count
-			if (IsSurvivalMode() and IsEocMode() and sim_survival.contains_faction_prop(prop_name, prop_count)) then
-				obj.props["zombied"] = 1
+			if (IsSurvivalMode()) then
+				if (IsEocMode() and sim_survival.contains_faction_prop(prop_count, prop_name)) then
+					obj.props["zombied"] = 1
+				elseif (prop_count == 0 and prop_name == "lair") then
+					obj.props["zombied"] = 1
+				end
 			end
 		end
 	end
