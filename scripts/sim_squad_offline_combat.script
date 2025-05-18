@@ -100,7 +100,7 @@ local function get_random_npc(squad)
 	return se_npc
 end
 
-local function process_combat(squad1, squad2, level_id)	
+local function process_combat(squad1, squad2, level_id)
 	local killer_squad = nil
 	local victim_squad = nil
 	local squad1_power = calculate_squad_power(squad1)
@@ -262,7 +262,8 @@ local function update_queue()
 	local squad2 = squads[squad2_index]
 	
 	if (squad1 == nil or squad2 == nil or 
-		squad1:alive() == false or squad2:alive() == false) then
+		squad1:alive() == false or squad2:alive() == false or 
+		squad1.online or squad2.online) then
 		return
 	end
 	
