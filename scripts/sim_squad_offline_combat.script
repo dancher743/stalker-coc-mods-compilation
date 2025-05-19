@@ -59,6 +59,7 @@ local loot_ignore_list = {
 
 local last_killed_stalker
 local is_survival_mode
+local actor_level_id
 
 local function get_combat_distance()
 	local distance
@@ -276,8 +277,10 @@ local function update_queue()
 		elseif (victim_squad.id == squad2.id) then
 			squads[squad2_index] = nil
 		end
-		if (victim_squad.smart_id and math.random() < remove_squad_chance) then
-			victim_squad:remove_squad()
+		if (actor_level_id ~= level_id and victim_squad.smart_id) then
+			if (math.random() < remove_squad_chance) then
+				victim_squad:remove_squad()
+			end
 		end
 	end
 end
@@ -362,6 +365,7 @@ local function actor_on_first_update()
 	combats_queue = {}
 	update_timer = time_global() + 1000
 	is_survival_mode = IsSurvivalMode()
+	actor_level_id = alife():level_name(game_graph():vertex(alife():actor().m_game_vertex_id):level_id())
 	AddUniqueCall(update)
 	StartTimer("offline_combat_update_queue", 500, update_queue)
 end
