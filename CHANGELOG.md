@@ -40,6 +40,7 @@ All notable changes to this project will be documented in this file.
 * Reworked weather period occurrences and next period picking
 * Added `oleg_anofriyev_yest_tolko_mig` into `agr_smart_terrain_1_6_near_1_radio`
 * Removed `bandit` prop from `esc_smart_terrain_5_7`
+* Enabled black screen effector with night vision on level changing
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`
