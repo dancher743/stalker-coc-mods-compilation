@@ -60,6 +60,19 @@ local loot_ignore_list = {
 local last_killed_stalker
 local is_survival_mode
 local actor_level_id
+local se_objs_cache
+
+local function get_se_obj(id)
+	if (se_objs_cache == nil) then
+		se_objs_cache = {}
+	end
+	local se_obj = se_objs_cache[id]
+	if (se_obj == nil) then
+		se_obj = alife_object(id)
+		se_objs_cache[id] = se_obj
+	end
+	return se_obj
+end
 
 local function get_combat_distance()
 	local distance
@@ -77,7 +90,7 @@ end
 local function calculate_squad_power(squad)
 	local power = 0
 	for k in squad:squad_members() do
-		local se_obj = alife_object(k.id)
+		local se_obj = get_se_obj(k.id)
 		if (se_obj) then
 			local rank_name = ranks.get_se_obj_rank_name(se_obj)
 			power = power + rank_power[rank_name] or 0
@@ -96,7 +109,7 @@ local function get_random_npc(squad)
 	for k in squad:squad_members() do
 		table.insert(squad_npcs, k.id)
 	end
-	local se_npc = alife_object(squad_npcs[math.random(#squad_npcs)])
+	local se_npc = get_se_obj(squad_npcs[math.random(#squad_npcs)])
 	iempty_table(squad_npcs)
 	return se_npc
 end
@@ -128,7 +141,7 @@ local function process_combat(squad1, squad2, level_id)
 	
 	for k in victim_squad:squad_members() do
 		se_killer = math.random(2) == 1 and se_killer or get_random_npc(killer_squad)
-		se_victim = alife_object(k.id)
+		se_victim = get_se_obj(k.id)
 		if (se_victim) then
 			se_victim:on_death(se_killer)
 			if (is_killer_stalker) then
@@ -139,7 +152,7 @@ local function process_combat(squad1, squad2, level_id)
 		if (se_victim and loot_items[se_victim.id] and loot_items[se_killer.id]) then
 			local victim_items = loot_items[se_victim.id]
 			for i=1,#victim_items do
-				local victim_item = alife_object(victim_items[i])
+				local victim_item = get_se_obj(victim_items[i])
 				table.remove(loot_items[se_victim.id], victim_item.id)
 				
 				local killer_item = alife():create(victim_item:section_name(), se_killer.position, se_killer.m_level_vertex_id, se_killer.m_game_vertex_id, se_killer.id)
