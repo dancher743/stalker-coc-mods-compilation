@@ -767,6 +767,14 @@ function actor_has_fetch_item(tsk,task_id)
 			else
 				tsk.stage = 0
 			end
+		elseif (task_id == "simulation_task_6" or task_id == "simulation_task_33" or 
+			task_id == "simulation_task_34") 
+		then
+			if (item:condition() >= 0.8) then
+				tsk.stage = 1
+			else
+				tsk.stage = 0
+			end
 		else
 			local count = utils.load_var(db.actor,task_id.."_fetch_count")
 			if (count and count > 1) then

@@ -2229,11 +2229,18 @@ function drx_sl_fetch_reward_money( actor, npc, p )
 	end
 
 	-- Determine reward limits:
-	local item_cost = IsWeapon(item) and utils.lerp(0,item:cost(),item:condition()) or item:cost()
+	local item_cost
+	local reward_by_condition = p[3]
+	if (reward_by_condition == STR_TRUE and IsWeapon(item)) then
+		item_cost = utils.lerp(0, item:cost(), item:condition())
+	else
+		item_cost = item:cost( )
+	end
+	
 	local reward_base = math.floor( (item_cost * (tonumber( p[2] ) or 1)) )
-	local reward_delta = math.floor( (reward_base * 0.1) )
 
 	if (reward_base > 0) then
+		local reward_delta = math.floor( (reward_base * 0.1) )
 		-- Give actor money reward:
 		drx_sl_reward_random_money( actor, npc, {((reward_base - reward_delta) * count), ((reward_base + reward_delta) * count)} )
 	end

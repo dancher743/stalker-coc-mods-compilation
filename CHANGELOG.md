@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 * Reworked automatic garbage collection
 * Weather sub-periods: now can extend current weather by adding a configs from other weatherpacks
 * Rebalanced and improved change actor name dialog
+* Reworked find weapon tasks: added weapon's condition into requirements
 
 ### Mods
 * [ND fix NPC guitar position coc 1.4.22](https://www.moddb.com/mods/call-of-chernobyl/addons/nd-fix-npc-guitar-position-coc1-4-22)
@@ -54,7 +55,6 @@ All notable changes to this project will be documented in this file.
 * Balanced appearing of low health effector: from 30% to 5%
 * Fixed non-gathering by other NPCs faction patch
 * Fixed incorect chance of angry stash owner message in case of quest treasure
-* Included weapon's condition into reward of find weapon for stalker task
 * Fixed premature fallout skipping in `FalloutManager:update()` method
 * Fixed changing of faction relations if actor killed NPC under disguise
 * Disabled `sim_squad_scripted:sim_available()` function to prevent oversimulation

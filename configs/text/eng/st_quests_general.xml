@@ -463,7 +463,7 @@
 		<text>Find a Reliable %s for Duty</text>
 	</string>
 	<string id="simulation_task_6_text">
-		<text>Procure a reliable %s for a Duty member.</text>
+		<text>Procure a reliable %s for a Duty member in good condition.</text>
 	</string>
 	<string id="simulation_task_6_about">
 		<text>This rifle I was issued is shit. I need one that won't jam on me in every firefight. Can you find a new one for me?</text>
@@ -922,7 +922,7 @@
 		<text>Find a Reliable %s for Merc</text>
 	</string>
 	<string id="simulation_task_33_text">
-		<text>Procure a reliable %s for a Mercenary.</text>
+		<text>Procure a reliable %s for a Mercenary in good condition.</text>
 	</string>
 	<string id="simulation_task_33_about">
 		<text>This rifle I was issued is shit. I need one that won't jam on me in every firefight. Can you find a new one for me?</text>
@@ -941,7 +941,7 @@
 		<text>Find a Reliable %s for Military</text>
 	</string>
 	<string id="simulation_task_34_text">
-		<text>Procure a reliable %s for Military.</text>
+		<text>Procure a reliable %s for Military in good condition.</text>
 	</string>
 	<string id="simulation_task_34_about">
 		<text>This rifle I was issued is shit. I need one that won't jam on me in every firefight. Can you find a new one for me?</text>
