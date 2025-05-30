@@ -20,6 +20,7 @@ local handicap_chance = 0.33
 local remove_squad_chance = 0.33
 local victim_id_key = "victim_id"
 local killer_id_key = "killer_id"
+local dbg = false
 
 local is_initialized
 local update_timer
@@ -66,6 +67,15 @@ local last_killed_stalker
 local is_survival_mode
 local actor_level_id
 local se_objs_cache
+
+local msg_format
+local function printf_dbg(msg,...)
+	if (msg_format == nil) then
+		msg_format = "### Offline Combat: %s ###"
+	end
+	msg = strformat(msg_format, msg)
+	printf(msg,...)
+end
 
 local function get_se_obj(id)
 	if (se_objs_cache == nil) then
@@ -128,13 +138,13 @@ local function process_combat(squad1, squad2, level_id)
 	if (squad1_power > squad2_power) then
 		killer_squad = squad1
 		victim_squad = squad2
-		-- printf("### Dancher: %s(%s) kills %s(%s) (%s) ###", squad1:name(), squad1_power, squad2:name(), squad2_power, alife():level_name(level_id))
+		if dbg then printf_dbg("%s(%s) kills %s(%s) (%s)", squad1:name(), squad1_power, squad2:name(), squad2_power, alife():level_name(level_id)) end
 	elseif (squad1_power < squad2_power) then
 		killer_squad = squad2
 		victim_squad = squad1
-		-- printf("### Dancher: %s(%s) kills %s(%s) (%s) ###", squad2:name(), squad2_power, squad1:name(), squad1_power, alife():level_name(level_id))
+		if dbg then printf_dbg("%s(%s) kills %s(%s) (%s)", squad2:name(), squad2_power, squad1:name(), squad1_power, alife():level_name(level_id)) end
 	elseif (squad1_power == squad2_power) then
-		-- printf("### Dancher: %s(%s) tie %s(%s) (%s) ###", squad1:name(), squad1_power, squad2:name(), squad2_power, alife():level_name(level_id))
+		if dbg then printf_dbg("%s(%s) tie %s(%s) (%s)", squad1:name(), squad1_power, squad2:name(), squad2_power, alife():level_name(level_id)) end
 		return nil
 	end
 	
@@ -164,7 +174,7 @@ local function process_combat(squad1, squad2, level_id)
 				table.insert(loot_items[se_killer.id], killer_item.id)
 				
 				safe_release_manager.release(victim_item)
-				-- printf("### Dancher: loot relocated!")
+				-- if dbg then printf_dbg("loot relocated!") end
 			end
 		end
 	end
@@ -215,7 +225,7 @@ local function process_squads_combat(squads)
 							table.insert(combats_queue, {squads, i, j})
 							processed_squads[squad1.id] = true
 							processed_squads[squad2.id] = true
-							-- printf("### Dancher: added to queue: %s, %s###", squad1:name(), squad2:name())
+							if dbg then printf_dbg("added to queue: %s, %s", squad1:name(), squad2:name()) end
 							combats_count = combats_count + 1
 							break
 						end
@@ -339,7 +349,7 @@ local function update()
 			local se_obj = alife_object(i)
 			if (se_obj and se_obj.parent_id and loot_items[se_obj.parent_id] and is_item_valid(se_obj)) then
 				table.insert(loot_items[se_obj.parent_id], se_obj.id)
-				-- printf("### Dancher: loot added (%s) ###", tostring(se_obj.id))
+				-- if dbg then printf_dbg("loot added (%s)", tostring(se_obj.id)) end
 			end
 		end
 		loot_ignore_list = nil
@@ -360,13 +370,13 @@ local function update()
 	
 	if (level_to_update == nil) then
 		empty_table(updated_levels)
-		-- printf("### Dancher: restart offline squads combat ###")
+		if dbg then printf_dbg("restart combats") end
 		return
 	end
 	
 	local squads_to_combat = squads_to_levels[level_to_update]
 	process_squads_combat(squads_to_combat)
-	-- printf("### Dancher: process offline squads combat ###")
+	if dbg then printf_dbg("process combats") end
 	
 	updated_levels[level_to_update] = true
 end
@@ -387,7 +397,7 @@ local function initialize()
 	StartTimer("offline_combat_update_queue", 500, update_queue)
 	
 	is_initialized = true
-	-- printf("### Dancher: offline squads combat initialized ###")
+	if dbg then printf_dbg("initialized") end
 end
 
 local function finalize()
@@ -407,7 +417,7 @@ local function finalize()
 	pop_last_killed_stalker_data()
 	
 	is_initialized = false
-	-- printf("### Dancher: offline squads combat finalized ###")
+	if dbg then printf_dbg("finalized") end
 end
 
 local function actor_on_first_update()
