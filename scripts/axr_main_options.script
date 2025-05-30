@@ -197,6 +197,12 @@ function opt_menu_on_init(menu)
 		if (IsAzazelMode()) then
 			menu.gameplay_options["death_spots"] = {default=true, debug_only=false, typ="check"}
 		end
+		
+		if (not IsEocMode()) then
+			menu.gameplay_options["offline_combat"] = {default=true, debug_only=false, typ="check", on_accept=function(handler,optMgr,ctrl)
+				sim_squad_offline_combat.option_on_accept(ctrl:GetCheck())
+			end}
+		end
 		--
 	end
 	

@@ -585,4 +585,7 @@
 	<string id="ui_mm_death_spots">
 		<text>Death spots</text>
 	</string>
+	<string id="ui_mm_offline_combat">
+		<text>Offline combats</text>
+	</string>
 </string_table>

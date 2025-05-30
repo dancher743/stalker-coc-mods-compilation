@@ -588,4 +588,7 @@
 	<string id="ui_mm_death_spots">
 		<text>Метки смертей</text>
 	</string>
+	<string id="ui_mm_offline_combat">
+		<text>Бои отрядов в оффлайне</text>
+	</string>
 </string_table>

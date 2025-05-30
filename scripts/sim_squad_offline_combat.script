@@ -21,6 +21,7 @@ local remove_squad_chance = 0.33
 local victim_id_key = "victim_id"
 local killer_id_key = "killer_id"
 
+local is_initialized
 local update_timer
 local updated_levels
 local squads_to_levels
@@ -370,9 +371,8 @@ local function update()
 	updated_levels[level_to_update] = true
 end
 
-local function actor_on_first_update()
-	if (IsEocMode()) then
-		UnregisterScriptCallback("actor_on_first_update",actor_on_first_update)
+local function initialize()
+	if (is_initialized or not is_enabled()) then
 		return
 	end
 	
@@ -385,14 +385,50 @@ local function actor_on_first_update()
 	actor_level_id = alife():level_name(game_graph():vertex(alife():actor().m_game_vertex_id):level_id())
 	AddUniqueCall(update)
 	StartTimer("offline_combat_update_queue", 500, update_queue)
+	
+	is_initialized = true
+	-- printf("### Dancher: offline squads combat initialized ###")
+end
+
+local function finalize()
+	if (not is_initialized) then
+		return
+	end
+	
+	loot_items = nil
+	updated_levels = nil
+	processed_squads = nil
+	combats_queue = nil
+	update_timer = nil
+	is_survival_mode = nil
+	actor_level_id = nil
+	StopTimer("offline_combat_update_queue", 500, update_queue)
+	RemoveUniqueCall(update)
+	pop_last_killed_stalker_data()
+	
+	is_initialized = false
+	-- printf("### Dancher: offline squads combat finalized ###")
+end
+
+local function actor_on_first_update()
+	initialize()
+	UnregisterScriptCallback("actor_on_first_update",actor_on_first_update)
 end
 
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
 end
 
+function option_on_accept(value)
+	if (value) then
+		initialize()
+	else
+		finalize()
+	end
+end
+
 function is_enabled()
-	return IsEocMode() == false
+	return not IsEocMode() and axr_main_options.get_check_option("offline_combat")
 end
 
 function pop_last_killed_stalker_data()
