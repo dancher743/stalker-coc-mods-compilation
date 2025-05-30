@@ -10,7 +10,11 @@ local good_distances = {
 	20*20,
 	15*15
 }
-local bad_distance = 10*10
+local bad_distances = {
+	10*10,
+	8*8,
+	6*6
+}
 local add_rank_points = 20
 local handicap_chance = 0.33
 local remove_squad_chance = 0.33
@@ -79,7 +83,7 @@ local function get_combat_distance()
 	local conds = xr_conditions
 	
 	if (conds.is_night() or conds.is_rain() or conds.is_foggy()) then
-		distance = bad_distance
+		distance = bad_distances[math.random(#bad_distances)]
 	else
 		distance = good_distances[math.random(#good_distances)]
 	end
