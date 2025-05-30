@@ -43,6 +43,7 @@ All notable changes to this project will be documented in this file.
 * Removed `bandit` prop from `esc_smart_terrain_5_7`
 * Enabled black screen effector with night vision on level changing
 * Replaced `mega_duty_propaganda_19` sound with Duty's propaganda from Clear Sky
+* Corrected `x` position of slots
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`
