@@ -44,6 +44,7 @@ All notable changes to this project will be documented in this file.
 * Enabled black screen effector with night vision on level changing
 * Replaced `mega_duty_propaganda_19` sound with Duty's propaganda from Clear Sky
 * Corrected `x` position of slots
+* Balanced stashes renewing
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`
