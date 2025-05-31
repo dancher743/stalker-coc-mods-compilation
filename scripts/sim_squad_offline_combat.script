@@ -4,6 +4,8 @@
 -- Special thanks to offline alife of AMK, EOC and Anomaly!
 --
 
+local dbg = false
+
 local combats_per_level = 5
 local good_distances = {
 	25*25,
@@ -15,19 +17,12 @@ local bad_distances = {
 	8*8,
 	6*6
 }
+
 local add_rank_points = 20
 local handicap_chance = 0.33
 local remove_squad_chance = 0.33
 local victim_id_key = "victim_id"
 local killer_id_key = "killer_id"
-local dbg = false
-
-local is_initialized
-local update_timer
-local updated_levels
-local squads_to_levels
-local processed_squads
-local combats_queue
 
 local rank_power = {
 	["novice"] = 10,
@@ -44,7 +39,6 @@ local rank_power = {
 	["strong"] = 90
 }
 
-local loot_items
 local loot_ignore_list = {
 		["bolt"] = true,
 		["device_torch"] = true,
@@ -63,6 +57,13 @@ local loot_ignore_list = {
 		["wpn_knife"] = true
 }
 
+local is_initialized
+local loot_items
+local update_timer
+local updated_levels
+local squads_to_levels
+local processed_squads
+local combats_queue
 local last_killed_stalker
 local is_survival_mode
 local actor_level_id
