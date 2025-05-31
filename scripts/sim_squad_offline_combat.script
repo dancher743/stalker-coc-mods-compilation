@@ -210,9 +210,9 @@ local function process_squads_combat(squads)
 				if (squad2 and squad1.id ~= squad2.id and not processed_squads[squad2.id] and 
 					simulation_objects.is_on_the_same_level(squad1, squad2)) 
 				then
-					local distance = squad1.position:distance_to_sqr(squad2.position)
-					
-					if (distance <= get_combat_distance()) then
+					local can_combat = squad1.current_target_id == squad2.current_target_id and
+									   squad1.position:distance_to_sqr(squad2.position) <= get_combat_distance()
+					if (can_combat) then
 						local community1 = squad1:get_squad_community()
 						local community2 = squad2:get_squad_community()
 						local are_enemies = nil
@@ -307,10 +307,8 @@ local function update_queue()
 		elseif (victim_squad.id == squad2.id) then
 			squads[squad2_index] = nil
 		end
-		if (actor_level_id ~= level_id and victim_squad.smart_id) then
-			if (math.random() < remove_squad_chance) then
-				victim_squad:remove_squad()
-			end
+		if (actor_level_id ~= level_id and math.random() < remove_squad_chance) then
+			victim_squad:remove_squad()
 		end
 	end
 end
