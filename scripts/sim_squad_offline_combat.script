@@ -60,6 +60,7 @@ local loot_ignore_list = {
 local is_initialized
 local loot_items
 local update_timer
+local update_queue_timer
 local updated_levels
 local squads_to_levels
 local processed_squads
@@ -315,14 +316,6 @@ local function update_queue()
 end
 
 local function update()
-	local tg = time_global()
-	
-	if (tg < update_timer) then
-		return
-	end
-	
-	update_timer = tg + math.random(10000,15000)
-	
 	if (squads_to_levels == nil) then
 		squads_to_levels = {}
 		
@@ -382,6 +375,22 @@ local function update()
 	updated_levels[level_to_update] = true
 end
 
+local function actor_on_slicing_update(_,delta)
+	update_timer = update_timer - delta
+	if (update_timer <= 0) then
+		update()
+		update_timer = math.random(10000,15000)
+		return
+	end
+	
+	update_queue_timer = update_queue_timer - delta
+	if (update_queue_timer <= 0) then
+		update_queue()
+		update_queue_timer = 500
+		return
+	end
+end
+
 local function initialize()
 	if (is_initialized or not is_enabled()) then
 		return
@@ -391,11 +400,11 @@ local function initialize()
 	updated_levels = {}
 	processed_squads = {}
 	combats_queue = {}
-	update_timer = time_global() + 1000
+	update_timer = 1000
+	update_queue_timer = 0
 	is_survival_mode = IsSurvivalMode()
 	actor_level_id = alife():level_name(game_graph():vertex(alife():actor().m_game_vertex_id):level_id())
-	AddUniqueCall(update)
-	StartTimer("offline_combat_update_queue", 500, update_queue)
+	RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
 	
 	is_initialized = true
 	if dbg then printf_dbg("initialized") end
@@ -406,15 +415,15 @@ local function finalize()
 		return
 	end
 	
+	UnregisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
 	loot_items = nil
 	updated_levels = nil
 	processed_squads = nil
 	combats_queue = nil
 	update_timer = nil
+	update_queue_timer = nil
 	is_survival_mode = nil
 	actor_level_id = nil
-	StopTimer("offline_combat_update_queue", 500, update_queue)
-	RemoveUniqueCall(update)
 	pop_last_killed_stalker_data()
 	
 	is_initialized = false
