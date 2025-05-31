@@ -45,6 +45,7 @@ All notable changes to this project will be documented in this file.
 * Replaced `mega_duty_propaganda_19` sound with Duty's propaganda from Clear Sky
 * Corrected `x` position of slots
 * Balanced stashes renewing
+* Added `vashe_blagorodiye_gospozha_udacha` track to `val_smart_terrain_7_3_radio`
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`
