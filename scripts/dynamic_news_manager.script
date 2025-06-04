@@ -1546,14 +1546,15 @@ function DynamicNewsManager:ReportNextEmission() --  news about expected surge's
 	local IsEmission, IsPsiStorm, IsFallout = false, false, false
 	
 	-- %33 chance to pick blowout or psi-storm or fallout
-	if (math.random(3) == 1) then
+	local pick = math.random(3)
+	if (pick == 1) then
 		SurgeType = game.translate_string("st_dyn_news_surge_type_emission")
 		SM = surge_manager and surge_manager.SurgeManager
 		if (atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_blowout",2,1)==1) and (SM ~= nil and SM._delta ~= nil and not SM.started) then	-- if blowouts are enabled
 			last_surge_time = SM and SM.last_surge_time or game.get_game_time()
 			IsEmission = true
 		end
-	elseif (math.random(3) == 2) then
+	elseif (pick == 2) then
 		SurgeType = game.translate_string("st_dyn_news_surge_type_psi")
 		SM = psi_storm_manager and psi_storm_manager.PsiStormManager
 		if (atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_psi_storm",2,1)==1) and (SM ~= nil and SM._delta ~= nil and not SM.started) then
@@ -1566,7 +1567,7 @@ function DynamicNewsManager:ReportNextEmission() --  news about expected surge's
 		local started = fallout_manager and fallout_manager.is_started()
 		if (atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_fallout",2,1)==1) and (SM ~= nil and SM._delta ~= nil and not started) then
 			last_surge_time = SM and SM.last_fallout_time or game.get_game_time()
-			IsPsiStorm = true
+			IsFallout = true
 		end
 	end
 	
