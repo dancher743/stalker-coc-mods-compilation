@@ -588,9 +588,13 @@ function get_random_weather()
 	return random_weather or "clear"
 end
 
-function set_rain_weather()
+function set_rain()
+	set_weather(weather_tbl[4])
+end
+
+function set_weather(period)
 	local weather_manager = get_weather_manager()
-	weather_manager.period = weather_tbl[4]
+	weather_manager.period = period
 	weather_manager:reset_last_period_change_date(true)
 	weather_manager:select_weather(true)
 end
