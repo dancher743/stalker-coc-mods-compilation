@@ -1,0 +1,18 @@
+#include "common.h"
+
+
+struct	p_TL
+{
+	half2 	Tex0	: TEXCOORD0;
+	half4	Color	: COLOR0;
+};
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// Pixel
+half4 main_ps_1_1 ( p_TL I ) : COLOR
+{
+	half4	t_base 	= tex2D( s_base, I.Tex0 );
+
+	return  half4	(t_base.r,t_base.g,t_base.b,t_base.a);
+}

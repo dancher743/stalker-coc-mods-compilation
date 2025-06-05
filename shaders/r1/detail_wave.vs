@@ -7,12 +7,20 @@ struct vf
 	float2 tc	: TEXCOORD0;
 };
 
+struct av 
+{
+	float4 	pos	: POSITION;	// (float,float,float,1)
+	float4 	nc	: NORMAL;	// (float,float,float,clr)
+	float4 	misc	: TEXCOORD0;	// (u(Q),v(Q),frac,???)
+};
+
 uniform float4 		consts; // {1/quant,1/quant,diffusescale,ambient}
 uniform float4 		wave; 	// cx,cy,cz,tm
 uniform float4 		dir2D; 
 uniform float4 		array	[200] : register(c10);
+uniform float3x4	m_xform;
 
-vf main (v_detail v)
+vf main (av v)
 {
 	vf 		o;
 
@@ -41,7 +49,8 @@ vf main (v_detail v)
 	o.hpos		= mul	(m_WVP,pos);
 
 	// Fake lighting
-	float 	dpc 	= max 	(0.f, dp);
+	float 	dpc 	= max 	(1.f, dp);
+
 	o.C		= c0 * (consts.w+consts.z*dpc*frac);
 
 	// final xform, color, tc
