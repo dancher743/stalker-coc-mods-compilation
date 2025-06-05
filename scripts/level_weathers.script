@@ -415,8 +415,12 @@ function WeatherManager:select_weather(now)
 			self.period = self:get_period_with_prob(weather)
 			self.pre_blowout_period=false
 		elseif self.pre_fallout_period==true then
+			if (self.levelWeather == "atmosfear_pre_blowout") then
+				self.period = "storm"
+			else
+				self.period = math.random() < 0.7 and "rain" or "storm"
+			end
 			weather = weather.."_pre_fallout"
-			self.period = math.random() < 0.7 and "rain" or "storm"
 			self.pre_fallout_period=false
 		else
 			if not (self.period) then
