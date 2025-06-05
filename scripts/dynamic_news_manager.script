@@ -489,7 +489,7 @@ function DynamicNewsManager:TickOfflineCombat()
 		return true
 	end
 	
-	ResetTimeEvent("DynamicNewsManager","TickOfflineCombat",90*TimeFactor)
+	ResetTimeEvent("DynamicNewsManager","TickOfflineCombat",math.random(90,270)*TimeFactor)
 	--printf(">>> Dyn News: TickOfflineCombat call")
 	
 	-- news state check
