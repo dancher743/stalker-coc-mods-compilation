@@ -277,10 +277,12 @@ function CPsiStormManager:update()
 		if(g_time:diffSec(self.last_psi_storm_time) < self._delta) then
 			return
 		end
+		if (surge_manager.is_started() or fallout_manager.is_started()) then
+			self:skip_psi_storm()
+			return
+		end
 		self:start()
 		return
-	elseif (surge_manager.is_started() or fallout_manager.is_started()) then 
-		self:skip_psi_storm()
 	end
 
 	diff_sec = math.ceil(game.get_game_time():diffSec(self.inited_time)/level.get_time_factor())
