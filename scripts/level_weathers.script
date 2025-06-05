@@ -85,6 +85,7 @@ function WeatherManager:__init()
 	self.subperiod=nil
 	self.transition_period=false
 	self.pre_blowout_period=false
+	self.pre_fallout_period=false
 	self.levelWeather="atmosfear"
 	self.far_distances={}
 	self.dof_kernels={}
@@ -264,9 +265,9 @@ end
 
 function WeatherManager:reset_last_period_change_date(period_change, delta_s)
 	--printf("reset_last_period_change_date = %s",tostring(period_change))
-	local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
-	Y, M, D, h, m, s, ms = self.last_period_change_date:get(Y, M, D, h, m, s, ms)
 	if (not period_change) then
+		local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
+		Y, M, D, h, m, s, ms = self.last_period_change_date:get(Y, M, D, h, m, s, ms)
 		self.last_period_change_date:set(Y, M, D, h, m, s + delta_s, ms)
 	else
 		self.last_period_change_date = game.get_game_time()
@@ -288,6 +289,13 @@ function WeatherManager:change_period()
 	if (diff_s<7200 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_blowout",2,1) ==1) or (diff_p<7200 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_psi_storm",2,1)==1) or level.is_wfx_playing() then
 		self.pre_blowout_period=true
 		self:reset_last_period_change_date(false, 1*60*60)
+	end
+	
+	local diff_f = fallout_manager.get_fallout_manager():get_time_left()
+	
+	if (diff_f<3600 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_fallout",2,1) ==1) or level.is_wfx_playing() then
+		self.pre_fallout_period=true
+		self:reset_last_period_change_date(false, 1*30*60)
 	end
 
 	if (self:can_change_period(self.period)) then
@@ -406,6 +414,10 @@ function WeatherManager:select_weather(now)
 			weather = weather.."_pre_blowout"
 			self.period = self:get_period_with_prob(weather)
 			self.pre_blowout_period=false
+		elseif self.pre_fallout_period==true then
+			weather = weather.."_pre_fallout"
+			self.period = math.random() < 0.7 and "rain" or "storm"
+			self.pre_fallout_period=false
 		else
 			if not (self.period) then
 				self.period = "clear"
@@ -821,6 +833,8 @@ function WeatherManager:load_state(m_data)
 		self.transition_period = true
 	elseif (self.levelWeather == "atmosfear_pre_blowout") then
 		self.pre_blowout_period = true
+	elseif (self.levelWeather == "atmosfear_pre_fallout") then
+		self.pre_fallout_period = true
 	end
 	
 	--alun_utils.debug_write("WeatherManager:load_state AFTER")

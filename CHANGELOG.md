@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 * Weather sub-periods: now can extend current weather by adding a configs from other weatherpacks
 * Rebalanced and improved change actor name dialog
 * Reworked find weapon tasks: added weapon's condition into requirements
+* Added pre-fallout weather to increase fallouts appearing
 
 ### Mods
 * [ND fix NPC guitar position coc 1.4.22](https://www.moddb.com/mods/call-of-chernobyl/addons/nd-fix-npc-guitar-position-coc1-4-22)
