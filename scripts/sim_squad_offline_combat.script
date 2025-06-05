@@ -20,7 +20,7 @@ local bad_distances = {
 
 local add_rank_points = 20
 local handicap_chance = 0.33
-local remove_squad_chance = 0.33
+local remove_squad_chance = 0.5
 local victim_id_key = "victim_id"
 local killer_id_key = "killer_id"
 
