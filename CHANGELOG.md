@@ -48,6 +48,7 @@ All notable changes to this project will be documented in this file.
 * Corrected `x` position of slots
 * Balanced stashes renewing
 * Added `vashe_blagorodiye_gospozha_udacha` track to `val_smart_terrain_7_3_radio`
+* Added new presets to stay point idle time of squad
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`
