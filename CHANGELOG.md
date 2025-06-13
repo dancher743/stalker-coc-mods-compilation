@@ -70,6 +70,7 @@ All notable changes to this project will be documented in this file.
 * Added bloodsuckers into Bloodsucker village (¯\_(ツ)_/¯)
 * Added missed lore-friendly textures of NPC's backpacks
 * Added check on guider's job into join as a companion dialogs
+* Fixed next time of the first fallout
 
 ### Optimization
 * Added `npc_count` into `CCampManager` to optimize update calls (from [[EN/RU] More campfire jokes and stories](https://www.moddb.com/mods/stalker-anomaly/addons/enru-more-campfire-jokes-and-stories) mod)

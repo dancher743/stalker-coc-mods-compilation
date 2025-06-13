@@ -57,8 +57,8 @@ function FalloutManager:__init()
 	self.taskThreshold=0.004
 	--self.minDelayTime=12*60*60
 	--self.maxDelayTime=24*60*60
-	self.minDelayTime=3*60*60
-	self.maxDelayTime=6*60*60
+	--self.minDelayTime=3*60*60
+	--self.maxDelayTime=6*60*60
 	self.minLengthTime=10*60
 	self.maxLengthTime=30*60
 	self.preStartTime=math.random(5,15)*60
@@ -66,7 +66,7 @@ function FalloutManager:__init()
 	self.fadeTime=10*60
 	self.fadeFactor=0
 	
-	self.nextFalloutIn=math.random(self.minDelayTime, self.maxDelayTime)
+	--self.nextFalloutIn=math.random(self.minDelayTime, self.maxDelayTime)
 	self.falloutLength=math.random(self.minLengthTime, self.maxLengthTime)
 	self.inited_time = game.get_game_time()
 	self.inited_time_sec = self.inited_time
@@ -203,6 +203,9 @@ end
 function FalloutManager:update()
 	if not(self.phase) then
 		local g_time = game.get_game_time()
+		if (self.nextFalloutIn == nil) then
+			self:new_time()
+		end
 		local diff = math.floor(self.nextFalloutIn - g_time:diffSec(self.inited_time))
 		--printf(diff)
 		--if diff > 0 then
