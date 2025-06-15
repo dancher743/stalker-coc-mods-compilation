@@ -21,7 +21,7 @@ All notable changes to this project will be documented in this file.
 * [Fixed Artefact Collision and Visuals [1.5.3]](https://www.moddb.com/mods/stalker-anomaly/addons/fixed-artefact-collision-and-visuals-152)
 * [ND DRXCoCDynamicAnomalies21 Remix](https://www.moddb.com/mods/call-of-chernobyl/addons/nd-drxcocdynamicanomalies21-remix)
 * [CoC OL pack v1.3](https://www.moddb.com/mods/call-of-chernobyl/addons/coc-ol-pack-v1-2)
-* [Build shaders](https://www.playground.ru/stalker_shadow_of_chernobyl/file/s_t_a_l_k_e_r_shadow_of_chernobyl_bildovskie_shejdery-1036063)
+* [Shaders from from Legend Returns 0.9.2](https://ap-pro.ru/stuff/zov_pripjati/legend-returns-092-r214/)
 
 ### Improvements
 * Reworked code of distant storms in `level_weathers.script`

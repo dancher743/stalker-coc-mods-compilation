@@ -2,21 +2,15 @@
 #define        COMMON_H
 
 // #define USE_SUPER_SPECULAR
-
+#include "config.h"
 #include "shared\common.h"
 //////////////////////////////////////////////////////////////////////////////////////////
 // *** options
 
-// #define DBG_TEST_NMAP
-// #define DBG_TEST_NMAP_SPEC
-// #define DBG_TEST_SPEC
-// #define DBG_TEST_LIGHT
-// #define DBG_TEST_LIGHT_SPEC
-
 // #define USE_GAMMA_22
 // #define USE_SJITTER
 // #define USE_SUNFILTER
-// #define USE_FETCH4
+//
 // #define USE_MBLUR                	//- HW-options defined
 // #define USE_HWSMAP                	//- HW-options defined
 
@@ -32,10 +26,10 @@
 // #define USE_LM_HEMI                	//- shader defined
 // #define USE_DISTORT                	//- shader defined
 #define USE_SUNMASK                		//- shader defined
-// #define DBG_TMAPPING
+//#define DBG_TMAPPING
 //////////////////////////////////////////////////////////////////////////////////////////
 #ifndef SMAP_size
-#define SMAP_size        1024
+#define SMAP_size        2048
 #endif
 #define PARALLAX_H 0.02
 #define parallax float2(PARALLAX_H, -PARALLAX_H/2)
@@ -46,8 +40,6 @@
 #  define xmaterial half(L_material.w)
 #endif
 //////////////////////////////////////////////////////////////////////////////////////////
-uniform half4                hemi_cube_pos_faces;
-uniform half4                hemi_cube_neg_faces;
 uniform half4                L_material;                            // 0,0,0,mid
 uniform half4                Ldynamic_color;                      // dynamic light color (rgb1)        - spot/point
 uniform half4                Ldynamic_pos;                       // dynamic light pos+1/range(w) - spot/point
@@ -57,12 +49,12 @@ uniform half4                J_direct        [6];
 uniform half4                J_spot                [6];
 
 half          calc_fogging               (half4 w_pos)      { return dot(w_pos,fog_plane);         }
-half2         calc_detail                (half3 w_pos)      {
+float2         calc_detail                (half3 w_pos)      {
         float                 dtl        = distance                (w_pos,eye_position)*dt_params.w;
                               dtl        = min              (dtl*dtl, 1);
         half                  dt_mul     = 1  - dtl;        // dt*  [1 ..  0 ]
         half                  dt_add     = .5 * dtl;        // dt+  [0 .. 0.5]
-        return                half2      (dt_mul,dt_add);
+        return                float2      (dt_mul,dt_add);
 }
 float3         calc_reflection     (float3 pos_w, float3 norm_w)
 {
@@ -127,8 +119,6 @@ struct         v_shadow_direct
         float4      hpos:        POSITION;       // Clip-space position         (for rasterization)
         float       depth:         TEXCOORD0;     // Depth
 };
-
-
 #endif
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -143,15 +133,29 @@ struct         p_bumped        {
         half3       M1                : TEXCOORD2;        // nmap 2 eye - 1
         half3       M2                : TEXCOORD3;        // nmap 2 eye - 2
         half3       M3                : TEXCOORD4;        // nmap 2 eye - 3
-#ifdef USE_TDETAIL
-        float2      tcdbump     	: TEXCOORD5;        // d-bump
+#ifdef USE_PARALLAX
+        half3       eye                : TEXCOORD5;        // vector to point in tangent space
+  #ifdef USE_TDETAIL
+        float2      tcdbump     : TEXCOORD6;        // d-bump
     #ifdef USE_LM_HEMI
-        float2      lmh             : TEXCOORD6;        // lm-hemi
+        float2      lmh                    : TEXCOORD7;        // lm-hemi
     #endif
+  #else
+    #ifdef USE_LM_HEMI
+        float2      lmh                   : TEXCOORD6;        // lm-hemi
+    #endif
+  #endif
 #else
+  #ifdef USE_TDETAIL
+        float2      tcdbump          : TEXCOORD5;        // d-bump
     #ifdef USE_LM_HEMI
-        float2      lmh             : TEXCOORD5;        // lm-hemi
+        float2      lmh                    : TEXCOORD6;        // lm-hemi
     #endif
+  #else
+    #ifdef USE_LM_HEMI
+        float2      lmh                   : TEXCOORD5;        // lm-hemi
+    #endif
+  #endif
 #endif
 };
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -193,8 +197,6 @@ uniform sampler2D       s_base;             	//
 uniform sampler2D       s_bump;             	//
 uniform sampler2D       s_bumpX;                //
 uniform sampler2D       s_detail;               //
-uniform sampler2D       s_detailBump;           //
-uniform sampler2D       s_detailBumpX;          //	Error for bump detail
 uniform sampler2D       s_bumpD;                //
 uniform sampler2D       s_hemi;             	//
 
@@ -228,14 +230,13 @@ uniform sampler         s_image;                // used in various post-processi
 uniform sampler2D       s_tonemap;              // actually MidleGray / exp(Lw + eps)
 //////////////////////////////////////////////////////////////////////////////////////////
 // Defines                                		//
-#define def_gloss       half(8.f /255.f) 
-#define def_aref        half(128.f/255.f) 
+#define def_gloss       half(2.f /255.f)
+#define def_aref        half(200.f/255.f)
 #define def_dbumph      half(0.333f)
-#define def_virtualh    half(0.05f)              // 5cm
+#define def_virtualh    half(.05f)              // 5cm
 #define def_distort     half(0.05f)             // we get -0.5 .. 0.5 range, this is -512 .. 512 for 1024, so scale it
-#define def_hdr         half(9.h)         		// hight luminance range half(3.h)
+#define def_hdr         half(8.h)         		// hight luminance range half(3.h)
 #define def_hdr_clip	half(0.75h)        		//
-#define def_lum_hrange	half(0.7h)	// hight luminance range
 
 //////////////////////////////////////////////////////////////////////////////////////////
 #define	LUMINANCE_VECTOR                 half3(0.3f, 0.48f, 0.22f)
@@ -243,63 +244,25 @@ void        tonemap              (out half4 low, out half4 high, half3 rgb, half
 {
         rgb     =      	rgb*scale       ;
 
-/*
-#ifdef	USE_BRANCHING		// ps_3_0
-        //low		=       rgb.xyzz		;
-
-		low		=	( (rgb*(1+rgb/fWhiteIntensitySQR)) / (rgb+1) ).xyzz;
-
-        high	=		low/def_hdr		;        // 8x dynamic range
-#else
-        low		=       half4           ( ( (rgb*(1+rgb/fWhiteIntensitySQR)) / (rgb+1) ),           0 )	;
-        high	=       half4       	(rgb/def_hdr,   0 )	;		// 8x dynamic range
-#endif
-*/
-
-// (rgb*(1+rgb/fWhiteIntensitySQR)) / (rgb+1) ) = rgb
-
-#ifdef 	USE_GAMMA_22
-	low	= 	half4(sqrt(rgb.xyz),	0);
-#else
-	low 	= 	half4(rgb,	  	0);
-#endif
-	high	= 	half4(rgb-def_lum_hrange, dot( min(rgb,def_lum_hrange), LUMINANCE_VECTOR ) );
+		low		= 	half4	(rgb, 0);
+		rgb		/=	def_hdr	;
+		high	= 	half4	(rgb, dot(rgb,0.333f)-def_hdr_clip)		;
 }
-
-	half4 	combine_bloom	(half3	low, half4 high)		{
-		return	half4(low+high*1.0,1.h);
-	}
+half4		combine_bloom        (half3  low, half4 high)	{
+        half4 result = half4(low + high*high.a, 1.h);
+		result.rb = clamp(result.rb, 0, 0.985f); // зеленоватый оттенок у блума, так смотрится естественнее (cjayho)
+		return result;
+}
 
 float3	v_hemi        	(float3 n)                        	{        return L_hemi_color*(.5f + .5f*n.y);                   }
 float3	v_hemi_wrap     (float3 n, float w)                	{        return L_hemi_color*(w + (1-w)*n.y);                   }
 float3	v_sun           (float3 n)                        	{        return L_sun_color*dot(n,-L_sun_dir_w);                }
 float3	v_sun_wrap      (float3 n, float w)                	{        return L_sun_color*(w+(1-w)*dot(n,-L_sun_dir_w));      }
 half3   p_hemi          (float2 tc)                         {
-//        half3        	t_lmh         = tex2D             	(s_hemi, tc);
-//        return  dot     (t_lmh,1.h/4.h);
-        half4        	t_lmh         = tex2D             	(s_hemi, tc);
-        return t_lmh.a;
-}
-
-half   get_hemi( half4 lmh)
-{
-	return lmh.a;
-}
-
-half   get_sun( half4 lmh)
-{
-	return lmh.g;
-}
-
-//	contrast function
-half Contrast(half Input, half ContrastPower)
-{
-     //piecewise contrast function
-     bool IsAboveHalf = Input > 0.5 ;
-     half ToRaise = saturate(2*(IsAboveHalf ? 1-Input : Input));
-     half Output = 0.5*pow(ToRaise, ContrastPower);
-     Output = IsAboveHalf ? 1-Output : Output;
-     return Output;
+        half3        	t_lmh         = tex2D             	(s_hemi, tc);
+        return  dot     (t_lmh,1.h/3.h);
+//        half4        	t_lmh         = tex2D             	(s_hemi, tc);
+//        return t_lmh.a;
 }
 
 #define FXPS technique _render{pass _code{PixelShader=compile ps_3_0 main();}}
