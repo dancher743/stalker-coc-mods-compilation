@@ -130,4 +130,4 @@ Mods
 78. Fixed Artefact Collision and Visuals [1.5.3] (Longreed, SoulCrystal) Special thanks to TheLostStalker88 for the tip!
 79. ND DRXCoCDynamicAnomalies21 Remix (TheLostStalker88, DoctorX)
 80. CoC OL pack v1.3 (Kisel_s_Molinkoi, K0MRADE, bloodshot12)
-81. Build shaders (Vodila25)
+81. Shaders from Legend Returns 0.9.2 (Genies of the Zone Team)
