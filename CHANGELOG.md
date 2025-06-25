@@ -50,6 +50,8 @@ All notable changes to this project will be documented in this file.
 * Balanced stashes renewing
 * Added `vashe_blagorodiye_gospozha_udacha` track to `val_smart_terrain_7_3_radio`
 * Added new presets to stay point idle time of squad
+* Removed open companion inventory dialog from guider's companions
+* Refactored `jg_guider.is_not_guider_companion` function
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`
