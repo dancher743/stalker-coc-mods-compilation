@@ -218,6 +218,12 @@ function FalloutManager:update()
 		--end
 		if diff < 0 then 
 			if level.rain_factor() > 0.001 then
+				if(self.time_forwarded) then
+					self.time_forwarded = false
+					self.skip_message = false
+					self:skip()
+					return
+				end
 				self.phase = prestart_phase_name
 				self.inited_time=game.get_game_time()
 				--self.atmosfear.debugMessages[1]:SetText("Fallout begins")
@@ -225,24 +231,27 @@ function FalloutManager:update()
 				--self.atmosfear.debugMessages[1]:SetText("Fallout can begin but waiting for rain")
 			end
 		end			
+		self.time_forwarded = false
 	elseif self.phase==prestart_phase_name then
-		if(self.time_forwarded) then
-			self.time_forwarded = false
-			self.skip_message = false
-			self:skip()
-			return
-		end
 		local g_time = game.get_game_time()
 		local diff = math.floor(self.preStartTime - g_time:diffSec(self.inited_time))
 		if diff < 0 then
 			local has_cataclysm = surge_manager.is_started() or psi_storm_manager.is_started()
 			if (level.rain_factor() > 0.001 and not has_cataclysm) then
+				if(self.time_forwarded) then
+					self.time_forwarded = false
+					self.skip_message = false
+					self:skip()
+					return
+				end
 				self:start()
 			else
 				self:shift()
 			end
+			self.time_forwarded = false
 			return
 		end
+		self.time_forwarded = false
 	elseif self.phase==prefade_phase_name then
 		local g_time = game.get_game_time()
 		local diff = math.floor(self.preFadeTime - g_time:diffSec(self.inited_time))
