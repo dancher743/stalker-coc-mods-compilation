@@ -3,6 +3,7 @@
 -- From Anomaly 1.5.1.2
 --------------------------------------------------
 local HUD = nil
+local update_tickback = nil
 
 function activate_hud()
 	if HUD == nil then
@@ -68,8 +69,8 @@ function UICompanionList:__init() super()
 	local function tickback()
 		self:CustomUpdate()
 	end
-	self.update_tickback = tickback
-	StartTimer("UICompanionListTimer", self.update_rate, self.update_tickback)
+	update_tickback = tickback
+	StartTimer("UICompanionListTimer", self.update_rate, update_tickback)
 end
 
 function UICompanionList:Clear()

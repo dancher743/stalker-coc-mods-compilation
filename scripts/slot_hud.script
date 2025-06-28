@@ -3,6 +3,7 @@
 local HUD
 local belted_arts, sloted_patch
 local update_rate = 1000 --[ms]
+local update_tickback = nil
 
 function activate_hud()
 	belted_arts = {}
@@ -125,8 +126,8 @@ function slot_hud:InitControls()
 	local function tickback()
 		self:CustomUpdate()
 	end
-	self.update_tickback = tickback
-	StartTimer("slot_hud_timer", update_rate, self.update_tickback)
+	update_tickback = tickback
+	StartTimer("slot_hud_timer", update_rate, update_tickback)
 end
 
 function slot_hud:Clear()

@@ -20,6 +20,8 @@ local shw_companions
 local cycle_TickSpecial, cycle_TickRandom, cycle_TickCompanion
 local msg_duration
 
+local found_stash_msg_timer_tickback = nil
+
 function update_options()
 	shw_death_stalker 	= axr_main.config:r_value("mm_dynamic_news_options","enable_death_stalker_news",1,true)
 	shw_death_mutant 	= axr_main.config:r_value("mm_dynamic_news_options","enable_death_mutant_news",1,true)
@@ -1466,11 +1468,11 @@ function DynamicNewsManager:FoundStash(has_spot) -- reaction of angry stash owne
 	local timer_id = "FoundStashMsgTimer" .. math.random(100)
 	local function tickback()
 		StopTimer(timer_id)
-		self.found_stash_msg_timer_tickback = nil
+		found_stash_msg_timer_tickback = nil
 		self:PushToChannel("general",{Mg=tbl[math.random(#tbl)],Ic=Ic,Snd="beep_2",Se=Se,It=It,Ty="found_stash"})
 	end
-	self.found_stash_msg_timer_tickback = tickback
-	StartTimer(timer_id, 2000*TimeFactor, self.found_stash_msg_timer_tickback)
+	found_stash_msg_timer_tickback = tickback
+	StartTimer(timer_id, 2000*TimeFactor, found_stash_msg_timer_tickback)
 
 	return true
 end
