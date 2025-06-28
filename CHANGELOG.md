@@ -80,6 +80,7 @@ All notable changes to this project will be documented in this file.
 * Fixed time forward if fallout can start but it waiting for rain
 * Added fallout skip by sleep place
 * Saved tickbacks of `StartTimer` to script fields to prevent missing HUD
+* Returned missed rad aura to `bloodsucker_black_weak`
 
 ### Optimization
 * Added `npc_count` into `CCampManager` to optimize update calls (from [[EN/RU] More campfire jokes and stories](https://www.moddb.com/mods/stalker-anomaly/addons/enru-more-campfire-jokes-and-stories) mod)
