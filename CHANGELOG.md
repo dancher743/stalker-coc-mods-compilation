@@ -76,6 +76,7 @@ All notable changes to this project will be documented in this file.
 * Fixed next time of the first fallout
 * Fixed `self._delta` field in `FalloutManager` class
 * Added fixes to `sound_theme.script` from [OpenXRay](https://github.com/OpenXRay/xray-16)
+* Corrected Pripyat left coast on the global map
 
 ### Optimization
 * Added `npc_count` into `CCampManager` to optimize update calls (from [[EN/RU] More campfire jokes and stories](https://www.moddb.com/mods/stalker-anomaly/addons/enru-more-campfire-jokes-and-stories) mod)
