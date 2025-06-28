@@ -304,6 +304,12 @@ function FalloutManager:update()
 			return
 		end
 		
+		local diff = math.ceil(game.get_game_time():diffSec(self.inited_time))
+		if (diff > 3600) then
+			self:finish()
+			return
+		end
+		
 		if not(self.task_given) then
 			--self.debugMessages[6]:SetText("FIND COVER")
 			if atmosfear_options.config:r_value(self.sect,"opt_fallout_task",0,"give")=="give" then
