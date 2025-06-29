@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 * Added pre-fallout weather to increase fallouts appearing
 * Added ability to receive tasks from companions
 * Fixed "sleeping" BTRs
+* Added BTR to Escape's blockpost
 
 ### Mods
 * [ND fix NPC guitar position coc 1.4.22](https://www.moddb.com/mods/call-of-chernobyl/addons/nd-fix-npc-guitar-position-coc1-4-22)

@@ -2090,9 +2090,11 @@ function cmd.coords(me,txt,owner,p)
 		local lvid = actor:level_vertex_id()
 		local gvid = actor:game_vertex_id()
 		result_txt = strformat("X:%s, Y:%s, Z:%s, lvID:%s, gvID:%s", position.x, position.y, position.z, lvid, gvid)
+		printf(result_txt)
 	elseif(wrd == "dir") then
 		local direction = actor:direction()
 		result_txt = strformat("X:%s, Y:%s, Z:%s", direction.x, direction.y, direction.z)
+		printf(result_txt)
 	else
 		result_txt = strformat("Incorrect subcommand '%s'. Type 'coords help' for list of subcommands.", wrd)
 	end
