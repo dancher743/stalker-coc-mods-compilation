@@ -3,12 +3,13 @@ active = ph_car@idle
 
 [ph_car@idle]
 path_walk 		= aes_btr_walk1
-on_info1		= {=drx_sl_is_enemy(army)} ph_car@attack
+on_info1		= {=drx_sl_is_enemy(monolith)} ph_car@attack
 
 [ph_car@attack]
 path_walk 		= aes_btr_walk1
 target 			= actor
 track_target    = true
 fire_repeat     = inf
+fire_range		= 150
 auto_fire       = true
-on_info1		= {!drx_sl_is_enemy(army)} ph_car@idle
+on_info1		= {!drx_sl_is_enemy(monolith)} ph_car@idle
