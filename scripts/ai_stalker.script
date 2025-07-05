@@ -87,7 +87,7 @@ function update_best_weapon(npc,cur_wpn)
 		-- usage actor's borrow items by a companion fix
 		if (axr_companions.is_companion(npc)) then
 			local borrow_items = alife_storage_manager.get_state().companion_borrow_item
-			if (borrow_items and borrow_items[wpn:id()] ~= nil) then
+			if (borrow_items and borrow_items[wpn:id()] == true) then
 				return false
 			end
 		end
