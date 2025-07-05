@@ -8020,3 +8020,7 @@ function remove_task_companion_by_squad(actor,npc,p)
 		end
 	end
 end
+
+function show_leave_zone_ui_dialog(actor, obj, p)
+	leave_zone.show_ui_dialog()
+end

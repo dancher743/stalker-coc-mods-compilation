@@ -54,6 +54,7 @@ All notable changes to this project will be documented in this file.
 * Added new presets to stay point idle time of squad
 * Removed open companion inventory dialog from guider's companions
 * Refactored `jg_guider.is_not_guider_companion` function
+* Reworked showing Leave the Zone dialog using restrictor
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`
