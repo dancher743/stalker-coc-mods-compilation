@@ -83,6 +83,7 @@ All notable changes to this project will be documented in this file.
 * Saved tickbacks of `StartTimer` to script fields to prevent missing HUD
 * Returned missed rad aura to `bloodsucker_black_weak`
 * Fixed borrow items check in `update_best_weapon` function
+* Fixed missing scopes on NPCs with `wpn_ak74_up`
 
 ### Optimization
 * Added `npc_count` into `CCampManager` to optimize update calls (from [[EN/RU] More campfire jokes and stories](https://www.moddb.com/mods/stalker-anomaly/addons/enru-more-campfire-jokes-and-stories) mod)
