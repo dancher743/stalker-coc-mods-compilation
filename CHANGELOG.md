@@ -97,6 +97,7 @@ All notable changes to this project will be documented in this file.
 * Added `is_foggy` function into `xr_conditions.script`
 * Added `set_weather` function into `level_weathers.script`
 * Added `weapon_with_scope_is_zoomed` field into `axr_main.script`
+* Added `period` command into debug command list to change weather period
 
 ## [1.5.1] - 2025-04-07
 
