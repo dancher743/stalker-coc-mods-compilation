@@ -96,12 +96,16 @@ function actor_item_to_belt(item)
 	end
 end
 
-function actor_on_weapon_zoom_in(item)
-	HUD:show_hud(false)
+function actor_on_weapon_zoom_in(wpn)
+	if wpn:weapon_scope_status() > 0 then
+		HUD:show_hud(false)
+	end
 end 
 
-function actor_on_weapon_zoom_out(item)
-	HUD:show_hud(true)
+function actor_on_weapon_zoom_out(wpn)
+	if wpn:weapon_scope_status() > 0 then
+		HUD:show_hud(true)
+	end
 end
 
 class "slot_hud" (CUIScriptWnd)

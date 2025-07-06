@@ -85,6 +85,7 @@ All notable changes to this project will be documented in this file.
 * Returned missed rad aura to `bloodsucker_black_weak`
 * Fixed borrow items check in `update_best_weapon` function
 * Fixed missing scopes on NPCs with `wpn_ak74_up`
+* Fixed missing companion UI with unscoped weapon zoom
 
 ### Optimization
 * Added `npc_count` into `CCampManager` to optimize update calls (from [[EN/RU] More campfire jokes and stories](https://www.moddb.com/mods/stalker-anomaly/addons/enru-more-campfire-jokes-and-stories) mod)
@@ -95,6 +96,7 @@ All notable changes to this project will be documented in this file.
 * Added `shuffle_table(t)` function into `utils.script` (from Anomaly 1.5.1.2)
 * Added `is_foggy` function into `xr_conditions.script`
 * Added `set_weather` function into `level_weathers.script`
+* Added `weapon_with_scope_is_zoomed` field into `axr_main.script`
 
 ## [1.5.1] - 2025-04-07
 

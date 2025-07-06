@@ -24,14 +24,14 @@ local function actor_on_net_destroy()
 	deactivate_hud()
 end
 
-local function actor_on_weapon_zoom_in(item)
-	if HUD ~= nil then
+local function actor_on_weapon_zoom_in(wpn)
+	if HUD and wpn:weapon_scope_status() > 0 then
 		HUD:Show(false)
 	end
 end 
 
-local function actor_on_weapon_zoom_out(item)
-	if HUD ~= nil then
+local function actor_on_weapon_zoom_out(wpn)
+	if HUD and wpn:weapon_scope_status() > 0 then
 		HUD:Show(true)
 	end
 end
