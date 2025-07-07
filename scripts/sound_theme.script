@@ -872,10 +872,19 @@ function init_npc_sound(npc)
 		if v.init_npc then
 			--printf("checking %s for %s (%s)", v.section, npc:name(), character_community(npc))
 			if (v.avail_communities == nil or v.avail_communities[character_community(npc)]) then
-				if (v.story_ids == nil or v.story_ids[story_objects.get_story_objects_registry():get_story_id(npc:id()) or ""]) then
+				if (v.story_ids == nil or v.story_ids[get_object_story_id(npc:id()) or STR_EMPTY]) then
 					v:init_npc(npc)
 				end
 			end
 		end
 	end
+end
+
+--' Added by Dancher
+function is_community_avail(sound, npc)
+	local snd_theme = sound_theme.theme[sound]
+	if (snd_theme and snd_theme.avail_communities) then
+		return snd_theme.avail_communities[character_community(npc)]
+	end
+	return false
 end
