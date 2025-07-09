@@ -56,6 +56,7 @@ All notable changes to this project will be documented in this file.
 * Refactored `jg_guider.is_not_guider_companion` function
 * Reworked showing Leave the Zone dialog using restrictor
 * Added terrain from "Advanced_vegetation_mix_update_1" mod to Jupiter
+* Increased timer of Agroprom's comandir megafon
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`
