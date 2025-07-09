@@ -1,5 +1,5 @@
 # S.T.A.L.K.E.R.: Call of Chernobyl Reforged
-"Quality of life" mods compilation for [Call of Chernobyl 1.4.22](https://www.moddb.com/mods/call-of-chernobyl). Support Russian and English languages.
+"Quality of life" mods compilation for [Call of Chernobyl 1.4.22](https://www.moddb.com/mods/call-of-chernobyl), focused on the vanilla gaming experience. Support Russian and English languages.
 
 [![preview-1.jpg](https://i.postimg.cc/t4DKK7h1/preview-1.jpg)](https://postimg.cc/5XYKv4K1)
 
