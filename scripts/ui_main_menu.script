@@ -57,7 +57,7 @@ function main_menu:InitControls()
 
 	local _ver = xml:InitStatic		("static_version",self)
 	local mm						= _G.main_menu.get_main_menu()
-	_ver:TextControl():SetText		("Call of Chernobyl ver. " .. (_G.GAME_VERSION) .. " + " .. (_G.MOD_VERSION))
+	_ver:TextControl():SetText		("Call of Chernobyl Reforged " .. (_G.MOD_VERSION))
 	
 	-- Message Window 
 	self.msg_wnd = xml:InitFrame("msg_wnd:background",self)

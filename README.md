@@ -1,12 +1,12 @@
-# stalker-coc-mods-compilation
-Mods compilation for S.T.A.L.K.E.R.: Call of Chernobyl 1.4.22 (ENG/RUS)
+# S.T.A.L.K.E.R.: Call of Chernobyl Reforged
+"Quality of life" mods compilation for [Call of Chernobyl 1.4.22](https://www.moddb.com/mods/call-of-chernobyl). Support Russian and English languages.
 
 [![preview-1.jpg](https://i.postimg.cc/t4DKK7h1/preview-1.jpg)](https://postimg.cc/5XYKv4K1)
 
 Install
 ---
 1. Install [release](https://www.moddb.com/mods/call-of-chernobyl/downloads/call-of-chernobyl-1412-full) CoC 1.4.12
-2. Install [patch](https://www.moddb.com/mods/call-of-chernobyl/downloads/coc-1422-patch) to make CoC 1.4.22
+2. Install [patch](https://www.moddb.com/mods/call-of-chernobyl/downloads/coc-1422-patch) to change version 1.4.12 to 1.4.22
 3. Dowload [compilation](https://github.com/dancher743/stalker-coc-mods-compilation/releases/latest)
 4. Dowload [installer](https://github.com/dancher743/stalker-coc-mods-compilation-installer/releases/latest)
 5. Place _compilation_ and _installer_ into the root folder -
