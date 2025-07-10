@@ -103,6 +103,7 @@ local sr_camp_states = {
 }
 
 local state_north_name = "state_north"
+local state_weather_bad_name = "state_weather_bad"
 
 --------------------------------------------------------------------------------
 -- Класс CCampManager
@@ -211,6 +212,10 @@ function CCampManager:update()
 					else
 						self.idle_talker_sound = "state"
 					end
+				elseif (math.random() < sound_theme.get_play_prob(state_weather_bad_name) and 
+					sound_theme.is_weathers_avail(state_weather_bad_name, level_weathers.get_period())) 
+				then
+					self.idle_talker_sound = state_weather_bad_name
 				else
 					self.idle_talker_sound = "state"
 				end

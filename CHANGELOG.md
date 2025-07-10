@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 * Added ability to receive tasks from companions
 * Fixed "sleeping" BTRs
 * Added BTR to Escape's blockpost and reworked BTR on Chernobyl NPP
+* Added to NPC sound reactions to weather
 
 ### Mods
 * [ND fix NPC guitar position coc 1.4.22](https://www.moddb.com/mods/call-of-chernobyl/addons/nd-fix-npc-guitar-position-coc1-4-22)
@@ -102,6 +103,7 @@ All notable changes to this project will be documented in this file.
 * Added `weapon_with_scope_is_zoomed` field into `axr_main.script`
 * Added `period` command into debug command list to change weather period
 * Added `avail_levels` and `play_prob` to section of `script_sound.ltx`
+* Added `get_period` function to `level_weathers.script`
 
 ## [1.5.1] - 2025-04-07
 

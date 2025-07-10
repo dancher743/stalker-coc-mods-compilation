@@ -47,6 +47,7 @@ function npc_sound:__init(snd_ini, section)
 	self.msg = snd_ini:r_string_ex(section,"message") or STR_EMPTY
 	self.avail_communities = snd_ini:line_exist(section,"avail_communities") and alun_utils.parse_list(snd_ini,section,"avail_communities",true) or nil
 	self.avail_levels = snd_ini:line_exist(section,"avail_levels") and alun_utils.parse_list(snd_ini,section,"avail_levels",true) or nil
+	self.avail_weathers = snd_ini:line_exist(section,"avail_weathers") and alun_utils.parse_list(snd_ini,section,"avail_weathers",true) or nil
 	local play_prob = snd_ini:r_string_ex(section,"play_prob")
 	self.play_prob = play_prob and tonumber(play_prob) or 0
 end
@@ -900,7 +901,15 @@ function is_level_avail(sound, level_name)
 	return false
 end
 
-function get_play_prob(sound, level_name)
+function is_weathers_avail(sound, weather_period)
+	local snd_theme = sound_theme.theme[sound]
+	if (snd_theme and snd_theme.avail_weathers) then
+		return snd_theme.avail_weathers[weather_period]
+	end
+	return false
+end
+
+function get_play_prob(sound)
 	local snd_theme = sound_theme.theme[sound]
 	if (snd_theme and snd_theme.play_prob) then
 		return snd_theme.play_prob

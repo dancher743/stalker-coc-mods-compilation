@@ -606,6 +606,10 @@ function get_random_weather()
 	return random_weather or "clear"
 end
 
+function get_period()
+	return get_weather_manager().period
+end
+
 function set_rain()
 	set_weather(weather_tbl[4])
 end
