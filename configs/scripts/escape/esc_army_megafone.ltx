@@ -1,0 +1,6 @@
+[logic]
+active = ph_idle@default
+
+[ph_idle@default]
+on_info = {=is_night} %=stop_sound%
+on_info2 = {!is_night} %=play_sound(esc_army_comandir_megafon)%

@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 * Fixed "sleeping" BTRs
 * Added BTR to Escape's blockpost and reworked BTR on Chernobyl NPP
 * Added to NPC sound reactions to weather
+* Returned sounds to Army's megafon on Escape
 
 ### Mods
 * [ND fix NPC guitar position coc 1.4.22](https://www.moddb.com/mods/call-of-chernobyl/addons/nd-fix-npc-guitar-position-coc1-4-22)
