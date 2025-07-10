@@ -239,8 +239,6 @@ type = npc
 npc_prefix = true
 avail_communities = bandit, csky, dolg, ecolog, freedom, killer, army, monolith, stalker
 path = states\idle\idle_
-path_north_levels = states\idle\north_levels\idle_
-north_levels = zaton, jupiter, l10_radar, l12_stancia, l12_stancia_2, l13_generators
 shuffle = rnd
 idle = 7,13,100
 group_snd = true
@@ -249,10 +247,12 @@ group_snd = true
 type = npc
 npc_prefix = true
 avail_communities = stalker
+avail_levels = zaton, jupiter, l10_red_forest, l10_radar, l12_stancia, l12_stancia_2, l13_generators
 path = states\idle\north_levels\idle_
 shuffle = rnd
 idle = 7,13,100
 group_snd = true
+play_prob = 0.05
 
 [state_1]
 type = npc|actor|3d

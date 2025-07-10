@@ -57,6 +57,7 @@ All notable changes to this project will be documented in this file.
 * Reworked showing Leave the Zone dialog using restrictor
 * Added terrain from "Advanced_vegetation_mix_update_1" mod to Jupiter
 * Increased timer of Agroprom's comandir megafon
+* Refactored NPC idle sounds about north levels
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`
@@ -100,6 +101,7 @@ All notable changes to this project will be documented in this file.
 * Added `set_weather` function into `level_weathers.script`
 * Added `weapon_with_scope_is_zoomed` field into `axr_main.script`
 * Added `period` command into debug command list to change weather period
+* Added `avail_levels` and `play_prob` to section of `script_sound.ltx`
 
 ## [1.5.1] - 2025-04-07
 

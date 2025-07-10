@@ -102,12 +102,7 @@ local sr_camp_states = {
 						},
 }
 
-local north_levels = {
-	zaton = true,
-	jupiter = true,
-	pripyat = true
-}
-local state_north_chance = 0.05
+local state_north_name = "state_north"
 
 --------------------------------------------------------------------------------
 -- Класс CCampManager
@@ -208,8 +203,8 @@ function CCampManager:update()
 		if(npc_count~=0) then
 			self.idle_talker = talkers[math.random(#talkers)]
 			if (self.idle_talker_sound == nil) then
-				if (north_levels[level.name()] and math.random() < state_north_chance) then
-					local state_north_name = "state_north"
+				local state_north_chance = sound_theme.get_play_prob(state_north_name)
+				if (math.random() < state_north_chance and sound_theme.is_level_avail(state_north_name, level.name())) then
 					local npc = db.storage[self.idle_talker] and db.storage[self.idle_talker].object
 					if (npc and sound_theme.is_community_avail(state_north_name, npc)) then
 						self.idle_talker_sound = state_north_name
