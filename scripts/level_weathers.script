@@ -242,25 +242,18 @@ function WeatherManager:get_next_period(period)
 end
 
 function WeatherManager:get_subperiod(period)
-	local subperiod = nil
-	local subperiods = alun_utils.parse_ini_section_to_array(self.graphs_ini,"subperiods")
+	local subperiod_name = self:get_period_with_prob("subperiods")
 	
-	local subperiods_ids = {}
-	table.insert(subperiods_ids, 0)
-	for id,_ in pairs(subperiods) do
-		table.insert(subperiods_ids, id)
+	if (subperiod_name == STR_DEFAULT) then
+		return nil
 	end
 	
-	local subperiod_id = subperiods_ids[math.random(#subperiods_ids)]
-	if (subperiod_id ~= 0) then
-		local subperiod_name = subperiods[subperiod_id]
-		local subperiod_periods = self:get_periods(subperiod_name)
-		if (utils.contains(subperiod_periods, period)) then
-			subperiod = subperiod_name
-		end
+	local subperiod_periods = self:get_periods(subperiod_name)
+	if (utils.contains(subperiod_periods, period)) then
+		return subperiod_name
 	end
 	
-	return subperiod
+	return nil
 end
 
 function WeatherManager:reset_last_period_change_date(period_change, delta_s)

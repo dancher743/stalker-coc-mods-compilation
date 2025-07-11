@@ -1907,6 +1907,7 @@ STR_NUMBER		= "number"
 STR_TABLE		= "table"
 STR_FUNCTION	= "function"
 STR_USERDATA	= "userdata"
+STR_DEFAULT		= "default"
 
 -----------------------------------------
 -- Functions
