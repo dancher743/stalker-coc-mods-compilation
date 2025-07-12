@@ -62,6 +62,7 @@ All notable changes to this project will be documented in this file.
 * Refactored NPC idle sounds about north levels
 * Balanced `wpn_fn2000` in Merc's veterans equipment
 * Added improvements to cat sleep aura
+* Added stopping Actor's sounds on death
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`

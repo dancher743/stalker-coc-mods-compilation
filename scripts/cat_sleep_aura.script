@@ -17,13 +17,20 @@ local actor_yawn_sound = nil
 local cat_timers = {}
 
 local function play_yawn_sound()
-	if (actor_yawn_sound ~= nil and actor_yawn_sound:playing()) then
+	if (actor_yawn_sound and actor_yawn_sound:playing()) then
 		return
 	end
 	
 	local sound_index = math.random(1,actor_yawn_sound_max_index)
 	actor_yawn_sound = xr_sound.get_safe_sound_object("actor\\yawn_"..sound_index,sound_object.s2d)
 	actor_yawn_sound:play(db.actor,0,sound_object.s2d)
+end
+
+local function stop_yawn_sound()
+	if (actor_yawn_sound and actor_yawn_sound:playing()) then
+		actor_yawn_sound:stop()
+		actor_yawn_sound = nil
+	end
 end
 
 local function apply_sleep_aura()
@@ -83,6 +90,15 @@ local function monster_on_update(npc)
 	apply_sleep_aura()
 end
 
+local function npc_on_death_callback(_,who)
+	if (not IsActor(who)) then
+		return
+	end
+	
+	stop_yawn_sound()
+end
+
 function on_game_start()
 	RegisterScriptCallback("monster_on_update",monster_on_update)
+	RegisterScriptCallback("npc_on_death_callback",npc_on_death_callback)
 end
