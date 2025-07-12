@@ -30,9 +30,7 @@ local function apply_sleep_aura()
 	has_aura_applied = true
 	
 	level.add_pp_effector(sleep_effector_name, 998, false)
-	if (math.random() < 0.5) then
-		play_yawn_sound()
-	end
+	play_yawn_sound()
 	
 	local function tickback()
 		StopTimer(sleep_aura_effector_timer_id)
@@ -68,7 +66,7 @@ local function monster_on_update(npc)
 		return
 	end
 	
-	cat_timer = time_global + 5000 + math.random(-1000,1500)
+	cat_timer = time_global + 7500 + math.random(-2500,2500)
 	cat_timers[cat_id] = cat_timer
 	
 	if (has_aura_applied) then
@@ -78,7 +76,7 @@ local function monster_on_update(npc)
 	local sleep_aura_prob = system_ini():r_string_ex(npc:section(),sleep_aura_prob_string_name)
 	sleep_aura_prob = tonumber(sleep_aura_prob)
 	
-	if (math.random() > sleep_aura_prob) then
+	if (math.random() >= sleep_aura_prob) then
 		return
 	end
 	

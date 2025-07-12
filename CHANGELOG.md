@@ -61,6 +61,7 @@ All notable changes to this project will be documented in this file.
 * Increased timer of Agroprom's comandir megafon
 * Refactored NPC idle sounds about north levels
 * Balanced `wpn_fn2000` in Merc's veterans equipment
+* Added improvements to cat sleep aura
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`
