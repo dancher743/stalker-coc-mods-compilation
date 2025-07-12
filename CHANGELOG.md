@@ -94,6 +94,7 @@ All notable changes to this project will be documented in this file.
 * Fixed borrow items check in `update_best_weapon` function
 * Fixed missing scopes on NPCs with `wpn_ak74_up`
 * Fixed missing companion UI with unscoped weapon zoom
+* Fixed not working `show_crit_hit_mark` option
 
 ### Optimization
 * Added `npc_count` into `CCampManager` to optimize update calls (from [[EN/RU] More campfire jokes and stories](https://www.moddb.com/mods/stalker-anomaly/addons/enru-more-campfire-jokes-and-stories) mod)
