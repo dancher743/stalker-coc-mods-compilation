@@ -60,6 +60,7 @@ All notable changes to this project will be documented in this file.
 * Added terrain from "Advanced_vegetation_mix_update_1" mod to Jupiter
 * Increased timer of Agroprom's comandir megafon
 * Refactored NPC idle sounds about north levels
+* Balanced `wpn_fn2000` in Merc's veterans equipment
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`

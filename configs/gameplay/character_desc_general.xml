@@ -7484,7 +7484,7 @@
     <visual>actors\stalker_merc\stalker_mercexo_4</visual>
     <supplies>
         [spawn] \n
-        wpn_fn2000 \n
+        wpn_g36 \n
         ammo_5.56x45_ap = 1 \n
         wpn_usp \n
         ammo_11.43x23_hydro = 1 \n
@@ -7513,7 +7513,7 @@
     <visual>actors\stalker_merc\stalker_mercexo4a</visual>
     <supplies>
         [spawn] \n
-        wpn_fn2000 \n
+        wpn_sig550 \n
         ammo_5.56x45_ap = 1 \n
         wpn_sig220 = 1 \n
         ammo_11.43x23_hydro = 1 \n
