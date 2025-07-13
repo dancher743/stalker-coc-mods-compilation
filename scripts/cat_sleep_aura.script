@@ -46,7 +46,7 @@ local function apply_sleep_aura()
 		has_aura_applied = false
 	end
 	sleep_aura_timer_tickback = tickback
-	StartTimer(sleep_aura_effector_timer_id, 2000, sleep_aura_timer_tickback)
+	StartTimer(sleep_aura_effector_timer_id, 5000, sleep_aura_timer_tickback)
 	
 	if (sleep_dep.feature_is_active) then
 		sleep_dep.last_sleep = sleep_dep.last_sleep + 1
