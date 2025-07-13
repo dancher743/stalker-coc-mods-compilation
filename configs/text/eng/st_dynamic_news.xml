@@ -2504,6 +2504,9 @@
 	<string id="st_dyn_news_surge_type_psi">
 		<text>psi-storm</text>
 	</string>
+	<string id="st_dyn_news_surge_type_fallout">
+		<text>fallout</text>
+	</string>
 	<string id="st_dyn_news_surge_type_fallout_rad">
 		<text>radioactive fallout</text>
 	</string>
@@ -7248,7 +7251,7 @@
 	
 	<!-- Special -->
 	<string id="st_dyn_news_spc_obituary_s">
-		<text>$clr_1Death Report -$clr_2 $who_name ($who_comm) killed $victim_name ($victim_comm).\n$clr_1Location -$clr_2 $where.</text>
+		<text>$clr_1Death Report -$clr_2 $who_name ($who_comm) killed $victim_name ($victim_comm).\n$clr_1Location -$clr_2 $where</text>
 	</string>
 	<string id="st_dyn_news_spc_obituary_m">
 		<text>$clr_1Death Report -$clr_2 $victim_name ($victim_comm) killed by $who.\n$clr_1Location -$clr_2 $where</text>

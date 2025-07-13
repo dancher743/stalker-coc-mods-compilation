@@ -799,9 +799,11 @@ function GetCommunityDescription(obj,index) -- Return the faction of the sender 
 	return msg
 end
 
-function GetMonsterDescription(obj,index) -- Get monster description, return translation
-	local sec = obj:section()
-	local cls = obj:clsid()
+function GetMonsterDescription(obj,index,section,cls) -- Get monster description, return translation
+	local sec = section or obj:section()
+	if not (cls) then
+		cls = obj:clsid()
+	end
 	if index then
 		local msg = game.translate_string("st_dyn_news_" .. sec .. "_" .. index)
 		if (msg == "st_dyn_news_" .. sec .. "_" .. index) then

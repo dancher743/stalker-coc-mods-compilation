@@ -1,9 +1,9 @@
 local npc_role = {noone=0, listener=1, director=2}
 local camp_ini = ini_file("scripts\\camp.ltx")
-local story_table = parse_names(camp_ini:r_string_ex("camp", "stories") or "test_story")
-local story_communities_table = nil
+local story_table = parse_names(camp_ini:r_string_ex("camp", "story_themes") or "test_story")
 local guitar_table = parse_names(camp_ini:r_string_ex("camp", "guitar_themes") or "test_guitar")
 local harmonica_table = parse_names(camp_ini:r_string_ex("camp", "harmonica_themes") or "test_harmonica")
+local joke_table = parse_names(camp_ini:r_string_ex("camp", "joke_themes") or "test_joke")
 local sr_camp_states = {
 				idle = {
 							director_state = nil,
@@ -74,38 +74,27 @@ local sr_camp_states = {
 						 },
 				story = {
 							director_state = "tell",
-							general_state = "teller",
+							general_state = "listen",
 							min_time = 30000,
 							max_time = 120000,
 							timeout = 0,
 							transitions = {"idle","harmonica","guitar","story"},
 							precondition = function (camp)
-								if(#story_table>0) then
+								if(#story_table>0 or #joke_table>0) then
 									local n = 0
-									local all_communities_avail = true
 									for k,v in pairs(camp.npc) do
-									
-										local npc = db.storage[k] and db.storage[k].object
-										if npc ~= nil and not xr_meet.is_meet(npc) then
-											n = n + 1
-										
-											if (story_communities_table == nil) then
-												story_communities_table = {}
-												local temp_table = parse_names(camp_ini:r_string_ex("camp", "stories_avail_communities") or STR_EMPTY)
-												for _,v in ipairs(temp_table) do
-													story_communities_table[v] = true
+										n = n + 1
+									end
+									if(n>1) then
+										for k,v in pairs(camp.npc) do
+											local scheme = db.storage[k] and db.storage[k].active_scheme and db.storage[k][db.storage[k].active_scheme]
+											local npc = db.storage[k] and db.storage[k].object
+											if (npc) then
+												if(v.story==npc_role.director) and (scheme ~= nil and scheme.base_action == scheme.description) and not xr_meet.is_meet(npc) then
+													return true
 												end
 											end
-											
-											local npc_community = character_community(npc)
-											if (not story_communities_table[npc_community]) then
-												all_communities_avail = false
-												break
-											end
 										end
-									end
-									if(n>1 and all_communities_avail) then
-										return true
 									end
 								end
 								return false
@@ -113,12 +102,8 @@ local sr_camp_states = {
 						},
 }
 
-local north_levels = {
-	zaton = true,
-	jupiter = true,
-	pripyat = true
-}
-local state_north_chance = 0.05
+local state_north_name = "state_north"
+local state_weather_bad_name = "state_weather_bad"
 
 --------------------------------------------------------------------------------
 -- Класс CCampManager
@@ -130,6 +115,7 @@ function CCampManager:__init(object)
 	self.object = object
 
 	self.npc = {}
+	self.npc_count = 0
 	self.schemes = {}
 	-- Хранилище для режиссера лагеря. Режиссерем является сталкер, затеявший необычное поведение
 	self.director = nil
@@ -147,6 +133,9 @@ function CCampManager:__init(object)
 end
 -- Переключает состояния кемпа
 function CCampManager:update()
+	if (self.npc_count == 0) then
+		return
+	end
 
 	-- Если саундменеджер говорит какую то историю - ждем окончания.
 	if not self.sound_manager:is_finished() then
@@ -215,14 +204,18 @@ function CCampManager:update()
 		if(npc_count~=0) then
 			self.idle_talker = talkers[math.random(#talkers)]
 			if (self.idle_talker_sound == nil) then
-				if (north_levels[level.name()] and math.random() < state_north_chance) then
-					local state_north_name = "state_north"
+				local state_north_chance = sound_theme.get_play_prob(state_north_name)
+				if (math.random() < state_north_chance and sound_theme.is_level_avail(state_north_name, level.name())) then
 					local npc = db.storage[self.idle_talker] and db.storage[self.idle_talker].object
 					if (npc and sound_theme.is_community_avail(state_north_name, npc)) then
 						self.idle_talker_sound = state_north_name
 					else
 						self.idle_talker_sound = "state"
 					end
+				elseif (math.random() < sound_theme.get_play_prob(state_weather_bad_name) and 
+					sound_theme.is_weathers_avail(state_weather_bad_name, level_weathers.get_period())) 
+				then
+					self.idle_talker_sound = state_weather_bad_name
 				else
 					self.idle_talker_sound = "state"
 				end
@@ -282,17 +275,21 @@ end
 function CCampManager:set_story()
 	if(self.active_state=="story") then
 		local story = nil
-		if (#story_table == 0) then
-			story = "test_story"
-		elseif (#story_table == 1) then
-			story = story_table[1]
-		elseif (#story_table > 1) then
-			story = utils.pick_without(self.last_story, story_table)
+		local story_chance = xr_conditions.is_night() and 0.33 or 0
+		if (math.random() < story_chance) then
+			if (#story_table == 1) then
+				story = story_table[1]
+			elseif (#story_table > 1) then
+				story = utils.pick_without(self.last_story, story_table)
+			end
+			self.last_story = story
+		else
+			story = joke_table[math.random(#joke_table)]
 		end
 		self.sound_manager:set_storyteller(self.director)
 		self.sound_manager:set_story(story)
 		self.sound_manager_started = true
-		self.last_story = story
+		self.sound_manager:update()
 	elseif(self.active_state=="idle") then
 		self.sound_manager_started = true
 	end
@@ -312,6 +309,7 @@ function CCampManager:register_npc(npc_id)
 --	local npc_id = npc:id()
 	--printf("Register NPC to camp %s", self.object:id())
 	self.npc[npc_id] = {state = self.active_state}
+	self.npc_count = self.npc_count + 1
 	db.storage[npc_id].registred_camp = self.object:id()
 
 	-- При регистрации персонажа, проверяем какие роли он может выполнять.
@@ -343,6 +341,7 @@ function CCampManager:unregister_npc(npc_id)
 
 	db.storage[npc_id].registred_camp = nil
 	self.npc[npc_id] = nil
+	self.npc_count = self.npc_count - 1
 	self.sound_manager:unregister_npc(npc_id)
 end
 function CCampManager:get_npc_role(npc_id, state)

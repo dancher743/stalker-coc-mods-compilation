@@ -182,14 +182,6 @@ function opt_menu_on_init(menu)
 		}
 		
 		-- Added by Dancher
-		menu.gameplay_options["auto_garbage_collection"] = {default=true, debug_only=false, typ="check", on_accept=function(handler,optMgr,ctrl)
-			if (ctrl:GetCheck()) then
-				gc.start_auto_collect()
-			else
-				gc.stop_auto_collect()
-			end
-		end}
-		
 		menu.gameplay_options["alife_switch_dist"] = {default=150, debug_only=false, typ="list", list={100,150,200,250}, on_accept=function(handler,optMgr,ctrl)
 			SetSwitchDistance(tonumber(ctrl:GetText()))
 		end}
@@ -204,6 +196,12 @@ function opt_menu_on_init(menu)
 		
 		if (IsAzazelMode()) then
 			menu.gameplay_options["death_spots"] = {default=true, debug_only=false, typ="check"}
+		end
+		
+		if (not IsEocMode()) then
+			menu.gameplay_options["offline_combat"] = {default=true, debug_only=false, typ="check", on_accept=function(handler,optMgr,ctrl)
+				sim_squad_offline_combat.option_on_accept(ctrl:GetCheck())
+			end}
 		end
 		--
 	end

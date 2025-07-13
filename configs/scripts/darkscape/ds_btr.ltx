@@ -3,10 +3,13 @@ active = ph_car@idle
 
 [ph_car@idle]
 path_walk 		= ds_btr_walk
+on_info1		= {=drx_sl_is_enemy(army)} ph_car@attack
 
-[ph_car]
+[ph_car@attack]
 path_walk 		= ds_btr_walk
 target 			= actor
 track_target    = true
 fire_repeat     = inf
+fire_range		= 120
 auto_fire       = true
+on_info1		= {!drx_sl_is_enemy(army)} ph_car@idle

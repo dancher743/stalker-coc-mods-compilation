@@ -2,6 +2,117 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.2] - Unreleased
+
+### Features
+* Added Offline Combat to basic mode
+* Reworked Survival mode with EOC
+* Removed automatic garbage collection
+* Weather sub-periods: now can extend current weather by adding a configs from other weatherpacks
+* Rebalanced and improved change actor name dialog
+* Reworked find weapon tasks: added weapon's condition into requirements
+* Added pre-fallout weather to increase fallouts appearing
+* Added ability to receive tasks from companions
+* Fixed "sleeping" BTRs
+* Added BTR to Escape's blockpost and reworked BTR on Chernobyl NPP
+* Added to NPC sound reactions to weather
+* Returned sounds to Army's megafon on Escape
+
+### Mods
+* [ND fix NPC guitar position coc 1.4.22](https://www.moddb.com/mods/call-of-chernobyl/addons/nd-fix-npc-guitar-position-coc1-4-22)
+* [Disappearing Rain Sound Fix](https://www.moddb.com/mods/doctorx-call-of-the-zone/addons/disappearing-rain-sound-fix)
+* [Jokes Restoration + Script Fix [CoC 1.5R7]](https://www.moddb.com/mods/call-of-chernobyl/addons/jokes-restoration-script-fix-coc-15r7)
+* [Fixed Artefact Collision and Visuals [1.5.3]](https://www.moddb.com/mods/stalker-anomaly/addons/fixed-artefact-collision-and-visuals-152)
+* [ND DRXCoCDynamicAnomalies21 Remix](https://www.moddb.com/mods/call-of-chernobyl/addons/nd-drxcocdynamicanomalies21-remix)
+* [CoC OL pack v1.3](https://www.moddb.com/mods/call-of-chernobyl/addons/coc-ol-pack-v1-2)
+* [Shaders from from Legend Returns 0.9.2](https://ap-pro.ru/stuff/zov_pripjati/legend-returns-092-r214/)
+
+### Improvements
+* Reworked code of distant storms in `level_weathers.script`
+* Made clean up in `level_weathers.script`
+* Moved UI strings of Guide job to a new `us_st_jg.xml` file
+* Refactored next cataclysm dialog
+* Added Fallout into report about next emission of Dynamic News
+* Replaced removed bandit squads in Dead City with merc squads
+* Replaced counter with random count in stashes renewing
+* Changed daytime of telling campfire stories (only at evenings)
+* Added few new tracks for radios
+* Added higher priority to shotgun in medium table in `ai_stalker.script`
+* Refactored `actor_health_effectors.script`
+* Restored original `printf` after disabling debug messages in `game_relations.script` (783a008)
+* Corrected chance of picking squad target
+* Corrected bandits `faction_boost` value from 5 to 8 in `sim_offline_control.script` (EOC mode)
+* Added more gunfire ambients during EOC
+* Refactored ambient configs: `eoc.ltx` and `survival.ltx`
+* Added `mark_fradkin_doroga_na_berlin` track to `esc_sidorovich_radio`
+* Reworked weather period occurrences and next period picking
+* Added `oleg_anofriyev_yest_tolko_mig` into `agr_smart_terrain_1_6_near_1_radio`
+* Removed `bandit` prop from `esc_smart_terrain_5_7`
+* Enabled black screen effector with night vision on level changing
+* Replaced `mega_duty_propaganda_19` sound with Duty's propaganda from Clear Sky
+* Corrected `x` position of slots
+* Balanced stashes renewing
+* Added `vashe_blagorodiye_gospozha_udacha` track to `val_smart_terrain_7_3_radio`
+* Added new presets to stay point idle time of squad
+* Removed open companion inventory dialog from guider's companions
+* Refactored `jg_guider.is_not_guider_companion` function
+* Reworked showing Leave the Zone dialog using restrictor
+* Added terrain from "Advanced_vegetation_mix_update_1" mod to Jupiter
+* Increased timer of Agroprom's comandir megafon
+* Refactored NPC idle sounds about north levels
+* Balanced `wpn_fn2000` in Merc's veterans equipment
+* Added improvements to cat sleep aura
+* Added stopping Actor's sounds on death
+
+### Fixes
+* Changed last period change date format for saves in `level_weathers.script`
+* Restored bad reaction sounds to jokes
+* Added `l10_limansk` into `levels_without_panorama` table
+* Balanced artefact spawn chance (from CoC 1.5)
+* Added original radio tracks from Clear Sky to Army base's megafon
+* Fixed error messages about missing killer panic sounds
+* Fixed ignoring of built-in helmet of some outfits in `disguise.script`
+* Balanced appearing of low health effector: from 30% to 5%
+* Fixed non-gathering by other NPCs faction patch
+* Fixed incorect chance of angry stash owner message in case of quest treasure
+* Fixed premature fallout skipping in `FalloutManager:update()` method
+* Fixed changing of faction relations if actor killed NPC under disguise
+* Disabled `sim_squad_scripted:sim_available()` function to prevent oversimulation
+* Saved `idle_time` and `stay_time` to fix reselection after reload in `sim_squad_scripted.script`
+* Fixed and refactored `are_factions_zombied_or_monster` function in `sim_survival.script`
+* Added bloodsuckers into Bloodsucker village (¯\_(ツ)_/¯)
+* Added missed lore-friendly textures of NPC's backpacks
+* Added check on guider's job into join as a companion dialogs
+* Fixed next time of the first fallout
+* Fixed `self._delta` field in `FalloutManager` class
+* Added fixes to `sound_theme.script` from [OpenXRay](https://github.com/OpenXRay/xray-16)
+* Corrected Pripyat left coast on the global map
+* Fixed time forward if fallout can start but it waiting for rain
+* Added fallout skip by sleep place
+* Saved tickbacks of `StartTimer` to script fields to prevent missing HUD
+* Returned missed rad aura to `bloodsucker_black_weak`
+* Fixed borrow items check in `update_best_weapon` function
+* Fixed missing scopes on NPCs with `wpn_ak74_up`
+* Fixed missing companion UI with unscoped weapon zoom
+* Fixed not working `show_crit_hit_mark` option
+
+### Optimization
+* Added `npc_count` into `CCampManager` to optimize update calls (from [[EN/RU] More campfire jokes and stories](https://www.moddb.com/mods/stalker-anomaly/addons/enru-more-campfire-jokes-and-stories) mod)
+* Moved scripts from `monster_on_update` to `monster_on_slicing_update` callback
+
+### Framework
+* Added `alive()`, `is_monster()` and `is_stalker()` methods into `sim_squad_scripted.script`
+* Added `get_level_id(obj)` and `get_level_name(obj)` functions into `simulation_objects.script`
+* Added `shuffle_table(t)` function into `utils.script` (from Anomaly 1.5.1.2)
+* Added `is_foggy` function into `xr_conditions.script`
+* Added `set_weather` function into `level_weathers.script`
+* Added `weapon_with_scope_is_zoomed` field into `axr_main.script`
+* Added `period` command into debug command list to change weather period
+* Added `avail_levels` and `play_prob` to section of `script_sound.ltx`
+* Added `get_period` function to `level_weathers.script`
+* Added `STR_DEFAULT` constant into `_g.script`
+* Added `monster_on_slicing_update` callback into `axr_main.script`
+
 ## [1.5.1] - 2025-04-07
 
 ### Improvements

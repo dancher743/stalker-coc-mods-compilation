@@ -2090,11 +2090,33 @@ function cmd.coords(me,txt,owner,p)
 		local lvid = actor:level_vertex_id()
 		local gvid = actor:game_vertex_id()
 		result_txt = strformat("X:%s, Y:%s, Z:%s, lvID:%s, gvID:%s", position.x, position.y, position.z, lvid, gvid)
+		printf(result_txt)
 	elseif(wrd == "dir") then
 		local direction = actor:direction()
 		result_txt = strformat("X:%s, Y:%s, Z:%s", direction.x, direction.y, direction.z)
+		printf(result_txt)
 	else
 		result_txt = strformat("Incorrect subcommand '%s'. Type 'coords help' for list of subcommands.", wrd)
+	end
+	
+	return result_txt
+end
+
+function cmd.period(me,txt,owner,p)
+	local wrd = check_and_set_help(me,txt,owner,"[clear|partly|cloudy|rain|storm|foggy]. Set weather period.")
+	if (not wrd or string.find(txt,"help")) then
+		return
+	end
+	
+	local result_txt
+	
+	if (wrd == "clear" or wrd == "partly" or wrd == "cloudy" or 
+		wrd == "rain" or wrd == "storm" or wrd == "foggy") 
+	then
+		level_weathers.set_weather(wrd)
+		result_txt = strformat("Period changed to '%s'", wrd)
+	else
+		result_txt = strformat("Incorrect subcommand '%s'. Type 'period help' for list of subcommands.", wrd)
 	end
 	
 	return result_txt

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+
+<!-- 
+	Strings for next cataclysm dialog
+	Author: Dancher
+-->
+
+<string_table>
+	<string id="next_cataclysm_dialog_0">
+		<text>Не подскажите, через сколько будет катаклизм?</text>
+	</string>
+	<string id="next_cataclysm_dialog_1_estimation">
+		<text>Аппаратура выдаёт оценку:</text>
+	</string>
+	<string id="next_cataclysm_dialog_1_surge">
+		<text>выброс - %s ч.</text>
+	</string>
+	<string id="next_cataclysm_dialog_1_psi_storm">
+		<text>пси-шторм - %s ч.</text>
+	</string>
+	<string id="next_cataclysm_dialog_1_fallout_0">
+		<text>осадки - %s ч.</text>
+	</string>
+	<string id="next_cataclysm_dialog_1_fallout_1">
+		<text>осадки - в непогоду.</text>
+	</string>
+	<string id="next_cataclysm_dialog_1_less_than_hour">
+		<text>менее 1</text>
+	</string>
+	<string id="next_cataclysm_dialog_1_unavailable">
+		<text>В данный момент произвести замеры невозможно.</text>
+	</string>
+</string_table>

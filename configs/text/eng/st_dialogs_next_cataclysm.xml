@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+
+<!-- 
+	Strings for next cataclysm dialog
+	Author: Dancher
+-->
+
+<string_table>
+	<string id="next_cataclysm_dialog_0">
+		<text>Can you tell me how much time before the next cataclysm?</text>
+	</string>
+	<string id="next_cataclysm_dialog_1_estimation">
+		<text>Our equipment gives the estimation:</text>
+	</string>
+	<string id="next_cataclysm_dialog_1_surge">
+		<text>surge - %s h.</text>
+	</string>
+	<string id="next_cataclysm_dialog_1_psi_storm">
+		<text>psi-storm - %s h.</text>
+	</string>
+	<string id="next_cataclysm_dialog_1_fallout_0">
+		<text>fallout - %s h.</text>
+	</string>
+	<string id="next_cataclysm_dialog_1_fallout_1">
+		<text>fallout - in bad weather.</text>
+	</string>
+	<string id="next_cataclysm_dialog_1_less_than_hour">
+		<text>less than 1</text>
+	</string>
+	<string id="next_cataclysm_dialog_1_unavailable">
+		<text>It's currently impossible to make measurements.</text>
+	</string>
+</string_table>

@@ -1,12 +1,12 @@
-# stalker-coc-mods-compilation
-Mods compilation for S.T.A.L.K.E.R.: Call of Chernobyl 1.4.22 (ENG/RUS)
+# S.T.A.L.K.E.R.: Call of Chernobyl Reforged
+"Quality of life" mods compilation for [Call of Chernobyl 1.4.22](https://www.moddb.com/mods/call-of-chernobyl), focused on the vanilla gaming experience. Support Russian and English languages.
 
 [![preview-1.jpg](https://i.postimg.cc/t4DKK7h1/preview-1.jpg)](https://postimg.cc/5XYKv4K1)
 
 Install
 ---
 1. Install [release](https://www.moddb.com/mods/call-of-chernobyl/downloads/call-of-chernobyl-1412-full) CoC 1.4.12
-2. Install [patch](https://www.moddb.com/mods/call-of-chernobyl/downloads/coc-1422-patch) to make CoC 1.4.22
+2. Install [patch](https://www.moddb.com/mods/call-of-chernobyl/downloads/coc-1422-patch) to change version 1.4.12 to 1.4.22
 3. Dowload [compilation](https://github.com/dancher743/stalker-coc-mods-compilation/releases/latest)
 4. Dowload [installer](https://github.com/dancher743/stalker-coc-mods-compilation-installer/releases/latest)
 5. Place _compilation_ and _installer_ into the root folder -
@@ -39,12 +39,14 @@ Optimization
 [![2.jpg](https://i.postimg.cc/WpZ08Zzg/2.jpg)](https://postimg.cc/NLgyf51j)
 [![3.jpg](https://i.postimg.cc/4NTVS3HM/3.jpg)](https://postimg.cc/kDf2VqcF)
 [![4.jpg](https://i.postimg.cc/4yR7q8yt/4.jpg)](https://postimg.cc/Vr4kbWjL)
-[![7a.jpg](https://i.postimg.cc/rsDbzTRq/7a.jpg)](https://postimg.cc/30H9bPZq)
-[![5.jpg](https://i.postimg.cc/HLK74WC6/5.jpg)](https://postimg.cc/FfyRh4zS)
-[![6.jpg](https://i.postimg.cc/PrzYskmq/6.jpg)](https://postimg.cc/2VyVhM9p)
-[![8.jpg](https://i.postimg.cc/cLF3CMky/8.jpg)](https://postimg.cc/LJZ50fMN)
-[![9.jpg](https://i.postimg.cc/q7g33hWt/9.jpg)](https://postimg.cc/GBwt02Lr)
-[![10.jpg](https://i.postimg.cc/dVsdJSBj/10.jpg)](https://postimg.cc/YhPj3RTv)
+[![5.jpg](https://i.postimg.cc/rsXqb51h/4a.jpg)](https://postimg.cc/cghqtg5Y)
+[![6.jpg](https://i.postimg.cc/59Scbcb9/5a.jpg)](https://postimg.cc/MXH3mFng)
+[![7.jpg](https://i.postimg.cc/HLK74WC6/5.jpg)](https://postimg.cc/FfyRh4zS)
+[![8.jpg](https://i.postimg.cc/PrzYskmq/6.jpg)](https://postimg.cc/2VyVhM9p)
+[![9.jpg](https://i.postimg.cc/cLF3CMky/8.jpg)](https://postimg.cc/LJZ50fMN)
+[![10.jpg](https://i.postimg.cc/q7g33hWt/9.jpg)](https://postimg.cc/GBwt02Lr)
+[![11.jpg](https://i.postimg.cc/dVsdJSBj/10.jpg)](https://postimg.cc/YhPj3RTv)
+[![12.jpg](https://i.postimg.cc/GhXZTk4Z/11.jpg)](https://postimg.cc/6yGHD4L0)
 
 </details>
 
@@ -98,10 +100,10 @@ Mods
 46. Outfit loot CoC 1 4 22 v2 with reworking (av661194, Dancher)
 47. CoC Extended Offline (EOC) Lite 1.7.6 + dynamic faction relations (xr_Sanya)
 48. Stalker Tweaks (SarisKhan)
-49. Radio music from Legend Returns 0.9.2 (selectively) (Genies of the Zone Team)
+49. Radio music from Legend Returns 0.9.2 (Genies of the Zone Team) and OLR 3.0 (hi_flyer & Co)
 50. Flashlight sound for vanilla CoC (Grelka)
 51. Classic SoC Flashlight for CoC with Dancher's changes (default white light) (Shovelled, Dancher)
-52. Clear weather from All AtmosFear 3 cycles for CoC (owdred)
+52. Clear weather and sky textures from All AtmosFear 3 cycles for CoC (owdred)
 53. Target location for DrX Questlines (SpcDan)
 54. Unload All Weapons [1.4.22/1.5 R6] with adaptations (sLoPpYdOtBiGhOlE, Dancher)
 55. Rare Item Drops [CoC 1.4] (Fohom)
@@ -124,3 +126,10 @@ Mods
 72. Call of Chernobyl Fallout (CrommCruac, av661194)
 73. Cat mutant sleep aura (Dancher)
 74. Military novice outfit from Comrade's Vanilla Addon (Comrade)
+75. ND fix NPC guitar position coc 1.4.22 (TheLostStalker88, VodkaChicken)
+76. Disappearing Rain Sound Fix (ZRP team, GoozE, woopersnaper). Special thanks to TheLostStalker88 for the tip!
+77. Jokes Restoration + Script Fix [CoC 1.5R7] (party-50, FudgeBomb, fontar)
+78. Fixed Artefact Collision and Visuals [1.5.3] (Longreed, SoulCrystal) Special thanks to TheLostStalker88 for the tip!
+79. ND DRXCoCDynamicAnomalies21 Remix (TheLostStalker88, DoctorX)
+80. CoC OL pack v1.3 (Kisel_s_Molinkoi, K0MRADE, bloodshot12)
+81. Shaders from Legend Returns 0.9.2 (Genies of the Zone Team)

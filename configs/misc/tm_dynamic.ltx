@@ -168,7 +168,7 @@ condlist_0 = {!task_giver_alive(simulation_task_5)} fail
 ;condlist_1 = {=drx_sl_is_enemy(stalker)} fail
 
 fetch_func = %=drx_sl_setup_fetch_weapon(simulation_task_5_fetch:1:1)%
-on_complete = %=drx_sl_fetch_reward_money(simulation_task_5_fetch:0.5) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(simulation_task_5) =pstor_reset(simulation_task_5_fetch) =drx_sl_unregister_task_giver(simulation_task_5) =drx_sl_reset_stored_task(simulation_task_5)%
+on_complete = %=drx_sl_fetch_reward_money(simulation_task_5_fetch:0.5:true) =drx_sl_reward_stash(true) =complete_task_inc_goodwill(50:stalker) =inc_task_stage(simulation_task_5) =pstor_reset(simulation_task_5_fetch) =drx_sl_unregister_task_giver(simulation_task_5) =drx_sl_reset_stored_task(simulation_task_5)%
 on_fail = %=fail_task_dec_goodwill(25:stalker) =pstor_reset(simulation_task_5_fetch) =drx_sl_unregister_task_giver(simulation_task_5) =drx_sl_reset_stored_task(simulation_task_5)%
 
 ;------------------------------------------------

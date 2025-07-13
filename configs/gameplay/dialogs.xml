@@ -470,7 +470,7 @@
 
 	<dialog id="dm_sim_ordered_task_dialog">
 		<precondition>dialogs.drx_sl_dont_has_npc_task</precondition>
-		<precondition>dialogs_axr_companion.is_not_actor_companion</precondition>
+		<!--<precondition>dialogs_axr_companion.is_not_actor_companion</precondition>-->
         <init_func>dialog_manager.dm_init_sim_dynamic_task_dialog</init_func>
     </dialog>
 
@@ -2671,6 +2671,7 @@
 	<dialog id="open_companion_inventory_dialog">
         <precondition>dialogs_axr_companion.can_dismiss_companion</precondition>
 		<precondition>dialogs_axr_companion.is_actor_companion</precondition>
+		<precondition>jg_guider.is_not_guider_companion</precondition>
         <phrase_list>
 			<phrase id="0">
                 <text>open_companion_inventory_phrase_0</text>

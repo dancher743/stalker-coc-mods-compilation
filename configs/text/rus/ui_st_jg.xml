@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>	
+	<string id="ui_st_travel_guider">
+        <text>Нельзя путешествовать в роли проводника</text>
+    </string>
+	
+	<string id="ui_st_jg_squad_killed">
+        <text>В роли проводника, вы потеряли весь отряд.</text>
+    </string>
+	
+	<string id="ui_st_pda_need_guider_spot_descr">
+		<text>%c[255,135,183,116]Проводник\n%c[default]%s нуждается в проводнике.</text>
+	</string>
+	<string id="ui_st_pda_guider_target_spot_descr">
+		<text>%c[255,135,183,116]Проводник\n%c[default]%s должен быть %s. Это примерно где-то здесь.</text>
+	</string>
+	
+	<string id="ui_st_jg_hud_timer_format">
+        <text>%02d:%02d</text>
+    </string>
+</string_table>

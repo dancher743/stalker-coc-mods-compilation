@@ -3,9 +3,6 @@
 -- Added by Dancher
 --
 
-local rate = 15 -- seconds
-local memory_threshold = 50000
-
 function collect(reason)
     if (reason) then
 		printf("collectgarbage reason: %s",reason)
@@ -13,19 +10,6 @@ function collect(reason)
 	end
     printf("collectgarbage before=%sKb",collectgarbage("count")*1024)
     collectgarbage("collect")
+	collectgarbage("collect")
     printf("collectgarbage after=%sKb",collectgarbage("count")*1024)
-end
-
-local function update()
-	if (collectgarbage("count") >= memory_threshold) then
-		collect("Automatic garbage collection")
-	end
-end
-
-function start_auto_collect()
-	StartTimer("gc_auto_collect",rate*1000,update)
-end
-
-function stop_auto_collect()
-	StopTimer("gc_auto_collect")
 end

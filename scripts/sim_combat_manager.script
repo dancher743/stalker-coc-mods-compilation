@@ -49,7 +49,7 @@ function sim_combat_manager:find_enemy(squad)
 				squad2_power = sim_offline_control.ocs_power_table[s]
 				
 				local are_enemies = nil
-				if (IsSurvivalMode() and sim_survival.are_factions_zombied_or_monster(faction, faction2)) then
+				if (IsSurvivalMode() and sim_survival.are_factions_zombied_and_monster(faction, faction2)) then
 					are_enemies = false
 				else
 					if (faction == "monster" and faction2 == "monster") then
@@ -83,7 +83,7 @@ function sim_combat_manager:is_valid()
 					squad2_power = sim_offline_control.ocs_power_table[s]
 					
 					local are_enemies = nil
-					if (IsSurvivalMode() and sim_survival.are_factions_zombied_or_monster(faction, faction2)) then
+					if (IsSurvivalMode() and sim_survival.are_factions_zombied_and_monster(faction, faction2)) then
 						are_enemies = false
 					else
 						if (faction == "monster" and faction2 == "monster") then

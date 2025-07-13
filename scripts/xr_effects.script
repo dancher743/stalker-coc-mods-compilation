@@ -2229,11 +2229,21 @@ function drx_sl_fetch_reward_money( actor, npc, p )
 	end
 
 	-- Determine reward limits:
-	local reward_base = math.floor( (item:cost( ) * (tonumber( p[2] ) or 1)) )
-	local reward_delta = math.floor( (reward_base * 0.1) )
+	local item_cost
+	local reward_by_condition = p[3]
+	if (reward_by_condition == STR_TRUE and IsWeapon(item)) then
+		item_cost = utils.lerp(0, item:cost(), item:condition())
+	else
+		item_cost = item:cost( )
+	end
+	
+	local reward_base = math.floor( (item_cost * (tonumber( p[2] ) or 1)) )
 
-	-- Give actor money reward:
-	drx_sl_reward_random_money( actor, npc, {((reward_base - reward_delta) * count), ((reward_base + reward_delta) * count)} )
+	if (reward_base > 0) then
+		local reward_delta = math.floor( (reward_base * 0.1) )
+		-- Give actor money reward:
+		drx_sl_reward_random_money( actor, npc, {((reward_base - reward_delta) * count), ((reward_base + reward_delta) * count)} )
+	end
 
 	-- Remove fetch task items:
 	remove_item( actor, npc, {sec, count} )
@@ -8009,4 +8019,8 @@ function remove_task_companion_by_squad(actor,npc,p)
 			utils.se_obj_save_var(k.id,k.object:name(),"companion_cannot_teleport",nil)
 		end
 	end
+end
+
+function show_leave_zone_ui_dialog(actor, obj, p)
+	leave_zone.show_ui_dialog()
 end

@@ -42,25 +42,18 @@
 				<next>1</next>
             </phrase>
 		    <phrase id="1">
-                <text>esc_2_12_stalker_trader_change_actor_name_dialog_1</text>
+                <script_text>dialogs_escape.get_name_changing_phrase_1</script_text>
 				<next>20</next>
 				<next>21</next>
-				<next>22</next>
             </phrase>
 			<phrase id="20">
-                <dont_has_info>esc_2_12_was_actor_name_changed</dont_has_info>
-				<text>esc_2_12_stalker_trader_change_actor_name_dialog_20</text>
+				<precondition>dialogs_escape.actor_has_money_to_change_name</precondition>
+                <text>esc_2_12_stalker_trader_change_actor_name_dialog_20</text>
 				<action>dialogs_escape.show_change_name_dialog_window</action>
 				<next>3</next>
             </phrase>
 			<phrase id="21">
-				<precondition>dialogs_escape.actor_has_money_to_change_name</precondition>
                 <text>esc_2_12_stalker_trader_change_actor_name_dialog_21</text>
-				<action>dialogs_escape.show_change_name_dialog_window</action>
-				<next>3</next>
-            </phrase>
-			<phrase id="22">
-                <text>esc_2_12_stalker_trader_change_actor_name_dialog_22</text>
             </phrase>
 			<phrase id="3">
                 <text>esc_2_12_stalker_trader_change_actor_name_dialog_3</text>

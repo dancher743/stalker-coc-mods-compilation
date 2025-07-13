@@ -570,9 +570,6 @@
 	<string id="ui_mm_conditions_mode_campfire">
 		<text>Campfire saving</text>
 	</string>
-	<string id="ui_mm_auto_garbage_collection">
-		<text>Auto garbage collection</text>
-	</string>
 	<string id="ui_mm_show_health_effectors">
 		<text>Show wound effects</text>
 	</string>
@@ -587,5 +584,8 @@
 	</string>
 	<string id="ui_mm_death_spots">
 		<text>Death spots</text>
+	</string>
+	<string id="ui_mm_offline_combat">
+		<text>Offline combats</text>
 	</string>
 </string_table>

@@ -57,8 +57,8 @@ function FalloutManager:__init()
 	self.taskThreshold=0.004
 	--self.minDelayTime=12*60*60
 	--self.maxDelayTime=24*60*60
-	self.minDelayTime=3*60*60
-	self.maxDelayTime=6*60*60
+	--self.minDelayTime=3*60*60
+	--self.maxDelayTime=6*60*60
 	self.minLengthTime=10*60
 	self.maxLengthTime=30*60
 	self.preStartTime=math.random(5,15)*60
@@ -66,7 +66,7 @@ function FalloutManager:__init()
 	self.fadeTime=10*60
 	self.fadeFactor=0
 	
-	self.nextFalloutIn=math.random(self.minDelayTime, self.maxDelayTime)
+	--self.nextFalloutIn=math.random(self.minDelayTime, self.maxDelayTime)
 	self.falloutLength=math.random(self.minLengthTime, self.maxLengthTime)
 	self.inited_time = game.get_game_time()
 	self.inited_time_sec = self.inited_time
@@ -90,6 +90,9 @@ function FalloutManager:__init()
 							geiger_7 = sound_object("detectors\\geiger_7"), 
 							geiger_8 = sound_object("detectors\\geiger_8")
 							}
+	-- for compatibility with other cataclysm managers
+	self._delta = self.nextFalloutIn
+	self.last_fallout_time = self.inited_time
 end
 
 local hits = {}
@@ -102,8 +105,9 @@ function FalloutManager:start(manual)
 		return
 	elseif manual and self.fallout_in_progress==false then --for debug
 		self.nextFalloutIn = math.ceil(game.get_game_time():diffSec(self.inited_time))
+		self._delta = self.nextFalloutIn
 		self.preStartTime = 0
-		level_weathers.set_rain_weather()
+		level_weathers.set_rain()
 		return
 	end
 	if self.fallout_in_progress==false then
@@ -186,6 +190,7 @@ function FalloutManager:new_time()
 	self.maxDelayTime = 3600*atmosfear_options.config:r_value(self.sect,"opt_fallout_freq",2,12)
 	self.minDelayTime = self.maxDelayTime/2
 	self.nextFalloutIn=math.random(self.minDelayTime, self.maxDelayTime)
+	self._delta = self.nextFalloutIn
 end
 
 function FalloutManager:get_time_left()
@@ -200,6 +205,9 @@ end
 function FalloutManager:update()
 	if not(self.phase) then
 		local g_time = game.get_game_time()
+		if (self.nextFalloutIn == nil) then
+			self:new_time()
+		end
 		local diff = math.floor(self.nextFalloutIn - g_time:diffSec(self.inited_time))
 		--printf(diff)
 		--if diff > 0 then
@@ -209,11 +217,13 @@ function FalloutManager:update()
 			--self.atmosfear.debugMessages[7]:SetText("opt_enable_psi_storm="..tostring(self.atmosfear.opt_enable_psi_storm)..", is_started("..tostring(psi_storm_manager.is_started())..")")
 		--end
 		if diff < 0 then 
-			if (surge_manager.is_started() or psi_storm_manager.is_started()) then 
-				self:shift()
-				return
-			end
 			if level.rain_factor() > 0.001 then
+				if(self.time_forwarded) then
+					self.time_forwarded = false
+					self.skip_message = false
+					self:skip()
+					return
+				end
 				self.phase = prestart_phase_name
 				self.inited_time=game.get_game_time()
 				--self.atmosfear.debugMessages[1]:SetText("Fallout begins")
@@ -221,23 +231,27 @@ function FalloutManager:update()
 				--self.atmosfear.debugMessages[1]:SetText("Fallout can begin but waiting for rain")
 			end
 		end			
-	elseif self.phase=="prestart" then
-		if(self.time_forwarded) then
-			self.time_forwarded = false
-			self.skip_message = false
-			self:skip()
-			return
-		end
+		self.time_forwarded = false
+	elseif self.phase==prestart_phase_name then
 		local g_time = game.get_game_time()
 		local diff = math.floor(self.preStartTime - g_time:diffSec(self.inited_time))
 		if diff < 0 then
-			if (level.rain_factor() > 0.001) then
+			local has_cataclysm = surge_manager.is_started() or psi_storm_manager.is_started()
+			if (level.rain_factor() > 0.001 and not has_cataclysm) then
+				if(self.time_forwarded) then
+					self.time_forwarded = false
+					self.skip_message = false
+					self:skip()
+					return
+				end
 				self:start()
 			else
 				self:shift()
 			end
+			self.time_forwarded = false
 			return
 		end
+		self.time_forwarded = false
 	elseif self.phase==prefade_phase_name then
 		local g_time = game.get_game_time()
 		local diff = math.floor(self.preFadeTime - g_time:diffSec(self.inited_time))
@@ -286,6 +300,12 @@ function FalloutManager:update()
 		-- main loop started
 		
 		if (level.rain_factor() == 0) then
+			self:finish()
+			return
+		end
+		
+		local diff = math.ceil(game.get_game_time():diffSec(self.inited_time))
+		if (diff > 3600) then
 			self:finish()
 			return
 		end
@@ -804,6 +824,7 @@ function FalloutManager:load(packet)
 		self.inited_time:set(Y, M, D, h, m, s + diff, ms)
 	end
 	self.nextFalloutIn = packet:r_u32()
+	self._delta = self.nextFalloutIn
 	self.falloutLength = packet:r_u32()
 	self.duration = packet:r_u32()
 	self.fadeFactor = packet:r_u32()
@@ -917,6 +938,7 @@ local function load_state(m_data)
 		self.save_time = last_save_time and utils.CTime_from_table(last_save_time) or self.inited_time
 	end
 	self.nextFalloutIn = m_data.FalloutManager.nextFalloutIn or self.nextFalloutIn
+	self._delta = self.nextFalloutIn
 	self.falloutLength = m_data.FalloutManager.falloutLength or self.falloutLength
 	self.duration = m_data.FalloutManager.duration or self.duration
 	self.fadeFactor = m_data.FalloutManager.fadeFactor or self.fadeFactor

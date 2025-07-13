@@ -3,6 +3,7 @@
 local HUD
 local belted_arts, sloted_patch
 local update_rate = 1000 --[ms]
+local update_tickback = nil
 
 function activate_hud()
 	belted_arts = {}
@@ -95,12 +96,16 @@ function actor_item_to_belt(item)
 	end
 end
 
-function actor_on_weapon_zoom_in(item)
-	HUD:show_hud(false)
+function actor_on_weapon_zoom_in(wpn)
+	if wpn:weapon_scope_status() > 0 then
+		HUD:show_hud(false)
+	end
 end 
 
-function actor_on_weapon_zoom_out(item)
-	HUD:show_hud(true)
+function actor_on_weapon_zoom_out(wpn)
+	if wpn:weapon_scope_status() > 0 then
+		HUD:show_hud(true)
+	end
 end
 
 class "slot_hud" (CUIScriptWnd)
@@ -125,8 +130,8 @@ function slot_hud:InitControls()
 	local function tickback()
 		self:CustomUpdate()
 	end
-	self.update_tickback = tickback
-	StartTimer("slot_hud_timer", update_rate, self.update_tickback)
+	update_tickback = tickback
+	StartTimer("slot_hud_timer", update_rate, update_tickback)
 end
 
 function slot_hud:Clear()

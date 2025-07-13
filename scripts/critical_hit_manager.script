@@ -23,6 +23,7 @@ local damage_factor = 3.0
 
 local crit_enabled_option_name = "can_stalker_crit_hit"
 local crit_cam_vfx_option_name = "show_crit_hit_cam_vfx"
+local crit_mark_option_name = "show_crit_hit_mark"
 local crit_sound_option_name = "play_crit_hit_sound"
 
 local function get_hit_chance(who)
@@ -58,7 +59,7 @@ local function npc_or_monster_on_hit_callback(victim, damage, _, who, _)
 		local has_hit = try_hit(victim, damage, who)
 		
 		if (has_hit and IsActor(who)) then
-			if (axr_main_options.get_check_option(crit_enabled_option_name)) then
+			if (axr_main_options.get_check_option(crit_mark_option_name)) then
 				ui_actor_critical_hit.show_mark()
 			end
 			

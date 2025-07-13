@@ -493,10 +493,12 @@ function CSurgeManager:update()
 		if(xr_logic.pick_section_from_condlist(db.actor, nil, self.condlist) ~= STR_TRUE) then
 			return
 		end
+		if (psi_storm_manager.is_started() or fallout_manager.is_started()) then
+			self:skip_surge()
+			return
+		end
 		self:start()
 		return
-	elseif (psi_storm_manager.is_started() or fallout_manager.is_started()) then 
-		self:skip_surge()
 	end
 	
 	local diff_sec = math.ceil(game.get_game_time():diffSec(self.inited_time)/level.get_time_factor())

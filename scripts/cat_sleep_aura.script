@@ -17,7 +17,7 @@ local actor_yawn_sound = nil
 local cat_timers = {}
 
 local function play_yawn_sound()
-	if (actor_yawn_sound ~= nil and actor_yawn_sound:playing()) then
+	if (actor_yawn_sound and actor_yawn_sound:playing()) then
 		return
 	end
 	
@@ -26,13 +26,18 @@ local function play_yawn_sound()
 	actor_yawn_sound:play(db.actor,0,sound_object.s2d)
 end
 
+local function stop_yawn_sound()
+	if (actor_yawn_sound and actor_yawn_sound:playing()) then
+		actor_yawn_sound:stop()
+		actor_yawn_sound = nil
+	end
+end
+
 local function apply_sleep_aura()
 	has_aura_applied = true
 	
 	level.add_pp_effector(sleep_effector_name, 998, false)
-	if (math.random() < 0.5) then
-		play_yawn_sound()
-	end
+	play_yawn_sound()
 	
 	local function tickback()
 		StopTimer(sleep_aura_effector_timer_id)
@@ -41,14 +46,14 @@ local function apply_sleep_aura()
 		has_aura_applied = false
 	end
 	sleep_aura_timer_tickback = tickback
-	StartTimer(sleep_aura_effector_timer_id, 2000, sleep_aura_timer_tickback)
+	StartTimer(sleep_aura_effector_timer_id, 5000, sleep_aura_timer_tickback)
 	
 	if (sleep_dep.feature_is_active) then
 		sleep_dep.last_sleep = sleep_dep.last_sleep + 1
 	end
 end
 
-local function monster_on_update(npc)
+local function monster_on_slicing_update(npc)
 	if (not npc:alive() or npc:clsid() ~= clsid.cat_s) then
 		return
 	end
@@ -68,7 +73,7 @@ local function monster_on_update(npc)
 		return
 	end
 	
-	cat_timer = time_global + 5000 + math.random(-1000,1500)
+	cat_timer = time_global + 7500 + math.random(-2500,2500)
 	cat_timers[cat_id] = cat_timer
 	
 	if (has_aura_applied) then
@@ -78,13 +83,18 @@ local function monster_on_update(npc)
 	local sleep_aura_prob = system_ini():r_string_ex(npc:section(),sleep_aura_prob_string_name)
 	sleep_aura_prob = tonumber(sleep_aura_prob)
 	
-	if (math.random() > sleep_aura_prob) then
+	if (math.random() >= sleep_aura_prob) then
 		return
 	end
 	
 	apply_sleep_aura()
 end
 
+local function actor_on_before_death()
+	stop_yawn_sound()
+end
+
 function on_game_start()
-	RegisterScriptCallback("monster_on_update",monster_on_update)
+	RegisterScriptCallback("monster_on_slicing_update",monster_on_slicing_update)
+	RegisterScriptCallback("actor_on_before_death",actor_on_before_death)
 end

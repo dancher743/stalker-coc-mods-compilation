@@ -68,6 +68,8 @@ function msg_box_ui:OnMsgOk()
 	end
 
 	level.add_pp_effector("black.ppe", 1313, false)
+	-- Dancher: a little hacky, but it works :)
+	xr_effects.disable_actor_nightvision()
 	
 	if (ini:r_bool_ex(self.name,"autosave",false)) then
 		xr_effects.scenario_autosave(nil,nil,{ini:r_string_ex(self.name,"hint") or "moving"})

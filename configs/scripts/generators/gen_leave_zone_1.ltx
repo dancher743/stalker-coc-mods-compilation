@@ -1,0 +1,9 @@
+[logic]
+active = sr_idle@wait_for_actor
+
+[sr_idle@wait_for_actor]
+on_actor_inside = sr_idle@show_ui_dialog 
+
+[sr_idle@show_ui_dialog]
+on_info = {-leave_zone_ui_dialog_shown} %=show_leave_zone_ui_dialog +leave_zone_ui_dialog_shown%
+on_actor_outside = sr_idle@wait_for_actor %-leave_zone_ui_dialog_shown%

@@ -167,6 +167,7 @@ local intercepts = {
 	
 	actor_on_slicing_update			= {},
 	squad_on_slicing_update			= {},
+	monster_on_slicing_update		= {},
 	
 	DeadBodySearchClosed			= {},
 	
@@ -284,10 +285,12 @@ function opt_menu_on_set_values(menu,optMgr)
 	axr_main_options.opt_menu_on_set_values(menu,optMgr)
 end
 
-function actor_on_weapon_zoom_in()
+function actor_on_weapon_zoom_in(wpn)
 	weapon_is_zoomed = true
+	weapon_with_scope_is_zoomed = wpn:weapon_scope_status() > 0
 end 
 
 function actor_on_weapon_zoom_out()
 	weapon_is_zoomed = false
+	weapon_with_scope_is_zoomed = false
 end

@@ -1,0 +1,456 @@
+--
+-- Offline Alife for non-EOC mode squads
+-- Added by Dancher
+-- Special thanks to offline alife of AMK, EOC and Anomaly!
+--
+
+local dbg = false
+
+local combats_per_level = 5
+local good_distances = {
+	25*25,
+	20*20,
+	15*15
+}
+local bad_distances = {
+	10*10,
+	8*8,
+	6*6
+}
+
+local add_rank_points = 20
+local handicap_chance = 0.25
+local remove_squad_chance = 0.5
+local victim_id_key = "victim_id"
+local killer_id_key = "killer_id"
+
+local rank_power = {
+	["novice"] = 10,
+	["trainee"] = 20,
+	["experienced"] = 30,
+	["professional"] = 40,
+	["veteran"] = 50,
+	["expert"] = 60,
+	["master"] = 70,
+	["legend"] = 80,
+	-- monsters
+	["weak"] = 30,
+	["normal"] = 60,
+	["strong"] = 90
+}
+
+local loot_ignore_list = {
+		["bolt"] = true,
+		["device_torch"] = true,
+		["device_pda"] = true,
+		["wpn_binoc"] = true,
+		["medkit_script"] = true,
+		["guitar_a"] = true,
+		["harmonica_a"] = true,
+		["anim_binoc"] = true,
+		["anim_knife"] = true,
+		["hand_radio"] = true,
+		["hand_radio_r"] = true,
+		["stick_bred"] = true,
+		["stick_kolbasa"] = true,
+		["stick_kolbasa_bred"] = true,
+		["wpn_knife"] = true
+}
+
+local is_initialized
+local loot_items
+local update_timer
+local update_queue_timer
+local updated_levels
+local squads_to_levels
+local processed_squads
+local combats_queue
+local last_killed_stalker
+local is_survival_mode
+local actor_level_id
+local se_objs_cache
+
+local msg_format
+local function printf_dbg(msg,...)
+	if (msg_format == nil) then
+		msg_format = "### Offline Combat: %s ###"
+	end
+	msg = strformat(msg_format, msg)
+	printf(msg,...)
+end
+
+local function get_se_obj(id)
+	if (se_objs_cache == nil) then
+		se_objs_cache = {}
+	end
+	local se_obj = se_objs_cache[id]
+	if (se_obj == nil) then
+		se_obj = alife_object(id)
+		se_objs_cache[id] = se_obj
+	end
+	return se_obj
+end
+
+local function get_combat_distance()
+	local distance
+	local conds = xr_conditions
+	
+	if (conds.is_night() or conds.is_rain() or conds.is_foggy()) then
+		distance = bad_distances[math.random(#bad_distances)]
+	else
+		distance = good_distances[math.random(#good_distances)]
+	end
+	
+	return distance
+end
+
+local function calculate_squad_power(squad)
+	local power = 0
+	for k in squad:squad_members() do
+		local se_obj = get_se_obj(k.id)
+		if (se_obj) then
+			local rank_name = ranks.get_se_obj_rank_name(se_obj)
+			power = power + rank_power[rank_name] or 0
+		end
+	end
+	if (math.random() < handicap_chance) then
+		power = power * math.random(3)
+	end
+	return power
+end
+
+-- from Anomaly 1.5.1.2
+local squad_npcs
+local function get_random_npc(squad)
+	squad_npcs = squad_npcs or {}
+	for k in squad:squad_members() do
+		table.insert(squad_npcs, k.id)
+	end
+	local se_npc = get_se_obj(squad_npcs[math.random(#squad_npcs)])
+	iempty_table(squad_npcs)
+	return se_npc
+end
+
+local function process_combat(squad1, squad2, level_id)
+	local killer_squad = nil
+	local victim_squad = nil
+	local squad1_power = calculate_squad_power(squad1)
+	local squad2_power = calculate_squad_power(squad2)
+	
+	if (squad1_power > squad2_power) then
+		killer_squad = squad1
+		victim_squad = squad2
+		if dbg then printf_dbg("%s(%s) kills %s(%s) (%s)", squad1:name(), squad1_power, squad2:name(), squad2_power, alife():level_name(level_id)) end
+	elseif (squad1_power < squad2_power) then
+		killer_squad = squad2
+		victim_squad = squad1
+		if dbg then printf_dbg("%s(%s) kills %s(%s) (%s)", squad2:name(), squad2_power, squad1:name(), squad1_power, alife():level_name(level_id)) end
+	elseif (squad1_power == squad2_power) then
+		if dbg then printf_dbg("%s(%s) tie %s(%s) (%s)", squad1:name(), squad1_power, squad2:name(), squad2_power, alife():level_name(level_id)) end
+		return nil
+	end
+	
+	game_relations.drx_df_faction_npc_on_death(killer_squad:get_squad_community(), victim_squad:get_squad_community())
+	
+	local se_killer = get_random_npc(killer_squad)
+	local se_victim = nil
+	local is_killer_stalker = killer_squad:is_stalker()
+	
+	for k in victim_squad:squad_members() do
+		se_killer = math.random(2) == 1 and se_killer or get_random_npc(killer_squad)
+		se_victim = get_se_obj(k.id)
+		if (se_victim) then
+			se_victim:on_death(se_killer)
+			if (is_killer_stalker) then
+				se_killer:set_rank(se_killer:rank() + add_rank_points)
+			end
+		end
+		
+		if (se_victim and loot_items[se_victim.id] and loot_items[se_killer.id]) then
+			local victim_items = loot_items[se_victim.id]
+			for i=1,#victim_items do
+				local victim_item = get_se_obj(victim_items[i])
+				table.remove(loot_items[se_victim.id], victim_item.id)
+				
+				local killer_item = alife():create(victim_item:section_name(), se_killer.position, se_killer.m_level_vertex_id, se_killer.m_game_vertex_id, se_killer.id)
+				table.insert(loot_items[se_killer.id], killer_item.id)
+				
+				safe_release_manager.release(victim_item)
+				-- if dbg then printf_dbg("loot relocated!") end
+			end
+		end
+	end
+	
+	if (se_victim and victim_squad:is_stalker()) then
+		if (last_killed_stalker == nil) then
+			last_killed_stalker = {}
+		end
+		last_killed_stalker[victim_id_key] = se_victim.id
+		last_killed_stalker[killer_id_key] = se_killer.id
+	end
+	
+	return victim_squad
+end
+
+local function process_squads_combat(squads)
+	if (#squads == 0) then
+		return
+	end
+	
+	local squads_count = #squads
+	local combats_count = 0
+	
+	for i=1,squads_count do
+		local squad1 = squads[i]
+		
+		if (squad1 and not processed_squads[squad1.id]) then
+			for j=1,squads_count do
+				local squad2 = squads[j]
+				
+				if (squad2 and squad1.id ~= squad2.id and not processed_squads[squad2.id] and 
+					simulation_objects.is_on_the_same_level(squad1, squad2)) 
+				then
+					local can_combat = squad1.current_target_id == squad2.current_target_id and
+									   squad1.position:distance_to_sqr(squad2.position) <= get_combat_distance()
+					if (can_combat) then
+						local community1 = squad1:get_squad_community()
+						local community2 = squad2:get_squad_community()
+						local are_enemies = nil
+						if (is_survival_mode and sim_survival.are_factions_zombied_and_monster(community1, community2)) then
+							-- from Survival-EOC
+							are_enemies = false
+						else
+							are_enemies = game_relations.is_factions_enemies(community1, community2)
+						end
+						
+						if (are_enemies) then
+							table.insert(combats_queue, {squads, i, j})
+							processed_squads[squad1.id] = true
+							processed_squads[squad2.id] = true
+							if dbg then printf_dbg("added to queue: %s, %s", squad1:name(), squad2:name()) end
+							combats_count = combats_count + 1
+							break
+						end
+					end
+				end
+			end
+		end
+		
+		if (combats_count == combats_per_level) then
+			break
+		end
+	end
+	
+	empty_table(processed_squads)
+end
+
+function is_item_valid(se_item)
+	local section = se_item:section_name()
+	return loot_ignore_list[section] == nil
+end
+
+local function is_squad_valid(squad)
+	if (not squad:alive() or 
+		get_object_story_id(squad.id) or 
+		xrs_kill_wounded.hostage_list[squad:commander_id()]) 
+	then
+		return false
+	end
+	
+	local task_info = task_manager.get_task_manager().task_info
+	for k in squad:squad_members() do
+		if (axr_task_manager.bounties_by_id) then
+			for _,npc_id in pairs(axr_task_manager.bounties_by_id) do
+				if (npc_id == k.id) then
+					return false
+				end
+			end
+		end
+		local se_obj = alife_object(k.id)
+		for _,task in pairs(task_info) do
+			local giver_id = task.task_giver_id
+			if (se_obj and giver_id and (giver_id == se_obj.group_id or giver_id == se_obj.id)) then
+				return false
+			end
+		end
+    end
+	
+	return true
+end
+
+local function update_queue()
+	if (#combats_queue == 0) then
+		return
+	end
+	
+	local combat = combats_queue[1]
+	table.remove(combats_queue, 1)
+	
+	local squads = combat[1]
+	local squad1_index = combat[2]
+	local squad2_index = combat[3]
+	local squad1 = squads[squad1_index]
+	local squad2 = squads[squad2_index]
+	
+	if (squad1 == nil or squad2 == nil or 
+		squad1:alive() == false or squad2:alive() == false or 
+		squad1.online or squad2.online) then
+		return
+	end
+	
+	local level_id = simulation_objects.get_level_id(squad1)
+	local victim_squad = process_combat(squad1, squad2, level_id)
+	
+	if (victim_squad) then
+		if (victim_squad.id == squad1.id) then
+			squads[squad1_index] = nil
+		elseif (victim_squad.id == squad2.id) then
+			squads[squad2_index] = nil
+		end
+		if (actor_level_id ~= level_id and math.random() < remove_squad_chance) then
+			victim_squad:remove_squad()
+		end
+	end
+end
+
+local function update()
+	if (squads_to_levels == nil) then
+		squads_to_levels = {}
+		
+		for _,squad in pairs(SIMBOARD.squads) do
+			if (squad and not squad.online and squad.first_update and is_squad_valid(squad)) then
+				local level_id = simulation_objects.get_level_id(squad)
+				if (squads_to_levels[level_id] == nil) then
+					squads_to_levels[level_id] = {}
+				end
+				table.insert(squads_to_levels[level_id], squad)
+				if not squad:is_monster() then
+					for k in squad:squad_members() do
+						loot_items[k.id] = {}
+					end
+				end
+			end
+		end
+		
+		for _,squads in ipairs(squads_to_levels) do
+			utils.shuffle_table(squads)
+		end
+		utils.shuffle_table(squads_to_levels)
+		
+		for i=1,65534 do
+			local se_obj = alife_object(i)
+			if (se_obj and se_obj.parent_id and loot_items[se_obj.parent_id] and is_item_valid(se_obj)) then
+				table.insert(loot_items[se_obj.parent_id], se_obj.id)
+				-- if dbg then printf_dbg("loot added (%s)", tostring(se_obj.id)) end
+			end
+		end
+		loot_ignore_list = nil
+		
+		-- Dancher: disabled
+		-- gc.collect("offline squads combat init")
+		return
+	end
+	
+	local level_to_update
+	
+	for id,_ in pairs(squads_to_levels) do
+		if (updated_levels[id] == nil) then
+			level_to_update = id
+			break
+		end
+	end
+	
+	if (level_to_update == nil) then
+		empty_table(updated_levels)
+		if dbg then printf_dbg("restart combats") end
+		return
+	end
+	
+	local squads_to_combat = squads_to_levels[level_to_update]
+	process_squads_combat(squads_to_combat)
+	if dbg then printf_dbg("process combats") end
+	
+	updated_levels[level_to_update] = true
+end
+
+local function actor_on_slicing_update(_,delta)
+	update_timer = update_timer - delta
+	if (update_timer <= 0) then
+		update()
+		update_timer = math.random(10000,15000)
+		return
+	end
+	
+	update_queue_timer = update_queue_timer - delta
+	if (update_queue_timer <= 0) then
+		update_queue()
+		update_queue_timer = 500
+		return
+	end
+end
+
+local function initialize()
+	if (is_initialized or not is_enabled()) then
+		return
+	end
+	
+	loot_items = {}
+	updated_levels = {}
+	processed_squads = {}
+	combats_queue = {}
+	update_timer = 1000
+	update_queue_timer = 0
+	is_survival_mode = IsSurvivalMode()
+	actor_level_id = alife():level_name(game_graph():vertex(alife():actor().m_game_vertex_id):level_id())
+	RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+	
+	is_initialized = true
+	if dbg then printf_dbg("initialized") end
+end
+
+local function finalize()
+	if (not is_initialized) then
+		return
+	end
+	
+	UnregisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+	loot_items = nil
+	updated_levels = nil
+	processed_squads = nil
+	combats_queue = nil
+	update_timer = nil
+	update_queue_timer = nil
+	is_survival_mode = nil
+	actor_level_id = nil
+	pop_last_killed_stalker_data()
+	
+	is_initialized = false
+	if dbg then printf_dbg("finalized") end
+end
+
+local function actor_on_first_update()
+	initialize()
+	UnregisterScriptCallback("actor_on_first_update",actor_on_first_update)
+end
+
+function on_game_start()
+	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
+end
+
+function option_on_accept(value)
+	if (value) then
+		initialize()
+	else
+		finalize()
+	end
+end
+
+function is_enabled()
+	return not IsEocMode() and axr_main_options.get_check_option("offline_combat")
+end
+
+function pop_last_killed_stalker_data()
+	local data = last_killed_stalker
+	last_killed_stalker = nil
+	return data
+end

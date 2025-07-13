@@ -16,16 +16,16 @@
 	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_0">
 		<text>Я хочу сменить имя.</text>
 	</string>
-	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_1">
-		<text>Ты не первый, кто обращается ко мне с такой просьбой. Значит так: в первый раз сменю бесплатно, потом плати 20000 рублей за каждую смену.</text>
+	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_10">
+		<text>Ты не первый, кто обращается ко мне с такой просьбой. Значит так: в первый раз сменю за символических 5000 рублей, потом плати 15000 за каждую смену.</text>
+	</string>
+	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_11">
+		<text>Плати 15000 рублей, и я сменю.</text>
 	</string>
 	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_20">
-		<text>Давай бесплатно.</text>
+		<text>Я согласен.</text>
 	</string>
 	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_21">
-		<text>Давай за деньги.</text>
-	</string>
-	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_22">
 		<text>В другой раз.</text>
 	</string>
 	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_3">
