@@ -98,6 +98,7 @@ All notable changes to this project will be documented in this file.
 
 ### Optimization
 * Added `npc_count` into `CCampManager` to optimize update calls (from [[EN/RU] More campfire jokes and stories](https://www.moddb.com/mods/stalker-anomaly/addons/enru-more-campfire-jokes-and-stories) mod)
+* Moved scripts from `monster_on_update` to `monster_on_slicing_update` callback
 
 ### Framework
 * Added `alive()`, `is_monster()` and `is_stalker()` methods into `sim_squad_scripted.script`
