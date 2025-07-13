@@ -110,6 +110,7 @@ All notable changes to this project will be documented in this file.
 * Added `avail_levels` and `play_prob` to section of `script_sound.ltx`
 * Added `get_period` function to `level_weathers.script`
 * Added `STR_DEFAULT` constant into `_g.script`
+* Added `monster_on_slicing_update` callback into `axr_main.script`
 
 ## [1.5.1] - 2025-04-07
 

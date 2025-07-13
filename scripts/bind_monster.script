@@ -17,6 +17,7 @@ function generic_object_binder:reinit()
 	--alun_utils.debug_write(self.object:name().."re_init() Start")
 	object_binder.reinit(self)
 
+	self.frame_counter = 0
 	self.st = {}
 	db.storage[self.object:id()] = self.st
 
@@ -52,6 +53,12 @@ function generic_object_binder:update(delta)
 	-- Start [Alundaio]
 	SendScriptCallback("monster_on_update",self.object,self.st)
 	-- End [Alundaio]
+	
+	local frame_counter = self.frame_counter
+	if (frame_counter % 3 == 0) then
+		SendScriptCallback("monster_on_slicing_update",self.object,self.st)
+	end
+	self.frame_counter = frame_counter + 1
 
 	if not (self.object:alive()) then
 		local looted = self.already_dead or utils.load_var(self.object,"looted",nil)
