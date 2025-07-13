@@ -90,15 +90,11 @@ local function monster_on_update(npc)
 	apply_sleep_aura()
 end
 
-local function npc_on_death_callback(_,who)
-	if (not IsActor(who)) then
-		return
-	end
-	
+local function actor_on_before_death()
 	stop_yawn_sound()
 end
 
 function on_game_start()
 	RegisterScriptCallback("monster_on_update",monster_on_update)
-	RegisterScriptCallback("npc_on_death_callback",npc_on_death_callback)
+	RegisterScriptCallback("actor_on_before_death",actor_on_before_death)
 end
