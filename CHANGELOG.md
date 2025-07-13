@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.5.2] - Unreleased
+## [1.5.2] - 2025-07-13
 
 ### Features
 * Added Offline Combat to basic mode
