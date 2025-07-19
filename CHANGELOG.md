@@ -10,6 +10,9 @@ All notable changes to this project will be documented in this file.
 ### Improvements
 * Added rain and rain splash textures from "CoC OL pack v1.3" mod
 
+### Fixes
+* Fixed error: "[LUA] SCRIPT RUNTIME ERROR : evaluator [corpse_exist] returns value with not a bool type!" (from CoC 1.5)
+
 ## [1.5.2] - 2025-07-13
 
 ### Features
