@@ -2,7 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.5.2] - Unreleased
+## [1.5.3] - Unreleased
+
+### Mods
+* [CS atmosphere for CoC v1.1 [CoC 1.4.22]](https://www.moddb.com/mods/call-of-chernobyl/addons/cop-and-cs-atmosphere-for-coc-coc-1422)
+
+## [1.5.2] - 2025-07-13
 
 ### Features
 * Added Offline Combat to basic mode
@@ -15,6 +20,8 @@ All notable changes to this project will be documented in this file.
 * Added ability to receive tasks from companions
 * Fixed "sleeping" BTRs
 * Added BTR to Escape's blockpost and reworked BTR on Chernobyl NPP
+* Added to NPC sound reactions to weather
+* Returned sounds to Army's megafon on Escape
 
 ### Mods
 * [ND fix NPC guitar position coc 1.4.22](https://www.moddb.com/mods/call-of-chernobyl/addons/nd-fix-npc-guitar-position-coc1-4-22)
@@ -56,6 +63,11 @@ All notable changes to this project will be documented in this file.
 * Refactored `jg_guider.is_not_guider_companion` function
 * Reworked showing Leave the Zone dialog using restrictor
 * Added terrain from "Advanced_vegetation_mix_update_1" mod to Jupiter
+* Increased timer of Agroprom's comandir megafon
+* Refactored NPC idle sounds about north levels
+* Balanced `wpn_fn2000` in Merc's veterans equipment
+* Added improvements to cat sleep aura
+* Added stopping Actor's sounds on death
 
 ### Fixes
 * Changed last period change date format for saves in `level_weathers.script`
@@ -87,9 +99,11 @@ All notable changes to this project will be documented in this file.
 * Fixed borrow items check in `update_best_weapon` function
 * Fixed missing scopes on NPCs with `wpn_ak74_up`
 * Fixed missing companion UI with unscoped weapon zoom
+* Fixed not working `show_crit_hit_mark` option
 
 ### Optimization
 * Added `npc_count` into `CCampManager` to optimize update calls (from [[EN/RU] More campfire jokes and stories](https://www.moddb.com/mods/stalker-anomaly/addons/enru-more-campfire-jokes-and-stories) mod)
+* Moved scripts from `monster_on_update` to `monster_on_slicing_update` callback
 
 ### Framework
 * Added `alive()`, `is_monster()` and `is_stalker()` methods into `sim_squad_scripted.script`
@@ -99,6 +113,10 @@ All notable changes to this project will be documented in this file.
 * Added `set_weather` function into `level_weathers.script`
 * Added `weapon_with_scope_is_zoomed` field into `axr_main.script`
 * Added `period` command into debug command list to change weather period
+* Added `avail_levels` and `play_prob` to section of `script_sound.ltx`
+* Added `get_period` function to `level_weathers.script`
+* Added `STR_DEFAULT` constant into `_g.script`
+* Added `monster_on_slicing_update` callback into `axr_main.script`
 
 ## [1.5.1] - 2025-04-07
 

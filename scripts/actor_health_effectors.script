@@ -12,13 +12,18 @@ local ble1 = 0
 local ble2 = false
 local last_reaction_snd = nil
 
+local function stop_reaction_sound()
+	if (last_reaction_snd and last_reaction_snd:playing()) then
+		last_reaction_snd:stop()
+		last_reaction_snd = nil
+	end
+end
+
 local function play_reaction_sound(snd_obj)
 	if (not snd_obj) then
 		return
 	end
-	if (last_reaction_snd and last_reaction_snd:playing()) then
-		last_reaction_snd:stop()
-	end
+	stop_reaction_sound()
 	snd_obj:play(db.actor,0,sound_object.s2d)
 	last_reaction_snd = snd_obj
 end
@@ -73,6 +78,11 @@ local function actor_on_slicing_update(_,delta)
 	check_effectors()
 end
 
+local function actor_on_before_death()
+	stop_reaction_sound()
+end
+
 function on_game_start()
     RegisterScriptCallback("actor_on_slicing_update", actor_on_slicing_update)
+	RegisterScriptCallback("actor_on_before_death",actor_on_before_death)
 end

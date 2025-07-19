@@ -13,7 +13,7 @@ if (jit == nil) then
 end
 
 GAME_VERSION = "1.4.22"
-MOD_VERSION = "Dancher's Compilation 1.5.2 RC 4"
+MOD_VERSION = "1.5.2"
 
 if string.find(command_line(), "-dbg") then
 	DEV_DEBUG = true
@@ -59,7 +59,7 @@ local get_console_function
 
 function start_game_callback()
 	math.randomseed(os.time())
-	printf("Call of Chernobyl version %s + %s",GAME_VERSION,MOD_VERSION)
+	printf("Call of Chernobyl Reforged %s",MOD_VERSION)
 	if (USE_MARSHAL) then
 		printf("using marshal library")
 	end
@@ -1907,6 +1907,7 @@ STR_NUMBER		= "number"
 STR_TABLE		= "table"
 STR_FUNCTION	= "function"
 STR_USERDATA	= "userdata"
+STR_DEFAULT		= "default"
 
 -----------------------------------------
 -- Functions

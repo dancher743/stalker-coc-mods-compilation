@@ -167,6 +167,7 @@ local intercepts = {
 	
 	actor_on_slicing_update			= {},
 	squad_on_slicing_update			= {},
+	monster_on_slicing_update		= {},
 	
 	DeadBodySearchClosed			= {},
 	
