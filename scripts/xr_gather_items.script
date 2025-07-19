@@ -9,11 +9,6 @@ evaid = 90005
 actid = 90005
 --------------------
 
---------------------
-local level = level
-local alife = alife
---------------------
-
 local Items
 local Enable
 local StateWalk
@@ -44,7 +39,7 @@ local function npc_on_item_take(npc,item)
 	
 	-- ATTACH WEAPON ADDONS
 	local wpn = npc:best_weapon()
-	if (wpn and item) then
+	if (wpn and IsWeapon(wpn)) then
 		wpn:weapon_addon_attach(item)
 	end
 	
@@ -73,22 +68,6 @@ local function actor_on_item_take(item)
 	if (Items and item) then
 		Items[item:id()] = nil
 	end
-end
-
-local function get_best_detector(npc)
-	local detectors = { "detector_simple", "detector_advanced", "detector_elite", "detector_scientific" }
-	for i=1, #detectors do
-		local obj = npc:object(detectors[i])
-		if obj ~= nil then
-			return obj
-		end
-	end
-end
-
-local function get_rand_vertex(npc,vo)
-	local dir = npc:position():sub(vo:position())
-	dir = vector_rotate_y(dir,math.random(5,45))
-	return vo:vertex_in_direction(vo:level_vertex_id(),dir,1)
 end
 
 ---------------------------------------
@@ -223,11 +202,10 @@ function eva_gather_itm:find_valid_item()
 	end
 
 	local tg = time_global()
-	self.st.__dtimer = not self.st.__dtimer and tg + 250 or self.st.__dtimer
-	if (tg < self.st.__dtimer) then 
+	if (self.st.__dtimer and tg < self.st.__dtimer) then 
 		return false 
 	end
-	self.st.__dtimer = nil
+	self.st.__dtimer = tg + 250
 	
 	local loot_table = UseCorpseLootTable ~= true and LootTable or xr_corpse_detection.lootable_table
 	if not (loot_table) then
@@ -308,15 +286,24 @@ function eva_gather_itm:find_valid_item()
 	self.st.index = self.st.index + 1
 
 	local itm = itm_id and itm_id ~= 0 and itm_id ~= 65535 and level.object_by_id(itm_id)
-	local se_itm = itm and loot_table[itm:section()] and Items[itm_id] == nil and alife_object(itm_id)
-
-	if not (se_itm and se_itm.parent_id == 65535) then
+	if not (itm and loot_table[itm:section()] and Items[itm_id] == nil) then 
+		return false 
+	end 
+	
+	if (itm:parent()) then
 		return false
 	end
 	
 	if (get_object_story_id(itm_id)) then
 		return false
 	end
+	
+	local itm_pos = itm:position()
+	local dist = npc:position():distance_to_sqr(itm_pos)
+	
+	if (dist > MaxDetectDistance) then 
+		return false 
+	end 
 	
 	if (npc:best_enemy()) then
 		if not (IsWeapon(itm)) then 
@@ -327,12 +314,12 @@ function eva_gather_itm:find_valid_item()
 		end
 	end
 
-	if (IsArtefact(nil,se_itm:clsid())) then
+	if (IsArtefact(itm)) then
 		if not (ArtifactDectection) then
 			return false
 		end
 
-		if (xr_logic.pick_section_from_condlist(db.actor, npc, self.st.gather_artefact_items_enabled) == "false") then
+		if (self.st.gather_artefact_items_enabled and xr_logic.pick_section_from_condlist(db.actor, npc, self.st.gather_artefact_items_enabled) == STR_FALSE) then
 			return false
 		end
 
@@ -348,22 +335,21 @@ function eva_gather_itm:find_valid_item()
 		end
 	end
 
-	local itm_pos = itm:position()
-	local dist = npc:position():distance_to_sqr(itm_pos)
-
-	if (self.st.nearest_dist == nil or dist < self.st.nearest_dist) and (dist < MaxDetectDistance) then
+	if (self.st.nearest_dist == nil or dist < self.st.nearest_dist) then
 		local vid = level.vertex_id(itm_pos)
-		if (level.vertex_position(vid):distance_to_sqr(itm_pos) > 16) then
-			vid = itm:level_vertex_id()
-		end
+		if (vid and alun_utils.valid_vertex_only(vid)) then
+			if (level.vertex_position(vid):distance_to_sqr(itm_pos) > 16) then
+				vid = itm:level_vertex_id()
+			end
 
-		if (npc:accessible(vid) and level.vertex_position(vid):distance_to_sqr(itm_pos) <= 15) then
-			self.st.nearest_dist = dist
-			self.st.nearest_vid = vid
-			self.st.nearest_pos = itm_pos
-			self.st.nearest_id = itm_id
+			if (npc:accessible(vid) and level.vertex_position(vid):distance_to_sqr(itm_pos) <= 15) then
+				self.st.nearest_dist = dist
+				self.st.nearest_vid = vid
+				self.st.nearest_pos = itm_pos
+				self.st.nearest_id = itm_id
 
-			--printf("item = %s id=%s",itm:section(),itm_id)
+				--printf("item = %s id=%s",itm:section(),itm_id)
+			end
 		end
 	end
 
@@ -390,7 +376,11 @@ function eva_gather_itm:evaluate()
 		return false
 	end
 
-	if (xr_conditions.surge_started() or xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.gather_items_enabled) == "false") then
+	if (xr_conditions.surge_started()) then
+		return false
+	end
+	
+	if (self.st.gather_items_enabled and xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.gather_items_enabled) == STR_FALSE) then 
 		return false
 	end
 	
@@ -414,7 +404,7 @@ function act_gather_itm:initialize()
 	npc:set_desired_direction()
 	npc:set_path_type(game_object.level_path)
 	--npc:set_dest_level_vertex_id(self.st.vid)
-	state_mgr.set_state(npc,self.st.state,nil,nil,nil,{fast_set = true})
+	state_mgr.set_state(npc,self.st.state)
 	self.st.vid = utils.send_to_nearest_accessible_vertex(npc,self.st.vid,"gather_items")
 	action_base.initialize(self)
 end
@@ -438,17 +428,6 @@ local function execute_gather_item(npc,self)
 
 	if (se_itm and IsArtefact(nil,se_itm:clsid())) then
 		local tg = time_global()
-
-		if not (self.st.artifact_timer) then
-			self.st.artifact_timer = tg + ArtifactSearchTimer
-		end
-
-		if (tg > self.st.artifact_timer) then
-			state_mgr.set_state(npc, "pickup_crouch")
-			self.st.stage = 2
-			return
-		end
-
 		if (self.st.stage == 1) then
 			local state
 			if (dist < 10) then
@@ -477,6 +456,14 @@ local function execute_gather_item(npc,self)
 				self.st.stage = 1
 				self.st.timer = nil
 			end
+			-- if not (self.st.artifact_timer) then
+				-- self.st.artifact_timer = tg + ArtifactSearchTimer
+			-- end
+			-- if (tg > self.st.artifact_timer) then
+				-- state_mgr.set_state(npc, "pickup_crouch")
+				-- self.st.stage = 2
+				-- return
+			-- end
 		end
 
 		if (npc:level_vertex_id() == self.st.vid) then
@@ -521,33 +508,6 @@ function act_gather_itm:finalize()
 	action_base.finalize(self)
 end
 
-
-
-----------------------------------------------------------------------------------------------------------------------
--- Default EVALUATOR
-----------------------------------------------------------------------------------------------------------------------
-class "evaluator_gather_items" (property_evaluator)
-function evaluator_gather_items:__init(name, storage, npc) super (nil, name)
-	self.st = storage
-end
-function evaluator_gather_items:evaluate()
-	if true then 
-		return false 
-	end 
-	
-	local enabled = xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.gather_items_enabled)
-	if (enabled ~= "true") then
-		return false
-	end
-
-	if (xr_conditions.surge_started() == true) then
-		return false
-	end
-
-	local items_to_pickup = self.object:is_there_items_to_pickup()
-	return items_to_pickup
-end
-
 ----------------------------------------------------------------------------------------------------------------------
 -- BINDER
 ----------------------------------------------------------------------------------------------------------------------
@@ -559,11 +519,6 @@ function add_to_binder(npc,ini,scheme,section,st,temp)
 	local manager = npc:motivation_action_manager()
 	
 	local wp = world_property
-
-	manager:remove_evaluator(stalker_ids.property_items)
-	manager:add_evaluator(stalker_ids.property_items,evaluator_gather_items("gather_items",st,npc))
-	--manager:add_evaluator(stalker_ids.property_items, property_evaluator_const(false))
-	
 	if (npc:character_community() == "zombied" or npc:section() == "actor_visual_stalker") then
 		manager:add_evaluator(evaid,property_evaluator_const(false))
 		--temp.needs_configured = false
@@ -575,7 +530,6 @@ function add_to_binder(npc,ini,scheme,section,st,temp)
 	temp.action:add_precondition(wp(stalker_ids.property_alive,true))
 	temp.action:add_precondition(wp(stalker_ids.property_enemy,	false))
 	temp.action:add_precondition(wp(stalker_ids.property_danger,false))
-	temp.action:add_precondition(wp(stalker_ids.property_anomaly,false))
 	temp.action:add_precondition(wp(evaid,true))
 	
 	temp.action:add_effect(wp(evaid, false))
@@ -621,8 +575,8 @@ function reset_generic_scheme(npc,scheme,section,stype,st)
 	st.gather_items.vid = nil
 	st.gather_items.vid_pos = nil
 
-	st.gather_items.gather_items_enabled = xr_logic.parse_condlist(npc, section, "gather_items_enabled", st.ini:r_string_ex(section,"gather_items_enabled") or "true")
-	st.gather_items.gather_artefact_items_enabled = xr_logic.parse_condlist(npc, section, "gather_artefact_items_enabled",st.ini:r_string_ex(section,"gather_artefact_items_enabled") or "true")
+	st.gather_items.gather_items_enabled = xr_logic.parse_condlist(npc, section, "gather_items_enabled", st.ini:r_string_ex(section,"gather_items_enabled") or STR_TRUE)
+	st.gather_items.gather_artefact_items_enabled = xr_logic.parse_condlist(npc, section, "gather_artefact_items_enabled",st.ini:r_string_ex(section,"gather_artefact_items_enabled") or STR_TRUE)
 end
 
 function npc_add_precondition(action)
