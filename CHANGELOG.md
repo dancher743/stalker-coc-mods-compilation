@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
 ### Mods
 * [CS atmosphere for CoC v1.1 [CoC 1.4.22]](https://www.moddb.com/mods/call-of-chernobyl/addons/cop-and-cs-atmosphere-for-coc-coc-1422)
 
+### Fixes
+* Fixed typo in `csky_scientific_outfit_description` string in rus localization
+
 ## [1.5.2] - 2025-07-13
 
 ### Features
