@@ -9,10 +9,14 @@ All notable changes to this project will be documented in this file.
 
 ### Improvements
 * Added rain and rain splash textures from "CoC OL pack v1.3" mod
+* Rebalanced presets of squad's stay point idle time due to x64 Engine integration
+* Rebalanced ability to receive tasks from companions
+* Corrected chance of telling campfire stories: from 33% to 50%
 
 ### Fixes
 * Fixed error: "[LUA] SCRIPT RUNTIME ERROR : evaluator [corpse_exist] returns value with not a bool type!" (from CoC 1.5)
 * Fixed error: "[LUA] SCRIPT RUNTIME ERROR : evaluator [eva_gather_itm] returns value with not a bool type!" (from CoC 1.5)
+* Fixed error: "! [LUA] CRestrictedObject : you use accessible_nearest when position is already accessible!"
 * Fixed transition between weather periods
 
 ### Framework
