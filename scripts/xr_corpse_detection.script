@@ -439,6 +439,7 @@ function action_search_corpse:initialize()
 	state_mgr.set_state(npc,self.a.state)
 	npc:set_desired_position()
 	npc:set_desired_direction()
+	npc:set_path_type(game_object.level_path)
 	self.a.vertex_id = utils.send_to_nearest_accessible_vertex(npc,self.a.vertex_id,"corpse_detection")
 end
 
@@ -492,11 +493,7 @@ function action_search_corpse:execute()
 			death_manager.create_release_item(corpse)
 		end
 		
-		if (npc:active_item() and npc:best_weapon() and npc:weapon_unstrapped() and npc:active_slot() == 3) then
-			state_mgr.set_state(npc,"search_corpse",nil,nil,{look_position = look_pos})
-		else
-			state_mgr.set_state(npc,"search_corpse_holstered",nil,nil,{look_position = look_pos})
-		end
+        state_mgr.set_state(npc,"search_corpse",nil,nil,{look_position = look_pos})
 	else
 	
 		if (self.a.analse_mode == STR_TRUE and not self.a.mutant_analysed) then 
