@@ -80,8 +80,10 @@ function WeatherManager:__init()
 		printf("error when open weather_dynamic_graphs.ltx")
 	end
 	self.dof_factor=1
+	self.period_prev=nil
 	self.period=get_random_weather()
 	self.period_next=get_random_weather()
+	self.subperiod_prev=nil
 	self.subperiod=nil
 	self.transition_period=false
 	self.pre_blowout_period=false
@@ -192,7 +194,7 @@ function WeatherManager:reset()
 	else
 		self.distant_storm_on = false
 	end
-    self:select_weather(true)
+    self:select_weather(true,true)
 end
 
 -- CC Functions
@@ -292,12 +294,15 @@ function WeatherManager:change_period()
 	end
 
 	if (self:can_change_period(self.period)) then
+		self.period_prev = self.period
 		self.period = self.period_next
-		self.subperiod = self:get_subperiod(self.period)
 		self.period_next = self:get_next_period(self.period)
+		self.subperiod_prev = self.subperiod
+		self.subperiod = self:get_subperiod(self.period)
 		self:reset_last_period_change_date(true)
-		-- Dancher: disabled
-		self.transition_period=false
+		self.transition_period = true
+	else
+		self.transition_period = false
 	end
 end
 
@@ -360,6 +365,19 @@ function WeatherManager:update()
 	--alun_utils.debug_write("WeatherManager:update end 2")
 end
 
+function WeatherManager:get_weather_section_name(period,subperiod)
+	local weather_section_name ="af3_"..atmosfear_options.config:r_value("atmosfear_current_parameters","opt_night_brightness").."_"..period
+	if period=="clear" or period=="partly" then
+		weather_section_name = weather_section_name.."_"..self:get_moon_phase()
+	end
+	if (subperiod) then
+		weather_section_name = strformat("%s\\%s",subperiod,weather_section_name)
+	else
+		weather_section_name = self:try_get_no_panorama_weather(weather_section_name)
+	end
+	return weather_section_name
+end
+
 function WeatherManager:get_moon_phase()
 	local months = {31,28,31,30,31,30,31,31,30,31,30,31}
 	local g_time=game.get_game_time()
@@ -386,7 +404,7 @@ function WeatherManager:get_moon_phase()
 	return tostring(phase)
 end
 
-function WeatherManager:select_weather(now)
+function WeatherManager:select_weather(now,loaded)
 	--
 	--alun_utils.debug_write("WeatherManager:select_weather")
 	
@@ -399,11 +417,7 @@ function WeatherManager:select_weather(now)
 	-- CC add period to name
 	if (weather=="atmosfear") then
 		weather_valid = true
-		if self.transition_period==true then
-			weather = weather.."_transition"
-			self.period = self:get_period_with_prob(weather)
-			self.transition_period=false
-		elseif self.pre_blowout_period==true then
+		if self.pre_blowout_period==true then
 			weather = weather.."_pre_blowout"
 			self.period = self:get_period_with_prob(weather)
 			self.pre_blowout_period=false
@@ -427,11 +441,7 @@ function WeatherManager:select_weather(now)
 
 	local weather_section_name = STR_EMPTY
 	if (weather_valid) then
-		weather_section_name="af3_"..atmosfear_options.config:r_value("atmosfear_current_parameters","opt_night_brightness").."_"..self.period
-		if self.period=="clear" or self.period=="partly" then
-			weather_section_name = weather_section_name.."_"..self:get_moon_phase()
-		end
-		weather_section_name = self:try_get_no_panorama_weather(weather_section_name)
+		weather_section_name=self:get_weather_section_name(self.period,self.subperiod)
 		--atmosfear.debugMessages[6]:SetText("weather_section_name= "..tostring(weather_section_name))
 	else
 		weather_section_name = weather
@@ -455,10 +465,12 @@ function WeatherManager:select_weather(now)
 		self.weather_fx = nil 
 		self.wfx_time = 0
 	else
-		if (self.subperiod) then
-			weather_section_name = strformat("%s\\%s",self.subperiod,weather_section_name)
+		if (loaded == true and self.transition_period == true and self.period_prev) then
+			level.set_weather(self:get_weather_section_name(self.period_prev,self.subperiod_prev),true)
+			level.set_weather(weather_section_name,false)
+		else
+			level.set_weather(weather_section_name,now)
 		end
-		level.set_weather(weather_section_name,now)
 	end
 	--self.debugMessages[15]:SetText("WEATHER: '"..weather_section_name.."' now '"..tostring(now).."'")
 	-- if xrs_news then
@@ -514,7 +526,7 @@ function WeatherManager:is_level_without_panorama()
 end
 
 function WeatherManager:try_get_no_panorama_weather(current_weather_section)
-	if (self.subperiod or not self:is_level_without_panorama()) then
+	if (not self:is_level_without_panorama()) then
 		return current_weather_section
 	end
 	
@@ -798,9 +810,11 @@ function WeatherManager:save_state(m_data)
 	--alun_utils.debug_write("WeatherManager:save_state BEFORE")
 	m_data.weather_manager = {}
 	m_data.weather_manager.levelWeather = self.levelWeather
+	m_data.weather_manager.period_prev = self.period_prev
 	m_data.weather_manager.period = self.period
-	m_data.weather_manager.subperiod = self.subperiod
 	m_data.weather_manager.period_next = self.period_next
+	m_data.weather_manager.subperiod_prev = self.subperiod_prev
+	m_data.weather_manager.subperiod = self.subperiod
 	m_data.weather_manager.last_period_change_date = utils.CTime_to_table(self.last_period_change_date)
 	
 	if (not bLevelUnderground and level.is_wfx_playing()) then
@@ -818,9 +832,11 @@ function WeatherManager:load_state(m_data)
 
 	--alun_utils.debug_write("WeatherManager:load_state BEFORE")
 	self.levelWeather = m_data.weather_manager.levelWeather or self.levelWeather
+	self.period_prev = m_data.weather_manager.period_prev or self.period_prev
 	self.period = m_data.weather_manager.period or self.period
-	self.subperiod = m_data.weather_manager.subperiod or self.subperiod
 	self.period_next = m_data.weather_manager.period_next or self.period_next
+	self.subperiod_prev = m_data.weather_manager.subperiod_prev or self.subperiod_prev
+	self.subperiod = m_data.weather_manager.subperiod or self.subperiod
 	self.last_period_change_date = m_data.weather_manager.last_period_change_date or self.last_period_change_date
 	-- new format check
 	if (type(self.last_period_change_date) == STR_TABLE) then
@@ -832,9 +848,7 @@ function WeatherManager:load_state(m_data)
 		self.wfx_time = m_data.weather_manager.weather_fx_time or 0
 	end
 	
-	if (self.levelWeather == "atmosfear_transition") then 
-		self.transition_period = true
-	elseif (self.levelWeather == "atmosfear_pre_blowout") then
+	if (self.levelWeather == "atmosfear_pre_blowout") then
 		self.pre_blowout_period = true
 	elseif (self.levelWeather == "atmosfear_pre_fallout") then
 		self.pre_fallout_period = true

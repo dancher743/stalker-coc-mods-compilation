@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 ### Fixes
 * Fixed error: "[LUA] SCRIPT RUNTIME ERROR : evaluator [corpse_exist] returns value with not a bool type!" (from CoC 1.5)
 * Fixed error: "[LUA] SCRIPT RUNTIME ERROR : evaluator [eva_gather_itm] returns value with not a bool type!" (from CoC 1.5)
+* Fixed transition between weather periods
 
 ### Framework
 * Added `valid_vertex_only` function into `alun_utils.script`
