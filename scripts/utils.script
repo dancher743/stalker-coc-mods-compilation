@@ -570,15 +570,17 @@ end
 
 -- отослать в ближайшую разрешённую ноду по направлению к заданной.
 -- возвращает vertex_id, в которое отправил персонажа
-function send_to_nearest_accessible_vertex( npc, v_id, caller)
-	if not (v_id and v_id < 4294967295 and npc:accessible( v_id )) then
-		local vtemp = vector()
-		--printf("vertex_position")
-		v_id, vtemp = npc:accessible_nearest(v_id and level.vertex_position(v_id) or npc:position(), vtemp )
+function send_to_nearest_accessible_vertex(npc,v_id,caller)
+	if (v_id == nil or v_id >= 4294967295) then
+		npc:set_dest_level_vertex_id(npc:level_vertex_id())
+		return npc:level_vertex_id()
 	end
-
-	npc:set_dest_level_vertex_id( v_id )
-
+	if not (npc:accessible(v_id)) then
+		local new_lvid,vtemp = npc:accessible_nearest(level.vertex_position(v_id),vector():set(0,0,0))
+		npc:set_dest_level_vertex_id(new_lvid)
+		return new_lvid
+	end
+	npc:set_dest_level_vertex_id(v_id)
 	return v_id
 end
 
