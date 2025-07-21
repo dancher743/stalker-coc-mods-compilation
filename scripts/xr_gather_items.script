@@ -332,7 +332,8 @@ function eva_gather_itm:find_valid_item()
 			return false
 		end
 
-		if (xr_logic.pick_section_from_condlist(db.actor, npc, self.st.gather_artefact_items_enabled) == "false") then
+		local enabled = xr_logic.pick_section_from_condlist(db.actor, npc, self.st.gather_artefact_items_enabled) or STR_TRUE
+		if (enabled == STR_FALSE) then
 			return false
 		end
 
@@ -390,7 +391,8 @@ function eva_gather_itm:evaluate()
 		return false
 	end
 
-	if (xr_conditions.surge_started() or xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.gather_items_enabled) == "false") then
+	local enabled = xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.gather_items_enabled) or STR_TRUE
+	if (xr_conditions.surge_started() or enabled == STR_FALSE) then
 		return false
 	end
 	
@@ -535,7 +537,7 @@ function evaluator_gather_items:evaluate()
 		return false 
 	end 
 	
-	local enabled = xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.gather_items_enabled)
+	local enabled = xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.gather_items_enabled) or STR_TRUE
 	if (enabled ~= "true") then
 		return false
 	end
@@ -621,8 +623,8 @@ function reset_generic_scheme(npc,scheme,section,stype,st)
 	st.gather_items.vid = nil
 	st.gather_items.vid_pos = nil
 
-	st.gather_items.gather_items_enabled = xr_logic.parse_condlist(npc, section, "gather_items_enabled", st.ini:r_string_ex(section,"gather_items_enabled") or "true")
-	st.gather_items.gather_artefact_items_enabled = xr_logic.parse_condlist(npc, section, "gather_artefact_items_enabled",st.ini:r_string_ex(section,"gather_artefact_items_enabled") or "true")
+	st.gather_items.gather_items_enabled = xr_logic.parse_condlist(npc, section, "gather_items_enabled", st.ini:r_string_ex(section,"gather_items_enabled") or STR_TRUE)
+	st.gather_items.gather_artefact_items_enabled = xr_logic.parse_condlist(npc, section, "gather_artefact_items_enabled",st.ini:r_string_ex(section,"gather_artefact_items_enabled") or STR_TRUE)
 end
 
 function npc_add_precondition(action)
