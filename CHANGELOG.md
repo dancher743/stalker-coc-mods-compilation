@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 * Rebalanced presets of squad's stay point idle time due to x64 Engine integration
 * Rebalanced ability to receive tasks from companions
 * Corrected chance of telling campfire stories: from 33% to 50%
+* Refactored and reworked `sound_actor_critical_hit.script`
 
 ### Fixes
 * Fixed error: "[LUA] SCRIPT RUNTIME ERROR : evaluator [corpse_exist] returns value with not a bool type!" (from CoC 1.5)
