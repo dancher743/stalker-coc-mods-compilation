@@ -280,7 +280,7 @@ function WeatherManager:change_period()
 	if (diff_s<7200 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_blowout",2,1)==1) or (diff_p<7200 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_psi_storm",2,1)==1) or level.is_wfx_playing() then
 		if (self.pre_blowout_period == false) then
 			self.pre_blowout_period = true
-			self.period = self:get_period_with_prob(weather)
+			self.period = self:get_period_with_prob("global_pre_blowout")
 			self:reset_last_period_change_date(false, 1*60*60)
 		end
 	end
@@ -288,7 +288,7 @@ function WeatherManager:change_period()
 	if (diff_f<3600 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_fallout",2,1)==1) or level.is_wfx_playing() then
 		if (self.pre_fallout_period == false) then
 			self.pre_fallout_period = true
-			self.period = (self.pre_blowout_period and "storm") or (math.random() < 0.7 and "rain" or "storm")
+			self.period = (self.pre_blowout_period and "storm") or self:get_period_with_prob("global_pre_fallout")
 			self:reset_last_period_change_date(false, 1*30*60)
 		end
 	end
