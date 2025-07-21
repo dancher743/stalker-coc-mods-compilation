@@ -484,6 +484,7 @@ function CSurgeManager:update()
 				self.skip_message = false
                 xr_statistic.inc_counter("surges")
                 self:skip_surge()
+				level_weathers.get_weather_manager():forced_weather_change()
                 return
 			end
 		end

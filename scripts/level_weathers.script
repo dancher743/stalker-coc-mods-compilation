@@ -199,11 +199,6 @@ end
 
 -- CC Functions
 
-function WeatherManager:round(n, precision)
-  local m = 10^(precision or 0)
-  return math.floor(m*n + 0.5)/m
-end
-
 function WeatherManager:get_next_period_change_hour(period)
 	local hour = 0
 	local len = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. period .. "_period",2,6)
@@ -280,19 +275,24 @@ function WeatherManager:change_period()
 	local g_time = game.get_game_time()
 	local diff_s = math.floor(surge_manager.SurgeManager._delta - g_time:diffSec(surge_manager.SurgeManager.last_surge_time))
 	local diff_p = psi_storm_manager and math.floor(psi_storm_manager.PsiStormManager._delta - g_time:diffSec(psi_storm_manager.PsiStormManager.last_psi_storm_time)) or 0
-
-	if (diff_s<7200 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_blowout",2,1) ==1) or (diff_p<7200 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_psi_storm",2,1)==1) or level.is_wfx_playing() then
-		self.pre_blowout_period=true
-		self:reset_last_period_change_date(false, 1*60*60)
-	end
-	
 	local diff_f = fallout_manager.get_fallout_manager():get_time_left()
 	
-	if (diff_f<3600 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_fallout",2,1) ==1) or level.is_wfx_playing() then
-		self.pre_fallout_period=true
-		self:reset_last_period_change_date(false, 1*30*60)
+	if (diff_s<7200 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_blowout",2,1)==1) or (diff_p<7200 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_psi_storm",2,1)==1) or level.is_wfx_playing() then
+		if (self.pre_blowout_period == false) then
+			self.pre_blowout_period = true
+			self.period = self:get_period_with_prob(weather)
+			self:reset_last_period_change_date(false, 1*60*60)
+		end
 	end
-
+	
+	if (diff_f<3600 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_fallout",2,1)==1) or level.is_wfx_playing() then
+		if (self.pre_fallout_period == false) then
+			self.pre_fallout_period = true
+			self.period = (self.pre_blowout_period and "storm") or (math.random() < 0.7 and "rain" or "storm")
+			self:reset_last_period_change_date(false, 1*30*60)
+		end
+	end
+	
 	if (self:can_change_period(self.period)) then
 		self.period_prev = self.period
 		self.period = self.period_next
@@ -419,16 +419,8 @@ function WeatherManager:select_weather(now,loaded)
 		weather_valid = true
 		if self.pre_blowout_period==true then
 			weather = weather.."_pre_blowout"
-			self.period = self:get_period_with_prob(weather)
-			self.pre_blowout_period=false
 		elseif self.pre_fallout_period==true then
-			if (self.levelWeather == "atmosfear_pre_blowout") then
-				self.period = "storm"
-			else
-				self.period = math.random() < 0.7 and "rain" or "storm"
-			end
 			weather = weather.."_pre_fallout"
-			self.pre_fallout_period=false
 		else
 			if not (self.period) then
 				self.period = "clear"
@@ -447,6 +439,14 @@ function WeatherManager:select_weather(now,loaded)
 		weather_section_name = weather
 	end
 
+	if self.forced_weather_change_on_time_change then
+		now = true
+		self.pre_blowout_period = false
+		self.pre_fallout_period = false
+		self.transition_period = false
+		self.forced_weather_change_on_time_change = false
+	end
+	
 	-- printf("weather_section_name = %s",weather_section_name)
 	if now then
 		self.last_hour=level.get_time_hours()
@@ -454,10 +454,6 @@ function WeatherManager:select_weather(now,loaded)
 		if self.next_hour>23 then
 			self.next_hour=self.next_hour-24
 		end
-	end
-	if self.forced_weather_change_on_time_change then
-		now = true
-		self.forced_weather_change_on_time_change = false
 	end
 	
 	if (self.weather_fx) then

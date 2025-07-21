@@ -222,6 +222,7 @@ function FalloutManager:update()
 					self.time_forwarded = false
 					self.skip_message = false
 					self:skip()
+					level_weathers.get_weather_manager():forced_weather_change()
 					return
 				end
 				self.phase = prestart_phase_name
@@ -242,6 +243,7 @@ function FalloutManager:update()
 					self.time_forwarded = false
 					self.skip_message = false
 					self:skip()
+					level_weathers.get_weather_manager():forced_weather_change()
 					return
 				end
 				self:start()
