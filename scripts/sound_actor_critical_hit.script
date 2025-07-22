@@ -3,7 +3,7 @@
 -- Added by Dancher
 --
 
-local volume = 0.3
+local volume = 0.45
 local sound_paths = {
 	"actor\\hurt2",
 	"actor\\hurt3",
@@ -18,7 +18,7 @@ local function get_sound()
 	return sound
 end
 
-function play_sound_on_distance(obj_position)
+function play_sound()
 	local sound = get_sound()
 	if (sound == nil or sound:playing() == true) then
 		return

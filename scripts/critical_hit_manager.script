@@ -64,7 +64,7 @@ local function npc_or_monster_on_hit_callback(victim, damage, _, who, _)
 			end
 			
 			if (axr_main_options.get_check_option(crit_sound_option_name)) then
-				sound_actor_critical_hit.play_sound_on_distance(victim:position())
+				sound_actor_critical_hit.play_sound()
 			end
 		end
 	end
