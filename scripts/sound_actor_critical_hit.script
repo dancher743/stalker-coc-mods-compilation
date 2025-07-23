@@ -4,6 +4,7 @@
 --
 
 local volume = 0.45
+local sound_delta_time = 25
 local sound_paths = {
 	"actor\\hurt2",
 	"actor\\hurt3",
@@ -12,6 +13,8 @@ local sound_paths = {
 	"actor\\hurt7"
 }
 
+local sound_time = nil
+
 local function get_sound()
 	local sound_path = sound_paths[math.random(#sound_paths)]
 	local sound = xr_sound.get_safe_sound_object(sound_path)
@@ -19,9 +22,11 @@ local function get_sound()
 end
 
 function play_sound()
-	local sound = get_sound()
-	if (sound == nil or sound:playing() == true) then
+	local time_global = time_global()
+	if (sound_time and sound_time > time_global) then
 		return
 	end
+	local sound = get_sound()
 	sound:play_no_feedback(db.actor, sound_object.s2d, 0, VEC_ZERO, volume)
+	sound_time = time_global + sound_delta_time
 end
