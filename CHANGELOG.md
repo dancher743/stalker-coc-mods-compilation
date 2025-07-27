@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 * Fixed error: "! [LUA] CRestrictedObject : you use accessible_nearest when position is already accessible!"
 * Fixed transition between weather periods
 * Added additional fix to pre cataclysm weather reselection after reload
+* Added missing crit hit sound on actor
 
 ### Framework
 * Added `valid_vertex_only` function into `alun_utils.script`

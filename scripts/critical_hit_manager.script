@@ -80,6 +80,10 @@ local function actor_on_hit_callback(victim, damage, _, who, _)
 			if (axr_main_options.get_check_option(crit_cam_vfx_option_name)) then
 				ui_actor_critical_hit.show_cam_effector()
 			end
+			
+			if (axr_main_options.get_check_option(crit_sound_option_name)) then
+				sound_actor_critical_hit.play_sound()
+			end
 		end
 	end
 end
