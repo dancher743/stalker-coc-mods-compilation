@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 * Corrected chance of telling campfire stories: from 33% to 50%
 * Refactored and reworked `sound_actor_critical_hit.script`
 * Added delay between Crit Hit's sound playbacks
+* Replaced `is_yan_base_defense_quest_enabled` condition with base defense option
 
 ### Fixes
 * Fixed error: "[LUA] SCRIPT RUNTIME ERROR : evaluator [corpse_exist] returns value with not a bool type!" (from CoC 1.5)
