@@ -224,7 +224,12 @@ function evaluator_wounded_exist:evaluate()
 	if (xr_danger.has_danger(npc)) then
 		return false
 	end
-
+	
+	local st = db.storage[npc:id()]
+	if (st) and (st.active_scheme == "camper") then 
+		return false 
+	end
+	
 	local vis = npc:get_visual_name()
 	if not (HelpInCombat or HelpInCombatVisuals[vis]) then
 		if (has_enemy(npc)) then

@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 ### Fixes
 * Fixed error: "[LUA] SCRIPT RUNTIME ERROR : evaluator [corpse_exist] returns value with not a bool type!" (from CoC 1.5)
 * Fixed error: "[LUA] SCRIPT RUNTIME ERROR : evaluator [eva_gather_itm] returns value with not a bool type!" (from CoC 1.5)
+* Fixed error: "[LUA] SCRIPT RUNTIME ERROR : evaluator [wounded_exist] returns value with not a bool type!" (from CoC 1.5)
 * Fixed error: "! [LUA] CRestrictedObject : you use accessible_nearest when position is already accessible!"
 * Fixed transition between weather periods
 * Added additional fix to pre cataclysm weather reselection after reload
