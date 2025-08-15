@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 * Refactored and reworked `sound_actor_critical_hit.script`
 * Added delay between Crit Hit's sound playbacks
 * Replaced `is_yan_base_defense_quest_enabled` condition with base defense option
+* Added ambient for EOC-Survival mode
 
 ### Fixes
 * Fixed error: "[LUA] SCRIPT RUNTIME ERROR : evaluator [corpse_exist] returns value with not a bool type!" (from CoC 1.5)
@@ -28,6 +29,7 @@ All notable changes to this project will be documented in this file.
 
 ### Framework
 * Added `valid_vertex_only` function into `alun_utils.script`
+* Added `IsEocAndSurvivalMode` function into `_g.script`
 
 ## [1.5.2] - 2025-07-13
 

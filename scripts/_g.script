@@ -1918,8 +1918,8 @@ function IsEocMode()
 		axr_main.config and axr_main.config:r_value("character_creation","new_game_eoc_mode",1) == true
 end
 
-function IsSurvivalOrEocMode()
-	return IsSurvivalMode() or IsEocMode()
+function IsEocAndSurvivalMode()
+	return IsEocMode() and IsSurvivalMode()
 end
 
 function IsAzazelMode()
