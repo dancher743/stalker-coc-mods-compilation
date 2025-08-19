@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 * Added additional fix to pre cataclysm weather reselection after reload
 * Added missing crit hit sound on actor
 * Returned original chance to start yantar base defense quest - 25%
+* Corrected text of `st_dyn_news_time_night_15` string in rus localisation
 
 ### Framework
 * Added `valid_vertex_only` function into `alun_utils.script`
