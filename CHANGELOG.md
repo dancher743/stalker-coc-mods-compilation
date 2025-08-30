@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [1.5.3] - Unreleased
 
+### Features
+* Added vodka for scope dialog to Screw from SoC
+
 ### Mods
 * [CS atmosphere for CoC v1.1 [CoC 1.4.22]](https://www.moddb.com/mods/call-of-chernobyl/addons/cop-and-cs-atmosphere-for-coc-coc-1422)
 

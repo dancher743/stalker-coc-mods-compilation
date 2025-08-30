@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+
+<string_table>
+	<string id="mil_screw_dialog_1000">
+		<text>Why are you so sad?</text>
+	</string>
+	<string id="mil_screw_dialog_1006">
+		<text>Pfft! Nothing but rubbish. I'm getting sick and tired of that. Soon as something breaks, they run to me and start whining about it. Listen, you got any vodka on you? I'd, umm... you... want a nice scope? The best optics there is!</text>
+	</string>
+	<string id="mil_screw_dialog_1100">
+		<text>No.</text>
+	</string>
+	<string id="mil_screw_dialog_1101">
+		<text>It's your loss. If you have some - come in, don't be a stranger.</text>
+	</string>
+	<string id="mil_screw_dialog_1102">
+		<text>OK.</text>
+	</string>
+	<string id="mil_screw_dialog_1200">
+		<text>Here, take it.</text>
+	</string>
+	<string id="mil_screw_dialog_1201">
+		<text>Well, thanks! How nice of you. Now I'll have something to help me relax later on.</text>
+	</string>
+	<string id="mil_screw_dialog_1202">
+		<text>Good luck.</text>
+	</string>
+</string_table>

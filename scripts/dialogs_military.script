@@ -1,0 +1,13 @@
+-------------------------------------------------------------------------
+--	author:		Tunduk Vladimir aka Sidorovich
+--	purpose:	dialog support for military
+-------------------------------------------------------------------------
+
+function have_a_vodka (stalker, player)
+    return stalker:object ("vodka") ~= nil
+end
+
+function transfer_scope (npc, actor)
+    dialogs.relocate_item_section(npc, "wpn_addon_scope_x2.7", "in")
+    dialogs.relocate_item_section(npc, "vodka", "out")
+end

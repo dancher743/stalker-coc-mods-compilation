@@ -97,6 +97,7 @@
 
 		<actor_dialog>dm_ordered_task_completed_dialog</actor_dialog>
 		<actor_dialog>dm_tech_repair</actor_dialog>
+		<actor_dialog>mil_screw_dialog</actor_dialog>
 		<actor_dialog>dm_broker_dialog</actor_dialog>
 		<actor_dialog>drx_sl_mechanic_task_dialog</actor_dialog>
 		<actor_dialog>actor_break_dialog</actor_dialog>

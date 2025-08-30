@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+
+<string_table>
+	<string id="mil_screw_dialog_1000">
+		<text>Чего такой грустный?</text>
+	</string>
+	<string id="mil_screw_dialog_1006">
+		<text>Задолбался уже. Как что сломается, сразу сюда бегут и канючат. Слушай, у тебя водочки нету? Я б тебе... хочешь, прицел хороший дам? Оптика высший сорт!</text>
+	</string>
+	<string id="mil_screw_dialog_1100">
+		<text>Нет.</text>
+	</string>
+	<string id="mil_screw_dialog_1101">
+		<text>Это ты зря. Так если будет - ты заходи, не стесняйся.</text>
+	</string>
+	<string id="mil_screw_dialog_1102">
+		<text>Хорошо.</text>
+	</string>
+	<string id="mil_screw_dialog_1200">
+		<text>Вот, держи.</text>
+	</string>
+	<string id="mil_screw_dialog_1201">
+		<text>Ну, спасибо! Уважил. Теперь хоть будет чем чуть попозжей расслабиться.</text>
+	</string>
+	<string id="mil_screw_dialog_1202">
+		<text>Удачи.</text>
+	</string>
+</string_table>
