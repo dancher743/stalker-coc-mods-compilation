@@ -80,7 +80,7 @@ function is_enemy(obj,enemy,no_memory)
 	if (obj:has_info("npcx_is_companion") or enemy:has_info("npcx_is_companion")) then
 		-- If companion is in stealth mode then ignore combat greater than 30m unless enemy is in combat with actor
 		if (obj:has_info("npcx_beh_substate_stealth") or enemy:has_info("npcx_beh_substate_stealth")) then 
-			if not (fighting_with_actor_npcs[id] or fighting_with_actor_npcs[ene_id]) then 
+			if not (xr_combat_ignore.fighting_with_actor_npcs[id] or xr_combat_ignore.fighting_with_actor_npcs[ene_id]) then 
 				if (enemy:position():distance_to_sqr(obj:position()) < 900) then 
 					return false
 				end
