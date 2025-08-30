@@ -219,11 +219,6 @@ function WeatherManager:get_period_occur_chance(period)
 end
 
 function WeatherManager:get_next_period(period)
-	local next_period = self:get_period_with_prob("global_weather_" .. period)
-	if (next_period and next_period ~= "all" and self:get_period_occur_chance(next_period) > 0) then
-		return next_period
-	end
-	
 	local available_periods = self:get_periods("global_weather_periods")
 	local next_periods = {}
 	
