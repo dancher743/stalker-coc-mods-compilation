@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 * Replaced `is_yan_base_defense_quest_enabled` condition with base defense option
 * Added ambient for EOC-Survival mode
 * Removed additional probabilities of rain and storm transitions
+* Balanced probabilities of cat sleep aura
 
 ### Fixes
 * Fixed error: "[LUA] SCRIPT RUNTIME ERROR : evaluator [corpse_exist] returns value with not a bool type!" (from CoC 1.5)
