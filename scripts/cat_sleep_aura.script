@@ -53,7 +53,7 @@ local function apply_sleep_aura()
 	end
 end
 
-local function monster_on_slicing_update(npc)
+local function monster_on_update(npc)
 	if (not npc:alive() or npc:clsid() ~= clsid.cat_s) then
 		return
 	end
@@ -95,6 +95,6 @@ local function actor_on_before_death()
 end
 
 function on_game_start()
-	RegisterScriptCallback("monster_on_slicing_update",monster_on_slicing_update)
+	RegisterScriptCallback("monster_on_update",monster_on_update)
 	RegisterScriptCallback("actor_on_before_death",actor_on_before_death)
 end
