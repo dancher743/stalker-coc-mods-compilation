@@ -162,7 +162,7 @@ function DynamicNewsManager:__init()
 	self.surge_type = STR_EMPTY
 	
 	self.sentences_fnames = self:ReadTextList("name_stalker_")
-	self.sentences_snames = self:ReadTextList("lname_private_")
+	self.sentences_snames = self:ReadTextList("lname_stalker_")
 	
 
 	CreateTimeEvent("DynamicNewsManager","TickNews",10*TimeFactor,self.TickNews,self)
