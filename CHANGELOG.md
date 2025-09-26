@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file.
 * Balanced probabilities of cat sleep aura
 
 ### Fixes
+* Fixed typo in `csky_scientific_outfit_description` string in rus localization
 * Fixed error: "[LUA] SCRIPT RUNTIME ERROR : evaluator [corpse_exist] returns value with not a bool type!" (from CoC 1.5)
 * Fixed error: "[LUA] SCRIPT RUNTIME ERROR : evaluator [eva_gather_itm] returns value with not a bool type!" (from CoC 1.5)
 * Fixed error: "[LUA] SCRIPT RUNTIME ERROR : evaluator [wounded_exist] returns value with not a bool type!" (from CoC 1.5)
