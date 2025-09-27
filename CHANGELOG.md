@@ -38,6 +38,7 @@ All notable changes to this project will be documented in this file.
 * Added supplies to Freedom trader and mechanic
 * Added missing save of `transition_period` flag in `WeatherManager` to fix transition between weather periods
 * Fixed NPC's second names in Dynamic News
+* Fixed `thunderbolt_period` of subperiods
 
 ### Optimization
 * Made `squad_on_update` and `monster_on_update` callbacks sliced
