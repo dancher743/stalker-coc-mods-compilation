@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 * Added ambient for EOC-Survival mode
 * Removed additional probabilities of rain and storm transitions
 * Balanced probabilities of cat sleep aura
+* Removed repairkits from trade
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
