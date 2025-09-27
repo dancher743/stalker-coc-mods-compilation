@@ -4,6 +4,7 @@
 --
 
 local head_bone_name = "bip01_head"
+local far_distance_sqr = 900
 
 local snd_obj
 local last_snd_tbl
@@ -319,11 +320,22 @@ local function npc_on_death_callback(victim)
 		last_snd_tbl = { [community] = snd_tbl }
 	end
 	
-	local snd = snd_tbl[math.random(#snd_tbl)]
-	snd_obj = sound_object(snd)
+	local snd_path = snd_tbl[math.random(#snd_tbl)]
+	snd_obj = sound_object(snd_path)
 	
-	if (snd_obj) then
+	if (snd_obj == nil) then
+		return
+	end
+	
+	local actor = db.actor
+	local actor_pos = actor:position()
+	local npc_pos = victim:position()
+	local is_npc_far = actor_pos:distance_to_sqr(npc_pos) > far_distance_sqr
+	
+	if (is_npc_far) then
 		snd_obj:play_at_pos(victim, alun_utils.safe_bone_pos(victim, head_bone_name))
+	else
+		snd_obj:play_at_pos(actor, vector():set(npc_pos.x - actor_pos.x, npc_pos.y - actor_pos.y, npc_pos.z - actor_pos.z), 0, sound_object.s2d)
 	end
 end
 
