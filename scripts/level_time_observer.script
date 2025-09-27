@@ -5,7 +5,7 @@
 
 local last_game_minute
 
-local function actor_on_slicing_update()
+local function actor_on_update()
 	local game_minute  = level.get_time_minutes()
 	
 	if (game_minute == last_game_minute) then
@@ -18,5 +18,5 @@ local function actor_on_slicing_update()
 end
 
 function on_game_start()
-    RegisterScriptCallback("actor_on_slicing_update", actor_on_slicing_update)
+    RegisterScriptCallback("actor_on_update", actor_on_update)
 end

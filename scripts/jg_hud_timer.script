@@ -7,7 +7,7 @@ local hud_timer
 local hud_timer_tickback
 local last_minute
 
-local function actor_on_slicing_update()
+local function actor_on_update()
 	local current_minute = level.get_time_minutes()
 	
 	if (last_minute and last_minute == current_minute) then
@@ -43,7 +43,7 @@ function try_start()
 	local position_base = hud_timer:GetPosition()
 	local position_without_bar = vector2():set(position_base.x, position_base.y)
 	local position_with_bar = vector2():set(position_base.x, position_base.y + 45)
-	RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+	RegisterScriptCallback("actor_on_update",actor_on_update)
 	
 	local function tickback()
 		if (main_hud_shown()) then
@@ -65,7 +65,7 @@ function try_stop()
 	
 	StopTimer("jg_hud_show_timer")
 	
-	UnregisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+	UnregisterScriptCallback("actor_on_update",actor_on_update)
 	last_minute = nil
 	
 	hud_timer:Clear()

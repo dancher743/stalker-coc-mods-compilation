@@ -373,7 +373,7 @@ local function update()
 	updated_levels[level_to_update] = true
 end
 
-local function actor_on_slicing_update(_,delta)
+local function actor_on_update(_,delta)
 	update_timer = update_timer - delta
 	if (update_timer <= 0) then
 		update()
@@ -402,7 +402,7 @@ local function initialize()
 	update_queue_timer = 0
 	is_survival_mode = IsSurvivalMode()
 	actor_level_id = alife():level_name(game_graph():vertex(alife():actor().m_game_vertex_id):level_id())
-	RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+	RegisterScriptCallback("actor_on_update",actor_on_update)
 	
 	is_initialized = true
 	if dbg then printf_dbg("initialized") end
@@ -413,7 +413,7 @@ local function finalize()
 		return
 	end
 	
-	UnregisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+	UnregisterScriptCallback("actor_on_update",actor_on_update)
 	loot_items = nil
 	updated_levels = nil
 	processed_squads = nil

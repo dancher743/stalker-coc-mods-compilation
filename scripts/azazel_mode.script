@@ -50,7 +50,7 @@ function on_game_load()
 	else
 		init()
 		RegisterScriptCallback("actor_on_before_death",actor_on_before_death)
-		RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+		RegisterScriptCallback("actor_on_update",actor_on_update)
 		RegisterScriptCallback("npc_on_use_dead",npc_on_use_dead)
 	end
 
@@ -82,7 +82,7 @@ function on_game_load()
 end
 
 function actor_on_before_death(whoID,flags)
-	UnregisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+	UnregisterScriptCallback("actor_on_update",actor_on_update)
 	
 	xr_statistic.actor_statistic.deaths = xr_statistic.actor_statistic.deaths + 1
 	SetHudMsg(strformat(game.translate_string("st_death_count"),xr_statistic.actor_statistic.deaths),8)
@@ -382,7 +382,7 @@ function actor_on_before_death(whoID,flags)
 
 	flags.ret_value = false
 	local function postpone_for_next_frame()
-		RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+		RegisterScriptCallback("actor_on_update",actor_on_update)
 	end
 	SkipFrame(postpone_for_next_frame)
 end
@@ -500,8 +500,7 @@ function debug_vars() -- return config and extra vars as strings
 	return strformat("Configs: Fix Bleeding: %s , Disable Animation: %s , Gain Money: %s , Lose All Money: %s , Stalker Money: %s", azazel_customizable_config["fix_bleeding"], azazel_customizable_config["disable_animation"], azazel_customizable_config["gain_money"], azazel_customizable_config["lose_all_money"], azazel_customizable_config["stalker_money"])
 end
 
-function actor_on_slicing_update()
-
+function actor_on_update()
 	if (alife_storage_manager.get_state().azazel_db_rad) then
 		if(rad_count < 5) then
 			db.actor.radiation = -1

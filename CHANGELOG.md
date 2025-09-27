@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Features
 * Added vodka for scope dialog to Screw from SoC
 * Added ecolog squad to Yantar Bunker
+* Optimized the number of per-frame updates calls
 
 ### Mods
 * [CS atmosphere for CoC v1.1 [CoC 1.4.22]](https://www.moddb.com/mods/call-of-chernobyl/addons/cop-and-cs-atmosphere-for-coc-coc-1422)
@@ -41,7 +42,7 @@ All notable changes to this project will be documented in this file.
 * Fixed `thunderbolt_period` of subperiods
 
 ### Optimization
-* Made `squad_on_update` and `monster_on_update` callbacks sliced
+* Made `squad_on_update`, `monster_on_update` and `actor_on_update` callbacks sliced
 
 ### Framework
 * Added `valid_vertex_only` function into `alun_utils.script`
