@@ -630,8 +630,8 @@ function has_not_spot(_,npc)
 	return not has_spot
 end
 
-function can_order_task(_,npc)
-	return axr_companions.is_companion(npc) and axr_companions.is_companion_trust(npc)
+function can_order_task(actor,npc)
+	return is_not_actor_companion(actor,npc) or axr_companions.is_companion_trust(npc)
 end
 
 function can_open_inventory(_,npc)

@@ -10,9 +10,9 @@ local trust_time_threshold = 24*60
 local time_key = "time"
 local trust_key = "trust"
 
-local function get_db_value(se_id, key, defaultValue)
+local function get_db_value(se_id, key, default)
 	local companion_data = database[se_id]
-	local value = companion_data and companion_data[key] or defaultValue
+	local value = companion_data and companion_data[key] or default
 	return value
 end
 
