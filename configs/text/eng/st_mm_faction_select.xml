@@ -224,7 +224,7 @@
 			\n%c[0,255,255,255]You can change population activity in your playthrough at any time.
 			\nSee "Options" -> "Game". Then "Population squades activity".
 			\n
-			\nSome characters that don't take part in the 'Mysteries of the Zone' storyline may die. To enable their respawn 
+			\nSome characters that don't take part in the 'Mysteries of the Zone' storyline may die. To enable their respawn: 
 			\nSee "Options" -> "Game". Then "Unique NPC respawn".
 		</text>
 	</string>
