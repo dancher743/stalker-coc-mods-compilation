@@ -88,7 +88,7 @@
 		<text>
 			%c[0,245,245,220]Choose whether you will be accompanied by companions from the very beginning of the game.
 			\n
-			\nCompanion who has spent 24 hours of in-game time (skipped time doesn't count) will become invulnerable to any type of damage and will give full access to his backpack. However, companions who accompany you from the very beginning of the game will have these bonuses from the start.
+			\nCompanion who has spent 24 hours of in-game time (skipped time doesn't count) will become invulnerable to any type of damage, will give full access to his backpack and will start giving a tasks. However, companions who accompany you from the very beginning of the game will have these bonuses from the start.
 			\n
 			\nInvulnerability will be indicated by the shield icon located on his interface in the upper left corner.
 			\n
@@ -96,6 +96,9 @@
 			\n
 			\n%c[0,255,255,255]You can make your companions vulnerable in your playthrough at any time.
 			\nSee "Options" -> "Game" -> "Companions invulnerability"
+			\n
+			\n%c[0,255,255,255]You can disable companions tasks in your playthrough at any time.
+			\nSee "Options" -> "Game" -> "Companions tasks"
 		</text>
 	</string>
 	<string id="st_mm_list_difficulty_desc">
