@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 * Removed additional probabilities of rain and storm transitions
 * Balanced probabilities of cat sleep aura
 * Removed repairkits from trade
+* Improved open companion inventory dialog
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization

@@ -2685,26 +2685,36 @@
 				<next>22</next>
 				<next>23</next>
             </phrase>
+			<phrase id="11">
+                <text>open_companion_inventory_phrase_1</text>
+				<next>20</next>
+				<next>21</next>
+				<next>22</next>
+				<next>24</next>
+            </phrase>
 			<phrase id="20">
                 <text>open_companion_inventory_phrase_20</text>
 				<action>dialogs_axr_companion.open_camel_inventory</action>
-				<action>dialogs.break_dialog</action>
+				<next>11</next>
             </phrase>
 			<phrase id="21">
 				<precondition>dialogs_axr_companion.can_open_inventory</precondition>
                 <text>open_companion_inventory_phrase_21</text>
 				<action>dialogs_axr_companion.open_arsenal_inventory</action>
-				<action>dialogs.break_dialog</action>
+				<next>11</next>
             </phrase>
 			<phrase id="22">
 				<precondition>dialogs_axr_companion.can_open_inventory</precondition>
                 <text>open_companion_inventory_phrase_22</text>
 				<action>dialogs_axr_companion.open_full_inventory</action>
-				<action>dialogs.break_dialog</action>
+				<next>11</next>
             </phrase>
 			<phrase id="23">
                 <text>open_companion_inventory_phrase_23</text>
 				<next>3</next>
+            </phrase>
+			<phrase id="24">
+                <text>open_companion_inventory_phrase_24</text>
             </phrase>
 			<phrase id="3">
                 <text>open_companion_inventory_phrase_3</text>
