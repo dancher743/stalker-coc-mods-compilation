@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 * Added vodka for scope dialog to Screw from SoC
 * Added ecolog squad to Yantar Bunker
 * Optimized the number of per-frame updates calls
+* Added "Companions tasks" option
 
 ### Mods
 * [CS atmosphere for CoC v1.1 [CoC 1.4.22]](https://www.moddb.com/mods/call-of-chernobyl/addons/cop-and-cs-atmosphere-for-coc-coc-1422)
@@ -47,6 +48,7 @@ All notable changes to this project will be documented in this file.
 ### Framework
 * Added `valid_vertex_only` function into `alun_utils.script`
 * Added `IsEocAndSurvivalMode` function into `_g.script`
+* Added `get_check_option` function into `_g.script`
 
 ## [1.5.2] - 2025-07-13
 

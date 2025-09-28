@@ -2040,3 +2040,7 @@ function SkipFrame(functor)
 	end
 	AddUniqueCall(skip_frame_call)
 end
+
+function get_check_option(name)
+	return axr_main_options.get_check_option(name)
+end
