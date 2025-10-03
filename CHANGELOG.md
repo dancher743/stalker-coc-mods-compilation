@@ -16,7 +16,7 @@ All notable changes to this project will be documented in this file.
 
 ### Improvements
 * Added rain and rain splash textures from "CoC OL pack v1.3" mod
-* Rebalanced presets of squad's stay point idle time due to x64 Engine integration
+* Rebalanced presets of squad's stay point idle time
 * Rebalanced ability to receive tasks from companions
 * Corrected chance of telling campfire stories: from 33% to 50%
 * Refactored and reworked `sound_actor_critical_hit.script`
