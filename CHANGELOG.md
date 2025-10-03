@@ -29,6 +29,7 @@ All notable changes to this project will be documented in this file.
 * Improved open companion inventory dialog
 * Added companion tasks info into Faction Select Menu
 * Added ":" symbol into text of `st_mm_ck_eoc_desc` string
+* Rebalanced chances of getting an artifacts from corpses
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
