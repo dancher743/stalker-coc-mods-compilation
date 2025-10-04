@@ -51,6 +51,7 @@ All notable changes to this project will be documented in this file.
 
 ### Optimization
 * Made `squad_on_update`, `monster_on_update` and `actor_on_update` callbacks sliced
+* Optimized code of finding target by distance in `DynamicNewsManager:FindSpeakerAndTarget`
 
 ### Framework
 * Added `valid_vertex_only` function into `alun_utils.script`

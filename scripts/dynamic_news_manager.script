@@ -756,7 +756,7 @@ end
 
 function DynamicNewsManager:FindSpeakerAndTarget(not_in_combat,distance,speaker_community) -- Find a random speaker ([boolean] if true, speaker must not be in combat | [string] if declared, speaker must belong to this community)
 	local sender,target,comm_sender
-	local dis = distance or 300
+	local dis = distance and distance*distance or 300*300
 	local t1,t2 = {},{}
 	-- Find a sender
 	for i=1, #db.OnlineStalkers do
@@ -782,7 +782,7 @@ function DynamicNewsManager:FindSpeakerAndTarget(not_in_combat,distance,speaker_
 	-- Find an enemy to sender
 	for i=1,65534 do 
 		local se_obj = alife():object(i)
-		if (se_obj and se_obj.position:distance_to(sender:position()) < dis and se_obj.group_id ~= 65535) then 
+		if (se_obj and se_obj.position:distance_to_sqr(sender:position()) < dis and se_obj.group_id ~= 65535) then 
 			if (IsStalker(nil,se_obj:clsid()) and se_obj:community() ~= "trader" and game_relations.is_factions_enemies(sender:character_community(), se_obj:community())) or (IsMonster(nil,se_obj:clsid())) then
 				if se_obj:alive() then
 					local st = db.storage[se_obj.id]
