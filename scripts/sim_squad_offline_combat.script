@@ -390,7 +390,7 @@ local function actor_on_update(_,delta)
 	update_queue_timer = update_queue_timer - delta
 	if (update_queue_timer <= 0) then
 		update_queue()
-		update_queue_timer = 500
+		update_queue_timer = 1500
 		return
 	end
 end
