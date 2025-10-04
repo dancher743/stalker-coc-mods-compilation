@@ -47,6 +47,7 @@ All notable changes to this project will be documented in this file.
 * Added missing save of `transition_period` flag in `WeatherManager` to fix transition between weather periods
 * Fixed NPC's second names in Dynamic News
 * Fixed `thunderbolt_period` of subperiods
+* Fixed wrong sound theme `strange_story_disbelief`
 
 ### Optimization
 * Made `squad_on_update`, `monster_on_update` and `actor_on_update` callbacks sliced
