@@ -155,6 +155,10 @@ function DynamicNewsManager:__init()
 		["show_about_loot"] = 0
 	}
 	
+	self.ignored_squads = {
+		["mar_smart_terrain_base_dog_doctor_squad"] = true
+	}
+	
 	self.loot = {}
 	self.companions_list = dynamic_news_helper.list_actor_squad_by_id()
 	self.news_toggle = xr_conditions.surge_complete()
@@ -783,7 +787,11 @@ function DynamicNewsManager:FindSpeakerAndTarget(not_in_combat,distance,speaker_
 				if se_obj:alive() then
 					local st = db.storage[se_obj.id]
 					local npc = st and st.object or level.object_by_id(se_obj.id)
-					table.insert(t2,npc)
+					local npc_squad = get_object_squad(npc)
+					local can_npc_be_target = self.ignored_squads[npc_squad:section_name()] == nil
+					if (can_npc_be_target) then
+						table.insert(t2,npc)
+					end
 				end
 			end
 		end
