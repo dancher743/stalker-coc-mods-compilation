@@ -19,8 +19,8 @@ local bad_distances = {
 }
 
 local add_rank_points = 20
-local handicap_chance = 0.25
-local remove_squad_chance = 0.5
+local handicap_chance = 25
+local remove_squad_chance = 50
 local not_on_smart_combat_chance = 10
 local victim_id_key = "victim_id"
 local killer_id_key = "killer_id"
@@ -114,7 +114,7 @@ local function calculate_squad_power(squad)
 			power = power + rank_power[rank_name] or 0
 		end
 	end
-	if (math.random() < handicap_chance) then
+	if (get_chance() <= handicap_chance) then
 		power = power * math.random(3)
 	end
 	return power
@@ -215,7 +215,7 @@ local function process_squads_combat(squads)
 					
 					if (squad1.position:distance_to_sqr(squad2.position) <= get_combat_distance()) then
 						if (squad1.current_target_id == nil and squad2.current_target_id == nil) then
-							can_combat = math.random(0,100) < not_on_smart_combat_chance
+							can_combat = get_chance() <= not_on_smart_combat_chance
 						elseif (squad1.current_target_id == squad2.current_target_id) then
 							can_combat = true
 						end
@@ -316,7 +316,7 @@ local function update_queue()
 		elseif (victim_squad.id == squad2.id) then
 			squads[squad2_index] = nil
 		end
-		if (actor_level_id ~= level_id and math.random() < remove_squad_chance) then
+		if (actor_level_id ~= level_id and get_chance() <= remove_squad_chance) then
 			victim_squad:remove_squad()
 		end
 	end

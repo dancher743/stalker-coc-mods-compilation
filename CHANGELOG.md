@@ -31,6 +31,7 @@ All notable changes to this project will be documented in this file.
 * Added ":" symbol into text of `st_mm_ck_eoc_desc` string
 * Rebalanced chances of getting an artifacts from corpses
 * Excluded Doctor's dog from Dynamic News
+* Reworked chances in `sim_squad_offline_combat.script`
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
@@ -58,6 +59,7 @@ All notable changes to this project will be documented in this file.
 * Added `valid_vertex_only` function into `alun_utils.script`
 * Added `IsEocAndSurvivalMode` function into `_g.script`
 * Added `get_check_option` function into `_g.script`
+* Added `get_chance` function into `_g.script`
 
 ## [1.5.2] - 2025-07-13
 

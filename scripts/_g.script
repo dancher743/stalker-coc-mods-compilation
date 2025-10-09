@@ -2044,3 +2044,7 @@ end
 function get_check_option(name)
 	return axr_main_options.get_check_option(name)
 end
+
+function get_chance()
+	return math.random(1,100)
+end
