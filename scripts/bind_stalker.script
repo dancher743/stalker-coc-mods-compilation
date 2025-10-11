@@ -307,7 +307,7 @@ function actor_binder:save(packet)
 	
 	sr_psy_antenna.save( packet )
 
-	alun_utils.w_stpk(packet,"bool",SIMBOARD.simulation_started, "sim started")
+	alun_utils.w_stpk(packet,STR_BOOL,SIMBOARD.simulation_started, "sim started")
 
 	xr_sound.actor_save(packet)
 	--alun_utils.w_stpk(packet,"stringZ",self.last_level_name,"last level name")
@@ -359,7 +359,7 @@ function actor_binder:load(reader)
 	xr_sound.actor_load(reader)
 	--[[
 	local n = reader:r_stringZ()
-	if(n~="nil") then
+	if(n~=STR_NIL) then
 		self.last_level_name = n
 	end
 	--]]

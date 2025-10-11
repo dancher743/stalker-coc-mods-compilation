@@ -5865,7 +5865,7 @@ function add_map_spot(actor, npc, p)
 				p[2] = "primary_task_location"
 			end
 			if(p[3]==nil) then
-				p[3] = "default"
+				p[3] = STR_DEFAULT
 			end
 			if level.map_has_object_spot(id, p[2]) == 0 then
 				level.map_add_object_spot_ser(id, p[2], p[3])
@@ -6078,7 +6078,7 @@ function set_bloodsucker_state(actor, npc, p)
 		npc = get_story_object(p[1])
 	end
 	if npc ~= nil then
-		if state == "default" then
+		if state == STR_DEFAULT then
 			npc:force_visibility_state(-1)
 		else
 			npc:force_visibility_state(tonumber(state))

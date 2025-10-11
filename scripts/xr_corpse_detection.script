@@ -146,7 +146,7 @@ function get_loot_table(ini)
 	local quest_item_string = "quest_item"
 	local mp_item_prefix = "mp_"
 	local inv_name_string = "inv_name"
-	local default_string = "default"
+	local default_string = STR_DEFAULT
 	local cost_string = "cost"
 	
 	sysini:section_for_each(function(section)

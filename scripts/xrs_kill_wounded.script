@@ -320,11 +320,11 @@ function act_kill_wounded:begin_kill_wounded(vo)
 		
 		if not (self.st.news_triggered) then
 			if (hostage_list[vo:id()]) then 
-				if (dynamic_news_manager and axr_main.config:r_value("mm_options","enable_dynamic_news",1)) then 
+				if (dynamic_news_manager and axr_main.config:r_value(MM_OPTIONS,"enable_dynamic_news",1)) then 
 					dynamic_news_manager.get_dynamic_news():KillWounded(self.object,vo,true)
 				end		
 			else 
-				if (dynamic_news_manager and axr_main.config:r_value("mm_options","enable_dynamic_news",1)) then 
+				if (dynamic_news_manager and axr_main.config:r_value(MM_OPTIONS,"enable_dynamic_news",1)) then 
 					dynamic_news_manager.get_dynamic_news():KillWounded(self.object,vo)
 				end
 			end

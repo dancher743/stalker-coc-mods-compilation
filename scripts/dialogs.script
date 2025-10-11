@@ -2137,7 +2137,7 @@ function surrender_victim_answers_bounty(a,b)
 	local npc = dialogs.who_is_npc(a,b)
 	local id = npc:id()
 
-	local prefix = "default"
+	local prefix = STR_DEFAULT
 	for task_id,npc_id in pairs(axr_task_manager.bounties_by_id) do
 		if (npc_id == id) then
 			if (task_id == "esc_m_trader_task_2") then

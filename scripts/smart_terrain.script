@@ -1126,7 +1126,7 @@ function se_smart_terrain:get_smart_props()
 			props = props.."\\nAlready_spawned :\n"
 			for k,v in pairs(self.already_spawned) do
 				if (v.num and self.respawn_params[k] and self.respawn_params[k].num) then
-					props = props.."["..k.."] = "..v.num.."("..(xr_logic.pick_section_from_condlist(db.actor, self,self.respawn_params[k].num) or "0")..")\\n"
+					props = props.."["..k.."] = "..v.num.."("..(xr_logic.pick_section_from_condlist(db.actor, self,self.respawn_params[k].num) or STR_ZERO)..")\\n"
 				end
 			end
 		end
