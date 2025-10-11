@@ -54,6 +54,7 @@ All notable changes to this project will be documented in this file.
 * Made `squad_on_update`, `monster_on_update` and `actor_on_update` callbacks sliced
 * Optimized code of finding target by distance in `DynamicNewsManager:FindSpeakerAndTarget`
 * Increased `update_queue_timer` from 500 to 1500 in `sim_squad_offline_combat.script`
+* Optimized CPU usage of `process_squads_combat` function in `sim_squad_offline_combat.script`
 
 ### Framework
 * Added `valid_vertex_only` function into `alun_utils.script`
