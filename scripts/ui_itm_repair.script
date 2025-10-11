@@ -376,7 +376,7 @@ function repair_ui:AddItemToList(item,listbox,condition)
 	local ini = system_ini()
 	local _itm			= load_item(self.file_item_main_sz.y)
 	local sec = item and item:section()
-	local inv_name 		= item and game.translate_string(ini:r_string_ex(sec,"inv_name") or "none")
+	local inv_name 		= item and game.translate_string(ini:r_string_ex(sec,"inv_name") or STR_NONE)
 
 	_itm:SetWndSize		(self.file_item_main_sz)
 

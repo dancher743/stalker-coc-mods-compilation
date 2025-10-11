@@ -1908,6 +1908,7 @@ STR_TABLE		= "table"
 STR_FUNCTION	= "function"
 STR_USERDATA	= "userdata"
 STR_DEFAULT		= "default"
+STR_NONE		= "none"
 
 -----------------------------------------
 -- Functions

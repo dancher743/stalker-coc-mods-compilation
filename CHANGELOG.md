@@ -61,6 +61,7 @@ All notable changes to this project will be documented in this file.
 * Added `IsEocAndSurvivalMode` function into `_g.script`
 * Added `get_check_option` function into `_g.script`
 * Added `get_chance` function into `_g.script`
+* Added `STR_NONE` constant into `_g.script`
 
 ## [1.5.2] - 2025-07-13
 

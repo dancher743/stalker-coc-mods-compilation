@@ -258,7 +258,7 @@ end
 
 function loot_ui:AddItemToList(sec,count)
 	local _itm			= load_item(self.file_item_main_sz.y)
-	local inv_name 		= game.translate_string(system_ini():r_string_ex(sec,"inv_name") or "none")
+	local inv_name 		= game.translate_string(system_ini():r_string_ex(sec,"inv_name") or STR_NONE)
 
 	_itm:SetWndSize		(self.file_item_main_sz)
 

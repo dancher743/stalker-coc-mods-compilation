@@ -80,7 +80,7 @@ function smart_terrain_on_update(smart)
 	    if smart.props.base > 0 then	   
 	   	   set_targets(smart)	  
 		    if dist > 20000 then
-			    if faction == "none" then
+			    if faction == STR_NONE then
 			 	   try_to_respawn_faction(smart) 
 		        else
 		           spawn_defense_squad(smart)	
@@ -91,7 +91,7 @@ function smart_terrain_on_update(smart)
 		        end
 		    end		  
 	    elseif smart.props.lair > 0 then 			   
-		    if faction == "none" and dist > 20000 then
+		    if faction == STR_NONE and dist > 20000 then
 		       spawn_mutants(smart)
 		    end
 		end
@@ -265,7 +265,7 @@ function smart_control(smart)
 		    local npc_count = npc_count_passive(smart, faction)
 					
 		    if (faction ~= smart.owning_faction and not game_relations.is_factions_enemies(faction, smart.owning_faction)) then
-		        if (smart.owning_faction ~= "none" and faction ~= "monster") then			  
+		        if (smart.owning_faction ~= STR_NONE and faction ~= "monster") then			  
 				    sim_squad.remove_squad(squad)
 					printf("### EOC: -- smart_control 1 -- ".. squad:name() .." - ".. smart:name() .." ###")
 			    end
@@ -309,7 +309,7 @@ function set_targets(smart)
 		local other = alife():object(target)
 		
 		if (other and other.owning_faction) then
-			if (other.owning_faction ~= "none" and not game_relations.is_factions_enemies(smart.owning_faction, other.owning_faction)) then
+			if (other.owning_faction ~= STR_NONE and not game_relations.is_factions_enemies(smart.owning_faction, other.owning_faction)) then
 				smart.target_smarts[other.id] = nil
 			else
 				target_smart_count = target_smart_count + 1
@@ -474,12 +474,12 @@ function process_mutants(smart)
 					if (other and other.props) then
 	                    if (night) then
 						    if math.random(100) > 50 then
-			                    if (other.owning_faction ~= "none") then
+			                    if (other.owning_faction ~= STR_NONE) then
 				                   sim_squad.set_target(squad, sm)
 				                   break	
                                 end		
                             else
-							    if (other.owning_faction == "none") then
+							    if (other.owning_faction == STR_NONE) then
 							 	    local mutants_in_target = squad_count(other, "monster")
 								
                                     if mutants_in_target < 1 then
@@ -489,7 +489,7 @@ function process_mutants(smart)
 							    end	
                             end								
 			            else											
-							if (other.owning_faction == "none") then
+							if (other.owning_faction == STR_NONE) then
 								local mutants_in_target = squad_count(other, "monster")
 								
                                 if mutants_in_target < 1 then
@@ -511,7 +511,7 @@ function find_targets(smart)
 	local linked = sim_tables.level_links[level]	
 	local currentLevelSmarts = sim_levels.level_information[level].smarts
 	local smartCollection = {}
-	local faction = smart.owning_faction or "none"
+	local faction = smart.owning_faction or STR_NONE
 
 	for i=1,#currentLevelSmarts	do
 		smartCollection[#smartCollection+1] = currentLevelSmarts[i]
@@ -539,7 +539,7 @@ function find_targets(smart)
 			if (other.props) then
 				local dist = smart.global_position:distance_to_sqr(other.global_position)
 				local priority = 0
-				local faction2 = other.owning_faction or "none"			
+				local faction2 = other.owning_faction or STR_NONE			
 				local otherLevel = game_graph():vertex(other.m_game_vertex_id):level_id()
 								
 				if (other.props[faction]) then
@@ -549,7 +549,7 @@ function find_targets(smart)
 				if (other.props.base > 0) then
 					priority = priority + 15
 					
-                    if other.owning_faction == "none" then
+                    if other.owning_faction == STR_NONE then
 				       priority = priority + 5
 					end
 				end
@@ -582,7 +582,7 @@ function find_targets(smart)
                    end	
                 end				  
 				
-				if (faction2 == "none" or game_relations.is_factions_enemies(faction, faction2)) then
+				if (faction2 == STR_NONE or game_relations.is_factions_enemies(faction, faction2)) then
 					targets[#targets+1] = {math.abs(dist/priority), other.id}
 				end
 			end
@@ -596,7 +596,7 @@ end
 function squad_count(smart, faction)
 
 	if not (smart.owning_faction) then
-		smart.owning_faction = "none"
+		smart.owning_faction = STR_NONE
 	end
 	
 	local squads = SIMBOARD.smarts[smart.id].squads
@@ -614,7 +614,7 @@ end
 function npc_count(smart, faction)
 
 	if not (smart.owning_faction) then
-		smart.owning_faction = "none"
+		smart.owning_faction = STR_NONE
 	end
 	
 	local squads = SIMBOARD.smarts[smart.id].squads
@@ -633,7 +633,7 @@ end
 function npc_count_passive(smart, faction)
 
 	if not (smart.owning_faction) then
-		smart.owning_faction = "none"
+		smart.owning_faction = STR_NONE
 	end
 	
 	local squads = SIMBOARD.smarts[smart.id].squads
@@ -652,7 +652,7 @@ end
 function npc_count_active(smart, faction)
 
 	if not (smart.owning_faction) then
-		smart.owning_faction = "none"
+		smart.owning_faction = STR_NONE
 	end
 	
 	local squads = SIMBOARD.smarts[smart.id].squads
@@ -675,17 +675,17 @@ function check_owner(smart)
 	end
 	
 	if (smart.time_to_capture) then
-	    smart.owning_faction = "none"
+	    smart.owning_faction = STR_NONE
 	    return
 	end
 	
 	if (not SIMBOARD.smarts[smart.id]) then
-		smart.owning_faction = "none"
+		smart.owning_faction = STR_NONE
 		return
 	end
 	
 	if not (SIMBOARD.smarts[smart.id].squads) then
-		smart.owning_faction = "none"
+		smart.owning_faction = STR_NONE
 		return
 	end
 
@@ -694,7 +694,7 @@ function check_owner(smart)
 	local squadPowers = {}
 	
 	if not (smart.owning_faction) then
-		smart.owning_faction = "none"
+		smart.owning_faction = STR_NONE
 	end
 
 	for i,squad in pairs(squads) do
@@ -716,23 +716,23 @@ function check_owner(smart)
 		end
 	end
 	
-	local owner = "none"
+	local owner = STR_NONE
 	for faction,count in pairs(squadCount) do	
-		if (owner == "none" or faction == smart.owning_faction) then		
+		if (owner == STR_NONE or faction == smart.owning_faction) then		
 			owner = faction
-		elseif (squadCount[owner] < count and smart.owning_faction == "none") then			
+		elseif (squadCount[owner] < count and smart.owning_faction == STR_NONE) then			
 			owner = faction
 		end
 	end
 	
 	if (owner == "monster") then
-		owner = "none"
+		owner = STR_NONE
 	end
 
 	smart.defense_count = squadCount[owner] or 0
 	smart.defense_power = squadPowers[owner] or 0
 	
-	if owner ~= "none" then
+	if owner ~= STR_NONE then
 	   smart.last_last_owner = owner
 	end
 	

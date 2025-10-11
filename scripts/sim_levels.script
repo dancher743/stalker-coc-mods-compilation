@@ -8,7 +8,7 @@ function update()
 end
 
 function setup_faction_table(lvl, faction)
-	if (faction ~= "none") then
+	if (faction ~= STR_NONE) then
 		level_information[lvl].faction_count = level_information[lvl].faction_count + 1
 	end
 
@@ -24,7 +24,7 @@ end
 
 function faction_enemy_present(lvl, faction)
     
-	if (faction == "none") then
+	if (faction == STR_NONE) then
 		return 0, {}
 	end
 
@@ -52,7 +52,7 @@ function update_level(lvl)
 		level_information[lvl].faction_count = 0
 		level_information[lvl].faction_war = false
 
-		setup_faction_table(lvl, "none")
+		setup_faction_table(lvl, STR_NONE)
 		
 		for i,sm in pairs(level_information[lvl].smarts) do
 			local smart = sm and alife():object(sm)
@@ -78,7 +78,7 @@ function update_level(lvl)
 		end
 		
 		for f,tbl in pairs(level_information[lvl].faction_stats) do
-			if f ~= "none" then	
+			if f ~= STR_NONE then	
 				if level_information[lvl].faction_count == 1 then
 					level_information[lvl].faction_stats[f].faction_war = false
 				else				
@@ -96,8 +96,8 @@ function update_level(lvl)
 
 		if (level_information[lvl].base_count > 0) then
 			for f,tbl in pairs(level_information[lvl].faction_stats) do
-				if f ~= "none" then		
-					if not (level_information[lvl].faction_stats[f].faction_war or level_information[lvl].faction_stats["none"].base_count > 0) then
+				if f ~= STR_NONE then		
+					if not (level_information[lvl].faction_stats[f].faction_war or level_information[lvl].faction_stats[STR_NONE].base_count > 0) then
 						if (math.random(0, 100) < 70) then
 							local target = get_level_target(lvl, f)
 							level_information[lvl].faction_stats[f].target_level = target
@@ -152,7 +152,7 @@ function get_level_target(lvl, faction)
 				priority = priority + level_information[lvl2].faction_priority[faction]
 			end
 
-			if (enemyCount > 0 or level_information[lvl2].faction_stats["none"].base_count > 0) then
+			if (enemyCount > 0 or level_information[lvl2].faction_stats[STR_NONE].base_count > 0) then
 				dists[#dists+1] = { lvl2, dist, priority, (dist/priority) }
 			end
 		end
