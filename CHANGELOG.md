@@ -50,6 +50,7 @@ All notable changes to this project will be documented in this file.
 * Fixed NPC's second names in Dynamic News
 * Fixed `thunderbolt_period` of subperiods
 * Fixed wrong sound theme `strange_story_disbelief`
+* Fixed not dropping items with low chances from dead NPCs
 
 ### Optimization
 * Made `squad_on_update`, `monster_on_update` and `actor_on_update` callbacks sliced

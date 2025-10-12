@@ -157,7 +157,7 @@ function create_release_item(npc)
 		--local p = alun_utils.str_explode(item_by_story_id[sid],STR_COMMA)
 		--printf("sid=%s p=%s",sid,p)
 		if (p and p ~= STR_EMPTY and p ~= STR_NIL) then
-			create_items(npc, p, 1, 100)
+			create_items(npc, p, 1, 1)
 		end
 	end
 
@@ -377,7 +377,7 @@ function create_items(npc, section, number, rnd)
 	else
 		for i=1,number do
 			--' Проверяем вероятность появить каждый объект в отдельности
-			if (math.random(1,100)/100) <=  rnd then
+			if math.random() <= rnd then
 				alife():create(section,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id())
 			end
 		end
