@@ -32,6 +32,7 @@ All notable changes to this project will be documented in this file.
 * Rebalanced chances of getting an artifacts from corpses
 * Excluded Doctor's dog from Dynamic News
 * Reworked chances in `sim_squad_offline_combat.script`
+* Corrected tasks descriptions in RUS localisation
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
