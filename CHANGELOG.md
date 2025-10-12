@@ -56,6 +56,7 @@ All notable changes to this project will be documented in this file.
 * Increased `update_queue_timer` from 500 to 1500 in `sim_squad_offline_combat.script`
 * Optimized CPU usage of `process_squads_combat` function in `sim_squad_offline_combat.script`
 * Replaced some strings with global constants
+* Added `check_option_name_prefix` field into `axr_main_options.script`
 
 ### Framework
 * Added `valid_vertex_only` function into `alun_utils.script`
