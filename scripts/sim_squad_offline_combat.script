@@ -62,8 +62,7 @@ local is_initialized
 local loot_items
 local update_timer
 local update_queue_timer
-local updated_levels
-local squads_to_levels
+local combat_squads_table
 local processed_squads
 local combats_queue
 local last_killed_stalker
@@ -132,7 +131,7 @@ local function get_random_npc(squad)
 	return se_npc
 end
 
-local function process_combat(squad1, squad2, level_id)
+local function execute_combat(squad1, squad2, level_id)
 	local killer_squad = nil
 	local victim_squad = nil
 	local squad1_power = calculate_squad_power(squad1)
@@ -156,6 +155,7 @@ local function process_combat(squad1, squad2, level_id)
 	local se_killer = get_random_npc(killer_squad)
 	local se_victim = nil
 	local is_killer_stalker = killer_squad:is_stalker()
+	local is_victim_stalker = victim_squad:is_stalker()
 	
 	for k in victim_squad:squad_members() do
 		se_killer = math.random(2) == 1 and se_killer or get_random_npc(killer_squad)
@@ -167,22 +167,27 @@ local function process_combat(squad1, squad2, level_id)
 			end
 		end
 		
-		if (se_victim and loot_items[se_victim.id] and loot_items[se_killer.id]) then
+		if (is_killer_stalker and is_victim_stalker and se_victim and loot_items[se_victim.id] and loot_items[se_killer.id]) then
 			local victim_items = loot_items[se_victim.id]
-			for i=1,#victim_items do
+			for i = #victim_items, 1, -1 do
 				local victim_item = get_se_obj(victim_items[i])
-				table.remove(loot_items[se_victim.id], victim_item.id)
 				
-				local killer_item = alife():create(victim_item:section_name(), se_killer.position, se_killer.m_level_vertex_id, se_killer.m_game_vertex_id, se_killer.id)
-				table.insert(loot_items[se_killer.id], killer_item.id)
-				
-				safe_release_manager.release(victim_item)
-				-- if dbg then printf_dbg("loot relocated!") end
+				if (victim_item and victim_item.parent_id ~= 0 and victim_item.parent_id == se_victim.id) then
+					table.remove(victim_items, i)
+					
+					local killer_item = alife():create(victim_item:section_name(), se_killer.position, 
+						se_killer.m_level_vertex_id, se_killer.m_game_vertex_id, se_killer.id)
+					local killer_items = loot_items[se_killer.id]
+					table.insert(killer_items, killer_item.id)
+					
+					safe_release_manager.release(victim_item)
+					-- if dbg then printf_dbg("loot relocated!") end
+				end
 			end
 		end
 	end
 	
-	if (se_victim and victim_squad:is_stalker()) then
+	if (se_victim and is_victim_stalker) then
 		if (last_killed_stalker == nil) then
 			last_killed_stalker = {}
 		end
@@ -193,12 +198,13 @@ local function process_combat(squad1, squad2, level_id)
 	return victim_squad
 end
 
-local function process_squads_combat(squads)
-	if (#squads == 0) then
+local function prepare_combats(squads)
+	local squads_count = #squads
+	
+	if (squads_count == 0) then
 		return
 	end
 	
-	local squads_count = #squads
 	local combats_count = 0
 	
 	for i=1,squads_count do
@@ -254,7 +260,7 @@ local function process_squads_combat(squads)
 	empty_table(processed_squads)
 end
 
-function is_item_valid(se_item)
+local function is_item_valid(se_item)
 	local section = se_item:section_name()
 	return loot_ignore_list[section] == nil
 end
@@ -309,7 +315,7 @@ local function update_queue()
 	end
 	
 	local level_id = simulation_objects.get_level_id(squad1)
-	local victim_squad = process_combat(squad1, squad2, level_id)
+	local victim_squad = execute_combat(squad1, squad2, level_id)
 	
 	if (victim_squad) then
 		if (victim_squad.id == squad1.id) then
@@ -319,68 +325,87 @@ local function update_queue()
 		end
 		if (actor_level_id ~= level_id and get_chance() <= remove_squad_chance) then
 			victim_squad:remove_squad()
+			pop_last_killed_stalker_data()
+		end
+	end
+end
+
+local function fill_combat_squads_table()
+	combat_squads_table = {}
+	
+	for _,squad in pairs(SIMBOARD.squads) do
+		if (squad and not squad.online and squad.first_update and is_squad_valid(squad)) then
+			local level_id = simulation_objects.get_level_id(squad)
+			local combat_squads = nil
+			
+			if (combat_squads_table[level_id] == nil) then
+				combat_squads = sim_squad_offline_combat.combat_squads(level_id)
+				combat_squads_table[level_id] = combat_squads
+			else
+				combat_squads = combat_squads_table[level_id]
+			end
+			
+			table.insert(combat_squads.squads, squad)
+		end
+	end
+	
+	for _,combat_squads in pairs(combat_squads_table) do
+		combat_squads:shuffle()
+	end
+	utils.shuffle_table(combat_squads_table)
+end
+
+local function fill_loot_items_table()
+	loot_items = {}
+	
+	for i=1,65534 do
+		local se_item = alife_object(i)
+		if (se_item and se_item.parent_id and is_item_valid(se_item)) then
+			local items = nil
+			if (loot_items[se_item.parent_id] == nil) then
+				items = {}
+				loot_items[se_item.parent_id] = items
+			else
+				items = loot_items[se_item.parent_id]
+			end
+			table.insert(items, se_item.id)
+			-- if dbg then printf_dbg("loot added (%s)", tostring(se_item.id)) end
 		end
 	end
 end
 
 local function update()
-	if (squads_to_levels == nil) then
-		squads_to_levels = {}
-		
-		for _,squad in pairs(SIMBOARD.squads) do
-			if (squad and not squad.online and squad.first_update and is_squad_valid(squad)) then
-				local level_id = simulation_objects.get_level_id(squad)
-				if (squads_to_levels[level_id] == nil) then
-					squads_to_levels[level_id] = {}
-				end
-				table.insert(squads_to_levels[level_id], squad)
-				if not squad:is_monster() then
-					for k in squad:squad_members() do
-						loot_items[k.id] = {}
-					end
-				end
-			end
-		end
-		
-		for _,squads in ipairs(squads_to_levels) do
-			utils.shuffle_table(squads)
-		end
-		utils.shuffle_table(squads_to_levels)
-		
-		for i=1,65534 do
-			local se_obj = alife_object(i)
-			if (se_obj and se_obj.parent_id and loot_items[se_obj.parent_id] and is_item_valid(se_obj)) then
-				table.insert(loot_items[se_obj.parent_id], se_obj.id)
-				-- if dbg then printf_dbg("loot added (%s)", tostring(se_obj.id)) end
-			end
-		end
-		loot_ignore_list = nil
-		
-		-- Dancher: disabled
-		-- gc.collect("offline squads combat init")
-		return
+	if (combat_squads_table == nil) then
+		fill_combat_squads_table()
 	end
 	
-	local level_to_update
+	if (loot_items == nil) then
+		fill_loot_items_table()
+	end
 	
-	for id,_ in pairs(squads_to_levels) do
-		if (updated_levels[id] == nil) then
-			level_to_update = id
+	local level_to_update = nil
+	
+	for level_id,combat_squads in pairs(combat_squads_table) do
+		if (combat_squads.were_combats == false) then
+			level_to_update = level_id
 			break
 		end
 	end
 	
 	if (level_to_update == nil) then
-		empty_table(updated_levels)
+		for _,combat_squads in pairs(combat_squads_table) do
+			combat_squads.were_combats = false
+		end
 		if dbg then printf_dbg("restart combats") end
 		return
 	end
 	
-	local squads_to_combat = squads_to_levels[level_to_update]
-	process_squads_combat(squads_to_combat)
+	local combat_squads = combat_squads_table[level_to_update]
+	
+	prepare_combats(combat_squads.squads)
 	if dbg then printf_dbg("process combats") end
 	
-	updated_levels[level_to_update] = true
+	combat_squads.were_combats = true
 end
 
 local function actor_on_update(_,delta)
@@ -404,8 +429,6 @@ local function initialize()
 		return
 	end
 	
-	loot_items = {}
-	updated_levels = {}
 	processed_squads = {}
 	combats_queue = {}
 	update_timer = 1000
@@ -423,16 +446,17 @@ local function finalize()
 		return
 	end
 	
-	UnregisterScriptCallback("actor_on_update",actor_on_update)
+	combat_squads_table = nil
 	loot_items = nil
-	updated_levels = nil
+	pop_last_killed_stalker_data()
+	
+	UnregisterScriptCallback("actor_on_update",actor_on_update)
 	processed_squads = nil
 	combats_queue = nil
 	update_timer = nil
 	update_queue_timer = nil
 	is_survival_mode = nil
 	actor_level_id = nil
-	pop_last_killed_stalker_data()
 	
 	is_initialized = false
 	if dbg then printf_dbg("finalized") end
@@ -463,4 +487,15 @@ function pop_last_killed_stalker_data()
 	local data = last_killed_stalker
 	last_killed_stalker = nil
 	return data
+end
+
+class "combat_squads"
+function combat_squads:__init(level_id)
+	self.level_id = level_id
+	self.squads = {}
+	self.were_combats = false
+end
+
+function combat_squads:shuffle()
+	utils.shuffle_table(self.squads)
 end

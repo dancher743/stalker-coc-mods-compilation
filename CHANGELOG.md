@@ -33,6 +33,7 @@ All notable changes to this project will be documented in this file.
 * Excluded Doctor's dog from Dynamic News
 * Reworked chances in `sim_squad_offline_combat.script`
 * Corrected tasks descriptions in RUS localisation
+* Refactored `sim_squad_offline_combat.script`
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
@@ -51,6 +52,7 @@ All notable changes to this project will be documented in this file.
 * Fixed `thunderbolt_period` of subperiods
 * Fixed wrong sound theme `strange_story_disbelief`
 * Fixed not dropping items with low chances from dead NPCs
+* Fixed incorrect loot relocation in Offline Combat feature
 
 ### Optimization
 * Made `squad_on_update`, `monster_on_update` and `actor_on_update` callbacks sliced
