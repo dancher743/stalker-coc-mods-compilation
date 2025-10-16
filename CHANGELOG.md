@@ -34,6 +34,7 @@ All notable changes to this project will be documented in this file.
 * Reworked chances in `sim_squad_offline_combat.script`
 * Corrected tasks descriptions in RUS localisation
 * Refactored `sim_squad_offline_combat.script`
+* Increased volum of critical hit sound from 0.45 to 0.75
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
