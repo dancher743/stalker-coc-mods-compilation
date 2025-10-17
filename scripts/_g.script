@@ -1932,10 +1932,7 @@ function IsIronManMode()
 end
 
 function IsActor(o,c)
-	if not (c) then
-		c = o and o:clsid()
-	end
-	return c and (c == clsid.script_actor) or false
+    return o and (o:id() == 0) or false
 end
 
 function IsStalkerOnly(o,c)
