@@ -976,7 +976,7 @@ function cmd.teleport(me,txt,owner,p)
 	
 	if (who and to_pos) then
 		local success = false
-		if (who.id == 0) then 
+		if (IsActor(who)) then 
 			db.actor:set_actor_position(to_pos)
 			success = true
 		elseif (to_obj) then

@@ -234,7 +234,7 @@ local function drx_df_npc_on_death_callback( npc, who )
 		return
 	end
 	local killer_faction
-	if (se_obj.id == 0 and disguise.has_actor_disguised()) then
+	if (IsActor(se_obj) and disguise.has_actor_disguised()) then
 		killer_faction = se_obj:community()
 	else
 		killer_faction = alife_character_community( se_obj )
