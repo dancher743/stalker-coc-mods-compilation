@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 * Optimized the number of per-frame updates calls
 * Added "Companions tasks" option
 * Added out of smart combats to Offline Combat feature
+* Reworked Critical Hit formula and added modificators: bleeding, radiation, health, power, psy-health and satiety
 
 ### Mods
 * [CS atmosphere for CoC v1.1 [CoC 1.4.22]](https://www.moddb.com/mods/call-of-chernobyl/addons/cop-and-cs-atmosphere-for-coc-coc-1422)
