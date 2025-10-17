@@ -423,7 +423,7 @@ end
 function coc_rankings_set_hint(index)
 	local se_obj = coc_ranking_list[index] ~= nil and alife_object(coc_ranking_list[index])
 	if (se_obj) then
-		if (IsActor(se_obj)) then
+		if (se_obj.id == 0) then
 			--TODO: Maybe some stats for player, like rank points per minute; if such a thing is possible.
 			return STR_EMPTY
 		else
@@ -497,7 +497,7 @@ function coc_rankings_set_icon(index)
 	local se_obj = coc_ranking_list[index] ~= nil and alife_object(coc_ranking_list[index])
 	if (se_obj) then
 		local icon_name
-		if (IsActor(se_obj)) then 
+		if (se_obj.id == 0) then 
 			if (axr_main.config:r_value(MM_OPTIONS,"enable_outfit_portrait",1,false) == true) then
 				local outfit = db.actor:item_in_slot(7)
 				if (outfit) then 
@@ -523,5 +523,5 @@ end
 
 function coc_rankings_show_border(index)
 	local se_obj = coc_ranking_list[index] ~= nil and alife_object(coc_ranking_list[index])
-	return IsActor(se_obj)
+	return se_obj and se_obj.id == 0 or false
 end

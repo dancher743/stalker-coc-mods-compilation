@@ -1162,7 +1162,7 @@ function alife_character_community (obj)
 		return
 	end
 	if IsStalker(obj, obj:clsid()) then
-		if (IsActor(obj) and disguise.has_actor_disguised()) then
+		if (obj.id == 0 and disguise.has_actor_disguised()) then
 			return disguise.get_actor_default_faction()
 		end
 		return obj:community()
@@ -1931,8 +1931,11 @@ function IsIronManMode()
 	return alife_storage_manager.get_state().uuid ~= nil
 end
 
-function IsActor(o)
-	return o and (o.id == 0) or false
+function IsActor(o,c)
+	if not (c) then
+		c = o and o:clsid()
+	end
+	return c and (c == clsid.script_actor) or false
 end
 
 function IsStalkerOnly(o,c)
