@@ -43,6 +43,7 @@ All notable changes to this project will be documented in this file.
 * Made `more_cooking_recipes_dialog` after `dm_broker_dialog` in Barman's dialogs
 * Added `rain_factor` check into `fallout` debug command
 * Replaced leave zone text with original CoP text
+* Made only Duty squads on `gar_smart_terrain_5_2` smart (Special thanks to LR mod for the tip!)
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
