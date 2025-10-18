@@ -834,6 +834,19 @@ function FalloutManager:load(packet)
 	set_save_marker(packet, "load", true, "Fallout")
 end
 
+function FalloutManager:on_level_changing()
+	if (self.phase == nil) then
+		return
+	end
+	
+	if (self.fallout_in_progress) then
+		self.skip_message = true
+		self:skip()
+	else
+		self:shift()
+	end
+end
+
 
 function get_fallout_manager()
 	if fallout_manager == nil then
@@ -949,6 +962,11 @@ local function load_state(m_data)
 	m_data.FalloutManager = nil
 end
 
+local function on_level_changing()
+	local m = get_fallout_manager()
+	m:on_level_changing()
+end
+
 function check_squad(squad, sim, gg)
 	if squad:clsid() ~= clsid.online_offline_group_s then 
 		return false
@@ -1000,6 +1018,7 @@ end
 function on_game_start()
 	RegisterScriptCallback("save_state", save_state)
 	RegisterScriptCallback("load_state", load_state)
+	RegisterScriptCallback("on_level_changing",on_level_changing)
 end
 
 --debug
