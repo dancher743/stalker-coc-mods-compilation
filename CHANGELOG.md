@@ -57,6 +57,7 @@ All notable changes to this project will be documented in this file.
 * Fixed not dropping items with low chances from dead NPCs
 * Fixed incorrect loot relocation in Offline Combat feature
 * Fixed black clouds in some CoC OL weather periods
+* Added `xr_meet.script` from CoC 1.5 to fix incorrect hello/bye phrases
 
 ### Optimization
 * Made `squad_on_update`, `monster_on_update` and `actor_on_update` callbacks sliced

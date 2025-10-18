@@ -219,48 +219,19 @@ function Cmeet_manager:__init(npc, storage)
 	self.bye_passed = false	 	-- Говорили ли мы пока
 end
 function Cmeet_manager:update_state()
-	local state = nil
-	local victim = nil
-
-	if self.current_distance == "close" then
-		-- анимация, пока в близком радиусе
-		state = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.close_anim)
-
-		-- направление, пока в близком радиусе
-		victim = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.close_victim)
-
-	elseif self.current_distance == "far" then
-		-- анимация, пока в дальнем радиусе
-		state = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.far_anim)
-
-		-- направление, пока в близком радиусе
-		victim = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.far_victim)
-
+	local condlist = self.current_distance == "close" and self.a.close_anim or self.a.far_anim
+	local state = condlist and xr_logic.pick_section_from_condlist(db.actor, self.npc, condlist)
+	
+	if (state and state ~= "nil" and state ~= "") then
+		local victim_str = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.current_distance == "close" and self.a.close_victim or self.a.far_victim)
+		local victim = get_story_object(victim_str)
+		state_mgr.set_state(self.npc, state, nil, nil, {look_object = victim})
 	end
 
-	if tostring(victim) ~= "nil" then
-		local sim = alife()
-		if sim then
-			victim = get_story_object(victim)
-		end
-	else
-		victim = nil
-	end
-	if tostring(state) ~= "nil" then
-		if victim == nil then
-			state_mgr.set_state(self.npc, state, nil, nil, nil)
-		else
-			state_mgr.set_state(self.npc, state, nil, nil, {look_object = victim})
-		end
-	end
-
-	local snd = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.far_snd)
-
-	-- звук, пока в дальнем радиусе  (отыгрывается, даже если мы в ближнем)
-	if tostring(snd) ~= "nil" then
+	local snd = self.a.far_snd and xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.far_snd)
+	if (snd and snd ~= "nil" and snd ~= "") then
 		xr_sound.set_sound_play(self.npc:id(), snd)
 	end
-
 end
 function Cmeet_manager:set_start_distance()
 	if db.actor == nil then
@@ -282,8 +253,8 @@ function Cmeet_manager:set_start_distance()
 
 	local actor_visible = self.npc:see(db.actor)
 
-	local is_object_far = actor_visible and distance <= tonumber(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.far_distance))
-	local is_object_close = (actor_visible and distance <= tonumber(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.close_distance))) or self.npc:is_talking()
+	local is_object_far = actor_visible and distance <= tonumber(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.far_distance) or 5)
+	local is_object_close = (actor_visible and distance <= tonumber(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.close_distance) or 3)) or self.npc:is_talking()
 
 	if is_object_close == true then
 		self.hello_passed = true
@@ -302,10 +273,10 @@ function Cmeet_manager:set_start_distance()
 end
 function Cmeet_manager:update()
 	local tg = time_global()
-	self.__stimer = not self.__stimer and tg + 500 or self.__stimer
-	if (tg < self.__stimer) then 
+	if (self.__stimer and tg < self.__stimer) then 
 		return 
 	end 
+	self.__stimer = tg + 500
 	
 	-- Определение, в каком радиусе находимся
 	local distance = self.npc:position():distance_to(db.actor:position())
@@ -318,12 +289,13 @@ function Cmeet_manager:update()
 			-- Коллбек на приближение
 			-- звук при приближении
 			if self.hello_passed == false then
-				local snd = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.close_snd_hello)
-				if tostring(snd) ~= "nil" and not state_mgr.is_npc_in_combat(self.npc) then
-					xr_sound.set_sound_play(self.npc:id(), snd)
-				end
-
 				self.hello_passed = true
+				if not (state_mgr.is_npc_in_combat(self.npc)) then
+					local snd = self.a.close_snd_hello and xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.close_snd_hello)
+					if (snd and snd ~= "nil") then
+						xr_sound.set_sound_play(self.npc:id(), snd)
+					end
+				end
 			end
 
 		elseif distance <= tonumber(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.far_snd_distance)) then
@@ -331,19 +303,20 @@ function Cmeet_manager:update()
 				-- Коллбек на отдаление
 				-- звук при отдалении
 				if self.bye_passed == false then
-					local snd = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.close_snd_bye)
-					if tostring(snd) ~= "nil" and not state_mgr.is_npc_in_combat(self.npc) then
-						xr_sound.set_sound_play(self.npc:id(), snd)
-					end
-
 					self.bye_passed = true
+					if not (state_mgr.is_npc_in_combat(self.npc)) then
+						local snd = self.a.close_snd_bye and xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.close_snd_bye)
+						if (snd and snd ~= "nil") then
+							xr_sound.set_sound_play(self.npc:id(), snd)
+						end
+					end
 				end
 			end
 		end
 	end
 
-	local is_object_far = actor_visible and distance <= tonumber(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.far_distance))
-	local is_object_close = (actor_visible and distance <= tonumber(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.close_distance))) or (self.npc:is_talking() and self.a.meet_on_talking)
+	local is_object_far = actor_visible and distance <= tonumber(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.far_distance) or 5)
+	local is_object_close = (actor_visible and distance <= tonumber(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.close_distance) or 3)) or (self.npc:is_talking() and self.a.meet_on_talking)
 
 	--printf("!!! %s %s %s", self.npc:name(), tostring(is_object_far), tostring(is_object_close))
 	--printf("%s",  xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.close_distance))
@@ -424,15 +397,13 @@ function Cmeet_manager:update()
 		end
 	end
 
-	local use_text = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.use_text) or "nil"
-	if use_text ~= "nil" then
+	local use_text = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.use_text)
+	if (use_text and use_text ~= "" and use_text ~= "nil") then
 		self.npc:set_tip_text(use_text)
+	elseif (self.npc:is_talk_enabled()) then 
+		self.npc:set_tip_text("character_use")
 	else
-		if self.npc:is_talk_enabled() then
-			self.npc:set_tip_text("character_use")
-		else
-			self.npc:set_tip_text("")
-		end
+		self.npc:set_tip_text("")
 	end
 
 	if (self.a.gtfo) then 
@@ -493,8 +464,8 @@ function notify_on_use(victim, who)
 		return
 	end
 
-	local snd = xr_logic.pick_section_from_condlist(db.actor, victim, st.snd_on_use) or "nil"
-	if (snd ~= "nil") then
+	local snd = xr_logic.pick_section_from_condlist(db.actor, victim, st.snd_on_use)
+	if (snd and snd ~= "" and snd ~= "nil") then
 		xr_sound.set_sound_play(victim:id(), snd)
 	end
 
@@ -526,7 +497,6 @@ function add_to_binder(npc,char_ini,scheme,section,st,temp)
 	temp.action:add_precondition(wp(stalker_ids.property_alive,true))
 	temp.action:add_precondition(wp(stalker_ids.property_enemy,false))
 	temp.action:add_precondition(wp(stalker_ids.property_danger,false))
-	temp.action:add_precondition(wp(stalker_ids.property_anomaly,false))
 	temp.action:add_precondition(wp(xr_evaluators_id.stohe_meet_base + 1,true))
 	
 	temp.action:add_effect(wp(xr_evaluators_id.stohe_meet_base + 1,false))
@@ -569,6 +539,7 @@ function disable_generic_scheme(npc,scheme,stype)
 	db.storage[npc:id()].actor_disable = nil
 end
 
+local default_meet = {} -- no sense to recreate for each npc
 
 -- Функция чтения настроек. В нее передается секция, откуда их нужно читать.
 function init_meet(npc, ini, section, st, scheme)
@@ -579,56 +550,57 @@ function init_meet(npc, ini, section, st, scheme)
 	end
 
 	st.meet_section = section
-
-	-- Устанавливаем дефолты
-	local def = {}
-
-	local relation = game_relations.get_npcs_relation(npc, db.actor)
-
-	if relation == game_object.enemy then
-		def.close_distance 		= "0"
-		def.close_anim 			= "nil"
-		def.close_snd_distance 	= "0"
-		def.close_snd_hello		= "nil"
-		def.close_snd_bye		= "nil"
-		def.close_victim		= "nil"
-		def.far_distance		= "0"
-		def.far_anim			= "nil"
-		def.far_snd_distance	= "0"
-		def.far_snd				= "nil"
-		def.far_victim			= "nil"
-		def.snd_on_use			= "nil"
-		def.use					= "false"
-		def.meet_dialog			= "nil"
-		def.abuse				= "false"
-		def.trade_enable		= "false"
-		def.allow_break			= "true"
-		def.meet_on_talking		= "true"
-		def.use_text			= "nil"
-
+	
+	
+	local is_enemy = game_relations.get_npcs_relation(npc, db.actor) == game_object.enemy
+	if not (default_meet[is_enemy]) then 
+		default_meet[is_enemy] = {}
+	end
+		
+	if (is_enemy) then
+		default_meet[is_enemy].close_distance 		= "0"
+		default_meet[is_enemy].close_anim 			= "nil"
+		default_meet[is_enemy].close_snd_distance 	= "0"
+		default_meet[is_enemy].close_snd_hello		= "nil"
+		default_meet[is_enemy].close_snd_bye		= "nil"
+		default_meet[is_enemy].close_victim		= "nil"
+		default_meet[is_enemy].far_distance		= "0"
+		default_meet[is_enemy].far_anim			= "nil"
+		default_meet[is_enemy].far_snd_distance	= "0"
+		default_meet[is_enemy].far_snd				= "nil"
+		default_meet[is_enemy].far_victim			= "nil"
+		default_meet[is_enemy].snd_on_use			= "nil"
+		default_meet[is_enemy].use					= "false"
+		default_meet[is_enemy].meet_dialog			= "nil"
+		default_meet[is_enemy].abuse				= "false"
+		default_meet[is_enemy].trade_enable		= "false"
+		default_meet[is_enemy].allow_break			= "true"
+		default_meet[is_enemy].meet_on_talking		= "true"
+		default_meet[is_enemy].use_text			= "nil"
 	else
-		def.close_distance 		= "{=is_wounded} 0, {!is_squad_commander} 0, {!after_first_meet !actor_friend =actor_has_weapon} 3, 2"
-		def.close_anim 			= "{=is_wounded} nil, {!is_squad_commander} nil, {=actor_has_weapon} nil, talk_default"
-		def.close_snd_distance 	= "{=is_wounded} 0, {!is_squad_commander} 0, 3"
-		def.close_snd_hello		= "{=is_wounded} nil, {!is_squad_commander} nil, {=actor_enemy} nil, {!after_first_meet !actor_friend =actor_has_weapon} meet_stop, meet_hello"
-		def.close_snd_bye		= "nil"
-		def.close_victim		= "{=is_wounded} nil, {!is_squad_commander} nil, actor"
-		def.far_distance		= "{=is_wounded} 0, {!is_squad_commander} 0, {!after_first_meet !actor_friend =actor_has_weapon} 7, 3"
-		def.far_anim			= "{=is_wounded} nil, {!is_squad_commander} nil, {!after_first_meet !actor_friend =actor_has_weapon} threat_na, nil"
-		def.far_snd_distance	= "{=is_wounded} 0, {!is_squad_commander} 0, 5"
-		def.far_snd				= "{=is_wounded} nil, {!is_squad_commander} nil, {=actor_enemy} nil, {!after_first_meet !actor_friend =actor_has_weapon} meet_hide_weapon, meet_wait"
-		def.far_victim			= "{=is_wounded} nil, {!is_squad_commander} nil, actor"
-		def.snd_on_use			= "{=is_wounded} nil, {!is_squad_commander} meet_use_no_talk_leader, {=actor_enemy} nil, {=has_enemy} meet_use_no_fight, {!dist_to_actor_le(3)} nil"
-		def.use					= "{=is_wounded} false, {!is_squad_commander} false, {=actor_enemy} false, {=has_enemy} false, {=dist_to_actor_le(3)} true, false"
-		def.meet_dialog			= "nil"
-		def.abuse				= "{=has_enemy} false, true"
-		def.trade_enable		= "true"
-		def.allow_break			= "true"
-		def.meet_on_talking		= "true"
-		def.use_text			= "nil"
+		default_meet[is_enemy].close_distance 		= "{=is_wounded} 0, {!is_squad_commander} 0, {!after_first_meet !actor_friend =actor_has_weapon} 3, 2"
+		default_meet[is_enemy].close_anim 			= "{=is_wounded} nil, {!is_squad_commander} nil, {=actor_has_weapon} nil, talk_default"
+		default_meet[is_enemy].close_snd_distance 	= "{=is_wounded} 0, {!is_squad_commander} 0, 3"
+		default_meet[is_enemy].close_snd_hello		= "{=is_wounded} nil, {!is_squad_commander} nil, {=actor_enemy} nil, {!after_first_meet !actor_friend =actor_has_weapon} meet_stop, meet_hello"
+		default_meet[is_enemy].close_snd_bye		= "nil"
+		default_meet[is_enemy].close_victim		= "{=is_wounded} nil, {!is_squad_commander} nil, actor"
+		default_meet[is_enemy].far_distance		= "{=is_wounded} 0, {!is_squad_commander} 0, {!after_first_meet !actor_friend =actor_has_weapon} 5, 3"
+		default_meet[is_enemy].far_anim			= "{=is_wounded} nil, {!is_squad_commander} nil, {!after_first_meet !actor_friend =actor_has_weapon} threat_na, nil"
+		default_meet[is_enemy].far_snd_distance	= "{=is_wounded} 0, {!is_squad_commander} 0, 5"
+		default_meet[is_enemy].far_snd				= "{=is_wounded} nil, {!is_squad_commander} nil, {=actor_enemy} nil, {!after_first_meet !actor_friend =actor_has_weapon} meet_hide_weapon, meet_wait"
+		default_meet[is_enemy].far_victim			= "{=is_wounded} nil, {!is_squad_commander} nil, actor"
+		default_meet[is_enemy].snd_on_use			= "{=is_wounded} nil, {!is_squad_commander} meet_use_no_talk_leader, {=actor_enemy} nil, {=has_enemy} meet_use_no_fight, {!dist_to_actor_le(3)} nil"
+		default_meet[is_enemy].use					= "{=is_wounded} false, {!is_squad_commander} false, {=actor_enemy} false, {=has_enemy} false, {=dist_to_actor_le(3)} true, false"
+		default_meet[is_enemy].meet_dialog			= "nil"
+		default_meet[is_enemy].abuse				= "{=has_enemy} false, true"
+		default_meet[is_enemy].trade_enable		= "true"
+		default_meet[is_enemy].allow_break			= "true"
+		default_meet[is_enemy].meet_on_talking		= "true"
+		default_meet[is_enemy].use_text			= "nil"
 	end
 
-
+	local def = default_meet[is_enemy]
+	
 	if tostring(section) == "no_meet" then
 		st.close_distance 	= xr_logic.parse_condlist(npc, section, "close_distance", 		"0")
 		st.close_anim 		= xr_logic.parse_condlist(npc, section, "close_anim", 			"nil")
@@ -654,7 +626,6 @@ function init_meet(npc, ini, section, st, scheme)
 
 		st.reset_distance	= 30
 		st.meet_only_at_path = true
-
 	else
 		st.close_distance 	= xr_logic.parse_condlist(npc, section, "close_distance", 		ini:r_string_ex(section,"close_distance") 		or def.close_distance)
 		st.close_anim 		= xr_logic.parse_condlist(npc, section, "close_anim", 			ini:r_string_ex(section,"close_anim")	 		or def.close_anim)
@@ -735,11 +706,23 @@ function process_npc_usability(npc)
 		else
 			npc:enable_talk()
 		end
-	elseif (use == "false") then
+		return
+	end 
+	
+	-- check if a task giver then force allow talk
+	local id = npc:id()
+	local task_info = task_manager.get_task_manager().task_info
+	for k,v in pairs(task_info) do
+		if (v.task_giver_id and v.task_giver_id == id) then
+			npc:enable_talk()
+			return
+		end 
+	end
+	
+	if (use == "false") then
 		npc:disable_talk()
 		if npc:is_talking() then
 			npc:stop_talk()
 		end
 	end
-
 end
