@@ -760,6 +760,9 @@ function cmd.fallout(me,txt,owner,p)
 	if not (sm) then return "No fallout manager!" end
 
 	if (wrd == "start") then
+		if (level.rain_factor() == 0) then
+			return "fallout:= not started. Need rain for a fallout to start! Try 'period rain/storm' command first."
+		end
 		sm:start(true)
 		return "fallout:= started"
 	elseif (wrd == "stop") then
