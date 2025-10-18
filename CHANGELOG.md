@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 
 ### Mods
 * [CS atmosphere for CoC v1.1 [CoC 1.4.22]](https://www.moddb.com/mods/call-of-chernobyl/addons/cop-and-cs-atmosphere-for-coc-coc-1422)
+* [Better Knife (Vanilla)](https://www.moddb.com/mods/call-of-chernobyl/addons/better-knife-vanilla) with adaptations from CoP
 
 ### Improvements
 * Added rain and rain splash textures from "CoC OL pack v1.3" mod
