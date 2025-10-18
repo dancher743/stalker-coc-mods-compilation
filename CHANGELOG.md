@@ -42,6 +42,7 @@ All notable changes to this project will be documented in this file.
 * Added SoC sounds to big bloodsuckers
 * Made `more_cooking_recipes_dialog` after `dm_broker_dialog` in Barman's dialogs
 * Added `rain_factor` check into `fallout` debug command
+* Replaced leave zone text with original CoP text
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
