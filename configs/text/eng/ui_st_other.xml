@@ -643,4 +643,8 @@
 	<string id="ui_st_ironman_mode_saves_deleted">
 		<text>You have no lives left. Saves have been deleted.</text>
 	</string>
+	
+	<string id="ui_st_no_talk_leader_news_text">
+		<text>Squad commander - %s.</text>
+	</string>
 </string_table>

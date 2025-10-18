@@ -594,4 +594,7 @@
 	<string id="ui_mm_companions_tasks">
 		<text>Задания от напарников</text>
 	</string>
+	<string id="ui_mm_show_no_talk_leader">
+		<text>Сообщ-е о командире отряда</text>
+	</string>
 </string_table>

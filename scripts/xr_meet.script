@@ -470,10 +470,20 @@ function notify_on_use(victim, who)
 	end
 
 	local meet_manager = st.meet_manager
-	if meet_manager.use == STR_FALSE and meet_manager.abuse_mode == STR_TRUE and
-		game_relations.get_npcs_relation(victim, db.actor) == game_object.friend
-	then
-		xr_abuse.add_abuse(victim, 1)
+	if meet_manager.use == STR_FALSE then
+		if (snd and snd == "meet_use_no_talk_leader" and get_check_option("show_no_talk_leader")) then
+			local news_caption = victim:character_name()
+			local victim_commander = alun_utils.get_commander(victim)
+			local text = game.translate_string("ui_st_no_talk_leader_news_text")
+			local news_text = strformat(text, victim_commander:character_name())
+			db.actor:give_game_news(news_caption, news_text, victim_commander:character_icon(), 100, 10000)
+		end
+		
+		if meet_manager.abuse_mode == STR_TRUE and
+			game_relations.get_npcs_relation(victim, db.actor) == game_object.friend
+		then
+			xr_abuse.add_abuse(victim, 1)
+		end
 	end
 end
 

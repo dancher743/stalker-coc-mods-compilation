@@ -591,4 +591,7 @@
 	<string id="ui_mm_companions_tasks">
 		<text>Companions tasks</text>
 	</string>
+	<string id="ui_mm_show_no_talk_leader">
+		<text>Squad commander message</text>
+	</string>
 </string_table>
