@@ -66,6 +66,7 @@ All notable changes to this project will be documented in this file.
 * Fixed black clouds in some CoC OL weather periods
 * Added `xr_meet.script` from CoC 1.5 to fix incorrect hello/bye phrases
 * Added skipping fallout with level changing
+* Fixed incorrect order of stories phrases
 
 ### Optimization
 * Made `squad_on_update`, `monster_on_update` and `actor_on_update` callbacks sliced
