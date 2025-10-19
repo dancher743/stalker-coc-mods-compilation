@@ -6,4 +6,7 @@
 	<string id="st_ui_safe_houses_bar_room">
 		<text>Барная комната</text>
 	</string>
+	<string id="st_ui_safe_houses_news_caption">
+		<text>Доступно убежище</text>
+	</string>
 </string_table>

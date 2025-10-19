@@ -20,6 +20,13 @@ local function create_spot()
 	level.map_add_object_spot_ser(se_obj.id, "safe_house", text)
 end
 
+local function give_news()
+	local caption = strtransl("st_ui_safe_houses_news_caption")
+	local text = strtransl("st_ui_safe_houses_bar_room")
+	local icon = "ui_inGame2_Laboratoriya_X8"
+	news_helper.give_news(caption, text, icon)
+end
+
 local function spawn_bed()
 	local x = 113.91
 	local y = -4.96
@@ -51,4 +58,5 @@ function buy_room(actor, npc)
 	dialogs.relocate_money_from_actor(actor, npc, bar_room_cost)
 	spawn_furniture()
 	create_spot()
+	give_news()
 end
