@@ -62,7 +62,7 @@
 		<text>Show faction reports across the zone</text>
 	</string>
 	<string id="ui_st_dyn_news_found_dead_news">
-		<text>Show corpse findings reports</text>
+		<text>Show corpse reports</text>
 	</string>
 	<string id="ui_st_dyn_news_surge_news">
 		<text>Show expected surge reports</text>

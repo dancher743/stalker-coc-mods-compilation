@@ -407,10 +407,8 @@ function DynamicNewsManager:TickRandom()
 		return false
 	end
 		
-	local shw_offline_combat = sim_squad_offline_combat.is_enabled()
-	
 	-- pick news
-	local pick_tbl = {shw_surge, shw_factions_report, shw_zone_activity, shw_found_dead, shw_random_msg, shw_offline_combat}
+	local pick_tbl = {shw_surge, shw_factions_report, shw_zone_activity, shw_found_dead, shw_random_msg}
 	local picked_tbl = {}
 	for i=1,#pick_tbl do
 		if (pick_tbl[i] == true) then
@@ -429,11 +427,9 @@ function DynamicNewsManager:TickRandom()
 	elseif (pick == 3) then
 		self:ReportZoneActivity()
 	elseif (pick == 4) then
-		self:FoundDead()
+		self:ReportFoundDeadOrDeathByOfflineCombat()
 	elseif (pick == 5) then
 		self:SpamRandom()
-	elseif (pick == 6) then
-		self:ReportDeathByOfflineCombat()
 	end
 	
 	return false
@@ -1720,6 +1716,23 @@ function DynamicNewsManager:SpamRandom() -- random news from all over the zone
 	return true
 end
 
+function DynamicNewsManager:ReportFoundDeadOrDeathByOfflineCombat()
+	if (sim_squad_offline_combat.is_enabled()) then
+		if (math.random(2) == 1) then
+			self:FoundDead()
+		else
+			local victim_data = sim_squad_offline_combat.pop_last_killed_stalker_data()
+			if (victim_data) then
+				self:ReportDeathByOfflineCombat(victim_data)
+			else
+				self:FoundDead()
+			end
+		end
+	else
+		self:FoundDead()
+	end
+end
+
 function DynamicNewsManager:FoundDead() -- report dead body findings
 	--printf(">>> Dyn News: FoundDead - call")
 	if (not self.sentences_fnames) or (not self.sentences_fnames) then
@@ -1764,12 +1777,8 @@ function DynamicNewsManager:FoundDead() -- report dead body findings
 	return true
 end
 
-function DynamicNewsManager:ReportDeathByOfflineCombat() -- Report offline combat death
+function DynamicNewsManager:ReportDeathByOfflineCombat(victim_data) -- Report offline combat death
 	--printf(">>> Dyn News: ReportDeathByOfflineCombat - call")
-	local victim_data = sim_squad_offline_combat.pop_last_killed_stalker_data()
-	if (not victim_data) then
-		return false
-	end
 	
 	local victim = alife_object(victim_data["victim_id"])
 	local killer = alife_object(victim_data["killer_id"])
