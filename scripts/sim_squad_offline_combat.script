@@ -24,7 +24,6 @@ local remove_squad_chance = 50
 local not_on_smart_combat_chance = 10
 local victim_id_key = "victim_id"
 local killer_id_key = "killer_id"
-local victim_squad_id_key = "victim_squad_id_key"
 
 local rank_power = {
 	["novice"] = 10,
@@ -188,14 +187,14 @@ local function execute_combat(squad1, squad2, level_id)
 		end
 	end
 	
-	if (se_victim and is_victim_stalker and last_killed_stalker == nil) then
-		last_killed_stalker = {}
-		last_killed_stalker[victim_id_key] = se_victim.id
-		last_killed_stalker[killer_id_key] = se_killer.id
-		last_killed_stalker[victim_squad_id_key] = victim_squad.id
+	local some_killed_stalker = nil
+	if (se_victim and is_victim_stalker) then
+		some_killed_stalker = {}
+		some_killed_stalker[victim_id_key] = se_victim.id
+		some_killed_stalker[killer_id_key] = se_killer.id
 	end
 	
-	return victim_squad
+	return victim_squad, some_killed_stalker
 end
 
 local function prepare_combats(squads)
@@ -315,7 +314,7 @@ local function update_queue()
 	end
 	
 	local level_id = simulation_objects.get_level_id(squad1)
-	local victim_squad = execute_combat(squad1, squad2, level_id)
+	local victim_squad, some_killed_stalker = execute_combat(squad1, squad2, level_id)
 	
 	if (victim_squad) then
 		if (victim_squad.id == squad1.id) then
@@ -324,10 +323,9 @@ local function update_queue()
 			squads[squad2_index] = nil
 		end
 		if (actor_level_id ~= level_id and get_chance() <= remove_squad_chance) then
-			if (last_killed_stalker and last_killed_stalker[victim_squad_id_key] == victim_squad.id) then
-				pop_last_killed_stalker_data()
-			end
 			victim_squad:remove_squad()
+		elseif (some_killed_stalker) then
+			last_killed_stalker = some_killed_stalker
 		end
 	end
 end
