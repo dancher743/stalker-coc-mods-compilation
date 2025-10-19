@@ -175,9 +175,6 @@ function DynamicNewsManager:__init()
 	CreateTimeEvent("DynamicNewsManager","TickTask",10*TimeFactor,self.TickTask,self)
 	CreateTimeEvent("DynamicNewsManager","TickRandom",10*TimeFactor,self.TickRandom,self)
 	CreateTimeEvent("DynamicNewsManager","TickCompanion",10*TimeFactor,self.TickCompanion,self)
-	if (sim_squad_offline_combat.is_enabled()) then
-		CreateTimeEvent("DynamicNewsManager","TickOfflineCombat",90*TimeFactor,self.TickOfflineCombat,self)
-	end
 	
 	RegisterScriptCallback("monster_on_death_callback",self)
 	--RegisterScriptCallback("monster_on_net_spawn",self)
@@ -194,7 +191,6 @@ function DynamicNewsManager:destroy()
 	RemoveTimeEvent("DynamicNewsManager","TickTask")
 	RemoveTimeEvent("DynamicNewsManager","TickRandom")
 	RemoveTimeEvent("DynamicNewsManager","TickCompanion")
-	RemoveTimeEvent("DynamicNewsManager","TickOfflineCombat")
 	
 	UnregisterScriptCallback("monster_on_death_callback",self)
 	--UnregisterScriptCallback("monster_on_net_spawn",self)
@@ -411,8 +407,10 @@ function DynamicNewsManager:TickRandom()
 		return false
 	end
 		
+	local shw_offline_combat = sim_squad_offline_combat.is_enabled()
+	
 	-- pick news
-	local pick_tbl = {shw_surge, shw_factions_report, shw_zone_activity, shw_found_dead, shw_random_msg}
+	local pick_tbl = {shw_surge, shw_factions_report, shw_zone_activity, shw_found_dead, shw_random_msg, shw_offline_combat}
 	local picked_tbl = {}
 	for i=1,#pick_tbl do
 		if (pick_tbl[i] == true) then
@@ -434,6 +432,8 @@ function DynamicNewsManager:TickRandom()
 		self:FoundDead()
 	elseif (pick == 5) then
 		self:SpamRandom()
+	elseif (pick == 6) then
+		self:ReportDeathByOfflineCombat()
 	end
 	
 	return false
@@ -481,30 +481,6 @@ function DynamicNewsManager:TickCompanion()
 		else
 			self:CompanionAboutLife(sender)
 		end
-	end
-	
-	return false
-end
-
-function DynamicNewsManager:TickOfflineCombat()
-	if (axr_main.config:r_value(MM_OPTIONS,"enable_dynamic_news",1,true) == false) then
-		return true
-	end
-	
-	if not sim_squad_offline_combat.is_enabled() then
-		return true
-	end
-	
-	ResetTimeEvent("DynamicNewsManager","TickOfflineCombat",math.random(90,270)*TimeFactor)
-	--printf(">>> Dyn News: TickOfflineCombat call")
-	
-	-- news state check
-	if self:NewsToggle() then
-		return false
-	end
-	
-	if (math.random() < 0.33) then
-		self:ReportDeathByOfflineCombat()
 	end
 	
 	return false
