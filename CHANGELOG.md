@@ -46,6 +46,7 @@ All notable changes to this project will be documented in this file.
 * Made only Duty squads on `gar_smart_terrain_5_2` smart (Special thanks to LR mod for the tip!)
 * Changed NPC's death sound from 2d to 3d type
 * Added news about bought safe house into Barman's dialogs
+* Improved behaviour of starting fallouts when time forward (due to adding pre-fallout rainy period)
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
