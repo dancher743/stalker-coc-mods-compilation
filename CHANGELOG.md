@@ -44,6 +44,7 @@ All notable changes to this project will be documented in this file.
 * Added `rain_factor` check into `fallout` debug command
 * Replaced leave zone text with original CoP text
 * Made only Duty squads on `gar_smart_terrain_5_2` smart (Special thanks to LR mod for the tip!)
+* Changed NPC's death sound from 2d to 3d type
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization

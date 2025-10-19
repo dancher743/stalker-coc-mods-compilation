@@ -3,7 +3,9 @@
 -- Оптимизация/рефакторинг by Dancher
 --
 
-local head_bone_name = "bip01_head"
+local head_bone_name = "bip01_r_foot"
+local toe_bone_name = "bip01_r_toe0"
+
 local far_distance_sqr = 900
 
 local snd_obj
@@ -329,13 +331,13 @@ local function npc_on_death_callback(victim)
 	
 	local actor = db.actor
 	local actor_pos = actor:position()
-	local npc_pos = victim:position()
-	local is_npc_far = actor_pos:distance_to_sqr(npc_pos) > far_distance_sqr
+	local victim_pos = victim:position()
+	local is_victim_far = actor_pos:distance_to_sqr(victim_pos) > far_distance_sqr
 	
-	if (is_npc_far) then
+	if (is_victim_far) then
 		snd_obj:play_at_pos(victim, alun_utils.safe_bone_pos(victim, head_bone_name))
 	else
-		snd_obj:play_at_pos(actor, vector():set(npc_pos.x - actor_pos.x, npc_pos.y - actor_pos.y, npc_pos.z - actor_pos.z), 0, sound_object.s2d)
+		snd_obj:play_at_pos(victim, alun_utils.safe_bone_pos(victim, toe_bone_name))
 	end
 end
 
