@@ -87,6 +87,7 @@ All notable changes to this project will be documented in this file.
 * Added `get_check_option` function into `_g.script`
 * Added `get_chance` function into `_g.script`
 * Added `STR_NONE` constant into `_g.script`
+* Extended `give_news` function in `news_helper.script`
 
 ## [1.5.2] - 2025-07-13
 
