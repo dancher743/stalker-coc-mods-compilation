@@ -48,6 +48,7 @@ All notable changes to this project will be documented in this file.
 * Added news about bought safe house into Barman's dialogs
 * Improved behaviour of starting fallouts when time forward (due to adding pre-fallout rainy period)
 * Added Offline Combat news into "Show corpse findings reports" option of Dynamic News
+* Configured subperiods weights
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
