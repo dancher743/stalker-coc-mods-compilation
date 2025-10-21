@@ -14,7 +14,8 @@ Install
 [![1.png](https://i.postimg.cc/5028Zy5t/1.png)](https://postimg.cc/Z9X9NTMk)
 
 6. Run `installer.bat` and wait until it's done
-7. Good hunting, stalker!
+7. Run `launcher.bat` to launch the game
+8. Good hunting, S.T.A.L.K.E.R!
 
 Settings
 ---
@@ -22,12 +23,12 @@ Settings
 * To access Dynamic News settings: load your game, then open the main menu and press Page-Up button
 * To ignite/extinguish a campfire holster your weapon first
 * To make the sky less bright type `r2_tonemap off` command at the console
+* Type `vid_restart` at the console if you are faced with _"Too many occlusion queries were issued"_ warnings. This command restarts the renderer
 
 Optimization
 ---
-* Type `vid_restart` at the console if you are faced with _"Too many occlusion queries were issued"_ warnings. This command restarts the renderer
-* Add `-no_staging` to the end of a shortcut as a launch parameter. In DirectX 10/11, it will load textures directly into video memory without copying them to RAM, thus keeping it free
-* Add `-noprefetch` to the end of a shortcut as a launch parameter to forces the game to clear RAM
+* Add `-no_staging` (is already in `launcher.bat`) to the end of a shortcut as a launch parameter. In DirectX 10/11, it will load textures directly into video memory without copying them to RAM, thus keeping it free
+* Add `-noprefetch` (is already in `launcher.bat`) to the end of a shortcut as a launch parameter to forces the game to clear RAM
 * Disable "Sun shadow" in "Options" in "Video" to reduce the load on a video card
 
 ❗ Screenshots
