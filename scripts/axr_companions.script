@@ -8,6 +8,7 @@ allow_neutrals_as_companions = true
 allow_friends_as_companions = true
 allow_simulation_squads_as_companions = false
 max_actor_squad_size = 0 -- used only for non task companions
+obtain_trust_time = 0
 
 -- Companion tables. All companions are added to companion_squads table by their squad id. Only non-task companions are tracked by non_task_companions table.
 companion_squads = {}
@@ -225,6 +226,7 @@ function on_game_start()
 	allow_friends_as_companions = ini:r_bool_ex("main","allow_friends_as_companions",false)
 	allow_simulation_squads_as_companions = ini:r_bool_ex("main","allow_simulation_squads_as_companions",false)
 	max_actor_squad_size = ini:r_float_ex("main","max_actor_squad_size") or 2
+	obtain_trust_time = ini:r_float_ex("main","obtain_trust_time") or obtain_trust_time
 end
 
 function companion_squad_can_teleport(squad)
