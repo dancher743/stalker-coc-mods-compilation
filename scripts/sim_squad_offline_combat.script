@@ -424,6 +424,19 @@ local function actor_on_update(_,delta)
 	end
 end
 
+local function save_state(data)
+	if (not data.offline_combat) then
+		data.offline_combat = {}
+	end
+	data.offline_combat.last_killed_stalker = last_killed_stalker
+end
+
+local function load_state(data)
+	if (data.offline_combat) then
+		last_killed_stalker = data.offline_combat.last_killed_stalker
+	end
+end
+
 local function initialize()
 	if (is_initialized or not is_enabled()) then
 		return
@@ -451,6 +464,8 @@ local function finalize()
 	pop_last_killed_stalker_data()
 	
 	UnregisterScriptCallback("actor_on_update",actor_on_update)
+	UnregisterScriptCallback("save_state",save_state)
+	UnregisterScriptCallback("load_state",load_state)
 	processed_squads = nil
 	combats_queue = nil
 	update_timer = nil
@@ -469,6 +484,8 @@ end
 
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
+	RegisterScriptCallback("save_state",save_state)
+	RegisterScriptCallback("load_state",load_state)
 end
 
 function option_on_accept(value)
