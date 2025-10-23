@@ -22,8 +22,6 @@ local add_rank_points = 20
 local handicap_chance = 25
 local remove_squad_chance = 50
 local not_on_smart_combat_chance = 10
-local victim_id_key = "victim_id"
-local killer_id_key = "killer_id"
 
 local rank_power = {
 	["novice"] = 10,
@@ -65,7 +63,8 @@ local update_queue_timer
 local combat_squads_table
 local processed_squads
 local combats_queue
-local last_killed_stalker
+local last_victim_stalker_id
+local last_killer_stalker_id
 local is_survival_mode
 local actor_level_id
 local se_objs_cache
@@ -160,14 +159,14 @@ local function execute_combat(squad1, squad2, level_id)
 	for k in victim_squad:squad_members() do
 		se_killer = math.random(2) == 1 and se_killer or get_random_npc(killer_squad)
 		se_victim = get_se_obj(k.id)
-		if (se_victim) then
-			se_victim:on_death(se_killer)
-			if (is_killer_stalker) then
-				se_killer:set_rank(se_killer:rank() + add_rank_points)
-			end
+		
+		se_victim:on_death(se_killer)
+		
+		if (is_killer_stalker) then
+			se_killer:set_rank(se_killer:rank() + add_rank_points)
 		end
 		
-		if (is_killer_stalker and is_victim_stalker and se_victim and loot_items[se_victim.id] and loot_items[se_killer.id]) then
+		if (is_killer_stalker and is_victim_stalker and loot_items[se_victim.id] and loot_items[se_killer.id]) then
 			local victim_items = loot_items[se_victim.id]
 			for i = #victim_items, 1, -1 do
 				local victim_item = get_se_obj(victim_items[i])
@@ -187,14 +186,7 @@ local function execute_combat(squad1, squad2, level_id)
 		end
 	end
 	
-	local some_killed_stalker = nil
-	if (se_victim and is_victim_stalker) then
-		some_killed_stalker = {}
-		some_killed_stalker[victim_id_key] = se_victim.id
-		some_killed_stalker[killer_id_key] = se_killer.id
-	end
-	
-	return victim_squad, some_killed_stalker
+	return victim_squad, se_victim.id, se_killer.id
 end
 
 local function prepare_combats(squads)
@@ -314,7 +306,7 @@ local function update_queue()
 	end
 	
 	local level_id = simulation_objects.get_level_id(squad1)
-	local victim_squad, some_killed_stalker = execute_combat(squad1, squad2, level_id)
+	local victim_squad, victim_id, killer_id = execute_combat(squad1, squad2, level_id)
 	
 	if (victim_squad) then
 		if (victim_squad.id == squad1.id) then
@@ -324,8 +316,9 @@ local function update_queue()
 		end
 		if (actor_level_id ~= level_id and get_chance() <= remove_squad_chance) then
 			victim_squad:remove_squad()
-		elseif (some_killed_stalker) then
-			last_killed_stalker = some_killed_stalker
+		elseif (victim_squad:is_stalker()) then
+			last_victim_stalker_id = victim_id
+			last_killer_stalker_id = killer_id
 		end
 	end
 end
@@ -428,13 +421,16 @@ local function save_state(data)
 	if (not data.offline_combat) then
 		data.offline_combat = {}
 	end
-	data.offline_combat.last_killed_stalker = last_killed_stalker
+	data.offline_combat.last_victim_stalker_id = last_victim_stalker_id
+	data.offline_combat.last_killer_stalker_id = last_killer_stalker_id
 end
 
 local function load_state(data)
-	if (data.offline_combat) then
-		last_killed_stalker = data.offline_combat.last_killed_stalker
+	if (not data.offline_combat) then
+		return
 	end
+	last_victim_stalker_id = data.offline_combat.last_victim_stalker_id
+	last_killer_stalker_id = data.offline_combat.last_killer_stalker_id
 end
 
 local function initialize()
@@ -501,9 +497,13 @@ function is_enabled()
 end
 
 function pop_last_killed_stalker_data()
-	local data = last_killed_stalker
-	last_killed_stalker = nil
-	return data
+	local victim_id = last_victim_stalker_id
+	local killer_id = last_killer_stalker_id
+	
+	last_victim_stalker_id = nil
+	last_killer_stalker_id = nil
+	
+	return victim_id, killer_id
 end
 
 class "combat_squads"

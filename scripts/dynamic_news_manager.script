@@ -1721,9 +1721,9 @@ function DynamicNewsManager:ReportFoundDeadOrDeathByOfflineCombat()
 		if (math.random(2) == 1) then
 			self:FoundDead()
 		else
-			local victim_data = sim_squad_offline_combat.pop_last_killed_stalker_data()
-			if (victim_data) then
-				self:ReportDeathByOfflineCombat(victim_data)
+			local victim_id, killer_id = sim_squad_offline_combat.pop_last_killed_stalker_data()
+			if (victim_id and killer_id) then
+				self:ReportDeathByOfflineCombat(victim_id, killer_id)
 			else
 				self:FoundDead()
 			end
@@ -1777,11 +1777,11 @@ function DynamicNewsManager:FoundDead() -- report dead body findings
 	return true
 end
 
-function DynamicNewsManager:ReportDeathByOfflineCombat(victim_data) -- Report offline combat death
+function DynamicNewsManager:ReportDeathByOfflineCombat(victim_id, killer_id) -- Report offline combat death
 	--printf(">>> Dyn News: ReportDeathByOfflineCombat - call")
 	
-	local victim = alife_object(victim_data["victim_id"])
-	local killer = alife_object(victim_data["killer_id"])
+	local victim = alife_object(victim_id)
+	local killer = alife_object(killer_id)
 	if (not victim or not killer) then
 		return false
 	end

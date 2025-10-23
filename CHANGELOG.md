@@ -82,6 +82,7 @@ All notable changes to this project will be documented in this file.
 * Replaced some strings with global constants
 * Added `check_option_name_prefix` field into `axr_main_options.script`
 * Optimized `IsActor` function in `_g.script`
+* Reworked `last_killed_stalker` field in `sim_squad_offline_combat.script` (RAM optimization)
 
 ### Framework
 * Added `valid_vertex_only` function into `alun_utils.script`
