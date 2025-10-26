@@ -270,6 +270,9 @@
   <string id="st_wpn_ak74u">
     <text>AKM-74/2U</text>
   </string>
+  <string id="st_wpn_ak74u_m1">
+	<text>AKM-74/2U Special</text>
+  </string>
   <string id="st_wpn_beretta">
 		<text>Martha</text>
   </string>
@@ -506,6 +509,9 @@
   </string>
   <string id="st_wpn_eagle_descr">
 		<text>The ultimate hand cannon - bulky, heavy and highly lethal. Developed as a specialized weapon for hunting medium-sized and large game, as well as for shooting competitions involving firing at steel body targets at distances over 50 meters. Its limited use in the Zone can be attributed to its price, size and weight, which are all double those of other pistols.</text>
+  </string>
+  <string id="st_wpn_ak74u_m1_descr">
+		<text>Enhanced AKM-74/2U machine gun. Comes with a non-replaceable muffler. Was owned by a stalker known as Bes, hiding in the Zone from the law.</text>
   </string>
   <string id="st_wpn_fn2000_descr">
 		<text>This futuristic-looking weapon with a bullpup layout is actually a mass produced modular system, comprising a rifle & grenade complex with a computerized fire control system and a 40-mm grenade launcher. Despite its bulky appearance, the weapon is highly ergonomic, easy to use and benefits from good technical characteristics.</text>
