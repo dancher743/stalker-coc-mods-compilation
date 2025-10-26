@@ -345,6 +345,12 @@
 	<string id="st_wpn_pb">
 		<text>ПБ</text>
 	</string>
+	<string id="st_wpn_pkm_tank">
+		<text>Танковый пулемёт</text>
+	</string>
+	<string id="st_wpn_pkm_tank_descr">
+		<text>Этот пулемёт был предназначен для установки на башне советского танка, но вполне пригоден для использования в качестве ручного пулемёта.</text>
+	</string>
 	<string id="st_wpn_pkm_zulus">
 		<text>ПКМ Зулуса</text>
 	</string>

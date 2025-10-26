@@ -345,6 +345,12 @@
   <string id="st_wpn_pb">
 		<text>PB-1s</text>
   </string>
+  <string id="st_wpn_pkm_tank">
+		<text>Tank machine gun</text>
+  </string>
+  <string id="st_wpn_pkm_tank_descr">
+		<text>This machine gun is intended for mounting onto a Soviet tank turret, but can be used just as well as a hand-held machine gun.</text>
+  </string>
   <string id="st_wpn_pkm_zulus">
 		<text>Zulu's RP-74</text>
   </string>
