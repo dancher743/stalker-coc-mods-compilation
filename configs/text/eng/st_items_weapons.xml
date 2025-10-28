@@ -480,6 +480,12 @@
   <string id="st_wpn_vintorez_descr">
 		<text>A special military sniper rifle purpose-built for silent, flashless sniping during special operations where early detection of the shooter may be critical. The Vintar BC provides high armour-piercing capability and stopping power, as well as being equipped with an integrated sniper and optical scope. Highly rated by many stalkers despite its small magazine.</text>
   </string>
+  <string id="st_wpn_vintorez_coll">
+		<text>Personalized Vintar BC</text>
+  </string>
+  <string id="st_wpn_vintorez_coll_descr">
+		<text>A Vintar BC with a dedication from a certain stalker named Sergei Tikhy. No one in the Zone remembers anything about this weapon's origins - apparently, its true owner is long dead. This weapon has a remarkable property: bullets fired from it fly at higher speeds and along a straighter trajectory. Increased magazine capacity using improvised means.</text>
+  </string>
   <string id="st_wpn_vintorez_nimble">
     <text>Tide</text>
   </string>
