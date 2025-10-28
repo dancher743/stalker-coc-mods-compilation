@@ -285,6 +285,12 @@
   <string id="st_wpn_colt1911">
 		<text>Kora-919</text>
   </string>
+  <string id="st_wpn_desert_eagle_m1">
+		<text>Big Ben</text>
+  </string>
+  <string id="st_wpn_desert_eagle_m1_descr">
+		<text>A gun that is already powerful, reworked to fit 9x39 mm rifle bullets. Truly a killing machine for close-range combat.</text>
+  </string>
   <string id="st_wpn_desert_eagle_nimble">
 		<text>Steppe Eagle</text>
   </string>

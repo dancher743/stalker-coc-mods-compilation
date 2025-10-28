@@ -285,6 +285,12 @@
 	<string id="st_wpn_colt1911">
 		<text>Colt M1911</text>
 	</string>
+	<string id="st_wpn_desert_eagle_m1">
+		<text>«Большой Бэн»</text>
+	</string>
+	<string id="st_wpn_desert_eagle_m1_descr">
+		<text>И без того мощный пистолет переработан под винтовочный патрон 9x39 мм. Поистине убойная штука для ближнего боя.</text>
+	</string>
 	<string id="st_wpn_desert_eagle_nimble">
 		<text>«Степной орёл»</text>
 	</string>
