@@ -516,6 +516,12 @@
   <string id="st_wpn_abakan_descr">
 		<text>A modern assault rifle developed as a replacement for the ageing AKM 74/2. The main difference is its high speed 2-round burst firing mode, which allows two bullets to be fired at exactly the same spot on a target up to 100 meters away. This significantly increases the likelihood of hitting the target in comparison to the 1 round firing mode, which considerably improves kill potential, stopping power and armour piercing capability.</text>
   </string>
+  <string id="st_wpn_ak47">
+	  <text>Trophy AKM-47/2</text>
+  </string>
+  <string id="st_wpn_ak47_descr">
+	  <text>An old, worn-down assault rifle with claw marks on the stock. A legendary weapon. </text>
+  </string>
   <string id="st_wpn_ak74_descr">
 		<text>This weapon, designed in 1974, signalled the adoption of small calibre and low impulse rounds by Warsaw Pact countries. A descendant of the most popular assault rifle in the world, the AKM-74/2 has an even bigger muzzle brake, resulting in a reduction of what was already manageable recoil. This facilitates better accuracy and groupings, especially when fired in fast single shots or bursts. As before, the rifle is very simple and reliable.</text>
   </string>
