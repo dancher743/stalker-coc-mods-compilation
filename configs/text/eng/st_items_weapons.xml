@@ -312,6 +312,9 @@
   <string id="st_wpn_gauss">
 		<text>Gauss rifle</text>
   </string>
+  <string id="st_wpn_gauss_m1">
+		<text>Improved Gauss rifle</text>
+  </string>
   <string id="st_wpn_groza">
 		<text>Tunder S14</text>
   </string>
@@ -584,6 +587,9 @@
   </string>
   <string id="st_wpn_gauss_descr">
 		<text>A super-accurate hi-tech weapon known as item 62, this rifle was developed in secret laboratories located inside the Zone. The weapon operates by accelerating bullets to extremely high speeds using a system of electromagnets, which provides incredible stopping power with virtually no recoil.  The weapon is powered by using encapsulated artefact fragments in the batteries.</text>
+  </string>
+  <string id="st_wpn_gauss_m1_descr">
+		<text>The weapon is integrated with elements of the "Battery" artifact, which reduce energy consumption by almost half, allowing its batteries to last for a greater number of shots.</text>
   </string>
   <string id="st_wpn_beretta_descr">
 		<text>Martha pistols enjoy the reputation of a relatively reliable, albeit somewhat cumbersome weapon, around the world. In service with armed forces and police across the ocean, as well as various military and law enforcement organisations worldwide.  The pistol is equally popular with members of the underworld, thanks to its powerful round and magazine capacity. Marthas found in the Zone are usually dated, probably from retired stock.</text>
