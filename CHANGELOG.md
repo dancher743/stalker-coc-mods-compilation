@@ -12,6 +12,9 @@ All notable changes to this project will be documented in this file.
 * Added out of smart combats to Offline Combat feature
 * Reworked Critical Hit formula and added modificators: bleeding, radiation, health, power, psy-health and satiety
 * Added message about squad leader if а dialog is unavailable (with option)
+* Added SoC unique weapons into stashes: AKM-74/2U Special, Big Ben, Personalized Vintar BC, Trophy AKM-47/2 (from CS), Lightened IL 86, Improved Gauss rifle
+* Added Tank machine gun(!) into Soviet tank's stash in Red Forest
+* Reworked adding unique weapons into stashes
 
 ### Mods
 * [CS atmosphere for CoC v1.1 [CoC 1.4.22]](https://www.moddb.com/mods/call-of-chernobyl/addons/cop-and-cs-atmosphere-for-coc-coc-1422)
@@ -73,6 +76,9 @@ All notable changes to this project will be documented in this file.
 * Added `xr_meet.script` from CoC 1.5 to fix incorrect hello/bye phrases
 * Added skipping fallout with level changing
 * Fixed incorrect order of stories phrases
+* Added missing unique weapons into Beard's trade config
+* Removed Trapper's weapon from stashes
+* Fixed `shuffle_table` function in `utils.script`
 
 ### Optimization
 * Made `squad_on_update`, `monster_on_update` and `actor_on_update` callbacks sliced
@@ -91,6 +97,8 @@ All notable changes to this project will be documented in this file.
 * Added `get_chance` function into `_g.script`
 * Added `STR_NONE` constant into `_g.script`
 * Extended `give_news` function in `news_helper.script`
+* Added functions for working with chances: `get_chance01`, `has_chance` and `has_chance01` into `_g.script`
+* Function `shuffle_table` now is `shuffle_itable` in `utils.script`
 
 ## [1.5.2] - 2025-07-13
 
