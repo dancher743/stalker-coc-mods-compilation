@@ -75,7 +75,7 @@ All notable changes to this project will be documented in this file.
 * Fixed wrong sound theme `strange_story_disbelief`
 * Fixed not dropping items with low chances from dead NPCs
 * Fixed incorrect loot relocation in Offline Combat feature
-* Fixed black clouds in some CoC OL weather periods
+* Fixed black clouds in some CoC OL and CS periods
 * Added `xr_meet.script` from CoC 1.5 to fix incorrect hello/bye phrases
 * Added skipping fallout with level changing
 * Fixed incorrect order of stories phrases
