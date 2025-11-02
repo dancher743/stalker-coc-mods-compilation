@@ -98,6 +98,10 @@ local sr_camp_states = {
 						},
 }
 
+local state_name = "state"
+local state_north_name = "state_north"
+local state_weather_bad_name = "state_weather_bad"
+
 --------------------------------------------------------------------------------
 -- Класс CCampManager
 --------------------------------------------------------------------------------
@@ -122,6 +126,7 @@ function CCampManager:__init(object)
 	self.active_state_time = 0
 	self.timeout = 0
 	self.idle_talker = nil
+	self.idle_talker_sound = nil
 	self.last_story = nil
 end
 -- Переключает состояния кемпа
@@ -149,6 +154,7 @@ function CCampManager:update()
 	-- Если кто-то говорит айдловую фразу, ждем пока он договорит.
 	if(self.idle_talker~=nil) then
 		if(xr_sound.sound_table[self.idle_talker]) then
+			self.idle_talker_sound = nil
 			return
 		else
 			self.idle_talker = nil
@@ -195,9 +201,41 @@ function CCampManager:update()
 		end
 		if(npc_count~=0) then
 			self.idle_talker = talkers[math.random(#talkers)]
-			xr_sound.set_sound_play(self.idle_talker, "state")
+			self.idle_talker_sound = self:get_idle_talker_sound()
+			xr_sound.set_sound_play(self.idle_talker, self.idle_talker_sound)
 		end
 	end
+end
+function CCampManager:get_idle_talker_sound()
+	if (self.idle_talker_sound ~= nil) then
+		return self.idle_talker_sound
+	end
+	
+	local idle_talker_sound = nil
+	local random = math.random(2)
+	
+	if (random == 1 and sound_theme.is_level_avail(state_north_name, level.name())) then
+		local state_prob = sound_theme.get_play_prob(state_north_name)
+		if (has_chance01(state_prob)) then
+			local talker = db.storage[self.idle_talker] and db.storage[self.idle_talker].object
+			if (talker and sound_theme.is_community_avail(state_north_name, talker)) then
+				idle_talker_sound = state_north_name
+			end
+		end
+	end
+	
+	if (random == 2 and sound_theme.is_weathers_avail(state_weather_bad_name, level_weathers.get_period())) then
+		local state_prob = sound_theme.get_play_prob(state_weather_bad_name)
+		if (has_chance01(state_prob)) then
+			idle_talker_sound = state_weather_bad_name
+		end
+	end
+	
+	if (idle_talker_sound == nil) then
+		idle_talker_sound = state_name
+	end
+	
+	return idle_talker_sound
 end
 function CCampManager:set_next_state()
 
