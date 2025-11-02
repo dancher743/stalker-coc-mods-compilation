@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 ### Mods
 * [CS atmosphere for CoC v1.1 [CoC 1.4.22]](https://www.moddb.com/mods/call-of-chernobyl/addons/cop-and-cs-atmosphere-for-coc-coc-1422)
 * [Better Knife (Vanilla)](https://www.moddb.com/mods/call-of-chernobyl/addons/better-knife-vanilla) with adaptations from CoP
+* [Optimized rain](https://stalker-mods.clan.su/load/stalker_cop/stalker_zov_pripjati/optimizirovannyj_dozhd/1-1-0-4001)
 
 ### Improvements
 * Added rain and rain splash textures from "CoC OL pack v1.3" mod
