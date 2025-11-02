@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 * Added SoC unique weapons into stashes: AKM-74/2U Special, Big Ben, Personalized Vintar BC, Trophy AKM-47/2 (from CS), Lightened IL 86, Improved Gauss rifle
 * Added Tank machine gun(!) into Soviet tank's stash in Red Forest
 * Reworked adding unique weapons into stashes
+* Rebuilded sound scripts to reduce bugs with sounds
 
 ### Mods
 * [CS atmosphere for CoC v1.1 [CoC 1.4.22]](https://www.moddb.com/mods/call-of-chernobyl/addons/cop-and-cs-atmosphere-for-coc-coc-1422)
@@ -53,6 +54,7 @@ All notable changes to this project will be documented in this file.
 * Added Offline Combat news into "Show corpse findings reports" option of Dynamic News
 * Configured subperiods weights
 * Balanced obtain trust time, added `obtain_trust_time` into `axr_companions.ltx`
+* Improved playing idle sounds about north levels and reactions to weather
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization

@@ -109,15 +109,12 @@ function npc_sound:init_npc(npc)
 		if (num > 1) then 
 			self.npc[npc_id] = {}
 			self.npc[npc_id].id = id()
-			--printf("-Added sound [%s] for [%s]: %s", self.section, npc:section(), npc:sound_prefix() .. self.path)
-			
+	
 			if self.is_combat_sound then
 				self.npc[npc_id].max = npc:add_combat_sound(self.path, 64, snd_type.talk, 2, 1, self.npc[npc_id].id,"bip01_head") - 1
 			else
 				self.npc[npc_id].max = npc:add_sound(self.path, 64, snd_type.talk, 2, 1, self.npc[npc_id].id) - 1
 			end
-		elseif DEV_DEBUG and string.find(npc:section(),"sim_default") then
-			printf("!Sound [%s] not found for [%s]: %s", self.section, npc:section(), npc:sound_prefix()..self.path)
 		end
 	end
 	
@@ -189,7 +186,7 @@ function npc_sound:play(npc_id, faction, point, sound)
 	end
 	
 	local npc_data = self.npc[npc_id]
-	if not (npc_data) then
+	if not (npc_data) then 
 		return false 
 	end
 
@@ -209,7 +206,7 @@ function npc_sound:play(npc_id, faction, point, sound)
 	end
 
 	npc:play_sound(npc_data.id, self.delay_sound+0.06, self.delay_sound+0.05, 1, 0, self.played_id)
-	
+
 	local table_id = self.played_id + 1
 	local snd = self.sound_path[npc_id][table_id]
 	if not (snd) then 
@@ -704,7 +701,7 @@ function object_sound:play(obj_id, faction, point,sound)
 	end
 	if snd and obj:position():distance_to_sqr(db.actor:position()) >= 5 and getFS():exist("$game_sounds$", snd.."_pda.ogg") ~= nil  then
 		self.pda_snd_obj = sound_object(snd.."_pda")
-		self.pda_snd_obj:play_at_pos(db.actor, vector():set(0,0,0), 0, sound_object.s2d)
+		self.pda_snd_obj:play_at_pos(db.actor, VEC_ZERO, 0, sound_object.s2d)
 		self.pda_snd_obj.volume = 0.8
 	end
 	self.snd_obj = sound_object(snd)
@@ -876,7 +873,7 @@ function init_npc_sound(npc)
 		if v.init_npc then
 			--printf("checking %s for %s (%s)", v.section, npc:name(), character_community(npc))
 			if (v.avail_communities == nil or v.avail_communities[character_community(npc)]) then
-				if (v.story_ids == nil or v.story_ids[get_object_story_id(npc:id()) or STR_EMPTY]) then
+				if (v.story_ids == nil or v.story_ids[story_objects.get_story_objects_registry():get_story_id(npc:id()) or STR_EMPTY]) then
 					v:init_npc(npc)
 				end
 			end
@@ -888,7 +885,7 @@ end
 function is_community_avail(sound, npc)
 	local snd_theme = sound_theme.theme[sound]
 	if (snd_theme and snd_theme.avail_communities) then
-		return snd_theme.avail_communities[character_community(npc)]
+		return snd_theme.avail_communities[character_community(npc)] ~= nil
 	end
 	return false
 end
@@ -896,7 +893,7 @@ end
 function is_level_avail(sound, level_name)
 	local snd_theme = sound_theme.theme[sound]
 	if (snd_theme and snd_theme.avail_levels) then
-		return snd_theme.avail_levels[level_name]
+		return snd_theme.avail_levels[level_name] ~= nil
 	end
 	return false
 end
@@ -904,7 +901,7 @@ end
 function is_weathers_avail(sound, weather_period)
 	local snd_theme = sound_theme.theme[sound]
 	if (snd_theme and snd_theme.avail_weathers) then
-		return snd_theme.avail_weathers[weather_period]
+		return snd_theme.avail_weathers[weather_period] ~= nil
 	end
 	return false
 end
