@@ -220,7 +220,7 @@ function npc_sound:play(npc_id, faction, point, sound)
 		end
 		self.pda_snd_obj = sound_object(snd.."_pda")
 		--play_at_pos(CScriptGameObject *object, const Fvector &position, float delay, int flags)
-		self.pda_snd_obj:play_at_pos(db.actor, vector():set(0,0,0), self.delay_sound, sound_object.s2d)
+		self.pda_snd_obj:play_at_pos(db.actor, VEC_ZERO, self.delay_sound, sound_object.s2d)
 		self.pda_snd_obj.volume = 0.8
 	end
 	--printf("snd_path is "..tostring(self.sound_path[npc_id][table_id]))
@@ -491,7 +491,7 @@ function actor_sound:play(npc, faction, point, sound)
 	end
 	self.snd_obj = sound_object(snd)
 	self.snd_obj.volume = 0.8
-	self.snd_obj:play_at_pos(db.actor, vector():set(0,0,0), 0, sound_object.s2d)
+	self.snd_obj:play_at_pos(db.actor, VEC_ZERO, 0, sound_object.s2d)
 	self.snd_obj.volume = 0.8
 	self.can_play_sound = false
 
@@ -701,7 +701,7 @@ function object_sound:play(obj_id, faction, point,sound)
 	end
 	if snd and obj:position():distance_to_sqr(db.actor:position()) >= 5 and getFS():exist("$game_sounds$", snd.."_pda.ogg") ~= nil  then
 		self.pda_snd_obj = sound_object(snd.."_pda")
-		self.pda_snd_obj:play_at_pos(db.actor, vector():set(0,0,0), 0, sound_object.s2d)
+		self.pda_snd_obj:play_at_pos(db.actor, VEC_ZERO, 0, sound_object.s2d)
 		self.pda_snd_obj.volume = 0.8
 	end
 	self.snd_obj = sound_object(snd)
