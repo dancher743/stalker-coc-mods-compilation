@@ -80,7 +80,7 @@ local sr_camp_states = {
 							timeout = 0,
 							transitions = {"idle","harmonica","guitar","story"},
 							precondition = function (camp)
-								if(#story_table>0 or joke_table>0) then
+								if(#story_table>0 or #joke_table>0) then
 									local n = 0
 									for k,v in pairs(camp.npc) do
 									
