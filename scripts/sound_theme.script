@@ -3,6 +3,7 @@
 --' автор:  Диденко Руслан  (Stohe)
 --'--------------------------------------------------------------------------------------------------------------------
 theme = {}
+can_play_sound = {}
 
 local sounds_base = stalker_ids.sound_script + 10000
 
@@ -17,17 +18,17 @@ end
 class "npc_sound"
 function npc_sound:__init(snd_ini, section)
 
-	--alun_utils.debug_write("npc_sound:__init %s",section)
+	--utils_data.debug_write("npc_sound:__init %s",section)
 	self.class_id = "npc_sound"
 		--' Параметры вычитывания звука
 	self.prefix = snd_ini:r_bool_ex(section,"npc_prefix",false)
-	self.path = snd_ini:r_string_ex(section,"path") or STR_EMPTY
+	self.path = snd_ini:r_string_ex(section,"path") or ""
 	self.shuffle = snd_ini:r_string_ex(section,"shuffle") or "rnd"
 	self.group_snd = snd_ini:r_bool_ex(section,"group_snd",false)
 	self.play_always = snd_ini:r_bool_ex(section,"play_always",false)
 	self.is_combat_sound = snd_ini:r_bool_ex(section,"is_combat_sound",false)
 	self.dont_save = snd_ini:r_bool_ex(section,"dont_save",false)
-	self.story_ids = snd_ini:line_exist(section,"story_ids") and alun_utils.parse_list(snd_ini,section,"story_ids",true) or nil
+	self.story_ids = snd_ini:line_exist(section,"story_ids") and parse_list(snd_ini,section,"story_ids",true) or nil
 	self.section = section
 	--' Хранит параметры звука для каждого NPC
 	self.npc = {}
@@ -40,16 +41,11 @@ function npc_sound:__init(snd_ini, section)
 	self.max_idle = tonumber(interval[2])
 	self.rnd = tonumber(interval[3])
 	self.can_play_group_sound = true
-	self.can_play_sound = {}
 	self.sound_path = {}
-	self.faction = snd_ini:r_string_ex(section,"faction") or STR_EMPTY
-	self.point = snd_ini:r_string_ex(section,"point") or STR_EMPTY
-	self.msg = snd_ini:r_string_ex(section,"message") or STR_EMPTY
-	self.avail_communities = snd_ini:line_exist(section,"avail_communities") and alun_utils.parse_list(snd_ini,section,"avail_communities",true) or nil
-	self.avail_levels = snd_ini:line_exist(section,"avail_levels") and alun_utils.parse_list(snd_ini,section,"avail_levels",true) or nil
-	self.avail_weathers = snd_ini:line_exist(section,"avail_weathers") and alun_utils.parse_list(snd_ini,section,"avail_weathers",true) or nil
-	local play_prob = snd_ini:r_string_ex(section,"play_prob")
-	self.play_prob = play_prob and tonumber(play_prob) or 0
+	self.faction = snd_ini:r_string_ex(section,"faction") or ""
+	self.point = snd_ini:r_string_ex(section,"point") or ""
+	self.msg = snd_ini:r_string_ex(section,"message") or ""
+	self.avail_communities = snd_ini:line_exist(section,"avail_communities") and parse_list(snd_ini,section,"avail_communities",true) or nil
 end
 
 function npc_sound:reset(npc_id)
@@ -58,7 +54,7 @@ function npc_sound:reset(npc_id)
 	self.played_time = nil
 	self.played_id = nil
 	self.can_play_group_sound = true
-	self.can_play_sound[npc_id] = true
+	can_play_sound[npc_id] = true
 	if npc ~= nil then
 		npc:set_sound_mask(-1)
 		npc:set_sound_mask(0)
@@ -74,11 +70,11 @@ function npc_sound:is_playing(npc_id)
 	if obj == nil then
 		return false
 	end
-	return obj:active_sound_count() ~= 0 or (self.pda_snd_obj and self.pda_snd_obj:playing())
+	return obj:active_sound_count() > 0 or (self.pda_snd_obj and self.pda_snd_obj:playing())
 end
 function npc_sound:init_npc(npc)
 
-	--alun_utils.debug_write(strformat("npc_sound:init_npc %s",npc and npc:name()))
+	--utils_data.debug_write(strformat("npc_sound:init_npc %s",npc and npc:name()))
 	local npc_id = npc:id()
 	self.sound_path[npc_id] = {}
 
@@ -116,8 +112,8 @@ function npc_sound:init_npc(npc)
 			else
 				self.npc[npc_id].max = npc:add_sound(self.path, 64, snd_type.talk, 2, 1, self.npc[npc_id].id) - 1
 			end
-		elseif DEV_DEBUG and string.find(npc:section(),"sim_default") then
-			printf("!Sound [%s] not found for [%s]: %s", self.section, npc:section(), npc:sound_prefix()..self.path)
+		elseif string.find(npc:section(),"sim_default") then
+			printdbg("!Sound [%s] not found for [%s]: %s", self.section, npc:section(), npc:sound_prefix()..self.path)
 		end
 	end
 	
@@ -133,23 +129,20 @@ function npc_sound:init_npc(npc)
 	if self.prefix == false then
 		npc:sound_prefix(character_prefix)
 	end
-	if self.group_snd then
+
+	if (self.group_snd) then
 		self.can_play_group_sound = true
-	else
-		if self.can_play_sound[npc_id] ~= false then
-			self.can_play_sound[npc_id] = true
-		end
 	end
+	can_play_sound[npc_id] = true
 end
 function npc_sound:callback(npc_id)
 	self.played_time = time_global()
 	self.idle_time = math.random(self.min_idle, self.max_idle) * 1000
 
-	if self.group_snd then
+	if (self.group_snd) then
 		self.can_play_group_sound = true
-	else
-		self.can_play_sound[npc_id] = true
 	end
+	can_play_sound[npc_id] = true
 
 --	printf("npc_sound:callback!!!!!!!!")
 
@@ -178,9 +171,9 @@ function npc_sound:callback(npc_id)
 		st[st.active_scheme].signals["sound_end"] = true
 	end
 end
-function npc_sound:play(npc_id, faction, point, sound)
+function npc_sound:play(npc_id, faction, point)
 
-	--alun_utils.debug_write(strformat("npc_sound:play npc_id=%s faction=%s msg=%s",npc_id,faction,msg))
+	--utils_data.debug_write(strformat("npc_sound:play npc_id=%s faction=%s msg=%s",npc_id,faction,msg))
 	local npc = db.storage[npc_id] and db.storage[npc_id].object
 
 	if npc == nil then
@@ -193,8 +186,12 @@ function npc_sound:play(npc_id, faction, point, sound)
 		return false 
 	end
 
-	if (self.group_snd and self.can_play_group_sound == false or self.can_play_sound[npc_id] == false) then 
-		return false 
+	if (self.group_snd) then
+		if (self.can_play_group_sound == false) then
+			return false
+		end
+	elseif (can_play_sound[npc_id] == false) then
+		return false
 	end 
 
 	if self.played_time ~= nil and time_global() - self.played_time < self.idle_time then
@@ -213,7 +210,7 @@ function npc_sound:play(npc_id, faction, point, sound)
 	local table_id = self.played_id + 1
 	local snd = self.sound_path[npc_id][table_id]
 	if not (snd) then 
-		printf("sound_theme.npc_sound:play() snd is nil! %s",sound)
+		printf("sound_theme.npc_sound:play() snd is nil! %s",self.section)
 		return
 	end
 
@@ -229,11 +226,10 @@ function npc_sound:play(npc_id, faction, point, sound)
 	--printf("snd_path is "..tostring(self.sound_path[npc_id][table_id]))
 	local snd_st, num_copy = string.gsub(snd, "\\", "_")
 
-	if self.group_snd then
+	if (self.group_snd) then
 		self.can_play_group_sound = false
-	else
-		self.can_play_sound[npc_id] = false
 	end
+	can_play_sound[npc_id] = false
 
 	if not closecaption.sound(snd, sound_object(snd):length(), npc, faction, point, self.delay_sound) then
 		if game.translate_string(snd_st) ~= snd_st then
@@ -294,9 +290,6 @@ function npc_sound:select_next_sound(npc_id)
 		end
 		return 0
 	end
-
-	printf("sound theme section[%s] has wrong shuffle[%s] parameter", self.section, self.shuffle)
-	return -1
 end
 function npc_sound:stop(obj_id)
 	local npc = db.storage[obj_id] and db.storage[obj_id].object
@@ -331,30 +324,30 @@ function npc_sound:load_state(m_data)
 	end
 end
 function npc_sound:save(thread)
-	--alun_utils.debug_write("npc_sound:save BEFORE")
+	--utils_data.debug_write("npc_sound:save BEFORE")
 	if self.dont_save then
-		--alun_utils.debug_write("npc_sound:save AFTER 1")
+		--utils_data.debug_write("npc_sound:save AFTER 1")
 		return
 	end
 --	set_save_marker(thread, "save", false, "npc_sound")
 
-	alun_utils.w_stpk(thread,"stringZ",tostring(self.played_id or nil),"npc_sound:save")
+	utils_data.w_stpk(thread,"stringZ",tostring(self.played_id or nil),"npc_sound:save")
 
 	if self.group_snd then
 		thread:w_bool(self.can_play_group_sound == true)
 	end
-	--alun_utils.debug_write("npc_sound:save AFTER 2")
+	--utils_data.debug_write("npc_sound:save AFTER 2")
 --	set_save_marker(thread, "save", true, "npc_sound")
 end
 function npc_sound:load(thread)
-	--alun_utils.debug_write("npc_sound:load BEFORE")
+	--utils_data.debug_write("npc_sound:load BEFORE")
 	if self.dont_save then
-		--alun_utils.debug_write("npc_sound:load AFTER 1")
+		--utils_data.debug_write("npc_sound:load AFTER 1")
 		return
 	end
 --	set_save_marker(thread, "load", false, "npc_sound")
 	local id = thread:r_stringZ()
-	if(id~=STR_NIL) then
+	if(id~="nil") then
 		self.played_id = tonumber(id)
 	else
 		self.played_id = nil
@@ -363,33 +356,33 @@ function npc_sound:load(thread)
 	if self.group_snd then
 		self.can_play_group_sound = thread:r_bool()
 	end
-	--alun_utils.debug_write("npc_sound:load AFTER 2")
+	--utils_data.debug_write("npc_sound:load AFTER 2")
 --	set_save_marker(thread, "load", true, "npc_sound")
 end
 function npc_sound:save_npc(thread, npc_id)
-	--alun_utils.debug_write("npc_sound:save_npc BEFORE")
+	--utils_data.debug_write("npc_sound:save_npc BEFORE")
 	if self.dont_save then
-		--alun_utils.debug_write("npc_sound:save_npc AFTER 1")
+		--utils_data.debug_write("npc_sound:save_npc AFTER 1")
 		return
 	end
 --	set_save_marker(thread, "save", false, "npc_sound_save_npc")
 	if not self.group_snd then
-		thread:w_bool(self.can_play_sound[npc_id] == true)
+		thread:w_bool(can_play_sound[npc_id] == true)
 	end
-	--alun_utils.debug_write("npc_sound:save_npc AFTER 2")
+	--utils_data.debug_write("npc_sound:save_npc AFTER 2")
 --	set_save_marker(thread, "save", true, "npc_sound_save_npc")
 end
 function npc_sound:load_npc(thread, npc_id)
-	--alun_utils.debug_write("npc_sound:load_npc BEFORE")
+	--utils_data.debug_write("npc_sound:load_npc BEFORE")
 	if self.dont_save then
-		--alun_utils.debug_write("npc_sound:load_npc AFTER 1")
+		--utils_data.debug_write("npc_sound:load_npc AFTER 1")
 		return
 	end
 --	set_save_marker(thread, "load", false, "npc_sound_save_npc")
 	if not self.group_snd then
-		self.can_play_sound[npc_id] = thread:r_bool()
+		can_play_sound[npc_id] = thread:r_bool()
 	end
-	--alun_utils.debug_write("npc_sound:load_npc AFTER 2")
+	--utils_data.debug_write("npc_sound:load_npc AFTER 2")
 --	set_save_marker(thread, "load", true, "npc_sound_save_npc")
 end
 --'--------------------------------------------------------------------------------------------------------------------
@@ -401,7 +394,7 @@ function actor_sound:__init(snd_ini, section)
 		--' Параметры вычитывания звука
 	self.stereo = snd_ini:r_bool_ex(section,"actor_stereo",false)
 	self.prefix = snd_ini:r_bool_ex(section,"npc_prefix",false)
-	self.path = snd_ini:r_string_ex(section,"path") or STR_EMPTY
+	self.path = snd_ini:r_string_ex(section,"path") or ""
 	self.shuffle = snd_ini:r_string_ex(section,"shuffle") or "rnd"
 	self.play_always = snd_ini:r_bool_ex(section,"play_always",false)
 	self.section = section
@@ -417,10 +410,10 @@ function actor_sound:__init(snd_ini, section)
 	self.rnd = tonumber(interval[3])
 	self.sound = {}
 	self.snd_obj = nil
-	self.can_play_sound = true
-	self.faction = snd_ini:r_string_ex(section,"faction") or STR_EMPTY
-	self.point = snd_ini:r_string_ex(section,"point") or STR_EMPTY
-	self.msg = snd_ini:r_string_ex(section,"message") or STR_EMPTY
+	can_play_sound[0] = true
+	self.faction = snd_ini:r_string_ex(section,"faction") or ""
+	self.point = snd_ini:r_string_ex(section,"point") or ""
+	self.msg = snd_ini:r_string_ex(section,"message") or ""
 
 	local f = getFS()
 
@@ -441,7 +434,7 @@ function actor_sound:callback(npc_id)
 	self.played_time = time_global()
 	self.idle_time = math.random(self.min_idle, self.max_idle) * 1000
 	self.snd_obj = nil
-	self.can_play_sound = true
+	can_play_sound[0] = true
 
 --	get_hud():RemoveCustomStatic("cs_subtitles_actor")
 
@@ -471,9 +464,9 @@ function actor_sound:is_playing ()
 		return false
 	end
 end
-function actor_sound:play(npc, faction, point, sound)
+function actor_sound:play(obj_id, faction, point, sound)
 	--printf("PLAY ACTOR SOUND")
-	if (self.can_play_sound == false) then
+	if (can_play_sound[0] == false) then
 		return false
 	end
 
@@ -496,19 +489,12 @@ function actor_sound:play(npc, faction, point, sound)
 	self.snd_obj.volume = 0.8
 	self.snd_obj:play_at_pos(db.actor, VEC_ZERO, 0, sound_object.s2d)
 	self.snd_obj.volume = 0.8
-	self.can_play_sound = false
+	can_play_sound[0] = false
 
-	local sender, sname
-	if type(npc) ~= STR_USERDATA then
-		sender = db.actor
-	else
-		sender = npc
-		sname = point
+	if not closecaption.sound(snd, self.snd_obj:length(), db.actor, faction, nil, 0) then
+		news_manager.send_sound(nil, faction, point, snd, nil, 0)
 	end
 	
-	if not closecaption.sound(snd, self.snd_obj:length(), sender, faction, sname, 0) then
-		news_manager.send_sound(nil, faction, point, snd)
-	end
 	return true
 end
 function actor_sound:reset(npc_id)
@@ -559,13 +545,13 @@ function actor_sound:stop()
 end
 function actor_sound:save(thread)
 --	set_save_marker(thread, "save", false, "actor_sound")
-	alun_utils.w_stpk(thread,"stringZ",tostring(self.played_id),"actor_sound:save")
+	utils_data.w_stpk(thread,"stringZ",tostring(self.played_id),"actor_sound:save")
 --	set_save_marker(thread, "save", true, "actor_sound")
 end
 function actor_sound:load(thread)
 --	set_save_marker(thread, "load", false, "actor_sound")
 	local id = thread:r_stringZ()
-	if(id~=STR_NIL) then
+	if(id~="nil") then
 		self.played_id = tonumber(id)
 	else
 		self.played_id = nil
@@ -599,7 +585,7 @@ class "object_sound"
 function object_sound:__init(snd_ini, section)
 	self.class_id = "object_sound"
 	--' Параметры вычитывания звука
-	self.path = snd_ini:r_string_ex(section,"path") or STR_EMPTY
+	self.path = snd_ini:r_string_ex(section,"path") or ""
 	self.shuffle = snd_ini:r_string_ex(section,"shuffle") or "rnd"
 
 	--' Интервал проигрывания звука
@@ -609,12 +595,11 @@ function object_sound:__init(snd_ini, section)
 	self.rnd = tonumber(interval[3])
 	self.sound = {}
 	self.snd_obj = nil
-	self.can_play_sound = {}
 	self.section = section
 	self.played_id = nil
-	self.faction = snd_ini:r_string_ex(section,"faction") or STR_EMPTY
-	self.point = snd_ini:r_string_ex(section,"point") or STR_EMPTY
-	self.msg = snd_ini:r_string_ex(section,"message") or STR_EMPTY
+	self.faction = snd_ini:r_string_ex(section,"faction") or ""
+	self.point = snd_ini:r_string_ex(section,"point") or ""
+	self.msg = snd_ini:r_string_ex(section,"message") or ""
 
 	local f = getFS()
 	if f:exist("$game_sounds$",self.path..".ogg") ~= nil then
@@ -639,7 +624,7 @@ function object_sound:callback(npc_id)
 	end
 
 	self.snd_obj = nil
-	self.can_play_sound[npc_id] = true
+	can_play_sound[npc_id] = true
 
 --	printf("object_sound:callback for object !!!!!!!!")
 --	get_hud():RemoveCustomStatic("cs_subtitles_object")
@@ -681,7 +666,7 @@ function object_sound:play(obj_id, faction, point,sound)
 
 	--printf("START object_sound:play() sound=%s %s[%s] can_play=%s",sound,obj:name(),obj_id,self.can_play_sound[obj_id] ~= false and true)
 	
-	if (self.can_play_sound[obj_id] == false) then 
+	if (can_play_sound[obj_id] == false) then 
 		return false 
 	end
 
@@ -704,13 +689,13 @@ function object_sound:play(obj_id, faction, point,sound)
 	end
 	if snd and obj:position():distance_to_sqr(db.actor:position()) >= 5 and getFS():exist("$game_sounds$", snd.."_pda.ogg") ~= nil  then
 		self.pda_snd_obj = sound_object(snd.."_pda")
-		self.pda_snd_obj:play_at_pos(db.actor, vector():set(0,0,0), 0, sound_object.s2d)
+		self.pda_snd_obj:play_at_pos(db.actor, VEC_ZERO, 0, sound_object.s2d)
 		self.pda_snd_obj.volume = 0.8
 	end
 	self.snd_obj = sound_object(snd)
 	self.snd_obj:play_at_pos(obj, obj:position(), 0, sound_object.s3d)
 
-	self.can_play_sound[obj_id] = false
+	can_play_sound[obj_id] = false
 
 	if not closecaption.sound(snd, self.snd_obj:length(), obj, faction, point, 0) then
 		news_manager.send_sound(nil, faction, point, snd)
@@ -753,13 +738,13 @@ function object_sound:stop()
 end
 function object_sound:save(thread)
 --	set_save_marker(thread, "save", false, "object_sound")
-	alun_utils.w_stpk(thread,"stringZ",tostring(self.played_id),"object_sound:save")
+	utils_data.w_stpk(thread,"stringZ",tostring(self.played_id),"object_sound:save")
 --    set_save_marker(thread, "save", true, "object_sound")
 end
 function object_sound:load(thread)
 --	set_save_marker(thread, "load", false, "object_sound")
 	local id = thread:r_stringZ()
-	if(id~=STR_NIL) then
+	if(id~="nil") then
 		self.played_id = tonumber(id)
 	else
 		self.played_id = nil
@@ -790,7 +775,7 @@ class "looped_sound"
 function looped_sound:__init(snd_ini, section)
 	self.class_id = "looped_sound"
 	--' Параметры вычитывания звука
-	self.path = snd_ini:r_string_ex(section,"path") or STR_EMPTY
+	self.path = snd_ini:r_string_ex(section,"path") or ""
 	self.sound = nil
 	self.snd_obj = nil
 	self.section = section
@@ -852,9 +837,9 @@ function load_sound()
 	local snd_ini = ini_file("misc\\sound\\script_sound.ltx")
 
 	local function itr(section)
-		local level_list = snd_ini:line_exist(section,"levels") and alun_utils.parse_list(snd_ini,section,"levels",true) or nil
+		local level_list = snd_ini:line_exist(section,"levels") and parse_list(snd_ini,section,"levels",true) or nil
 		if (level_list == nil or level_list[level.name()]) then
-			local type = snd_ini:r_string_ex(section,"type") or STR_EMPTY
+			local type = snd_ini:r_string_ex(section,"type") or ""
 			if type == "npc" then
 				theme[section] = theme[section] or npc_sound(snd_ini, section)
 			elseif type == "actor" then
@@ -865,6 +850,7 @@ function load_sound()
 				theme[section] = theme[section] or looped_sound(snd_ini, section)
 			end
 		end
+		return false
 	end
 
 	snd_ini:section_for_each(itr)
@@ -876,43 +862,10 @@ function init_npc_sound(npc)
 		if v.init_npc then
 			--printf("checking %s for %s (%s)", v.section, npc:name(), character_community(npc))
 			if (v.avail_communities == nil or v.avail_communities[character_community(npc)]) then
-				if (v.story_ids == nil or v.story_ids[get_object_story_id(npc:id()) or STR_EMPTY]) then
+				if (v.story_ids == nil or v.story_ids[ get_object_story_id(npc:id()) or ""]) then
 					v:init_npc(npc)
 				end
 			end
 		end
 	end
-end
-
---' Added by Dancher
-function is_community_avail(sound, npc)
-	local snd_theme = sound_theme.theme[sound]
-	if (snd_theme and snd_theme.avail_communities) then
-		return snd_theme.avail_communities[character_community(npc)]
-	end
-	return false
-end
-
-function is_level_avail(sound, level_name)
-	local snd_theme = sound_theme.theme[sound]
-	if (snd_theme and snd_theme.avail_levels) then
-		return snd_theme.avail_levels[level_name]
-	end
-	return false
-end
-
-function is_weathers_avail(sound, weather_period)
-	local snd_theme = sound_theme.theme[sound]
-	if (snd_theme and snd_theme.avail_weathers) then
-		return snd_theme.avail_weathers[weather_period]
-	end
-	return false
-end
-
-function get_play_prob(sound)
-	local snd_theme = sound_theme.theme[sound]
-	if (snd_theme and snd_theme.play_prob) then
-		return snd_theme.play_prob
-	end
-	return 0
 end
