@@ -1,6 +1,7 @@
 local npc_role = {noone=0, listener=1, director=2}
 local camp_ini = ini_file("scripts\\camp.ltx")
-local story_table = parse_names(camp_ini:r_string_ex("camp", "stories") or "test_story")
+local story_table = parse_names(camp_ini:r_string_ex("camp", "story_themes") or "test_story")
+local joke_table = parse_names(camp_ini:r_string_ex("camp", "joke_themes") or "test_joke")
 local guitar_table = parse_names(camp_ini:r_string_ex("camp", "guitar_themes") or "test_guitar")
 local harmonica_table = parse_names(camp_ini:r_string_ex("camp", "harmonica_themes") or "test_harmonica")
 local sr_camp_states = {
@@ -79,7 +80,7 @@ local sr_camp_states = {
 							timeout = 0,
 							transitions = {"idle","harmonica","guitar","story"},
 							precondition = function (camp)
-								if(#story_table>0) then
+								if(#story_table>0 or joke_table>0) then
 									local n = 0
 									for k,v in pairs(camp.npc) do
 									
@@ -107,6 +108,7 @@ function CCampManager:__init(object)
 	self.object = object
 
 	self.npc = {}
+	self.npc_registered = 0
 	self.schemes = {}
 	-- Хранилище для режиссера лагеря. Режиссерем является сталкер, затеявший необычное поведение
 	self.director = nil
@@ -120,9 +122,13 @@ function CCampManager:__init(object)
 	self.active_state_time = 0
 	self.timeout = 0
 	self.idle_talker = nil
+	self.last_story = nil
 end
 -- Переключает состояния кемпа
 function CCampManager:update()
+	if (self.npc_registered == 0) then
+		return
+	end
 
 	-- Если саундменеджер говорит какую то историю - ждем окончания.
 	if not self.sound_manager:is_finished() then
@@ -243,8 +249,21 @@ function CCampManager:get_director()
 end
 function CCampManager:set_story()
 	if(self.active_state=="story") then
+		local story = nil
+		local story_chance = xr_conditions.is_night() and 50 or 0
+		if (has_chance(story_chance)) then
+			if (#story_table == 1) then
+				story = story_table[1]
+			elseif (#story_table > 1) then
+				story = utils.pick_without(self.last_story, story_table)
+			end
+			self.last_story = story
+		else
+			story = joke_table[math.random(#joke_table)]
+		end
 		self.sound_manager:set_storyteller(self.director)
-		self.sound_manager:set_story(story_table[math.random(#story_table)])
+		self.sound_manager:set_story(story)
+		self.sound_manager:update()
 		self.sound_manager_started = true
 	elseif(self.active_state=="idle") then
 		self.sound_manager_started = true
@@ -265,6 +284,7 @@ function CCampManager:register_npc(npc_id)
 --	local npc_id = npc:id()
 	--printf("Register NPC to camp %s", self.object:id())
 	self.npc[npc_id] = {state = self.active_state}
+	self.npc_registered = self.npc_registered + 1
 	db.storage[npc_id].registred_camp = self.object:id()
 
 	-- При регистрации персонажа, проверяем какие роли он может выполнять.
@@ -296,6 +316,7 @@ function CCampManager:unregister_npc(npc_id)
 
 	db.storage[npc_id].registred_camp = nil
 	self.npc[npc_id] = nil
+	self.npc_registered = self.npc_registered - 1
 	self.sound_manager:unregister_npc(npc_id)
 end
 function CCampManager:get_npc_role(npc_id, state)
