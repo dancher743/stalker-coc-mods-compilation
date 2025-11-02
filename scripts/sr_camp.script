@@ -1,9 +1,8 @@
 local npc_role = {noone=0, listener=1, director=2}
 local camp_ini = ini_file("scripts\\camp.ltx")
-local story_table = parse_names(camp_ini:r_string_ex("camp", "story_themes") or "test_story")
+local story_table = parse_names(camp_ini:r_string_ex("camp", "stories") or "test_story")
 local guitar_table = parse_names(camp_ini:r_string_ex("camp", "guitar_themes") or "test_guitar")
 local harmonica_table = parse_names(camp_ini:r_string_ex("camp", "harmonica_themes") or "test_harmonica")
-local joke_table = parse_names(camp_ini:r_string_ex("camp", "joke_themes") or "test_joke")
 local sr_camp_states = {
 				idle = {
 							director_state = nil,
@@ -22,7 +21,7 @@ local sr_camp_states = {
 							min_time = 30000,
 							max_time = 120000,
 							timeout = 0,
-							transitions = {"idle"},
+							transitions = {"idle","guitar","story"},
 							precondition = function (camp)
 								if(#harmonica_table>0) then
 									local n = 0
@@ -50,7 +49,7 @@ local sr_camp_states = {
 							min_time = 30000,
 							max_time = 120000,
 							timeout = 0,
-							transitions = {"idle"},
+							transitions = {"idle","guitar","story"},
 							precondition = function (camp)
 								if(#guitar_table>0) then
 									local n = 0
@@ -80,30 +79,23 @@ local sr_camp_states = {
 							timeout = 0,
 							transitions = {"idle","harmonica","guitar","story"},
 							precondition = function (camp)
-								if(#story_table>0 or #joke_table>0) then
+								if(#story_table>0) then
 									local n = 0
 									for k,v in pairs(camp.npc) do
-										n = n + 1
+									
+										local npc = db.storage[k] and db.storage[k].object
+										if npc ~= nil and not xr_meet.is_meet(npc) then
+											n = n + 1
+										end
 									end
 									if(n>1) then
-										for k,v in pairs(camp.npc) do
-											local scheme = db.storage[k] and db.storage[k].active_scheme and db.storage[k][db.storage[k].active_scheme]
-											local npc = db.storage[k] and db.storage[k].object
-											if (npc) then
-												if(v.story==npc_role.director) and (scheme ~= nil and scheme.base_action == scheme.description) and not xr_meet.is_meet(npc) then
-													return true
-												end
-											end
-										end
+										return true
 									end
 								end
 								return false
 							end
 						},
 }
-
-local state_north_name = "state_north"
-local state_weather_bad_name = "state_weather_bad"
 
 --------------------------------------------------------------------------------
 -- Класс CCampManager
@@ -115,7 +107,6 @@ function CCampManager:__init(object)
 	self.object = object
 
 	self.npc = {}
-	self.npc_count = 0
 	self.schemes = {}
 	-- Хранилище для режиссера лагеря. Режиссерем является сталкер, затеявший необычное поведение
 	self.director = nil
@@ -129,13 +120,9 @@ function CCampManager:__init(object)
 	self.active_state_time = 0
 	self.timeout = 0
 	self.idle_talker = nil
-	self.last_story = nil
 end
 -- Переключает состояния кемпа
 function CCampManager:update()
-	if (self.npc_count == 0) then
-		return
-	end
 
 	-- Если саундменеджер говорит какую то историю - ждем окончания.
 	if not self.sound_manager:is_finished() then
@@ -156,7 +143,6 @@ function CCampManager:update()
 	-- Если кто-то говорит айдловую фразу, ждем пока он договорит.
 	if(self.idle_talker~=nil) then
 		if(xr_sound.sound_table[self.idle_talker]) then
-			self.idle_talker_sound = nil
 			return
 		else
 			self.idle_talker = nil
@@ -203,24 +189,7 @@ function CCampManager:update()
 		end
 		if(npc_count~=0) then
 			self.idle_talker = talkers[math.random(#talkers)]
-			if (self.idle_talker_sound == nil) then
-				local state_north_chance = sound_theme.get_play_prob(state_north_name)
-				if (math.random() < state_north_chance and sound_theme.is_level_avail(state_north_name, level.name())) then
-					local npc = db.storage[self.idle_talker] and db.storage[self.idle_talker].object
-					if (npc and sound_theme.is_community_avail(state_north_name, npc)) then
-						self.idle_talker_sound = state_north_name
-					else
-						self.idle_talker_sound = "state"
-					end
-				elseif (math.random() < sound_theme.get_play_prob(state_weather_bad_name) and 
-					sound_theme.is_weathers_avail(state_weather_bad_name, level_weathers.get_period())) 
-				then
-					self.idle_talker_sound = state_weather_bad_name
-				else
-					self.idle_talker_sound = "state"
-				end
-			end
-			xr_sound.set_sound_play(self.idle_talker, self.idle_talker_sound)
+			xr_sound.set_sound_play(self.idle_talker, "state")
 		end
 	end
 end
@@ -274,22 +243,9 @@ function CCampManager:get_director()
 end
 function CCampManager:set_story()
 	if(self.active_state=="story") then
-		local story = nil
-		local story_chance = xr_conditions.is_night() and 0.5 or 0
-		if (math.random() < story_chance) then
-			if (#story_table == 1) then
-				story = story_table[1]
-			elseif (#story_table > 1) then
-				story = utils.pick_without(self.last_story, story_table)
-			end
-			self.last_story = story
-		else
-			story = joke_table[math.random(#joke_table)]
-		end
 		self.sound_manager:set_storyteller(self.director)
-		self.sound_manager:set_story(story)
+		self.sound_manager:set_story(story_table[math.random(#story_table)])
 		self.sound_manager_started = true
-		self.sound_manager:update()
 	elseif(self.active_state=="idle") then
 		self.sound_manager_started = true
 	end
@@ -309,7 +265,6 @@ function CCampManager:register_npc(npc_id)
 --	local npc_id = npc:id()
 	--printf("Register NPC to camp %s", self.object:id())
 	self.npc[npc_id] = {state = self.active_state}
-	self.npc_count = self.npc_count + 1
 	db.storage[npc_id].registred_camp = self.object:id()
 
 	-- При регистрации персонажа, проверяем какие роли он может выполнять.
@@ -341,7 +296,6 @@ function CCampManager:unregister_npc(npc_id)
 
 	db.storage[npc_id].registred_camp = nil
 	self.npc[npc_id] = nil
-	self.npc_count = self.npc_count - 1
 	self.sound_manager:unregister_npc(npc_id)
 end
 function CCampManager:get_npc_role(npc_id, state)
