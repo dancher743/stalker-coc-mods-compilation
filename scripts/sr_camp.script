@@ -212,7 +212,7 @@ function CCampManager:get_idle_talker_sound()
 	end
 	
 	local idle_talker_sound = nil
-	local random = math.random(2)
+	local random = math.random(3)
 	
 	if (random == 1 and sound_theme.is_level_avail(state_north_name, level.name())) then
 		local state_prob = sound_theme.get_play_prob(state_north_name)
@@ -222,20 +222,16 @@ function CCampManager:get_idle_talker_sound()
 				idle_talker_sound = state_north_name
 			end
 		end
-	end
-	
-	if (random == 2 and sound_theme.is_weathers_avail(state_weather_bad_name, level_weathers.get_period())) then
+	elseif (random == 2 and sound_theme.is_weathers_avail(state_weather_bad_name, level_weathers.get_period())) then
 		local state_prob = sound_theme.get_play_prob(state_weather_bad_name)
 		if (has_chance01(state_prob)) then
 			idle_talker_sound = state_weather_bad_name
 		end
-	end
-	
-	if (idle_talker_sound == nil) then
+	elseif (random == 3) then
 		idle_talker_sound = state_name
 	end
 	
-	return idle_talker_sound
+	return idle_talker_sound or state_name
 end
 function CCampManager:set_next_state()
 

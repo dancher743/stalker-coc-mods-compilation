@@ -53,6 +53,7 @@ All notable changes to this project will be documented in this file.
 * Added Offline Combat news into "Show corpse findings reports" option of Dynamic News
 * Configured subperiods weights
 * Balanced obtain trust time, added `obtain_trust_time` into `axr_companions.ltx`
+* Improved playing idle sounds about north levels and reactions to weather
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
