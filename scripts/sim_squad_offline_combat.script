@@ -21,7 +21,7 @@ local bad_distances = {
 local add_rank_points = 20
 local handicap_chance = 25
 local remove_squad_chance = 50
-local not_on_smart_combat_chance = 10
+local not_on_smart_combat_chance = 20
 
 local rank_power = {
 	["novice"] = 10,
