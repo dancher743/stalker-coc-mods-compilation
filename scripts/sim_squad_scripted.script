@@ -1428,7 +1428,7 @@ end
 ----------------------------
 
 function sim_squad_scripted:alive()
-	local se_obj = alife_object(self:commander_id())
+	local se_obj = self:commander_id() and alife_object(self:commander_id())
 	if (se_obj and se_obj:alive()) then
 		return true
 	end
