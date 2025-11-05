@@ -56,6 +56,7 @@ All notable changes to this project will be documented in this file.
 * Configured subperiods weights
 * Balanced obtain trust time, added `obtain_trust_time` into `axr_companions.ltx`
 * Improved playing idle sounds about north levels and reactions to weather
+* Added more M203 grenade launchers into NPC's spawn
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
@@ -82,6 +83,7 @@ All notable changes to this project will be documented in this file.
 * Added missing unique weapons into Beard's trade config
 * Removed Trapper's weapon from stashes
 * Fixed `shuffle_table` function in `utils.script`
+* Fixed overspawning of grenade launchers ammo
 
 ### Optimization
 * Made `squad_on_update`, `monster_on_update` and `actor_on_update` callbacks sliced

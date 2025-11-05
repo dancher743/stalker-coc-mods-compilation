@@ -216,7 +216,7 @@ function try_spawn_ammo(npc,spawn_items)
 				end
 			end
 			-- spawn grenade ammo if there is launcher attached
-			if (ini:r_float_ex(itm:section(),"grenade_launcher_status") > 0) then
+			if (itm:weapon_grenadelauncher_status() > 0) then
 				ammo_class = alun_utils.parse_list(ini,itm:section(),"grenade_class")
 				for i=1,#ammo_class do
 					sec = ammo_class[i]
@@ -347,7 +347,7 @@ function set_weapon_drop_condition(npc,itm)
 			end
 		end
 		-- spawn grenade ammo if there is launcher attached
-		if (ini:r_float_ex(itm:section(),"grenade_launcher_status") > 0) then
+		if (itm:weapon_grenadelauncher_status() > 0) then
 			ammo_class = alun_utils.parse_list(ini,itm:section(),"grenade_class")
 			for i=1,#ammo_class do
 				sec = ammo_class[i]
