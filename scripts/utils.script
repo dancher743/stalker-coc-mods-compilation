@@ -907,6 +907,13 @@ end
 ----------------------------
 
 --
+-- Clamps value between 0 and 1 and returns value
+--
+function clamp01(value)
+	return (value < 0 and 0) or (value > 1 and 1) or value
+end
+
+--
 -- Linearly interpolates between "a" and "b" by "t".
 -- The parameter "t" is clamped to the range [0, 1].
 --
@@ -1075,4 +1082,14 @@ function parse_ini_section_to_iarray(ini,section)
 	end
 	
 	return t
+end
+
+function ini_r_string_explode(ini,section,line)
+	local value = ini:r_string_ex(section,line)
+	
+	if (value == nil or value == STR_EMPTY) then
+		return nil
+	end
+	
+	return alun_utils.str_explode(value,STR_COMMA)
 end

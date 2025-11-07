@@ -57,6 +57,7 @@ All notable changes to this project will be documented in this file.
 * Balanced obtain trust time, added `obtain_trust_time` into `axr_companions.ltx`
 * Improved playing idle sounds about north levels and reactions to weather
 * Added more M203 grenade launchers into NPC's spawn
+* Refactored "Rank-based weapon condition drops" mod
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
@@ -106,6 +107,7 @@ All notable changes to this project will be documented in this file.
 * Added functions for working with chances: `get_chance01`, `has_chance` and `has_chance01` into `_g.script`
 * Function `shuffle_table` now is `shuffle_itable` in `utils.script`
 * Refactored usage of `try_spawn_ammo` function in `death_manager.script`
+* Added `clamp01` and `ini_r_string_explode` functions into `utils.script`
 
 ## [1.5.2] - 2025-07-13
 
