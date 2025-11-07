@@ -176,7 +176,7 @@ function create_release_item(npc)
 		return
 	end
 	
-	try_spawn_ammo(npc,spawn_items)
+	npc:iterate_inventory(try_spawn_ammo,npc)
 	
 	try_spawn_patch_for_zombied(npc,spawn_items)
 	
@@ -193,48 +193,40 @@ function create_release_item(npc)
 	end
 end
 
-function try_spawn_ammo(npc,spawn_items)
+function try_spawn_ammo(npc,itm)
 	local ini = system_ini()
 	local class,ammo_class,sec,number
-	local function itr(npc,itm)
-		if (IsWeapon(nil,itm:clsid()) and not npc:marked_dropped(itm)) then
-			class = system_ini():r_string_ex(itm:section(),"class")
-			ammo_class = alun_utils.parse_list(ini,itm:section(),"ammo_class")
-			if (class and class == "WP_KNIFE") then return end
-			-- randomly spawn only 1 ammo type per found weapon
-			if (#ammo_class > 0) then
-				sec = ammo_class[math.random(1,#ammo_class)]
-				if (sec) then 
-					if (item_count[sec]) then
-						number = math.random(item_count[sec][1], item_count[sec][2])
-					else 
-						number = math.random(1,15)
-					end
-					if (number > 0 and system_ini():section_exist(sec)) then
-						create_ammo(sec,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id(),number)
-					end
+	
+	if (IsWeapon(nil,itm:clsid()) and not npc:marked_dropped(itm)) then
+		local ini = system_ini()
+		local sec,number
+		local ammo_class = alun_utils.parse_list(ini,itm:section(),"ammo_class")
+		
+		-- randomly spawn only 1 ammo type per found weapon
+		if (#ammo_class > 0) then
+			sec = ammo_class[math.random(1,#ammo_class)]
+			if (sec and item_count[sec]) then 
+				number = math.random(item_count[sec][1], item_count[sec][2])
+				if (number > 0 and system_ini():section_exist(sec)) then
+					create_ammo(sec,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id(),number)
 				end
 			end
-			-- spawn grenade ammo if there is launcher attached
-			if (itm:weapon_grenadelauncher_status() > 0) then
-				ammo_class = alun_utils.parse_list(ini,itm:section(),"grenade_class")
-				for i=1,#ammo_class do
-					sec = ammo_class[i]
-					if (sec) then
-						if (item_count[sec]) then
-							number = math.random(item_count[sec][1], item_count[sec][2])
-						else 
-							number = math.random(0,2)
-						end
-						if (number > 0 and system_ini():section_exist(sec)) then 
-							create_ammo(sec,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id(),number)
-						end
+		end
+		
+		-- spawn grenade ammo if there is launcher attached
+		if (itm:weapon_grenadelauncher_status() > 0) then
+			ammo_class = alun_utils.parse_list(ini,itm:section(),"grenade_class")
+			for i=1,#ammo_class do
+				sec = ammo_class[i]
+				if (sec and item_count[sec]) then 
+					number = math.random(item_count[sec][1], item_count[sec][2])
+					if (number > 0 and system_ini():section_exist(sec)) then 
+						create_ammo(sec,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id(),number)
 					end
 				end
 			end
 		end
 	end
-	npc:iterate_inventory(itr,npc)
 end
 
 function try_spawn_patch_for_zombied(npc,spawn_items)
@@ -332,34 +324,7 @@ function set_weapon_drop_condition(npc,itm)
 	--printf("condition [%s]", tostring(condition))
 	itm:set_condition(condition)
 	
-	if (IsWeapon(nil,itm:clsid()) and not npc:marked_dropped(itm)) then
-		local ini = system_ini()
-		local sec,number
-		local ammo_class = alun_utils.parse_list(ini,itm:section(),"ammo_class")
-		-- randomly spawn only 1 ammo type per found weapon
-		if (#ammo_class > 0) then
-			sec = ammo_class[math.random(1,#ammo_class)]
-			if (sec and item_count[sec]) then 
-				number = math.random(item_count[sec][1], item_count[sec][2])
-				if (number > 0 and system_ini():section_exist(sec)) then
-					create_ammo(sec,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id(),number)
-				end
-			end
-		end
-		-- spawn grenade ammo if there is launcher attached
-		if (itm:weapon_grenadelauncher_status() > 0) then
-			ammo_class = alun_utils.parse_list(ini,itm:section(),"grenade_class")
-			for i=1,#ammo_class do
-				sec = ammo_class[i]
-				if (sec and item_count[sec]) then 
-					number = math.random(item_count[sec][1], item_count[sec][2])
-					if (number > 0 and system_ini():section_exist(sec)) then 
-						create_ammo(sec,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id(),number)
-					end
-				end
-			end
-		end
-	end
+	try_spawn_ammo(npc,itm)
 end
 
 --' Функция спавнит необходимое число предметов
