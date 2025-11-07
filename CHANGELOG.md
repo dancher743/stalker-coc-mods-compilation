@@ -58,6 +58,7 @@ All notable changes to this project will be documented in this file.
 * Improved playing idle sounds about north levels and reactions to weather
 * Added more M203 grenade launchers into NPC's spawn
 * Refactored "Rank-based weapon condition drops" mod
+* Added hud disabling to level changing
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
