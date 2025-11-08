@@ -822,6 +822,9 @@ function WeatherManager:load_state(m_data)
 		return
 	end
 
+	-- migration
+	self:migrate_state(m_data)
+
 	--alun_utils.debug_write("WeatherManager:load_state BEFORE")
 	self.levelWeather = m_data.weather_manager.levelWeather or self.levelWeather
 	self.period_prev = m_data.weather_manager.period_prev or self.period_prev
@@ -849,6 +852,18 @@ function WeatherManager:load_state(m_data)
 	
 	--alun_utils.debug_write("WeatherManager:load_state AFTER")
 end 
+
+function WeatherManager:migrate_state(m_data)
+	local subperiod_prev = m_data.weather_manager.subperiod_prev
+	if (subperiod_prev and subperiod_prev == "coc_ol_pack") then
+		m_data.weather_manager.subperiod_prev = "legend_returns"
+	end
+	
+	local subperiod = m_data.weather_manager.subperiod
+	if (subperiod and subperiod == "coc_ol_pack") then
+		m_data.weather_manager.subperiod = "legend_returns"
+	end
+end
 
 function WeatherManager:finalize()
 	if (self.meteorites_particle and self.meteorites_particle:playing()) then
