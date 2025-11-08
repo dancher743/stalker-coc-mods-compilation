@@ -943,6 +943,20 @@
         <ui_pda2_need_guider_location_spot width="19" height="19" stretch="1" alignment="c" location_level="1">
                 <texture r="135" g="183" b="116">ui_pda2_sq_sos</texture>
         </ui_pda2_need_guider_location_spot>
+		
+		<ui_squad_commander_blink_level_map ttl="11" hint="disable_hint" location_level="-1">
+			<level_map spot="ui_squad_commander_blink_spot"/>
+		</ui_squad_commander_blink_level_map>
+		<ui_squad_commander_blink_spot x="-8" y="-40" width="19" height="19" stretch="1" light_anim="new_task_highlight_00" light_anim_cyclic="1" la_texture="1" xform_anim="new_task_highlight_xform" xform_anim_cyclic="1" alignment="c" location_level="-1">
+			<texture>ui_pda2_stask_last_01a</texture>
+		</ui_squad_commander_blink_spot>
+		
+		<ui_squad_commander_blink_mini_map ttl="11" hint="disable_hint" location_level="-1">
+			<mini_map spot="ui_squad_commander_blink_mini_spot"/>
+		</ui_squad_commander_blink_mini_map>
+		<ui_squad_commander_blink_mini_spot x="-8" y="-40" width="19" height="19" stretch="1" light_anim="new_task_highlight_00" light_anim_cyclic="1" la_texture="1" xform_anim="new_task_highlight_xform" xform_anim_cyclic="1" alignment="c" location_level="-1">
+			<texture>ui_pda2_stask_last_01a</texture>
+		</ui_squad_commander_blink_mini_spot>
 </map_spots>
 
 

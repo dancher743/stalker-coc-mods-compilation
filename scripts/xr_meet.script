@@ -477,6 +477,16 @@ function notify_on_use(victim, who)
 			local text = game.translate_string("ui_st_no_talk_leader_news_text")
 			local news_text = strformat(text, victim_commander:character_name())
 			db.actor:give_game_news(news_caption, news_text, victim_commander:character_icon(), 100, 10000)
+			
+			local commander_id = victim_commander:id()
+			if (level.map_has_object_spot(commander_id, "ui_squad_commander_blink_mini_map") == 0) then
+				level.map_add_object_spot_ser(commander_id, "ui_squad_commander_blink_mini_map", STR_EMPTY)
+			end
+			if (pda_upgrade_manager.has_squads_on_map_upgrade() and get_check_option("show_stalkers_on_map")) then
+				if (level.map_has_object_spot(commander_id, "ui_squad_commander_blink_level_map") == 0) then
+					level.map_add_object_spot_ser(commander_id, "ui_squad_commander_blink_level_map", STR_EMPTY)
+				end
+			end
 		end
 		
 		if meet_manager.abuse_mode == STR_TRUE and
