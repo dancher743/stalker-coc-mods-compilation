@@ -137,3 +137,18 @@ Mods
 82. CS atmosphere for CoC v1.1 [CoC 1.4.22] (Sanctuary)
 83. Better Knife (Vanilla) with adaptations from CoP (alalakskylvia)
 84. Optimized rain (Clepoy)
+
+Credits
+---
+Special thanks to:
+* Team Epic for Call of Chernobyl
+* Anomaly Developers for Anomaly
+* LR Devs for Legend Returns
+* DBolical Pty Ltd. for [moddb.com](https://www.moddb.com/)
+* DoctorX for Questlines, Dynamic Faction Relations and Anomalies mods. Rest In Peace stalker, we miss you 💔🕯️
+* Tronex for Dynamic News Revamp, Global Weather, Fresh Start mods
+* av661194 for a big bunch of fixes
+* Alundaio for SDK
+* OpenXRay Team for help and advices
+
+And all-all-all whose developments I used in my mods compilation!
