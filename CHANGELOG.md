@@ -27,7 +27,7 @@ All notable changes to this project will be documented in this file.
 * Added rain and rain splash textures from "CoC OL pack v1.3" mod
 * Rebalanced presets of squad's stay point idle time
 * Rebalanced ability to receive tasks from companions
-* Corrected chance of telling campfire stories: from 33% to 50%
+* Corrected chance of telling campfire stories: from 33 to 25
 * Refactored and reworked `sound_actor_critical_hit.script`
 * Added delay between Crit Hit's sound playbacks
 * Replaced `is_yan_base_defense_quest_enabled` condition with base defense option
