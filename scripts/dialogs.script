@@ -3190,8 +3190,13 @@ end
 function can_vanish_bounty_hunt_target(first_speaker, second_speaker)
 	local npc = who_is_npc(first_speaker, second_speaker)
 	local actor = db.actor
+	
+	if (has_alife_info("achieved_silver_or_lead")) then
+		return true
+	end
+	
 	local actor_rank = actor:character_rank()
-	local npc_rank = npc:character_rank()
+	local npc_rank = npc:character_rank() * 1.25
 	
 	return actor_rank > npc_rank
 end
