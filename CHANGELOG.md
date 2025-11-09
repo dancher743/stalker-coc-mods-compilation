@@ -43,7 +43,7 @@ All notable changes to this project will be documented in this file.
 * Reworked chances in `sim_squad_offline_combat.script`
 * Corrected tasks descriptions in RUS localisation
 * Refactored `sim_squad_offline_combat.script`
-* Increased volum of critical hit sound from 0.45 to 0.5
+* Increased volum of critical hit sound from 0.45 to 0.35
 * Added black screen effector to online smart Fast Travel
 * Added SoC sounds to big bloodsuckers
 * Made `more_cooking_recipes_dialog` after `dm_broker_dialog` in Barman's dialogs

@@ -3,7 +3,7 @@
 -- Added by Dancher
 --
 
-local volume = 0.5
+local volume = 0.35
 local sound_delta_time = 25
 local sound_paths = {
 	"actor\\hurt2",
