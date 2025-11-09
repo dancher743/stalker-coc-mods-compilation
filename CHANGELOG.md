@@ -89,6 +89,7 @@ All notable changes to this project will be documented in this file.
 * Fixed `shuffle_table` function in `utils.script`
 * Fixed overspawning of grenade launchers ammo
 * Balanced 5.45, 5.56 and 9x39 ammo drop count (from CoC 1.5)
+* Added `can_trade` with false to `hand_radio` and `hand_radio_r` script items
 
 ### Optimization
 * Made `squad_on_update`, `monster_on_update` and `actor_on_update` callbacks sliced
