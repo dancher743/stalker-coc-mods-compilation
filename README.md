@@ -148,7 +148,9 @@ Special thanks to:
 * DoctorX for Questlines, Dynamic Faction Relations and Anomalies mods. Rest In Peace stalker, we miss you 💔🕯️
 * Tronex for Dynamic News Revamp, Global Weather, Fresh Start mods
 * av661194 for a big bunch of fixes
+* xr_Sanya for Extended Offline (EOC) Lite mod
 * Alundaio for SDK
 * OpenXRay Team for help and advices
+* AMK Team for this long and fascinating journey!
 
 And all-all-all whose developments I used in my mods compilation!
