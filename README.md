@@ -67,7 +67,7 @@ Mods
 12. Vanilla Hands Return (for CoC 1.4) (FudgeBomb)
 13. Lor's models v2.5 (Grelka)
 14. LootMoney Vanilla CoC 1.4.22/1.5R6 (tsěsarĭ, RenanMsV)
-15. S.W.T.C Call of Chernobyl - Advanced + FIX 1.1 (exDeMODER)
+15. S.W.T.C Call of Chernobyl - Advanced + FIX 1.1 (VincentVega aka GragHat, exDeMODER, brainscorcher)
 16. UI mutant looting CoC 1.4.22 (av661194, Nik71rus)
 17. Full Simulation A-Life (Aktuarus)
 18. Companions can Sprint (Sanctuary/Revo Lucas)
@@ -101,7 +101,7 @@ Mods
 46. Outfit loot CoC 1 4 22 v2 with reworking (av661194, Dancher)
 47. CoC Extended Offline (EOC) Lite 1.7.6 + dynamic faction relations (xr_Sanya)
 48. Stalker Tweaks (SarisKhan)
-49. Radio music from Legend Returns 0.9.2 (Genies of the Zone Team) and OLR 3.0 (hi_flyer & Co)
+49. Radio music from Legend Returns 0.9.2 (LR Devs) and OLR 3.0 (hi_flyer & Co)
 50. Flashlight sound for vanilla CoC (Grelka)
 51. Classic SoC Flashlight for CoC with Dancher's changes (default white light) (Shovelled, Dancher)
 52. Clear weather and sky textures from All AtmosFear 3 cycles for CoC (owdred)
@@ -132,8 +132,8 @@ Mods
 77. Jokes Restoration + Script Fix [CoC 1.5R7] (party-50, FudgeBomb, fontar)
 78. Fixed Artefact Collision and Visuals [1.5.3] (Longreed, SoulCrystal) Special thanks to TheLostStalker88 for the tip!
 79. ND DRXCoCDynamicAnomalies21 Remix (TheLostStalker88, DoctorX)
-80. Weather from Legend Returns 0.9.2 (Genies of the Zone Team)
-81. Shaders from Legend Returns 0.9.2 (Genies of the Zone Team)
+80. Weather from Legend Returns 0.9.2 (LR Devs)
+81. Shaders from Legend Returns 0.9.2 (LR Devs)
 82. CS atmosphere for CoC v1.1 [CoC 1.4.22] (Sanctuary)
 83. Better Knife (Vanilla) with adaptations from CoP (alalakskylvia)
 84. Optimized rain (Clepoy)
@@ -149,6 +149,7 @@ Special thanks to:
 * Tronex for Dynamic News Revamp, Global Weather, Fresh Start mods
 * av661194 for a big bunch of fixes
 * xr_Sanya for Extended Offline (EOC) Lite mod
+* VincentVega aka GragHat, exDeMODER, brainscorcher for S.W.T.C. Call of Chernobyl Edition mod
 * Alundaio for SDK
 * OpenXRay Team for help and advices
 * AMK Team for this long and fascinating journey!
