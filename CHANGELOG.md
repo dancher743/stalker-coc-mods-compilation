@@ -112,6 +112,7 @@ All notable changes to this project will be documented in this file.
 * Function `shuffle_table` now is `shuffle_itable` in `utils.script`
 * Refactored usage of `try_spawn_ammo` function in `death_manager.script`
 * Added `clamp01` and `ini_r_string_explode` functions into `utils.script`
+* Added `enable_ui` string to `sr_teleport_sections.ltx` and `ui_sr_teleport.script`
 
 ## [1.5.2] - 2025-07-13
 

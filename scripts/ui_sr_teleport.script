@@ -39,6 +39,9 @@ function msg_box_ui:__init(obj,disable_msg,item) super()
 		return
 	end
 	
+	local enable_ui = ini:r_string_ex(self.name,"enable_ui") or STR_FALSE
+	self.enable_ui = enable_ui == STR_TRUE and true or false
+	
 	self.obj = obj
 
 	self.message_box = CUIMessageBoxEx()
@@ -68,8 +71,10 @@ function msg_box_ui:OnMsgOk()
 	end
 
 	level.add_pp_effector("black.ppe", 1313, false)
-	slot_hud.deactivate_hud()
-	show_all_ui(false)
+	if (self.enable_ui == false) then
+		slot_hud.deactivate_hud()
+		show_all_ui(false)
+	end
 	-- Dancher: a little hacky, but it works :)
 	xr_effects.disable_actor_nightvision()
 	
