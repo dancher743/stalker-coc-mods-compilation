@@ -61,6 +61,7 @@ All notable changes to this project will be documented in this file.
 * Refactored "Rank-based weapon condition drops" mod
 * Added hud disabling to level changing
 * Added achievements to ask-to-join and bounty hunt peaceful way dialogs and corrected formulas
+* Corrected Guide job dialog position in `character_dialogs.xml`
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
