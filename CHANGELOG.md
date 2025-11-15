@@ -67,6 +67,7 @@ All notable changes to this project will be documented in this file.
 * Decreased chance of finding a toolkits in NPC loot from 0.015 to 0.01
 * Changed size of `ui_icon_equipment` from 1024x2048 to 2048x2048
 * Reworked picking of killers in combats of Offline Combat feature
+* Added check for a squads on smarts for turning on a campfires
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
