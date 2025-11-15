@@ -119,16 +119,7 @@ local function calculate_squad_power(squad)
 end
 
 -- from Anomaly 1.5.1.2
-local squad_npcs
-local function get_random_npc(squad)
-	squad_npcs = squad_npcs or {}
-	for k in squad:squad_members() do
-		table.insert(squad_npcs, k.id)
-	end
-	local se_npc = get_se_obj(squad_npcs[math.random(#squad_npcs)])
-	iempty_table(squad_npcs)
-	return se_npc
-end
+local killer_squad_ids = {}
 
 local function execute_combat(squad1, squad2, level_id)
 	local killer_squad = nil
@@ -151,13 +142,17 @@ local function execute_combat(squad1, squad2, level_id)
 	
 	game_relations.drx_df_faction_npc_on_death(killer_squad:get_squad_community(), victim_squad:get_squad_community())
 	
-	local se_killer = get_random_npc(killer_squad)
+	local se_killer = nil
 	local se_victim = nil
 	local is_killer_stalker = killer_squad:is_stalker()
 	local is_victim_stalker = victim_squad:is_stalker()
 	
+	for k in killer_squad:squad_members() do
+		table.insert(killer_squad_ids, k.id)
+	end
+	
 	for k in victim_squad:squad_members() do
-		se_killer = math.random(2) == 1 and se_killer or get_random_npc(killer_squad)
+		se_killer = get_se_obj(utils.random_in_itable(killer_squad_ids))
 		se_victim = get_se_obj(k.id)
 		
 		se_victim:on_death(se_killer)
@@ -185,6 +180,8 @@ local function execute_combat(squad1, squad2, level_id)
 			end
 		end
 	end
+	
+	iempty_table(killer_squad_ids)
 	
 	return victim_squad, se_victim.id, se_killer.id
 end

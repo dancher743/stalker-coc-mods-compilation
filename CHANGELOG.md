@@ -66,6 +66,7 @@ All notable changes to this project will be documented in this file.
 * Increased remove squad chance from 50 to 60 in Offline Combat
 * Decreased chance of finding a toolkits in NPC loot from 0.015 to 0.01
 * Changed size of `ui_icon_equipment` from 1024x2048 to 2048x2048
+* Reworked picking of killers in combats of Offline Combat feature
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
@@ -118,6 +119,7 @@ All notable changes to this project will be documented in this file.
 * Refactored usage of `try_spawn_ammo` function in `death_manager.script`
 * Added `clamp01` and `ini_r_string_explode` functions into `utils.script`
 * Added `enable_ui` string to `sr_teleport_sections.ltx` and `ui_sr_teleport.script`
+* Added `random_in_itable` function into `utils.script`
 
 ## [1.5.2] - 2025-07-13
 

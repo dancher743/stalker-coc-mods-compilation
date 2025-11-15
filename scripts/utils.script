@@ -954,6 +954,10 @@ function contains(array, value)
     return false
 end
 
+function random_in_itable(t)
+    return t[math.random(#t)]
+end
+
 -- from Anomaly 1.5.1.2
 local function swap(array, index1, index2)
     array[index1], array[index2] = array[index2], array[index1]
