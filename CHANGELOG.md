@@ -106,7 +106,6 @@ All notable changes to this project will be documented in this file.
 * Optimized CPU usage of `process_squads_combat` function in `sim_squad_offline_combat.script`
 * Replaced some strings with global constants
 * Added `check_option_name_prefix` field into `axr_main_options.script`
-* Optimized `IsActor` function in `_g.script`
 * Reworked `last_killed_stalker` field in `sim_squad_offline_combat.script` (RAM optimization)
 
 ### Framework
