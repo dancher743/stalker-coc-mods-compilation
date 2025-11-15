@@ -142,7 +142,7 @@ function loot_ui:FillList()
 	self.loot = utils.load_var(self.obj,"looting_tbl",nil)
 	if self.loot == nil then
 		self.loot = {}
-		loot_mutant(nil,self.clsid,self.loot)
+		itms_manager.loot_mutant(nil,self.clsid,self.loot)
 		utils.save_var(self.obj,"looting_tbl",self.loot)
 	end
 
@@ -290,73 +290,6 @@ function loot_ui:AddItemToList(sec,count)
 
 
 	self.list_box:AddExistingItem(_itm)
-end
-
---------------------------------------------------- from itms_manager.script
-
-function loot_mutant(obj,cls,t,npc)
-	if not (db.actor) then 
-		return 
-	end 
-	
-	local cls = cls or obj and obj:clsid()
-	if not (cls) then
-		return
-	end
-	local ini = ini_file("plugins\\itms_manager.ltx")
-	local clsid_to_section = {
-		[clsid.bloodsucker_s] 	= "bloodsucker",
-		[clsid.boar_s] 			= "boar",
-		[clsid.burer_s] 		= "burer",
-		[clsid.chimera_s]		= "chimera",
-		[clsid.controller_s]	= "controller",
-		[clsid.dog_s]			= "dog",
-		[clsid.flesh_s]			= "flesh",
-		[clsid.gigant_s]		= "gigant",
-		[clsid.poltergeist_s]	= "poltergeist",
-		[clsid.psy_dog_s]		= "psy_dog",
-		[clsid.psy_dog_phantom_s] = "psy_dog",
-		[clsid.pseudodog_s]		= "pseudodog",
-		[clsid.snork_s]			= "snork",
-		[clsid.tushkano_s]		= "tushkano",
-		[clsid.cat_s]			= "cat",
-		[clsid.fracture_s]		= "fracture",
-		[clsid.zombie_s]		= "zombie",
-		[clsid.crow]			= "crow",
-		[clsid.rat_s]			= "rat"
-	}
-
-	local loot_table = alun_utils.collect_section(ini,clsid_to_section[cls])
-
-	local loot,sec
-	for i=1,#loot_table do
-		loot = alun_utils.str_explode(loot_table[i],STR_COMMA)
-		if (loot and loot[1] and loot[2]) then
-			if not (loot[3]) then
-				loot[3] = 1
-			end
-
-			loot[2] = tonumber(loot[2])
-			for i=1,loot[2] do
-				if ((math.random(1,100)/100) <= tonumber(loot[3])) then
-					--printf("loot_mutant: section=%s",loot[1])
-					local koef = 1
-					if has_alife_info("achieved_well_dressed") and (math.random(1,100) <= 20) then
-						--printf("bonus loot")
-						koef = 2
-					end
-					if (t) then
-						local item_section = loot[1]
-						if not (t[item_section]) then
-							t[item_section] = {}
-						end
-						t[item_section].count = (t[item_section].count and t[item_section].count + 1 or 1)*koef
-						--printf("loot_mutant")
-					end
-				end
-			end
-		end
-	end
 end
 
 --		добавляем в опции
