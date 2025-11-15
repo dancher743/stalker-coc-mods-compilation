@@ -65,6 +65,7 @@ All notable changes to this project will be documented in this file.
 * Corrected Guide job dialog position in `character_dialogs.xml`
 * Increased remove squad chance from 50 to 60 in Offline Combat
 * Decreased chance of finding a toolkits in NPC loot from 0.015 to 0.01
+* Changed size of `ui_icon_equipment` from 1024x2048 to 2048x2048
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
