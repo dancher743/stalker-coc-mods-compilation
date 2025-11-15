@@ -150,7 +150,7 @@ Special thanks to:
 * av661194 for a big bunch of fixes
 * xr_Sanya for Extended Offline (EOC) Lite mod
 * VincentVega aka GragHat, exDeMODER, brainscorcher for S.W.T.C. Call of Chernobyl Edition mod
-* Alundaio for SDK
+* Alundaio for AXR Toolset
 * OpenXRay Team for help and advices
 * AMK Team for this long and fascinating journey!
 
