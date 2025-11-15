@@ -89,8 +89,14 @@ function on_item_focus(itm)
 	local section = itm:section()
 	if (RepairTools[section]) then 
 		local ini = system_ini()
+		
 		local repair_type = ini:r_string_ex(section,"repair_type")
 		if not (repair_type) then 
+			return
+		end
+		
+		local can_highlight_slots = ini:r_bool_ex(section,"can_highlight_slots") or false
+		if not (can_highlight_slots) then
 			return
 		end
 		
@@ -128,11 +134,17 @@ function on_item_drag_dropped(itm1,itm2,from_slot,to_slot)
 	end
 
 	local ini = system_ini()
+	
 	local repair_type = ini:r_string_ex(section,"repair_type")
 	if not (repair_type) then 
 		return 
 	end
 
+	local can_drag_and_drop = ini:r_bool_ex(section,"can_drag_and_drop") or false
+	if not (can_drag_and_drop) then
+		return
+	end
+	
 	if (repair_type == "weapon") then 
 		if not (IsWeapon(itm2)) then 
 			return 
@@ -168,8 +180,6 @@ function on_item_drag_dropped(itm1,itm2,from_slot,to_slot)
 	end]]
 	
 	local function on_yes(owner,p)
-		
-		
 		local new_condition = cur_condition + c_add
 		if (new_condition > c_max) then 
 			new_condition = c_max
@@ -427,11 +437,15 @@ function actor_on_item_use(obj)
 
 	-- Repair mod
 	if (RepairModEnable and RepairTools[obj:section()]) then
-		if (RepairUI) then
+		local section = obj:section()
+		local ini = system_ini()
+		
+		local use_repair_ui = ini:r_bool_ex(section,"use_repair_ui") or false
+		if (RepairUI and use_repair_ui) then
 			local hud = get_hud()
 			if (hud) then
-				--hud:HideActorMenu()
-				local ui = ui_itm_repair and ui_itm_repair.repair_ui(hud,obj,obj:section())
+				hud:HideActorMenu()
+				local ui = ui_itm_repair and ui_itm_repair.repair_ui(hud,obj,section)
 				if (ui) then
 					ui:ShowDialog(true)
 					ui:FillList()
