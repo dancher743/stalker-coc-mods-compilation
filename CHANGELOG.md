@@ -127,6 +127,7 @@ All notable changes to this project will be documented in this file.
 * Added `clamp01` and `ini_r_string_explode` functions into `utils.script`
 * Added `enable_ui` string to `sr_teleport_sections.ltx` and `ui_sr_teleport.script`
 * Added `random_in_itable` function into `utils.script`
+* Added `subperiod` command into debug command list to change weather subperiod
 
 ## [1.5.2] - 2025-07-13
 
