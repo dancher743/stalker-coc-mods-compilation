@@ -69,6 +69,7 @@ All notable changes to this project will be documented in this file.
 * Reworked picking of killers in combats of Offline Combat feature
 * Added check for a squads on smarts for turning on a campfires
 * Removed special config for companion trade
+* Returned bread and conserva to Army loot (according to SoC)
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
