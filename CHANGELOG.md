@@ -102,6 +102,7 @@ All notable changes to this project will be documented in this file.
 * Added `can_trade` with false to `hand_radio` and `hand_radio_r` script items
 * Fixed incorrect item count for task completion
 * Changed `meat_base` section parent to `booster_script`
+* Fixed missing cooked food in NPC's loot
 
 ### Optimization
 * Made `squad_on_update`, `monster_on_update` and `actor_on_update` callbacks sliced
