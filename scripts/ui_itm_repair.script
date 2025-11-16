@@ -415,7 +415,10 @@ function repair_ui:OnButton_repair()
 				self:HideDialog()
 			end
 		else
-			self:ResetControls()
+			local function postpone_for_next_frame()
+				self:ResetControls()
+			end
+			SkipFrame(postpone_for_next_frame)
 		end
 	
 		if (self.use_actor_effects and actor_effects) then
