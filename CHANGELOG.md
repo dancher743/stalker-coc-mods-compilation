@@ -70,6 +70,7 @@ All notable changes to this project will be documented in this file.
 * Added check for a squads on smarts for turning on a campfires
 * Removed special config for companion trade
 * Returned bread and conserva to Army loot (according to SoC)
+* Added `edita_piekha_gorod_detstva` track to `bar_visitors_radio`
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
