@@ -46,7 +46,7 @@ local function update_data()
 		time = time + 1
 		set_db_value(se_id, time_key, time)
 		
-		if (time > axr_companions.obtain_trust_time) then
+		if (time > axr_companions.obtain_trust_time and is_trust(se_id) == false) then
 			set_db_value(se_id, trust_key, true)
 		end
 		

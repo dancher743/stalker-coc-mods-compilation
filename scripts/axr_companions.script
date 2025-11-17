@@ -874,6 +874,7 @@ end
 -- Added by Dancher
 ------------------------------------------
 
+local invulnerability_option_name = "enable_companions_invulnerability"
 local simulation = alife()
 local option_name
 local se_obj_cache
@@ -956,12 +957,10 @@ function is_invulnerable_obj(obj)
 end
 
 function is_invulnerable(se_obj)
-	option_name = option_name or "enable_companions_invulnerability"
-	
-	local option = axr_main.config:r_value(MM_OPTIONS,option_name,1,false)
+	local has_option = get_check_option(invulnerability_option_name)
 	local is_trust = axr_companions_trust.is_trust(se_obj.id)
 	
-	return option and is_trust
+	return has_option and is_trust
 end
 
 function is_companion_trust(obj)

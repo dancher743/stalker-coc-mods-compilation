@@ -262,6 +262,7 @@ local function is_squad_valid(squad)
 	end
 	
 	local task_info = task_manager.get_task_manager().task_info
+	
 	for k in squad:squad_members() do
 		if (axr_task_manager.bounties_by_id) then
 			for _,npc_id in pairs(axr_task_manager.bounties_by_id) do
@@ -270,7 +271,13 @@ local function is_squad_valid(squad)
 				end
 			end
 		end
+		
 		local se_obj = alife_object(k.id)
+		
+		if (se_obj and axr_companions.is_invulnerable(se_obj)) then
+			return false
+		end
+		
 		for _,task in pairs(task_info) do
 			local giver_id = task.task_giver_id
 			if (se_obj and giver_id and (giver_id == se_obj.group_id or giver_id == se_obj.id)) then
