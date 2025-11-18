@@ -99,7 +99,12 @@ local hits = {}
 local h
 
 function FalloutManager:start(manual)
-	if atmosfear_options.config:r_value(self.sect,"opt_enable_fallout",2,1)==0 or (level.name() == "l11_hospital" or level_weathers.valid_levels[level.name()] ~= true) or has_alife_info("bar_arena_fight") then
+	if atmosfear_options.config:r_value(self.sect,"opt_enable_fallout",2,1)==0 then
+		self.skip_message = true
+		self:skip()
+		return
+	end
+	if (level.name() == "l11_hospital" or level_weathers.valid_levels[level.name()] ~= true) or has_alife_info("bar_arena_fight") then
 		self.skip_message = true
 		self:skip()
 		return
@@ -216,6 +221,11 @@ function FalloutManager:update()
 			--self.atmosfear.debugMessages[7]:SetText("opt_enable_psi_storm="..tostring(self.atmosfear.opt_enable_psi_storm)..", is_started("..tostring(psi_storm_manager.is_started())..")")
 		--end
 		if diff < 0 then 
+			if atmosfear_options.config:r_value(self.sect,"opt_enable_fallout",2,1)==0 then
+				self.skip_message = true
+				self:skip()
+				return
+			end
 			if(self.time_forwarded) then
 				self.time_forwarded = false
 				self.skip_message = false

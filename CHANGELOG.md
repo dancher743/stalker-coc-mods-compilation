@@ -106,6 +106,7 @@ All notable changes to this project will be documented in this file.
 * Fixed incorrect item count for task completion
 * Changed `meat_base` section parent to `booster_script`
 * Fixed missing cooked food in NPC's loot
+* Added missing cataclysm skips when time forward
 
 ### Optimization
 * Made `squad_on_update`, `monster_on_update` and `actor_on_update` callbacks sliced

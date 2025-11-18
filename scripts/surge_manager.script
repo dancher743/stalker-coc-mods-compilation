@@ -481,10 +481,14 @@ function CSurgeManager:update()
 			self.time_forwarded = false
 			local diff = math.abs(self._delta - g_time:diffSec(self.last_surge_time))
 			if(diff<3600) then
-				self.skip_message = false
-                xr_statistic.inc_counter("surges")
+				if atmosfear_options.config:r_value(self.sect,"opt_enable_blowout",2,1)==0 then
+					self.skip_message = true
+				else
+					self.skip_message = false
+					xr_statistic.inc_counter("surges")
+					level_weathers.get_weather_manager():forced_weather_change()
+				end
                 self:skip_surge()
-				level_weathers.get_weather_manager():forced_weather_change()
                 return
 			end
 		end
