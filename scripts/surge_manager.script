@@ -172,6 +172,7 @@ function CSurgeManager:start(manual)
 	
 	if atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_blowout",2,1)==0 then
 		self.skip_message = true
+		self.force_artefacts_and_anomalies = true
 		self:skip_surge()
 		return
 	end
@@ -276,8 +277,11 @@ function CSurgeManager:skip_surge()
 	self.wave_sound 			= false
 	prev_sec					= 0
 
-	self:toggle_level_artefact_respawns()
-	self:respawn_artefacts_and_replace_anomaly_zone()
+	if (self.force_artefacts_and_anomalies == true) then
+		self.force_artefacts_and_anomalies = false
+		self:toggle_level_artefact_respawns()
+		self:respawn_artefacts_and_replace_anomaly_zone()
+	end
 	
 	--xr_statistic.inc_counter("surges")
 	if not self.skip_message then
@@ -483,6 +487,7 @@ function CSurgeManager:update()
 			if(diff<3600) then
 				if atmosfear_options.config:r_value(self.sect,"opt_enable_blowout",2,1)==0 then
 					self.skip_message = true
+					self.force_artefacts_and_anomalies = true
 				else
 					self.skip_message = false
 					xr_statistic.inc_counter("surges")
