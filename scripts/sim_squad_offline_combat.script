@@ -274,15 +274,15 @@ local function is_squad_valid(squad)
 		
 		local se_obj = alife_object(k.id)
 		
-		if (se_obj and axr_companions.is_invulnerable(se_obj)) then
-			return false
-		end
-		
 		for _,task in pairs(task_info) do
 			local giver_id = task.task_giver_id
 			if (se_obj and giver_id and (giver_id == se_obj.group_id or giver_id == se_obj.id)) then
 				return false
 			end
+		end
+		
+		if (se_obj and axr_companions.is_invulnerable(se_obj)) then
+			return false
 		end
     end
 	
