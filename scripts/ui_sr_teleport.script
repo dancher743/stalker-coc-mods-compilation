@@ -74,6 +74,10 @@ function msg_box_ui:OnMsgOk()
 	if (self.enable_ui == false) then
 		slot_hud.deactivate_hud()
 		show_all_ui(false)
+		local hud = get_hud()
+		if (hud) then
+			hud:show_messages()
+		end
 	end
 	-- Dancher: a little hacky, but it works :)
 	xr_effects.disable_actor_nightvision()
