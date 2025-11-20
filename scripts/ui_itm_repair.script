@@ -80,7 +80,7 @@ function repair_ui:FillPartsList()
 	local obj = level.object_by_id(item.item_id)
 	local function fill_list(actor,itm)
 		if (itm and itm:id() ~= item.item_id) then
-			if (self.parts_include and self.parts_include[itm:section()]) or (self.parts_exclude == nil and string.find(obj:section(),itm:section())) or (self.parts_exclude and self.parts_exclude[itm:section()] == nil and string.find(obj:section(),itm:section())) then
+			if (self.parts_include and self.parts_include[itm:section()]) or (self.parts_exclude == nil and string.find(obj:section(),itm:section())) or (self.parts_exclude and self.parts_exclude[itm:section()] == nil and (string.find(obj:section(),itm:section()) or string.find(itm:section(),obj:section()))) then
 				local con = 0
 				local prefix = nil
 				if (self.add_full_part_condition) then

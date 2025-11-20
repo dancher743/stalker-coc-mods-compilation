@@ -72,6 +72,7 @@ All notable changes to this project will be documented in this file.
 * Returned bread and conserva to Army loot (according to SoC)
 * Added `edita_piekha_gorod_detstva` track to `bar_visitors_radio`
 * Added companion invulnerability into squad validation of offline combat
+* Added backward compatibility to repairing weapon sections
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
