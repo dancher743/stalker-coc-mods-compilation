@@ -3,14 +3,13 @@
 -- Added by Dancher
 --
 
-local volume = 0.35
+local volume = 0.5
 local sound_delta_time = 25
 local sound_paths = {
-	"actor\\hurt2",
-	"actor\\hurt3",
-	"actor\\hurt5",
-	"actor\\hurt6",
-	"actor\\hurt7"
+	"actor\\bullet_hit_1",
+	"actor\\bullet_hit_2",
+	"actor\\bullet_hit_3",
+	"actor\\bullet_hit_4"
 }
 
 local sound_time = nil
@@ -23,10 +22,12 @@ end
 
 function play_sound()
 	local time_global = time_global()
+	
 	if (sound_time and sound_time > time_global) then
 		return
 	end
-	local sound = get_sound()
-	sound:play_no_feedback(db.actor, sound_object.s2d, 0, VEC_ZERO, volume)
+	
+    local sound = get_sound()
+    sound:play_no_feedback(db.actor, sound_object.s2d, 0, VEC_ZERO, volume)
 	sound_time = time_global + sound_delta_time
 end
