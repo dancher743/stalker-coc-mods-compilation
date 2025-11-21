@@ -73,6 +73,7 @@ All notable changes to this project will be documented in this file.
 * Added `edita_piekha_gorod_detstva` track to `bar_visitors_radio`
 * Added companion invulnerability into squad validation of offline combat
 * Added backward compatibility to repairing weapon sections
+* Added detaching of weapon addons from repairing weapons
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization

@@ -40,6 +40,21 @@ function repair_ui:__init(owner,obj,section) super()
 	self.parts_exclude = alun_utils.parse_list(ini,section,"repair_parts_exclude",true)
 
 	self.use_actor_effects = ini:r_bool_ex(section,"repair_use_actor_effects",false)
+	
+	self.weapon_addons = {
+		"wpn_addon_scope",
+		"wpn_addon_scope_x2.7",
+		"wpn_addon_scope_detector",
+		"wpn_addon_scope_night",
+		"wpn_addon_scope_susat",
+		"wpn_addon_scope_susat_x1.6",
+		"wpn_addon_scope_susat_custom",
+		"wpn_addon_scope_susat_dusk",
+		"wpn_addon_scope_susat_night",
+		"wpn_addon_silencer",
+		"wpn_addon_grenade_launcher",
+		"wpn_addon_grenade_launcher_m203"
+	}
 
 	self:InitControls()
 	self:InitCallBacks()
@@ -377,19 +392,15 @@ function repair_ui:OnButton_repair()
 	local ini = system_ini()
 	local bonus = 0
 	local se_part = nil
-	local con_part = 0
+	local obj_part = nil
 	if (self.list_box_parts) then
 		index = self.list_box_parts:GetSelectedIndex()
 		if (index ~= 4294967295) then
 			item = self.list_box_parts:GetItemByIndex(index)
 			se_part = item and item.item_id and alife_object(item.item_id)
 			if (se_part) then
-				local sec = se_part:section_name()
-				bonus = ini:r_float_ex(sec,"repair_part_bonus") or self.part_bonus
-				local obj_part = item and level.object_by_id(item.item_id)
-				if (obj_part) then
-					con_part = obj_part:condition()
-				end
+				bonus = ini:r_float_ex(se_part:section_name(),"repair_part_bonus") or self.part_bonus
+				obj_part = item and level.object_by_id(item.item_id)
 			end
 		end
 	end
@@ -397,8 +408,8 @@ function repair_ui:OnButton_repair()
 	local con = obj:condition()
 	local con_delta = 0
 	if (self.add_full_part_condition) then
-		if index == 4294967295 or se_part == nil then return end
-		con_delta = con_part
+		if index == 4294967295 or se_part == nil or obj_part == nil then return end
+		con_delta = obj_part:condition()
 	else
 		con_delta = self.add_condition + bonus
 	end
@@ -406,6 +417,7 @@ function repair_ui:OnButton_repair()
 	
 	local function on_yes(owner,p)
 		obj:set_condition(con)
+		self:DetachWeaponAddons(obj_part)
 		alife():release(se_part,true)
 	
 		if (self.use_condition and self.object and self.object:get_remaining_uses() <= 0) then 
@@ -483,4 +495,13 @@ function repair_ui:AddItemToList(item,listbox,condition,prefix)
 	--]]
 
 	listbox:AddExistingItem(_itm)
+end
+
+function repair_ui:DetachWeaponAddons(wpn)
+	if (IsWeapon(wpn) == false) then
+		return
+	end
+	for _,v in ipairs(self.weapon_addons) do
+		wpn:weapon_addon_detach(v)
+	end
 end
