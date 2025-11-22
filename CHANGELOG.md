@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 * Rebuilded sound scripts to reduce bugs with sounds
 * Replaced [CoC OL pack v1.3](https://www.moddb.com/mods/call-of-chernobyl/addons/coc-ol-pack-v1-2) sub-period with Legend Returns 0.9.2 weather
 * Soft rework of toolkits (especially gunsmith)
+* Added "Squad migration" option to change frequency of squads migration
 
 ### Mods
 * [CS atmosphere for CoC v1.1 [CoC 1.4.22]](https://www.moddb.com/mods/call-of-chernobyl/addons/cop-and-cs-atmosphere-for-coc-coc-1422)

@@ -6,10 +6,8 @@
 
 -- Current Action: 0 - Reach Target | 1 - Stay Point
 
-local STAY_POINT_IDLE_TIME = {
-	24*60*60
-}
-
+local STAY_POINT_HOURS_DEFAULT = 24
+local STAY_POINT_HOURS_OPTION_NAME = "squad_stay_point_hours"
 local STALKERS_ON_MAP_OPTION_NAME = "show_stalkers_on_map"
 local MONSTERS_ON_MAP_OPTION_NAME = "show_monsters_on_map"
 local GUIDE_JOB_ON_MAP_OPTION_NAME = "show_guide_job_on_map"
@@ -25,6 +23,11 @@ do -- to localize below
 	end 
 	
 	locations_ini:section_for_each(itr)
+end
+
+local function get_stay_point_time()
+	local hours = axr_main.config:r_value(MM_OPTIONS,STAY_POINT_HOURS_OPTION_NAME,3) or STAY_POINT_HOURS_DEFAULT
+	return hours*60*60
 end
 
 --***********************************************************************************************
@@ -69,7 +72,7 @@ function sim_squad_scripted:init_squad()
 	if (s) then
 		self.random_targets = alun_utils.str_explode(s,STR_COMMA) 
 	end
-	self.idle_time			= sys_ini:r_float_ex(settings_id,"idle_time") or STAY_POINT_IDLE_TIME[math.random(#STAY_POINT_IDLE_TIME)]
+	self.idle_time			= sys_ini:r_float_ex(settings_id,"idle_time") or get_stay_point_time()
 	
 	self.relationship		= self.relationship or rel
 	self.sympathy			= sys_ini:r_float_ex(settings_id,"sympathy")
@@ -299,7 +302,7 @@ function sim_squad_scripted:specific_update(script_target_id)
 				self.current_target_id = self.assigned_target_id
 				self.current_action = 1
 				if (self.idle_time == nil) then
-					self.idle_time = system_ini():r_float_ex(self:section_name(),"idle_time") or STAY_POINT_IDLE_TIME[math.random(#STAY_POINT_IDLE_TIME)]
+					self.idle_time = system_ini():r_float_ex(self:section_name(),"idle_time") or get_stay_point_time()
 				end
 				if (self.stay_time == nil) then
 					self.stay_time = game.get_game_time()
@@ -356,7 +359,7 @@ function sim_squad_scripted:generic_update()
 					self.current_target_id = self.assigned_target_id
 					self.current_action = 1
 					if (self.idle_time == nil) then
-						self.idle_time = system_ini():r_float_ex(self:section_name(),"idle_time") or STAY_POINT_IDLE_TIME[math.random(#STAY_POINT_IDLE_TIME)]
+						self.idle_time = system_ini():r_float_ex(self:section_name(),"idle_time") or get_stay_point_time()
 					end
 					if (self.stay_time == nil) then
 						self.stay_time = game.get_game_time()

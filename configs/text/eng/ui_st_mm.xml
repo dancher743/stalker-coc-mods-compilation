@@ -594,4 +594,7 @@
 	<string id="ui_mm_show_no_talk_leader">
 		<text>Squad commander message</text>
 	</string>
+	<string id="ui_mm_squad_stay_point_hours">
+		<text>Squad migration (every hours)</text>
+	</string>
 </string_table>
