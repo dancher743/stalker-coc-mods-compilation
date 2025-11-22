@@ -1304,6 +1304,14 @@ function disable_info (info)
 	end
 end
 
+-- Added by Dancher
+function create_item(section, npc, count)
+	count = count or 1
+	for i = 1, count do
+		alife():create(section, npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
+	end
+end
+
 function create_ammo(section, position, lvi, gvi, pid, num)
 	local ini = system_ini()
 

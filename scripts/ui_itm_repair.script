@@ -41,19 +41,9 @@ function repair_ui:__init(owner,obj,section) super()
 
 	self.use_actor_effects = ini:r_bool_ex(section,"repair_use_actor_effects",false)
 	
-	self.weapon_addons = {
-		"wpn_addon_scope",
-		"wpn_addon_scope_x2.7",
-		"wpn_addon_scope_detector",
-		"wpn_addon_scope_night",
-		"wpn_addon_scope_susat",
-		"wpn_addon_scope_susat_x1.6",
-		"wpn_addon_scope_susat_custom",
-		"wpn_addon_scope_susat_dusk",
-		"wpn_addon_scope_susat_night",
-		"wpn_addon_silencer",
-		"wpn_addon_grenade_launcher",
-		"wpn_addon_grenade_launcher_m203"
+	self.default_weapon_scopes = {
+		["wpn_addon_scope"] = true,
+		["wpn_addon_scope_susat"] = true
 	}
 
 	self:InitControls()
@@ -502,7 +492,38 @@ function repair_ui:AddItemToList(item,listbox,condition,prefix)
 end
 
 function repair_ui:DetachWeaponAddons(wpn)
-	for _,v in ipairs(self.weapon_addons) do
-		wpn:weapon_addon_detach(v)
+	local ini = system_ini()
+	local wpn_section = wpn:section()
+	
+	if (wpn:weapon_is_silencer() and wpn:weapon_silencer_status() == 2) then
+		local silencer_name = ini:r_string_ex(wpn_section, "silencer_name")
+		if (silencer_name) then
+			create_item(silencer_name, db.actor)
+		end
+	end
+	
+	if (wpn:weapon_is_grenadelauncher() and wpn:weapon_grenadelauncher_status() == 2) then
+		local grenade_launcher_name = ini:r_string_ex(wpn_section, "grenade_launcher_name")
+		if (grenade_launcher_name) then
+			create_item(grenade_launcher_name, db.actor)
+		end
+	end
+	
+	if (wpn:weapon_is_scope() and wpn:weapon_scope_status() == 2) then
+		local scope_name = ini:r_string_ex(wpn_section, "scope_name")
+		if (scope_name) then
+			create_item(scope_name, db.actor)
+		else
+			local scopes_sect = utils.ini_r_string_explode(ini, wpn_section, "scopes_sect")
+			if (scopes_sect) then
+				for _,scope_sect in ipairs(scopes_sect) do
+					scope_name = ini:r_string_ex(scope_sect, "scope_name")
+					if (scope_name and self.default_weapon_scopes[scope_name] == true) then
+						create_item(scope_name, db.actor)
+						break
+					end
+				end
+			end
+		end
 	end
 end

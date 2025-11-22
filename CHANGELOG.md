@@ -136,6 +136,7 @@ All notable changes to this project will be documented in this file.
 * Added `random_in_itable` function into `utils.script`
 * Added `subperiod` command into debug command list to change weather subperiod
 * Added `play_sound_by_path` function into `xr_sound.script`
+* Added `create_item` function into `_g.script`
 
 ## [1.5.2] - 2025-07-13
 
