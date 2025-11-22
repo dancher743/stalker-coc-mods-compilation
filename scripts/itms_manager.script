@@ -165,12 +165,9 @@ function on_item_drag_dropped(itm1,itm2,from_slot,to_slot)
 	local c_min = ini:r_float_ex(section,"repair_min_condition") or 0
 	local c_max = ini:r_float_ex(section,"repair_max_condition") or 0.75
 	
-	if (cur_condition < c_min) then 
-		ui_dyn_msg_box.msg_box_ui("message_box_ok",true,game.translate_string("st_repair_mod_message_box_condition_to_low"))
+	if (cur_condition < c_min or cur_condition >= c_max) then
+		ui_dyn_msg_box.msg_box_ui("message_box_ok",true,game.translate_string("st_repair_mod_message_box_condition"))
 		return
-	elseif (cur_condition >= c_max) then 
-		ui_dyn_msg_box.msg_box_ui("message_box_ok",true,game.translate_string("st_repair_mod_message_box_condition_to_high"))
-		return	
 	end
 	
 	local c_add = ini:r_float_ex(section,"repair_add_condition") or 0.15
@@ -184,6 +181,7 @@ function on_item_drag_dropped(itm1,itm2,from_slot,to_slot)
 		if (new_condition > c_max) then 
 			new_condition = c_max
 		end
+		play_repaired_sound(repair_type)
 		
 		--printf("%s:set_condition(%s)",itm2:name(),new_condition)
 		itm2:set_condition(new_condition)
@@ -220,6 +218,14 @@ function on_item_drag_dropped(itm1,itm2,from_slot,to_slot)
 
 	ui_dyn_msg_box.msg_box_ui("message_box_yes_no",true,msg,on_yes,on_no)
 end 
+
+function play_repaired_sound(repair_type)
+	if (repair_type == "weapon") then
+		xr_sound.play_sound_by_path("lr\\weapon_repaired")
+	elseif (repair_type == "outfit") then
+		xr_sound.play_sound_by_path("lr\\outfit_repaired")
+	end
+end
 
 local torch_delay
 -- bind_stalker update

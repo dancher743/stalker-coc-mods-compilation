@@ -630,6 +630,14 @@ function get_safe_sound_object(path)
 	return sound_object_by_path[path]
 end
 
+function play_sound_by_path(path, once)
+	local sound = get_safe_sound_object(path)
+	if (once == true and sound:playing()) then
+		sound:stop()
+	end
+	sound:play(db.actor, 0, sound_object.s2d)
+end
+
 function stop_all_sound_object()
 	for k,v in pairs(sound_object_by_path) do
 		if v:playing() then

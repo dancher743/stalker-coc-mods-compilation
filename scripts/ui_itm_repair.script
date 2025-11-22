@@ -419,8 +419,9 @@ function repair_ui:OnButton_repair()
 		obj:set_condition(con)
 		if (self.repair_type == "weapon" and IsWeapon(obj_part)) then
 			self:DetachWeaponAddons(obj_part)
-			obj_part:unload_magazine()
+			unload_all_weapons.unload_weapon(obj_part)
 		end
+		itms_manager.play_repaired_sound(self.repair_type)
 		alife():release(se_part,true)
 	
 		if (self.use_condition and self.object and self.object:get_remaining_uses() <= 0) then 

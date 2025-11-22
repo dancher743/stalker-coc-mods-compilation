@@ -57,11 +57,8 @@
 	<string id="st_repair_mod_message_box_ask">
 		<text>Точно хотите отремонтировать: %s?\n\n%c[255,1,255,1]+%s%</text>
 	</string>
-	<string id="st_repair_mod_message_box_condition_to_low">
-		<text>Это нельзя отремонтировать этим набором.</text>
-	</string>
-	<string id="st_repair_mod_message_box_condition_to_high">
-		<text>Ремнабора не достаточно для проведения ремонта.</text>
+	<string id="st_repair_mod_message_box_condition">
+		<text>Это нельзя отремонтировать.</text>
 	</string>
 	<string id="st_itm_stash">
 		<text> тайник</text>

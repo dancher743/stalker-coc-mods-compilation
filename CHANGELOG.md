@@ -74,6 +74,7 @@ All notable changes to this project will be documented in this file.
 * Added companion invulnerability into squad validation of offline combat
 * Added backward compatibility to repairing weapon sections
 * Added detaching of weapon addons and magazine unloading to weapons for repair
+* Added item repaired sounds
 
 ### Fixes
 * Fixed typo in `csky_scientific_outfit_description` string in rus localization
@@ -134,6 +135,7 @@ All notable changes to this project will be documented in this file.
 * Added `enable_ui` string to `sr_teleport_sections.ltx` and `ui_sr_teleport.script`
 * Added `random_in_itable` function into `utils.script`
 * Added `subperiod` command into debug command list to change weather subperiod
+* Added `play_sound_by_path` function into `xr_sound.script`
 
 ## [1.5.2] - 2025-07-13
 

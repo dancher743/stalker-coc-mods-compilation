@@ -5,7 +5,7 @@
 -- adapted: Dancher
 --------------------------------------------
 local bgl,bsi,bsc
-local weapon_empty_sound
+local unload_sound_path = "weapons\\gen_empty"
 
 function unload_weapons()
 	local inventory = ActorMenu.get_actor_menu()
@@ -14,7 +14,7 @@ function unload_weapons()
 		return 
 	end
 	
-	local ta, tb, ts, ini = {}, {}, {}, system_ini()
+	local ta, tb, ts = {}, {}, {}
 	local i, k, v
 	ts["wpn_knife"] = true
 	ts["wpn_binoc"] = true
@@ -27,39 +27,36 @@ function unload_weapons()
 	
 	if (string.find(GAME_VERSION,"1.4")) then
 		local function itr(npc,itm)
-			if (IsWeapon(itm) and not ts[itm:id()] and not ts[itm:section()]) then
-				i = itm:get_ammo_in_magazine()
-				if (i > 0) then
-					k = itm and alife():object(itm:id())
-					v = k and stpk_utils.get_weapon_data(k)
-					if (v) then
-						k = ini:r_string_ex(itm:section(),"ammo_class",STR_EMPTY)
+			if (not ts[itm:id()] and not ts[itm:section()]) then
+				unload_weapon(itm)
+			end
+		end
+		db.actor:iterate_inventory(itr,db.actor)
+	end
+	
+	xr_sound.play_sound_by_path(unload_sound_path,true)
+end
+
+function unload_weapon(itm)
+	local i, k, v
+	if (IsWeapon(itm)) then
+		i = itm:get_ammo_in_magazine()
+		if (i > 0) then
+			k = itm and alife():object(itm:id())
+			v = k and stpk_utils.get_weapon_data(k)
+			if (v) then
+				k = system_ini():r_string_ex(itm:section(),"ammo_class",STR_EMPTY)
+				if (k and k ~= STR_EMPTY) then
+					k = alun_utils.str_explode(k,STR_COMMA)
+					if (k) then
+						k = k[v.ammo_type + 1]
 						if (k and k ~= STR_EMPTY) then
-							k = alun_utils.str_explode(k,STR_COMMA)
-							if (k) then
-								k = k[v.ammo_type + 1]
-								if (k and k ~= STR_EMPTY) then
-									if not (ta[k]) then
-										ta[k] = i
-									else
-										ta[k] = ta[k] + i
-									end
-									itm:unload_magazine()
-								end
-							end
+							itm:unload_magazine()
+							create_ammo(k,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id(),i)
 						end
 					end
 				end
 			end
 		end
-		db.actor:iterate_inventory(itr,db.actor)
 	end
-	for k,v in pairs(ta) do
-		create_ammo(k,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id(),v)
-	end
-	
-	if (weapon_empty_sound == nil) then
-		weapon_empty_sound = sound_object([[weapons\gen_empty]])
-	end
-	weapon_empty_sound:play(db.actor,0,sound_object.s2d)
 end
