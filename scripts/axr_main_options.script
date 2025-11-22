@@ -134,7 +134,7 @@ function opt_menu_on_init(menu)
 	
 	menu.gameplay_options["show_no_talk_leader"] = {default=true, 	debug_only=false, 	typ="check"}
 	
-	menu.gameplay_options["squad_stay_point_hours"] = {default=24, debug_only=false, typ="list", list={24,36,48,60,72}}
+	menu.gameplay_options["squad_stay_point_hours"] = {default=36, debug_only=false, typ="list", list={24,36,48,60,72}}
 	--
 	
 	if (db.actor) then -- Options will only show while in-game

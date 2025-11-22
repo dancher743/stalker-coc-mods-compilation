@@ -6,7 +6,7 @@
 
 -- Current Action: 0 - Reach Target | 1 - Stay Point
 
-local STAY_POINT_HOURS_DEFAULT = 24
+local STAY_POINT_HOURS_DEFAULT = 36
 local STAY_POINT_HOURS_OPTION_NAME = "squad_stay_point_hours"
 local STALKERS_ON_MAP_OPTION_NAME = "show_stalkers_on_map"
 local MONSTERS_ON_MAP_OPTION_NAME = "show_monsters_on_map"
