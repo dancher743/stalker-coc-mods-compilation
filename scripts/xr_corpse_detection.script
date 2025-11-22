@@ -146,7 +146,7 @@ function get_loot_table(ini)
 	local quest_item_string = "quest_item"
 	local mp_item_prefix = "mp_"
 	local inv_name_string = "inv_name"
-	local default_string = "default"
+	local default_string = STR_DEFAULT
 	local cost_string = "cost"
 	
 	sysini:section_for_each(function(section)
@@ -416,8 +416,8 @@ function evaluator_corpse:evaluate()
 		return false 
 	end
 
-	self.a.analse_mode = xr_logic.pick_section_from_condlist(db.actor, self.object, self.a.mutant_corpse_analysis)
-	self.a.enabled = xr_logic.pick_section_from_condlist(db.actor, self.object, self.a.corpse_detection_enabled)
+	self.a.analse_mode = xr_logic.pick_section_from_condlist(db.actor, self.object, self.a.mutant_corpse_analysis) or STR_FALSE
+	self.a.enabled = xr_logic.pick_section_from_condlist(db.actor, self.object, self.a.corpse_detection_enabled) or STR_TRUE
 	if (self.a.analse_mode == STR_FALSE and self.a.enabled == STR_FALSE) then
 		return false
 	end

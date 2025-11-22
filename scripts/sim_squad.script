@@ -176,7 +176,7 @@ function squad_update(squad)
 
 			if (squad.current_action == 0 and not squad.combat_target_id) then
 				if (se_target:clsid() == clsid.smart_terrain) then
-					local smartOwner = se_target.owning_faction or "none"
+					local smartOwner = se_target.owning_faction or STR_NONE
 					
 					if not (game_relations.is_factions_enemies(smartOwner, squad:get_squad_community())) then
 						if (se_target:am_i_reached(squad)) then

@@ -11,7 +11,7 @@ local psy_aura_distance_sqr = 10*10
 
 local DogTimers = {}
 
-local function monster_on_slicing_update(npc)
+local function monster_on_update(npc)
 	if (npc:clsid()==clsid.psy_dog_s and npc:section() == monster_section_name) then
 		if (not npc:alive()) then
 			pp_effector_manager.remove(395)
@@ -61,5 +61,5 @@ local function monster_on_slicing_update(npc)
 end
 
 function on_game_start()
-	RegisterScriptCallback("monster_on_slicing_update",monster_on_slicing_update)
+	RegisterScriptCallback("monster_on_update",monster_on_update)
 end

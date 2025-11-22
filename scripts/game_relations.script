@@ -366,7 +366,7 @@ end
 
 
 function set_factions_community(faction, faction_to, new_community)
-	if(faction~=nil) and (faction~="none") and (faction_to~="none") then
+	if(faction~=nil) and (faction~=STR_NONE) and (faction_to~=STR_NONE) then
 		local community = tonumber(new_community) or new_community==game_object.enemy and -5000 or new_community==game_object.friend and 5000 or 0
 		set_factions_community_num(faction, faction_to, community)
 	else
@@ -375,7 +375,7 @@ function set_factions_community(faction, faction_to, new_community)
 end
 
 function set_factions_community_num(faction, faction_to, new_community_num)
-	if(faction~=nil) and (faction~="none") and (faction_to~="none") then
+	if(faction~=nil) and (faction~=STR_NONE) and (faction_to~=STR_NONE) then
 		relation_registry.set_community_relation(faction, faction_to, new_community_num)
 	else
 		--printf("No such faction community: "..tostring(faction))
@@ -383,7 +383,7 @@ function set_factions_community_num(faction, faction_to, new_community_num)
 end
 
 function change_factions_community_num(faction_name, obj_id, delta)
-	if(faction_name~=nil) and (faction_name~="none") and (obj_id ~= nil) then
+	if(faction_name~=nil) and (faction_name~=STR_NONE) and (obj_id ~= nil) then
 		relation_registry.change_community_goodwill(faction_name, obj_id, delta)
 	else
 		printf("No such faction community: "..tostring(faction))
@@ -391,7 +391,7 @@ function change_factions_community_num(faction_name, obj_id, delta)
 end
 
 function get_factions_community(faction, faction_to)
-	if(faction~=nil) and (faction~="none") and (faction_to~="none") then
+	if(faction~=nil) and (faction~=STR_NONE) and (faction_to~=STR_NONE) then
 		return relation_registry.community_relation(faction, faction_to)
 	else
 		--printf("No such faction community: "..tostring(faction))
@@ -400,7 +400,7 @@ function get_factions_community(faction, faction_to)
 end
 
 function is_factions_friends(faction, faction_to)
-	if(faction~=nil) and (faction~="none") and (faction_to~="none") then
+	if(faction~=nil) and (faction~=STR_NONE) and (faction_to~=STR_NONE) then
 		return relation_registry.community_relation(faction, faction_to)>=FRIENDS
 	else
 		--printf("No such faction community: "..tostring(faction))
@@ -409,7 +409,7 @@ function is_factions_friends(faction, faction_to)
 end
 
 function is_factions_enemies(faction, faction_to)
-	if(faction~=nil) and (faction~="none") and (faction_to~="none") then
+	if(faction~=nil) and (faction~=STR_NONE) and (faction_to~=STR_NONE) then
 		return relation_registry.community_relation(faction, faction_to)<=ENEMIES
 	else
 		--printf("No such faction community: "..tostring(faction))

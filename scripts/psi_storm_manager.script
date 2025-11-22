@@ -268,8 +268,13 @@ function CPsiStormManager:update()
 			self.time_forwarded = false
 			local diff = math.abs(self._delta - g_time:diffSec(self.last_psi_storm_time))
 			if(diff<3600) then
-				self.skip_message = false
-				xr_statistic.inc_counter("storms")
+				if atmosfear_options.config:r_value(self.sect,"opt_enable_psi_storm",2,1)==0 then
+					self.skip_message = true
+				else
+					self.skip_message = false
+					xr_statistic.inc_counter("storms")
+					level_weathers.get_weather_manager():forced_weather_change()
+				end
 				self:skip_psi_storm()
 				return
 			end

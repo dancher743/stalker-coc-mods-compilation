@@ -65,7 +65,7 @@ local function get_danger_name(best_danger)
 	end
 
 	if best_danger_object == nil then
-		return "none"
+		return STR_NONE
 	end
 	return best_danger_object:name()
 end

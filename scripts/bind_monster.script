@@ -17,7 +17,7 @@ function generic_object_binder:reinit()
 	--alun_utils.debug_write(self.object:name().."re_init() Start")
 	object_binder.reinit(self)
 
-	self.frame_counter = 0
+	self.frame_counter = -1
 	self.st = {}
 	db.storage[self.object:id()] = self.st
 
@@ -26,7 +26,7 @@ function generic_object_binder:reinit()
 		self.object:set_callback(callback.hit,					self.hit_callback,		self)
 		self.object:set_callback(callback.death,				self.death_callback,	self)
 		self.object:set_callback(callback.sound, 				self.hear_callback, 	self)
-		self.object:set_tip_text("")
+		self.object:set_tip_text(STR_EMPTY)
 	end
 	if (USE_MARSHAL) then
 		RegisterScriptCallback("save_state",self)
@@ -47,6 +47,12 @@ function generic_object_binder:use_kick(obj, who)
 end
 
 function generic_object_binder:update(delta)
+	local frame_counter = self.frame_counter + 1
+	self.frame_counter = frame_counter
+	if (frame_counter % 3 ~= 0) then
+		return
+	end
+	
 	--alun_utils.debug_write(strformat("%s:update  loaded=%s",self.object and self.object:name(),self.loaded))
 	object_binder.update(self, delta)
 	
@@ -54,11 +60,8 @@ function generic_object_binder:update(delta)
 	SendScriptCallback("monster_on_update",self.object,self.st)
 	-- End [Alundaio]
 	
-	local frame_counter = self.frame_counter
-	if (frame_counter % 3 == 0) then
-		SendScriptCallback("monster_on_slicing_update",self.object,self.st)
-	end
-	self.frame_counter = frame_counter + 1
+	-- OBSOLETE: Use "monster_on_update" instead
+	SendScriptCallback("monster_on_slicing_update",self.object,self.st)
 
 	if not (self.object:alive()) then
 		local looted = self.already_dead or utils.load_var(self.object,"looted",nil)
@@ -67,7 +70,7 @@ function generic_object_binder:update(delta)
 			self.object:set_tip_text("st_screen_field_dress")
 		else
 			self.object:set_callback(callback.use_object, nil)
-			self.object:set_tip_text("")
+			self.object:set_tip_text(STR_EMPTY)
 		end
 		return
 	end
@@ -437,7 +440,7 @@ function generic_object_binder:load_state()
 	st.loaded_ini_filename = state.xr_logic.ini_filename
 	st.loaded_section_logic = state.xr_logic.section_logic
 	st.loaded_active_section = state.xr_logic.active_section
-	st.loaded_gulag_name = state.xr_logic.gulag_name or ""
+	st.loaded_gulag_name = state.xr_logic.gulag_name or STR_EMPTY
 	st.activation_time = state.xr_logic.activation_time and state.xr_logic.activation_time + time_global() or time_global()
 	st.activation_game_time = state.xr_logic.activation_game_time or game.get_game_time()
 	state.xr_logic = nil

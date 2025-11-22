@@ -117,6 +117,7 @@ function opt_menu_on_init(menu)
 	-- Added by Dancher
 	menu.gameplay_options["companions_hud"] 				= {default=true, 	debug_only=false, 	typ="check"}
 	menu.gameplay_options["companions_invulnerability"]		= {default=true, 	debug_only=false, 	typ="check"}
+	menu.gameplay_options["companions_tasks"] 				= {default=true, 	debug_only=false, 	typ="check"}
 	
 	menu.gameplay_options["show_monsters_on_map"]	= {default=true, 	debug_only=false, 	typ="check"}
 	menu.gameplay_options["show_stalkers_on_map"]	= {default=true, 	debug_only=false, 	typ="check"}
@@ -130,6 +131,10 @@ function opt_menu_on_init(menu)
 	menu.gameplay_options["show_health_effectors"]	= {default=false, 	debug_only=false, 	typ="check"}
 	
 	menu.gameplay_options["show_guide_job_on_map"] = {default=true, 	debug_only=false, 	typ="check"}
+	
+	menu.gameplay_options["show_no_talk_leader"] = {default=true, 	debug_only=false, 	typ="check"}
+	
+	menu.gameplay_options["squad_stay_point_hours"] = {default=36, debug_only=false, typ="list", list={24,36,48,60,72}}
 	--
 	
 	if (db.actor) then -- Options will only show while in-game
@@ -306,6 +311,7 @@ end
 -- Added by Dancher
 ------------------------------------
 local check_option_type = "check"
+local check_option_name_prefix = "enable_"
 
 function get_check_option(name)
 	return get_option(name, check_option_type, nil)
@@ -316,7 +322,7 @@ function get_option(name, type, subtype)
 	local value = nil
 	
 	if (type == check_option_type) then
-		value = config:r_value(MM_OPTIONS,"enable_"..name,1,false)
+		value = config:r_value(MM_OPTIONS,check_option_name_prefix..name,1,false)
 	elseif (type == "list") then
 		if (subtype == STR_BOOLEAN) then
 			value = config:r_value(MM_OPTIONS,name,1,false)

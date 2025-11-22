@@ -3,17 +3,22 @@
 --	Author: Dancher
 --
 
-function give_news(caption, text, icon, delay, show_time)
+function give_news(caption, text, icon, delay, show_time, sound_theme)
 	delay = delay or 0
 	show_time = show_time or 5000
+	icon = icon or "ui_iconsTotal_grouping"
 	
 	local actor = db.actor
 	
 	if actor:is_talking() then
 		actor:give_talk_message2(caption, text, icon, "iconed_answer_item")
 	else
-		actor:give_game_news(caption, text, icon, delay, show_time)
+		actor:give_game_news(caption, text, icon, delay, show_time, 0)
 	end
 	
-	xr_sound.set_sound_play(actor:id(), "pda_tips")
+	if (sound_theme == nil) then
+		xr_sound.set_sound_play(actor:id(), "pda_tips")
+	elseif (sound_theme ~= STR_EMPTY) then
+		xr_sound.set_sound_play(actor:id(), sound_theme)
+	end
 end

@@ -1273,6 +1273,9 @@
 	<string id="open_companion_inventory_phrase_23">
 		<text>I've changed my mind.</text>
 	</string>
+	<string id="open_companion_inventory_phrase_24">
+		<text>Close backpack.</text>
+	</string>
 	<string id="open_companion_inventory_phrase_3">
 		<text>It was a waste of time to open it...</text>
 	</string>

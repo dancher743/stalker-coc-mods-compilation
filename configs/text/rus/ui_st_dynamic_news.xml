@@ -62,7 +62,7 @@
 		<text>О событиях в Зоне</text>
 	</string>
 	<string id="ui_st_dyn_news_found_dead_news">
-		<text>Сообщения о находке погибших</text>
+		<text>Сообщения о погибших</text>
 	</string>
 	<string id="ui_st_dyn_news_surge_news">
 		<text>О надвигающихся выбросах</text>

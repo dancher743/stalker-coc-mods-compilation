@@ -101,7 +101,7 @@ function actor_on_first_update(binder,delta)
 	SendScriptCallback("actor_on_first_update",binder,delta)
 end
 
-local frame_counter = 0
+local frame_counter = -1
 local slicing_delta = 0
 function actor_on_update(binder,delta)
 	-- WISH GRANTER ZOMBIED-IMMORTALITY
@@ -110,6 +110,12 @@ function actor_on_update(binder,delta)
 		db.actor.bleeding = 1
 		db.actor.psy_health = 1
 		db.actor.radiation = -1
+	end
+	
+	slicing_delta = slicing_delta + delta
+	frame_counter = frame_counter + 1
+	if (frame_counter % 3 ~= 0) then
+		return
 	end
 
 	local torch = db.actor:object("device_torch")
@@ -123,14 +129,12 @@ function actor_on_update(binder,delta)
 		end
 	end
 
-	SendScriptCallback("actor_on_update",binder,delta)
+	SendScriptCallback("actor_on_update",binder,slicing_delta)
 	
-	slicing_delta = slicing_delta + delta
-	if (frame_counter % 3 == 0) then
-		SendScriptCallback("actor_on_slicing_update",binder,slicing_delta)
-		slicing_delta = 0
-	end
-	frame_counter = frame_counter + 1
+	-- OBSOLETE: Use "actor_on_update" instead
+	SendScriptCallback("actor_on_slicing_update",binder,slicing_delta)
+	
+	slicing_delta = 0
 end
 
 -------------------

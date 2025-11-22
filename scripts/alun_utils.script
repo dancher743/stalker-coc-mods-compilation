@@ -93,6 +93,11 @@ function valid_vertex(npc,vid)
 	return vid and vid < 4294967295 and npc:accessible(vid) and vid
 end
 
+-- Added by Dancher
+function valid_vertex_only(vid)
+	return vid and vid < 4294967295 and vid
+end
+
 function accessible(npc,point)
 	if (type(point) == STR_NUMBER) then
 		return point < 4294967295 and npc:accessible(point)

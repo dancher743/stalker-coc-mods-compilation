@@ -3,16 +3,14 @@
 -- Added by Dancher
 --
 
-local database = {}
-
-local trust_time_threshold = 24*60
-
 local time_key = "time"
 local trust_key = "trust"
 
-local function get_db_value(se_id, key, defaultValue)
+local database = {}
+
+local function get_db_value(se_id, key, default)
 	local companion_data = database[se_id]
-	local value = companion_data and companion_data[key] or defaultValue
+	local value = companion_data and companion_data[key] or default
 	return value
 end
 
@@ -48,7 +46,7 @@ local function update_data()
 		time = time + 1
 		set_db_value(se_id, time_key, time)
 		
-		if (time > trust_time_threshold) then
+		if (time > axr_companions.obtain_trust_time and is_trust(se_id) == false) then
 			set_db_value(se_id, trust_key, true)
 		end
 		

@@ -9,17 +9,17 @@
 --
 
 local hit_chance_by_rank = {
-	["novice"] 			= 0.06,
-	["trainee"] 		= 0.08,
-	["experienced"]		= 0.10,
-	["professional"]    = 0.12,
-	["veteran"]         = 0.14,
-	["expert"]          = 0.16,
-	["master"]          = 0.18,
-	["legend"]          = 0.20
+	["novice"] 			= 6,
+	["trainee"] 		= 8,
+	["experienced"]		= 10,
+	["professional"]    = 12,
+	["veteran"]         = 14,
+	["expert"]          = 16,
+	["master"]          = 18,
+	["legend"]          = 20
 }
 
-local damage_factor = 3.0
+local hit_multiplier = 0.25
 
 local crit_enabled_option_name = "can_stalker_crit_hit"
 local crit_cam_vfx_option_name = "show_crit_hit_cam_vfx"
@@ -32,24 +32,38 @@ local function get_hit_chance(who)
 	return chance
 end
 
-local function calculate_hit_power(damage, chance)
-	local a = damage * (1 - chance)
-	local b = damage * damage_factor * chance
-	local power = (a + b) - damage
-	return power
+local function calculate_hit_modificator(max, value)
+	return utils.lerp(0, max, value)
+end
+
+local function calculate_hit_damage(base_damage, who)
+	local modificator = 0
+	if (IsActor(who)) then
+		modificator = modificator + calculate_hit_modificator(0.1, 1 - who.bleeding)
+		modificator = modificator + calculate_hit_modificator(0.1, 1 - who.radiation)
+		modificator = modificator + calculate_hit_modificator(0.1, who.health)
+		modificator = modificator + calculate_hit_modificator(0.1, who.power)
+		modificator = modificator + calculate_hit_modificator(0.1, who.psy_health)
+		modificator = modificator + calculate_hit_modificator(0.1, who.satiety)
+	else
+		modificator = modificator + calculate_hit_modificator(0.3, 1 - who.bleeding)
+		modificator = modificator + calculate_hit_modificator(0.3, who.health)
+	end
+	
+	local hit_damage = base_damage * hit_multiplier * (1 + modificator)
+	return hit_damage
 end
 
 local function try_hit(victim, damage, who)
-	local hit_chance = get_hit_chance(who)
-	local has_hit = math.random() < hit_chance
+	local can_hit = get_chance() <= get_hit_chance(who)
 	
-	if (has_hit) then
-		local hit_power = calculate_hit_power(damage, hit_chance)
-		victim.health = -(hit_power / 100)
-		-- printf(string.format(">>> Dancher: critical_hit_manager.script -> Critical damage is %0.2f. Orignal damage is %0.2f.", hit_power, damage))
+	if (can_hit) then
+		local hit_damage = calculate_hit_damage(damage, who)
+		victim.health = -(hit_damage / 100)
+		-- printf(string.format(">>> Dancher: critical_hit_manager.script -> Orignal damage is %0.2f. Additional crit damage is %0.2f.", damage, hit_damage))
 	end
 	
-	return has_hit
+	return can_hit
 end
 
 local function npc_or_monster_on_hit_callback(victim, damage, _, who, _)
@@ -64,7 +78,7 @@ local function npc_or_monster_on_hit_callback(victim, damage, _, who, _)
 			end
 			
 			if (axr_main_options.get_check_option(crit_sound_option_name)) then
-				sound_actor_critical_hit.play_sound_on_distance(victim:position())
+				sound_actor_critical_hit.play_sound()
 			end
 		end
 	end

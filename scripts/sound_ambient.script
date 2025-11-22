@@ -53,10 +53,12 @@ function reset_settings(level_name, ambient)
 	if (not IsUndergroundLevel()) then
 		local ambients_mode = nil
 		
-		if (IsSurvivalMode()) then
-			ambients_mode = ini_file("environment\\ambients\\survival.ltx")
+		if (IsEocAndSurvivalMode()) then
+			ambients_mode = ini_file("environment\\ambients\\eoc_survival.ltx")
 		elseif (IsEocMode()) then
 			ambients_mode = ini_file("environment\\ambients\\eoc.ltx")
+		elseif (IsSurvivalMode()) then
+			ambients_mode = ini_file("environment\\ambients\\survival.ltx")
 		end
 		
 		if (ambients_mode) then

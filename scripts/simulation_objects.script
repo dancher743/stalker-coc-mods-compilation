@@ -79,7 +79,7 @@ function simulation_objects_registry:get_props(obj)
 		if (props_ini:section_exist(obj:name())) then 
 			props_section = obj:name()
 		else 
-			props_section = "default"
+			props_section = STR_DEFAULT
 		end
 	end
 

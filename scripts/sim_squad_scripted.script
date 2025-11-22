@@ -6,14 +6,8 @@
 
 -- Current Action: 0 - Reach Target | 1 - Stay Point
 
-local STAY_POINT_IDLE_TIME = {
-	8*60*60,
-	16*60*60,
-	20*60*60,
-	24*60*60,
-	32*60*60
-}
-
+local STAY_POINT_HOURS_DEFAULT = 36
+local STAY_POINT_HOURS_OPTION_NAME = "squad_stay_point_hours"
 local STALKERS_ON_MAP_OPTION_NAME = "show_stalkers_on_map"
 local MONSTERS_ON_MAP_OPTION_NAME = "show_monsters_on_map"
 local GUIDE_JOB_ON_MAP_OPTION_NAME = "show_guide_job_on_map"
@@ -31,12 +25,17 @@ do -- to localize below
 	locations_ini:section_for_each(itr)
 end
 
+local function get_stay_point_time()
+	local hours = axr_main.config:r_value(MM_OPTIONS,STAY_POINT_HOURS_OPTION_NAME,3) or STAY_POINT_HOURS_DEFAULT
+	return hours*60*60
+end
+
 --***********************************************************************************************
 --*										INITIALIZATION								  *
 --***********************************************************************************************
 class "sim_squad_scripted" (cse_alife_online_offline_group)
 function sim_squad_scripted:__init(section) super (section)
-	self.frame_counter = 0
+	self.frame_counter 		= -1
 	self.smart_id 			= nil
 	self.current_spot_id 	= nil
 	self.current_action 	= nil
@@ -73,7 +72,7 @@ function sim_squad_scripted:init_squad()
 	if (s) then
 		self.random_targets = alun_utils.str_explode(s,STR_COMMA) 
 	end
-	self.idle_time			= sys_ini:r_float_ex(settings_id,"idle_time") or STAY_POINT_IDLE_TIME[math.random(#STAY_POINT_IDLE_TIME)]
+	self.idle_time			= sys_ini:r_float_ex(settings_id,"idle_time") or get_stay_point_time()
 	
 	self.relationship		= self.relationship or rel
 	self.sympathy			= sys_ini:r_float_ex(settings_id,"sympathy")
@@ -156,6 +155,12 @@ function sim_squad_scripted:get_script_target()
 end
 
 function sim_squad_scripted:update()
+	local frame_counter = self.frame_counter + 1
+	self.frame_counter = frame_counter
+	if (frame_counter % 3 ~= 0) then
+		return
+	end
+	
 	--alun_utils.debug_write("sim_squad_scripted:update START")
 	cse_alife_online_offline_group.update(self)
 	if not (self.first_update) then
@@ -221,11 +226,8 @@ function sim_squad_scripted:update()
 	
 	SendScriptCallback("squad_on_update",self)
 	
-	local frame_counter = self.frame_counter
-	if (frame_counter % 3 == 0) then
-		SendScriptCallback("squad_on_slicing_update",self)
-	end
-	self.frame_counter = frame_counter + 1
+	-- OBSOLETE: Use "squad_on_update" instead
+	SendScriptCallback("squad_on_slicing_update",self)
 
 	local sim = alife()
 	local se_actor = sim:actor()
@@ -300,7 +302,7 @@ function sim_squad_scripted:specific_update(script_target_id)
 				self.current_target_id = self.assigned_target_id
 				self.current_action = 1
 				if (self.idle_time == nil) then
-					self.idle_time = system_ini():r_float_ex(self:section_name(),"idle_time") or STAY_POINT_IDLE_TIME[math.random(#STAY_POINT_IDLE_TIME)]
+					self.idle_time = system_ini():r_float_ex(self:section_name(),"idle_time") or get_stay_point_time()
 				end
 				if (self.stay_time == nil) then
 					self.stay_time = game.get_game_time()
@@ -357,7 +359,7 @@ function sim_squad_scripted:generic_update()
 					self.current_target_id = self.assigned_target_id
 					self.current_action = 1
 					if (self.idle_time == nil) then
-						self.idle_time = system_ini():r_float_ex(self:section_name(),"idle_time") or STAY_POINT_IDLE_TIME[math.random(#STAY_POINT_IDLE_TIME)]
+						self.idle_time = system_ini():r_float_ex(self:section_name(),"idle_time") or get_stay_point_time()
 					end
 					if (self.stay_time == nil) then
 						self.stay_time = game.get_game_time()
@@ -1429,7 +1431,7 @@ end
 ----------------------------
 
 function sim_squad_scripted:alive()
-	local se_obj = alife_object(self:commander_id())
+	local se_obj = self:commander_id() and alife_object(self:commander_id())
 	if (se_obj and se_obj:alive()) then
 		return true
 	end

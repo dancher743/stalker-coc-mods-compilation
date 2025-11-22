@@ -196,6 +196,18 @@ function campfire_binder:net_spawn(server_object)
 		end
 		db.campfire_table_by_smart_names[smart_name][id] = self
 	end
+	
+	-- Dancher: check for a squads on smart and, if there are any, turn on the campfire
+	for _,squad in pairs(SIMBOARD.stalker_squads) do
+		local current_target = squad.current_target_id and alife_object(squad.current_target_id)
+		if (current_target and current_target:name() == smart_name and xr_conditions.is_rain() == false) then
+			if (self.campfire and self.campfire:is_on() == false) then
+				self.campfire:turn_on()
+			end
+			break
+		end
+	end
+	
 	return true
 end
 

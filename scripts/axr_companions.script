@@ -8,6 +8,7 @@ allow_neutrals_as_companions = true
 allow_friends_as_companions = true
 allow_simulation_squads_as_companions = false
 max_actor_squad_size = 0 -- used only for non task companions
+obtain_trust_time = 0
 
 -- Companion tables. All companions are added to companion_squads table by their squad id. Only non-task companions are tracked by non_task_companions table.
 companion_squads = {}
@@ -109,7 +110,7 @@ local function squad_on_unregister(squad)
 	companion_squads[squad.id] = nil
 end
 
-local function squad_on_slicing_update(squad)
+local function squad_on_update(squad)
 	--alun_utils.debug_write(strformat("axr_companions.squad_on_update - heli_enemy_flag"))
 	if (db.actor and not db.actor:alive()) then
 		remove_all_from_actor_squad()
@@ -131,7 +132,7 @@ local function on_level_changing()
 	teleport_companions_to_actor()
 end
 
-local function actor_on_slicing_update()
+local function actor_on_update()
 	if (has_companion()) then
 		ui_axr_companions.activate_hud()
 	else
@@ -209,12 +210,12 @@ function on_game_start()
 	if not (Enabled) then return end
 	
 	RegisterScriptCallback("npc_on_fighting_actor",on_fighting_actor)
-	RegisterScriptCallback("squad_on_slicing_update",squad_on_slicing_update)
+	RegisterScriptCallback("squad_on_update",squad_on_update)
 	RegisterScriptCallback("squad_on_npc_death",squad_on_npc_death)
 	RegisterScriptCallback("squad_on_register",squad_on_register)
 	RegisterScriptCallback("squad_on_unregister",squad_on_unregister)
 	RegisterScriptCallback("on_level_changing",on_level_changing)
-	RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+	RegisterScriptCallback("actor_on_update",actor_on_update)
 	RegisterScriptCallback("actor_on_item_drop",actor_on_item_drop)
 	RegisterScriptCallback("actor_on_item_take",actor_on_item_take)
 	RegisterScriptCallback("save_state",save_state)
@@ -225,6 +226,7 @@ function on_game_start()
 	allow_friends_as_companions = ini:r_bool_ex("main","allow_friends_as_companions",false)
 	allow_simulation_squads_as_companions = ini:r_bool_ex("main","allow_simulation_squads_as_companions",false)
 	max_actor_squad_size = ini:r_float_ex("main","max_actor_squad_size") or 2
+	obtain_trust_time = ini:r_float_ex("main","obtain_trust_time") or obtain_trust_time
 end
 
 function companion_squad_can_teleport(squad)
@@ -872,6 +874,7 @@ end
 -- Added by Dancher
 ------------------------------------------
 
+local invulnerability_option_name = "enable_companions_invulnerability"
 local simulation = alife()
 local option_name
 local se_obj_cache
@@ -954,17 +957,19 @@ function is_invulnerable_obj(obj)
 end
 
 function is_invulnerable(se_obj)
-	option_name = option_name or "enable_companions_invulnerability"
-	
-	local option = axr_main.config:r_value(MM_OPTIONS,option_name,1,false)
+	local has_option = get_check_option(invulnerability_option_name)
 	local is_trust = axr_companions_trust.is_trust(se_obj.id)
 	
-	return option and is_trust
+	return has_option and is_trust
+end
+
+function is_companion_trust(obj)
+	local se_obj = get_se_obj(obj:id())
+	return axr_companions_trust.is_trust(se_obj.id)
 end
 
 function can_open_inventory(obj)
-	local se_obj = get_se_obj(obj:id())
-	return axr_companions_trust.is_trust(se_obj.id)
+	return is_companion_trust(obj)
 end
 
 function get_time_with_companion(se_obj)

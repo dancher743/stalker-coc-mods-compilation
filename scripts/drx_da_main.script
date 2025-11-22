@@ -778,7 +778,7 @@ end
 
 -- ////////////////////////////////////////////////////////////////////////////////////////////////
 --
--- drx_da_actor_on_slicing_update_callback function
+-- drx_da_actor_on_update_callback function
 --
 -- ------------------------------------------------------------------------------------------------
 --
@@ -801,7 +801,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 -- Scripts to run when the game loads:
-local function drx_da_actor_on_slicing_update_callback( )
+local function drx_da_actor_on_update_callback( )
 
 	-- Update dynamic anomalies:
 	drx_da_update_dynamic_anomalies( )
@@ -875,7 +875,7 @@ end
 
 -- Register callback scripts:
 function on_game_start( )
-	RegisterScriptCallback( "actor_on_slicing_update", drx_da_actor_on_slicing_update_callback )
+	RegisterScriptCallback( "actor_on_update", drx_da_actor_on_update_callback )
 	RegisterScriptCallback( "on_game_load", drx_da_on_game_load_callback )
 end
 

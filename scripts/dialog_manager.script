@@ -762,9 +762,9 @@ end
 function fill_phrase_table()
 	local cfg = ini_file_ex("misc\\dialog_manager.ltx")
 	local function itr(section)
-		local val = cfg:r_value(section,"category") or "default"
-		local category = (val == "hello" or val == "anomalies" or val == "place" or val == "job" or val == "information" or val == "tips") and val or "default"
-		if (category ~= "default") then
+		local val = cfg:r_value(section,"category") or STR_DEFAULT
+		local category = (val == "hello" or val == "anomalies" or val == "place" or val == "job" or val == "information" or val == "tips") and val or STR_DEFAULT
+		if (category ~= STR_DEFAULT) then
 			local temp_table = {}
 			temp_table.info = {}
 			temp_table.id = tostring(get_id())

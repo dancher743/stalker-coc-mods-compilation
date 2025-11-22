@@ -446,7 +446,7 @@ pda_icons = {
 	["killer"] = "circle_killer",
 	["monolith"] = "circle_monolith",
 	["zombied"] = "circle_zombied",
-	["none"] = "circle_empty",
+	[STR_NONE] = "circle_empty",
 	["target"] = "circle_target",
 }
 

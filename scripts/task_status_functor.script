@@ -787,6 +787,8 @@ function actor_has_fetch_item(tsk,task_id)
 				db.actor:iterate_inventory(section_count, nil)
 				if (cnt >= count) then
 					tsk.stage = 1
+				else 
+					tsk.stage = 0
 				end
 				return
 			end

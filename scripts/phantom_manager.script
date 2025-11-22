@@ -29,7 +29,7 @@ function dynamic_phantom_count(sec)
 	return phantom_registry[sec] or 0
 end
 
-local function monster_on_slicing_update(npc,st)
+local function monster_on_update(npc,st)
 	if not (npc and npc:alive()) then 
 		return 
 	end
@@ -71,7 +71,7 @@ end
 
 function on_game_start()
 	if (level.spawn_item) then
-		RegisterScriptCallback("monster_on_slicing_update",monster_on_slicing_update)
+		RegisterScriptCallback("monster_on_update",monster_on_update)
 	end
 end 
 

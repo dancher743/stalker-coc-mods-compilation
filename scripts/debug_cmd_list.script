@@ -760,6 +760,9 @@ function cmd.fallout(me,txt,owner,p)
 	if not (sm) then return "No fallout manager!" end
 
 	if (wrd == "start") then
+		if (level.rain_factor() == 0) then
+			return "fallout:= not started. Need rain for a fallout to start! Try 'period rain/storm' command first."
+		end
 		sm:start(true)
 		return "fallout:= started"
 	elseif (wrd == "stop") then
@@ -2117,6 +2120,34 @@ function cmd.period(me,txt,owner,p)
 		result_txt = strformat("Period changed to '%s'", wrd)
 	else
 		result_txt = strformat("Incorrect subcommand '%s'. Type 'period help' for list of subcommands.", wrd)
+	end
+	
+	return result_txt
+end
+
+function cmd.subperiod(me,txt,owner,p)
+	local weather_manager = level_weathers.get_weather_manager()
+	local periods = alun_utils.parse_ini_section_to_array(weather_manager.graphs_ini,"subperiods")
+	
+	local help_txt = STR_EMPTY
+	for k,v in pairs(periods) do
+		help_txt = help_txt .. k .. ","
+	end
+	help_txt = help_txt:sub(1, -2)
+	help_txt = "[" .. help_txt .. "]. Set weather subperiod."
+	
+	local wrd = check_and_set_help(me,txt,owner,help_txt)
+	if (not wrd or string.find(txt,"help")) then
+		return
+	end
+	
+	local result_txt = STR_EMPTY
+	
+	if (periods[wrd]) then
+		weather_manager.subperiod = subperiod
+		result_txt = strformat("Subperiod changed to '%s'", wrd)
+	else
+		result_txt = strformat("Incorrect subcommand '%s'. Type 'subperiod help' for list of subcommands.", wrd)
 	end
 	
 	return result_txt

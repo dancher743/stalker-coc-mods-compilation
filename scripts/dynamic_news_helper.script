@@ -899,7 +899,7 @@ function send_tip(msg, header, timeout, showtime, sender, sound,icon_by) -- Send
 	header = header or game.translate_string("st_tip") -- sender name
 	timeout = timeout or 0 
 	showtime = showtime or 7
-	sender = sender or "default" -- faction
+	sender = sender or STR_DEFAULT -- faction
 	
 	-- sound effect depends on the type of news
 	if sound =="news" then	

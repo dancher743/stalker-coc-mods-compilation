@@ -43,12 +43,25 @@ local renewing_next_time = 0
 
 local ltx = ini_file("plugins\\coc_treasure_manager.ltx")
 local valid_item_list = nil
+
+local unique_weapons = {}
 ------------------------------------------------------------------------------------------------------------------
 --							PRIVATE
 ------------------------------------------------------------------------------------------------------------------
 local function on_game_load()
 	if (renewing_next_time == 0) then
 		renewing_next_time = get_renewing_next_time()
+	end
+	
+	-- init unique weapon sections
+	local ltx_section = "unique_weapon_sections"
+	if ltx:section_exist(ltx_section) then
+		local n = ltx:line_count(ltx_section)
+		local result, id, value = false, STR_EMPTY, STR_EMPTY
+		for i=0, n-1 do
+			result, id, value = ltx:r_line_ex(ltx_section, i, STR_EMPTY, STR_EMPTY)
+			unique_weapons[id] = tonumber(value) or 0
+		end
 	end
 	
 	if (caches_count > 0) then
@@ -644,24 +657,28 @@ end
 
 function try_add_unique_weapon(bonus_items)
 	if (bonus_items == nil) then
-		return
+		return false
 	end
 	
-	local unique_weapons = utils.parse_ini_section_to_iarray(ltx, "unique_weapon_sections")
+	utils.shuffle_table(unique_weapons)
+	local weapon_info_postfix = "%s_stashed"
 	
-	if (unique_weapons == nil or #unique_weapons == 0) then
-		return
+	for weapon_section,weapon_chance in pairs(unique_weapons) do
+		local weapon_info = strformat(weapon_info_postfix,weapon_section)
+		
+		if (not has_info(weapon_info)) then
+			local can_add_weapon = has_chance01(weapon_chance)
+			
+			if (can_add_weapon) then
+				table.insert(bonus_items, weapon_section)
+				give_info(weapon_info)
+			end
+			
+			return can_add_weapon
+		end
 	end
 	
-	local unique_weapon = unique_weapons[math.random(#unique_weapons)]
-	local unique_weapon_info = strformat("%s_stashed",unique_weapon)
-	
-	if (has_alife_info(unique_weapon_info)) then
-		return
-	end
-	
-	table.insert(bonus_items, unique_weapon)
-	give_info(unique_weapon_info)
+	return false
 end
 
 function save(pk)
@@ -695,7 +712,7 @@ function get_valid_item_sections()
 	local quest_item_string = "quest_item"
 	local mp_item_prefix = "mp_"
 	local inv_name_string = "inv_name"
-	local default_string = "default"
+	local default_string = STR_DEFAULT
 	local cost_string = "cost"
 	
 	ini:section_for_each(function(section)

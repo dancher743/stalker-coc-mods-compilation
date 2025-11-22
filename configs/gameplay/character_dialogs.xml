@@ -21,8 +21,8 @@
 
 <start_dialog>hello_dialog</start_dialog>
 <actor_dialog>dm_sim_ordered_task_completed_dialog</actor_dialog>
-<actor_dialog>dm_sim_ordered_task_dialog</actor_dialog>
 <actor_dialog>guid_dlg</actor_dialog>
+<actor_dialog>dm_sim_ordered_task_dialog</actor_dialog>
 <actor_dialog>vanish_bounty_hunt_target_dialog</actor_dialog>
 <actor_dialog>neutral_companion_dialog</actor_dialog>
 <actor_dialog>friendly_companion_dialog</actor_dialog>

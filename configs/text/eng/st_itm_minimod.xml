@@ -28,13 +28,13 @@
 		<text>Gunsmith kit</text>
 	</string>
 	<string id="st_itm_gunsmith_toolkit_descr">
-		<text>A kit containing oils and tools used for basic firearm maintenance. Useful when out exploring, but also quite heavy.\n\n%c[255,255,1,1]To repair, drag onto the item or click on the kit</text>
+		<text>A kit containing oils and tools used for basic firearm maintenance. Useful for cleaning and replacing weapon parts when out exploring, but also quite heavy.\n\n%c[200,200,200,50]Click on the kit and choose an item to repair</text>
 	</string>
 	<string id="st_itm_outfit_toolkit">
 		<text>Sewing kit</text>
 	</string>
 	<string id="st_itm_outfit_toolkit_descr">
-		<text>A makeshift kit of sewing equipment and spare materials for outfit maintenance. Useful for repairing holes and tears in armour.\n\n%c[255,255,1,1]To repair, drag onto the item or click on the kit</text>
+		<text>A makeshift kit of sewing equipment and spare materials for outfit maintenance. Useful for repairing holes and tears in armour.\n\n%c[200,200,200,50]Drag the kit onto an item to repair</text>
 	</string>
 	<string id="st_itm_repairkit_tier_1_name">
 		<text>Basic tools</text>
@@ -57,11 +57,8 @@
 	<string id="st_repair_mod_message_box_ask">
 		<text>Are you sure you would like to repair %s?\n\n%c[255,1,255,1]+%s%</text>
 	</string>
-	<string id="st_repair_mod_message_box_condition_to_low">
-		<text>The item is beyond repair with these tools.</text>
-	</string>
-	<string id="st_repair_mod_message_box_condition_to_high">
-		<text>These tools aren't enough to repair this item further.</text>
+	<string id="st_repair_mod_message_box_condition">
+		<text>The item is beyond repair.</text>
 	</string>
 	<string id="st_itm_stash">
 		<text>stash</text>

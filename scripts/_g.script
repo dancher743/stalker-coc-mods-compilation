@@ -13,7 +13,7 @@ if (jit == nil) then
 end
 
 GAME_VERSION = "1.4.22"
-MOD_VERSION = "1.5.2"
+MOD_VERSION = "1.5.3 RC 6"
 
 if string.find(command_line(), "-dbg") then
 	DEV_DEBUG = true
@@ -1304,6 +1304,14 @@ function disable_info (info)
 	end
 end
 
+-- Added by Dancher
+function create_item(section, npc, count)
+	count = count or 1
+	for i = 1, count do
+		alife():create(section, npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
+	end
+end
+
 function create_ammo(section, position, lvi, gvi, pid, num)
 	local ini = system_ini()
 
@@ -1908,6 +1916,7 @@ STR_TABLE		= "table"
 STR_FUNCTION	= "function"
 STR_USERDATA	= "userdata"
 STR_DEFAULT		= "default"
+STR_NONE		= "none"
 
 -----------------------------------------
 -- Functions
@@ -1918,8 +1927,8 @@ function IsEocMode()
 		axr_main.config and axr_main.config:r_value("character_creation","new_game_eoc_mode",1) == true
 end
 
-function IsSurvivalOrEocMode()
-	return IsSurvivalMode() or IsEocMode()
+function IsEocAndSurvivalMode()
+	return IsEocMode() and IsSurvivalMode()
 end
 
 function IsAzazelMode()
@@ -2039,4 +2048,24 @@ function SkipFrame(functor)
 		return true
 	end
 	AddUniqueCall(skip_frame_call)
+end
+
+function get_check_option(name)
+	return axr_main_options.get_check_option(name)
+end
+
+function get_chance()
+	return math.random(100)
+end
+
+function has_chance(chance)
+	return get_chance() <= chance
+end
+
+function get_chance01()
+	return math.random()
+end
+
+function has_chance01(chance)
+	return get_chance01() < chance
 end

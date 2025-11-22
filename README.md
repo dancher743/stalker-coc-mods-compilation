@@ -14,20 +14,24 @@ Install
 [![1.png](https://i.postimg.cc/5028Zy5t/1.png)](https://postimg.cc/Z9X9NTMk)
 
 6. Run `installer.bat` and wait until it's done
-7. Good hunting, stalker!
+7. Run `launcher.bat` to launch the game
+8. Good hunting, S.T.A.L.K.E.R!
 
 Settings
 ---
-* To change input language press Ctrl + Shift key combination
-* To access Dynamic News settings: load your game, then open the main menu and press Page-Up button
+* To change input language press Ctrl + Shift
 * To ignite/extinguish a campfire holster your weapon first
+* No need to create saves manually (via the main menu) - try Slow Saves: in the game, press the `F6` button (by default) and the save will be created automatically.
+* To unload all weapons, open Inventory and press the 'K' button (default)
+* You can put a custom spot on Map by pressing `J` button (by default)
+* To access Dynamic News settings: load your game, then open the main menu and press Page-Up button
 * To make the sky less bright type `r2_tonemap off` command at the console
+* Type `vid_restart` at the console if you are faced with _"Too many occlusion queries were issued"_ warnings. This command restarts the renderer
 
 Optimization
 ---
-* Type `vid_restart` at the console if you are faced with _"Too many occlusion queries were issued"_ warnings. This command restarts the renderer
-* Add `-no_staging` to the end of a shortcut as a launch parameter. In DirectX 10/11, it will load textures directly into video memory without copying them to RAM, thus keeping it free
-* Add `-noprefetch` to the end of a shortcut as a launch parameter to forces the game to clear RAM
+* Add `-no_staging` (is already in `launcher.bat`) to the end of a shortcut as a launch parameter. In DirectX 10/11, it will load textures directly into video memory without copying them to RAM, thus keeping it free
+* Add `-noprefetch` (is already in `launcher.bat`) to the end of a shortcut as a launch parameter to forces the game to clear RAM
 * Disable "Sun shadow" in "Options" in "Video" to reduce the load on a video card
 
 ❗ Screenshots
@@ -38,10 +42,10 @@ Optimization
 [![1.jpg](https://i.postimg.cc/QCc5d2w0/1.jpg)](https://postimg.cc/hQPhC5Sd)
 [![2.jpg](https://i.postimg.cc/WpZ08Zzg/2.jpg)](https://postimg.cc/NLgyf51j)
 [![3.jpg](https://i.postimg.cc/4NTVS3HM/3.jpg)](https://postimg.cc/kDf2VqcF)
-[![4.jpg](https://i.postimg.cc/4yR7q8yt/4.jpg)](https://postimg.cc/Vr4kbWjL)
+[![4.jpg](https://i.postimg.cc/YCJWJGb2/4r.jpg)](https://postimg.cc/Xrkq5vRt)
 [![5.jpg](https://i.postimg.cc/rsXqb51h/4a.jpg)](https://postimg.cc/cghqtg5Y)
-[![6.jpg](https://i.postimg.cc/59Scbcb9/5a.jpg)](https://postimg.cc/MXH3mFng)
-[![7.jpg](https://i.postimg.cc/HLK74WC6/5.jpg)](https://postimg.cc/FfyRh4zS)
+[![6.jpg](https://i.postimg.cc/HLK74WC6/5.jpg)](https://postimg.cc/FfyRh4zS)
+[![7.jpg](https://i.postimg.cc/TwYGYQPw/6a.jpg)](https://postimg.cc/94SsLdZ5)
 [![8.jpg](https://i.postimg.cc/PrzYskmq/6.jpg)](https://postimg.cc/2VyVhM9p)
 [![9.jpg](https://i.postimg.cc/cLF3CMky/8.jpg)](https://postimg.cc/LJZ50fMN)
 [![10.jpg](https://i.postimg.cc/q7g33hWt/9.jpg)](https://postimg.cc/GBwt02Lr)
@@ -66,7 +70,7 @@ Mods
 12. Vanilla Hands Return (for CoC 1.4) (FudgeBomb)
 13. Lor's models v2.5 (Grelka)
 14. LootMoney Vanilla CoC 1.4.22/1.5R6 (tsěsarĭ, RenanMsV)
-15. S.W.T.C Call of Chernobyl - Advanced + FIX 1.1 (exDeMODER)
+15. S.W.T.C Call of Chernobyl - Advanced + FIX 1.1 (VincentVega aka GragHat, exDeMODER, brainscorcher)
 16. UI mutant looting CoC 1.4.22 (av661194, Nik71rus)
 17. Full Simulation A-Life (Aktuarus)
 18. Companions can Sprint (Sanctuary/Revo Lucas)
@@ -84,7 +88,7 @@ Mods
 30. Original Sound Effects for Call of Chernobyl (selectively) (Panzermann11)
 31. Level changers for CoC 1 4 22 (av661194)
 32. Zombie Headlamp ON 1.5r7 (jeredy_hothead)
-33. Rank-based weapon condition drops | 1.4.22 (Wafel)
+33. Rank-based weapon condition drops (based on Wafel's mod) (Wafel, Dancher)
 34. Faction Uniform Patches Lottery from Anomaly 1.5.1.2/MLR addon (Anomaly Developers, MLR team)
 35. DoctorX Dynamic Anomalies 2.1 [CoC 1.5 / 1.4.22] (DoctorX)
 36. NPC's vision thru vegetation fix (EmSobac)
@@ -100,7 +104,7 @@ Mods
 46. Outfit loot CoC 1 4 22 v2 with reworking (av661194, Dancher)
 47. CoC Extended Offline (EOC) Lite 1.7.6 + dynamic faction relations (xr_Sanya)
 48. Stalker Tweaks (SarisKhan)
-49. Radio music from Legend Returns 0.9.2 (Genies of the Zone Team) and OLR 3.0 (hi_flyer & Co)
+49. Radio music from Legend Returns 0.9.2 (LR Devs) and OLR 3.0 (hi_flyer & Co)
 50. Flashlight sound for vanilla CoC (Grelka)
 51. Classic SoC Flashlight for CoC with Dancher's changes (default white light) (Shovelled, Dancher)
 52. Clear weather and sky textures from All AtmosFear 3 cycles for CoC (owdred)
@@ -131,5 +135,26 @@ Mods
 77. Jokes Restoration + Script Fix [CoC 1.5R7] (party-50, FudgeBomb, fontar)
 78. Fixed Artefact Collision and Visuals [1.5.3] (Longreed, SoulCrystal) Special thanks to TheLostStalker88 for the tip!
 79. ND DRXCoCDynamicAnomalies21 Remix (TheLostStalker88, DoctorX)
-80. CoC OL pack v1.3 (Kisel_s_Molinkoi, K0MRADE, bloodshot12)
-81. Shaders from Legend Returns 0.9.2 (Genies of the Zone Team)
+80. Weather from Legend Returns 0.9.2 (LR Devs) and some textures from CoC OL pack v1.3 (Kisel_s_Molinkoi, K0MRADE, bloodshot12)
+81. Shaders from Legend Returns 0.9.2 (LR Devs)
+82. CS atmosphere for CoC v1.1 [CoC 1.4.22] (Sanctuary)
+83. Better Knife (Vanilla) with adaptations from CoP (alalakskylvia)
+84. Optimized rain (Clepoy)
+
+Credits
+---
+Special thanks to:
+* Team Epic for Call of Chernobyl
+* Anomaly Developers for Anomaly
+* LR Devs for Legend Returns
+* DBolical Pty Ltd. for [moddb.com](https://www.moddb.com/)
+* DoctorX for Questlines, Dynamic Faction Relations and Anomalies mods. Rest In Peace stalker, we miss you 💔🕯️
+* Tronex for Dynamic News Revamp, Global Weather, Fresh Start mods
+* av661194 for a big bunch of fixes
+* xr_Sanya for Extended Offline (EOC) Lite mod
+* VincentVega aka GragHat, exDeMODER, brainscorcher for S.W.T.C. Call of Chernobyl Edition mod
+* Alundaio for AXR Toolset
+* OpenXRay Team for help and advices
+* AMK Team for this long and fascinating journey!
+
+And to all-all-all who helped me and whose developments I used in my mods compilation!

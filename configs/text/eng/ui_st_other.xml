@@ -590,9 +590,6 @@
 		<text>Spot has added</text>
 	</string>
 	
-	<string id="ui_st_leave_zone_confirm">
-		<text>You are about to leave the Zone, the game will be over. Proceed?</text>
-	</string>
 	<string id="ui_st_leave_zone_finish_save">
 		<text>Left the Zone. Game over.</text>
 	</string>
@@ -642,5 +639,9 @@
 	</string>
 	<string id="ui_st_ironman_mode_saves_deleted">
 		<text>You have no lives left. Saves have been deleted.</text>
+	</string>
+	
+	<string id="ui_st_no_talk_leader_news_text">
+		<text>Squad commander - %s.</text>
 	</string>
 </string_table>

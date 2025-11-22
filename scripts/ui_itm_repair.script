@@ -24,10 +24,12 @@ function repair_ui:__init(owner,obj,section) super()
 	self.section = section
 	local ini = system_ini()
 	self.use_condition = ini:r_bool_ex(section,"use_condition") or false
+	self.remove_after_use = ini:r_bool_ex(section,"remove_after_use") or false
 	self.min_condition = ini:r_float_ex(section,"repair_min_condition") or 0
 	self.max_condition = ini:r_float_ex(section,"repair_max_condition") or 0
 	self.add_condition = ini:r_float_ex(section,"repair_add_condition") or 0
 	self.part_bonus = ini:r_float_ex(section,"repair_part_bonus") or 0
+	self.add_full_part_condition = ini:r_bool_ex(section,"repair_add_full_part_condition") or false
 	self.use_parts = ini:r_bool_ex(section,"repair_use_parts") or false
 	self.repair_type = ini:r_string_ex(section,"repair_type") or "all"
 
@@ -38,6 +40,11 @@ function repair_ui:__init(owner,obj,section) super()
 	self.parts_exclude = alun_utils.parse_list(ini,section,"repair_parts_exclude",true)
 
 	self.use_actor_effects = ini:r_bool_ex(section,"repair_use_actor_effects",false)
+	
+	self.default_weapon_scopes = {
+		["wpn_addon_scope"] = true,
+		["wpn_addon_scope_susat"] = true
+	}
 
 	self:InitControls()
 	self:InitCallBacks()
@@ -78,13 +85,31 @@ function repair_ui:FillPartsList()
 	local obj = level.object_by_id(item.item_id)
 	local function fill_list(actor,itm)
 		if (itm and itm:id() ~= item.item_id) then
-			if (self.parts_include and self.parts_include[itm:section()]) or (self.parts_exclude == nil and string.find(obj:section(),itm:section())) or (self.parts_exclude and self.parts_exclude[itm:section()] == nil and string.find(obj:section(),itm:section())) then
-				self:AddItemToList(itm,self.list_box_parts,system_ini():r_float_ex(itm:section(),"repair_part_bonus") or self.part_bonus)
+			if (self.parts_include and self.parts_include[itm:section()]) or (self.parts_exclude == nil and string.find(obj:section(),itm:section())) or (self.parts_exclude and self.parts_exclude[itm:section()] == nil and (string.find(obj:section(),itm:section()) or string.find(itm:section(),obj:section()))) then
+				local con = 0
+				local prefix = nil
+				if (self.add_full_part_condition) then
+					con = itm:condition()
+				else
+					con = system_ini():r_float_ex(itm:section(),"repair_part_bonus") or self.part_bonus
+					prefix = "+"
+				end
+				self:AddItemToList(itm,self.list_box_parts,con,prefix)
 			end
 		end
 	end
 
 	db.actor:iterate_inventory(fill_list,db.actor)
+end
+
+function repair_ui:ResetControls()
+	self.picture:SetTextureRect(Frect():set(0,0,0,0))
+	self.caption_repair:SetText(self.caption_repair_text)
+	self:FillList()
+	
+	self.picture_parts:SetTextureRect(Frect():set(0,0,0,0))
+	self.caption_parts:SetText(self.caption_parts_text)
+	self:FillPartsList()
 end
 
 function repair_ui:InitControls()
@@ -165,6 +190,11 @@ function repair_ui:InitControls()
 	-- Caption
 	self.caption_parts 		= self.xml:InitTextWnd("itm_repair:form:caption_parts",self.form)
 	self.caption_repair		= self.xml:InitTextWnd("itm_repair:form:caption_repair",self.form)
+	
+	-- Caption Text
+	self.caption_repair_text = strtransl("ui_st_repairable_equipment")
+	self.caption_parts_text = strtransl("ui_st_usable_parts")
+	self.caption_parts_disassemble_text = strtransl("st_disassemble")
 
 	-- List Box
 	self.xml:InitFrame			("itm_repair:form:list_frame",self.form)
@@ -215,7 +245,7 @@ function repair_ui:OnPartsListItemClicked()
 	local item = self.list_box_parts:GetSelectedItem()
 	if not (item) then
 		self.picture_parts:SetTextureRect(Frect():set(0,0,0,0))
-		self.caption_parts:SetText(STR_EMPTY)
+		self.caption_parts:SetText(self.caption_parts_text)
 		return
 	end
 
@@ -226,8 +256,19 @@ function repair_ui:OnPartsListItemClicked()
 	end
 
 	local sec = se_item:section_name()
-	local part_bonus = system_ini():r_float_ex(sec,"repair_part_bonus") or self.part_bonus
-	local con = math.floor((self.add_condition + part_bonus)*100)
+	local ini = system_ini()
+	
+	local con = 0
+	if (self.add_full_part_condition) then
+		local obj = item and level.object_by_id(item.item_id)
+		if (obj) then
+			con = math.ceil(obj:condition()*100)
+		end
+	else
+		local part_bonus = ini:r_float_ex(sec,"repair_part_bonus") or self.part_bonus
+		con = math.floor((self.add_condition + part_bonus)*100)
+	end
+	
 	self.caption_repair:SetText("+"..con.."%")
 
 	local w,h = item.width,item.height
@@ -247,8 +288,7 @@ function repair_ui:OnPartsListItemClicked()
 	end
 
 	self.picture_parts:SetWndPos(vector2():set(self.picture_parts.x-w/2, self.picture_parts.y-h/2))
-
-	self.caption_parts:SetText(game.translate_string("st_disassemble"))
+	self.caption_parts:SetText(self.caption_parts_disassemble_text)
 end
 
 function repair_ui:OnPartsListItemDbClicked()
@@ -288,14 +328,17 @@ function repair_ui:OnListItemClicked()
 	end
 
 	self.picture:SetWndPos(vector2():set(self.picture.x-w/2, self.picture.y-h/2))
-
-
-	local con = math.floor(self.add_condition*100)
-	self.caption_repair:SetText("+"..con.."%")
+	
+	if (self.add_full_part_condition) then
+		self.caption_repair:SetText(self.caption_repair_text)
+	else
+		local con = math.floor(self.add_condition*100)
+		self.caption_repair:SetText("+"..con.."%")
+	end
 
 	if (self.use_parts) then
 		self.picture_parts:SetTextureRect(Frect():set(0,0,0,0))
-		self.caption_parts:SetText(STR_EMPTY)
+		self.caption_parts:SetText(self.caption_parts_text)
 		self:FillPartsList()
 	end
 end
@@ -310,8 +353,6 @@ function repair_ui:OnButton_back_clicked()
 		if (r+1 <= self.object:get_max_uses()) then
 			self.object:set_remaining_uses(self.object:get_remaining_uses()+1)
 		end
-	else
-		alife():create(self.section,db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
 	end
 	self:HideDialog()
 end
@@ -330,53 +371,82 @@ end
 
 function repair_ui:OnButton_repair()
 	local index = self.list_box:GetSelectedIndex()
-	if index == -1 then return end
+	if index == 4294967295 then return end
 	local item  = self.list_box:GetItemByIndex(index)
 
 	local obj = item and level.object_by_id(item.item_id)
 	if not (obj) then
 		return
 	end
-
-	if (self.use_condition and self.object and self.object:get_remaining_uses() <= 0) then 
-		local se_obj = alife_object(self.object:id())
-		if (se_obj) then 
-			alife():release(se_obj,true)
-		end
-	end
 	
+	local ini = system_ini()
 	local bonus = 0
+	local se_part = nil
+	local obj_part = nil
 	if (self.list_box_parts) then
 		index = self.list_box_parts:GetSelectedIndex()
-		if (index ~= -1) then
+		if (index ~= 4294967295) then
 			item = self.list_box_parts:GetItemByIndex(index)
-			local se_parts = item and item.item_id and alife_object(item.item_id)
-			if (se_parts) then
-				local sec = se_parts:section_name()
-				bonus = system_ini():r_float_ex(sec,"repair_part_bonus") or self.part_bonus
-				alife():release(se_parts,true)
+			se_part = item and item.item_id and alife_object(item.item_id)
+			if (se_part) then
+				bonus = ini:r_float_ex(se_part:section_name(),"repair_part_bonus") or self.part_bonus
+				obj_part = item and level.object_by_id(item.item_id)
 			end
 		end
 	end
 
 	local con = obj:condition()
-	con = con + self.add_condition + bonus
-	con = con <= 1 and con or 1
-	obj:set_condition(con)
-
-	self:HideDialog()
-
-	if (self.use_actor_effects and actor_effects) then
-		actor_effects.use_item(self.section.."_dummy")
-		level_weathers.get_weather_manager():forced_weather_change()
+	local con_delta = 0
+	if (self.add_full_part_condition) then
+		if index == 4294967295 or se_part == nil or obj_part == nil then return end
+		con_delta = obj_part:condition()
+	else
+		con_delta = self.add_condition + bonus
 	end
+	con = utils.clamp01(con + con_delta)
+	
+	local function on_yes(owner,p)
+		obj:set_condition(con)
+		if (self.repair_type == "weapon" and IsWeapon(obj_part)) then
+			self:DetachWeaponAddons(obj_part)
+			unload_all_weapons.unload_weapon(obj_part)
+		end
+		itms_manager.play_repaired_sound(self.repair_type)
+		alife():release(se_part,true)
+	
+		if (self.use_condition and self.object and self.object:get_remaining_uses() <= 0) then 
+			local se_obj = alife_object(self.object:id())
+			if (se_obj) then 
+				alife():release(se_obj,true)
+				self:HideDialog()
+			end
+		else
+			local function postpone_for_next_frame()
+				self:ResetControls()
+			end
+			SkipFrame(postpone_for_next_frame)
+		end
+	
+		if (self.use_actor_effects and actor_effects) then
+			actor_effects.use_item(self.section.."_dummy")
+			level_weathers.get_weather_manager():forced_weather_change()
+		end
+	end
+	
+	local function on_no(owner,p)
+	end
+	
+	local inv_name = game.translate_string(ini:r_string_ex(obj:section(),"inv_name") or "st_none")
+	local msg = strformat(game.translate_string("st_repair_mod_message_box_ask"),inv_name,math.ceil(con_delta*100))
+
+	ui_dyn_msg_box.msg_box_ui("message_box_yes_no",true,msg,on_yes,on_no)
 end
 
-function repair_ui:AddItemToList(item,listbox,condition)
+function repair_ui:AddItemToList(item,listbox,condition,prefix)
 	local ini = system_ini()
 	local _itm			= load_item(self.file_item_main_sz.y)
 	local sec = item and item:section()
-	local inv_name 		= item and game.translate_string(ini:r_string_ex(sec,"inv_name") or "none")
+	local inv_name 		= item and game.translate_string(ini:r_string_ex(sec,"inv_name") or STR_NONE)
 
 	_itm:SetWndSize		(self.file_item_main_sz)
 
@@ -386,7 +456,10 @@ function repair_ui:AddItemToList(item,listbox,condition)
 
 	condition = math.ceil(condition*100)
 	if (item) then
-		_itm.fage     = _itm:AddTextField("+"..condition.."%", self.file_item_fd_sz.x)
+		if (prefix == nil) then
+			prefix = STR_EMPTY
+		end
+		_itm.fage     = _itm:AddTextField(prefix..condition.."%", self.file_item_fd_sz.x)
 		_itm.fage:SetFont	(GetFontLetterica16Russian())
 		_itm.fage:SetWndPos	(vector2():set(self.file_item_fn_sz.x+4, 0))
 		_itm.fage:SetWndSize(self.file_item_fd_sz)
@@ -416,4 +489,41 @@ function repair_ui:AddItemToList(item,listbox,condition)
 	--]]
 
 	listbox:AddExistingItem(_itm)
+end
+
+function repair_ui:DetachWeaponAddons(wpn)
+	local ini = system_ini()
+	local wpn_section = wpn:section()
+	
+	if (wpn:weapon_is_silencer() and wpn:weapon_silencer_status() == 2) then
+		local silencer_name = ini:r_string_ex(wpn_section, "silencer_name")
+		if (silencer_name) then
+			create_item(silencer_name, db.actor)
+		end
+	end
+	
+	if (wpn:weapon_is_grenadelauncher() and wpn:weapon_grenadelauncher_status() == 2) then
+		local grenade_launcher_name = ini:r_string_ex(wpn_section, "grenade_launcher_name")
+		if (grenade_launcher_name) then
+			create_item(grenade_launcher_name, db.actor)
+		end
+	end
+	
+	if (wpn:weapon_is_scope() and wpn:weapon_scope_status() == 2) then
+		local scope_name = ini:r_string_ex(wpn_section, "scope_name")
+		if (scope_name) then
+			create_item(scope_name, db.actor)
+		else
+			local scopes_sect = utils.ini_r_string_explode(ini, wpn_section, "scopes_sect")
+			if (scopes_sect) then
+				for _,scope_sect in ipairs(scopes_sect) do
+					scope_name = ini:r_string_ex(scope_sect, "scope_name")
+					if (scope_name and self.default_weapon_scopes[scope_name] == true) then
+						create_item(scope_name, db.actor)
+						break
+					end
+				end
+			end
+		end
+	end
 end

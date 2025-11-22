@@ -270,6 +270,9 @@
   <string id="st_wpn_ak74u">
     <text>AKM-74/2U</text>
   </string>
+  <string id="st_wpn_ak74u_m1">
+	<text>AKM-74/2U Special</text>
+  </string>
   <string id="st_wpn_beretta">
 		<text>Martha</text>
   </string>
@@ -281,6 +284,12 @@
   </string>
   <string id="st_wpn_colt1911">
 		<text>Kora-919</text>
+  </string>
+  <string id="st_wpn_desert_eagle_m1">
+		<text>Big Ben</text>
+  </string>
+  <string id="st_wpn_desert_eagle_m1_descr">
+		<text>A gun that is already powerful, reworked to fit 9x39 mm rifle bullets. Truly a killing machine for close-range combat.</text>
   </string>
   <string id="st_wpn_desert_eagle_nimble">
 		<text>Steppe Eagle</text>
@@ -303,6 +312,9 @@
   <string id="st_wpn_gauss">
 		<text>Gauss rifle</text>
   </string>
+  <string id="st_wpn_gauss_m1">
+		<text>Improved Gauss rifle</text>
+  </string>
   <string id="st_wpn_groza">
 		<text>Tunder S14</text>
   </string>
@@ -324,6 +336,9 @@
   <string id="st_wpn_l85">
 		<text>IL 86</text>
   </string>
+  <string id="st_wpn_l85_m2">
+		<text>Lightened IL 86</text>
+  </string>
   <string id="st_wpn_lr300">
 		<text>TRs 301</text>
   </string>
@@ -341,6 +356,12 @@
   </string>
   <string id="st_wpn_pb">
 		<text>PB-1s</text>
+  </string>
+  <string id="st_wpn_pkm_tank">
+		<text>Tank machine gun</text>
+  </string>
+  <string id="st_wpn_pkm_tank_descr">
+		<text>This machine gun is intended for mounting onto a Soviet tank turret, but can be used just as well as a hand-held machine gun.</text>
   </string>
   <string id="st_wpn_pkm_zulus">
 		<text>Zulu's RP-74</text>
@@ -465,6 +486,12 @@
   <string id="st_wpn_vintorez_descr">
 		<text>A special military sniper rifle purpose-built for silent, flashless sniping during special operations where early detection of the shooter may be critical. The Vintar BC provides high armour-piercing capability and stopping power, as well as being equipped with an integrated sniper and optical scope. Highly rated by many stalkers despite its small magazine.</text>
   </string>
+  <string id="st_wpn_vintorez_coll">
+		<text>Personalized Vintar BC</text>
+  </string>
+  <string id="st_wpn_vintorez_coll_descr">
+		<text>A Vintar BC with a dedication from a certain stalker named Sergei Tikhy. No one in the Zone remembers anything about this weapon's origins - apparently, its true owner is long dead. This weapon has a remarkable property: bullets fired from it fly at higher speeds and along a straighter trajectory. Increased magazine capacity using improvised means.</text>
+  </string>
   <string id="st_wpn_vintorez_nimble">
     <text>Tide</text>
   </string>
@@ -495,6 +522,12 @@
   <string id="st_wpn_abakan_descr">
 		<text>A modern assault rifle developed as a replacement for the ageing AKM 74/2. The main difference is its high speed 2-round burst firing mode, which allows two bullets to be fired at exactly the same spot on a target up to 100 meters away. This significantly increases the likelihood of hitting the target in comparison to the 1 round firing mode, which considerably improves kill potential, stopping power and armour piercing capability.</text>
   </string>
+  <string id="st_wpn_ak47">
+	  <text>Trophy AKM-47/2</text>
+  </string>
+  <string id="st_wpn_ak47_descr">
+	  <text>An old, worn-down assault rifle with claw marks on the stock. A legendary weapon. </text>
+  </string>
   <string id="st_wpn_ak74_descr">
 		<text>This weapon, designed in 1974, signalled the adoption of small calibre and low impulse rounds by Warsaw Pact countries. A descendant of the most popular assault rifle in the world, the AKM-74/2 has an even bigger muzzle brake, resulting in a reduction of what was already manageable recoil. This facilitates better accuracy and groupings, especially when fired in fast single shots or bursts. As before, the rifle is very simple and reliable.</text>
   </string>
@@ -507,6 +540,9 @@
   <string id="st_wpn_eagle_descr">
 		<text>The ultimate hand cannon - bulky, heavy and highly lethal. Developed as a specialized weapon for hunting medium-sized and large game, as well as for shooting competitions involving firing at steel body targets at distances over 50 meters. Its limited use in the Zone can be attributed to its price, size and weight, which are all double those of other pistols.</text>
   </string>
+  <string id="st_wpn_ak74u_m1_descr">
+		<text>Enhanced AKM-74/2U machine gun. Comes with a non-replaceable muffler. Was owned by a stalker known as Bes, hiding in the Zone from the law.</text>
+  </string>
   <string id="st_wpn_fn2000_descr">
 		<text>This futuristic-looking weapon with a bullpup layout is actually a mass produced modular system, comprising a rifle & grenade complex with a computerized fire control system and a 40-mm grenade launcher. Despite its bulky appearance, the weapon is highly ergonomic, easy to use and benefits from good technical characteristics.</text>
   </string>
@@ -518,6 +554,9 @@
   </string>
   <string id="st_wpn_l85_descr">
 		<text>This rifle's considerable number of drawbacks caused most of these weapons to be modernized, with the retired stock making its way to the Zone via the black market. The rifle's main advantages are its built-in 4x scope, high single-shot accuracy and reliable upgrade technology. When the weapon is fired in bursts, its accuracy decreases significantly and the rifle's basic internal mechanisms become somewhat unreliable.</text>
+  </string>
+  <string id="st_wpn_l85_m2_descr">
+	  <text>Weapon comes with an integrated muffler. Many parts are replaced with lighter analogues, which makes the weapon significantly lighter. Was owned by a stalker known as Master, probably the most qualified mechanic in the Zone.</text>
   </string>
   <string id="st_wpn_lr300_descr">
 		<text>A new step in the development of this famous weapon family. The changes were made to the upper half of the steel construction comprising the barrel, gas tube and bolt assembly, reducing the weapon's weight, improving ergonomics and its gas system. The weapon is highly accurate, although its propensity to catch dirt makes it a poor choice for the Zone's difficult conditions.</text>
@@ -548,6 +587,9 @@
   </string>
   <string id="st_wpn_gauss_descr">
 		<text>A super-accurate hi-tech weapon known as item 62, this rifle was developed in secret laboratories located inside the Zone. The weapon operates by accelerating bullets to extremely high speeds using a system of electromagnets, which provides incredible stopping power with virtually no recoil.  The weapon is powered by using encapsulated artefact fragments in the batteries.</text>
+  </string>
+  <string id="st_wpn_gauss_m1_descr">
+		<text>The weapon is integrated with elements of the "Battery" artifact, which reduce energy consumption by almost half, allowing its batteries to last for a greater number of shots.</text>
   </string>
   <string id="st_wpn_beretta_descr">
 		<text>Martha pistols enjoy the reputation of a relatively reliable, albeit somewhat cumbersome weapon, around the world. In service with armed forces and police across the ocean, as well as various military and law enforcement organisations worldwide.  The pistol is equally popular with members of the underworld, thanks to its powerful round and magazine capacity. Marthas found in the Zone are usually dated, probably from retired stock.</text>

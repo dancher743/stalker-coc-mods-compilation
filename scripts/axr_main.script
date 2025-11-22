@@ -165,9 +165,9 @@ local intercepts = {
 	on_game_unload					= {},
 	on_game_first_load				= {},
 	
-	actor_on_slicing_update			= {},
-	squad_on_slicing_update			= {},
-	monster_on_slicing_update		= {},
+	actor_on_slicing_update			= {},	-- OBSOLETE: Use "actor_on_update" instead
+	squad_on_slicing_update			= {},	-- OBSOLETE: Use "squad_on_update" instead
+	monster_on_slicing_update		= {},	-- OBSOLETE: Use "monster_on_update" instead
 	
 	DeadBodySearchClosed			= {},
 	

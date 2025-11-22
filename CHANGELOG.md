@@ -2,6 +2,143 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.3] - Unreleased
+
+### Features
+* Added vodka for scope dialog to Screw from SoC
+* Added ecolog squad to Yantar Bunker
+* Optimized the number of per-frame updates calls
+* Added "Companions tasks" option
+* Added out of smart combats to Offline Combat feature
+* Reworked Critical Hit formula and added modificators: bleeding, radiation, health, power, psy-health and satiety
+* Added mapspot and message about squad leader if а dialog is unavailable (with option)
+* Added SoC unique weapons into stashes: AKM-74/2U Special, Big Ben, Personalized Vintar BC, Trophy AKM-47/2 (from CS), Lightened IL 86, Improved Gauss rifle
+* Added Tank machine gun(!) into Soviet tank's stash in Red Forest
+* Reworked adding unique weapons into stashes
+* Rebuilded sound scripts to reduce bugs with sounds
+* Replaced [CoC OL pack v1.3](https://www.moddb.com/mods/call-of-chernobyl/addons/coc-ol-pack-v1-2) sub-period with Legend Returns 0.9.2 weather
+* Soft rework of toolkits (especially gunsmith)
+* Added "Squad migration" option to change frequency of squads migration
+
+### Mods
+* [CS atmosphere for CoC v1.1 [CoC 1.4.22]](https://www.moddb.com/mods/call-of-chernobyl/addons/cop-and-cs-atmosphere-for-coc-coc-1422)
+* [Better Knife (Vanilla)](https://www.moddb.com/mods/call-of-chernobyl/addons/better-knife-vanilla) with adaptations from CoP
+* [Optimized rain](https://stalker-mods.clan.su/load/stalker_cop/stalker_zov_pripjati/optimizirovannyj_dozhd/1-1-0-4001)
+
+### Improvements
+* Added rain and rain splash textures from "CoC OL pack v1.3" mod
+* Rebalanced presets of squad's stay point idle time
+* Rebalanced ability to receive tasks from companions
+* Corrected chance of telling campfire stories: from 33 to 25
+* Refactored and reworked `sound_actor_critical_hit.script`
+* Added delay between Crit Hit's sound playbacks
+* Replaced `is_yan_base_defense_quest_enabled` condition with base defense option
+* Added ambient for EOC-Survival mode
+* Removed additional probabilities of rain and storm transitions
+* Balanced probabilities of cat sleep aura
+* Removed repairkits from trade
+* Improved open companion inventory dialog
+* Added companion tasks info into Faction Select Menu
+* Added ":" symbol into text of `st_mm_ck_eoc_desc` string
+* Rebalanced chances of getting an artifacts from corpses
+* Excluded Doctor's dog from Dynamic News
+* Reworked chances in `sim_squad_offline_combat.script`
+* Corrected tasks descriptions in RUS localisation
+* Refactored `sim_squad_offline_combat.script`
+* Soft reworked critical hit sounds
+* Added black screen effector to online smart Fast Travel
+* Added SoC sounds to big bloodsuckers
+* Made `more_cooking_recipes_dialog` after `dm_broker_dialog` in Barman's dialogs
+* Added `rain_factor` check into `fallout` debug command
+* Replaced leave zone text with original CoP text
+* Made only Duty squads on `gar_smart_terrain_5_2` smart (Special thanks to LR mod for the tip!)
+* Changed NPC's death sound from 2d to 3d type
+* Added news about bought safe house into Barman's dialogs
+* Improved behaviour of starting fallouts when time forward (due to adding pre-fallout rainy period)
+* Added Offline Combat news into "Show corpse findings reports" option of Dynamic News
+* Configured subperiods weights
+* Balanced obtain trust time, added `obtain_trust_time` into `axr_companions.ltx`
+* Improved playing idle sounds about north levels and reactions to weather
+* Added more M203 grenade launchers into NPC's spawn
+* Refactored "Rank-based weapon condition drops" mod
+* Added hud disabling to level changing
+* Added achievements to ask-to-join and bounty hunt peaceful way dialogs and corrected formulas
+* Corrected Guide job dialog position in `character_dialogs.xml`
+* Increased remove squad chance from 50 to 60 in Offline Combat
+* Decreased chance of finding a toolkits in NPC loot from 0.015 to 0.01
+* Changed size of `ui_icon_equipment` from 1024x2048 to 2048x2048
+* Reworked picking of killers in combats of Offline Combat feature
+* Added check for a squads on smarts for turning on a campfires
+* Removed special config for companion trade
+* Returned bread and conserva to Army loot (according to SoC)
+* Added `edita_piekha_gorod_detstva` track to `bar_visitors_radio`
+* Added companion invulnerability into squad validation of offline combat
+* Added backward compatibility to repairing weapon sections
+* Added detaching of weapon addons and magazine unloading to weapons for repair
+* Added item repaired sounds
+
+### Fixes
+* Fixed typo in `csky_scientific_outfit_description` string in rus localization
+* Fixed error: "[LUA] SCRIPT RUNTIME ERROR : evaluator [corpse_exist] returns value with not a bool type!" (from CoC 1.5)
+* Fixed error: "[LUA] SCRIPT RUNTIME ERROR : evaluator [eva_gather_itm] returns value with not a bool type!" (from CoC 1.5)
+* Fixed error: "[LUA] SCRIPT RUNTIME ERROR : evaluator [wounded_exist] returns value with not a bool type!" (from CoC 1.5)
+* Fixed error: "! [LUA] CRestrictedObject : you use accessible_nearest when position is already accessible!"
+* Fixed transition between weather periods
+* Added additional fix to pre cataclysm weather reselection after reload
+* Added missing crit hit sound on actor
+* Returned original chance to start yantar base defense quest - 25%
+* Corrected text of `st_dyn_news_time_night_15` string in rus localisation
+* Added supplies to Freedom trader and mechanic
+* Added missing save of `transition_period` flag in `WeatherManager` to fix transition between weather periods
+* Fixed NPC's second names in Dynamic News
+* Fixed `thunderbolt_period` of subperiods
+* Fixed wrong sound theme `strange_story_disbelief`
+* Fixed not dropping items with low chances from dead NPCs
+* Fixed incorrect loot relocation in Offline Combat feature
+* Fixed black clouds in some CoC OL and CS periods
+* Added `xr_meet.script` from CoC 1.5 to fix incorrect hello/bye phrases
+* Added skipping fallout with level changing
+* Fixed incorrect order of stories phrases
+* Added missing unique weapons into Beard's trade config
+* Removed Trapper's weapon from stashes
+* Fixed `shuffle_table` function in `utils.script`
+* Fixed overspawning of grenade launchers ammo
+* Balanced 5.45, 5.56 and 9x39 ammo drop count (from CoC 1.5)
+* Balanced bandage drop chance (from CoC 1.5)
+* Fixed mutant loot drop count
+* Added `can_trade` with false to `hand_radio` and `hand_radio_r` script items
+* Fixed incorrect item count for task completion
+* Changed `meat_base` section parent to `booster_script`
+* Fixed missing cooked food in NPC's loot
+* Added missing cataclysm skips when time forward
+* Fixed artefacts over-respawn and anomalies replacing if surges are disabled
+
+### Optimization
+* Made `squad_on_update`, `monster_on_update` and `actor_on_update` callbacks sliced
+* Optimized code of finding target by distance in `DynamicNewsManager:FindSpeakerAndTarget`
+* Increased `update_queue_timer` from 500 to 1500 in `sim_squad_offline_combat.script`
+* Optimized CPU usage of `process_squads_combat` function in `sim_squad_offline_combat.script`
+* Replaced some strings with global constants
+* Added `check_option_name_prefix` field into `axr_main_options.script`
+* Reworked `last_killed_stalker` field in `sim_squad_offline_combat.script` (RAM optimization)
+
+### Framework
+* Added `valid_vertex_only` function into `alun_utils.script`
+* Added `IsEocAndSurvivalMode` function into `_g.script`
+* Added `get_check_option` function into `_g.script`
+* Added `get_chance` function into `_g.script`
+* Added `STR_NONE` constant into `_g.script`
+* Extended `give_news` function in `news_helper.script`
+* Added functions for working with chances: `get_chance01`, `has_chance` and `has_chance01` into `_g.script`
+* Function `shuffle_table` now is `shuffle_itable` in `utils.script`
+* Refactored usage of `try_spawn_ammo` function in `death_manager.script`
+* Added `clamp01` and `ini_r_string_explode` functions into `utils.script`
+* Added `enable_ui` string to `sr_teleport_sections.ltx` and `ui_sr_teleport.script`
+* Added `random_in_itable` function into `utils.script`
+* Added `subperiod` command into debug command list to change weather subperiod
+* Added `play_sound_by_path` function into `xr_sound.script`
+* Added `create_item` function into `_g.script`
+
 ## [1.5.2] - 2025-07-13
 
 ### Features

@@ -69,7 +69,7 @@ local function check_effectors()
 end
 
 local timer = 0
-local function actor_on_slicing_update(_,delta)
+local function actor_on_update(_,delta)
 	timer = timer + delta
 	if (timer < update_time) then
 		return
@@ -83,6 +83,6 @@ local function actor_on_before_death()
 end
 
 function on_game_start()
-    RegisterScriptCallback("actor_on_slicing_update", actor_on_slicing_update)
+    RegisterScriptCallback("actor_on_update", actor_on_update)
 	RegisterScriptCallback("actor_on_before_death",actor_on_before_death)
 end

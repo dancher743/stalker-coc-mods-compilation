@@ -48,7 +48,7 @@ ShowMessageTime = nil
 
 function on_game_start()
 	RegisterScriptCallback("on_game_load",on_game_load)
-	RegisterScriptCallback("actor_on_slicing_update",actor_on_slicing_update)
+	RegisterScriptCallback("actor_on_update",actor_on_update)
 	RegisterScriptCallback("actor_on_item_drop",actor_on_item_drop)
 	RegisterScriptCallback("monster_on_actor_use_callback",monster_on_actor_use_callback)
 	RegisterScriptCallback("actor_on_item_use",actor_on_item_use)
@@ -89,8 +89,14 @@ function on_item_focus(itm)
 	local section = itm:section()
 	if (RepairTools[section]) then 
 		local ini = system_ini()
+		
 		local repair_type = ini:r_string_ex(section,"repair_type")
 		if not (repair_type) then 
+			return
+		end
+		
+		local can_highlight_slots = ini:r_bool_ex(section,"can_highlight_slots") or false
+		if not (can_highlight_slots) then
 			return
 		end
 		
@@ -128,11 +134,17 @@ function on_item_drag_dropped(itm1,itm2,from_slot,to_slot)
 	end
 
 	local ini = system_ini()
+	
 	local repair_type = ini:r_string_ex(section,"repair_type")
 	if not (repair_type) then 
 		return 
 	end
 
+	local can_drag_and_drop = ini:r_bool_ex(section,"can_drag_and_drop") or false
+	if not (can_drag_and_drop) then
+		return
+	end
+	
 	if (repair_type == "weapon") then 
 		if not (IsWeapon(itm2)) then 
 			return 
@@ -153,12 +165,9 @@ function on_item_drag_dropped(itm1,itm2,from_slot,to_slot)
 	local c_min = ini:r_float_ex(section,"repair_min_condition") or 0
 	local c_max = ini:r_float_ex(section,"repair_max_condition") or 0.75
 	
-	if (cur_condition < c_min) then 
-		ui_dyn_msg_box.msg_box_ui("message_box_ok",true,game.translate_string("st_repair_mod_message_box_condition_to_low"))
+	if (cur_condition < c_min or cur_condition >= c_max) then
+		ui_dyn_msg_box.msg_box_ui("message_box_ok",true,game.translate_string("st_repair_mod_message_box_condition"))
 		return
-	elseif (cur_condition >= c_max) then 
-		ui_dyn_msg_box.msg_box_ui("message_box_ok",true,game.translate_string("st_repair_mod_message_box_condition_to_high"))
-		return	
 	end
 	
 	local c_add = ini:r_float_ex(section,"repair_add_condition") or 0.15
@@ -168,12 +177,11 @@ function on_item_drag_dropped(itm1,itm2,from_slot,to_slot)
 	end]]
 	
 	local function on_yes(owner,p)
-		
-		
 		local new_condition = cur_condition + c_add
 		if (new_condition > c_max) then 
 			new_condition = c_max
 		end
+		play_repaired_sound(repair_type)
 		
 		--printf("%s:set_condition(%s)",itm2:name(),new_condition)
 		itm2:set_condition(new_condition)
@@ -211,6 +219,14 @@ function on_item_drag_dropped(itm1,itm2,from_slot,to_slot)
 	ui_dyn_msg_box.msg_box_ui("message_box_yes_no",true,msg,on_yes,on_no)
 end 
 
+function play_repaired_sound(repair_type)
+	if (repair_type == "weapon") then
+		xr_sound.play_sound_by_path("lr\\weapon_repaired")
+	elseif (repair_type == "outfit") then
+		xr_sound.play_sound_by_path("lr\\outfit_repaired")
+	end
+end
+
 local torch_delay
 -- bind_stalker update
 local actor_fill_backpack
@@ -220,7 +236,7 @@ local device_torch_obj = "device_torch"
 local dev_torch_fl_obj = "dev_torch_fl"
 local device_torch_dummy_section = "device_torch_dummy"
 
-function actor_on_slicing_update()
+function actor_on_update()
 	check_actor_backpack()
 
 	if (FlashlightModEnable) then
@@ -427,11 +443,15 @@ function actor_on_item_use(obj)
 
 	-- Repair mod
 	if (RepairModEnable and RepairTools[obj:section()]) then
-		if (RepairUI) then
+		local section = obj:section()
+		local ini = system_ini()
+		
+		local use_repair_ui = ini:r_bool_ex(section,"use_repair_ui") or false
+		if (RepairUI and use_repair_ui) then
 			local hud = get_hud()
 			if (hud) then
-				--hud:HideActorMenu()
-				local ui = ui_itm_repair and ui_itm_repair.repair_ui(hud,obj,obj:section())
+				hud:HideActorMenu()
+				local ui = ui_itm_repair and ui_itm_repair.repair_ui(hud,obj,section)
 				if (ui) then
 					ui:ShowDialog(true)
 					ui:FillList()
@@ -646,15 +666,16 @@ function loot_mutant(obj,cls,t,npc)
 			end
 
 			loot[2] = tonumber(loot[2])
+			loot[3] = tonumber(loot[3])
+			if(has_alife_info("achieved_well_dressed")) then
+				loot[3] = utils.clamp01(loot[3] + 0.2)
+				--printf("bonus loot")
+			end
 			for i=1,loot[2] do
-				if ((math.random(1,100)/100) <= tonumber(loot[3])) then
+				if ((math.random(1,100)/100) <= loot[3]) then
 					--printf("loot_mutant: section=%s",loot[1])
 					local se_obj = alife():create(loot[1],npc and npc:position() or db.actor:position(),0,0,npc and npc:id() or 0)
 					if (se_obj) then
-						if(has_alife_info("achieved_well_dressed") and ((math.random(1,100)/100) <= 0.2)) then
-							--printf("bonus loot")
-							alife():create(loot[1],npc and npc:position() or db.actor:position(),0,0,npc and npc:id() or 0)
-						end
 						if (t) then
 							local item_section = loot[1]
 							if not (t[item_section]) then

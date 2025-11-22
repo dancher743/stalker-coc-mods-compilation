@@ -2137,7 +2137,7 @@ function surrender_victim_answers_bounty(a,b)
 	local npc = dialogs.who_is_npc(a,b)
 	local id = npc:id()
 
-	local prefix = "default"
+	local prefix = STR_DEFAULT
 	for task_id,npc_id in pairs(axr_task_manager.bounties_by_id) do
 		if (npc_id == id) then
 			if (task_id == "esc_m_trader_task_2") then
@@ -3190,8 +3190,13 @@ end
 function can_vanish_bounty_hunt_target(first_speaker, second_speaker)
 	local npc = who_is_npc(first_speaker, second_speaker)
 	local actor = db.actor
+	
+	if (has_alife_info("achieved_silver_or_lead")) then
+		return true
+	end
+	
 	local actor_rank = actor:character_rank()
-	local npc_rank = npc:character_rank()
+	local npc_rank = npc:character_rank() * 1.25
 	
 	return actor_rank > npc_rank
 end

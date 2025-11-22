@@ -1268,6 +1268,9 @@
 	<string id="open_companion_inventory_phrase_23">
 		<text>Я передумал.</text>
 	</string>
+	<string id="open_companion_inventory_phrase_24">
+		<text>Закрой рюкзак.</text>
+	</string>
 	<string id="open_companion_inventory_phrase_3">
 		<text>Зря открывал только...</text>
 	</string>

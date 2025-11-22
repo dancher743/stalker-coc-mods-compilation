@@ -4,89 +4,6 @@ local always_keep_item = {}
 local item_by_story_id
 local death_ini = ini_file("misc\\death_generic.ltx")
 
---Wafel start
-function Wafel_func_drop()  
-	local drop_config={
-		["zero"]={0,0,0,0},
-		["novice"]={45,60,2,6}, --wpn_cond_min,wpn_cond_max,ammo_multiple_min, ammo_multiple_max
-		["trainee"]={60,70,3,7},
-		["experienced"]={70,80,4,8},
-		["professional"]={80,90,5,9},
-		["veteran"]={80,90,6,10},
-		["expert"]={85,90,7,11},
-		["master"]={90,95,8,12},
-		["legend"]={95,100,9,13},    
-	}	
-	
-	local aliases={'zero','novice','trainee','experienced','professional','veteran','expert','master','legend'}
-	
-	return function (rank,mode,npc)
-		math.randomseed( os.time() )
-		local result
-		local  function find_pos(where,what)
-			local pos=1
-			for k,v in pairs(where) do
-			  if (string.find(v,''..what)~=nil) then
-				pos=k
-				break
-			  end
-			end			
-			return pos
-		end
-		local temp_pos=find_pos(aliases,''..rank)		
-		if(temp_pos>1 and math.random(1,100)<math.floor(64/temp_pos))then	
-			temp_pos=math.random(temp_pos-2,temp_pos+2)
-			if		(temp_pos<2) then temp_pos=2
-			elseif	(temp_pos>9) then temp_pos=9 end			
-		end
-		local temp_rank=aliases[temp_pos]
-		
-		
-		if(mode == "wpn") then 
-			local temp_min_cond=drop_config[temp_rank][1]
-			local temp_max_cond=drop_config[temp_rank][2]			
-			result=math.random(temp_min_cond,temp_max_cond)
-			--printf("Wafel checks: myfunc: ret wpn cond: "..result)
-			
-			---
-			-- Additional chances to change weapon's condition:
-			-- 75% chance to decrease weapon's condition on 20%,
-			-- if npc is zombied, his weapon's condition additionally will be divide by 2,
-			-- 20% chance to set weapon's condition to 50% for any stalker (including zombied),
-			-- 10% chance to set weapon's condition to 100% for any stalker (including zombied).
-			-- Added by Dancher.
-			--
-			local chance = math.random(100)
-			
-			if (chance <= 75) then
-				result = result - (result * 0.2)
-			end
-			
-			if npc:character_community() == "zombied" then
-				result = result / 2
-			end
-			
-			if (chance <= 20) then
-				result = 50
-			end
-			
-			if (chance <= 10) then
-				result = 100
-			end
-			---
-			
-			return result/100      
-		elseif(mode=="ammo") then
-			local temp_min_ammo=drop_config[temp_rank][3]
-			local temp_max_ammo=drop_config[temp_rank][4]
-			result=math.random(temp_min_ammo,temp_max_ammo)
-			--printf("Wafel checks: myfunc: ret ammo multiple: "..result)
-			return result		
-		end		    
-	end
-end
---Wafel end
-
 function init_drop_settings()
 	-- Create a list by community of the percent chance to spawn an item
 	local community_list = { "stalker", "dolg", "freedom", "bandit", "army", "zombied", "ecolog", "killer", "monolith", "csky" }
@@ -157,7 +74,7 @@ function create_release_item(npc)
 		--local p = alun_utils.str_explode(item_by_story_id[sid],STR_COMMA)
 		--printf("sid=%s p=%s",sid,p)
 		if (p and p ~= STR_EMPTY and p ~= STR_NIL) then
-			create_items(npc, p, 1, 100)
+			create_items(npc, p, 1, 1)
 		end
 	end
 
@@ -176,7 +93,7 @@ function create_release_item(npc)
 		return
 	end
 	
-	try_spawn_ammo(npc,spawn_items)
+	npc:iterate_inventory(try_spawn_ammo,npc)
 	
 	try_spawn_patch_for_zombied(npc,spawn_items)
 	
@@ -193,48 +110,40 @@ function create_release_item(npc)
 	end
 end
 
-function try_spawn_ammo(npc,spawn_items)
+function try_spawn_ammo(npc,itm)
 	local ini = system_ini()
 	local class,ammo_class,sec,number
-	local function itr(npc,itm)
-		if (IsWeapon(nil,itm:clsid()) and not npc:marked_dropped(itm)) then
-			class = system_ini():r_string_ex(itm:section(),"class")
-			ammo_class = alun_utils.parse_list(ini,itm:section(),"ammo_class")
-			if (class and class == "WP_KNIFE") then return end
-			-- randomly spawn only 1 ammo type per found weapon
-			if (#ammo_class > 0) then
-				sec = ammo_class[math.random(1,#ammo_class)]
-				if (sec) then 
-					if (item_count[sec]) then
-						number = math.random(item_count[sec][1], item_count[sec][2])
-					else 
-						number = math.random(1,15)
-					end
-					if (number > 0 and system_ini():section_exist(sec)) then
-						create_ammo(sec,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id(),number)
-					end
+	
+	if (IsWeapon(nil,itm:clsid()) and not npc:marked_dropped(itm)) then
+		local ini = system_ini()
+		local sec,number
+		local ammo_class = alun_utils.parse_list(ini,itm:section(),"ammo_class")
+		
+		-- randomly spawn only 1 ammo type per found weapon
+		if (#ammo_class > 0) then
+			sec = ammo_class[math.random(1,#ammo_class)]
+			if (sec and item_count[sec]) then 
+				number = math.random(item_count[sec][1], item_count[sec][2])
+				if (number > 0 and system_ini():section_exist(sec)) then
+					create_ammo(sec,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id(),number)
 				end
 			end
-			-- spawn grenade ammo if there is launcher attached
-			if (ini:r_float_ex(itm:section(),"grenade_launcher_status") > 0) then
-				ammo_class = alun_utils.parse_list(ini,itm:section(),"grenade_class")
-				for i=1,#ammo_class do
-					sec = ammo_class[i]
-					if (sec) then
-						if (item_count[sec]) then
-							number = math.random(item_count[sec][1], item_count[sec][2])
-						else 
-							number = math.random(0,2)
-						end
-						if (number > 0 and system_ini():section_exist(sec)) then 
-							create_ammo(sec,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id(),number)
-						end
+		end
+		
+		-- spawn grenade ammo if there is launcher attached
+		if (itm:weapon_grenadelauncher_status() > 0) then
+			ammo_class = alun_utils.parse_list(ini,itm:section(),"grenade_class")
+			for i=1,#ammo_class do
+				sec = ammo_class[i]
+				if (sec and item_count[sec]) then 
+					number = math.random(item_count[sec][1], item_count[sec][2])
+					if (number > 0 and system_ini():section_exist(sec)) then 
+						create_ammo(sec,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id(),number)
 					end
 				end
 			end
 		end
 	end
-	npc:iterate_inventory(itr,npc)
 end
 
 function try_spawn_patch_for_zombied(npc,spawn_items)
@@ -322,44 +231,40 @@ function keep_item(npc, item)
 	alife():release(se_item, true)
 end
 
-function set_weapon_drop_condition(npc,itm)	
-	--Wafel start			 	
-	local rank = ranks.get_obj_rank_name(npc)	
-	local rank_dep_drop_W=Wafel_func_drop()  
-	local condition  = rank_dep_drop_W(rank,'wpn',npc)	
-	--Wafel end	
-	--local condition  = (math.random(40)+5)/100--commented by Wafel
-	--printf("condition [%s]", tostring(condition))
-	itm:set_condition(condition)
+function set_weapon_drop_condition(npc,item)
+	local rank = ranks.get_obj_rank_name(npc)
+	local conditions = utils.ini_r_string_explode(death_ini,"weapon_condition_by_rank",rank)
+	local condition = math.random(tonumber(conditions[1]),tonumber(conditions[2]))
 	
-	if (IsWeapon(nil,itm:clsid()) and not npc:marked_dropped(itm)) then
-		local ini = system_ini()
-		local sec,number
-		local ammo_class = alun_utils.parse_list(ini,itm:section(),"ammo_class")
-		-- randomly spawn only 1 ammo type per found weapon
-		if (#ammo_class > 0) then
-			sec = ammo_class[math.random(1,#ammo_class)]
-			if (sec and item_count[sec]) then 
-				number = math.random(item_count[sec][1], item_count[sec][2])
-				if (number > 0 and system_ini():section_exist(sec)) then
-					create_ammo(sec,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id(),number)
-				end
-			end
-		end
-		-- spawn grenade ammo if there is launcher attached
-		if (ini:r_float_ex(itm:section(),"grenade_launcher_status") > 0) then
-			ammo_class = alun_utils.parse_list(ini,itm:section(),"grenade_class")
-			for i=1,#ammo_class do
-				sec = ammo_class[i]
-				if (sec and item_count[sec]) then 
-					number = math.random(item_count[sec][1], item_count[sec][2])
-					if (number > 0 and system_ini():section_exist(sec)) then 
-						create_ammo(sec,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id(),number)
-					end
-				end
-			end
-		end
+	local additions = "weapon_condition_additions"
+	
+	local decrease_by_chance = utils.ini_r_string_explode(death_ini,additions,"decrease_by_chance")
+	if (has_chance01(tonumber(decrease_by_chance[1]))) then
+		condition = condition - tonumber(decrease_by_chance[2])
+		printf("decrease_by_chance")
 	end
+	
+	local increase_by_chance = utils.ini_r_string_explode(death_ini,additions,"increase_by_chance")
+	if (has_chance01(tonumber(increase_by_chance[1]))) then
+		condition = condition + tonumber(increase_by_chance[2])
+		--printf("increase_by_chance")
+	end
+	
+	if (npc:character_community() == "zombied") then
+		local decrease_by_zombied = death_ini:r_string_ex(additions,"decrease_by_zombied")
+		condition = condition * tonumber(decrease_by_zombied)
+		--printf("decrease_by_zombied")
+	end
+	
+	local perfect_chance = death_ini:r_string_ex(additions,"perfect_by_chance")
+	if (has_chance01(tonumber(perfect_chance))) then
+		condition = 100
+		--printf("perfect_by_chance")
+	end
+	
+	condition = utils.clamp01(condition/100)
+	--printf("condition [%s], section [%s]", tostring(condition), item:section())
+	item:set_condition(condition)
 end
 
 --' Функция спавнит необходимое число предметов
@@ -377,7 +282,7 @@ function create_items(npc, section, number, rnd)
 	else
 		for i=1,number do
 			--' Проверяем вероятность появить каждый объект в отдельности
-			if (math.random(1,100)/100) <=  rnd then
+			if math.random() <= rnd then
 				alife():create(section,npc:position(),npc:level_vertex_id(),npc:game_vertex_id(),npc:id())
 			end
 		end

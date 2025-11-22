@@ -155,6 +155,10 @@ function DynamicNewsManager:__init()
 		["show_about_loot"] = 0
 	}
 	
+	self.ignored_targets = {
+		["mar_smart_terrain_base_dog_doctor_squad"] = true
+	}
+	
 	self.loot = {}
 	self.companions_list = dynamic_news_helper.list_actor_squad_by_id()
 	self.news_toggle = xr_conditions.surge_complete()
@@ -162,7 +166,7 @@ function DynamicNewsManager:__init()
 	self.surge_type = STR_EMPTY
 	
 	self.sentences_fnames = self:ReadTextList("name_stalker_")
-	self.sentences_snames = self:ReadTextList("lname_private_")
+	self.sentences_snames = self:ReadTextList("lname_stalker_")
 	
 
 	CreateTimeEvent("DynamicNewsManager","TickNews",10*TimeFactor,self.TickNews,self)
@@ -171,9 +175,6 @@ function DynamicNewsManager:__init()
 	CreateTimeEvent("DynamicNewsManager","TickTask",10*TimeFactor,self.TickTask,self)
 	CreateTimeEvent("DynamicNewsManager","TickRandom",10*TimeFactor,self.TickRandom,self)
 	CreateTimeEvent("DynamicNewsManager","TickCompanion",10*TimeFactor,self.TickCompanion,self)
-	if (sim_squad_offline_combat.is_enabled()) then
-		CreateTimeEvent("DynamicNewsManager","TickOfflineCombat",90*TimeFactor,self.TickOfflineCombat,self)
-	end
 	
 	RegisterScriptCallback("monster_on_death_callback",self)
 	--RegisterScriptCallback("monster_on_net_spawn",self)
@@ -190,7 +191,6 @@ function DynamicNewsManager:destroy()
 	RemoveTimeEvent("DynamicNewsManager","TickTask")
 	RemoveTimeEvent("DynamicNewsManager","TickRandom")
 	RemoveTimeEvent("DynamicNewsManager","TickCompanion")
-	RemoveTimeEvent("DynamicNewsManager","TickOfflineCombat")
 	
 	UnregisterScriptCallback("monster_on_death_callback",self)
 	--UnregisterScriptCallback("monster_on_net_spawn",self)
@@ -427,7 +427,7 @@ function DynamicNewsManager:TickRandom()
 	elseif (pick == 3) then
 		self:ReportZoneActivity()
 	elseif (pick == 4) then
-		self:FoundDead()
+		self:ReportFoundDeadOrDeathByOfflineCombat()
 	elseif (pick == 5) then
 		self:SpamRandom()
 	end
@@ -477,30 +477,6 @@ function DynamicNewsManager:TickCompanion()
 		else
 			self:CompanionAboutLife(sender)
 		end
-	end
-	
-	return false
-end
-
-function DynamicNewsManager:TickOfflineCombat()
-	if (axr_main.config:r_value(MM_OPTIONS,"enable_dynamic_news",1,true) == false) then
-		return true
-	end
-	
-	if not sim_squad_offline_combat.is_enabled() then
-		return true
-	end
-	
-	ResetTimeEvent("DynamicNewsManager","TickOfflineCombat",math.random(90,270)*TimeFactor)
-	--printf(">>> Dyn News: TickOfflineCombat call")
-	
-	-- news state check
-	if self:NewsToggle() then
-		return false
-	end
-	
-	if (math.random() < 0.25) then
-		self:ReportDeathByOfflineCombat()
 	end
 	
 	return false
@@ -752,7 +728,7 @@ end
 
 function DynamicNewsManager:FindSpeakerAndTarget(not_in_combat,distance,speaker_community) -- Find a random speaker ([boolean] if true, speaker must not be in combat | [string] if declared, speaker must belong to this community)
 	local sender,target,comm_sender
-	local dis = distance or 300
+	local dis = distance and distance*distance or 300*300
 	local t1,t2 = {},{}
 	-- Find a sender
 	for i=1, #db.OnlineStalkers do
@@ -778,12 +754,16 @@ function DynamicNewsManager:FindSpeakerAndTarget(not_in_combat,distance,speaker_
 	-- Find an enemy to sender
 	for i=1,65534 do 
 		local se_obj = alife():object(i)
-		if (se_obj and se_obj.position:distance_to(sender:position()) < dis and se_obj.group_id ~= 65535) then 
+		if (se_obj and se_obj.position:distance_to_sqr(sender:position()) < dis and se_obj.group_id ~= 65535) then 
 			if (IsStalker(nil,se_obj:clsid()) and se_obj:community() ~= "trader" and game_relations.is_factions_enemies(sender:character_community(), se_obj:community())) or (IsMonster(nil,se_obj:clsid())) then
 				if se_obj:alive() then
 					local st = db.storage[se_obj.id]
 					local npc = st and st.object or level.object_by_id(se_obj.id)
-					table.insert(t2,npc)
+					local npc_squad = get_object_squad(se_obj)
+					local can_npc_be_target = self.ignored_targets[npc_squad:section_name()] == nil
+					if (can_npc_be_target) then
+						table.insert(t2,npc)
+					end
 				end
 			end
 		end
@@ -1736,6 +1716,23 @@ function DynamicNewsManager:SpamRandom() -- random news from all over the zone
 	return true
 end
 
+function DynamicNewsManager:ReportFoundDeadOrDeathByOfflineCombat()
+	if (sim_squad_offline_combat.is_enabled()) then
+		if (math.random(2) == 1) then
+			self:FoundDead()
+		else
+			local victim_id, killer_id = sim_squad_offline_combat.pop_last_killed_stalker_data()
+			if (victim_id and killer_id) then
+				self:ReportDeathByOfflineCombat(victim_id, killer_id)
+			else
+				self:FoundDead()
+			end
+		end
+	else
+		self:FoundDead()
+	end
+end
+
 function DynamicNewsManager:FoundDead() -- report dead body findings
 	--printf(">>> Dyn News: FoundDead - call")
 	if (not self.sentences_fnames) or (not self.sentences_fnames) then
@@ -1780,15 +1777,11 @@ function DynamicNewsManager:FoundDead() -- report dead body findings
 	return true
 end
 
-function DynamicNewsManager:ReportDeathByOfflineCombat() -- Report offline combat death
+function DynamicNewsManager:ReportDeathByOfflineCombat(victim_id, killer_id) -- Report offline combat death
 	--printf(">>> Dyn News: ReportDeathByOfflineCombat - call")
-	local victim_data = sim_squad_offline_combat.pop_last_killed_stalker_data()
-	if (not victim_data) then
-		return false
-	end
 	
-	local victim = alife_object(victim_data["victim_id"])
-	local killer = alife_object(victim_data["killer_id"])
+	local victim = alife_object(victim_id)
+	local killer = alife_object(killer_id)
 	if (not victim or not killer) then
 		return false
 	end
