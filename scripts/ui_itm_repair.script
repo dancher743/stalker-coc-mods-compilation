@@ -417,7 +417,10 @@ function repair_ui:OnButton_repair()
 	
 	local function on_yes(owner,p)
 		obj:set_condition(con)
-		self:DetachWeaponAddons(obj_part)
+		if (self.repair_type == "weapon" and IsWeapon(obj_part)) then
+			self:DetachWeaponAddons(obj_part)
+			obj_part:unload_magazine()
+		end
 		alife():release(se_part,true)
 	
 		if (self.use_condition and self.object and self.object:get_remaining_uses() <= 0) then 
@@ -498,9 +501,6 @@ function repair_ui:AddItemToList(item,listbox,condition,prefix)
 end
 
 function repair_ui:DetachWeaponAddons(wpn)
-	if (IsWeapon(wpn) == false) then
-		return
-	end
 	for _,v in ipairs(self.weapon_addons) do
 		wpn:weapon_addon_detach(v)
 	end
