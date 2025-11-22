@@ -19,10 +19,10 @@ Install
 
 Settings
 ---
-* To change input language press Ctrl + Shift key combination
+* To change input language press Ctrl + Shift
 * To ignite/extinguish a campfire holster your weapon first
 * No need to create saves manually (via the main menu) - try Slow Saves: in the game, press the `F6` button (by default) and the save will be created automatically.
-* You can unload all your weapons in the inventory by pressing the `K` button (by default)
+* To unload all weapons, open Inventory and press the 'K' button (default)
 * You can put a custom spot on Map by pressing `J` button (by default)
 * To access Dynamic News settings: load your game, then open the main menu and press Page-Up button
 * To make the sky less bright type `r2_tonemap off` command at the console
