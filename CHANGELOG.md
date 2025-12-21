@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [1.5.4] - Unreleased
 
+### Fixes
+* Fixed overbrightnes of `18:00:00` section in `af3_day_clear.ltx`
+
 ## [1.5.3] - 2025-11-22
 
 ### Features
