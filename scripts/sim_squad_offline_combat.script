@@ -118,6 +118,11 @@ local function calculate_squad_power(squad)
 	return power
 end
 
+local function is_on_actor_level(obj)
+	local level_id = simulation_objects.get_level_id(obj)
+	return level_id and level_id == actor_level_id
+end
+
 -- from Anomaly 1.5.1.2
 local killer_squad_ids = {}
 
@@ -166,7 +171,7 @@ local function execute_combat(squad1, squad2, level_id)
 			for i = #victim_items, 1, -1 do
 				local victim_item = get_se_obj(victim_items[i])
 				
-				if (victim_item and victim_item.parent_id ~= 0 and victim_item.parent_id == se_victim.id) then
+				if (victim_item and victim_item.parent_id ~= 0 and victim_item.parent_id ~= 65535 and victim_item.parent_id == se_victim.id) then
 					table.remove(victim_items, i)
 					
 					local killer_item = alife():create(victim_item:section_name(), se_killer.position, 
@@ -203,7 +208,8 @@ local function prepare_combats(squads)
 				local squad2 = squads[j]
 				
 				if (squad2 and squad1.id ~= squad2.id and not processed_squads[squad2.id] and 
-					simulation_objects.is_on_the_same_level(squad1, squad2)) 
+					simulation_objects.is_on_the_same_level(squad1, squad2) and 
+					(is_on_actor_level(squad1) == false and is_on_actor_level(squad2) == false)) 
 				then
 					local community1 = squad1:get_squad_community()
 					local community2 = squad2:get_squad_community()
@@ -249,8 +255,16 @@ local function prepare_combats(squads)
 end
 
 local function is_item_valid(se_item)
+	if (se_item.parent_id == nil or se_item.parent_id == 65535) then
+		return false
+	end
+	
 	local section = se_item:section_name()
-	return loot_ignore_list[section] == nil
+	if (loot_ignore_list[section] == true) then
+		return false
+	end
+	
+	return true
 end
 
 local function is_squad_valid(squad)
@@ -273,6 +287,10 @@ local function is_squad_valid(squad)
 		end
 		
 		local se_obj = alife_object(k.id)
+		
+		if (se_obj.group_id == 65535) then
+			return false
+		end
 		
 		for _,task in pairs(task_info) do
 			local giver_id = task.task_giver_id
@@ -318,7 +336,7 @@ local function update_queue()
 		elseif (victim_squad.id == squad2.id) then
 			squads[squad2_index] = nil
 		end
-		if (actor_level_id ~= level_id and get_chance() <= remove_squad_chance) then
+		if (get_chance() <= remove_squad_chance) then
 			victim_squad:remove_squad()
 		elseif (victim_squad:is_stalker()) then
 			last_victim_stalker_id = victim_id
@@ -331,7 +349,7 @@ local function fill_combat_squads_table()
 	combat_squads_table = {}
 	
 	for _,squad in pairs(SIMBOARD.squads) do
-		if (squad and not squad.online and squad.first_update and is_squad_valid(squad)) then
+		if (squad and squad.first_update and squad.online == false and is_squad_valid(squad)) then
 			local level_id = simulation_objects.get_level_id(squad)
 			local combat_squads = nil
 			
@@ -357,7 +375,7 @@ local function fill_loot_items_table()
 	
 	for i=1,65534 do
 		local se_item = alife_object(i)
-		if (se_item and se_item.parent_id and is_item_valid(se_item)) then
+		if (se_item and is_item_valid(se_item)) then
 			local items = nil
 			if (loot_items[se_item.parent_id] == nil) then
 				items = {}
@@ -383,7 +401,7 @@ local function update()
 	local level_to_update = nil
 	
 	for level_id,combat_squads in pairs(combat_squads_table) do
-		if (combat_squads.were_combats == false) then
+		if (level_id ~= actor_level_id and combat_squads.were_combats == false) then
 			level_to_update = level_id
 			break
 		end
