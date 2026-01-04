@@ -8,6 +8,9 @@ All notable changes to this project will be documented in this file.
 * Fixed overbrightnes of `18:00:00` section in `af3_day_clear.ltx`
 * Disabled Offline Combats on Actor's level to fix crash - "[error][      87]"
 
+### Optimization
+* Memoized `device()` function
+
 ### Framework
 * Added `se_obj_on_before_release` callback  into `axr_main.script`
 
