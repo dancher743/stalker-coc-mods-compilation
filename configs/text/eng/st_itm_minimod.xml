@@ -60,6 +60,9 @@
 	<string id="st_repair_mod_message_box_condition">
 		<text>The item is beyond repair.</text>
 	</string>
+	<string id="st_repair_mod_inv_name_slot_postfix">
+		<text>(in slot)</text>
+	</string>
 	<string id="st_itm_stash">
 		<text>stash</text>
 	</string>

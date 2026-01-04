@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [1.5.4] - Unreleased
 
+### Improvements
+* Added "(in slot)" postfix to items names in repair UI
+
 ### Fixes
 * Fixed overbrightnes of `18:00:00` section in `af3_day_clear.ltx`
 * Disabled Offline Combats on Actor's level to fix crash - "[error][      87]"
