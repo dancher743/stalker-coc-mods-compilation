@@ -58,8 +58,7 @@ local loot_ignore_list = {
 local smart_combat_remove_chance = 50
 local max_smart_combats_count = 5
 local smart_combat_counters = {}
-local max_smart_combat_counters_reset_time = 12*60 -- minutes
-local smart_combat_counters_reset_timer = 0
+local smart_combat_victims = {}
 
 local is_initialized
 local loot_items
@@ -348,11 +347,14 @@ local function update_queue()
 		if (is_smart_combat) then
 			local smart_id = victim_squad.current_target_id
 			local counter = smart_combat_counters[smart_id] or 0
-			counter = counter + 1
-			smart_combat_counters[smart_id] = counter
 			if (counter > max_smart_combats_count or has_chance(smart_combat_remove_chance)) then
 				victim_squad:remove_squad()
 				has_squad_removed = true
+			else
+				counter = counter + 1
+				smart_combat_counters[smart_id] = counter
+				local commander_id = victim_squad:commander_id()
+				smart_combat_victims[commander_id] = smart_id
 			end
 		end
 		if (has_squad_removed == false and victim_squad:is_stalker()) then
@@ -463,7 +465,7 @@ local function save_state(data)
 	data.offline_combat.last_victim_stalker_id = last_victim_stalker_id
 	data.offline_combat.last_killer_stalker_id = last_killer_stalker_id
 	data.offline_combat.smart_combat_counters = smart_combat_counters
-	data.offline_combat.smart_combat_counters_reset_timer = smart_combat_counters_reset_timer
+	data.offline_combat.smart_combat_victims = smart_combat_victims
 end
 
 local function load_state(data)
@@ -473,8 +475,7 @@ local function load_state(data)
 	last_victim_stalker_id = data.offline_combat.last_victim_stalker_id
 	last_killer_stalker_id = data.offline_combat.last_killer_stalker_id
 	smart_combat_counters = data.offline_combat.smart_combat_counters or smart_combat_counters
-	smart_combat_counters_reset_timer = 
-		data.offline_combat.smart_combat_counters_reset_timer or smart_combat_counters_reset_timer
+	smart_combat_victims = data.offline_combat.smart_combat_victims or smart_combat_victims
 end
 
 local function initialize()
@@ -522,17 +523,25 @@ local function actor_on_first_update()
 	UnregisterScriptCallback("actor_on_first_update",actor_on_first_update)
 end
 
-local function level_time_on_changed()
-	local smart_combat_counters_reset_timer = smart_combat_counters_reset_timer + 1
-	if (smart_combat_counters_reset_timer > max_smart_combat_counters_reset_time) then
-		empty_table(smart_combat_counters)
-		smart_combat_counters_reset_timer = 0
+local function se_obj_on_before_release(se_obj)
+	local commander_id = se_obj.id
+	local smart_id = smart_combat_victims[commander_id]
+	
+	if (smart_id) then
+		local counter = smart_combat_counters[smart_id]
+		
+		if (counter and counter > 1) then
+			counter = counter - 1
+			smart_combat_counters[smart_id] = counter
+		end
+		
+		smart_combat_victims[commander_id] = nil
 	end
 end
 
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
-	RegisterScriptCallback("level_time_on_changed",level_time_on_changed)
+	RegisterScriptCallback("se_obj_on_before_release",se_obj_on_before_release)
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
 end
