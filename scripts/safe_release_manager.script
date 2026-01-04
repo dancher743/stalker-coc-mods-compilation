@@ -35,6 +35,7 @@ function execute_destroy_callback()
 					-- binder has not been destroyed yet...or error
 					local obj = db.storage[id] and db.storage[id].object 
 					if not (obj) then
+						SendScriptCallback("se_obj_on_before_release",se_obj)
 						--printf("release %s",se_obj:name())
 						sim:release(se_obj)
 						objects_to_release[id] = nil

@@ -173,7 +173,9 @@ local intercepts = {
 	
 	npc_on_use_dead					= {},
 	
-	level_time_on_changed			= {}
+	level_time_on_changed			= {},
+	
+	se_obj_on_before_release		= {}
 }
 
 -----------------------------------------------------------
