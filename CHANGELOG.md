@@ -14,6 +14,9 @@ All notable changes to this project will be documented in this file.
 ### Optimization
 * Memoized `device()` function
 
+### Framework
+* Added `se_obj_on_before_release` callback  into `axr_main.script`
+
 ## [1.5.3] - 2025-11-22
 
 ### Features

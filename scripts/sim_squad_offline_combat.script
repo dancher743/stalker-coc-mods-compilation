@@ -20,7 +20,6 @@ local bad_distances = {
 
 local add_rank_points = 20
 local handicap_chance = 25
-local remove_squad_chance = 60
 local not_on_smart_combat_chance = 20
 
 local rank_power = {
@@ -55,6 +54,11 @@ local loot_ignore_list = {
 		["stick_kolbasa_bred"] = true,
 		["wpn_knife"] = true
 }
+
+local smart_combat_remove_chance = 50
+local max_smart_combats_count = 5
+local smart_combat_counters = {}
+local smart_combat_victims = {}
 
 local is_initialized
 local loot_items
@@ -224,17 +228,19 @@ local function prepare_combats(squads)
 					
 					if (are_enemies) then
 						local can_combat = false
+						local is_smart_combat = false
 						
 						if (squad1.position:distance_to_sqr(squad2.position) <= get_combat_distance()) then
 							if (squad1.current_target_id == nil and squad2.current_target_id == nil) then
 								can_combat = get_chance() <= not_on_smart_combat_chance
 							elseif (squad1.current_target_id == squad2.current_target_id) then
 								can_combat = true
+								is_smart_combat = true
 							end
 						end
 						
 						if (can_combat) then
-							table.insert(combats_queue, {squads, i, j})
+							table.insert(combats_queue, {squads, i, j, is_smart_combat})
 							processed_squads[squad1.id] = true
 							processed_squads[squad2.id] = true
 							if dbg then printf_dbg("added to queue: %s, %s", squad1:name(), squad2:name()) end
@@ -318,6 +324,7 @@ local function update_queue()
 	local squads = combat[1]
 	local squad1_index = combat[2]
 	local squad2_index = combat[3]
+	local is_smart_combat = combat[4]
 	local squad1 = squads[squad1_index]
 	local squad2 = squads[squad2_index]
 	
@@ -336,9 +343,21 @@ local function update_queue()
 		elseif (victim_squad.id == squad2.id) then
 			squads[squad2_index] = nil
 		end
-		if (get_chance() <= remove_squad_chance) then
-			victim_squad:remove_squad()
-		elseif (victim_squad:is_stalker()) then
+		local has_squad_removed = false
+		if (is_smart_combat) then
+			local smart_id = victim_squad.current_target_id
+			local counter = smart_combat_counters[smart_id] or 0
+			if (counter > max_smart_combats_count or has_chance(smart_combat_remove_chance)) then
+				victim_squad:remove_squad()
+				has_squad_removed = true
+			else
+				counter = counter + 1
+				smart_combat_counters[smart_id] = counter
+				local commander_id = victim_squad:commander_id()
+				smart_combat_victims[commander_id] = smart_id
+			end
+		end
+		if (has_squad_removed == false and victim_squad:is_stalker()) then
 			last_victim_stalker_id = victim_id
 			last_killer_stalker_id = killer_id
 		end
@@ -445,6 +464,8 @@ local function save_state(data)
 	end
 	data.offline_combat.last_victim_stalker_id = last_victim_stalker_id
 	data.offline_combat.last_killer_stalker_id = last_killer_stalker_id
+	data.offline_combat.smart_combat_counters = smart_combat_counters
+	data.offline_combat.smart_combat_victims = smart_combat_victims
 end
 
 local function load_state(data)
@@ -453,6 +474,8 @@ local function load_state(data)
 	end
 	last_victim_stalker_id = data.offline_combat.last_victim_stalker_id
 	last_killer_stalker_id = data.offline_combat.last_killer_stalker_id
+	smart_combat_counters = data.offline_combat.smart_combat_counters or smart_combat_counters
+	smart_combat_victims = data.offline_combat.smart_combat_victims or smart_combat_victims
 end
 
 local function initialize()
@@ -500,8 +523,25 @@ local function actor_on_first_update()
 	UnregisterScriptCallback("actor_on_first_update",actor_on_first_update)
 end
 
+local function se_obj_on_before_release(se_obj)
+	local commander_id = se_obj.id
+	local smart_id = smart_combat_victims[commander_id]
+	
+	if (smart_id) then
+		local counter = smart_combat_counters[smart_id]
+		
+		if (counter and counter > 1) then
+			counter = counter - 1
+			smart_combat_counters[smart_id] = counter
+		end
+		
+		smart_combat_victims[commander_id] = nil
+	end
+end
+
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
+	RegisterScriptCallback("se_obj_on_before_release",se_obj_on_before_release)
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
 end
