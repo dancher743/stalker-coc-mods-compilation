@@ -6,10 +6,12 @@ All notable changes to this project will be documented in this file.
 
 ### Improvements
 * Added "(in slot)" postfix to items names in repair UI
+* Improved out of smart Offline Combats
 
 ### Fixes
 * Fixed overbrightnes of `18:00:00` section in `af3_day_clear.ltx`
 * Disabled Offline Combats on Actor's level to fix crash - "[error][      87]"
+* Fixed incorrect dynamic relations change in Offline Combats
 
 ### Optimization
 * Memoized `device()` function
