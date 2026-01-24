@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Improvements
 * Added "(in slot)" postfix to items names in repair UI
 * Improved out of smart Offline Combats
+* Reverted SoC bloodsucker sounds: from big to weak and normal
 
 ### Fixes
 * Fixed overbrightnes of `18:00:00` section in `af3_day_clear.ltx`
