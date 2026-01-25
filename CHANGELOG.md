@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 * Added "(in slot)" postfix to items names in repair UI
 * Improved out of smart Offline Combats
 * Reverted SoC bloodsucker sounds: from big to weak and normal
+* Added Gauss rifle into find weapon tasks
 
 ### Fixes
 * Fixed overbrightnes of `18:00:00` section in `af3_day_clear.ltx`

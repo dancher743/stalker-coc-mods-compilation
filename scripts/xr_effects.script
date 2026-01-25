@@ -2819,6 +2819,7 @@ function drx_sl_setup_fetch_weapon( actor, npc, p )
 		table.insert( item_list, "wpn_g36" )
 		table.insert( item_list, "wpn_fn2000" )
 		table.insert( item_list, "wpn_pkm" )
+		table.insert( item_list, "wpn_gauss" )
 	end
 
 	-- Pick a random item from the list:
