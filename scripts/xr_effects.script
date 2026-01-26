@@ -2804,19 +2804,26 @@ function drx_sl_setup_fetch_weapon( actor, npc, p )
 	}
 
 	-- If only fetching 1 item then expand the list:
-	if ( (min_count == 1) and (max_count == 1) ) then
+	local actor_rank = actor:character_rank()
+	local rank_interval = ranks.get_rank_interval("trainee")
+	if ( rank_interval[2] < actor_rank ) then
 		table.insert( item_list, "wpn_abakan" )
 		table.insert( item_list, "wpn_l85" )
 		table.insert( item_list, "wpn_lr300" )
 		table.insert( item_list, "wpn_sig550" )
+		table.insert( item_list, "wpn_g36" )
+	end
+	rank_interval = ranks.get_rank_interval("professional")
+	if ( rank_interval[2] < actor_rank ) then
 		table.insert( item_list, "wpn_groza" )
 		table.insert( item_list, "wpn_val" )
 		table.insert( item_list, "wpn_vintorez" )
 		table.insert( item_list, "wpn_svu" )
 		table.insert( item_list, "wpn_svd" )
-		table.insert( item_list, "wpn_rg-6" )
+	end
+	rank_interval = ranks.get_rank_interval("expert")
+	if ( rank_interval[2] < actor_rank ) then
 		table.insert( item_list, "wpn_rpg7" )
-		table.insert( item_list, "wpn_g36" )
 		table.insert( item_list, "wpn_fn2000" )
 		table.insert( item_list, "wpn_pkm" )
 		table.insert( item_list, "wpn_gauss" )

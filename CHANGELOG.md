@@ -4,11 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [1.5.4] - Unreleased
 
+### Features
+* Added rank-based weapons into find weapon tasks
+
 ### Improvements
 * Added "(in slot)" postfix to items names in repair UI
 * Improved out of smart Offline Combats
 * Reverted SoC bloodsucker sounds: from big to weak and normal
 * Added Gauss rifle into find weapon tasks
+* Removed Bulldog-6 from find weapon tasks due to high rarity
 
 ### Fixes
 * Fixed overbrightnes of `18:00:00` section in `af3_day_clear.ltx`
