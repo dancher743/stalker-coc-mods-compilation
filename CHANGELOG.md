@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 
 ### Framework
 * Added `se_obj_on_before_release` callback  into `axr_main.script`
+* Added activation of debug mode of Offline Combat feature with `-dbg` command
 
 ## [1.5.3] - 2025-11-22
 
