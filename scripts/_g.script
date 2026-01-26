@@ -1151,6 +1151,21 @@ squad_community_by_behaviour = {
 		["monster_zombied_night"]			= "monster",
 		["monster_special"]					= "monster"
 }-------------------------------------------------------------------------------------------
+
+community = {
+	["stalker"]		= "stalker",
+	["bandit"]		= "bandit",
+	["csky"]		= "csky",
+	["dolg"]		= "dolg",
+	["freedom"]		= "freedom",
+	["army"]		= "army",
+	["ecolog"]		= "ecolog",
+	["killer"]		= "killer",
+	["monolith"]	= "monolith",
+	["zombied"]		= "zombied",
+	["trader"]		= "trader"
+}
+
 function get_object_community(obj)
 	if type(obj.id) == STR_FUNCTION then
 		return character_community(obj)

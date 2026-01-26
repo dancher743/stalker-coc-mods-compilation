@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 * Disabled Offline Combats on Actor's level to fix crash - "[error][      87]"
 * Fixed incorrect dynamic relations change in Offline Combats
 * Fixed LUA error: dynamic_news_manager.script:1795: attempt to call method 'community' (a nil value)
+* Excluded zombied from loot relocation of Offline Combats
 
 ### Optimization
 * Memoized `device()` function
@@ -22,6 +23,7 @@ All notable changes to this project will be documented in this file.
 ### Framework
 * Added `se_obj_on_before_release` callback  into `axr_main.script`
 * Added activation of debug mode of Offline Combat feature with `-dbg` command
+* Added `community` table into `_g.script`
 
 ## [1.5.3] - 2025-11-22
 

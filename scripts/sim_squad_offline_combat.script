@@ -159,18 +159,21 @@ local victim_squad_ids = {}
 local function execute_kill(se_killer, se_victim, killer_squad, victim_squad)
 	local is_killer_stalker = killer_squad:is_stalker()
 	local is_victim_stalker = victim_squad:is_stalker()
+	local killer_community = killer_squad:get_squad_community()
 	
 	se_victim:on_death(se_killer)
 	
 	if (is_killer_stalker and is_victim_stalker) then
-		game_relations.drx_df_faction_npc_on_death(victim_squad:get_squad_community(), killer_squad:get_squad_community())
+		game_relations.drx_df_faction_npc_on_death(victim_squad:get_squad_community(), killer_community)
 	end
 	
 	if (is_killer_stalker) then
 		se_killer:set_rank(se_killer:rank() + add_rank_points)
 	end
 	
-	if (is_killer_stalker and is_victim_stalker and loot_items[se_victim.id] and loot_items[se_killer.id]) then
+	if (is_killer_stalker and killer_community ~= community.zombied and is_victim_stalker and 
+		loot_items[se_victim.id] and loot_items[se_killer.id]) 
+	then
 		relocate_loot(se_killer, se_victim)
 	end
 end
