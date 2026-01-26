@@ -1718,15 +1718,8 @@ end
 
 function DynamicNewsManager:ReportFoundDeadOrDeathByOfflineCombat()
 	if (sim_squad_offline_combat.is_enabled()) then
-		if (math.random(2) == 1) then
+		if (math.random(2) == 1 or self:ReportDeathByOfflineCombat() == false) then
 			self:FoundDead()
-		else
-			local victim_id, killer_id = sim_squad_offline_combat.pop_last_killed_stalker_data()
-			if (victim_id and killer_id) then
-				self:ReportDeathByOfflineCombat(victim_id, killer_id)
-			else
-				self:FoundDead()
-			end
 		end
 	else
 		self:FoundDead()
@@ -1777,8 +1770,13 @@ function DynamicNewsManager:FoundDead() -- report dead body findings
 	return true
 end
 
-function DynamicNewsManager:ReportDeathByOfflineCombat(victim_id, killer_id) -- Report offline combat death
+function DynamicNewsManager:ReportDeathByOfflineCombat() -- Report offline combat death
 	--printf(">>> Dyn News: ReportDeathByOfflineCombat - call")
+	
+	local victim_id, killer_id = sim_squad_offline_combat.pop_last_killed_stalker_data()
+	if (not victim_id or not killer_id) then
+		return false
+	end
 	
 	local victim = alife_object(victim_id)
 	local killer = alife_object(killer_id)
@@ -1790,7 +1788,7 @@ function DynamicNewsManager:ReportDeathByOfflineCombat(victim_id, killer_id) -- 
 	local clr_2 = "%" .. "%c[255,220,220,220]"
 	local who = killer
 	
-	if IsStalker(who) then
+	if IsStalker(who) and IsStalker(victim) then
 		local a = game.translate_string(who:community())
 		local b = game.translate_string(victim:community())
 		local c = dynamic_news_helper.GetPointDescription(victim)
@@ -1800,7 +1798,9 @@ function DynamicNewsManager:ReportDeathByOfflineCombat(victim_id, killer_id) -- 
 		local msg = self:ReadTextKeyList( game.translate_string("st_dyn_news_spc_obituary_s") , {["clr_1"]=clr_1 , ["clr_2"]=clr_2 , ["who_name"]=who_name , ["who_comm"]=a , ["victim_name"]=victim:character_name() , ["victim_comm"]=b , ["where"]=c} )
 		
 		self:PushToChannel("general",{Mg=msg,Ic="death",Snd="no_sound",Se=Se,It="gr",Ty=STR_EMPTY})
-	elseif IsMonster(who) then
+		
+		return true
+	elseif IsMonster(who) and IsStalker(victim) then
 		local a
 		if (system_ini():r_string_ex("string_table","language") == "rus") then
 			a = dynamic_news_helper.GetMonsterDescription(nil,7,who:section_name(),who:clsid())
@@ -1814,9 +1814,11 @@ function DynamicNewsManager:ReportDeathByOfflineCombat(victim_id, killer_id) -- 
 		local msg = self:ReadTextKeyList( game.translate_string("st_dyn_news_spc_obituary_m") , {["clr_1"]=clr_1 , ["clr_2"]=clr_2 , ["victim_name"]=victim:character_name() , ["victim_comm"]=b , ["who"]=a , ["where"]=c} )
 		
 		self:PushToChannel("general",{Mg=msg,Ic="death",Snd="no_sound",Se=Se,It="gr",Ty=STR_EMPTY})
+		
+		return true
 	end
 	
-	return true
+	return false
 end
 
 --< Special News >--
