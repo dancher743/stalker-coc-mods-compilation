@@ -163,7 +163,7 @@ local function execute_kill(se_killer, se_victim, killer_squad, victim_squad)
 	se_victim:on_death(se_killer)
 	
 	if (is_killer_stalker and is_victim_stalker) then
-		game_relations.drx_df_faction_npc_on_death(killer_squad:get_squad_community(), victim_squad:get_squad_community())
+		game_relations.drx_df_faction_npc_on_death(victim_squad:get_squad_community(), killer_squad:get_squad_community())
 	end
 	
 	if (is_killer_stalker) then
