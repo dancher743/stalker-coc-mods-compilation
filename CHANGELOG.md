@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 * Reverted SoC bloodsucker sounds: from big to weak and normal
 * Added Gauss rifle into find weapon tasks
 * Removed Bulldog-6 from find weapon tasks due to high rarity
+* Reworked/restored the ignore chance of angry stash owner message
 
 ### Fixes
 * Fixed overbrightnes of `18:00:00` section in `af3_day_clear.ltx`
