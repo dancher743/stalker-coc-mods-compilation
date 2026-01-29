@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
 ### Features
 * Added rank-based weapons into find weapon tasks
 
+### Mods
+* Removed mod [CS atmosphere for CoC v1.1 [CoC 1.4.22]](https://www.moddb.com/mods/call-of-chernobyl/addons/cop-and-cs-atmosphere-for-coc-coc-1422)
+
 ### Improvements
 * Added "(in slot)" postfix to items names in repair UI
 * Improved out of smart Offline Combats
