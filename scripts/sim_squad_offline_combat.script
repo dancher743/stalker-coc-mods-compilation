@@ -178,7 +178,7 @@ local function execute_kill(se_killer, se_victim, killer_squad, victim_squad)
 	end
 end
 
-local function execute_combat_on_smart(squad1, squad2, level_id)
+local function execute_combat_on_smart(squad1, squad2)
 	local killer_squad = nil
 	local victim_squad = nil
 	local squad1_power = calculate_squad_power(squad1)
@@ -187,13 +187,13 @@ local function execute_combat_on_smart(squad1, squad2, level_id)
 	if (squad1_power > squad2_power) then
 		killer_squad = squad1
 		victim_squad = squad2
-		if dbg then printf_dbg("%s(%s) kills %s(%s) (%s)(smart)", squad1:name(), squad1_power, squad2:name(), squad2_power, alife():level_name(level_id)) end
+		if dbg then printf_dbg("%s(%s) kills %s(%s) (%s)(smart)", squad1:name(), squad1_power, squad2:name(), squad2_power, simulation_objects.get_level_name(squad1)) end
 	elseif (squad1_power < squad2_power) then
 		killer_squad = squad2
 		victim_squad = squad1
-		if dbg then printf_dbg("%s(%s) kills %s(%s) (%s)(smart)", squad2:name(), squad2_power, squad1:name(), squad1_power, alife():level_name(level_id)) end
+		if dbg then printf_dbg("%s(%s) kills %s(%s) (%s)(smart)", squad2:name(), squad2_power, squad1:name(), squad1_power, simulation_objects.get_level_name(squad2)) end
 	elseif (squad1_power == squad2_power) then
-		if dbg then printf_dbg("%s(%s) tie %s(%s) (%s)(smart)", squad1:name(), squad1_power, squad2:name(), squad2_power, alife():level_name(level_id)) end
+		if dbg then printf_dbg("%s(%s) tie %s(%s) (%s)(smart)", squad1:name(), squad1_power, squad2:name(), squad2_power, simulation_objects.get_level_name(squad1)) end
 		return nil, nil, nil
 	end
 	
@@ -215,7 +215,7 @@ local function execute_combat_on_smart(squad1, squad2, level_id)
 	return victim_squad, se_victim.id, se_killer.id
 end
 
-local function execute_combat_on_map(squad1, squad2, level_id)	
+local function execute_combat_on_map(squad1, squad2)
 	for k in squad1:squad_members() do
 		table.insert(killer_squad_ids, k.id)
 	end
@@ -248,16 +248,16 @@ local function execute_combat_on_map(squad1, squad2, level_id)
 				killer_squad = squad1
 				victim_squad = squad2
 				can_execute_kill = true
-				if dbg then printf_dbg("%s(%s) kills %s(%s) (%s)(map)", squad1_npc:name(), squad1_npc_power, squad2_npc:name(), squad2_npc_power, alife():level_name(level_id)) end
+				if dbg then printf_dbg("%s(%s) kills %s(%s) (%s)(map)", squad1_npc:name(), squad1_npc_power, squad2_npc:name(), squad2_npc_power, simulation_objects.get_level_name(squad1_npc)) end
 			elseif (squad1_npc_power < squad2_npc_power) then
 				se_killer = squad2_npc
 				se_victim = squad1_npc
 				killer_squad = squad2
 				victim_squad = squad1
 				can_execute_kill = true
-				if dbg then printf_dbg("%s(%s) kills %s(%s) (%s)(map)", squad2_npc:name(), squad2_npc_power, squad1_npc:name(), squad1_npc_power, alife():level_name(level_id)) end
+				if dbg then printf_dbg("%s(%s) kills %s(%s) (%s)(map)", squad2_npc:name(), squad2_npc_power, squad1_npc:name(), squad1_npc_power, simulation_objects.get_level_name(squad2_npc)) end
 			elseif (squad1_npc_power == squad2_npc_power) then
-				if dbg then printf_dbg("%s(%s) tie %s(%s) (%s)(map)", squad1_npc:name(), squad1_npc_power, squad2_npc:name(), squad2_npc_power, alife():level_name(level_id)) end
+				if dbg then printf_dbg("%s(%s) tie %s(%s) (%s)(map)", squad1_npc:name(), squad1_npc_power, squad2_npc:name(), squad2_npc_power, simulation_objects.get_level_name(squad1_npc)) end
 			end
 			
 			if (can_execute_kill) then
@@ -433,13 +433,12 @@ local function update_queue()
 		return
 	end
 	
-	local level_id = simulation_objects.get_level_id(squad1)
 	local victim_squad, victim_id, killer_id = nil, nil, nil
 	
 	if (is_smart_combat) then
-		victim_squad, victim_id, killer_id = execute_combat_on_smart(squad1, squad2, level_id)
+		victim_squad, victim_id, killer_id = execute_combat_on_smart(squad1, squad2)
 	else
-		victim_squad, victim_id, killer_id = execute_combat_on_map(squad1, squad2, level_id)
+		victim_squad, victim_id, killer_id = execute_combat_on_map(squad1, squad2)
 	end
 	
 	if (victim_squad) then
@@ -593,7 +592,7 @@ local function initialize()
 	update_timer = 1000
 	update_queue_timer = 0
 	is_survival_mode = IsSurvivalMode()
-	actor_level_id = alife():level_name(game_graph():vertex(alife():actor().m_game_vertex_id):level_id())
+	actor_level_id = game_graph():vertex(alife():actor().m_game_vertex_id):level_id()
 	RegisterScriptCallback("actor_on_update",actor_on_update)
 	
 	is_initialized = true
