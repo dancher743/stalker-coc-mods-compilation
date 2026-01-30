@@ -136,10 +136,8 @@ Mods
 78. Fixed Artefact Collision and Visuals [1.5.3] (Longreed, SoulCrystal) Special thanks to TheLostStalker88 for the tip!
 79. ND DRXCoCDynamicAnomalies21 Remix (TheLostStalker88, DoctorX)
 80. Weather from Legend Returns 0.9.2 (LR Devs) and some textures from CoC OL pack v1.3 (Kisel_s_Molinkoi, K0MRADE, bloodshot12)
-81. Shaders from Legend Returns 0.9.2 (LR Devs)
-82. CS atmosphere for CoC v1.1 [CoC 1.4.22] (Sanctuary)
-83. Better Knife (Vanilla) with adaptations from CoP (alalakskylvia)
-84. Optimized rain (Clepoy)
+81. Better Knife (Vanilla) with adaptations from CoP (alalakskylvia)
+82. Optimized rain (Clepoy)
 
 Credits
 ---
