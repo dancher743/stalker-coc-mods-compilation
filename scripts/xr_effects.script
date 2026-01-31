@@ -7988,6 +7988,22 @@ end
 
 -- Added by Dancher
 
+function set_npc_squad_enemy_to_actor(actor, npc, p)
+	if (npc == nil) then
+		assert("NPC is nil")
+		return
+	end
+
+	local squad = get_object_squad(npc)
+	
+	if (squad == nil) then
+		assert("Squad doesnt exist")
+		return
+	end
+	
+	squad:set_squad_relation(-5000)
+end
+
 function remove_task_squad(actor,npc,p)
 	level.add_pp_effector("black.ppe", 1313, false)
 	

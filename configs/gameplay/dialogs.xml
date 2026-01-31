@@ -2654,6 +2654,7 @@
 				<text>vanish_bounty_hunt_target_dialog_1</text>
 				<next>11</next>
 				<next>12</next>
+				<next>13</next>
             </phrase>
 			<phrase id="11">
 				<text>vanish_bounty_hunt_target_dialog_11</text>
@@ -2661,6 +2662,11 @@
             </phrase>
 			<phrase id="12">
 				<text>vanish_bounty_hunt_target_dialog_12</text>
+				<action>dialogs.set_squad_enemy</action>
+				<action>dialogs.break_dialog</action>
+            </phrase>
+			<phrase id="13">
+				<text>vanish_bounty_hunt_target_dialog_13</text>
             </phrase>
 			<phrase id="2">
 				<precondition>dialogs.cant_vanish_bounty_hunt_target</precondition>

@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 * Added Gauss rifle into find weapon tasks
 * Removed Bulldog-6 from find weapon tasks due to high rarity
 * Reworked/restored the ignore chance of angry stash owner message
+* Added reject case to bounty hunt peaceful way dialog
 
 ### Fixes
 * Fixed overbrightnes of `18:00:00` section in `af3_day_clear.ltx`

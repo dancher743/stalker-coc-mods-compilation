@@ -3158,6 +3158,11 @@ end
 
 -- Added by Dancher
 
+function set_squad_enemy(first_speaker, second_speaker)
+	local npc = who_is_npc(first_speaker, second_speaker)
+	xr_effects.set_npc_squad_enemy_to_actor(db.actor, npc)
+end
+
 function is_bounty_hunt_target(first_speaker, second_speaker)
 	local bounties_npcs = axr_task_manager.bounties_by_id
 	
