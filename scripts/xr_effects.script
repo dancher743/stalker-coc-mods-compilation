@@ -3361,6 +3361,7 @@ function reward_random_money(actor,npc,p)
 end
 
 function remove_special_task_squad(actor,npc,p)
+	xr_effects.disable_actor_nightvision()
 	level.add_pp_effector("black.ppe", 1313, false)
 	remove_squad(actor,npc,p)
 end
@@ -8005,6 +8006,7 @@ function set_npc_squad_enemy_to_actor(actor, npc, p)
 end
 
 function remove_task_squad(actor,npc,p)
+	xr_effects.disable_actor_nightvision()
 	level.add_pp_effector("black.ppe", 1313, false)
 	
 	local squad = get_object_squad(npc)

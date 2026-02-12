@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 * Fixed LUA error: dynamic_news_manager.script:1795: attempt to call method 'community' (a nil value)
 * Excluded zombied from loot relocation of Offline Combats
 * Fixed `actor_level_id` in `sim_squad_offline_combat.script` to increase safety of work
+* Disabled night vision with black screen effector when removing task squad
 
 ### Optimization
 * Memoized `device()` function
