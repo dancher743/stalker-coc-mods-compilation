@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 * Removed Bulldog-6 from find weapon tasks due to high rarity
 * Reworked/restored the ignore chance of angry stash owner message
 * Added reject case to bounty hunt peaceful way dialog
+* Decreased chance of bad weather reaction from 0.5 to 0.33
 
 ### Fixes
 * Fixed overbrightnes of `18:00:00` section in `af3_day_clear.ltx`
