@@ -72,7 +72,7 @@ function WeatherManager:__init()
 	self.wfx_time = 0
 	self.weather_fx = nil
 	self.weatherType = "[default]"
-	self.forced_weather_change_on_time_change = false
+	self.forced_weather_change_flag = false
 	self.last_hour = 0
 	self.next_hour=0
 	self.graphs_ini = ini_file("environment\\dynamic_weather_graphs.ltx")
@@ -302,7 +302,7 @@ function WeatherManager:change_period()
 end
 
 function WeatherManager:forced_weather_change()
-	self.forced_weather_change_on_time_change = true
+	self.forced_weather_change_flag = true
 	self:update()
 end
 
@@ -328,7 +328,7 @@ end
 -- Обновляем погоду раз в час.
 function WeatherManager:update()
 	--alun_utils.debug_write("WeatherManager:update start")
-	local is_force = self.forced_weather_change_on_time_change
+	local is_force = self.forced_weather_change_flag
 	if (not is_force and self.___timer and self.___timer == level.get_time_minutes()) then
 		return --alun_utils.debug_write("WeatherManager:update end 1")
 	end
@@ -434,12 +434,12 @@ function WeatherManager:select_weather(now,loaded)
 		weather_section_name = weather
 	end
 
-	if self.forced_weather_change_on_time_change then
+	if self.forced_weather_change_flag then
 		now = true
 		self.pre_blowout_period = false
 		self.pre_fallout_period = false
 		self.transition_period = false
-		self.forced_weather_change_on_time_change = false
+		self.forced_weather_change_flag = false
 	end
 	
 	-- printf("weather_section_name = %s",weather_section_name)

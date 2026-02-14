@@ -36,6 +36,7 @@ All notable changes to this project will be documented in this file.
 * Added `se_obj_on_before_release` callback  into `axr_main.script`
 * Added activation of debug mode of Offline Combat feature with `-dbg` command
 * Added `community` table into `_g.script`
+* Renamed flag `forced_weather_change_on_time_change` to `forced_weather_change` in `level_weathers.script`
 
 ## [1.5.3] - 2025-11-22
 
