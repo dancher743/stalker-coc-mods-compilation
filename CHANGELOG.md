@@ -32,6 +32,7 @@ All notable changes to this project will be documented in this file.
 * Fixed `actor_level_id` in `sim_squad_offline_combat.script` to increase safety of work
 * Disabled night vision with black screen effector when removing task squad
 * Fixed case when pre cataclysm weather may not appear after reload
+* Added some code to `xr_help_wounded.script` to fix "[LUA] SCRIPT RUNTIME ERROR : evaluator [wounded_exist] returns value with not a bool type!" (from Anomaly 1.5.1.2)
 
 ### Optimization
 * Memoized `device()` function

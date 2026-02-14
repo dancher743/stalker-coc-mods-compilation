@@ -105,7 +105,6 @@ function evaluator_wounded_exist:find_valid_target()
 			db.storage[self.a.selected_id].wounded_already_selected = nil
 		end
 		self.a.selected_id = nil
-		return false
 	end
 
 	if not (db.OnlineStalkers) then
@@ -364,7 +363,9 @@ function setup_generic_scheme(npc,ini,scheme,section,stype,temp)
 end
 
 function add_to_binder(npc,char_ini,scheme,section,st,temp)
+	if not npc then return end
 	local manager = npc:motivation_action_manager()
+	if not manager then return end
 
 	if (npc:character_community() == "zombied" or npc:section() == "actor_visual_stalker") then
 		manager:add_evaluator(xr_evaluators_id.wounded_exist,property_evaluator_const(false))
@@ -375,7 +376,12 @@ function add_to_binder(npc,char_ini,scheme,section,st,temp)
 	
 	local wp = world_property
 
+	local evaluator = evaluator_wounded_exist("wounded_exist", st)
 	temp.action = action_help_wounded (npc:name(),"action_help_wounded", st)
+
+	if not evaluator or not temp.action then return end
+	manager:add_evaluator(xr_evaluators_id.wounded_exist, evaluator)
+	
 	temp.action:add_precondition(wp(stalker_ids.property_alive, true))
 	temp.action:add_precondition(wp(stalker_ids.property_anomaly,false))
 	
@@ -385,21 +391,24 @@ function add_to_binder(npc,char_ini,scheme,section,st,temp)
 end
 
 function configure_actions(npc,ini,scheme,section,stype,temp)
+	if not npc then return end
+	local manager = npc:motivation_action_manager()
+	if not manager or not temp.action then return end
+
 	local wp = world_property
 	
 	temp.action:add_precondition(wp(xr_evaluators_id.sidor_wounded_base, false))
 	temp.action:add_precondition(wp(xr_evaluators_id.wounded_exist, true))
 	
-	local manager = npc:motivation_action_manager()
 	local action
 	
 	local vis = npc:get_visual_name()
 	if (HelpInCombat or HelpInCombatVisuals[vis]) then
 		action = manager:action(stalker_ids.action_combat_planner)
-		action:add_precondition( wp(xr_evaluators_id.wounded_exist,false) )
+		if action then action:add_precondition( wp(xr_evaluators_id.wounded_exist,false) ) end
 
 		--action = manager:action(xr_actions_id.state_mgr + 1)
-		--action:add_precondition( wp(xr_evaluators_id.wounded_exist,false) )
+		--if action then action:add_precondition( wp(xr_evaluators_id.wounded_exist,false) ) end
 	end
 
 	local p = {
@@ -442,7 +451,7 @@ end
 function is_under_help_wounded(npc)
 	local mgr = npc:motivation_action_manager()
 
-	if not mgr:initialized() then
+	if not mgr or not mgr:initialized() then
 		return false
 	end
 
