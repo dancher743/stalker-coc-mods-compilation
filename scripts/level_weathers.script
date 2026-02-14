@@ -248,15 +248,9 @@ function WeatherManager:get_subperiod(period)
 	return nil
 end
 
-function WeatherManager:reset_last_period_change_date(period_change, delta_s)
-	--printf("reset_last_period_change_date = %s",tostring(period_change))
-	if (not period_change) then
-		local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
-		Y, M, D, h, m, s, ms = self.last_period_change_date:get(Y, M, D, h, m, s, ms)
-		self.last_period_change_date:set(Y, M, D, h, m, s + delta_s, ms)
-	else
-		self.last_period_change_date = game.get_game_time()
-	end
+function WeatherManager:reset_last_period_change_date()
+	--printf("reset_last_period_change_date")
+	self.last_period_change_date = game.get_game_time()
 end
 
 function WeatherManager:can_change_period(period)
@@ -272,20 +266,36 @@ function WeatherManager:change_period()
 	local diff_p = psi_storm_manager and math.floor(psi_storm_manager.PsiStormManager._delta - g_time:diffSec(psi_storm_manager.PsiStormManager.last_psi_storm_time)) or 0
 	local diff_f = fallout_manager.get_fallout_manager():get_time_left()
 	
+	self.transition_period = false
+	
 	if (diff_s<7200 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_blowout",2,1)==1) or (diff_p<7200 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_psi_storm",2,1)==1) or level.is_wfx_playing() then
 		if (self.pre_blowout_period == false) then
 			self.pre_blowout_period = true
+			self.period_prev = self.period
+			self.period_next = self:get_next_period(self.period)
+			self.subperiod_prev = self.subperiod
+			self.subperiod = self:get_subperiod(self.period)
 			self.period = self:get_period_with_prob("global_pre_blowout")
-			self:reset_last_period_change_date(false, 1*60*60)
+			self:reset_last_period_change_date()
+			self.transition_period = true
 		end
+	else
+		self.pre_blowout_period = false
 	end
 	
 	if (diff_f<3600 and atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_fallout",2,1)==1) or level.is_wfx_playing() then
 		if (self.pre_fallout_period == false) then
 			self.pre_fallout_period = true
+			self.period_prev = self.period
 			self.period = (self.pre_blowout_period and "storm") or self:get_period_with_prob("global_pre_fallout")
-			self:reset_last_period_change_date(false, 1*30*60)
+			self.period_next = self:get_next_period(self.period)
+			self.subperiod_prev = self.subperiod
+			self.subperiod = self:get_subperiod(self.period)
+			self:reset_last_period_change_date()
+			self.transition_period = true
 		end
+	else
+		self.pre_fallout_period = false
 	end
 	
 	if (self:can_change_period(self.period)) then
@@ -294,10 +304,8 @@ function WeatherManager:change_period()
 		self.period_next = self:get_next_period(self.period)
 		self.subperiod_prev = self.subperiod
 		self.subperiod = self:get_subperiod(self.period)
-		self:reset_last_period_change_date(true)
+		self:reset_last_period_change_date()
 		self.transition_period = true
-	else
-		self.transition_period = false
 	end
 end
 
@@ -436,9 +444,6 @@ function WeatherManager:select_weather(now,loaded)
 
 	if self.forced_weather_change_flag then
 		now = true
-		self.pre_blowout_period = false
-		self.pre_fallout_period = false
-		self.transition_period = false
 		self.forced_weather_change_flag = false
 	end
 	
@@ -613,7 +618,7 @@ end
 function set_weather(period)
 	local weather_manager = get_weather_manager()
 	weather_manager.period = period
-	weather_manager:reset_last_period_change_date(true)
+	weather_manager:reset_last_period_change_date()
 	weather_manager:select_weather(true)
 end
 

@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 * Reworked/restored the ignore chance of angry stash owner message
 * Added reject case to bounty hunt peaceful way dialog
 * Decreased chance of bad weather reaction from 0.5 to 0.33
+* Improved logic of transition and pre cataclysm flags in `level_weathers.script`
 
 ### Fixes
 * Fixed overbrightnes of `18:00:00` section in `af3_day_clear.ltx`
@@ -28,6 +29,7 @@ All notable changes to this project will be documented in this file.
 * Excluded zombied from loot relocation of Offline Combats
 * Fixed `actor_level_id` in `sim_squad_offline_combat.script` to increase safety of work
 * Disabled night vision with black screen effector when removing task squad
+* Fixed case when pre cataclysm weather may not appear after reload
 
 ### Optimization
 * Memoized `device()` function
