@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 * Added reject case to bounty hunt peaceful way dialog
 * Decreased chance of bad weather reaction from 0.5 to 0.33
 * Improved logic of transition and pre cataclysm flags in `level_weathers.script`
+* Reworked fallout skip when time forward
 
 ### Fixes
 * Fixed overbrightnes of `18:00:00` section in `af3_day_clear.ltx`
