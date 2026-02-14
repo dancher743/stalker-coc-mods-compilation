@@ -855,13 +855,17 @@ end
 
 function WeatherManager:migrate_state(m_data)
 	local subperiod_prev = m_data.weather_manager.subperiod_prev
-	if (subperiod_prev and subperiod_prev == "coc_ol_pack") then
-		m_data.weather_manager.subperiod_prev = "legend_returns"
+	if (subperiod_prev) then
+		if (subperiod_prev == "coc_ol_pack" or subperiod_prev == "cs_original") then
+			m_data.weather_manager.subperiod_prev = "legend_returns"
+		end
 	end
 	
 	local subperiod = m_data.weather_manager.subperiod
-	if (subperiod and subperiod == "coc_ol_pack") then
-		m_data.weather_manager.subperiod = "legend_returns"
+	if (subperiod) then
+		if (subperiod == "coc_ol_pack" or subperiod == "cs_original") then
+			m_data.weather_manager.subperiod = "legend_returns"
+		end
 	end
 end
 
