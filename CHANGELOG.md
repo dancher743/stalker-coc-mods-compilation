@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 * Improved logic of transition and pre cataclysm flags in `level_weathers.script`
 * Reworked fallout skip when time forward
 * Increased cost of Personalized Vintar BC weapon
+* Improved slicing code of actor, monster and squad update callbacks
 
 ### Fixes
 * Fixed overbrightnes of `18:00:00` section in `af3_day_clear.ltx`
