@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file.
 * Increased cost of Personalized Vintar BC weapon
 * Improved slicing code of actor, monster and squad update callbacks
 * Reworked icon of outfit toolkit
+* Made Wolf's equipment lore friendly (as in SoC)
 
 ### Fixes
 * Fixed overbrightnes of `18:00:00` section in `af3_day_clear.ltx`
