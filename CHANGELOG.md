@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 * Reworked fallout skip when time forward
 * Increased cost of Personalized Vintar BC weapon
 * Improved slicing code of actor, monster and squad update callbacks
+* Reworked icon of outfit toolkit
 
 ### Fixes
 * Fixed overbrightnes of `18:00:00` section in `af3_day_clear.ltx`
