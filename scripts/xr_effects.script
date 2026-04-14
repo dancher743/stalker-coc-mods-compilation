@@ -2657,16 +2657,39 @@ end
 function drx_sl_setup_fetch_mutant_parts( actor, npc, p )
 
 	-- List of possible fetch items:
-	local item_list = {
-		"mutant_part_krovosos_jaw",
-		"mutant_part_controller_glass",
-		"mutant_part_controller_hand",
-		"mutant_part_burer_hand",
-		"mutant_part_pseudogigant_eye",
-		"mutant_part_pseudogigant_hand",
-		"mutant_part_chimera_claw",
-		"mutant_part_chimera_kogot"
-	}
+	local item_list = nil
+	local tier_number = has_chance(10) and 3 or 
+						has_chance(30) and 2 or 
+						1
+	
+	if (tier_number == 1) then
+		item_list = {
+			"mutant_part_krovosos_jaw",
+			"mutant_part_controller_glass",
+			"mutant_part_controller_hand",
+			"mutant_part_burer_hand",
+			"mutant_part_pseudogigant_eye",
+			"mutant_part_pseudogigant_hand",
+			"mutant_part_chimera_claw",
+			"mutant_part_chimera_kogot"
+		}
+	elseif (tier_number == 2) then
+		item_list = {
+			"mutant_part_cat_tail",
+			"mutant_part_fracture_hand",
+			"mutant_part_snork_hand",
+			"mutant_part_snork_leg",
+			"mutant_part_tushkano_head",
+			"mutant_part_zombi_hand"
+		}
+	elseif (tier_number == 3) then
+		item_list = {
+			"mutant_part_boar_leg",
+			"mutant_part_flesh_eye",
+			"mutant_part_dog_tail",
+			"mutant_part_psevdodog_tail"
+		}
+	end
 
 	-- Pick a random item from the list:
 	local fetch_item = item_list[math.random( #item_list )]
