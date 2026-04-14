@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.5] - Unreleased
+
 ## [1.5.4] - 2026-04-14
 
 ### Features
