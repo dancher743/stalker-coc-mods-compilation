@@ -26,13 +26,13 @@ Settings
 * You can put a custom spot on Map by pressing `J` button (by default)
 * To access Dynamic News settings: load your game, then open the main menu and press Page-Up button
 * To make the sky less bright type `r2_tonemap off` command at the console
+* Disable "Sun shadow" in "Options" in "Video" to play without lighting shaders
 * Type `vid_restart` at the console if you are faced with _"Too many occlusion queries were issued"_ warnings. This command restarts the renderer
 
 Optimization
 ---
 * Add `-no_staging` (is already in `launcher.bat`) to the end of a shortcut as a launch parameter. In DirectX 10/11, it will load textures directly into video memory without copying them to RAM, thus keeping it free
 * Add `-noprefetch` (is already in `launcher.bat`) to the end of a shortcut as a launch parameter to forces the game to clear RAM
-* Disable "Sun shadow" in "Options" in "Video" to reduce the load on a video card
 
 ❗ Screenshots
 ---
@@ -136,10 +136,8 @@ Mods
 78. Fixed Artefact Collision and Visuals [1.5.3] (Longreed, SoulCrystal) Special thanks to TheLostStalker88 for the tip!
 79. ND DRXCoCDynamicAnomalies21 Remix (TheLostStalker88, DoctorX)
 80. Weather from Legend Returns 0.9.2 (LR Devs) and some textures from CoC OL pack v1.3 (Kisel_s_Molinkoi, K0MRADE, bloodshot12)
-81. Shaders from Legend Returns 0.9.2 (LR Devs)
-82. CS atmosphere for CoC v1.1 [CoC 1.4.22] (Sanctuary)
-83. Better Knife (Vanilla) with adaptations from CoP (alalakskylvia)
-84. Optimized rain (Clepoy)
+81. Better Knife (Vanilla) with adaptations from CoP (alalakskylvia)
+82. Optimized rain (Clepoy)
 
 Credits
 ---

@@ -2195,7 +2195,11 @@ function surrender_victim_answers_1(a,b)
 
 		if (coc_treasure_manager) then
 			local hint = strformat(strtransl("st_itm_stash_of_character"), npc:character_name(), strtransl(character_community(npc)))
-			coc_treasure_manager.create_random_stash(nil,hint)
+			local bonus = {}
+			if (has_chance01(0.5)) then
+				coc_treasure_manager.try_add_unique_weapon(bonus)
+			end
+			coc_treasure_manager.create_random_stash(nil,hint,bonus)
 			if (has_alife_info("achieved_silver_or_lead") and ((math.random(1,100)/100) <= 0.33)) then
 				coc_treasure_manager.create_random_stash(nil,hint)
 			end
@@ -3157,6 +3161,11 @@ end
 --
 
 -- Added by Dancher
+
+function set_squad_enemy(first_speaker, second_speaker)
+	local npc = who_is_npc(first_speaker, second_speaker)
+	xr_effects.set_npc_squad_enemy_to_actor(db.actor, npc)
+end
 
 function is_bounty_hunt_target(first_speaker, second_speaker)
 	local bounties_npcs = axr_task_manager.bounties_by_id

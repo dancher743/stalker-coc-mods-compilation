@@ -13,7 +13,7 @@ if (jit == nil) then
 end
 
 GAME_VERSION = "1.4.22"
-MOD_VERSION = "1.5.3"
+MOD_VERSION = "1.5.4 RC 3"
 
 if string.find(command_line(), "-dbg") then
 	DEV_DEBUG = true
@@ -49,12 +49,14 @@ local sim
 local gg
 local hud
 local console
+local device_obj
 -- Cached functions during memoization
 local alife_function
 local system_ini_function
 local game_graph_function
 local get_hud_function
 local get_console_function
+local device_function
 ----------------------------------------------------------------------
 
 function start_game_callback()
@@ -115,6 +117,9 @@ function memoize_functions()
 	
 	get_console_function = get_console
 	get_console = _G.get_console_memoized
+	
+	device_function = device
+	device = _G.device_memoized
 end
 
 function unmemoize_functions()
@@ -132,6 +137,9 @@ function unmemoize_functions()
 	
 	get_console = get_console_function
 	get_console_function = nil
+	
+	device = device_function
+	device_function = nil
 end
 
 function alife_memoized()
@@ -167,6 +175,13 @@ function get_console_memoized()
 		console = get_console_function()
 	end
 	return console
+end
+
+function device_memoized()
+	if not (device_obj) then
+		device_obj = device_function()
+	end
+	return device_obj
 end
 
 -------------------------------------------------------------------------------------------------------
@@ -1136,6 +1151,21 @@ squad_community_by_behaviour = {
 		["monster_zombied_night"]			= "monster",
 		["monster_special"]					= "monster"
 }-------------------------------------------------------------------------------------------
+
+community = {
+	["stalker"]		= "stalker",
+	["bandit"]		= "bandit",
+	["csky"]		= "csky",
+	["dolg"]		= "dolg",
+	["freedom"]		= "freedom",
+	["army"]		= "army",
+	["ecolog"]		= "ecolog",
+	["killer"]		= "killer",
+	["monolith"]	= "monolith",
+	["zombied"]		= "zombied",
+	["trader"]		= "trader"
+}
+
 function get_object_community(obj)
 	if type(obj.id) == STR_FUNCTION then
 		return character_community(obj)

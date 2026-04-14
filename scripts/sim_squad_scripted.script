@@ -154,13 +154,7 @@ function sim_squad_scripted:get_script_target()
 	end
 end
 
-function sim_squad_scripted:update()
-	local frame_counter = self.frame_counter + 1
-	self.frame_counter = frame_counter
-	if (frame_counter % 3 ~= 0) then
-		return
-	end
-	
+function sim_squad_scripted:update()	
 	--alun_utils.debug_write("sim_squad_scripted:update START")
 	cse_alife_online_offline_group.update(self)
 	if not (self.first_update) then
@@ -216,6 +210,12 @@ function sim_squad_scripted:update()
 	if self.need_to_reset_location_masks then
 		self:set_location_types()
 		self.need_to_reset_location_masks = false
+	end
+	
+	local frame_counter = self.frame_counter + 1
+	self.frame_counter = frame_counter
+	if (frame_counter % 3 ~= 0) then
+		return
 	end
 	
 	local tg = time_global()

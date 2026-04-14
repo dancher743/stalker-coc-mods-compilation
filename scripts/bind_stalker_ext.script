@@ -104,18 +104,18 @@ end
 local frame_counter = -1
 local slicing_delta = 0
 function actor_on_update(binder,delta)
+	slicing_delta = slicing_delta + delta
+	frame_counter = frame_counter + 1
+	if (frame_counter % 3 ~= 0) then
+		return
+	end
+	
 	-- WISH GRANTER ZOMBIED-IMMORTALITY
 	if (db.actor:has_info("actor_made_wish_immortal") or invulnerable_time and invulnerable_time > time_global() + 7000) then 
 		db.actor.health = 1
 		db.actor.bleeding = 1
 		db.actor.psy_health = 1
 		db.actor.radiation = -1
-	end
-	
-	slicing_delta = slicing_delta + delta
-	frame_counter = frame_counter + 1
-	if (frame_counter % 3 ~= 0) then
-		return
 	end
 
 	local torch = db.actor:object("device_torch")

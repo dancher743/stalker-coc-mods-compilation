@@ -4,7 +4,7 @@
 -- Special thanks to offline alife of AMK, EOC and Anomaly!
 --
 
-local dbg = false
+local dbg = DEV_DEBUG
 
 local combats_per_level = 5
 local good_distances = {
@@ -20,8 +20,7 @@ local bad_distances = {
 
 local add_rank_points = 20
 local handicap_chance = 25
-local remove_squad_chance = 60
-local not_on_smart_combat_chance = 20
+local map_combat_chance = 20
 
 local rank_power = {
 	["novice"] = 10,
@@ -55,6 +54,11 @@ local loot_ignore_list = {
 		["stick_kolbasa_bred"] = true,
 		["wpn_knife"] = true
 }
+
+local smart_combat_remove_chance = 50
+local max_smart_combats_count = 5
+local smart_combat_counters = {}
+local smart_combat_victims = {}
 
 local is_initialized
 local loot_items
@@ -103,25 +107,78 @@ local function get_combat_distance()
 	return distance
 end
 
-local function calculate_squad_power(squad)
+local function is_on_actor_level(obj)
+	local level_id = simulation_objects.get_level_id(obj)
+	return level_id and level_id == actor_level_id
+end
+
+local function calculate_npc_power(id)
 	local power = 0
-	for k in squad:squad_members() do
-		local se_obj = get_se_obj(k.id)
-		if (se_obj) then
-			local rank_name = ranks.get_se_obj_rank_name(se_obj)
-			power = power + rank_power[rank_name] or 0
-		end
+	local se_obj = get_se_obj(id)
+	if (se_obj) then
+		local rank_name = ranks.get_se_obj_rank_name(se_obj)
+		power = power + rank_power[rank_name] or 0
 	end
-	if (get_chance() <= handicap_chance) then
+	if (has_chance(handicap_chance)) then
 		power = power * math.random(3)
 	end
 	return power
 end
 
+local function calculate_squad_power(squad)
+	local power = 0
+	for k in squad:squad_members() do
+		power = power + calculate_npc_power(k.id)
+	end
+	return power
+end
+
+local function relocate_loot(se_killer, se_victim)
+	local victim_items = loot_items[se_victim.id]
+	for i = #victim_items, 1, -1 do
+		local victim_item = get_se_obj(victim_items[i])
+		
+		if (victim_item and victim_item.parent_id ~= 0 and victim_item.parent_id ~= 65535 and victim_item.parent_id == se_victim.id) then
+			table.remove(victim_items, i)
+			
+			local killer_item = alife():create(victim_item:section_name(), se_killer.position, 
+				se_killer.m_level_vertex_id, se_killer.m_game_vertex_id, se_killer.id)
+			local killer_items = loot_items[se_killer.id]
+			table.insert(killer_items, killer_item.id)
+			
+			safe_release_manager.release(victim_item)
+			-- if dbg then printf_dbg("loot relocated!") end
+		end
+	end
+end
+
 -- from Anomaly 1.5.1.2
 local killer_squad_ids = {}
+local victim_squad_ids = {}
 
-local function execute_combat(squad1, squad2, level_id)
+local function execute_kill(se_killer, se_victim, killer_squad, victim_squad)
+	local is_killer_stalker = killer_squad:is_stalker()
+	local is_victim_stalker = victim_squad:is_stalker()
+	local killer_community = killer_squad:get_squad_community()
+	
+	se_victim:on_death(se_killer)
+	
+	if (is_killer_stalker and is_victim_stalker) then
+		game_relations.drx_df_faction_npc_on_death(victim_squad:get_squad_community(), killer_community)
+	end
+	
+	if (is_killer_stalker) then
+		se_killer:set_rank(se_killer:rank() + add_rank_points)
+	end
+	
+	if (is_killer_stalker and killer_community ~= community.zombied and is_victim_stalker and 
+		loot_items[se_victim.id] and loot_items[se_killer.id]) 
+	then
+		relocate_loot(se_killer, se_victim)
+	end
+end
+
+local function execute_combat_on_smart(squad1, squad2)
 	local killer_squad = nil
 	local victim_squad = nil
 	local squad1_power = calculate_squad_power(squad1)
@@ -130,22 +187,18 @@ local function execute_combat(squad1, squad2, level_id)
 	if (squad1_power > squad2_power) then
 		killer_squad = squad1
 		victim_squad = squad2
-		if dbg then printf_dbg("%s(%s) kills %s(%s) (%s)", squad1:name(), squad1_power, squad2:name(), squad2_power, alife():level_name(level_id)) end
+		if dbg then printf_dbg("%s(%s) kills %s(%s) (%s)(smart)", squad1:name(), squad1_power, squad2:name(), squad2_power, simulation_objects.get_level_name(squad1)) end
 	elseif (squad1_power < squad2_power) then
 		killer_squad = squad2
 		victim_squad = squad1
-		if dbg then printf_dbg("%s(%s) kills %s(%s) (%s)", squad2:name(), squad2_power, squad1:name(), squad1_power, alife():level_name(level_id)) end
+		if dbg then printf_dbg("%s(%s) kills %s(%s) (%s)(smart)", squad2:name(), squad2_power, squad1:name(), squad1_power, simulation_objects.get_level_name(squad2)) end
 	elseif (squad1_power == squad2_power) then
-		if dbg then printf_dbg("%s(%s) tie %s(%s) (%s)", squad1:name(), squad1_power, squad2:name(), squad2_power, alife():level_name(level_id)) end
-		return nil
+		if dbg then printf_dbg("%s(%s) tie %s(%s) (%s)(smart)", squad1:name(), squad1_power, squad2:name(), squad2_power, simulation_objects.get_level_name(squad1)) end
+		return nil, nil, nil
 	end
-	
-	game_relations.drx_df_faction_npc_on_death(killer_squad:get_squad_community(), victim_squad:get_squad_community())
 	
 	local se_killer = nil
 	local se_victim = nil
-	local is_killer_stalker = killer_squad:is_stalker()
-	local is_victim_stalker = victim_squad:is_stalker()
 	
 	for k in killer_squad:squad_members() do
 		table.insert(killer_squad_ids, k.id)
@@ -154,36 +207,91 @@ local function execute_combat(squad1, squad2, level_id)
 	for k in victim_squad:squad_members() do
 		se_killer = get_se_obj(utils.random_in_itable(killer_squad_ids))
 		se_victim = get_se_obj(k.id)
-		
-		se_victim:on_death(se_killer)
-		
-		if (is_killer_stalker) then
-			se_killer:set_rank(se_killer:rank() + add_rank_points)
-		end
-		
-		if (is_killer_stalker and is_victim_stalker and loot_items[se_victim.id] and loot_items[se_killer.id]) then
-			local victim_items = loot_items[se_victim.id]
-			for i = #victim_items, 1, -1 do
-				local victim_item = get_se_obj(victim_items[i])
-				
-				if (victim_item and victim_item.parent_id ~= 0 and victim_item.parent_id == se_victim.id) then
-					table.remove(victim_items, i)
-					
-					local killer_item = alife():create(victim_item:section_name(), se_killer.position, 
-						se_killer.m_level_vertex_id, se_killer.m_game_vertex_id, se_killer.id)
-					local killer_items = loot_items[se_killer.id]
-					table.insert(killer_items, killer_item.id)
-					
-					safe_release_manager.release(victim_item)
-					-- if dbg then printf_dbg("loot relocated!") end
-				end
-			end
-		end
+		execute_kill(se_killer, se_victim, killer_squad, victim_squad)
 	end
 	
 	iempty_table(killer_squad_ids)
 	
 	return victim_squad, se_victim.id, se_killer.id
+end
+
+local function execute_combat_on_map(squad1, squad2)
+	for k in squad1:squad_members() do
+		table.insert(killer_squad_ids, k.id)
+	end
+	
+	for k in squad2:squad_members() do
+		table.insert(victim_squad_ids, k.id)
+	end
+	
+	utils.shuffle_itable(killer_squad_ids)
+	utils.shuffle_itable(victim_squad_ids)
+	
+	local killer_squad = nil
+	local victim_squad = nil
+	local se_killer = nil
+	local se_victim = nil
+	
+	for _,squad1_npc_id in ipairs(killer_squad_ids) do
+		local squad1_npc_power = calculate_npc_power(squad1_npc_id)
+		local squad1_npc = get_se_obj(squad1_npc_id)
+		
+		for i = #victim_squad_ids, 1, -1 do
+			local squad2_npc_id = victim_squad_ids[i]
+			local squad2_npc_power = calculate_npc_power(squad2_npc_id)
+			local squad2_npc = get_se_obj(squad2_npc_id)
+			local can_execute_kill = false
+			
+			if (squad1_npc_power > squad2_npc_power) then
+				se_killer = squad1_npc
+				se_victim = squad2_npc
+				killer_squad = squad1
+				victim_squad = squad2
+				can_execute_kill = true
+				if dbg then printf_dbg("%s(%s) kills %s(%s) (%s)(map)", squad1_npc:name(), squad1_npc_power, squad2_npc:name(), squad2_npc_power, simulation_objects.get_level_name(squad1_npc)) end
+			elseif (squad1_npc_power < squad2_npc_power) then
+				se_killer = squad2_npc
+				se_victim = squad1_npc
+				killer_squad = squad2
+				victim_squad = squad1
+				can_execute_kill = true
+				if dbg then printf_dbg("%s(%s) kills %s(%s) (%s)(map)", squad2_npc:name(), squad2_npc_power, squad1_npc:name(), squad1_npc_power, simulation_objects.get_level_name(squad2_npc)) end
+			elseif (squad1_npc_power == squad2_npc_power) then
+				if dbg then printf_dbg("%s(%s) tie %s(%s) (%s)(map)", squad1_npc:name(), squad1_npc_power, squad2_npc:name(), squad2_npc_power, simulation_objects.get_level_name(squad1_npc)) end
+			end
+			
+			if (can_execute_kill) then
+				execute_kill(se_killer, se_victim, killer_squad, victim_squad)
+				killer_squad = nil
+				victim_squad = nil
+				table.remove(victim_squad_ids, i)
+				break
+			end
+		end
+	end
+	
+	local victim_squad = squad1
+	for _,k_id in ipairs(killer_squad_ids) do
+		local se_obj = get_se_obj(k_id)
+		if (se_obj and se_obj:alive()) then
+			victim_squad = nil
+			break
+		end
+	end
+	
+	victim_squad = squad2
+	for _,k_id in ipairs(victim_squad_ids) do
+		local se_obj = get_se_obj(k_id)
+		if (se_obj and se_obj:alive()) then
+			victim_squad = nil
+			break
+		end
+	end
+	
+	iempty_table(killer_squad_ids)
+	iempty_table(victim_squad_ids)
+	
+	return victim_squad, se_victim and se_victim.id, se_killer and se_killer.id
 end
 
 local function prepare_combats(squads)
@@ -203,7 +311,8 @@ local function prepare_combats(squads)
 				local squad2 = squads[j]
 				
 				if (squad2 and squad1.id ~= squad2.id and not processed_squads[squad2.id] and 
-					simulation_objects.is_on_the_same_level(squad1, squad2)) 
+					simulation_objects.is_on_the_same_level(squad1, squad2) and 
+					(is_on_actor_level(squad1) == false and is_on_actor_level(squad2) == false)) 
 				then
 					local community1 = squad1:get_squad_community()
 					local community2 = squad2:get_squad_community()
@@ -218,17 +327,19 @@ local function prepare_combats(squads)
 					
 					if (are_enemies) then
 						local can_combat = false
+						local is_smart_combat = false
 						
 						if (squad1.position:distance_to_sqr(squad2.position) <= get_combat_distance()) then
 							if (squad1.current_target_id == nil and squad2.current_target_id == nil) then
-								can_combat = get_chance() <= not_on_smart_combat_chance
+								can_combat = has_chance(map_combat_chance)
 							elseif (squad1.current_target_id == squad2.current_target_id) then
 								can_combat = true
+								is_smart_combat = true
 							end
 						end
 						
 						if (can_combat) then
-							table.insert(combats_queue, {squads, i, j})
+							table.insert(combats_queue, {squads, i, j, is_smart_combat})
 							processed_squads[squad1.id] = true
 							processed_squads[squad2.id] = true
 							if dbg then printf_dbg("added to queue: %s, %s", squad1:name(), squad2:name()) end
@@ -249,8 +360,16 @@ local function prepare_combats(squads)
 end
 
 local function is_item_valid(se_item)
+	if (se_item.parent_id == nil or se_item.parent_id == 65535) then
+		return false
+	end
+	
 	local section = se_item:section_name()
-	return loot_ignore_list[section] == nil
+	if (loot_ignore_list[section] == true) then
+		return false
+	end
+	
+	return true
 end
 
 local function is_squad_valid(squad)
@@ -273,6 +392,10 @@ local function is_squad_valid(squad)
 		end
 		
 		local se_obj = alife_object(k.id)
+		
+		if (se_obj.group_id == 65535) then
+			return false
+		end
 		
 		for _,task in pairs(task_info) do
 			local giver_id = task.task_giver_id
@@ -300,6 +423,7 @@ local function update_queue()
 	local squads = combat[1]
 	local squad1_index = combat[2]
 	local squad2_index = combat[3]
+	local is_smart_combat = combat[4]
 	local squad1 = squads[squad1_index]
 	local squad2 = squads[squad2_index]
 	
@@ -309,8 +433,13 @@ local function update_queue()
 		return
 	end
 	
-	local level_id = simulation_objects.get_level_id(squad1)
-	local victim_squad, victim_id, killer_id = execute_combat(squad1, squad2, level_id)
+	local victim_squad, victim_id, killer_id = nil, nil, nil
+	
+	if (is_smart_combat) then
+		victim_squad, victim_id, killer_id = execute_combat_on_smart(squad1, squad2)
+	else
+		victim_squad, victim_id, killer_id = execute_combat_on_map(squad1, squad2)
+	end
 	
 	if (victim_squad) then
 		if (victim_squad.id == squad1.id) then
@@ -318,9 +447,21 @@ local function update_queue()
 		elseif (victim_squad.id == squad2.id) then
 			squads[squad2_index] = nil
 		end
-		if (actor_level_id ~= level_id and get_chance() <= remove_squad_chance) then
-			victim_squad:remove_squad()
-		elseif (victim_squad:is_stalker()) then
+		local has_squad_removed = false
+		if (is_smart_combat) then
+			local smart_id = victim_squad.current_target_id
+			local counter = smart_combat_counters[smart_id] or 0
+			if (counter > max_smart_combats_count or has_chance(smart_combat_remove_chance)) then
+				victim_squad:remove_squad()
+				has_squad_removed = true
+			else
+				counter = counter + 1
+				smart_combat_counters[smart_id] = counter
+				local commander_id = victim_squad:commander_id()
+				smart_combat_victims[commander_id] = smart_id
+			end
+		end
+		if (has_squad_removed == false and victim_squad:is_stalker()) then
 			last_victim_stalker_id = victim_id
 			last_killer_stalker_id = killer_id
 		end
@@ -331,7 +472,7 @@ local function fill_combat_squads_table()
 	combat_squads_table = {}
 	
 	for _,squad in pairs(SIMBOARD.squads) do
-		if (squad and not squad.online and squad.first_update and is_squad_valid(squad)) then
+		if (squad and squad.first_update and squad.online == false and is_squad_valid(squad)) then
 			local level_id = simulation_objects.get_level_id(squad)
 			local combat_squads = nil
 			
@@ -357,7 +498,7 @@ local function fill_loot_items_table()
 	
 	for i=1,65534 do
 		local se_item = alife_object(i)
-		if (se_item and se_item.parent_id and is_item_valid(se_item)) then
+		if (se_item and is_item_valid(se_item)) then
 			local items = nil
 			if (loot_items[se_item.parent_id] == nil) then
 				items = {}
@@ -383,7 +524,7 @@ local function update()
 	local level_to_update = nil
 	
 	for level_id,combat_squads in pairs(combat_squads_table) do
-		if (combat_squads.were_combats == false) then
+		if (level_id ~= actor_level_id and combat_squads.were_combats == false) then
 			level_to_update = level_id
 			break
 		end
@@ -427,6 +568,8 @@ local function save_state(data)
 	end
 	data.offline_combat.last_victim_stalker_id = last_victim_stalker_id
 	data.offline_combat.last_killer_stalker_id = last_killer_stalker_id
+	data.offline_combat.smart_combat_counters = smart_combat_counters
+	data.offline_combat.smart_combat_victims = smart_combat_victims
 end
 
 local function load_state(data)
@@ -435,6 +578,8 @@ local function load_state(data)
 	end
 	last_victim_stalker_id = data.offline_combat.last_victim_stalker_id
 	last_killer_stalker_id = data.offline_combat.last_killer_stalker_id
+	smart_combat_counters = data.offline_combat.smart_combat_counters or smart_combat_counters
+	smart_combat_victims = data.offline_combat.smart_combat_victims or smart_combat_victims
 end
 
 local function initialize()
@@ -447,7 +592,7 @@ local function initialize()
 	update_timer = 1000
 	update_queue_timer = 0
 	is_survival_mode = IsSurvivalMode()
-	actor_level_id = alife():level_name(game_graph():vertex(alife():actor().m_game_vertex_id):level_id())
+	actor_level_id = game_graph():vertex(alife():actor().m_game_vertex_id):level_id()
 	RegisterScriptCallback("actor_on_update",actor_on_update)
 	
 	is_initialized = true
@@ -482,8 +627,25 @@ local function actor_on_first_update()
 	UnregisterScriptCallback("actor_on_first_update",actor_on_first_update)
 end
 
+local function se_obj_on_before_release(se_obj)
+	local commander_id = se_obj.id
+	local smart_id = smart_combat_victims[commander_id]
+	
+	if (smart_id) then
+		local counter = smart_combat_counters[smart_id]
+		
+		if (counter and counter > 1) then
+			counter = counter - 1
+			smart_combat_counters[smart_id] = counter
+		end
+		
+		smart_combat_victims[commander_id] = nil
+	end
+end
+
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
+	RegisterScriptCallback("se_obj_on_before_release",se_obj_on_before_release)
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
 end

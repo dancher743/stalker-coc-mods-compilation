@@ -139,8 +139,8 @@
         [spawn] \n
         wpn_pm \n
         ammo_9x18_fmj = 2 \n
-        wpn_pkm \n
-        ammo_pkm_100 = 3 \n
+        wpn_ak74u \n
+        ammo_5.45x39_fmj = 3 \n
         device_torch \n
         hand_radio \n
     </supplies>

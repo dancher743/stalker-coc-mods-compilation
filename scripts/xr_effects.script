@@ -2657,16 +2657,39 @@ end
 function drx_sl_setup_fetch_mutant_parts( actor, npc, p )
 
 	-- List of possible fetch items:
-	local item_list = {
-		"mutant_part_krovosos_jaw",
-		"mutant_part_controller_glass",
-		"mutant_part_controller_hand",
-		"mutant_part_burer_hand",
-		"mutant_part_pseudogigant_eye",
-		"mutant_part_pseudogigant_hand",
-		"mutant_part_chimera_claw",
-		"mutant_part_chimera_kogot"
-	}
+	local item_list = nil
+	local tier_number = has_chance(10) and 3 or 
+						has_chance(30) and 2 or 
+						1
+	
+	if (tier_number == 1) then
+		item_list = {
+			"mutant_part_krovosos_jaw",
+			"mutant_part_controller_glass",
+			"mutant_part_controller_hand",
+			"mutant_part_burer_hand",
+			"mutant_part_pseudogigant_eye",
+			"mutant_part_pseudogigant_hand",
+			"mutant_part_chimera_claw",
+			"mutant_part_chimera_kogot"
+		}
+	elseif (tier_number == 2) then
+		item_list = {
+			"mutant_part_cat_tail",
+			"mutant_part_fracture_hand",
+			"mutant_part_snork_hand",
+			"mutant_part_snork_leg",
+			"mutant_part_tushkano_head",
+			"mutant_part_zombi_hand"
+		}
+	elseif (tier_number == 3) then
+		item_list = {
+			"mutant_part_boar_leg",
+			"mutant_part_flesh_eye",
+			"mutant_part_dog_tail",
+			"mutant_part_psevdodog_tail"
+		}
+	end
 
 	-- Pick a random item from the list:
 	local fetch_item = item_list[math.random( #item_list )]
@@ -2804,21 +2827,29 @@ function drx_sl_setup_fetch_weapon( actor, npc, p )
 	}
 
 	-- If only fetching 1 item then expand the list:
-	if ( (min_count == 1) and (max_count == 1) ) then
+	local actor_rank = actor:character_rank()
+	local rank_interval = ranks.get_rank_interval("trainee")
+	if ( rank_interval[2] < actor_rank ) then
 		table.insert( item_list, "wpn_abakan" )
 		table.insert( item_list, "wpn_l85" )
 		table.insert( item_list, "wpn_lr300" )
 		table.insert( item_list, "wpn_sig550" )
+		table.insert( item_list, "wpn_g36" )
+	end
+	rank_interval = ranks.get_rank_interval("professional")
+	if ( rank_interval[2] < actor_rank ) then
 		table.insert( item_list, "wpn_groza" )
 		table.insert( item_list, "wpn_val" )
 		table.insert( item_list, "wpn_vintorez" )
 		table.insert( item_list, "wpn_svu" )
 		table.insert( item_list, "wpn_svd" )
-		table.insert( item_list, "wpn_rg-6" )
+	end
+	rank_interval = ranks.get_rank_interval("expert")
+	if ( rank_interval[2] < actor_rank ) then
 		table.insert( item_list, "wpn_rpg7" )
-		table.insert( item_list, "wpn_g36" )
 		table.insert( item_list, "wpn_fn2000" )
 		table.insert( item_list, "wpn_pkm" )
+		table.insert( item_list, "wpn_gauss" )
 	end
 
 	-- Pick a random item from the list:
@@ -3353,6 +3384,7 @@ function reward_random_money(actor,npc,p)
 end
 
 function remove_special_task_squad(actor,npc,p)
+	xr_effects.disable_actor_nightvision()
 	level.add_pp_effector("black.ppe", 1313, false)
 	remove_squad(actor,npc,p)
 end
@@ -7980,7 +8012,24 @@ end
 
 -- Added by Dancher
 
+function set_npc_squad_enemy_to_actor(actor, npc, p)
+	if (npc == nil) then
+		assert("NPC is nil")
+		return
+	end
+
+	local squad = get_object_squad(npc)
+	
+	if (squad == nil) then
+		assert("Squad doesnt exist")
+		return
+	end
+	
+	squad:set_squad_relation(-5000)
+end
+
 function remove_task_squad(actor,npc,p)
+	xr_effects.disable_actor_nightvision()
 	level.add_pp_effector("black.ppe", 1313, false)
 	
 	local squad = get_object_squad(npc)

@@ -2,6 +2,52 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.4] - Unreleased
+
+### Features
+* Added rank-based weapons into find weapon tasks
+
+### Mods
+* Removed mod [CS atmosphere for CoC v1.1 [CoC 1.4.22]](https://www.moddb.com/mods/call-of-chernobyl/addons/cop-and-cs-atmosphere-for-coc-coc-1422)
+
+### Improvements
+* Added "(in slot)" postfix to items names in repair UI
+* Improved out of smart Offline Combats
+* Reverted SoC bloodsucker sounds: from big to weak and normal
+* Added Gauss rifle into find weapon tasks
+* Removed Bulldog-6 from find weapon tasks due to high rarity
+* Reworked/restored the ignore chance of angry stash owner message
+* Added reject case to bounty hunt peaceful way dialog
+* Decreased chance of bad weather reaction from 0.5 to 0.33
+* Improved logic of transition and pre cataclysm flags in `level_weathers.script`
+* Reworked fallout skip when time forward
+* Increased cost of Personalized Vintar BC weapon
+* Improved slicing code of actor, monster and squad update callbacks
+* Reworked icon of outfit toolkit
+* Made Wolf's equipment lore friendly (as in SoC)
+* Extended item list of Tissue Sample for Sakharov task
+* Added SoC unique weapons into surrender victim and NPC's loot stashes
+
+### Fixes
+* Fixed overbrightnes of `18:00:00` section in `af3_day_clear.ltx`
+* Disabled Offline Combats on Actor's level to fix crash - "[error][      87]"
+* Fixed incorrect dynamic relations change in Offline Combats
+* Fixed LUA error: dynamic_news_manager.script:1795: attempt to call method 'community' (a nil value)
+* Excluded zombied from loot relocation of Offline Combats
+* Fixed `actor_level_id` in `sim_squad_offline_combat.script` to increase safety of work
+* Disabled night vision with black screen effector when removing task squad
+* Fixed case when pre cataclysm weather may not appear after reload
+* Added some code to `xr_help_wounded.script` to fix "[LUA] SCRIPT RUNTIME ERROR : evaluator [wounded_exist] returns value with not a bool type!" (from Anomaly 1.5.1.2)
+
+### Optimization
+* Memoized `device()` function
+
+### Framework
+* Added `se_obj_on_before_release` callback  into `axr_main.script`
+* Added activation of debug mode of Offline Combat feature with `-dbg` command
+* Added `community` table into `_g.script`
+* Renamed flag `forced_weather_change_on_time_change` to `forced_weather_change` in `level_weathers.script`
+
 ## [1.5.3] - 2025-11-22
 
 ### Features

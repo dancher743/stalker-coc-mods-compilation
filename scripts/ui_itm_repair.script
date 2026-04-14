@@ -437,6 +437,7 @@ function repair_ui:OnButton_repair()
 	end
 	
 	local inv_name = game.translate_string(ini:r_string_ex(obj:section(),"inv_name") or "st_none")
+	inv_name = self:AddSlotPostfixToInvName(inv_name,obj)
 	local msg = strformat(game.translate_string("st_repair_mod_message_box_ask"),inv_name,math.ceil(con_delta*100))
 
 	ui_dyn_msg_box.msg_box_ui("message_box_yes_no",true,msg,on_yes,on_no)
@@ -447,6 +448,7 @@ function repair_ui:AddItemToList(item,listbox,condition,prefix)
 	local _itm			= load_item(self.file_item_main_sz.y)
 	local sec = item and item:section()
 	local inv_name 		= item and game.translate_string(ini:r_string_ex(sec,"inv_name") or STR_NONE)
+	inv_name = self:AddSlotPostfixToInvName(inv_name,item)
 
 	_itm:SetWndSize		(self.file_item_main_sz)
 
@@ -489,6 +491,29 @@ function repair_ui:AddItemToList(item,listbox,condition,prefix)
 	--]]
 
 	listbox:AddExistingItem(_itm)
+end
+
+function repair_ui:AddSlotPostfixToInvName(inv_name,item)
+	local is_in_slot_postfix = false
+	
+	if (IsWeapon(item)) then
+		for i=2,3 do
+			local slot_item = db.actor:item_in_slot(i)
+			if (slot_item and slot_item:id() == item:id()) then
+				is_in_slot_postfix = true
+				break
+			end
+		end
+	elseif (IsOutfit(item)) then
+		local slot_item = db.actor:item_in_slot(7)
+		is_in_slot_postfix = slot_item and slot_item:id() == item:id()
+	end
+	
+	if (is_in_slot_postfix) then
+		inv_name = strformat("%s %s", inv_name, strtransl("st_repair_mod_inv_name_slot_postfix"))
+	end
+	
+	return inv_name
 end
 
 function repair_ui:DetachWeaponAddons(wpn)

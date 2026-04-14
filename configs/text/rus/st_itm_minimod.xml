@@ -60,6 +60,9 @@
 	<string id="st_repair_mod_message_box_condition">
 		<text>Это нельзя отремонтировать.</text>
 	</string>
+	<string id="st_repair_mod_inv_name_slot_postfix">
+		<text>(в слоте)</text>
+	</string>
 	<string id="st_itm_stash">
 		<text> тайник</text>
 	</string>

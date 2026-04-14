@@ -593,6 +593,15 @@ skin_armor = 0.40
 
 invisibility_activate_delay = 5000
 
+sound_idle          = monsters\bloodsucker\soc\idle_
+sound_eat         	= monsters\bloodsucker\soc\eat_
+sound_attack_hit    = monsters\bloodsucker\soc\attack_hit_
+sound_take_damage   = monsters\bloodsucker\soc\hit_
+sound_die         	= monsters\bloodsucker\soc\die_
+sound_panic         = monsters\bloodsucker\soc\hit_
+sound_die_in_anomaly = monsters\bloodsucker\soc\die_
+sound_distant_idle  = monsters\bloodsucker\soc\idle_
+
 [bloodsucker_immunities_weak]
 burn_immunity   		= 0.15
 strike_immunity 		= 0.15
@@ -645,6 +654,15 @@ protections_sect = bloodsucker_protections
 MaxHealthValue         = 1.0              ; range [0..200]
 
 skin_armor = 0.5
+
+sound_idle          = monsters\bloodsucker\soc\idle_
+sound_eat         	= monsters\bloodsucker\soc\eat_
+sound_attack_hit    = monsters\bloodsucker\soc\attack_hit_
+sound_take_damage   = monsters\bloodsucker\soc\hit_
+sound_die         	= monsters\bloodsucker\soc\die_
+sound_panic         = monsters\bloodsucker\soc\hit_
+sound_die_in_anomaly = monsters\bloodsucker\soc\die_
+sound_distant_idle  = monsters\bloodsucker\soc\idle_
 
 [bloodsucker_immunities_normal]
 burn_immunity     		= 0.1
@@ -837,35 +855,28 @@ radiation_pp_highest_at		= 	0.1
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;------------- Strong -------------
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-[bloodsucker_big_strong]:bloodsucker_strong
-MaxHealthValue         = 1.5              ; range [0..200]
 
-sound_idle          = monsters\bloodsucker\soc\idle_
-sound_eat         	= monsters\bloodsucker\soc\eat_
-sound_attack_hit    = monsters\bloodsucker\soc\attack_hit_
-sound_take_damage   = monsters\bloodsucker\soc\hit_
-sound_die         	= monsters\bloodsucker\soc\die_
-sound_panic         = monsters\bloodsucker\soc\hit_
-sound_die_in_anomaly = monsters\bloodsucker\soc\die_
-sound_distant_idle  = monsters\bloodsucker\soc\idle_
 
-[bloodsucker_red_strong]:bloodsucker_big_strong
+[bloodsucker_red_strong]:bloodsucker_strong
 $spawn        = "monsters\bloodsuckers\bloodsucker_red_strong"
 visual        = monsters\krovosos\krovosos_big
 corpse_visual        = monsters\krovosos\krovosos_big_dead
 Predator_Visual   = monsters\krovosos\krovosos_big_xray
+MaxHealthValue         = 1.5              ; range [0..200]
 
-[bloodsucker_green_strong]:bloodsucker_big_strong
+[bloodsucker_green_strong]:bloodsucker_strong
 $spawn        = "monsters\bloodsuckers\bloodsucker_green_strong"
 visual        = monsters\krovosos\krovosos_green_big
 corpse_visual        = monsters\krovosos\krovosos_green_big_dead
 Predator_Visual   = monsters\krovosos\krovosos_green_big_xray
+MaxHealthValue         = 1.5              ; range [0..200]
 
-[bloodsucker_black_strong]:bloodsucker_big_strong
+[bloodsucker_black_strong]:bloodsucker_strong
 $spawn        = "monsters\bloodsuckers\bloodsucker_black_strong"
 visual        = monsters\krovosos\krovosos_dark_big
 corpse_visual        = monsters\krovosos\krovosos_dark_big_dead
 Predator_Visual   = monsters\krovosos\krovosos_dark_big_xray
+MaxHealthValue         = 1.5              ; range [0..200]
 
 radiation_max_distance		=	5
 radiation_max_power			=	0.05
