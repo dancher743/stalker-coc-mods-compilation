@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 * Reworked icon of outfit toolkit
 * Made Wolf's equipment lore friendly (as in SoC)
 * Extended item list of Tissue Sample for Sakharov task
+* Added SoC unique weapons into surrender victim and NPC's loot stashes
 
 ### Fixes
 * Fixed overbrightnes of `18:00:00` section in `af3_day_clear.ltx`
