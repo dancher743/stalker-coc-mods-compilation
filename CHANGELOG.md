@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.5.4] - Unreleased
+## [1.5.4] - 2026-04-14
 
 ### Features
 * Added rank-based weapons into find weapon tasks
