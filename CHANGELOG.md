@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [1.5.5] - Unreleased
 
+### Fixes
+* Added fixes to Offline Combats to fix potential crash - "[error][      87]"
+
 ## [1.5.4] - 2026-04-14
 
 ### Features
