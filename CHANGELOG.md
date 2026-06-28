@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [1.5.5] - Unreleased
 
+### Improvements
+* Added Duty Outpost At Garbage to Fast Travel
+
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
 
