@@ -62,7 +62,7 @@ function generic_object_binder:update(delta)
 	end
 
 	if not (self.object:alive()) then
-		local looted = self.already_dead or utils.load_var(self.object,"looted",nil)
+		local looted = self.already_dead or utils.load_var(self.object,"looted",nil) or utils.se_obj_load_var(self.object:id(),STR_EMPTY,"looted")
 		if not (looted) then
 			self.object:set_callback(callback.use_object, self.use_callback, self)
 			self.object:set_tip_text("st_screen_field_dress")

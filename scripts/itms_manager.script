@@ -301,7 +301,7 @@ function monster_on_actor_use_callback(obj,who)
 		return
 	end
 
-	local looted = utils.load_var(obj,"looted",nil)
+	local looted = utils.load_var(obj,"looted",nil) or utils.se_obj_load_var(obj:id(),STR_EMPTY,"looted")
 	if (looted) then
 		return
 	end
@@ -312,6 +312,7 @@ function monster_on_actor_use_callback(obj,who)
 	if (st and st.death_time and game.get_game_time():diffSec(st.death_time) > MutantLootDecayTime) then
 		SetHudMsg(game.translate_string("st_body_decayed"),4)
 		utils.save_var(obj,"looted",true)
+		utils.se_obj_save_var(obj:id(),STR_EMPTY,"looted",true)
 		xr_corpse_detection.set_valuable_loot(obj:id(),false)
 	else
 		local hud = get_hud()
@@ -320,6 +321,7 @@ function monster_on_actor_use_callback(obj,who)
 				ui_mutant_loot.loot_ui(get_hud(),obj,obj:id(),obj:section(),obj:clsid())
 			else
 				utils.save_var(obj,"looted",true)
+				utils.se_obj_save_var(obj:id(),STR_EMPTY,"looted",true)
 				xr_corpse_detection.set_valuable_loot(obj:id(),false)
 
 				local t = {}

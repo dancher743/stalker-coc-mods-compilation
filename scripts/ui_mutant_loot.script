@@ -159,6 +159,7 @@ function loot_ui:FillList()
 		end
 		SetHudMsg("st_nothing_useful",4)
 		utils.save_var(self.obj,"looted",true)
+		utils.se_obj_save_var(self.obj:id(),STR_EMPTY,"looted",true)
 		xr_corpse_detection.set_valuable_loot(self.id,false)
 	end
 end
@@ -212,6 +213,7 @@ function loot_ui:OnListItemDbClicked()
 
 	if is_empty(self.loot) then
 	utils.save_var(self.obj,"looted",true)
+	utils.se_obj_save_var(self.obj:id(),STR_EMPTY,"looted",true)
 	xr_corpse_detection.set_valuable_loot(self.id,false)
 	self:HideDialog()
 	else
@@ -235,6 +237,7 @@ function loot_ui:OnButton_ok()
 	self.loot[sec] = nil
 	end
 	utils.save_var(self.obj,"looted",true)
+	utils.se_obj_save_var(self.obj:id(),STR_EMPTY,"looted",true)
 	xr_corpse_detection.set_valuable_loot(self.id,false)
 	self:HideDialog()
 end

@@ -92,7 +92,7 @@ local function monster_on_death_callback(obj,who)
 	
 	HasValuableLoot[obj:id()] = nil
 	
-	if not (utils.load_var(obj,"looted")) then
+	if not (utils.load_var(obj,"looted") or utils.se_obj_load_var(obj:id(),STR_EMPTY,"looted")) then
 		HasValuableLoot[obj:id()] = true
 	end
 end
@@ -112,7 +112,7 @@ local function on_pstor_load_all(obj)
 		return 
 	end
 
-	if not (utils.load_var(obj,"looted")) then
+	if not (utils.load_var(obj,"looted") or utils.se_obj_load_var(obj:id(),STR_EMPTY,"looted")) then
 		HasValuableLoot[obj:id()] = true
 	end
 end
@@ -220,7 +220,7 @@ function get_all_from_corpse(npc)
 			end
 		end
 	
-		local looted = utils.load_var(corpse_npc,"looted",nil)
+		local looted = utils.load_var(corpse_npc,"looted",nil) or utils.se_obj_load_var(corpse_npc:id(),STR_EMPTY,"looted")
 		if (not looted and itms_manager) then
 			local loot = {}
 			itms_manager.loot_mutant(nil,corpse_npc:clsid(),loot,npc)
@@ -237,6 +237,7 @@ function get_all_from_corpse(npc)
 				xr_sound.set_sound_play(id,"corpse_loot_bad")
 			end
 			utils.save_var(corpse_npc,"looted",true)
+			utils.se_obj_save_var(corpse_npc:id(),STR_EMPTY,"looted",true)
 		end
 		return
 	end

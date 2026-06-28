@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
+* Fixed loot in dead NPC's inventory after Offline Combats
 
 ## [1.5.4] - 2026-04-14
 

@@ -138,8 +138,23 @@ local function calculate_squad_power(squad)
 	return power
 end
 
-local function relocate_loot(se_killer, se_victim)
+local function relocate_loot(is_killer_stalker, is_victim_stalker, killer_community, se_killer, se_victim)
+	if (is_killer_stalker and not is_victim_stalker) then
+		utils.se_obj_save_var(se_victim.id,STR_EMPTY,"looted",true)
+		return
+	end
+	
+	if (not is_killer_stalker or
+		killer_community == community.zombied or
+		not is_victim_stalker or
+		not loot_items[se_victim.id] or
+		not loot_items[se_killer.id])
+	then
+		return
+	end
+	
 	local victim_items = loot_items[se_victim.id]
+	
 	for i = #victim_items, 1, -1 do
 		local victim_item = get_se_obj(victim_items[i])
 		
@@ -157,6 +172,8 @@ local function relocate_loot(se_killer, se_victim)
 			end
 		end
 	end
+	
+	utils.se_obj_save_var(se_victim.id,STR_EMPTY,"death_dropped",true)
 end
 
 -- from Anomaly 1.5.1.2
@@ -176,11 +193,7 @@ local function execute_kill(se_killer, se_victim, killer_squad, victim_squad)
 		se_killer:set_rank(se_killer:rank() + add_rank_points)
 	end
 	
-	if (is_killer_stalker and killer_community ~= community.zombied and is_victim_stalker and 
-		loot_items[se_victim.id] and loot_items[se_killer.id]) 
-	then
-		relocate_loot(se_killer, se_victim)
-	end
+	relocate_loot(is_killer_stalker, is_victim_stalker, killer_community, se_killer, se_victim)
 	
 	se_victim:on_death(se_killer)
 end
