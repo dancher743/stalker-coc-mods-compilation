@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Improvements
 * Added Duty Outpost At Garbage to Fast Travel
 * Added cuckoo ambient sound from OLR 3.0
+* Rebalanced chances of getting an artifacts from corpses based on original CoC chance
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
