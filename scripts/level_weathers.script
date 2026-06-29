@@ -214,7 +214,7 @@ end
 function WeatherManager:get_period_occur_chance(period)
 	local val = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. period .. "_occur",2,4)
 	val = tonumber(val)
-	local chance = (val == 4 and 0.8) or (val == 3 and 0.4) or (val == 2 and 0.2) or (val == 1 and 0)
+	local chance = (val == 4 and 0.8) or (val == 3 and 0.4) or (val == 2 and 0.1) or (val == 1 and 0)
 	return chance
 end
 
