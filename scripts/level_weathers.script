@@ -223,13 +223,12 @@ function WeatherManager:get_next_period(period)
 	local next_periods = {}
 	
 	for i=1,#available_periods do
-		local occur_chance = self:get_period_occur_chance(available_periods[i])
-		if (math.random() < occur_chance) then
-			next_periods[#next_periods + 1] = available_periods[i]
-		end
+		local period_name = available_periods[i]
+		local period_occur = self:get_period_occur_chance(period_name)
+		next_periods[period_name] = period_occur
 	end
 	
-	next_period = #next_periods > 0 and next_periods[math.random(#next_periods)] or period
+	local next_period = utils.random_with_weights(next_periods) or period
 	return next_period
 end
 

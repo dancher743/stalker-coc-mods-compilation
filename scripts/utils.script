@@ -1097,3 +1097,21 @@ function ini_r_string_explode(ini,section,line)
 	
 	return alun_utils.str_explode(value,STR_COMMA)
 end
+
+function random_with_weights(t)
+	local sumWeight = 0
+	
+	for _,weight in pairs(t) do
+		sumWeight = sumWeight + weight
+	end
+	
+	local randomWeight = math.random() * sumWeight
+	local currentWeight = 0
+	
+	for k,weight in pairs(t) do
+		currentWeight = currentWeight + weight
+		if randomWeight <= currentWeight then
+			return k
+		end
+	end
+end
