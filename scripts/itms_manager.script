@@ -181,7 +181,6 @@ function on_item_drag_dropped(itm1,itm2,from_slot,to_slot)
 		if (new_condition > c_max) then 
 			new_condition = c_max
 		end
-		play_repaired_sound(repair_type)
 		
 		--printf("%s:set_condition(%s)",itm2:name(),new_condition)
 		itm2:set_condition(new_condition)
@@ -206,6 +205,9 @@ function on_item_drag_dropped(itm1,itm2,from_slot,to_slot)
 			end
 		end
 		
+		play_repaired_sound(repair_type)
+		inc_rank(itm2)
+		
 		ActorMenu.get_actor_menu():refresh_current_cell_item()
 	end
 	
@@ -224,6 +226,16 @@ function play_repaired_sound(repair_type)
 		xr_sound.play_sound_by_path("lr\\weapon_repaired")
 	elseif (repair_type == "outfit") then
 		xr_sound.play_sound_by_path("lr\\outfit_repaired")
+	end
+end
+
+function inc_rank(itm)
+	if (IsWeapon(itm)) then
+		xr_statistic.inc_rank("weapons_repaired")
+	elseif (IsOutfit(itm)) then
+		xr_statistic.inc_rank("outfits_repaired")
+	elseif (IsHeadgear(itm)) then
+		xr_statistic.inc_rank("headgears_repaired")
 	end
 end
 

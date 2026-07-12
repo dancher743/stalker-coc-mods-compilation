@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 * Rebalanced chances of getting an artifacts from corpses based on original CoC chance
 * Decreased chances of "rare" weather occurrence
 * Configured subperiods weights
+* Added slight rank increase by repairing with toolkits
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
