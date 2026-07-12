@@ -173,7 +173,7 @@ local function relocate_loot(is_killer_stalker, is_victim_stalker, killer_commun
 		end
 	end
 	
-	utils.se_obj_save_var(se_victim.id,STR_EMPTY,"death_dropped",true)
+	utils.se_obj_save_var(se_victim.id,STR_EMPTY,"dont_spawn_loot",true)
 end
 
 -- from Anomaly 1.5.1.2

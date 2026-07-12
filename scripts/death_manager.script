@@ -87,6 +87,10 @@ function create_release_item(npc)
 	if (st and st.ini and st.section_logic and st.ini:line_exist(st.section_logic,"dont_spawn_loot")) then 
 		return
 	end
+	
+	if (utils.se_obj_load_var(npc:id(),STR_EMPTY,"dont_spawn_loot") == true) then
+		return
+	end
 
 	local spawn_items = item_by_community[character_community(npc)]
 	if spawn_items == nil then
