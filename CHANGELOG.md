@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
 * Fixed loot in dead NPC's inventory after Offline Combats
 * Reworked weather occurrence from random selection to weighted random selection
+* Restored original jokes for Mercenaries (from SoC/CS)
 
 ### Framework
 * Added `random_with_weights` function into `utils.script`
