@@ -176,7 +176,7 @@ function generic_object_binder:death_callback(victim, who)
 	db.delete_enemy(victim)
 
 	-- This is necessary because hit callback is not triggered if it takes a single blow to kill npc
-	self:hit_callback(victim, 1, vector():set(0,0,0), who, "from_death_callback")
+	self:hit_callback(victim, 1, VEC_ZERO, who, "from_death_callback")
 
 	if (who) then
 		if (who:id() == db.actor:id()) then

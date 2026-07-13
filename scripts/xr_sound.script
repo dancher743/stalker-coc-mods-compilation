@@ -345,7 +345,7 @@ function set_sound(npc, sound, now, into_timeout)
 --			printf("*SND* change SND [%s] to [%s] for [%s]", tostring(db.sound[npc_id].theme), tostring(sound), npc:name())
 --		end
 		-- Туточки надобно распарсить имена тем в их id
-		if sound == nil then sound = "" end
+		if sound == nil then sound = STR_EMPTY end
 		if db.sound[npc_id] == nil then db.sound[npc_id] = {} end
 		db.sound[npc_id].theme = sound
 		db.sound[npc_id].snd = parse_names(sound)
@@ -487,7 +487,7 @@ function set_actor_sound(sound)
 	--printf("*ACTOR SND* try to change SND to [%s]", tostring(sound))
 	if actor_sound.theme ~= sound then
 		--' Туточки надобно распарсить имена тем в их id
-		if sound == nil then sound = "" end
+		if sound == nil then sound = STR_EMPTY end
 		actor_sound.theme = sound
 		actor_sound.begin = nil
 

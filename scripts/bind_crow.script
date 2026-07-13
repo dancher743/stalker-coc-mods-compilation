@@ -34,7 +34,7 @@ function crow_binder:update(delta)
 			self.object:set_tip_text("st_screen_field_dress")
 		else
 			self.object:set_callback(callback.use_object, nil)
-			self.object:set_tip_text("")
+			self.object:set_tip_text(STR_EMPTY)
 		end
 		--Alundaio
 	end

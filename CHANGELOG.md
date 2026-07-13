@@ -20,6 +20,9 @@ All notable changes to this project will be documented in this file.
 * Restored original jokes for Mercenaries (from SoC/CS)
 * Fixed influence of player's "Well Dressed" achievement on mutant loot for NPC
 
+### Optimization
+* Replaced some allocations with global constants
+
 ### Framework
 * Added `random_with_weights` function into `utils.script`
 

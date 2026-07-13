@@ -576,7 +576,7 @@ function send_to_nearest_accessible_vertex(npc,v_id,caller)
 		return npc:level_vertex_id()
 	end
 	if not (npc:accessible(v_id)) then
-		local new_lvid,vtemp = npc:accessible_nearest(level.vertex_position(v_id),vector():set(0,0,0))
+		local new_lvid,vtemp = npc:accessible_nearest(level.vertex_position(v_id),VEC_ZERO)
 		npc:set_dest_level_vertex_id(new_lvid)
 		return new_lvid
 	end

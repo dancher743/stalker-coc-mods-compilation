@@ -538,7 +538,7 @@ function evaluator_gather_items:evaluate()
 	end 
 	
 	local enabled = xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.gather_items_enabled) or STR_TRUE
-	if (enabled ~= "true") then
+	if (enabled ~= STR_TRUE) then
 		return false
 	end
 

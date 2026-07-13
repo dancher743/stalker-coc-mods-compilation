@@ -1636,13 +1636,13 @@ function cmd.level(me,txt,owner,p)
 				data.dest_game_vertex_id = gvid
 				data.dest_level_vertex_id = lvid
 				data.dest_position = pos
-				data.dest_direction = vector():set(0,0,0)
+				data.dest_direction = VEC_ZERO
 				data.dest_level_name = level
 				data.silent_mode = 1
 				
 				data.shapes[1] = {}
 				data.shapes[1].shtype = 0
-				data.shapes[1].offset = vector():set(0,0,0)
+				data.shapes[1].offset = VEC_ZERO
 				data.shapes[1].radius = 5
 				
 				data.hint = "level_changer_invitation"
