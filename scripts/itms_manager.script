@@ -635,39 +635,47 @@ function is_ammo_for_wpn(sec)
 	return false
 end
 
-
+local clsid_to_section = nil
 
 function loot_mutant(obj,cls,t,npc)
+	local cls = cls or obj and obj:clsid()
+	local sim = alife()
+	local se_npc = npc and sim:object(npc:id()) or sim:actor()
+	loot_mutant_se(cls,t,se_npc)
+end
+
+function loot_mutant_se(cls,t,se_npc)
 	if not (db.actor) then 
 		return 
 	end 
 	
-	local cls = cls or obj and obj:clsid()
 	if not (cls) then
 		return
 	end
 
-	local clsid_to_section = {
-		[clsid.bloodsucker_s] 	= "bloodsucker",
-		[clsid.boar_s] 			= "boar",
-		[clsid.burer_s] 		= "burer",
-		[clsid.chimera_s]		= "chimera",
-		[clsid.controller_s]	= "controller",
-		[clsid.dog_s]			= "dog",
-		[clsid.flesh_s]			= "flesh",
-		[clsid.gigant_s]		= "gigant",
-		[clsid.poltergeist_s]	= "poltergeist",
-		[clsid.psy_dog_s]		= "psy_dog",
-		[clsid.psy_dog_phantom_s] = "psy_dog",
-		[clsid.pseudodog_s]		= "pseudodog",
-		[clsid.snork_s]			= "snork",
-		[clsid.tushkano_s]		= "tushkano",
-		[clsid.cat_s]			= "cat",
-		[clsid.fracture_s]		= "fracture",
-		[clsid.zombie_s]		= "zombie",
-		[clsid.crow]			= "crow",
-		[clsid.rat_s]			= "rat"
-	}
+	if (clsid_to_section == nil) then
+		clsid_to_section = {
+			[clsid.bloodsucker_s] 	= "bloodsucker",
+			[clsid.boar_s] 			= "boar",
+			[clsid.burer_s] 		= "burer",
+			[clsid.chimera_s]		= "chimera",
+			[clsid.controller_s]	= "controller",
+			[clsid.dog_s]			= "dog",
+			[clsid.flesh_s]			= "flesh",
+			[clsid.gigant_s]		= "gigant",
+			[clsid.poltergeist_s]	= "poltergeist",
+			[clsid.psy_dog_s]		= "psy_dog",
+			[clsid.psy_dog_phantom_s] = "psy_dog",
+			[clsid.pseudodog_s]		= "pseudodog",
+			[clsid.snork_s]			= "snork",
+			[clsid.tushkano_s]		= "tushkano",
+			[clsid.cat_s]			= "cat",
+			[clsid.fracture_s]		= "fracture",
+			[clsid.zombie_s]		= "zombie",
+			[clsid.crow]			= "crow",
+			[clsid.rat_s]			= "rat"
+		}
+	end
 
 	local loot_table = alun_utils.collect_section(ini,clsid_to_section[cls])
 
@@ -681,14 +689,15 @@ function loot_mutant(obj,cls,t,npc)
 
 			loot[2] = tonumber(loot[2])
 			loot[3] = tonumber(loot[3])
-			if(has_alife_info("achieved_well_dressed")) then
+			local se_npc_id = se_npc.id
+			if(se_npc_id == 0 and has_alife_info("achieved_well_dressed")) then
 				loot[3] = utils.clamp01(loot[3] + 0.2)
 				--printf("bonus loot")
 			end
 			for i=1,loot[2] do
 				if ((math.random(1,100)/100) <= loot[3]) then
 					--printf("loot_mutant: section=%s",loot[1])
-					local se_obj = alife():create(loot[1],npc and npc:position() or db.actor:position(),0,0,npc and npc:id() or 0)
+					local se_obj = alife():create(loot[1],se_npc.position,0,0,se_npc_id)
 					if (se_obj) then
 						if (t) then
 							local item_section = loot[1]

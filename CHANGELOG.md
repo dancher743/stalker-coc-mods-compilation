@@ -11,12 +11,14 @@ All notable changes to this project will be documented in this file.
 * Decreased chances of "rare" weather occurrence
 * Configured subperiods weights
 * Added slight rank increase by repairing with toolkits
+* Added mutant loot relocation to NPC in Offline Combats
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
 * Fixed loot in dead NPC's inventory after Offline Combats
 * Reworked weather occurrence from random selection to weighted random selection
 * Restored original jokes for Mercenaries (from SoC/CS)
+* Fixed influence of player's "Well Dressed" achievement on mutant loot for NPC
 
 ### Framework
 * Added `random_with_weights` function into `utils.script`

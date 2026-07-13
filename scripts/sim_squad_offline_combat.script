@@ -140,6 +140,7 @@ end
 
 local function relocate_loot(is_killer_stalker, is_victim_stalker, killer_community, se_killer, se_victim)
 	if (is_killer_stalker and not is_victim_stalker) then
+		itms_manager.loot_mutant_se(se_victim:clsid(),nil,se_killer)
 		utils.se_obj_save_var(se_victim.id,STR_EMPTY,"looted",true)
 		return
 	end
