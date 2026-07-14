@@ -140,7 +140,16 @@ end
 
 local function relocate_loot(is_killer_stalker, is_victim_stalker, killer_community, se_killer, se_victim)
 	if (is_killer_stalker and not is_victim_stalker) then
-		itms_manager.loot_mutant_se(se_victim:clsid(),nil,se_killer)
+		local killer_items = loot_items[se_killer.id]
+		if (killer_items) then
+			local t = {}
+			itms_manager.loot_mutant_se(se_victim:clsid(),t,se_killer)
+			for _,v in pairs(t) do
+				for _,id in ipairs(v) do
+					table.insert(killer_items, id)
+				end
+			end
+		end
 		utils.se_obj_save_var(se_victim.id,STR_EMPTY,"looted",true)
 		return
 	end
