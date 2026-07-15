@@ -17,7 +17,7 @@ All notable changes to this project will be documented in this file.
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
 * Fixed loot in dead NPC's inventory after Offline Combats
 * Reworked weather occurrence from random selection to weighted random selection
-* Restored original jokes for Mercenaries (from SoC/CS)
+* Restored original campfire replicas for Mercenaries (from SoC/CS)
 * Fixed influence of player's "Well Dressed" achievement on mutant loot for NPC
 
 ### Optimization
