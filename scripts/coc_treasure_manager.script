@@ -45,6 +45,8 @@ local ltx = ini_file("plugins\\coc_treasure_manager.ltx")
 local valid_item_list = nil
 
 local unique_weapons = {}
+
+local descr_type_weights = { [0] = 10, [1] = 80, [2] = 10 }
 ------------------------------------------------------------------------------------------------------------------
 --							PRIVATE
 ------------------------------------------------------------------------------------------------------------------
@@ -772,31 +774,25 @@ function get_extended_hint(sim,stash,hint,id)
 	local name
 	local descr
 	
-	local descr_type = stash_name == nil and 0 or 1
-
-	if hint and string.match(hint, string.format(game.translate_string("st_itm_stash_of_character"),STR_EMPTY,STR_EMPTY)) then
-		if (math.random(100) <= 30) then
-			descr_type = 0
-		elseif (math.random(100) <= 20) then
-			descr_type = 2
-		end
-	end
-	
-	if descr_type == 1 then
-		name = get_hint_part(stash_name, "name", "st_ui_pda_secret")
-		descr = get_hint_part(stash_name, "descr", "st_stash_no_descr")
-	end
+	local descr_type = stash_name == nil and 0 or utils.random_with_weights(descr_type_weights)
 	
 	if descr_type == 0 then
 		name = game.translate_string("st_ui_pda_secret")
 		descr = game.translate_string("st_stash_no_descr")
+	elseif descr_type == 1 then
+		name = get_hint_part(stash_name, "name", "st_ui_pda_secret")
+		descr = get_hint_part(stash_name, "descr", "st_stash_no_descr")
 	elseif descr_type == 2 then
 		name = game.translate_string("st_ui_pda_secret")
 		descr = get_hint_part(stash_name, "descr", "st_stash_no_descr")
-		descr = game.translate_string("st_stash_encrypt_descr").."\\n"..base64.encode(descr)
+		descr = game.translate_string("st_stash_encrypt_descr") .. "\\n" .. base64.encode(descr)
 	end
 	
-	local extended_hint = "%c[255,255,160,0]" .. name .. "\\n%c[default]" .. descr .. "\\n%c[160,0,255,255]" .. (hint or STR_EMPTY)
+	local extended_hint = "%c[255,255,160,0]" .. name .. "\\n%c[default]" .. descr
+	
+	if (hint) then
+		extended_hint = extended_hint .. "\\n%c[160,0,255,255]" .. hint
+	end
 
 	return extended_hint, name
 end

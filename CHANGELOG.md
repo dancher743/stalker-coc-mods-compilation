@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 * Added slight rank increase by repairing with toolkits
 * Added mutant loot relocation to NPC in Offline Combats
 * Restored sleeping sounds for NPC
+* Reworked stashes descriptions
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
@@ -24,6 +25,7 @@ All notable changes to this project will be documented in this file.
 * Restored original campfire replicas for Mercenaries (from SoC/CS)
 * Fixed influence of player's "Well Dressed" achievement on mutant loot for NPC
 * Separated money looting from stash looting
+* Fixed missing encrypted stashes descriptions
 
 ### Optimization
 * Replaced some allocations with global constants
