@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [1.5.5] - Unreleased
 
+### Features
+* Added "newbie" character sounds for novices
+
 ### Improvements
 * Added Duty Outpost At Garbage to Fast Travel
 * Added cuckoo ambient sound from OLR 3.0
