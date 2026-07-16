@@ -20,12 +20,14 @@ All notable changes to this project will be documented in this file.
 * Reworked weather occurrence from random selection to weighted random selection
 * Restored original campfire replicas for Mercenaries (from SoC/CS)
 * Fixed influence of player's "Well Dressed" achievement on mutant loot for NPC
+* Separated money looting from stash looting
 
 ### Optimization
 * Replaced some allocations with global constants
 
 ### Framework
 * Added `random_with_weights` function into `utils.script`
+* Added default value to `se_obj_load_var` function in `utils.script`
 
 ## [1.5.4] - 2026-04-14
 

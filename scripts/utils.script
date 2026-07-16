@@ -891,11 +891,15 @@ function se_obj_save_var(id,name,varname,val)
 	end
 end
 
-function se_obj_load_var(id,name,varname)
+function se_obj_load_var(id,name,varname,def)
 	local m_data = alife_storage_manager.get_state()
 	if (m_data.se_object[id]) then
-		return m_data.se_object[id][varname]
+		local varvalue = m_data.se_object[id][varname]
+		if (varvalue ~= nil) then
+			return varvalue
+		end
 	end
+	return def
 end
 
 function pos_in_rect(p,r)
