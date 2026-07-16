@@ -7539,7 +7539,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_stalker_0</class>
     <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_01\stalker\</snd_config>
+    <snd_config>characters_voice\human_01\newbie\</snd_config>
     <rank>17</rank>
     <money min="250" max="1750" infinitive="0"/>
     <reputation>2475</reputation>
@@ -7565,7 +7565,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_stalker_0</class>
     <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_01\stalker\</snd_config>
+    <snd_config>characters_voice\human_01\newbie\</snd_config>
     <rank>40</rank>
     <money min="250" max="1750" infinitive="0"/>
     <reputation>1525</reputation>
@@ -7696,7 +7696,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_stalker_0</class>
     <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_01\stalker\</snd_config>
+    <snd_config>characters_voice\human_01\newbie\</snd_config>
     <rank>187</rank>
     <money min="250" max="1750" infinitive="0"/>
     <reputation>-2201</reputation>
@@ -7775,7 +7775,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_stalker_0</class>
     <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_01\stalker\</snd_config>
+    <snd_config>characters_voice\human_02\newbie\</snd_config>
     <rank>130</rank>
     <money min="250" max="1750" infinitive="0"/>
     <reputation>-421</reputation>
@@ -7905,7 +7905,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_stalker_0</class>
     <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_01\stalker\</snd_config>
+    <snd_config>characters_voice\human_02\newbie\</snd_config>
     <rank>216</rank>
     <money min="250" max="1750" infinitive="0"/>
     <reputation>1913</reputation>
@@ -7983,7 +7983,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_stalker_0</class>
     <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_01\stalker\</snd_config>
+    <snd_config>characters_voice\human_01\newbie\</snd_config>
     <rank>32</rank>
     <money min="250" max="1750" infinitive="0"/>
     <reputation>-1175</reputation>
@@ -8036,7 +8036,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_stalker_0</class>
     <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_01\stalker\</snd_config>
+    <snd_config>characters_voice\human_01\newbie\</snd_config>
     <rank>29</rank>
     <money min="250" max="1750" infinitive="0"/>
     <reputation>983</reputation>
@@ -8141,7 +8141,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_stalker_0</class>
     <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_03\stalker\</snd_config>
+    <snd_config>characters_voice\human_03\newbie\</snd_config>
     <rank>863</rank>
     <money min="250" max="1750" infinitive="0"/>
     <reputation>-18</reputation>
@@ -8167,7 +8167,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_stalker_0</class>
     <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_03\stalker\</snd_config>
+    <snd_config>characters_voice\human_03\newbie\</snd_config>
     <rank>831</rank>
     <money min="250" max="1750" infinitive="0"/>
     <reputation>-853</reputation>
@@ -8219,7 +8219,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_stalker_0</class>
     <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_03\stalker\</snd_config>
+    <snd_config>characters_voice\human_03\newbie\</snd_config>
     <rank>528</rank>
     <money min="250" max="1750" infinitive="0"/>
     <reputation>-1500</reputation>
@@ -8271,7 +8271,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_stalker_0</class>
     <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_01\stalker\</snd_config>
+    <snd_config>characters_voice\human_02\newbie\</snd_config>
     <rank>99</rank>
     <money min="250" max="1750" infinitive="0"/>
     <reputation>-2156</reputation>
@@ -8429,7 +8429,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_stalker_0</class>
     <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_01\stalker\</snd_config>
+    <snd_config>characters_voice\human_02\newbie\</snd_config>
     <rank>71</rank>
     <money min="250" max="1750" infinitive="0"/>
     <reputation>111</reputation>
