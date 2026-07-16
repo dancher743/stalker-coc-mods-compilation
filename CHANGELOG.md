@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 * Configured subperiods weights
 * Added slight rank increase by repairing with toolkits
 * Added mutant loot relocation to NPC in Offline Combats
+* Restored sleeping sounds for NPC
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"

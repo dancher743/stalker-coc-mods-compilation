@@ -1,0 +1,46 @@
+--
+-- Sounds for a sleeping NPC.
+-- The sound code in xr_sleeper.script does not work.
+-- Author: Dancher
+--
+
+local sleeping_anim_name = "sleeping"
+local sleeping_sound_name = "sleep"
+
+local play_prob = nil
+local timers = nil
+
+local function is_npc_asleep(st)
+	return st.state_mgr.animation.states.current_state == sleeping_anim_name
+end
+
+local function npc_update(npc,st)
+	if (is_npc_asleep(st) == false) then
+		return
+	end
+	
+	local npc_id = npc:id()
+	local time_global = time_global()
+	
+	local timer = timers[npc_id] or 0
+	if (timer > time_global) then
+		return
+	end
+	
+	xr_sound.stop_sounds_by_id(npc_id)
+	if (has_chance01(play_prob)) then
+		xr_sound.set_sound_play(npc_id, sleeping_sound_name)
+	end
+	
+	timers[npc_id] = time_global + 30000
+end
+
+local function actor_on_first_update()
+	play_prob = sound_theme.get_play_prob(sleeping_sound_name)
+	timers = {}
+end
+
+function on_game_start()
+	RegisterScriptCallback("actor_on_first_update", actor_on_first_update)
+	RegisterScriptCallback("npc_on_update", npc_update)
+end
