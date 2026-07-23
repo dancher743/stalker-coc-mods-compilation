@@ -28,6 +28,8 @@ local function play_inv_sound(player_char)
 	inv_sound:play(player_char,0,sound_object.s2d)
 end
 
+local stash_dropped_varname = "lootmoney_stash_dropped"
+
 function on_game_start()
 	RegisterScriptCallback("on_game_load", on_game_load)
 end
@@ -95,16 +97,16 @@ function lootmoney(npc) -- player character is looting a npc or creature
 		end
 	end -- if drop chance higher than random value between 1, 99 exit
 	
-	local lootmoney_stash_dropped = utils.se_obj_load_var(npc_id,STR_EMPTY,"lootmoney_stash_dropped",false)
-	if (has_chance(lootmoney_stashchance) and lootmoney_stash and lootmoney_stash_dropped == false) then -- spawn random stash
+	local stash_dropped = utils.se_obj_load_var(npc_id,STR_EMPTY,stash_dropped_varname,false)
+	if (has_chance(lootmoney_stashchance) and lootmoney_stash and stash_dropped == false) then -- spawn random stash
 		local bonus = {}
 		if (has_chance01(0.5)) then
 			coc_treasure_manager.try_add_unique_weapon(bonus)
 		end
 		local hint = strformat(strtransl("st_itm_stash_of_character"), npc_name, strtransl(character_community(npc)))
 		coc_treasure_manager.create_random_stash(nil, hint, bonus)
-		utils.se_obj_save_var(npc_id,STR_EMPTY,"lootmoney_stash_dropped",true)
 	end
+	utils.se_obj_save_var(npc_id,STR_EMPTY,stash_dropped_varname,true)
 	
 	debug_sc(
 		strformat("You collected money from NPC. Chance: %s. Stalker: %c[66,167,245,0]%s%c[default]", rnd_value, npc_name)
