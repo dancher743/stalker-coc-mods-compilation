@@ -176,7 +176,7 @@ end
 
 function explode_config_minmax(rank, t)
 	local ini_string = alun_utils.read_from_ini(config_ini, "rank_money", rank, STR_STRING)
-	local v = alun_utils.str_explode(ini_string, ",", false)
+	local v = alun_utils.str_explode(ini_string, STR_COMMA, false)
 	if t == 1 then
 		return tonumber(v[1])
 	elseif t == 2 then
