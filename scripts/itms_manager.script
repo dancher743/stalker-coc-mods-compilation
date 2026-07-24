@@ -337,7 +337,7 @@ function monster_on_actor_use_callback(obj,who)
 				xr_corpse_detection.set_valuable_loot(obj:id(),false)
 
 				local t = {}
-				loot_mutant(nil,obj:clsid(),t)
+				loot_mutant(nil,obj:clsid(),t,db.actor)
 				for sec,v in pairs(t) do
 					for i=1,v.count do
 						xr_statistic.inc_counter("field_dressings")
@@ -635,21 +635,35 @@ function is_ammo_for_wpn(sec)
 	return false
 end
 
-local clsid_to_section = nil
-
 function loot_mutant(obj,cls,t,npc)
 	local cls = cls or obj and obj:clsid()
-	local sim = alife()
-	local se_npc = npc and sim:object(npc:id()) or sim:actor()
+	local se_npc = alife_object(npc:id())
 	loot_mutant_se(cls,t,se_npc)
 end
 
 function loot_mutant_se(cls,t,se_npc)
-	if not (db.actor) then 
-		return 
+	if not (db.actor) or not (se_npc) then
+		return
 	end 
 	
-	if not (cls) then
+	local id = se_npc.id
+	fill_mutant_loot_table(cls,t,id)
+	
+	if (t) then
+		local pos = se_npc.position
+		local sim = alife()
+		for sec,v in pairs(t) do
+			for i=1,v.count do
+				sim:create(sec,pos,0,0,id)
+			end
+		end
+	end
+end
+
+local clsid_to_section = nil
+
+function fill_mutant_loot_table(cls,t,npc_id)
+	if not (cls) or not (t) then
 		return
 	end
 
@@ -689,26 +703,20 @@ function loot_mutant_se(cls,t,se_npc)
 
 			loot[2] = tonumber(loot[2])
 			loot[3] = tonumber(loot[3])
-			local se_npc_id = se_npc.id
-			if(se_npc_id == 0 and has_alife_info("achieved_well_dressed")) then
+			if (npc_id == 0 and has_alife_info("achieved_well_dressed")) then
 				loot[3] = utils.clamp01(loot[3] + 0.2)
 				--printf("bonus loot")
 			end
 			for i=1,loot[2] do
 				if ((math.random(1,100)/100) <= loot[3]) then
 					--printf("loot_mutant: section=%s",loot[1])
-					local se_obj = alife():create(loot[1],se_npc.position,0,0,se_npc_id)
-					if (se_obj) then
-						if (t) then
-							local item_section = loot[1]
-							if not (t[item_section]) then
-								t[item_section] = {}
-							end
-							t[item_section].count = t[item_section].count and t[item_section].count + 1 or 1
-							t[item_section][t[item_section].count] = se_obj.id
-							--printf("loot_mutant")
-						end
+					local item_section = loot[1]
+					if not (t[item_section]) then
+						t[item_section] = {}
 					end
+					t[item_section].count = t[item_section].count and t[item_section].count + 1 or 1
+					t[item_section][t[item_section].count] = npc_id
+					--printf("loot_mutant")
 				end
 			end
 		end

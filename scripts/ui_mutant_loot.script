@@ -142,7 +142,7 @@ function loot_ui:FillList()
 	self.loot = utils.load_var(self.obj,"looting_tbl",nil)
 	if self.loot == nil then
 		self.loot = {}
-		itms_manager.loot_mutant(nil,self.clsid,self.loot)
+		itms_manager.fill_mutant_loot_table(self.clsid,self.loot,0)
 		utils.save_var(self.obj,"looting_tbl",self.loot)
 	end
 

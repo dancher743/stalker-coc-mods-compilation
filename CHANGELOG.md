@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 * Fixed influence of player's "Well Dressed" achievement on mutant loot for NPC
 * Separated money looting from stash looting
 * Fixed missing encrypted stashes descriptions
+* Fixed doubling of mutant loot
 
 ### Optimization
 * Replaced some allocations with global constants
