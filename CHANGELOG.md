@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 * Added mutant loot relocation to NPC in Offline Combats
 * Restored sleeping sounds for NPC
 * Reworked stashes descriptions
+* Removed `sim_actor_combat.script`
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"

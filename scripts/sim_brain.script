@@ -27,7 +27,6 @@ end
 
 function on_game_load()
 	if (IsEocMode()) then
-		sim_actor_combat.init()
 		override_combat_ignore()
 		smart_terrain.is_respawn_allowed = false
 		_G.DEACTIVATE_SIM_ON_NON_LINKED_LEVELS = false
@@ -149,10 +148,6 @@ local last_update
 function actor_on_update()
 	if (not IsEocMode()) then
 		UnregisterScriptCallback("actor_on_update", actor_on_update)
-		return
-	end
-	
-	if (sim_actor_combat.has_combat()) then
 		return
 	end
 
@@ -398,10 +393,6 @@ function smart_terrain_on_update(smart)
 		UnregisterScriptCallback("smart_terrain_on_update", smart_terrain_on_update)
 		return
 	end
-	
-	if (sim_actor_combat.has_combat()) then
-		return
-	end
 
 	sim_smart.smart_terrain_on_update(smart)
 end
@@ -409,10 +400,6 @@ end
 function squad_on_update(squad)
 	if (not IsEocMode()) then
 		UnregisterScriptCallback("squad_on_update", squad_on_update)
-		return
-	end
-	
-	if (sim_actor_combat.has_combat()) then
 		return
 	end
 
