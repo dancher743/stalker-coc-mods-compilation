@@ -1,0 +1,65 @@
+--
+-- Dead mutants spots
+-- Author: Dancher
+--
+
+local function has_spot(id)
+	return level.map_has_object_spot(id, "deadbody_location") == 1
+end
+
+local function try_add_spot(obj)
+	local id = obj:id()
+	
+	if (obj:alive() or has_spot(id)) then
+		return
+	end
+	
+	level.map_add_object_spot_ser(id, "deadbody_location", STR_EMPTY)
+end
+
+local function remove_spot(obj)
+	local id = obj:id()
+	
+	if (has_spot(id) == false) then
+		return
+	end
+	
+	level.map_remove_object_spot(id, "deadbody_location")
+end
+
+local function monster_on_net_spawn(obj)
+	try_add_spot(obj)
+end
+
+local function monster_on_death_callback(victim)
+	try_add_spot(victim)
+end
+
+function on_game_start()
+	if (get_check_option("mutant_dead_spots") == false) then
+		return
+	end
+	
+	RegisterScriptCallback("monster_on_net_spawn", monster_on_net_spawn)
+	RegisterScriptCallback("monster_on_death_callback", monster_on_death_callback)
+end
+
+function check_option_on_accept(value)
+	if (value) then
+		RegisterScriptCallback("monster_on_net_spawn", monster_on_net_spawn)
+		RegisterScriptCallback("monster_on_death_callback", monster_on_death_callback)
+	else
+		UnregisterScriptCallback("monster_on_net_spawn", monster_on_net_spawn)
+		UnregisterScriptCallback("monster_on_death_callback", monster_on_death_callback)
+	end
+	
+	for i=1, #db.OnlineMonsters do
+		local obj = level.object_by_id(db.OnlineMonsters[i])
+		
+		if (value) then
+			try_add_spot(obj)
+		else
+			remove_spot(obj)
+		end
+	end
+end
