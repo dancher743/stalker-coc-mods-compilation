@@ -30,6 +30,7 @@ All notable changes to this project will be documented in this file.
 * Separated money looting from stash looting
 * Fixed missing encrypted stashes descriptions
 * Fixed doubling of mutant loot
+* Fixed `sun_color`s of yellow moon
 
 ### Optimization
 * Replaced some allocations with global constants
