@@ -375,7 +375,7 @@ function WeatherManager:get_weather_section_name(period,subperiod)
 	if (subperiod) then
 		weather_section_name = strformat("%s\\%s",subperiod,weather_section_name)
 	else
-		weather_section_name = self:try_get_no_panorama_weather(weather_section_name)
+		weather_section_name = self:try_get_no_panorama_weather(period, weather_section_name)
 	end
 	return weather_section_name
 end
@@ -520,20 +520,15 @@ function WeatherManager:is_level_without_panorama()
 	return levels_without_panorama[level.name()]
 end
 
-function WeatherManager:try_get_no_panorama_weather(current_weather_section)
+function WeatherManager:try_get_no_panorama_weather(period, current_weather_section)
 	if (not self:is_level_without_panorama()) then
 		return current_weather_section
 	end
 	
 	local no_panorama_weather_section = nil
 	
-	if (string.find(current_weather_section, "clear")) then
-		local level_hours = level.get_time_hours()
-		local level_minutes = level.get_time_minutes()
-		
-		if (level_hours >= 4 and level_minutes >= 30 or level_hours <= 21 and level_minutes <= 30) then
-			no_panorama_weather_section = "without_panorama\\af3_day_clear"
-		end
+	if (period == "clear") then
+		no_panorama_weather_section = strformat("%s\\%s", "without_panorama", current_weather_section)
 	end
 	
 	return no_panorama_weather_section or current_weather_section
