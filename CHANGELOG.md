@@ -31,6 +31,7 @@ All notable changes to this project will be documented in this file.
 * Fixed missing encrypted stashes descriptions
 * Fixed doubling of mutant loot
 * Fixed `sun_color`s of yellow moon
+* Fixed overbrightnes of clear weather between 09:00-16:00
 
 ### Optimization
 * Replaced some allocations with global constants
