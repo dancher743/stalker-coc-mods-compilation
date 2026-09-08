@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 * Reworked stashes descriptions
 * Removed `sim_actor_combat.script`
 * Added AtmosFear 3 skyboxes to `21:30:00`-`22:30:00` sections of clear weather period
+* Returned to original amount of `simulation_zombie` squads in Survival mode
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
