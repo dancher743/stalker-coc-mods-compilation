@@ -1644,19 +1644,13 @@ function se_smart_terrain:try_respawn()
 			if (sect_to_spawn_params.squads) then
 				local squad
 				if (IsSurvivalMode() and not bar_smarts[self:name()] and math.random(1,100) < 90) then
-					local simulation_section
-					if (has_chance01(0.5)) then
-						simulation_section = "simulation_zombie"
-						if (has_chance01(0.1)) then
-							simulation_section = "simulation_zombie_ghost"
-						end
-					else
-						local t = {"zombied_sim_squad_","simulation_fracture","simulation_snork"}
-						simulation_section = t[math.random(#t)]
-						if (simulation_section == "zombied_sim_squad_") then
-							t = {"novice","advanced","veteran"}
-							simulation_section = simulation_section..t[math.random(#t)]
-						end
+					local t = {"simulation_zombie","simulation_zombie","zombied_sim_squad_","simulation_fracture","simulation_snork"}
+					local simulation_section = t[math.random(#t)]
+					if (simulation_section == "simulation_zombie" and math.random() < 0.1) then
+						simulation_section = "simulation_zombie_ghost"
+					elseif (simulation_section == "zombied_sim_squad_") then
+						t = {"novice","advanced","veteran"}
+						simulation_section = simulation_section..t[math.random(#t)]
 					end
 					squad = SIMBOARD:create_squad(self, simulation_section)
 				else 
