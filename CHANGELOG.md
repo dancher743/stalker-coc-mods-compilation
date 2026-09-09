@@ -42,6 +42,7 @@ All notable changes to this project will be documented in this file.
 * Added `random_with_weights` function into `utils.script`
 * Added default value to `se_obj_load_var` function in `utils.script`
 * Splited `sim_survival.script` into `sim_survival_mode.script` and `sim_survival_eoc_mode.script`
+* Added `monster_on_net_destroy` callback into `axr_main.script`
 
 ## [1.5.4] - 2026-04-14
 

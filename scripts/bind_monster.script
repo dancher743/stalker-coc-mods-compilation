@@ -328,6 +328,10 @@ function generic_object_binder:net_destroy()
 	self.object:set_callback(callback.sound,nil)
 	self.object:set_callback(callback.use_object,nil)
 	xr_sound.stop_sounds_by_id(self.object:id())
+	
+	-- Dancher
+	SendScriptCallback("monster_on_net_destroy",self.object)
+	-- Dancher
 
 	xr_combat_ignore.fighting_with_actor_npcs[self.object:id()] = nil
 
@@ -349,7 +353,7 @@ function generic_object_binder:net_destroy()
 	if (USE_MARSHAL) then
 		UnregisterScriptCallback("save_state",self)
 	end
-
+	
 	db.del_obj(self.object)
 	db.delete_enemy(self.object)
 	local m_data = alife_storage_manager.get_state()
