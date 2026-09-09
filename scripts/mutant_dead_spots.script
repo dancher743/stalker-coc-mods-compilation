@@ -43,6 +43,10 @@ local function monster_on_death_callback(victim)
 	try_add_spot(victim)
 end
 
+local function monster_on_net_destroy(obj)
+	remove_spot(obj)
+end
+
 function on_game_start()
 	if (get_check_option("mutant_dead_spots") == false) then
 		return
@@ -50,15 +54,18 @@ function on_game_start()
 	
 	RegisterScriptCallback("monster_on_net_spawn", monster_on_net_spawn)
 	RegisterScriptCallback("monster_on_death_callback", monster_on_death_callback)
+	RegisterScriptCallback("monster_on_net_destroy", monster_on_net_destroy)
 end
 
 function check_option_on_accept(value)
 	if (value) then
 		RegisterScriptCallback("monster_on_net_spawn", monster_on_net_spawn)
 		RegisterScriptCallback("monster_on_death_callback", monster_on_death_callback)
+		RegisterScriptCallback("monster_on_net_destroy", monster_on_net_destroy)
 	else
 		UnregisterScriptCallback("monster_on_net_spawn", monster_on_net_spawn)
 		UnregisterScriptCallback("monster_on_death_callback", monster_on_death_callback)
+		UnregisterScriptCallback("monster_on_net_destroy", monster_on_net_destroy)
 	end
 	
 	for i=1, #db.OnlineMonsters do
