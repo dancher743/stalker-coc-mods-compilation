@@ -264,12 +264,7 @@ function simulation_board:fill_start_position()
 	end
 	self.start_position_filled = true
 	
-	local setting_ini
-	if (IsSurvivalMode()) then 
-		setting_ini = ini_file("misc\\simulation_survival_mode.ltx")
-	else 
-		setting_ini = ini_file("misc\\simulation.ltx")
-	end 
+	local setting_ini = ini_file("misc\\simulation.ltx")
 	
 	local stalker_pop_factor = (axr_main.config:r_value("character_creation","new_game_stalker_pop",3) or 1)
 	local monster_pop_factor = (axr_main.config:r_value("character_creation","new_game_mutant_pop",3) or 1)
@@ -282,6 +277,7 @@ function simulation_board:fill_start_position()
 			if (smart) then
 				result, squad_section, count = setting_ini:r_line(section,li,STR_EMPTY,STR_EMPTY)
 				count = tonumber(count) or 1
+				local is_sim_avail_squad = false
 				
 				if (string.find(squad_section,"sim_squad")) then
 					count = count*stalker_pop_factor
@@ -292,6 +288,7 @@ function simulation_board:fill_start_position()
 					else 
 						count = utils.round(count)
 					end
+					is_sim_avail_squad = true
 				elseif (string.find(squad_section,"simulation")) then
 					count = count*monster_pop_factor
 					if (count < 0.5) then
@@ -301,9 +298,13 @@ function simulation_board:fill_start_position()
 					else 
 						count = utils.round(count)
 					end
+					is_sim_avail_squad = true
 				end
 					
 				for i=1,count do
+					if (IsSurvivalMode() and is_sim_avail_squad) then
+						squad_section = sim_survival_mode.try_get_simulation_section(smart:name()) or squad_section
+					end
 					self:create_squad(smart,squad_section)
 				end
 			else 

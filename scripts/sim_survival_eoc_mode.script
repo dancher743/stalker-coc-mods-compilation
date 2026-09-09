@@ -1,5 +1,5 @@
 --
---	Function-helpers for a simulation of EOC's survival mode
+--	Function-helpers for a simulation of EOC-Survival mode
 --	Added by Dancher
 --
 
@@ -13,7 +13,7 @@ local enable_debug = false
 -- From Anomaly 1.5.1.2 mod
 local function print_dbg(fmt, ...)
 	if enable_debug then
-		printf("DANCHER | sim_survival.script : " .. fmt, ...)
+		printf("DANCHER | sim_survival_eoc_mode.script : " .. fmt, ...)
 	end
 end
 
@@ -56,8 +56,4 @@ end
 
 function contains_faction_prop(prop_count, prop_name)
 	return prop_count > 0 and sim_tables.factions_to_zombied_props[prop_name]
-end
-
-function are_factions_zombied_and_monster(f1, f2)
-	return (f1 == "zombied" and f2 == "monster") or (f1 == "monster" and f2 == "zombied")
 end

@@ -362,7 +362,7 @@ local function prepare_combats(squads)
 					local community2 = squad2:get_squad_community()
 					local are_enemies = nil
 					
-					if (is_survival_mode and sim_survival.are_factions_zombied_and_monster(community1, community2)) then
+					if (is_survival_mode and sim_survival_mode.are_factions_zombied_and_monster(community1, community2)) then
 						-- from Survival-EOC
 						are_enemies = false
 					else

@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 * Reworked stashes descriptions
 * Removed `sim_actor_combat.script`
 * Added AtmosFear 3 skyboxes to `21:30:00`-`22:30:00` sections of clear weather period
+* Improved start population of Survival mode
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
@@ -39,6 +40,7 @@ All notable changes to this project will be documented in this file.
 ### Framework
 * Added `random_with_weights` function into `utils.script`
 * Added default value to `se_obj_load_var` function in `utils.script`
+* Splited `sim_survival.script` into `sim_survival_mode.script` and `sim_survival_eoc_mode.script`
 
 ## [1.5.4] - 2026-04-14
 

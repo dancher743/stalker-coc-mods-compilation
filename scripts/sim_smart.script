@@ -107,11 +107,11 @@ function try_to_respawn_faction(smart)
 		return
 	end
 
-	if (IsSurvivalMode() and sim_survival.can_replace_faction_respawn()) then
+	if (IsSurvivalMode() and sim_survival_eoc_mode.can_replace_faction_respawn()) then
 		local faction = "zombied"
 		local base_count = sim_factions.faction_information[faction].base_count or 0
 		sim_factions.faction_information[faction].base_count = base_count + 1
-		local count = math.random(1,sim_survival.get_zombied_respawn_squads_count())
+		local count = math.random(1,sim_survival_eoc_mode.get_zombied_respawn_squads_count())
 		for i=1,count do
 			sim_squad.create_squad(smart, faction, nil, nil, nil, 1)
 		end
@@ -440,7 +440,7 @@ function spawn_mutants(smart)
 			
 			    if section then
 					if (IsSurvivalMode()) then
-						section = sim_survival.try_replace_mutant(section)
+						section = sim_survival_eoc_mode.try_replace_mutant(section)
 						if (section == nil) then
 							return
 						end
