@@ -8,6 +8,10 @@ local function has_spot(id)
 end
 
 local function try_add_spot(obj)
+	if (obj == nil) then
+		return
+	end
+	
 	local id = obj:id()
 	
 	if (obj:alive() or has_spot(id)) then
@@ -18,6 +22,10 @@ local function try_add_spot(obj)
 end
 
 local function remove_spot(obj)
+	if (obj == nil) then
+		return
+	end
+	
 	local id = obj:id()
 	
 	if (has_spot(id) == false) then
