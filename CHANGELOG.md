@@ -22,7 +22,7 @@ All notable changes to this project will be documented in this file.
 * Added AtmosFear 3 skyboxes to `21:30:00`-`22:30:00` sections of clear weather period
 * Improved start population of Survival mode
 * Returned original format of `send_treasure` tips
-* Corrected `ls_tip_7` string
+* Corrected strings `ls_tip_7` and `ls_tip_20`
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"

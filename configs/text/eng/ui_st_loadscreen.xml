@@ -86,7 +86,7 @@
 	</string>
 	
 	<string id="ls_tip_20">
-		<text>Online exclusion radius can be set via the game options and defaults to 25m. It creates a no-spawn area around the player preventing mutants and other stalkers spawning unfairly and dangerously close.</text>
+		<text>New artifacts may appear in anomalous areas that you've already explored after an emission.</text>
 	</string>
 	
 	<string id="ls_tip_21">
