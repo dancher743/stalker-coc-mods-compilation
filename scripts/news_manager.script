@@ -198,23 +198,22 @@ function send_task(actor, type, tsk)
 end
 
 function send_treasure(param, has_spot)
-	local news_caption = game.translate_string("st_tip")
-	local news_text = STR_EMPTY
+	local news_caption = STR_EMPTY
 	local news_icon = "ui_inGame2_Polucheni_koordinaty_taynika"
 	
 	if(param==0) then
-		news_text = game.translate_string("st_found_new_treasure")
+		news_caption = game.translate_string("st_found_new_treasure")
 	elseif(param==1) then
-		news_text = game.translate_string("st_got_treasure")
+		news_caption = game.translate_string("st_got_treasure")
 		dynamic_news_manager.get_dynamic_news():FoundStash(has_spot) -- send stash found news
 	elseif(param==2) then
-		news_text = game.translate_string("st_found_old_treasure")
+		news_caption = game.translate_string("st_found_old_treasure")
 	end
 
 	if db.actor:is_talking() then
-		db.actor:give_talk_message2(news_caption, news_text, news_icon, "iconed_answer_item")
+		db.actor:give_talk_message2(news_caption, STR_EMPTY, news_icon, "iconed_answer_item")
 	else
-		db.actor:give_game_news(news_caption, news_text, news_icon, 0, 3000)
+		db.actor:give_game_news(news_caption, STR_EMPTY, news_icon, 0, 3000)
 	end
 	
 	xr_sound.set_sound_play(db.actor:id(), "pda_tips")
