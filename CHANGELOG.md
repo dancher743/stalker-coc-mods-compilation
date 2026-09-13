@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 * Improved start population of Survival mode
 * Returned original format of `send_treasure` tips
 * Corrected strings `ls_tip_7` and `ls_tip_20`
+* Reworked rat mutant visuals
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
