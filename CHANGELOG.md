@@ -37,6 +37,7 @@ All notable changes to this project will be documented in this file.
 * Fixed `sun_color`s of yellow moon
 * Fixed overbrightnes of clear weather between 09:00-16:00
 * Included ecolog explorer squads into start population
+* Corrected descriptions of rodents items
 
 ### Optimization
 * Replaced some allocations with global constants
