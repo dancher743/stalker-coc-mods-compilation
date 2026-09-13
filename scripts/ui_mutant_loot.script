@@ -98,7 +98,7 @@ function loot_ui:SetMutantImage()
 	controller			= {file="ui\\ui_actor_monsters_pda",x="393",y="800",special=STR_ONE},
 	chimera				= {file="ui\\ui_actor_monsters_pda",x=STR_ONE,y="600",special=STR_ONE},
 	tushkano			= {file="ui\\ui_actor_monsters_pda",x=STR_ONE,y=STR_ONE,special=STR_ONE},
-	rat					= {file="ui\\ui_actor_monsters_pda",x=STR_ONE,y=STR_ONE,special=STR_ONE},
+	rat					= {file="ui\\ui_actor_monsters_pda_3",x=STR_ONE,y=STR_ONE,special=STR_ONE},
 	flesh				= {file="ui\\ui_actor_monsters_pda",x="393",y="600",special=STR_ONE},
 
 	burer				= {file="ui\\ui_actor_monsters_pda_1",x=STR_ONE,y=STR_ONE,special=STR_ONE},

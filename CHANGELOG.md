@@ -38,6 +38,7 @@ All notable changes to this project will be documented in this file.
 * Fixed overbrightnes of clear weather between 09:00-16:00
 * Included ecolog explorer squads into start population
 * Corrected descriptions of rodents items
+* Added rat icon to mutant's loot window
 
 ### Optimization
 * Replaced some allocations with global constants
