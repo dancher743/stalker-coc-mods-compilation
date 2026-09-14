@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Features
 * Added "newbie" character sounds for novices
 * Added mapspots for dead mutants with option ("Dead mutants spots"). The option is enabled by default.
+* Restored [Rat wolf](https://stalker.fandom.com/wiki/Rat_wolf) mutant 🐀
 
 ### Improvements
 * Added Duty Outpost At Garbage to Fast Travel

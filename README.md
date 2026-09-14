@@ -138,6 +138,7 @@ Mods
 80. Weather from Legend Returns 0.9.2 (LR Devs) and some textures from CoC OL pack v1.3 (Kisel_s_Molinkoi, K0MRADE, bloodshot12)
 81. Better Knife (Vanilla) with adaptations from CoP (alalakskylvia)
 82. Optimized rain (Clepoy)
+83. Textures for Rat wolf mutant from OLR 3.0 (hi_flyer & Co) and Legend Returns 0.9.2 (LR Devs)
 
 Credits
 ---
