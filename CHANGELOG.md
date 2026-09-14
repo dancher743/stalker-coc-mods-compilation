@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Features
 * Added "newbie" character sounds for novices
 * Added mapspots for dead mutants with option ("Dead mutants spots"). The option is enabled by default.
+* Restored [Rat wolf](https://stalker.fandom.com/wiki/Rat_wolf) mutant 🐀
 
 ### Improvements
 * Added Duty Outpost At Garbage to Fast Travel
@@ -23,6 +24,7 @@ All notable changes to this project will be documented in this file.
 * Improved start population of Survival mode
 * Returned original format of `send_treasure` tips
 * Corrected strings `ls_tip_7` and `ls_tip_20`
+* Reworked rat mutant visuals
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
@@ -36,6 +38,8 @@ All notable changes to this project will be documented in this file.
 * Fixed `sun_color`s of yellow moon
 * Fixed overbrightnes of clear weather between 09:00-16:00
 * Included ecolog explorer squads into start population
+* Corrected descriptions of rodents items
+* Added rat icon to mutant's loot window
 
 ### Optimization
 * Replaced some allocations with global constants
