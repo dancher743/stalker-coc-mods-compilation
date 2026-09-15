@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 * Corrected strings `ls_tip_7` and `ls_tip_20`
 * Reworked rat mutant visuals
 * Removed `simulation_rats` squad from simulation
+* Added rat spleen item to rat mutant
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"

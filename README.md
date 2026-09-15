@@ -139,7 +139,7 @@ Mods
 81. Better Knife (Vanilla) with adaptations from CoP (alalakskylvia)
 82. Optimized rain (Clepoy)
 83. Textures for Rat wolf mutant from OLR 3.0 (hi_flyer & Co) and Legend Returns 0.9.2 (LR Devs)
-84. Controller brain visual from Narodnaya Solyanka 2016 (Arhara & Co)
+84. Controller brain and rat spleen visual from Narodnaya Solyanka 2016 (Arhara & Co)
 
 Credits
 ---

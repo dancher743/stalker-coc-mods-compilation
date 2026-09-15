@@ -151,4 +151,10 @@
 	<string id="mutant_burer_hand">
 		<text>Рука бюрера</text>
 	</string>
+	<string id="mutant_rat_spleen_description">
+		<text>Под воздействием аномальных полей селезёнка крысы мутировала: она демонстрирует аномально высокую концентрацию макрофагов и изменённую клеточную структуру, помогающую организму носителя справляться с тяжелейшим радиационным фоном.</text>
+	</string>
+	<string id="mutant_rat_spleen">
+		<text>Селезёнка крысы</text>
+	</string>
 </string_table>
