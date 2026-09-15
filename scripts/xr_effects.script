@@ -2680,6 +2680,7 @@ function drx_sl_setup_fetch_mutant_parts( actor, npc, p )
 			"mutant_part_snork_hand",
 			"mutant_part_snork_leg",
 			"mutant_part_tushkano_head",
+			"mutant_part_rat_spleen",
 			"mutant_part_zombi_hand"
 		}
 	elseif (tier_number == 3) then
