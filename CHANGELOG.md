@@ -41,6 +41,7 @@ All notable changes to this project will be documented in this file.
 * Included ecolog explorer squads into start population
 * Corrected descriptions of rodents items
 * Added rat icon to mutant's loot window
+* Fixed incorrect controller brain visual (mesh from Narodnaya Solyanka 2016)
 
 ### Optimization
 * Replaced some allocations with global constants
