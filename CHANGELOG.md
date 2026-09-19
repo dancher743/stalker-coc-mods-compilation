@@ -27,6 +27,7 @@ All notable changes to this project will be documented in this file.
 * Reworked rat mutant visuals
 * Removed `simulation_rats` squad from simulation
 * Added rat spleen item to rat mutant
+* Corrected EOC Mode description in Faction Select Menu
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
