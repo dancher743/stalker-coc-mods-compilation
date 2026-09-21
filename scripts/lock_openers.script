@@ -1,0 +1,25 @@
+local function spawn_mil_door_lock_opener_object()
+	local x = -22.488410949707
+	local y = -6.23675012588501
+	local z = -19.385778427124
+	local lvid = 272
+	local gvid = 1966
+	alife():create("mil_door_lock_opener_object",vector():set(x,y,z),lvid,gvid)
+end
+
+local function on_game_first_load()
+	spawn_mil_door_lock_opener_object()
+end
+
+local function physic_object_on_use_callback(ph_obj,_)
+	if (ph_obj:section() == "mil_door_lock_opener_object") then
+		alife_release(ph_obj)
+		alife_release(get_story_object("mil_door_locker"))
+		give_info("mil_freedom_arsenal_door_opened")
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("on_game_first_load",on_game_first_load)
+	RegisterScriptCallback("physic_object_on_use_callback",physic_object_on_use_callback)
+end

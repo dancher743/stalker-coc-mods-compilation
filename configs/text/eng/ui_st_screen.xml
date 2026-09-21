@@ -461,7 +461,7 @@
 		<text>Leave Zone ($$ACTION_USE$$)</text>
 	</string>
 	
-	<string id="st_locker_opener_object">
+	<string id="st_lock_opener_object">
 		<text>Open the lock ($$ACTION_USE$$)</text>
 	</string>
 	

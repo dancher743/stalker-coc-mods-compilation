@@ -448,7 +448,7 @@
 		<text>Покинуть Зону ($$ACTION_USE$$)</text>
 	</string>
 	
-	<string id="st_locker_opener_object">
+	<string id="st_lock_opener_object">
 		<text>Открыть замок ($$ACTION_USE$$)</text>
 	</string>
 	
