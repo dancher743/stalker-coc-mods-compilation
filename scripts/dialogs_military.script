@@ -11,3 +11,20 @@ function transfer_scope (npc, actor)
     dialogs.relocate_item_section(npc, "wpn_addon_scope_x2.7", "in")
     dialogs.relocate_item_section(npc, "vodka", "out")
 end
+
+-- Added by Dancher
+
+function can_give_mil_door_lock_key_item(_, actor)
+	local rank_interval = ranks.get_rank_interval("veteran")
+	local is_actor_has_rank = actor:character_rank() >= rank_interval[1]
+	local is_actor_in_freedom = utils.get_actor_community() == community.freedom
+	return is_actor_in_freedom and is_actor_has_rank
+end
+
+function cant_give_mil_door_lock_key_item(_, actor)
+	return can_give_mil_door_lock_key_item(_, actor) == false
+end
+
+function give_mil_door_lock_key_item(npc, actor)
+    dialogs.relocate_item_section(npc, "mil_door_lock_key", "in")
+end
