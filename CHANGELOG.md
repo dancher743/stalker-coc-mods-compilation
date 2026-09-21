@@ -56,6 +56,7 @@ All notable changes to this project will be documented in this file.
 * Splited `sim_survival.script` into `sim_survival_mode.script` and `sim_survival_eoc_mode.script`
 * Added `monster_on_net_destroy` callback into `axr_main.script`
 * Added `alife_release` function into `_g.script`
+* Added `ignore_cant_trade_sections` into `xr_corpse_detection.ltx`
 
 ## [1.5.4] - 2026-04-14
 
