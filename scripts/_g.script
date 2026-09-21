@@ -106,7 +106,7 @@ function alife_release(obj)
 	end
 	local se_obj = alife_object(obj:id())
 	if (se_obj) then
-		safe_release_manager.release(se_obj)
+		alife():release(se_obj)
 	end
 end
 

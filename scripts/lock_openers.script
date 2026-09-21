@@ -13,9 +13,27 @@ end
 
 local function physic_object_on_use_callback(ph_obj,_)
 	if (ph_obj:section() == "mil_door_lock_opener_object") then
-		alife_release(ph_obj)
-		alife_release(get_story_object("mil_door_locker"))
-		give_info("mil_freedom_arsenal_door_opened")
+		
+		local key_obj = nil
+		local key_name = "mil_door_lock_key"
+		
+		local function iterator(_, item)
+			if (key_obj == nil and item:section() == key_name) then
+				key_obj = item
+			end
+		end
+		
+		db.actor:iterate_inventory(iterator, nil)
+		
+		if (key_obj) then
+			SetHudMsg(STR_EMPTY,0)
+			alife_release(key_obj)
+			alife_release(get_story_object("mil_door_locker"))
+			alife_release(ph_obj)
+			give_info("mil_freedom_arsenal_door_opened")
+		else
+			SetHudMsg(strtransl("st_no_lock_key_item_hudmsg"),5)
+		end
 	end
 end
 

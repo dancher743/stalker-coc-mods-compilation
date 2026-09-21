@@ -170,4 +170,13 @@
 	<string id="st_memory_stick_name">
 		<text>Карта памяти</text>
 	</string>
+	
+	<!-- Added by Dancher -->
+	
+	<string id="st_mil_door_lock_key_name">
+		<text>Ключ от арсенала «Свободы»</text>
+	</string>
+	<string id="st_mil_door_lock_key_descr">
+		<text>Ключ от замка на дверях арсенала базы «Свободы» на Армейских складах.</text>
+	</string>
 </string_table>

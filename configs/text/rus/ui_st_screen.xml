@@ -459,7 +459,12 @@
 	<string id="st_psi_storm_while_asleep">
 		<text>В Зоне недавно произошёл пси-шторм.</text>
 	</string>
+	
 	<string id="st_fallout_while_asleep">
 		<text>В Зоне недавно произошли осадки.</text>
+	</string>
+	
+	<string id="st_no_lock_key_item_hudmsg">
+		<text>У вас нет ключа.</text>
 	</string>
 </string_table>
