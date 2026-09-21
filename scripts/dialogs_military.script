@@ -17,7 +17,7 @@ end
 function can_give_mil_door_lock_key_item(_, actor)
 	local rank_interval = ranks.get_rank_interval("veteran")
 	local is_actor_has_rank = actor:character_rank() >= rank_interval[1]
-	local is_actor_in_freedom = utils.get_actor_community() == community.freedom
+	local is_actor_in_freedom = actor_community() == community.freedom
 	return is_actor_in_freedom and is_actor_has_rank
 end
 

@@ -30,6 +30,6 @@
 		<text>I need the armory key.</text>
 	</string>
 	<string id="mil_armory_lock_key_dialog_1">
-		<text>The armory key is only issued to Freedom members with the rank of Veteran and above.</text>
+		<text>The armory key is only given to those who joined Freedom and reached Veteran rank or higher.</text>
 	</string>
 </string_table>
