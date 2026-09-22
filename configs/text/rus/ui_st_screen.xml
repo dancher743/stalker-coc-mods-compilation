@@ -465,6 +465,6 @@
 	</string>
 	
 	<string id="st_no_lock_key_item_hudmsg">
-		<text>У вас нет ключа.</text>
+		<text>У вас нет ключа</text>
 	</string>
 </string_table>
