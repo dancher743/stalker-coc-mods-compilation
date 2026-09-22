@@ -491,7 +491,7 @@ function drx_create_random_stash( no_spot, hint, bonus_items, bonus_lottery, cus
 	loot[12] = {"wpn_spas12", "wpn_ak74u", "wpn_mp5", "wpn_ak74", "wpn_abakan", "wpn_l85", "wpn_lr300", "wpn_groza", "wpn_val", "wpn_vintorez", "helm_tactic", "helm_battle", "itm_pda_rare", "ammo_11.43x23_hydro", "ammo_5.56x45_ap", "itm_repairkit_tier_2", "itm_outfit_toolkit_tier_1"}
 
 	-- Extremely rare:
-	loot[13] = {"wpn_svu", "wpn_svd", "wpn_g36", "wpn_fn2000", "helm_m40", "wpn_pkm", "stalker_outfit", "svoboda_novice_outfit", "ecolog_guard_outfit", "banditmerc_outfit", "dolg_novice_outfit", "cs_novice_outfit", "ecolog_outfit_green", "svoboda_light_outfit", "af_compass", "itm_pda_rare", "itm_repairkit_tier_3"}
+	loot[13] = {"wpn_svu", "wpn_svd", "wpn_g36", "wpn_fn2000", "helm_m40", "wpn_pkm", "stalker_outfit", "svoboda_novice_outfit", "ecolog_guard_outfit", "banditmerc_outfit", "dolg_novice_outfit", "cs_novice_outfit", "ecolog_outfit_green", "svoboda_light_outfit", "af_compass", "mil_door_lock_key", "itm_pda_rare", "itm_repairkit_tier_3"}
 	loot[14] = {"wpn_rg-6", "wpn_rpg7", "specops_outfit", "military_outfit", "scientific_outfit", "svoboda_heavy_outfit", "cs_heavy_outfit", "dolg_outfit", "itm_pda_rare", "itm_repairkit_tier_3"}
 	loot[15] = {"ammo_gauss", "exo_outfit", "dolg_heavy_outfit", "itm_pda_rare", "wpn_rg-6", "wpn_rpg7", "specops_outfit", "military_outfit", "scientific_outfit", "svoboda_heavy_outfit", "cs_heavy_outfit", "dolg_outfit", "itm_repairkit_tier_3"}
 
@@ -714,7 +714,6 @@ function get_valid_item_sections()
 	local quest_item_string = "quest_item"
 	local mp_item_prefix = "mp_"
 	local inv_name_string = "inv_name"
-	local default_string = STR_DEFAULT
 	local cost_string = "cost"
 	
 	ini:section_for_each(function(section)
@@ -724,7 +723,7 @@ function get_valid_item_sections()
 					if (ini:r_bool_ex(section,quest_item_string,false) == false) then
 						if not (string.find(section,mp_item_prefix)) then
 							local name = ini:r_string_ex(section,inv_name_string)
-							if (name and name ~= STR_EMPTY and name ~= default_string) then
+							if (name and name ~= STR_EMPTY and name ~= STR_DEFAULT) then
 								local cost = ini:r_float_ex(section,cost_string) or 0
 								if (cost > 0) then
 									t[section] = cost

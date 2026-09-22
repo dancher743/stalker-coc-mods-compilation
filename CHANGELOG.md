@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 * Added "newbie" character sounds for novices
 * Added mapspots for dead mutants with option ("Dead mutants spots"). The option is enabled by default.
 * Restored [Rat wolf](https://stalker.fandom.com/wiki/Rat_wolf) mutant 🐀
+* Restored ability to open the armory at the Freedom base
 
 ### Improvements
 * Added Duty Outpost At Garbage to Fast Travel
@@ -29,6 +30,7 @@ All notable changes to this project will be documented in this file.
 * Added rat spleen item to rat mutant
 * Corrected EOC Mode description in Faction Select Menu
 * Added `grob_skvoz_dyru_v_moyey_golove` and `kino_mama_anarkhiya` tracks to `agr_smart_terrain_4_4_radio`
+* Reworked Freedom base arsenal items (RG-6 added!)
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
@@ -54,6 +56,8 @@ All notable changes to this project will be documented in this file.
 * Added default value to `se_obj_load_var` function in `utils.script`
 * Splited `sim_survival.script` into `sim_survival_mode.script` and `sim_survival_eoc_mode.script`
 * Added `monster_on_net_destroy` callback into `axr_main.script`
+* Added `alife_release` function into `_g.script`
+* Added `ignore_cant_trade_sections` into `xr_corpse_detection.ltx`
 
 ## [1.5.4] - 2026-04-14
 

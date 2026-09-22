@@ -1,0 +1,78 @@
+--
+-- Lock openers logic
+-- Added by Dancher
+--
+
+local function spawn_mil_door_lock_opener_object()
+	local x = -22.488410949707
+	local y = -6.23675012588501
+	local z = -19.385778427124
+	local lvid = 272
+	local gvid = 1966
+	alife():create("mil_door_lock_opener_object",vector():set(x,y,z),lvid,gvid)
+end
+
+local function open_mil_door_lock(ph_obj,actor)
+	local key_obj = nil
+	local key_name = "mil_door_lock_key"
+	
+	local function iterator(_, item)
+		if (key_obj == nil and item:section() == key_name) then
+			key_obj = item
+		end
+	end
+	
+	actor:iterate_inventory(iterator, nil)
+	
+	if (key_obj) then
+		SetHudMsg(STR_EMPTY,0)
+		
+		alife_release(key_obj)
+		alife_release(get_story_object("mil_door_locker"))
+		alife_release(ph_obj)
+		give_info("mil_freedom_arsenal_door_opened")
+		
+		if (actor_community() ~= community.freedom) then
+			local has_caught_stealing = false
+			
+			for i=1, #db.OnlineStalkers do
+				local npc = level.object_by_id(db.OnlineStalkers[i])
+				if (npc and npc:see(actor) and character_community(npc) == community.freedom) then
+					has_caught_stealing = true
+					break
+				end
+			end
+			
+			if (has_caught_stealing) then
+				if (disguise.has_actor_disguised()) then
+					disguise.discover()
+				end
+				for i=1, #db.OnlineStalkers do
+					local npc = level.object_by_id(db.OnlineStalkers[i])
+					if (npc and character_community(npc) == community.freedom) then
+						npc:set_relation(-5000,actor)
+					end
+				end
+				local sound_path = "characters_voice\\human_01\\freedom\\reactions\\box\\box_" .. math.random(1,4)
+				xr_sound.play_sound_by_path(sound_path, false)
+			end
+		end
+	else
+		SetHudMsg(strtransl("st_no_lock_key_item_hudmsg"),5)
+	end
+end
+
+local function physic_object_on_use_callback(obj,who)
+	if (obj:section() == "mil_door_lock_opener_object") then
+		open_mil_door_lock(obj,who)
+	end
+end
+
+local function on_game_first_load()
+	spawn_mil_door_lock_opener_object()
+end
+
+function on_game_start()
+	RegisterScriptCallback("on_game_first_load",on_game_first_load)
+	RegisterScriptCallback("physic_object_on_use_callback",physic_object_on_use_callback)
+end
