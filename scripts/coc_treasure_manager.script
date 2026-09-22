@@ -714,7 +714,6 @@ function get_valid_item_sections()
 	local quest_item_string = "quest_item"
 	local mp_item_prefix = "mp_"
 	local inv_name_string = "inv_name"
-	local default_string = STR_DEFAULT
 	local cost_string = "cost"
 	
 	ini:section_for_each(function(section)
@@ -724,7 +723,7 @@ function get_valid_item_sections()
 					if (ini:r_bool_ex(section,quest_item_string,false) == false) then
 						if not (string.find(section,mp_item_prefix)) then
 							local name = ini:r_string_ex(section,inv_name_string)
-							if (name and name ~= STR_EMPTY and name ~= default_string) then
+							if (name and name ~= STR_EMPTY and name ~= STR_DEFAULT) then
 								local cost = ini:r_float_ex(section,cost_string) or 0
 								if (cost > 0) then
 									t[section] = cost
