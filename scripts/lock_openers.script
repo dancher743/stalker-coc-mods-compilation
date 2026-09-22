@@ -37,7 +37,7 @@ local function open_mil_door_lock(ph_obj,actor)
 			
 			for i=1, #db.OnlineStalkers do
 				local npc = level.object_by_id(db.OnlineStalkers[i])
-				if (npc and npc:see(actor)) then
+				if (npc and npc:see(actor) and character_community(npc) == community.freedom) then
 					has_caught_stealing = true
 					break
 				end
