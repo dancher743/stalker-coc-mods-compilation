@@ -1,3 +1,8 @@
+--
+-- Lock openers logic
+-- Added by Dancher
+--
+
 local function spawn_mil_door_lock_opener_object()
 	local x = -22.488410949707
 	local y = -6.23675012588501
