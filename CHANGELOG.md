@@ -30,6 +30,7 @@ All notable changes to this project will be documented in this file.
 * Added rat spleen item to rat mutant
 * Corrected EOC Mode description in Faction Select Menu
 * Added `grob_skvoz_dyru_v_moyey_golove` and `kino_mama_anarkhiya` tracks to `agr_smart_terrain_4_4_radio`
+* Added `nagovitsyn_gorodskiye_vstrechi` track to `val_smart_terrain_7_3_radio`
 * Reworked Freedom base arsenal items (RG-6 added!)
 
 ### Fixes
