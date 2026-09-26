@@ -632,6 +632,10 @@ end
 
 function play_sound_by_path(path, once)
 	local sound = get_safe_sound_object(path)
+	if (sound == nil) then
+		printf(strformat("sound at path %s is not found.", path))
+		return
+	end
 	if (once == true and sound:playing()) then
 		sound:stop()
 	end
