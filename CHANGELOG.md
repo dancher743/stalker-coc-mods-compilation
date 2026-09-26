@@ -49,6 +49,7 @@ All notable changes to this project will be documented in this file.
 * Corrected descriptions of rodents items
 * Added rat icon to mutant's loot window
 * Fixed incorrect controller brain visual (mesh from Narodnaya Solyanka 2016)
+* Fixed ignore of occurrences for start weather
 
 ### Optimization
 * Replaced some allocations with global constants
