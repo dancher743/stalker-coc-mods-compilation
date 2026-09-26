@@ -51,7 +51,7 @@ All notable changes to this project will be documented in this file.
 * Added rat icon to mutant's loot window
 * Fixed incorrect controller brain visual (mesh from Narodnaya Solyanka 2016)
 * Fixed ignore of occurrences for start weather
-* Fixed flowers colores in `build_details.dds` texture of `l01_escape` level
+* Fixed thistle plant color in `build_details` texture of `l01_escape` and `l07_military` levels
 
 ### Optimization
 * Replaced some allocations with global constants
