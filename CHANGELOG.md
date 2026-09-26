@@ -34,7 +34,6 @@ All notable changes to this project will be documented in this file.
 * Reworked Freedom base arsenal items (RG-6 added!)
 * Added `12` to squad stay point hours option
 * Added nil check to `play_sound_by_path` function in `xr_sound.script`
-* Corrected colors of flowers in some `build_details.dds` textures
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
@@ -52,6 +51,7 @@ All notable changes to this project will be documented in this file.
 * Added rat icon to mutant's loot window
 * Fixed incorrect controller brain visual (mesh from Narodnaya Solyanka 2016)
 * Fixed ignore of occurrences for start weather
+* Fixed flowers colores in `build_details.dds` texture of `l01_escape` level
 
 ### Optimization
 * Replaced some allocations with global constants
