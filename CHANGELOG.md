@@ -52,6 +52,7 @@ All notable changes to this project will be documented in this file.
 * Fixed incorrect controller brain visual (mesh from Narodnaya Solyanka 2016)
 * Fixed ignore of occurrences for start weather
 * Fixed thistle plant color in `build_details` texture of `l01_escape` and `l07_military` levels
+* Fixed mute of Bar radio music in bar room safe house area
 
 ### Optimization
 * Replaced some allocations with global constants
