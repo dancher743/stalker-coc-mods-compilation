@@ -32,6 +32,7 @@ All notable changes to this project will be documented in this file.
 * Added `grob_skvoz_dyru_v_moyey_golove` and `kino_mama_anarkhiya` tracks to `agr_smart_terrain_4_4_radio`
 * Added `nagovitsyn_gorodskiye_vstrechi` track to `val_smart_terrain_7_3_radio`
 * Reworked Freedom base arsenal items (RG-6 added!)
+* Added `12` to squad stay point hours option
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
