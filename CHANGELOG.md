@@ -31,6 +31,7 @@ All notable changes to this project will be documented in this file.
 * Corrected EOC Mode description in Faction Select Menu
 * Added `grob_skvoz_dyru_v_moyey_golove` and `kino_mama_anarkhiya` tracks to `agr_smart_terrain_4_4_radio`
 * Added `nagovitsyn_gorodskiye_vstrechi` track to `val_smart_terrain_7_3_radio`
+* Added `nasha_sluzhba_i_opasna_i_trudna` track to `agr_smart_terrain_1_6_near_1_radio`
 * Reworked Freedom base arsenal items (RG-6 added!)
 * Added `12` to squad stay point hours option
 * Added nil check to `play_sound_by_path` function in `xr_sound.script`
