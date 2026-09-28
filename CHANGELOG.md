@@ -55,6 +55,7 @@ All notable changes to this project will be documented in this file.
 * Fixed thistle plant color in `build_details` texture of `l01_escape` and `l07_military` levels
 * Fixed mute of Bar radio music in bar room safe house area
 * Fixed squad to smart assign and corrected location types setup (all credits to [borjan](https://discord.com/users/381065679719366656) for sharing this fix!)
+* Fixed incorrect `snd_config` of `sim_default_freedom_4_default_1` character
 
 ### Optimization
 * Replaced some allocations with global constants

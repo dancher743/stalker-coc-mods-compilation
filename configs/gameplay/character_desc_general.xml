@@ -3563,7 +3563,7 @@
     <bio>Опытный сталкер. Детальная информация отсутствует.</bio>
     <class>sim_default_freedom_4</class>
     <community>freedom</community> <terrain_sect>stalker_terrain</terrain_sect>
-    <snd_config>characters_voice\human_02\freedom\</snd_config>
+    <snd_config>characters_voice\human_03\freedom\</snd_config>
     <rank>5369</rank>
     <reputation>1011</reputation>
     <money min="5000" max="10000" infinitive="0"/>
