@@ -19,7 +19,7 @@ do -- to localize below
 	
 	local function itr(section)
 		local a,key,val = locations_ini:r_line_ex(section,0,STR_EMPTY,STR_EMPTY)
-		location_types[key] = key
+		location_types[section] = key
 	end 
 	
 	locations_ini:section_for_each(itr)
@@ -288,7 +288,7 @@ function sim_squad_scripted:specific_update(script_target_id)
 	end 
 	
 	if (self.smart_id ~= self.assigned_target_id and se_target:clsid() == clsid.smart_terrain) then 
-		self:assign_smart(se_target,self.smart_id)
+		SIMBOARD:assign_squad_to_smart(self, se_target.id)
 	end
 	
 	if (self.current_action) then
@@ -350,7 +350,7 @@ function sim_squad_scripted:generic_update()
 			-- If current action is not finished, then return
 			
 			if (self.smart_id ~= self.assigned_target_id and se_target:clsid() == clsid.smart_terrain) then 
-				self:assign_smart(se_target,self.smart_id)
+				SIMBOARD:assign_squad_to_smart(self, se_target.id)
 			end
 	
 			if (self.current_action == 0) then
