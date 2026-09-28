@@ -36,6 +36,7 @@ All notable changes to this project will be documented in this file.
 * Added `12` to squad stay point hours option
 * Added nil check to `play_sound_by_path` function in `xr_sound.script`
 * Balanced a repair of outfit toolkit item
+* Removed whisper ambient from `day` section in `l11_pripyat.ltx`
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
