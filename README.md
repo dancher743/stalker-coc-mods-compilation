@@ -1,10 +1,32 @@
-# S.T.A.L.K.E.R.: Call of Chernobyl Reforged
-"Quality of life" mods compilation for [Call of Chernobyl 1.4.22](https://www.moddb.com/mods/call-of-chernobyl), focused on the vanilla gaming experience. Support Russian and English languages.
+# S.T.A.L.K.E.R.: Call of Chernobyl Reforged (QoL Compilation)
+A carefully curated "Quality of Life" mods compilation for [Call of Chernobyl 1.4.22](https://www.moddb.com/mods/call-of-chernobyl), strictly focused on preserving and enhancing the vanilla gaming experience. 
+
+This compilation doesn't overhaul the core mechanics or turn the game into something else. Instead, it polishes the rough edges, fixes long-standing bugs, improves performance, and adds highly requested vanilla-friendly features to make your journey through the Zone more comfortable.
+
+Support Russian and English languages.
 
 [![preview-1.jpg](https://i.postimg.cc/t4DKK7h1/preview-1.jpg)](https://postimg.cc/5XYKv4K1)
 
-Install
----
+## Key Features & Improvements
+* "Slow Saves" - to not create saves manually (via the main menu)
+* Custom map spots
+* 100 Rads Bar Safehouse: purchase access to the Back Room of the 100 Rads Bar and use it as your personal safehouse
+* Disguise (with fixes and improvements)
+* Fixed and restored squads A-Life
+* All Weapons Unloading
+* Reworking of Faction Selection menu
+* Quick companion menu
+* Added invulnerability to companions (can be disabled using the option) and "Open inventory" dialog to help carry your items during long journeys through the Zone
+* Critical hits
+* Guide job (with fixes and improvements)
+* Made Survival mode playable and added Extended Offline (EOC) mode
+* Restored SoC and CS functionality: opening the armory at the Freedom base, sleeping sounds, jokes and campfire stories for NPC, Screw scope dialog, unique weapons from SoC and CS etc.
+* Fixed original Call of Chernobyl functionality: artefacts and mutants part drop, "sleeping" BTRs, sounds of Army's megaphone on Escape, missing mutants (Rat Wolf and Psysucker), text on the health bar etc.
+
+And much more!
+
+## Install
+
 1. Install [release](https://www.moddb.com/mods/call-of-chernobyl/downloads/call-of-chernobyl-1412-full) CoC 1.4.12
 2. Install [patch](https://www.moddb.com/mods/call-of-chernobyl/downloads/coc-1422-patch) to change version 1.4.12 to 1.4.22
 3. Dowload [compilation](https://github.com/dancher743/stalker-coc-mods-compilation/releases/latest)
@@ -17,8 +39,8 @@ Install
 7. Run `launcher.bat` to launch the game
 8. Good hunting, S.T.A.L.K.E.R!
 
-Settings
----
+## Settings
+
 * To change input language press Ctrl + Shift
 * To ignite/extinguish a campfire holster your weapon first
 * No need to create saves manually (via the main menu) - try Slow Saves: in the game, press the `F6` button (by default) and the save will be created automatically.
@@ -29,13 +51,13 @@ Settings
 * Disable "Sun shadow" in "Options" in "Video" to play without lighting shaders
 * Type `vid_restart` at the console if you are faced with _"Too many occlusion queries were issued"_ warnings. This command restarts the renderer
 
-Optimization
----
+## Optimization
+
 * Add `-no_staging` (is already in `launcher.bat`) to the end of a shortcut as a launch parameter. In DirectX 10/11, it will load textures directly into video memory without copying them to RAM, thus keeping it free
 * Add `-noprefetch` (is already in `launcher.bat`) to the end of a shortcut as a launch parameter to forces the game to clear RAM
 
-❗ Screenshots
----
+## Screenshots
+
 <details>
 <summary>Spoiler</summary>
 
@@ -54,8 +76,8 @@ Optimization
 
 </details>
 
-Mods
----
+## Mods
+
 1. Original Item Models and Icons (Panzermann11)
 2. Displaying units like in Clear Sky, squads on the pda map v2 (av661194, turoff82)
 3. Stashes from SOC and CS (av661194)
@@ -138,11 +160,9 @@ Mods
 80. Weather from Legend Returns 0.9.2 (LR Devs) and some textures from CoC OL pack v1.3 (Kisel_s_Molinkoi, K0MRADE, bloodshot12)
 81. Better Knife (Vanilla) with adaptations from CoP (alalakskylvia)
 82. Optimized rain (Clepoy)
-83. Textures for Rat wolf mutant from OLR 3.0 (hi_flyer & Co) and Legend Returns 0.9.2 (LR Devs)
-84. Controller brain and rat spleen visual from Narodnaya Solyanka 2016 (Arhara & Co)
 
-Credits
----
+## Credits
+
 Special thanks to:
 * Team Epic for Call of Chernobyl
 * Anomaly Developers for Anomaly
