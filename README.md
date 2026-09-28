@@ -12,7 +12,7 @@ Support Russian and English languages.
 * Custom map spots
 * 100 Rads Bar Safehouse: purchase access to the Back Room of the 100 Rads Bar and use it as your personal safehouse
 * Disguise (with fixes and improvements)
-* Fixed and restored squads A-Life
+* Fixed and restored squads A-Life and added offline combats
 * All Weapons Unloading
 * Reworking of Faction Selection menu
 * Quick companion menu
