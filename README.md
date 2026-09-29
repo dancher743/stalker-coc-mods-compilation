@@ -1,4 +1,4 @@
-# S.T.A.L.K.E.R.: Call of Chernobyl Reforged (QoL Compilation)
+# S.T.A.L.K.E.R.: Call of Chernobyl Reforged
 A carefully curated "Quality of Life" mods compilation for [Call of Chernobyl 1.4.22](https://www.moddb.com/mods/call-of-chernobyl), strictly focused on preserving and enhancing the vanilla gaming experience. 
 
 This compilation doesn't overhaul the core mechanics or turn the game into something else. Instead, it polishes the rough edges, fixes long-standing bugs, improves performance, and adds highly requested vanilla-friendly features to make your journey through the Zone more comfortable.
@@ -39,7 +39,7 @@ And much more!
 7. Run `launcher.bat` to launch the game
 8. Good hunting, S.T.A.L.K.E.R!
 
-## Settings
+## Tips
 
 * To change input language press Ctrl + Shift
 * To ignite/extinguish a campfire holster your weapon first
