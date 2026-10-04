@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 * Added mapspots for dead mutants with option ("Dead mutants spots"). The option is enabled by default.
 * Restored [Rat wolf](https://stalker.fandom.com/wiki/Rat_wolf) mutant 🐀
 * Restored ability to open the armory at the Freedom base
+* Added P90 weapon
 
 ### Improvements
 * Added Duty Outpost At Garbage to Fast Travel
