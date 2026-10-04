@@ -303,6 +303,9 @@
   <string id="st_wpn_fn2000">
 		<text>FT-200M</text>
   </string>
+  <string id="st_wpn_p90">
+		<text>FP-91M</text>
+  </string>
   <string id="st_wpn_fort">
 		<text>Fora-12</text>
   </string>
@@ -546,6 +549,8 @@
   <string id="st_wpn_fn2000_descr">
 		<text>This futuristic-looking weapon with a bullpup layout is actually a mass produced modular system, comprising a rifle & grenade complex with a computerized fire control system and a 40-mm grenade launcher. Despite its bulky appearance, the weapon is highly ergonomic, easy to use and benefits from good technical characteristics.</text>
   </string>
+  <string id="st_wpn_p90_descr">
+		<text>A Belgian submachine gun developed in the 1980s, primarily for tank crews and military vehicle drivers. After finding its way into the Zone, it was chambered for the 9x19 mm round. Features a progressive, highly ergonomic design. Due to its compactness and practicality, it is widely used by scientific expeditions.</text>
   <string id="st_wpn_fort_descr">
 		<text>A Ukrainian-made pistol predominantly used by law enforcement organisations. Provides higher accuracy, better ergonomics and has a larger magazine than the PMm.  These pistols make it into the Zone in large numbers thanks to the sale of defective weapons, which suffer from technical miscalculations in early design models. Despite this, the pistol is in demand among stalkers thanks to its good combat characteristics.</text>
   </string>

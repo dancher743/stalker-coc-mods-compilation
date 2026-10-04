@@ -160,6 +160,7 @@ And much more!
 80. Weather from Legend Returns 0.9.2 (LR Devs) and some textures from CoC OL pack v1.3 (Kisel_s_Molinkoi, K0MRADE, bloodshot12)
 81. Better Knife (Vanilla) with adaptations from CoP (alalakskylvia)
 82. Optimized rain (Clepoy)
+83. P90 weapon from Legend Returns 0.9.2 (LR Devs) and Shoker Weapon Mod 2.1 (Shoker Team)
 
 ## Credits
 

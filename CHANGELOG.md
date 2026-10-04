@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 * Added mapspots for dead mutants with option ("Dead mutants spots"). The option is enabled by default.
 * Restored [Rat wolf](https://stalker.fandom.com/wiki/Rat_wolf) mutant 🐀
 * Restored ability to open the armory at the Freedom base
+* Added P90 weapon
 
 ### Improvements
 * Added Duty Outpost At Garbage to Fast Travel
@@ -37,6 +38,7 @@ All notable changes to this project will be documented in this file.
 * Added nil check to `play_sound_by_path` function in `xr_sound.script`
 * Balanced a repair of outfit toolkit item
 * Removed whisper ambient from `day` section in `l11_pripyat.ltx`
+* Reworked supplies of ecolog explorer squads
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
@@ -58,6 +60,7 @@ All notable changes to this project will be documented in this file.
 * Fixed mute of Bar radio music in bar room safe house area
 * Fixed squad to smart assign and corrected location types setup (all credits to [borjan](https://github.com/DissidentEast) for sharing this fix!)
 * Fixed incorrect `snd_config` of `sim_default_freedom_4_default_1` character
+* Removed guillemets from the names of certain weapons in RU localization
 
 ### Optimization
 * Replaced some allocations with global constants
