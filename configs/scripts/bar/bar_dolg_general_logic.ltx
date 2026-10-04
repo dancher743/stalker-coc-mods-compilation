@@ -110,7 +110,7 @@ meet = meet@zoneguard
 gather_items_enabled = false
 help_wounded_enabled = false
 corpse_detection_enabled = false
-on_actor_in_zone = bar_angar_warn_zone | %=play_sound(bar_dolg_hangar_bridge_hello)%
+on_actor_in_zone = bar_angar_warn_zone | {=is_alive} %=play_sound(bar_dolg_hangar_bridge_hello)%
 ;turn_on_campfire = true 
 
 [meet@zoneguard]
