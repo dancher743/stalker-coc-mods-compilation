@@ -40,6 +40,7 @@ All notable changes to this project will be documented in this file.
 * Removed whisper ambient from `day` section in `l11_pripyat.ltx`
 * Reworked supplies of ecolog explorer squads
 * Added ecolog explorer squads to debug
+* Removed build exoskeleton mesh from neutral stalkers
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
