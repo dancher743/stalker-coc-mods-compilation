@@ -55,7 +55,7 @@ local function calculate_hit_damage(base_damage, who)
 end
 
 local function try_hit(victim, damage, who)
-	local can_hit = get_chance() <= get_hit_chance(who)
+	local can_hit = has_chance(get_hit_chance(who))
 	
 	if (can_hit) then
 		local hit_damage = calculate_hit_damage(damage, who)

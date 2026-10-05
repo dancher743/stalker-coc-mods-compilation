@@ -2109,18 +2109,10 @@ function get_check_option(name)
 	return axr_main_options.get_check_option(name)
 end
 
-function get_chance()
-	return math.random(100)
-end
-
 function has_chance(chance)
-	return get_chance() <= chance
-end
-
-function get_chance01()
-	return math.random()
+	return math.random(100) <= chance
 end
 
 function has_chance01(chance)
-	return get_chance01() < chance
+	return math.random() < chance
 end

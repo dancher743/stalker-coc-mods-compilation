@@ -81,6 +81,7 @@ All notable changes to this project will be documented in this file.
 * Added `monster_on_net_destroy` callback into `axr_main.script`
 * Added `alife_release` function into `_g.script`
 * Added `ignore_cant_trade_sections` into `xr_corpse_detection.ltx`
+* Removed extra `get_chance` and `get_chance01` functions from `_g.script`
 
 ## [1.5.4] - 2026-04-14
 
