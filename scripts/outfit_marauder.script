@@ -138,10 +138,7 @@ end
 
 function has_chance_to_create(section)
 	local cost = system_ini():r_string_ex(section, "cost")
-	if cost == nil then
-		return false
-	end
-	return math.random() <= (1000 / cost)
+	return cost ~= nil and has_chance01(1000 / cost) or false
 end
 
 function fill_visuals()

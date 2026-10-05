@@ -44,6 +44,7 @@ All notable changes to this project will be documented in this file.
 * Removed build exoskeleton mesh from neutral stalkers
 * Increased stats of coocked mutant food
 * Rebalanced сooking recipes givers
+* Refactored `has_chance_to_create` function in `outfit_marauder.script`
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
