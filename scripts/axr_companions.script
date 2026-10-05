@@ -874,7 +874,7 @@ end
 -- Added by Dancher
 ------------------------------------------
 
-local invulnerability_option_name = "enable_companions_invulnerability"
+local invulnerability_option_name = "companions_invulnerability"
 local simulation = alife()
 local option_name
 local se_obj_cache
