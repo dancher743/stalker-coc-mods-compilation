@@ -43,6 +43,7 @@ All notable changes to this project will be documented in this file.
 * Added ecolog explorer squads to debug
 * Removed build exoskeleton mesh from neutral stalkers
 * Increased stats of coocked mutant food
+* Rebalanced сooking recipes givers
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
