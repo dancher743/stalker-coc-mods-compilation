@@ -14,8 +14,10 @@
     <snd_config>characters_voice\human_03\ecolog\</snd_config>
     <supplies>
         [spawn] \n
-        wpn_sig220 \n
-        ammo_11.43x23_hydro \n
+        wpn_sig220 = 1 \n
+        ammo_11.43x23_hydro = 1 \n
+		wpn_p90 = 1 \n
+		ammo_9x19_fmj = 1 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
     </supplies>
@@ -38,6 +40,8 @@
         [spawn] \n
         wpn_walther = 1 \n
         ammo_9x19_fmj = 1 \n
+		wpn_p90 = 1 \n
+		ammo_9x19_fmj = 1 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
     </supplies>
@@ -60,6 +64,8 @@
         [spawn] \n
         wpn_walther = 1 \n
         ammo_9x19_fmj = 1 \n
+		wpn_p90 = 1 \n
+		ammo_9x19_fmj = 1 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
     </supplies>
@@ -82,6 +88,8 @@
         [spawn] \n
         wpn_walther = 1 \n
         ammo_9x19_fmj = 1 \n
+		wpn_p90 = 1 \n
+		ammo_9x19_fmj = 1 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
     </supplies>
@@ -104,6 +112,8 @@
         [spawn] \n
         wpn_walther = 1 \n
         ammo_9x19_fmj = 1 \n
+		wpn_p90 = 1 \n
+		ammo_9x19_fmj = 1 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
     </supplies>
@@ -126,6 +136,8 @@
         [spawn] \n
         wpn_walther = 1 \n
         ammo_9x19_fmj = 1 \n
+		wpn_p90 = 1 \n
+		ammo_9x19_fmj = 1 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
     </supplies>
