@@ -45,6 +45,7 @@ All notable changes to this project will be documented in this file.
 * Increased stats of coocked mutant food
 * Rebalanced сooking recipes givers
 * Refactored `has_chance_to_create` function in `outfit_marauder.script`
+* Set `max_uses` to 2 for all cooked food
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
