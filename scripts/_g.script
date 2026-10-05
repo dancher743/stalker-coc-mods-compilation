@@ -258,68 +258,81 @@ end
 -- For example, do not try to destroy npcs unless you do not care that it can fail before player saved then loaded.
 ----------------------------------------------------------------------------------------------
 local ev_queue = {}
-function CreateTimeEvent(ev_id,act_id,timer,f,...)
-	if not (ev_queue[ev_id]) then
-		ev_queue[ev_id] = {}
-		ev_queue[ev_id].__size = 0
-	end
 
-	if not (ev_queue[ev_id][act_id]) then
-		ev_queue[ev_id][act_id] = {}
-		ev_queue[ev_id][act_id].timer = time_global() + timer*1000
-		ev_queue[ev_id][act_id].f = f
-		ev_queue[ev_id][act_id].p = {...}
-		ev_queue[ev_id].__size = ev_queue[ev_id].__size + 1
-	end
-end
-function RemoveTimeEvent(ev_id,act_id)
-	if (ev_queue[ev_id] and ev_queue[ev_id][act_id]) then
-		ev_queue[ev_id][act_id] = nil
-		ev_queue[ev_id].__size = ev_queue[ev_id].__size - 1
-	end
+function CreateTimeEvent(ev_id, act_id, timer, f, ...)
+    if not ev_queue[ev_id] then
+        ev_queue[ev_id] = {}
+    end
+
+    if not ev_queue[ev_id][act_id] then
+        ev_queue[ev_id][act_id] = {
+            timer = time_global() + timer * 1000,
+            f = f,
+            p = {...}
+        }
+    end
 end
 
-function ResetTimeEvent(ev_id,act_id,timer)
-	if (ev_queue[ev_id] and ev_queue[ev_id][act_id]) then
-		ev_queue[ev_id][act_id].timer = time_global() + timer*1000
-	end
+function RemoveTimeEvent(ev_id, act_id)
+    local actions = ev_queue[ev_id]
+
+    if actions and actions[act_id] then
+        actions[act_id] = nil
+
+        if next(actions) == nil then
+            ev_queue[ev_id] = nil
+        end
+    end
 end
 
-function HasTimeEvent(ev_id,act_id)
-	return ev_queue[ev_id] and ev_queue[ev_id][act_id]
+function ResetTimeEvent(ev_id, act_id, timer)
+    local actions = ev_queue[ev_id]
+
+    if actions and actions[act_id] then
+        actions[act_id].timer = time_global() + timer * 1000
+    end
+end
+
+function HasTimeEvent(ev_id, act_id)
+    return ev_queue[ev_id] and ev_queue[ev_id][act_id]
 end
 
 function ProcessEventQueue(force)
 	-- if (has_alife_info("sleep_active")) then
 		-- return false
 	-- end
-	
-	for event_id,actions in pairs(ev_queue) do
-		for action_id,act in pairs(actions) do
-			--alun_utils.debug_write(strformat("event_queue: event_id=%s action_id=%s",event_id,action_id))
-			if (action_id ~= "__size") then
-				if (force) or (time_global() >= act.timer) then
-					if (act.f(unpack(act.p)) == true) then
-						ev_queue[event_id][action_id] = nil
-						ev_queue[event_id].__size = ev_queue[event_id].__size - 1
-					end
-				end
-			end
-		end
+    local current_time = time_global()
 
-		if (ev_queue[event_id].__size == 0) then
-			ev_queue[event_id] = nil
-		end
-	end
-	
-	return false
+    for event_id, actions in pairs(ev_queue) do
+		local expired = {}
+
+        for action_id, act in pairs(actions) do
+            --alun_utils.debug_write(strformat("event_queue: event_id=%s action_id=%s",event_id,action_id))
+			if force or current_time >= act.timer then
+                if act.f(unpack(act.p)) == true then
+                    expired[#expired + 1] = action_id
+                end
+            end
+        end
+
+        for i = 1, #expired do
+            actions[expired[i]] = nil
+        end
+
+        if next(actions) == nil then
+            ev_queue[event_id] = nil
+        end
+    end
+
+    return false
 end
-function ProcessEventQueueState(m_data,save)
+
+function ProcessEventQueueState(m_data, save)
 	if (save) then
-		m_data.event_queue = ev_queue
-	else
-		ev_queue = m_data.event_queue or ev_queue
-	end
+        m_data.event_queue = ev_queue
+    else
+        ev_queue = m_data.event_queue or ev_queue
+    end
 end
 
 function SetSwitchDistance(dist)

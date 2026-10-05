@@ -66,6 +66,7 @@ All notable changes to this project will be documented in this file.
 * Fixed incorrect `snd_config` of `sim_default_freedom_4_default_1` character
 * Removed guillemets from the names of certain weapons in RU localization
 * Fixed logic of `bar_dolg_hangar_bridge_hello` sound for `bar_dolg_general_zoneguard_stalker`
+* Added fixes to `TimeEvent` code
 
 ### Optimization
 * Replaced some allocations with global constants
