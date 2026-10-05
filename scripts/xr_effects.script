@@ -6753,6 +6753,7 @@ function sleep(actor, npc)
 						"agr_sr_sleep_tunnel",
 						"agr_sr_sleep_wagon",
 						"bar_actor_sleep_zone",
+						"bar_dolg_bunker_sleep_area",
 						"cit_merc_sleep",
 						"ds_farmhouse_sleep",
 						"esc_basement_sleep_area",

@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 * Restored [Rat wolf](https://stalker.fandom.com/wiki/Rat_wolf) mutant 🐀
 * Restored ability to open the armory at the Freedom base
 * Added P90 weapon
+* Added sleeping area to Dolg bunker in Bar
 
 ### Improvements
 * Added Duty Outpost At Garbage to Fast Travel
