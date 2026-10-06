@@ -569,7 +569,7 @@ function actor_on_item_take_from_box(box,obj)
 
 	-- Backpack section
 	if (BackPackStashEnable and box:section() == "inv_backpack") then
-		if (box:is_inv_box_empty()) then
+		if (box:is_inv_box_empty() and get_check_option("dont_remove_empty_stashes") == false) then
 			local hud = get_hud()
 			if (hud) then
 				hud:HideActorMenu()

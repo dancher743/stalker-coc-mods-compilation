@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 * Restored ability to open the armory at the Freedom base
 * Added P90 weapon
 * Added sleeping area to Dolg bunker in Bar
+* Added "Don't remove empty stashes" option
 
 ### Improvements
 * Added Duty Outpost At Garbage to Fast Travel

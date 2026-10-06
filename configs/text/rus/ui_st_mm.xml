@@ -603,4 +603,7 @@
 	<string id="ui_mm_mutant_dead_spots">
 		<text>Метки мёртвых мутантов</text>
 	</string>
+	<string id="ui_mm_dont_remove_empty_stashes">
+		<text>Не убирать пустые тайники</text>
+	</string>
 </string_table>
