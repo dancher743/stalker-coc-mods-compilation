@@ -47,6 +47,7 @@ All notable changes to this project will be documented in this file.
 * Rebalanced сooking recipes givers
 * Refactored `has_chance_to_create` function in `outfit_marauder.script`
 * Set `max_uses` to 2 for all cooked food
+* Excluded tools from non-reward stashes
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
