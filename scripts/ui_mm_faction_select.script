@@ -301,6 +301,12 @@ local function on_game_load(binder)
 		need_save = true
 	end
 
+	-- Respawn artefacts
+	local sm = surge_manager.get_surge_manager()
+	if (sm) then
+		sm:toggle_level_artefact_respawns()
+	end
+	
 	if (need_save) then
 		config:save()
 	end

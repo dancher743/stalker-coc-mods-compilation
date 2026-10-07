@@ -50,6 +50,7 @@ All notable changes to this project will be documented in this file.
 * Excluded tools from non-reward stashes
 * Reworked chance of adding tools into `bonus` table in `xr_effects.reward_stash` function
 * Rebalanced chances of add toolkit to reward stash
+* Added artifact respawning from game start
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
