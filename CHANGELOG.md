@@ -75,6 +75,7 @@ All notable changes to this project will be documented in this file.
 * Added fixes to `TimeEvent` code
 * Fixed missing invulnerability of companions
 * Removed `default` ambient weather configs
+* Fixed incorrect Clear Sky barman name in recipes dialog
 
 ### Optimization
 * Replaced some allocations with global constants
