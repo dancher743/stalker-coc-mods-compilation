@@ -2101,14 +2101,14 @@ function drx_sl_reward_stash( actor, npc, p )
 		end
 
 		-- Randomly add toolkit to stash:
-		if ( math.random( 100 ) < 75 ) then
+		if ( math.random( 100 ) < 25 ) then
 			local rnd = math.random( 100 )
 			if ( rnd < 33 ) then
-				table.insert( bonus, "itm_repairkit_tier_1" )
-			elseif ( rnd > 66 ) then
+				table.insert( bonus, "itm_repairkit_tier_3" )
+			elseif ( rnd < 66 ) then
 				table.insert( bonus, "itm_repairkit_tier_2" )
 			else
-				table.insert( bonus, "itm_repairkit_tier_3" )
+				table.insert( bonus, "itm_repairkit_tier_1" )
 			end
 		end
 
