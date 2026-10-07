@@ -74,6 +74,7 @@ All notable changes to this project will be documented in this file.
 * Fixed logic of `bar_dolg_hangar_bridge_hello` sound for `bar_dolg_general_zoneguard_stalker`
 * Added fixes to `TimeEvent` code
 * Fixed missing invulnerability of companions
+* Removed `default` ambient weather configs
 
 ### Optimization
 * Replaced some allocations with global constants
