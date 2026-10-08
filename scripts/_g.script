@@ -66,6 +66,10 @@ function start_game_callback()
 		printf("using marshal library")
 	end
 	
+	if not (DEV_DEBUG) then
+		printf = _G.printf_empty
+	end
+	
 	if (USE_FUNCTIONS_MEMOIZE) then
 		memoize_functions()
 	end
@@ -557,6 +561,9 @@ function printf(fmt,...)
 	else
 		get_console():execute("load ~#debug msg:"..fmt)
 	end	
+end
+
+function printf_empty()
 end
 
 function spairs(t, order)

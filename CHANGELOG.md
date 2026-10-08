@@ -82,6 +82,7 @@ All notable changes to this project will be documented in this file.
 
 ### Optimization
 * Replaced some allocations with global constants
+* Added `printf_empty` function if game launched in non-debug mode
 
 ### Framework
 * Added `random_with_weights` function into `utils.script`
