@@ -52,6 +52,8 @@ All notable changes to this project will be documented in this file.
 * Rebalanced chances of add toolkit to reward stash
 * Added artifact respawning from game start
 * Added two new found stash response messages
+* Added inventory sounds to mutant's loot window
+* Moved mutant's loot window option from `ui_mutant_loot.script` to `ui_mutant_loot.script`
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"

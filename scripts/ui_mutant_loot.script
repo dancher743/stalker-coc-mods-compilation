@@ -29,6 +29,8 @@ function loot_ui:__init(owner,obj,id,section,clsid) super()
 	self:InitCallBacks()
 
 	self:FillList()
+	
+	xr_sound.play_sound_by_path("interface\\inv_open")
 end
 
 function loot_ui:__finalize()
@@ -155,7 +157,7 @@ function loot_ui:FillList()
 		self:ShowDialog(true)
 	else		
 		if self:IsShown() then
-			self:HideDialog()
+			self:Close()
 		end
 		SetHudMsg("st_nothing_useful",4)
 		utils.save_var(self.obj,"looted",true)
@@ -212,38 +214,38 @@ function loot_ui:OnListItemDbClicked()
 	end
 
 	if is_empty(self.loot) then
-	utils.save_var(self.obj,"looted",true)
-	utils.se_obj_save_var(self.obj:id(),STR_EMPTY,"looted",true)
-	xr_corpse_detection.set_valuable_loot(self.id,false)
-	self:HideDialog()
+		utils.save_var(self.obj,"looted",true)
+		utils.se_obj_save_var(self.obj:id(),STR_EMPTY,"looted",true)
+		xr_corpse_detection.set_valuable_loot(self.id,false)
+		self:Close()
 	else
-	utils.save_var(self.obj,"looting_tbl",self.loot)
-	self:FillList()
+		utils.save_var(self.obj,"looting_tbl",self.loot)
+		self:FillList()
 	end
 end
 
 function loot_ui:OnButton_ok()
 	if is_empty(self.loot) then
-	--self:HideDialog()
-	return
+		--self:Close()
+		return
 	end
 
 	for sec,t in pairs(self.loot) do
 		for i=1,t.count do
-		alife():create(sec, db.actor:position(),0,0,0)
-		xr_statistic.inc_counter("field_dressings")
+			alife():create(sec, db.actor:position(),0,0,0)
+			xr_statistic.inc_counter("field_dressings")
 		end
-	news_manager.relocate_item(db.actor, "in", sec, t.count)
-	self.loot[sec] = nil
+		news_manager.relocate_item(db.actor, "in", sec, t.count)
+		self.loot[sec] = nil
 	end
 	utils.save_var(self.obj,"looted",true)
 	utils.se_obj_save_var(self.obj:id(),STR_EMPTY,"looted",true)
 	xr_corpse_detection.set_valuable_loot(self.id,false)
-	self:HideDialog()
+	self:Close()
 end
 
 function loot_ui:OnButton_quit()
-self:HideDialog()
+	self:Close()
 end
 
 function loot_ui:OnKeyboard(dik, keyboard_action)
@@ -251,7 +253,7 @@ function loot_ui:OnKeyboard(dik, keyboard_action)
 	if (keyboard_action == ui_events.WINDOW_KEY_PRESSED) then
 	local bind = dik_to_bind(dik)
 		if bind == key_bindings.kQUIT or bind == key_bindings.kUSE then
-			self:HideDialog()
+			self:Close()
 		elseif dik == DIK_keys.DIK_LSHIFT then
 			self:OnButton_ok()
 		end
@@ -295,17 +297,7 @@ function loot_ui:AddItemToList(sec,count)
 	self.list_box:AddExistingItem(_itm)
 end
 
---		добавляем в опции
-
-local function opt_menu_on_init(menu)
-menu.gameplay_options["ui_mutant_loot"] = {
-		default = true,
-		debug_only = false,
-		typ = "check"
-		}
-end
-
-
-function on_game_start()
-RegisterScriptCallback("opt_menu_on_init",opt_menu_on_init)
+function loot_ui:Close()
+	xr_sound.play_sound_by_path("interface\\inv_close")
+	self:HideDialog()
 end

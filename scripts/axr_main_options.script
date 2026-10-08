@@ -114,6 +114,9 @@ function opt_menu_on_init(menu)
 	-- quicksave_cnt
 	menu.gameplay_options["quicksave_cnt"]		= {default=5, 		debug_only=false, 	typ="list", list={1,5,10,20}}
 	
+	-- UI mutant loot
+	menu.gameplay_options["ui_mutant_loot"] = { default = true, debug_only = false, typ = "check" }
+	
 	-- Added by Dancher
 	menu.gameplay_options["companions_hud"] 				= {default=true, 	debug_only=false, 	typ="check"}
 	menu.gameplay_options["companions_invulnerability"]		= {default=true, 	debug_only=false, 	typ="check"}
