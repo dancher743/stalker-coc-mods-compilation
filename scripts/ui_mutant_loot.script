@@ -30,7 +30,9 @@ function loot_ui:__init(owner,obj,id,section,clsid) super()
 
 	self:FillList()
 	
-	xr_sound.play_sound_by_path("interface\\inv_open")
+	if (not is_empty(self.loot)) then
+		xr_sound.play_sound_by_path("interface\\inv_open")
+	end
 end
 
 function loot_ui:__finalize()
@@ -298,6 +300,8 @@ function loot_ui:AddItemToList(sec,count)
 end
 
 function loot_ui:Close()
-	xr_sound.play_sound_by_path("interface\\inv_close")
+	if (not is_empty(self.loot)) then
+		xr_sound.play_sound_by_path("interface\\inv_close")
+	end
 	self:HideDialog()
 end
