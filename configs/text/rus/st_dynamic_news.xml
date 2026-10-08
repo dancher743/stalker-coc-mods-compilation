@@ -3529,6 +3529,12 @@
 	<string id="st_dyn_news_res_found_stash_5">
 		<text>Надо было лучше прятать.</text>
 	</string>
+	<string id="st_dyn_news_res_found_stash_6">
+		<text>А мой тайник вы фиг найдёте!</text>
+	</string>
+	<string id="st_dyn_news_res_found_stash_7">
+		<text>Надо будет мне всё-таки перепрятать...</text>
+	</string>
 	
 	
 <!----------------------------- Task news ----------------------------->
