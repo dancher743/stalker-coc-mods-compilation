@@ -82,6 +82,7 @@ All notable changes to this project will be documented in this file.
 * Fixed missing invulnerability of companions
 * Removed `default` ambient weather configs
 * Fixed incorrect Clear Sky barman name in recipes dialog
+* Added fixes to `try_spawn_ammo` function in `death_manager.script`
 
 ### Optimization
 * Replaced some allocations with global constants
