@@ -10,7 +10,8 @@ disguise_tip_type = {
 	returned = 2,
 	same = 3,
 	has_companion = 4,
-	discovered = 5
+	discovered = 5,
+	in_combat = 6
 }
 
 local once_disguise_tips = {}
@@ -36,6 +37,8 @@ function send_disguise_tip(tip_type, community)
 	
 	if tip_type == disguise_tip_type.has_companion then
 		text = game.translate_string("st_disguise_actor_has_companion")
+	elseif tip_type == disguise_tip_type.in_combat then
+		text = game.translate_string("st_disguise_actor_in_combat")
 	elseif tip_type == disguise_tip_type.not_allowed then
 		text = game.translate_string("st_disguise_actor_in_sight")
 	elseif tip_type == disguise_tip_type.same then
