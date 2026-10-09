@@ -47,7 +47,6 @@ All notable changes to this project will be documented in this file.
 * Rebalanced сooking recipes givers
 * Refactored `has_chance_to_create` function in `outfit_marauder.script`
 * Set `max_uses` to 2 for all cooked food
-* Excluded tools from non-reward stashes
 * Reworked chance of adding tools into `bonus` table in `xr_effects.reward_stash` function
 * Rebalanced chances of add toolkit to reward stash
 * Added artifact respawning from game start
