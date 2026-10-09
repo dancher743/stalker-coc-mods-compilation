@@ -139,7 +139,8 @@ function try_spawn_ammo(npc, itm)
         if (gl_status == 1) then
             has_grenadelauncher = true
         elseif (gl_status == 2) then
-            local data = stpk_utils.get_weapon_data(itm)
+            local se_obj = alife_object(itm:id())
+			local data = stpk_utils.get_weapon_data(se_obj)
             if (data) then
                 local flags = data.addon_flags or 0
                 has_grenadelauncher = (bit_and(flags, 4) == 4)
