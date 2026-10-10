@@ -57,6 +57,7 @@ All notable changes to this project will be documented in this file.
 * Added inventory sounds to mutant's loot window
 * Added mutant's loot window closing by inventory key
 * Moved mutant's loot window option from `ui_mutant_loot.script` to `ui_mutant_loot.script`
+* Corrected description of Guide job map spots
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
