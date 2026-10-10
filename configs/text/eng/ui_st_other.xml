@@ -644,4 +644,8 @@
 	<string id="ui_st_no_talk_leader_news_text">
 		<text>Squad commander - %s.</text>
 	</string>
+	
+	<string id="st_level_changer_left_companions_hudmsg">
+		<text>Cannot move to the next level: your companions are left behind.</text>
+	</string>
 </string_table>

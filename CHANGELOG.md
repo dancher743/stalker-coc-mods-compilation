@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 * Added "in combat" state to disguise system
 * Added Fast-shooting AKM-74/2 weapon to Strelok's group's stash (Agroprom Underground)
 * Added stash removing by pressing `H` button (by default)
+* Added companion distance check before moving to the next level
 
 ### Improvements
 * Added Duty Outpost At Garbage to Fast Travel
