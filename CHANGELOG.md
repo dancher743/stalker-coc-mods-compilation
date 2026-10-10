@@ -84,6 +84,7 @@ All notable changes to this project will be documented in this file.
 * Removed `default` ambient weather configs
 * Fixed incorrect Clear Sky barman name in recipes dialog
 * Added fixes to `try_spawn_ammo` function in `death_manager.script`
+* Added missing SoC unique weapons into Hermann's trade config
 
 ### Optimization
 * Replaced some allocations with global constants
