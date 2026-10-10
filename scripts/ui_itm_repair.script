@@ -83,15 +83,17 @@ function repair_ui:FillPartsList()
 	end
 
 	local obj = level.object_by_id(item.item_id)
+	local obj_sec = obj:section()
 	local function fill_list(actor,itm)
 		if (itm and itm:id() ~= item.item_id) then
-			if (self.parts_include and self.parts_include[itm:section()]) or (self.parts_exclude == nil and string.find(obj:section(),itm:section())) or (self.parts_exclude and self.parts_exclude[itm:section()] == nil and (string.find(obj:section(),itm:section()) or string.find(itm:section(),obj:section()))) then
+			local itm_sec = itm:section()
+			if (self.parts_include and self.parts_include[itm_sec]) or (self.parts_exclude == nil and string.find(obj_sec,itm_sec)) or (self.parts_exclude and self.parts_exclude[itm_sec] == nil and (string.find(obj_sec,itm_sec) or string.find(itm_sec,obj_sec))) then
 				local con = 0
 				local prefix = nil
 				if (self.add_full_part_condition) then
 					con = itm:condition()
 				else
-					con = system_ini():r_float_ex(itm:section(),"repair_part_bonus") or self.part_bonus
+					con = system_ini():r_float_ex(itm_sec,"repair_part_bonus") or self.part_bonus
 					prefix = "+"
 				end
 				self:AddItemToList(itm,self.list_box_parts,con,prefix)
