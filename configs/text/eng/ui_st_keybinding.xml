@@ -285,4 +285,7 @@
 	<string id="kb_custom_spot">
 		<text>Put spot on Map</text>
 	</string>
+	<string id="kb_remove_stash">
+		<text>Remove stash</text>
+	</string>
 </string_table>

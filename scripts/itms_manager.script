@@ -239,6 +239,34 @@ function inc_rank(itm)
 	end
 end
 
+-- Called from axr_keybind.script as kCUSTOM15 action - inventory_remove_stash
+function try_remove_stash()
+	local obj = level.get_target_obj()
+	if (obj and obj:section() == "inv_backpack") then
+		local actor = db.actor
+		
+		local function iterator(obj, item)
+			if (obj) then
+				obj:transfer_item(item, actor)
+			end
+		end
+		obj:iterate_inventory_box(iterator, obj)
+		
+		local function postpone_for_next_frame()
+			if (obj:is_inv_box_empty()) then
+				level.map_remove_object_spot(obj:id(), BackPackStashSpot)
+				create_item("itm_backpack", actor)
+				alife_release(obj)
+				
+				if (BackPackStashEnableTip) then
+					SetHudMsg(game.translate_string("st_stash_removed"),4)
+				end
+			end
+		end
+		SkipFrame(postpone_for_next_frame)
+	end
+end
+
 local torch_delay
 -- bind_stalker update
 local actor_fill_backpack
@@ -565,25 +593,6 @@ function actor_on_item_take_from_box(box,obj)
 
 	if not (obj) then
 		return
-	end
-
-	-- Backpack section
-	if (BackPackStashEnable and box:section() == "inv_backpack") then
-		if (box:is_inv_box_empty() and get_check_option("dont_remove_empty_stashes") == false) then
-			local hud = get_hud()
-			if (hud) then
-				hud:HideActorMenu()
-			end
-
-			level.map_remove_object_spot(box:id(), BackPackStashSpot)
-			alife():create("itm_backpack",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
-
-			alife():release( alife_object(box:id()) ,true)
-			
-			if (BackPackStashEnableTip) then
-				SetHudMsg(game.translate_string("st_stash_removed"),4)
-			end
-		end
 	end
 
 	-- Actor backpack section

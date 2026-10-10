@@ -11,9 +11,9 @@ All notable changes to this project will be documented in this file.
 * Restored ability to open the armory at the Freedom base
 * Added P90 weapon
 * Added sleeping area to Dolg bunker in Bar
-* Added "Don't remove empty stashes" option
 * Added "in combat" state to disguise system
 * Added Fast-shooting AKM-74/2 weapon to Strelok's group's stash (Agroprom Underground)
+* Added stash removing by pressing `H` button (by default)
 
 ### Improvements
 * Added Duty Outpost At Garbage to Fast Travel

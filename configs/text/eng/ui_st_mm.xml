@@ -600,7 +600,4 @@
 	<string id="ui_mm_mutant_dead_spots">
 		<text>Dead mutants spots</text>
 	</string>
-	<string id="ui_mm_dont_remove_empty_stashes">
-		<text>Don't remove empty stashes</text>
-	</string>
 </string_table>

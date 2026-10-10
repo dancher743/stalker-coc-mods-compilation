@@ -23,6 +23,7 @@ keybinds = {
 					["inventory_unload_weapons"] 	= "kCUSTOM12",
 					["common_slow_save"]			= "kCUSTOM13",
 					["inventory_custom_spot"]		= "kCUSTOM14",
+					["inventory_remove_stash"]		= "kCUSTOM15",
 					
 					["debug_demo_record"]			= "DIK_NUMPAD0",
 					--["debug_select_object"] 		= "DIK_NUMPAD9",
@@ -162,6 +163,16 @@ function action.inventory_custom_spot(p)
 		return 
 	end
 	custom_object_spots.show_input_dialog()
+end
+
+function action.inventory_remove_stash(p)
+	if not (p==1) then
+		return
+	end
+	if (actor_menu.dead_body_searching) then
+		return
+	end
+	itms_manager.try_remove_stash()
 end
 
 function action.debug_demo_record(p)

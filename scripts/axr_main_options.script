@@ -143,8 +143,6 @@ function opt_menu_on_init(menu)
 		function(handler,optMgr,ctrl)
 			mutant_dead_spots.check_option_on_accept(ctrl:GetCheck())
 		end}
-	
-	menu.gameplay_options["dont_remove_empty_stashes"] = {default=false, debug_only=false, typ="check"}
 	--
 	
 	if (db.actor) then -- Options will only show while in-game
