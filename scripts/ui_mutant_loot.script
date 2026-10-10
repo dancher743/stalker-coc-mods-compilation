@@ -30,7 +30,7 @@ function loot_ui:__init(owner,obj,id,section,clsid) super()
 
 	self:FillList()
 	
-	if (not is_empty(self.loot)) then
+	if (self.has_loot_filled) then
 		xr_sound.play_sound_by_path("interface\\inv_open")
 	end
 end
@@ -150,14 +150,15 @@ function loot_ui:FillList()
 		utils.save_var(self.obj,"looting_tbl",self.loot)
 	end
 
-	for sec,t in pairs(self.loot) do
-		self:AddItemToList(sec,t.count)
-	end
+	self.has_loot_filled = is_empty(self.loot) == false
 
-	if (not is_empty(self.loot)) then
+	if (self.has_loot_filled) then
+		for sec,t in pairs(self.loot) do
+			self:AddItemToList(sec,t.count)
+		end
 		SetHudMsg(STR_EMPTY,0)
 		self:ShowDialog(true)
-	else		
+	else
 		if self:IsShown() then
 			self:Close()
 		end
@@ -300,7 +301,7 @@ function loot_ui:AddItemToList(sec,count)
 end
 
 function loot_ui:Close()
-	if (not is_empty(self.loot)) then
+	if (self.has_loot_filled) then
 		xr_sound.play_sound_by_path("interface\\inv_close")
 	end
 	self:HideDialog()
