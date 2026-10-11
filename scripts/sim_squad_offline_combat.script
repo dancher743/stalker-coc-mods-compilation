@@ -91,6 +91,8 @@ local function get_se_obj(id)
 		se_obj = alife_object(id)
 		if (se_obj and se_obj.group_id ~= 65535) then
 			se_objs_cache[id] = se_obj
+		else
+			se_obj = nil
 		end
 	elseif (se_obj.group_id == 65535) then
 		se_objs_cache[id] = nil
