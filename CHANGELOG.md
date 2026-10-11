@@ -95,6 +95,7 @@ All notable changes to this project will be documented in this file.
 * Fixed incorrect result of `get_se_obj` function in `sim_squad_offline_combat` script
 * Added bump textures to fix fallback in Darkscape location
 * Added missing ".thm" files to stons
+* Corrected disguise warning and dewarn limits
 
 ### Optimization
 * Replaced some allocations with global constants
