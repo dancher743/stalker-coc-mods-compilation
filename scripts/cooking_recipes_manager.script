@@ -3,8 +3,9 @@
 --	Author: Dancher
 --
 
-local info_portion_string_name = "info_portion"
+local recipes_section_name = "recipes"
 local recipes_givers_section_name = "recipes_givers"
+local info_portion_string_name = "info_portion"
 local ini_path = "plugins\\cooking_recipes.ltx"
 
 function get_ini()
@@ -28,6 +29,19 @@ function has_actor_recipes_from_npc(id)
 	end
 	
 	return has_recipes
+end
+
+function has_actor_all_recipes()
+	local ini = get_ini()
+	local recipe_sections = utils.parse_ini_section_to_iarray(ini,recipes_section_name) or {}
+	
+	for _,recipe_section in ipairs(recipe_sections) do
+		if (has_actor_recipe(recipe_section) == false) then
+			return false
+		end
+	end
+	
+	return true
 end
 
 function give_actor_recipes_from_npc(id)

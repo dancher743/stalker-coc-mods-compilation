@@ -60,6 +60,7 @@ All notable changes to this project will be documented in this file.
 * Corrected description of Guide job map spots
 * Made weapons repair in gunsmith toolkit by ammo classes
 * Corrected "zat_a2_stalker_mechanic_sell_gauss_ammo_0" string in RUS localization
+* Added hiding of `more_cooking_recipes_dialog` if all recipes have been obtained
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
