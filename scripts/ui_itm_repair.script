@@ -415,10 +415,10 @@ function repair_ui:OnButton_repair()
 	else
 		con_delta = self.add_condition + bonus
 	end
-	con = utils.clamp01(con + con_delta)
+	local con_result = utils.clamp01(con + con_delta)
 	
 	local function on_yes(owner,p)
-		obj:set_condition(con)
+		obj:set_condition(con_result)
 		if (self.repair_type == "weapon" and IsWeapon(obj_part)) then
 			self:DetachWeaponAddons(obj_part)
 			unload_all_weapons.unload_weapon(obj_part)
@@ -451,7 +451,7 @@ function repair_ui:OnButton_repair()
 	
 	local inv_name = game.translate_string(ini:r_string_ex(obj:section(),"inv_name") or "st_none")
 	inv_name = self:AddSlotPostfixToInvName(inv_name,obj)
-	local msg = strformat(game.translate_string("st_repair_mod_message_box_ask"),inv_name,math.ceil(con_delta*100))
+	local msg = strformat(game.translate_string("st_repair_mod_message_box_ask"),inv_name,math.ceil(con*100),math.ceil(con_delta*100))
 
 	ui_dyn_msg_box.msg_box_ui("message_box_yes_no",true,msg,on_yes,on_no)
 end

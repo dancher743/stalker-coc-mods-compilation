@@ -216,7 +216,7 @@ function on_item_drag_dropped(itm1,itm2,from_slot,to_slot)
 	end
 	
 	local inv_name = game.translate_string(ini:r_string_ex(itm2:section(),"inv_name") or "st_none")
-	local msg = strformat(game.translate_string("st_repair_mod_message_box_ask"),inv_name,c_add*100)
+	local msg = strformat(game.translate_string("st_repair_mod_message_box_ask"),inv_name,math.floor(cur_condition*100),c_add*100)
 
 	ui_dyn_msg_box.msg_box_ui("message_box_yes_no",true,msg,on_yes,on_no)
 end 
