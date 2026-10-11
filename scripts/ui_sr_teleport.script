@@ -62,7 +62,7 @@ function msg_box_ui:InitCallBacks()
 end
 
 function msg_box_ui:OnMsgOk()
-	if (axr_companions.has_companion() and axr_companions.is_distance_to_actor_ge(25)) then
+	if (axr_companions.has_companion() and axr_companions.is_distance_to_actor_ge(30)) then
 		SetHudMsg(strtransl("st_level_changer_left_companions_hudmsg"), 8)
 		self:OnMsgCancel()
 		return
