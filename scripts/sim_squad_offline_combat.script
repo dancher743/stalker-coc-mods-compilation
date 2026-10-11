@@ -684,7 +684,7 @@ local function se_obj_on_before_release(se_obj)
 	if (smart_id) then
 		local counter = smart_combat_counters[smart_id]
 		
-		if (counter and counter > 1) then
+		if (counter and counter >= 1) then
 			counter = counter - 1
 			smart_combat_counters[smart_id] = counter
 		end
