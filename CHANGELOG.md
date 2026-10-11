@@ -59,6 +59,7 @@ All notable changes to this project will be documented in this file.
 * Moved mutant's loot window option from `ui_mutant_loot.script` to `ui_mutant_loot.script`
 * Corrected description of Guide job map spots
 * Made weapons repair in gunsmith toolkit by ammo classes
+* Corrected "zat_a2_stalker_mechanic_sell_gauss_ammo_0" string in RUS localization
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
