@@ -93,6 +93,7 @@ All notable changes to this project will be documented in this file.
 * Added missing SoC unique weapons into Hermann's trade config
 * Corrected counter equality check in `sim_squad_offline_combat.se_obj_on_before_release` function
 * Fixed incorrect result of `get_se_obj` function in `sim_squad_offline_combat` script
+* Added bump textures to fix fallback in Darkscape location
 
 ### Optimization
 * Replaced some allocations with global constants
