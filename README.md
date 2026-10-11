@@ -47,8 +47,8 @@ And much more!
 * To unload all weapons, open Inventory and press the 'K' button (default)
 * You can put a custom spot on Map by pressing `J` button (by default)
 * To access Dynamic News settings: load your game, then open the main menu and press Page-Up button
+* It is recommended to disable "Sun shadow" in "Options" in "Video" to play without lighting shaders
 * To make the sky less bright type `r2_tonemap off` command at the console
-* Disable "Sun shadow" in "Options" in "Video" to play without lighting shaders
 * Type `vid_restart` at the console if you are faced with _"Too many occlusion queries were issued"_ warnings. This command restarts the renderer
 
 ## Optimization
