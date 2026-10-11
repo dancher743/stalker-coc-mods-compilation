@@ -82,12 +82,22 @@ function repair_ui:FillPartsList()
 		return
 	end
 
+	local function comparator(obj,obj_sec,itm,itm_sec)
+		if (IsWeapon(obj) and IsWeapon(itm) and repair_ui:IsSameAmmoClass(obj_sec,itm_sec)) then
+			return true
+		end
+		if (string.find(obj_sec,itm_sec) or string.find(itm_sec,obj_sec)) then
+			return true
+		end
+		return false
+	end
+	
 	local obj = level.object_by_id(item.item_id)
 	local obj_sec = obj:section()
 	local function fill_list(actor,itm)
 		if (itm and itm:id() ~= item.item_id) then
 			local itm_sec = itm:section()
-			if (self.parts_include and self.parts_include[itm_sec]) or (self.parts_exclude == nil and string.find(obj_sec,itm_sec)) or (self.parts_exclude and self.parts_exclude[itm_sec] == nil and (string.find(obj_sec,itm_sec) or string.find(itm_sec,obj_sec))) then
+			if (self.parts_include and self.parts_include[itm_sec]) or (self.parts_exclude and self.parts_exclude[itm_sec] == nil and comparator(obj,obj_sec,itm,itm_sec)) then
 				local con = 0
 				local prefix = nil
 				if (self.add_full_part_condition) then
@@ -554,4 +564,20 @@ function repair_ui:DetachWeaponAddons(wpn)
 			end
 		end
 	end
+end
+
+function repair_ui:IsSameAmmoClass(sec_wpn1, sec_wpn2)
+	local ini = system_ini()
+	local wpn1_ammo = alun_utils.parse_list(ini,sec_wpn1,"ammo_class")
+    local wpn2_ammo = alun_utils.parse_list(ini,sec_wpn2,"ammo_class")
+	
+    for _,ammo1 in ipairs(wpn1_ammo) do
+		for _,ammo2 in ipairs(wpn2_ammo) do
+			if (ammo1 == ammo2) then
+				return true
+			end
+        end
+    end
+    
+    return false
 end
