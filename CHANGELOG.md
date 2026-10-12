@@ -97,6 +97,7 @@ All notable changes to this project will be documented in this file.
 * Added bump textures to fix fallback in Darkscape location
 * Added missing ".thm" files to stons
 * Corrected disguise warning and dewarn limits
+* Added all phantoms to `m_controller_psy` mutant
 
 ### Optimization
 * Replaced some allocations with global constants
@@ -111,6 +112,7 @@ All notable changes to this project will be documented in this file.
 * Added `alife_release` function into `_g.script`
 * Added `ignore_cant_trade_sections` into `xr_corpse_detection.ltx`
 * Removed extra `get_chance` and `get_chance01` functions from `_g.script`
+* Extended `phantom_manager.script` to work with many sections in `spawn_phantom` string
 
 ## [1.5.4] - 2026-04-14
 
