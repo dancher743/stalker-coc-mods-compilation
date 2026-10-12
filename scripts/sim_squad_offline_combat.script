@@ -170,7 +170,12 @@ local function relocate_loot(is_killer_stalker, is_victim_stalker, killer_commun
 	for i = #victim_items, 1, -1 do
 		local victim_item = get_se_obj(victim_items[i])
 		
-		if (victim_item and victim_item.parent_id ~= 0 and victim_item.parent_id ~= 65535 and victim_item.parent_id == se_victim.id) then
+		if (victim_item and victim_item.parent_id == 65535) then
+			table.remove(victim_items, i)
+			victim_item = nil
+		end
+		
+		if (victim_item and victim_item.parent_id ~= 0 and victim_item.parent_id == se_victim.id) then
 			table.remove(victim_items, i)
 			
 			local killer_item = alife():create(victim_item:section_name(), se_killer.position, 
@@ -179,7 +184,7 @@ local function relocate_loot(is_killer_stalker, is_victim_stalker, killer_commun
 			
 			if (killer_item and killer_items) then
 				table.insert(killer_items, killer_item.id)
-				safe_release_manager.release(victim_item)
+				alife_release(victim_item)
 				-- if dbg then printf_dbg("loot relocated!") end
 			end
 		end
@@ -412,6 +417,10 @@ local function is_item_valid(se_item)
 	
 	local section = se_item:section_name()
 	if (loot_ignore_list[section] == true) then
+		return false
+	end
+	
+	if (get_object_story_id(se_item.id) ~= nil) then
 		return false
 	end
 	
@@ -678,6 +687,10 @@ local function se_obj_on_before_release(se_obj)
 	
 	if (se_objs_cache ~= nil) then
 		se_objs_cache[se_obj_id] = nil
+	end
+	
+	if (loot_items and loot_items[se_obj_id]) then
+		loot_items[se_obj_id] = nil
 	end
 	
 	local commander_id = se_obj_id
