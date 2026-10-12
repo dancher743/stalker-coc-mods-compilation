@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 * Added "in combat" state to disguise system
 * Added companion distance check before moving to the next level
 * Added stash removing by pressing `H` button (by default)
+* Replaced the regular controllers in Agroprom Underground and X16 with boss controllers
 
 ### Improvements
 * Added Duty Outpost At Garbage to Fast Travel

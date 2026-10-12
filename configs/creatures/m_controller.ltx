@@ -521,6 +521,15 @@ community			= controller
 [m_controller_psy]:m_controller_normal2
 can_spawn_phantom = true
 
+;*********************
+; BOSS 
+;*********************
+[m_controller_boss]:m_controller_psy
+MaxHealthValue			= 1.25			; range [0..200]
+immunities_sect			= controller_immunities_boss
+
+[controller_immunities_boss]:controller_immunities
+fire_wound_immunity   	= 0.2
 
 [controller_critical_wound_bones_head]
 bip01_neck
