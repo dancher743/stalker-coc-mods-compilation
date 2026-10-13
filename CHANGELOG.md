@@ -98,6 +98,7 @@ All notable changes to this project will be documented in this file.
 * Added missing ".thm" files to stons
 * Corrected disguise warning and dewarn limits
 * Added all phantoms to `m_controller_psy` mutant
+* Fixed shuffling of squads in Offline Combats
 
 ### Optimization
 * Replaced some allocations with global constants

@@ -65,6 +65,7 @@ local loot_items
 local update_timer
 local update_queue_timer
 local combat_squads_table
+local combat_squads_level_ids_shuffled
 local processed_squads
 local combats_queue
 local last_victim_stalker_id
@@ -545,7 +546,7 @@ local function fill_combat_squads_table()
 	for _,combat_squads in pairs(combat_squads_table) do
 		combat_squads:shuffle()
 	end
-	utils.shuffle_table(combat_squads_table)
+	combat_squads_level_ids_shuffled = utils.shuffle_table(combat_squads_table)
 end
 
 local function fill_loot_items_table()
@@ -578,7 +579,8 @@ local function update()
 	
 	local level_to_update = nil
 	
-	for level_id,combat_squads in pairs(combat_squads_table) do
+	for _,level_id in pairs(combat_squads_level_ids_shuffled) do
+		local combat_squads = combat_squads_table[level_id]
 		if (level_id ~= actor_level_id and combat_squads.were_combats == false) then
 			level_to_update = level_id
 			break
@@ -745,5 +747,5 @@ function combat_squads:__init(level_id)
 end
 
 function combat_squads:shuffle()
-	utils.shuffle_table(self.squads)
+	utils.shuffle_itable(self.squads)
 end

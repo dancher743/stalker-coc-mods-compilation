@@ -988,6 +988,8 @@ function shuffle_table(t)
         local j = math.random(i)
         swap(keys, i, j)
     end
+	
+	return keys
 end
 
 function get_hours_elapsed()
