@@ -65,6 +65,7 @@ All notable changes to this project will be documented in this file.
 * Extended delta text in the toolkits repair UI
 * Corrected disguise warning and dewarn limits
 * Added all phantoms to `m_controller_psy` mutant
+* Balanced controller immunities
 * Added reinit of squads when Offline Combats restarts
 
 ### Fixes

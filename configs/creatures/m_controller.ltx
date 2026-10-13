@@ -485,7 +485,11 @@ corpse_visual		 = monsters\controller\controller_dead
 icon				= ui_npc_monster_controller
 spec_rank			= normal
 rank				= 18
+immunities_sect		= controller_immunities_weak
 community			= controller
+
+[controller_immunities_weak]:controller_immunities
+fire_wound_immunity   	= 1.2
 
 ;*********************************************************************************
 ; NORMAL PROFILE 2
@@ -522,11 +526,13 @@ community			= controller
 spawn_phantom 		= m_phantom_bloodsucker, m_phantom_boar, m_phantom_cat, m_phantom_controller, m_phantom_dog, m_phantom_flesh, m_phantom_pseudodog, m_phantom_snork, m_phantom_tushkano, m_phantom_zombi
 can_spawn_phantom 	= true
 
+[controller_immunities_psy]:controller_immunities
+fire_wound_immunity   	= 0.8
+
 ;*********************
 ; BOSS 
 ;*********************
 [m_controller_boss]:m_controller_psy
-MaxHealthValue			= 1.25			; range [0..200]
 immunities_sect			= controller_immunities_boss
 
 [controller_immunities_boss]:controller_immunities
