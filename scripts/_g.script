@@ -102,16 +102,23 @@ function alife_object(id)
 	return alife():object(id)
 end
 
-function alife_release(obj)
-	if (obj == nil) then
+function alife_release(se_obj)
+	if (se_obj == nil) then
 		callstack()
 		printf("ALIFE OBJECT IS NIL!")
 		return
 	end
-	local se_obj = alife_object(obj:id())
-	if (se_obj) then
-		alife():release(se_obj)
+	alife():release(se_obj)
+end
+
+function release(obj)
+	if (obj == nil) then
+		callstack()
+		printf("OBJECT IS NIL!")
+		return
 	end
+    local se_obj = alife_object(obj:id())
+	alife_release(se_obj)
 end
 
 -------------------------------------------------------------------------------------------------------

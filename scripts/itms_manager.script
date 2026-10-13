@@ -256,7 +256,7 @@ function try_remove_stash()
 			if (obj:is_inv_box_empty()) then
 				level.map_remove_object_spot(obj:id(), BackPackStashSpot)
 				create_item("itm_backpack", actor)
-				alife_release(obj)
+				release(obj)
 				
 				if (BackPackStashEnableTip) then
 					SetHudMsg(game.translate_string("st_stash_removed"),4)

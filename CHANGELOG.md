@@ -109,7 +109,7 @@ All notable changes to this project will be documented in this file.
 * Added default value to `se_obj_load_var` function in `utils.script`
 * Splited `sim_survival.script` into `sim_survival_mode.script` and `sim_survival_eoc_mode.script`
 * Added `monster_on_net_destroy` callback into `axr_main.script`
-* Added `alife_release` function into `_g.script`
+* Added `alife_release` and `release` functions into `_g.script`
 * Added `ignore_cant_trade_sections` into `xr_corpse_detection.ltx`
 * Removed extra `get_chance` and `get_chance01` functions from `_g.script`
 * Extended `phantom_manager.script` to work with many sections in `spawn_phantom` string

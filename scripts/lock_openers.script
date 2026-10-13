@@ -27,9 +27,9 @@ local function open_mil_door_lock(ph_obj,actor)
 	if (key_obj) then
 		SetHudMsg(STR_EMPTY,0)
 		
-		alife_release(key_obj)
-		alife_release(get_story_object("mil_door_locker"))
-		alife_release(ph_obj)
+		release(key_obj)
+		release(get_story_object("mil_door_locker"))
+		release(ph_obj)
 		give_info("mil_freedom_arsenal_door_opened")
 		
 		if (actor_community() ~= community.freedom) then
