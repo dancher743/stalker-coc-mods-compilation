@@ -588,9 +588,9 @@ local function update()
 	end
 	
 	if (level_to_update == nil) then
-		for _,combat_squads in pairs(combat_squads_table) do
-			combat_squads.were_combats = false
-		end
+		combat_squads_table = nil
+		combat_squads_level_ids_shuffled = nil
+		loot_items = nil
 		if dbg then printf_dbg("restart combats") end
 		return
 	end

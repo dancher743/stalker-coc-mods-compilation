@@ -63,6 +63,7 @@ All notable changes to this project will be documented in this file.
 * Corrected "zat_a2_stalker_mechanic_sell_gauss_ammo_0" string in RUS localization
 * Added hiding of `more_cooking_recipes_dialog` if all recipes have been obtained
 * Extended delta text in the toolkits repair UI
+* Added reinit of squads when Offline Combats restarts
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
