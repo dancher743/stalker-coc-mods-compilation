@@ -63,6 +63,8 @@ All notable changes to this project will be documented in this file.
 * Corrected "zat_a2_stalker_mechanic_sell_gauss_ammo_0" string in RUS localization
 * Added hiding of `more_cooking_recipes_dialog` if all recipes have been obtained
 * Extended delta text in the toolkits repair UI
+* Corrected disguise warning and dewarn limits
+* Added all phantoms to `m_controller_psy` mutant
 * Added reinit of squads when Offline Combats restarts
 
 ### Fixes
@@ -97,8 +99,6 @@ All notable changes to this project will be documented in this file.
 * Fixed incorrect result of `get_se_obj` function in `sim_squad_offline_combat` script
 * Added bump textures to fix fallback in Darkscape location
 * Added missing ".thm" files to stons
-* Corrected disguise warning and dewarn limits
-* Added all phantoms to `m_controller_psy` mutant
 * Fixed shuffling of squads in Offline Combats
 
 ### Optimization
