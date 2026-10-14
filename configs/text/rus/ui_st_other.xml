@@ -648,4 +648,11 @@
 	<string id="st_level_changer_left_companions_hudmsg">
 		<text>Переход невозможен: вы оставили напарников позади.</text>
 	</string>
+	
+	<string id="ui_st_mine_actor_spot_remove">
+		<text>Разминировать</text>
+	</string>
+	<string id="st_mine_actor_too_far_to_remove_hudmsg">
+		<text>Вы находитесь слишком далеко от мины.</text>
+	</string>
 </string_table>

@@ -27,6 +27,7 @@
 
 
 		<texture id="ui_inGame2_PDA_icon_quest_secret" x="2" y="688" width="25" height="25" />
+		<texture id="ui_inGame2_PDA_icon_flag" x="30" y="688" width="25" height="25" />
 	</file>
 
     <file name="ui\ui_actor_sleep_screen">

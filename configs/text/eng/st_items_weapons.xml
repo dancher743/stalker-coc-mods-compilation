@@ -618,6 +618,6 @@
     <text>Butterfly mine</text>
   </string>
   <string id="st_wpn_mine_descr">
-		<text>The PFM-1 is an anti-personnel mine which became infamous for causing large numbers of civilian casualties. Often referred to as a butterfly mine due to its unusual shape.</text>
+		<text>The PFM-1 is an anti-personnel mine which became infamous for causing large numbers of civilian casualties. Often referred to as a butterfly mine due to its unusual shape.\n%c[200,200,200,50]To defuse the mine, right-click its marker on the PDA map.</text>
   </string>
 </string_table>
