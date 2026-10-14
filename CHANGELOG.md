@@ -69,6 +69,7 @@ All notable changes to this project will be documented in this file.
 * Balanced controller immunities
 * Added reinit of squads when Offline Combats restarts
 * Corrected Butterfly mine blow radius
+* Added news message to Guide job map spot
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
