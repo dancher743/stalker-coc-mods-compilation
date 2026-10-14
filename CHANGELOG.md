@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 * Added companion distance check before moving to the next level
 * Added stash removing by pressing `H` button (by default)
 * Replaced the regular controllers in Agroprom Underground and X16 with boss controllers
+* Added Butterfly mine defusal mechanic: press `K` button while standing close to it
 
 ### Improvements
 * Added Duty Outpost At Garbage to Fast Travel
@@ -67,6 +68,7 @@ All notable changes to this project will be documented in this file.
 * Added all phantoms to `m_controller_psy` mutant
 * Balanced controller immunities
 * Added reinit of squads when Offline Combats restarts
+* Corrected Butterfly mine blow radius
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"

@@ -9,10 +9,11 @@
 -- Now has a primer before it will react to targets
 -- Uses persistent storage marshal library
 ----------------------
-DEFUSE_RADIUS = 4
-local BLOW_RADIUS = 2.5
+local BLOW_RADIUS = 1
+local DEFUSE_RADIUS = 2
 local PRIMER_FACTOR = 5					-- Time to activate in human seconds
 local HOSTILE_TIME_FACTOR = 360			-- Amount of seconds before NPC forgets actor placed mine
+local ACTOR_MINE_SPOT_NAME = "mine_actor_spot"
 
 local neutral_placed_mines = {}
 local actor_placed_mines = {}
@@ -170,12 +171,12 @@ local function actor_on_item_use(itm)
    		local se_obj = alife():create("mine_actor",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id())
 		if (se_obj) then
 			m_mine_table.priming[se_obj.id] = game.get_game_time()
-			m_mine_spots.add_spot(se_obj.id)
+			level.map_add_object_spot_ser(se_obj.id, ACTOR_MINE_SPOT_NAME, strtransl("st_wpn_mine_name"))
 		end
 	end
 end
 
-function remove_actor_mine(obj)
+local function remove_actor_mine(obj)
     if (obj and obj:section() == "mine_actor") then
 		local mid = obj:id()
 
@@ -199,10 +200,40 @@ function remove_actor_mine(obj)
         if (snd_obj) then
             snd_obj:play_at_pos(obj, mine_pos)
         end
-
-        alife():create("wpn_mine", mine_pos, l_vid, g_vid)
+		
+		if (level.map_has_object_spot(mid, ACTOR_MINE_SPOT_NAME) == 1) then
+			level.map_remove_object_spot(mid, ACTOR_MINE_SPOT_NAME)
+		end
+		
+		alife():create("wpn_mine", mine_pos, l_vid, g_vid)
 		release(obj)
     end
+end
+
+function remove_all_actor_mines()
+	if (#actor_placed_mines == 0) then
+		return
+	end
+
+    local actor_pos = db.actor:position()
+	local defuse_radius = DEFUSE_RADIUS * DEFUSE_RADIUS
+	local is_too_far = true
+	
+    for i = #actor_placed_mines, 1, -1 do
+        local mid = actor_placed_mines[i]
+		local se_obj = alife_object(mid)
+		if (se_obj and se_obj.position:distance_to_sqr(actor_pos) <= defuse_radius) then
+			local obj = level.object_by_id(se_obj.id)
+			remove_actor_mine(obj)
+			is_too_far = false
+		end
+	end
+	
+	if (is_too_far) then
+		SetHudMsg(strtransl("st_mine_actor_too_far_to_remove_hudmsg"),5)
+	else
+		SetHudMsg(STR_EMPTY,0)
+	end
 end
 
 local function save_state(data)

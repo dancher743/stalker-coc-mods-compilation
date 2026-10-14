@@ -10,7 +10,8 @@ local unload_sound_path = "weapons\\gen_empty"
 function unload_weapons()
 	local inventory = ActorMenu.get_actor_menu()
 	
-	if not (inventory and inventory:IsShown()) then 
+	if (inventory and inventory:IsShown() == false) then 
+		m_mines.remove_all_actor_mines()
 		return 
 	end
 	

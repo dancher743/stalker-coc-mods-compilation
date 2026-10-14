@@ -44,7 +44,7 @@ And much more!
 * To change input language press Ctrl + Shift
 * To ignite/extinguish a campfire holster your weapon first
 * No need to create saves manually (via the main menu) - try Slow Saves: in the game, press the `F6` button (by default) and the save will be created automatically.
-* To unload all weapons, open Inventory and press the 'K' button (default)
+* To unload all your weapons, open Inventory and press the 'K' button (default). Also you can defuse your mines using this.
 * You can put a custom spot on Map by pressing `J` button (by default)
 * To access Dynamic News settings: load your game, then open the main menu and press Page-Up button
 * It is recommended to disable "Sun shadow" in "Options" in "Video" to play without lighting shaders
