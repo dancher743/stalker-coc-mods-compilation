@@ -10,7 +10,7 @@
 -- Uses persistent storage marshal library
 ----------------------
 local BLOW_RADIUS = 1
-local DEFUSE_RADIUS = 2
+local DEFUSE_RADIUS = 1.5
 local PRIMER_FACTOR = 5					-- Time to activate in human seconds
 local HOSTILE_TIME_FACTOR = 360			-- Amount of seconds before NPC forgets actor placed mine
 local ACTOR_MINE_SPOT_NAME = "mine_actor_spot"
@@ -24,7 +24,6 @@ local m_mine_table = 	{
 							recently_placed = false
 						}
 
-
 function add_actor_mine(m)
 	table.insert(actor_placed_mines, m:id())
 	m_mine_table.recently_placed = m:id()
@@ -34,6 +33,15 @@ function add_neutral_mine(m)
 	table.insert(neutral_placed_mines, m:id())
 end
 
+local function add_actor_mine_spot(id)
+	level.map_add_object_spot_ser(id, ACTOR_MINE_SPOT_NAME, strtransl("st_wpn_mine_name"))
+end
+
+local function remove_actor_mine_spot(id)
+	if (level.map_has_object_spot(id, ACTOR_MINE_SPOT_NAME) == 1) then
+		level.map_remove_object_spot(id, ACTOR_MINE_SPOT_NAME)
+	end
+end
 
 local function evaluate_actor_mines(npc,st)
 	if (#actor_placed_mines == 0) then
@@ -45,48 +53,49 @@ local function evaluate_actor_mines(npc,st)
 	if (tg < st.__timer_mine) then
 		return
 	end
+	st.__timer_mine = tg + 100
 
-	st.__index_mine = not st.__index_mine and 1 or st.__index_mine > #actor_placed_mines and 1 or st.__index_mine
+	for i = #actor_placed_mines, 1, -1 do
+		local mid = actor_placed_mines[i]
+		local actor_mine = mid and level.object_by_id(mid)
 
-	local mid = actor_placed_mines[st.__index_mine]
-	local actor_mine = mid and level.object_by_id(mid)
+		if not (actor_mine) then
+			remove_actor_mine_spot(mid)
+			table.remove(actor_placed_mines, i)
+		else
+			local is_ready = true
 
-	if not (actor_mine) then
-		table.remove(actor_placed_mines,st.__index_mine)
-		st.__index_mine = 1
-		return
-	end
+			-- Mine is m_mine_table.priming; give actor time to move away
+			if (m_mine_table.priming[mid]) then
+				if (game.get_game_time():diffSec(m_mine_table.priming[mid]) < level.get_time_factor() * PRIMER_FACTOR) then
+					is_ready = false
+				else
+					m_mine_table.priming[mid] = nil
+					if (m_mine_table.recently_placed == mid) then
+						m_mine_table.recently_placed = false
+					end
+				end
+			end
 
-	-- Mine is m_mine_table.priming; give actor time to move away
-	if (m_mine_table.priming[mid] and game.get_game_time():diffSec(m_mine_table.priming[mid]) < level.get_time_factor()*PRIMER_FACTOR) then
-		st.__index_mine = st.__index_mine + 1
-		return
-	end
-	m_mine_table.priming[mid] = nil
-
-	if (m_mine_table.recently_placed == mid) then
-		m_mine_table.recently_placed = false
-	end
-
-	-- Blow up if NPC in radius
-	if (npc:position():distance_to(actor_mine:position()) <= BLOW_RADIUS) then
-		-- NPC saw actor place mine; turn hostile
-		if (m_mine_table.turn_hostile[npc:id()]) then
-			local h = hit()
-			h.type = hit.fire_wound
-			h.power = 0.0
-			h.impulse = 0.0
-			h.direction = vector():set(0,1,0)
-			h.draftsman = db.actor
-			npc:hit(h)
+			-- Blow up if NPC in radius
+			if is_ready and (npc:position():distance_to(actor_mine:position()) <= BLOW_RADIUS) then
+				-- NPC saw actor place mine; turn hostile
+				if (m_mine_table.turn_hostile[npc:id()]) then
+					local h = hit()
+					h.type = hit.fire_wound
+					h.power = 0.0
+					h.impulse = 0.0
+					h.direction = vector():set(0,1,0)
+					h.draftsman = db.actor
+					npc:hit(h)
+				end
+				
+				remove_actor_mine_spot(mid)
+				actor_mine:explode(0)
+				table.remove(actor_placed_mines, i)
+			end
 		end
-
-		actor_mine:explode(0)
-		table.remove(actor_placed_mines,st.__index_mine)
-		st.__index_mine = 1
-		return
 	end
-	st.__index_mine = st.__index_mine + 1
 end
 
 local function evaluate_neutral_mines(npc,st)
@@ -133,7 +142,6 @@ local function npc_on_update(npc,st)
 	evaluate_neutral_mines(npc,st)
 
 	local id = npc:id()
-	local tg = time_global()
 
 	if (m_mine_table.turn_hostile[id]) then
 		if (game.get_game_time():diffSec(m_mine_table.turn_hostile[id]) > HOSTILE_TIME_FACTOR*level.get_time_factor()) then
@@ -168,10 +176,12 @@ end
 
 local function actor_on_item_use(itm)
 	if (itm:section() == "wpn_mine") then
-   		local se_obj = alife():create("mine_actor",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id())
+		local spawn_pos = db.actor:position()
+        spawn_pos.y = spawn_pos.y + 0.1
+		local se_obj = alife():create("mine_actor",spawn_pos,db.actor:level_vertex_id(),db.actor:game_vertex_id())
 		if (se_obj) then
 			m_mine_table.priming[se_obj.id] = game.get_game_time()
-			level.map_add_object_spot_ser(se_obj.id, ACTOR_MINE_SPOT_NAME, strtransl("st_wpn_mine_name"))
+			add_actor_mine_spot(se_obj.id)
 		end
 	end
 end
@@ -201,10 +211,9 @@ local function remove_actor_mine(obj)
             snd_obj:play_at_pos(obj, mine_pos)
         end
 		
-		if (level.map_has_object_spot(mid, ACTOR_MINE_SPOT_NAME) == 1) then
-			level.map_remove_object_spot(mid, ACTOR_MINE_SPOT_NAME)
-		end
-		
+		remove_actor_mine_spot(mid)
+
+        mine_pos.y = mine_pos.y + 0.1
 		alife():create("wpn_mine", mine_pos, l_vid, g_vid)
 		release(obj)
     end

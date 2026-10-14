@@ -104,6 +104,7 @@ All notable changes to this project will be documented in this file.
 * Added bump textures to fix fallback in Darkscape location
 * Added missing ".thm" files to stons
 * Fixed shuffling of squads in Offline Combats
+* Fixed mine detonation
 
 ### Optimization
 * Replaced some allocations with global constants
