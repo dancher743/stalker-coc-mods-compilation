@@ -120,6 +120,7 @@ All notable changes to this project will be documented in this file.
 * Added `ignore_cant_trade_sections` into `xr_corpse_detection.ltx`
 * Removed extra `get_chance` and `get_chance01` functions from `_g.script`
 * Extended `phantom_manager.script` to work with many sections in `spawn_phantom` string
+* Extended `give_news` function in `news_helper.script`
 
 ## [1.5.4] - 2026-04-14
 

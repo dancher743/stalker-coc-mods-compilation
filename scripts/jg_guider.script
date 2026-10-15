@@ -149,10 +149,9 @@ function activate()
 		local npc = level.object_by_id(get_comm_id(curr_guid.squad_id))
 		local spot_descr = strformat(strtransl("ui_st_pda_guider_target_spot_descr"),npc:character_name(),curr_guid.description)
 		level.map_add_object_spot_ser(spot_id, "crlc_guide", spot_descr)
-		local caption = strtransl("st_tip")
 		local text = strtransl("ui_st_pda_guider_target_spot_news_descr")
 		local icon = "ui_iconsTotal_locations"
-		news_helper.give_news(caption, text, icon)
+		news_helper.give_news(_, text, icon)
 		-- level.map_add_object_spot_ser(guid.squad_id, 'storyline_task_location', 'Сталкеру необходимо попасть '..description)
 		
 		curr_guid.spot_id = spot_id
