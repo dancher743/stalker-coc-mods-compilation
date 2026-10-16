@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 * Added stash removing by pressing `H` button (by default)
 * Replaced the regular controllers in Agroprom Underground and X16 with boss controllers
 * Added Butterfly mine defusal mechanic: press `K` button while standing close to it
+* Added night-time NPC reaction to the player's flashlight
 
 ### Improvements
 * Added Duty Outpost At Garbage to Fast Travel
@@ -114,6 +115,7 @@ All notable changes to this project will be documented in this file.
 
 ### Framework
 * Added `random_with_weights` function into `utils.script`
+* Added `stalker_eye_range` function into `utils.script`
 * Added default value to `se_obj_load_var` function in `utils.script`
 * Splited `sim_survival.script` into `sim_survival_mode.script` and `sim_survival_eoc_mode.script`
 * Added `monster_on_net_destroy` callback into `axr_main.script`

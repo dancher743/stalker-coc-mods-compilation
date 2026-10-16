@@ -1121,3 +1121,35 @@ function random_with_weights(t)
 		end
 	end
 end
+
+function stalker_eye_range(obj)
+	local section_name = "m_stalker"
+	local community = obj:character_community()
+
+	if (community == "monolith") then
+		section_name = "m_stalker_monolith"
+	elseif (community == "zombied") then
+		section_name = "m_stalker_zombied"
+	end
+
+	local eye_range = 150
+	local ini = system_ini()
+
+	if ini:line_exist(section_name, "eye_range") then
+		eye_range = ini:r_float(section_name, "eye_range")
+	end
+
+	local max_view_dist = 0.8
+	
+	local vision_section = "stalker_vision_free"
+
+	if (obj:mental_state() == anim.danger) then
+		vision_section = "stalker_vision_danger"
+	end
+
+	if ini:section_exist(vision_section) and ini:line_exist(vision_section, "max_view_distance") then
+		max_view_dist = ini:r_float(vision_section, "max_view_distance")
+	end
+
+	return eye_range * max_view_dist
+end

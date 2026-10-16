@@ -194,6 +194,41 @@ function check_light(stalker)
 	end
 end
 
+function check_actor_light(stalker)
+	local actor = db.actor
+
+	if (xr_combat_ignore.fighting_with_actor_npcs[stalker:id()] == true or 
+		stalker:relation(actor) ~= game_object.enemy) then
+		return
+	end
+
+    local hours = level.get_time_hours()
+	if (hours > 5 and hours < 20) then
+		return
+	end
+
+	local torch = actor:object("device_torch")
+	if not (torch and torch:torch_enabled()) then
+		return
+    end
+	
+	local actor_pos = actor:position()
+	local stalker_pos = stalker:position()
+	local distance_sqr = stalker_pos:distance_to_sqr(actor_pos)
+	local eye_range = utils.stalker_eye_range(stalker)
+
+	if (distance_sqr < eye_range * eye_range) then
+		local dir_to_actor = vector():sub(actor_pos, stalker_pos)
+		dir_to_actor:normalize()
+		local cos_alpha = stalker:direction():dotproduct(dir_to_actor)
+
+		-- 0.707 is 90 degrees
+		if (cos_alpha > 0.707) then
+			stalker:make_object_visible_somewhen(actor)
+		end
+	end
+end
+
 function clean_up ()
 	for k,v in pairs(light_zones) do
 		light_zones[k] = nil
