@@ -222,6 +222,7 @@ function loot_ui:OnListItemDbClicked()
 		xr_corpse_detection.set_valuable_loot(self.id,false)
 		self:Close()
 	else
+		xr_sound.play_sound_by_path("interface\\inv_ruck")
 		utils.save_var(self.obj,"looting_tbl",self.loot)
 		self:FillList()
 	end
