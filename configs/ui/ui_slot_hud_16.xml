@@ -1,0 +1,22 @@
+<w>
+	<static_slot_back x="185" y="721" width="126" height="25" stretch="1">
+		<slot_1 x="5" y="7" width="21" height="25" stretch="1">
+			<texture x="0" y="0" width="25" height="25">ui_hud_icon_artefact</texture>
+		</slot_1>
+		<slot_2 x="30" y="7" width="21" height="25" stretch="1">
+			<texture x="0" y="0" width="25" height="25">ui_hud_icon_artefact</texture>
+		</slot_2>
+		<slot_3 x="55" y="7" width="21" height="25" stretch="1">
+			<texture x="0" y="0" width="22" height="22">ui_hud_icon_artefact</texture>
+		</slot_3>
+		<slot_4 x="80" y="7" width="21" height="25" stretch="1">
+			<texture x="0" y="0" width="25" height="25">ui_hud_icon_artefact</texture>
+		</slot_4>
+		<slot_5 x="105" y="7" width="21" height="25" stretch="1">
+			<texture x="0" y="0" width="25" height="25">ui_hud_icon_artefact</texture>
+		</slot_5>
+		<slot_6 x="130" y="7" width="21" height="25" stretch="1">
+			<texture x="0" y="0" width="25" height="25">ui_hud_icon_artefact</texture>
+		</slot_6>
+    </static_slot_back>
+</w>
