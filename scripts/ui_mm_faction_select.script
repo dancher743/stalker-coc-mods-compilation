@@ -305,6 +305,7 @@ local function on_game_load(binder)
 	local sm = surge_manager.get_surge_manager()
 	if (sm) then
 		sm:toggle_level_artefact_respawns()
+		sm:respawn_artefacts_and_replace_anomaly_zone()
 	end
 	
 	if (need_save) then
