@@ -12,16 +12,17 @@ Support Russian and English languages.
 * Custom map spots
 * 100 Rads Bar Safehouse: purchase access to the Back Room of the 100 Rads Bar and use it as your personal safehouse
 * Disguise (with fixes and improvements)
+* Critical hits
+* Stashes renewing
 * Fixed and restored squads A-Life and added offline combats
+* Restored SoC and CS functionality: opening the armory at the Freedom base, sleeping sounds, jokes and campfire stories for NPC, Screw scope dialog, unique weapons from SoC and CS etc.
+* Fixed original Call of Chernobyl functionality: artefacts and mutants part drop, "sleeping" BTRs, sounds of Army's megaphone on Escape, missing mutants (Rat Wolf and Psysucker), text on the health bar etc.
+* Added invulnerability to companions (can be disabled using the option) and "Open inventory" dialog to help carry your items during long journeys through the Zone
+* Made Survival mode playable and added Extended Offline (EOC) mode
 * All Weapons Unloading
 * Reworking of Faction Selection menu
 * Quick companion menu
-* Added invulnerability to companions (can be disabled using the option) and "Open inventory" dialog to help carry your items during long journeys through the Zone
-* Critical hits
 * Guide job (with fixes and improvements)
-* Made Survival mode playable and added Extended Offline (EOC) mode
-* Restored SoC and CS functionality: opening the armory at the Freedom base, sleeping sounds, jokes and campfire stories for NPC, Screw scope dialog, unique weapons from SoC and CS etc.
-* Fixed original Call of Chernobyl functionality: artefacts and mutants part drop, "sleeping" BTRs, sounds of Army's megaphone on Escape, missing mutants (Rat Wolf and Psysucker), text on the health bar etc.
 
 And much more!
 
