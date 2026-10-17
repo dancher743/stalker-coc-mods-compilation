@@ -122,7 +122,7 @@
                 <level_map spot="fast_travel_spot"/>
 				<mini_map spot="fast_travel_spot_mini"/>
         </fast_travel>
-        <fast_travel_spot x="0" y="0" width="25" height="25" alignment="c" location_level="1" scale_max="1">
+        <fast_travel_spot x="0" y="0" width="25" height="25" alignment="c" location_level="11" scale_max="1">
                 <texture>ui_hud_icon_sleep</texture>
         </fast_travel_spot>
 		<fast_travel_spot_mini x="0" y="0" width="17" height="17" alignment="c" location_level="1" scale_max="1">
