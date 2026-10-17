@@ -122,12 +122,12 @@ function CCampManager:__init(object)
 	self.sound_manager = sound_manager.get_sound_manager("camp"..self.object:id())
 	self.sound_manager_started = true
 	-- Состояния кемпа
-
 	self.active_state_time = 0
 	self.timeout = 0
 	self.idle_talker = nil
 	self.idle_talker_sound = nil
 	self.last_story = nil
+	self.music_state_started = false
 end
 -- Переключает состояния кемпа
 function CCampManager:update()
@@ -146,9 +146,12 @@ function CCampManager:update()
 	end
 
 	-- To stop air guitar
-	if (self.active_state == "guitar" or self.active_state == "harmonica") then
-		self.director = nil
-		self.active_state_time = 0
+	if (self.music_state_started and (self.active_state == "guitar" or self.active_state == "harmonica")) then
+		if (xr_sound.sound_table[self.director] == nil) then
+			self.director = nil
+			self.active_state_time = 0
+			self.music_state_started = false
+		end
 	end
 	
 	-- Если кто-то говорит айдловую фразу, ждем пока он договорит.
@@ -409,6 +412,7 @@ function start_guitar(npc)
 	camp.sound_manager:set_story(guitar_table[math.random(#guitar_table)])
 	camp.sound_manager_started = true
 	camp.sound_manager:update()
+	camp.music_state_started = true
 end
 
 function start_harmonica(npc)
@@ -422,4 +426,5 @@ function start_harmonica(npc)
 	camp.sound_manager:set_story(harmonica_table[math.random(#harmonica_table)])
 	camp.sound_manager_started = true
 	camp.sound_manager:update()
+	camp.music_state_started = true
 end

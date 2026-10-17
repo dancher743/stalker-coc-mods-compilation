@@ -109,6 +109,7 @@ All notable changes to this project will be documented in this file.
 * Fixed mine detonation
 * Fixed scale of slots HUD for 16:9 aspect ratio
 * Fixed an issue where jokes would not play
+* Fixed "stop air guitar" code in `sr_camp.script`
 
 ### Optimization
 * Replaced some allocations with global constants
