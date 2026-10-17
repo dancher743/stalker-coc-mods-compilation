@@ -158,8 +158,7 @@ function check_light(stalker)
 	end
 
 	if not forced then
-		local htime = level.get_time_hours()
-		if htime <= 5 or htime >= 20 then
+		if xr_conditions.is_night() then
 			light = true
 		end
 
@@ -202,8 +201,7 @@ function check_actor_light(stalker)
 		return
 	end
 
-    local hours = level.get_time_hours()
-	if (hours > 5 and hours < 20) then
+	if not (xr_conditions.is_night() or xr_conditions.is_heavy_rain()) then
 		return
 	end
 
