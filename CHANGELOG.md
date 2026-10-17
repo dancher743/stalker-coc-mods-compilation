@@ -108,6 +108,7 @@ All notable changes to this project will be documented in this file.
 * Fixed shuffling of squads in Offline Combats
 * Fixed mine detonation
 * Fixed scale of slots HUD for 16:9 aspect ratio
+* Fixed an issue where jokes would not play
 
 ### Optimization
 * Replaced some allocations with global constants
