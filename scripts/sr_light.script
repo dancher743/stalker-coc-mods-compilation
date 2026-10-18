@@ -255,7 +255,7 @@ function check_actor_companions_light(stalker)
 		end
 	end
 	
-	axr_companions.foreach_actor_squad(callback)
+	axr_companions.iterate_actor_squad(callback)
 end
 
 function clean_up ()

@@ -128,7 +128,7 @@ All notable changes to this project will be documented in this file.
 * Removed extra `get_chance` and `get_chance01` functions from `_g.script`
 * Extended `phantom_manager.script` to work with many sections in `spawn_phantom` string
 * Extended `give_news` function in `news_helper.script`
-* Added `foreach_actor_squad` function into `axr_companions.script`
+* Added `iterate_actor_squad` function into `axr_companions.script`
 
 ## [1.5.4] - 2026-04-14
 

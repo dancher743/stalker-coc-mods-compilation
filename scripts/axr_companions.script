@@ -1003,8 +1003,8 @@ function list_actor_squad_with_se_obj()
 end
 
 -- includes task companions too
-function foreach_actor_squad(callback)
-	for id,squad in spairs(companion_squads, companion_squads_pairs_sorter) do 
+function iterate_actor_squad(callback)
+	for _,squad in pairs(companion_squads) do
 		if (squad and squad.commander_id) then
 			local commander_id = squad:commander_id()
 			if not (xrs_kill_wounded.hostage_list[commander_id] or is_hostage_npc(commander_id)) then
