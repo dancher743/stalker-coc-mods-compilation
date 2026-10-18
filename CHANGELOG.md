@@ -110,6 +110,7 @@ All notable changes to this project will be documented in this file.
 * Fixed scale of slots HUD for 16:9 aspect ratio
 * Fixed an issue where jokes would not play
 * Fixed "stop air guitar" code in `sr_camp.script`
+* Fixed companions tasks giving
 
 ### Optimization
 * Replaced some allocations with global constants

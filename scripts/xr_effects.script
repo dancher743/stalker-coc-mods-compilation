@@ -3215,6 +3215,7 @@ function remove_task_companion(actor,npc,p)
 			utils.se_obj_save_var(k.id,k.object:name(),"companion",nil)
 			utils.se_obj_save_var(k.id,k.object:name(),"companion_cannot_dismiss",nil)
 			utils.se_obj_save_var(k.id,k.object:name(),"companion_cannot_teleport",nil)
+			utils.se_obj_save_var(k.id,k.object:name(),"companion_task",nil)
 		end
 	end
 end
@@ -3231,6 +3232,7 @@ function add_task_companion(actor,npc,p)
 			utils.se_obj_save_var(k.id,k.object:name(),"companion",true)
 			utils.se_obj_save_var(k.id,k.object:name(),"companion_cannot_dismiss",true)
 			utils.se_obj_save_var(k.id,k.object:name(),"companion_cannot_teleport",nil)
+			utils.se_obj_save_var(k.id,k.object:name(),"companion_task",true)
 			axr_companions.setup_companion_logic(npc,db.storage[k.id],false,true)
 		end
 	end
@@ -3430,6 +3432,7 @@ function setup_companion_task(actor,npc,p)
 				utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_is_hostage",true)
 				xrs_kill_wounded.hostage_list[se_obj.id] = smart.id
 			end
+			utils.se_obj_save_var(se_obj.id,se_obj:name(),"companion_task",true)
 		end
 	end
 

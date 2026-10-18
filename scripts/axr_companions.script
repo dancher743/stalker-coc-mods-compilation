@@ -951,6 +951,10 @@ function is_hostage_squad(squad_id)
 	return result
 end
 
+function is_task_companion(obj)
+	return utils.se_obj_load_var(obj:id(),obj:name(),"companion_task",false)
+end
+
 function is_invulnerable_obj(obj)
 	local se_obj = get_se_obj(obj:id())
 	return is_invulnerable(se_obj)
