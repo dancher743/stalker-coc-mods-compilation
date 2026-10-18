@@ -23,6 +23,7 @@ Support Russian and English languages.
 * Reworking of Faction Selection menu
 * Quick companion menu
 * Guide job (with fixes and improvements)
+* Fallout (radioactive and acidic)
 
 And much more!
 
