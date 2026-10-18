@@ -113,6 +113,7 @@ function check_light(stalker)
 		return
 	end
 
+	-- Stalker is companion; disable torch
 	if (axr_companions.is_companion(stalker)) then
 		if (xr_conditions.is_night() or xr_conditions.is_heavy_rain()) then
 			local actor_torch = db.actor:object("device_torch")
