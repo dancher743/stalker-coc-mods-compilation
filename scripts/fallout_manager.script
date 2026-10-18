@@ -127,6 +127,11 @@ function FalloutManager:start(manual)
 end
 
 function FalloutManager:finish()
+	if (self.fallout_in_progress == true) then
+		self.surge_manager:respawn_artefacts_and_replace_anomaly_zone()
+		self.surge_manager:toggle_level_artefact_respawns()
+	end
+	
 	self.finished = true
 	self.fallout_in_progress=false
 	self.task_given = false

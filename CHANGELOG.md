@@ -55,7 +55,7 @@ All notable changes to this project will be documented in this file.
 * Set `max_uses` to 2 for all cooked food
 * Reworked chance of adding tools into `bonus` table in `xr_effects.reward_stash` function
 * Rebalanced chances of add toolkit to reward stash
-* Added artifact respawning from game start
+* Added artifact respawning from game start and after fallout
 * Added two new found stash response messages
 * Added inventory sounds to mutant's loot window
 * Added mutant's loot window closing by inventory key
