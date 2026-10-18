@@ -1002,6 +1002,20 @@ function list_actor_squad_with_se_obj()
 	return t
 end
 
+-- includes task companions too
+function foreach_actor_squad(callback)
+	for id,squad in spairs(companion_squads, companion_squads_pairs_sorter) do 
+		if (squad and squad.commander_id) then
+			local commander_id = squad:commander_id()
+			if not (xrs_kill_wounded.hostage_list[commander_id] or is_hostage_npc(commander_id)) then
+				for k in squad:squad_members() do
+					callback(k)
+				end
+			end
+		end
+	end
+end
+
 function is_distance_to_actor_ge(distance)
 	local actor_pos = db.actor:position()
 	local distance_sqr = distance * distance

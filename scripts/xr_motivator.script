@@ -444,6 +444,7 @@ function motivator_binder:update(delta)
 	xr_meet.process_npc_usability(object)
 	sr_light.check_light(object)
 	sr_light.check_actor_light(object)
+	sr_light.check_actor_companions_light(object)
 	
 	if not (object:best_enemy()) then
 		xr_combat_ignore.fighting_with_actor_npcs[id] = nil

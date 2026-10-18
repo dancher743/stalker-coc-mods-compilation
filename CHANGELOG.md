@@ -17,7 +17,7 @@ All notable changes to this project will be documented in this file.
 * Added stash removing by pressing `H` button (by default)
 * Replaced the regular controllers in Agroprom Underground and X16 with boss controllers
 * Added Butterfly mine defusal mechanic: press `K` button while standing close to it
-* Added night-time NPC reaction to the player's flashlight
+* Added night-time NPC reaction to the player and companions flashlights
 
 ### Improvements
 * Added Duty Outpost At Garbage to Fast Travel
@@ -128,6 +128,7 @@ All notable changes to this project will be documented in this file.
 * Removed extra `get_chance` and `get_chance01` functions from `_g.script`
 * Extended `phantom_manager.script` to work with many sections in `spawn_phantom` string
 * Extended `give_news` function in `news_helper.script`
+* Added `foreach_actor_squad` function into `axr_companions.script`
 
 ## [1.5.4] - 2026-04-14
 

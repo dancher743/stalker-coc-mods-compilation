@@ -113,6 +113,18 @@ function check_light(stalker)
 		return
 	end
 
+	if (axr_companions.is_companion(stalker)) then
+		if (xr_conditions.is_night() or xr_conditions.is_heavy_rain()) then
+			local actor_torch = db.actor:object("device_torch")
+			if (actor_torch and not actor_torch:torch_enabled()) then
+				if (torch) then
+					torch:enable_attachable_item(false)
+				end
+				return
+			end
+		end
+	end
+
 	-- Non-headlamp scheme in use; release torch
 	local scheme = st.active_scheme
 	if (scheme == "kamp" or scheme == "camper" or scheme == "sleeper") then
@@ -193,38 +205,57 @@ function check_light(stalker)
 	end
 end
 
-function check_actor_light(stalker)
-	local actor = db.actor
-
-	if (xr_combat_ignore.fighting_with_actor_npcs[stalker:id()] == true or 
-		stalker:relation(actor) ~= game_object.enemy) then
+local function check_victim_light(stalker, victim)
+	if (stalker:relation(victim) ~= game_object.enemy) then
 		return
 	end
-
+	
 	if not (xr_conditions.is_night() or xr_conditions.is_heavy_rain()) then
 		return
 	end
 
-	local torch = actor:object("device_torch")
+	local torch = victim:object("device_torch")
 	if not (torch and torch:torch_enabled()) then
 		return
     end
 	
-	local actor_pos = actor:position()
+	local victim_pos = victim:position()
 	local stalker_pos = stalker:position()
-	local distance_sqr = stalker_pos:distance_to_sqr(actor_pos)
+	local distance_sqr = stalker_pos:distance_to_sqr(victim_pos)
 	local eye_range = utils.stalker_eye_range(stalker)
 
 	if (distance_sqr < eye_range * eye_range) then
-		local dir_to_actor = vector():sub(actor_pos, stalker_pos)
-		dir_to_actor:normalize()
-		local cos_alpha = stalker:direction():dotproduct(dir_to_actor)
+		local dir_to_victim = vector():sub(victim_pos, stalker_pos)
+		dir_to_victim:normalize()
+		local cos_alpha = stalker:direction():dotproduct(dir_to_victim)
 
 		-- 0.707 is 90 degrees
 		if (cos_alpha > 0.707) then
-			stalker:make_object_visible_somewhen(actor)
+			stalker:make_object_visible_somewhen(victim)
 		end
 	end
+end
+
+function check_actor_light(stalker)
+	local actor = db.actor
+
+	if (xr_combat_ignore.fighting_with_actor_npcs[stalker:id()] == true) then
+		return
+	end
+	
+	check_victim_light(stalker, actor)
+end
+
+function check_actor_companions_light(stalker)
+	local function callback(k)
+		local member = db.storage[k.id] and db.storage[k.id].object
+		
+		if (member) then
+			check_victim_light(stalker, member)
+		end
+	end
+	
+	axr_companions.foreach_actor_squad(callback)
 end
 
 function clean_up ()
