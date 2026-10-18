@@ -112,6 +112,7 @@ All notable changes to this project will be documented in this file.
 * Fixed "stop air guitar" code in `sr_camp.script`
 * Fixed companions tasks giving
 * Fixed the `af_ameba_mica` string in the trade configs
+* Fixed missing supplies in the Beard's trade config
 
 ### Optimization
 * Replaced some allocations with global constants
