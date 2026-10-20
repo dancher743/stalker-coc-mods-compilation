@@ -117,6 +117,7 @@ All notable changes to this project will be documented in this file.
 * Fixed companions tasks giving
 * Fixed the `af_ameba_mica` string in the trade configs
 * Fixed missing supplies in the Beard's trade config
+* Added some items to `ignore_sections` in `coc_treasure_manager.ltx`
 
 ### Optimization
 * Replaced some allocations with global constants
