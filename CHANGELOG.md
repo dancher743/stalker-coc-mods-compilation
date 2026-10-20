@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Features
 * Added "newbie" character sounds for novices
-* Added mapspots for dead mutants with option ("Dead mutants spots"). The option is enabled by default.
+* Added mapspots for dead mutants with option ("Dead mutants spots"). The option is enabled by default
 * Restored [Rat wolf](https://stalker.fandom.com/wiki/Rat_wolf) mutant 🐀
 * Restored ability to open the armory at the Freedom base
 * Added P90 weapon
@@ -18,7 +18,7 @@ All notable changes to this project will be documented in this file.
 * Replaced the regular controllers in Agroprom Underground and X16 with boss controllers
 * Added Butterfly mine defusal mechanic: press `K` button while standing close to it
 * Added night-time NPC reaction to the player and companions flashlights
-* Added Hand radio item. It can be used to command a military helicopter not to attack you. To find this item, check out Quartet's command post at the Chernobyl NPP (South).
+* Added Hand radio item. It can be used to command a military helicopter not to attack you. To find this item, check out Quartet's command post at the Chernobyl NPP (South)
 * Added Ghost bodysuit
 
 ### Improvements
