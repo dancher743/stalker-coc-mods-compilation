@@ -179,4 +179,11 @@
 	<string id="st_mil_door_lock_key_descr">
 		<text>A key to the lock on the armory doors at the Freedom base in the Army Warehouses.</text>
 	</string>
+	
+	<string id="st_actor_hand_radio">
+		<text>Hand radio</text>
+	</string>
+	<string id="st_actor_hand_radio_descr">
+		<text>A radio left behind by a commander callsign Quartet after Operation Monolith, launched by the military in the summer of 2012 following the shutdown of the Brain Scorcher on Radar. It can be used to command a military helicopter not to attack you.</text>
+	</string>
 </string_table>

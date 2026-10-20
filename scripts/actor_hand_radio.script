@@ -1,0 +1,24 @@
+--
+-- Actor's hand radio
+-- By Dancher
+--
+
+local function actor_on_item_use(obj)
+	if (obj:section() ~= "actor_hand_radio") then
+		return
+	end
+
+	local heli_enemy_flag = utils.load_var(db.actor,"heli_enemy_flag",false)
+	if (heli_enemy_flag == false) then
+		return
+	end
+
+	utils.save_var(db.actor,"heli_enemy_flag",nil)
+
+	local text = strtransl("st_actor_hand_radio_cancel_heli_enemy")
+	news_helper.give_news(_, text)
+end
+
+function on_game_start()
+	RegisterScriptCallback("actor_on_item_use",actor_on_item_use)
+end
