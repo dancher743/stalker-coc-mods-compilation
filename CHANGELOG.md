@@ -75,7 +75,7 @@ All notable changes to this project will be documented in this file.
 * Added news message to Guide job map spot
 * Made Fast Travel icon over the other on the map
 * Reduced amount of dead bodies after offline combats
-* Fixed logic of the ecolog squad on Yantar bunker
+* Reworked time of next Guide's job appearance
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
@@ -117,6 +117,7 @@ All notable changes to this project will be documented in this file.
 * Fixed companions tasks giving
 * Fixed the `af_ameba_mica` string in the trade configs
 * Fixed missing supplies in the Beard's trade config
+* Fixed logic of the ecolog squad on Yantar bunker
 * Added some items to `ignore_sections` in `coc_treasure_manager.ltx`
 * Added fixed code from CoC 1.5 to `xr_sound.script`
 * Fixed an incorrect repair values of the gunsmith toolkit

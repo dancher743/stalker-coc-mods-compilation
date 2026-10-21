@@ -38,6 +38,21 @@ function on_game_start()
 	RegisterScriptCallback("squad_on_npc_death",squad_on_npc_death)
 end
 
+local function get_next_follower_hours()
+	local random_number = math.random(3)
+	local min_hours, max_hours = 1, 1
+	
+	if (random_number == 1) then
+		min_hours, max_hours = 11, 23
+	elseif (random_number == 2)  then
+		min_hours, max_hours = 24, 47
+	elseif (random_number == 3)  then
+		min_hours, max_hours = 48, 71
+	end
+	
+	return math.random(min_hours, max_hours)
+end
+
 function clear()
 	db.actor:disable_info_portion('guider_start')
 	local spot_id = curr_guid.spot_id
@@ -53,7 +68,7 @@ function clear()
 	jg_utils.d_v("curr_guid")
 	jg_hud_timer.try_stop()
 	jg_timers.stop_g_timer('guid_fail')
-	jg_timers.g_start_timer('guid_msg',1,math.random(11,23),59,'jg_guider','prepare_follower')
+	jg_timers.g_start_timer('guid_msg',1,get_next_follower_hours(),59,'jg_guider','prepare_follower')
 end 
 
 local function clear_guid()
@@ -126,7 +141,7 @@ function prepare_follower()
 	send_tip(npc, news_text, beep_1)
 	
 	-- Запускаем таймер следующего вызова этой функции
-	jg_timers.g_start_timer('guid_msg',0,math.random(11,23),59,'jg_guider','prepare_follower')
+	jg_timers.g_start_timer('guid_msg',0,get_next_follower_hours(),59,'jg_guider','prepare_follower')
 end
 
 function activate()
