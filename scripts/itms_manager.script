@@ -245,9 +245,11 @@ function try_remove_stash()
 	if (obj and obj:section() == "inv_backpack") then
 		local actor = db.actor
 		
+		local amount = 0
 		local function iterator(obj, item)
 			if (obj) then
 				obj:transfer_item(item, actor)
+				amount = amount + 1
 			end
 		end
 		obj:iterate_inventory_box(iterator, obj)
@@ -260,6 +262,13 @@ function try_remove_stash()
 				
 				if (BackPackStashEnableTip) then
 					SetHudMsg(game.translate_string("st_stash_removed"),4)
+				end
+				
+				if (amount > 0) then
+					local caption = strtransl("general_in_item")
+					local text = "x"..amount
+					local icon = "ui_inGame2_Predmet_poluchen"
+					news_helper.give_news(caption, text, icon)
 				end
 			end
 		end
