@@ -118,6 +118,7 @@ All notable changes to this project will be documented in this file.
 * Fixed the `af_ameba_mica` string in the trade configs
 * Fixed missing supplies in the Beard's trade config
 * Added some items to `ignore_sections` in `coc_treasure_manager.ltx`
+* Added fixed code from CoC 1.5 to `xr_sound.script`
 
 ### Optimization
 * Replaced some allocations with global constants

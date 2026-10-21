@@ -11,13 +11,17 @@ sound_table = {}
 function set_sound_play(npc_id, sound, faction, point)
 	if not (sound and sound_theme.theme[sound]) then
 		callstack()
-		printf("set_sound_play. Wrong sound theme [%s], npc[%s]", tostring(sound), npc_id)
+		printf("set_sound_play. Wrong sound theme [%s], npc[%s]",sound,npc_id)
 		return
 	end
 	
 	local snd_theme = sound_theme.theme[sound]
 	if snd_theme.class_id == "looped_sound" then
 		printf("You trying to play sound [%s] which type is looped", sound)
+	end
+	
+	if (snd_theme.class_id == "npc_sound" and npc_id == 0) then 
+		printf("set_sound_play. Trying to play wrong type. %s is %s",sound,snd_theme.class_id)
 	end
 	
 	if sound_table[npc_id] == nil or snd_theme.play_always == true then
@@ -385,85 +389,75 @@ end
 
 function play_sound(npc, themes, timeout)
 	--alun_utils.debug_write(strformat("xr_sound:play_sound %s",npc and npc:name()))
-	-- нужно составить список тем
 	local snd_table = {}
-	local t = 0
+	local n = 0
 	for k,v in pairs(themes) do
-		snd_table[t] = {}
+		snd_table[n] = {}
 		if sound_theme.theme[v] ~= nil then
-			snd_table[t].theme = v
-			get_sound(sound_theme.theme[v], snd_table[t], npc)
+			snd_table[n].theme = v
+			get_sound(sound_theme.theme[v], snd_table[n], npc)
 		else
 			printf("ERROR: ILLEGAL PLAY SOUND!!! %s for %s", v, npc:name())
 		end
-		t = t + 1
+		n = n + 1
 	end
-	--printf("*")
-	--print_table(snd_table)
-	if t == 0 then return end
-	-- из списка тем выбираем одну.
-	local snd = snd_table[math.random(0, t-1)]
-	if snd ~= nil then
-		--printf("!")
-		--print_table(snd)
-		if snd.min_snd == nil then return end
-		local npc_id = npc:id()
-		local group_table = xr_sound.group_idle[get_key(npc)]
-		group_table.idle = math.random(snd.min_snd, snd.max_snd)*1000
-		if group_table.last_snd	== nil then
-			group_table.last_snd = {}
-		end
-		-- необходимо ли нам играть into или rnd звуки
-		if snd.into_max ~= nil and
-			snd.into_max > 0
-		then
-			if db.sound[npc_id].last_snd[snd.into_id] == snd.into_max - 1 then
-				if snd.into_cycled == true then
-					db.sound[npc_id].last_snd[snd.into_id] = nil
-				else
-					return
-				end
-			end
 
-			-- играем входные
-			if db.sound[npc_id].last_snd[snd.into_id] == nil then db.sound[npc_id].last_snd[snd.into_id] = -1 end
+	local snd = n and snd_table[math.random(0, n-1)]
+	if not (snd and snd.min_snd) then 
+		return
+	end
+	
+	local npc_id = npc:id()
+	local group_table = xr_sound.group_idle[get_key(npc)]
+	group_table.idle = math.random(snd.min_snd, snd.max_snd)*1000
+	if group_table.last_snd	== nil then
+		group_table.last_snd = {}
+	end
 
-			--printf("*SND* play seq [%s] for [%s]", db.sound[npc_id].last_snd[snd.into_id]+1, npc:name())
-			process_tutor_on_sound(snd.theme)
-			npc:play_sound(snd.into_id, 1, 0, 1, 0, db.sound[npc_id].last_snd[snd.into_id]+1)
-			db.sound[npc_id].last_snd[snd.into_id] = db.sound[npc_id].last_snd[snd.into_id] + 1
-			--printf("*SND* play seq [%s] for [%s]", db.sound[npc_id].last_snd[snd.into_id], npc:name())
-			return
-		end
-		if snd.rnd_max ~= nil and
-			snd.rnd_max > 0
-		then
-			-- играем рандомные
-			local s = 0
-			if snd.rnd_max == 1 then
-				s = 0
+	if (snd.into_max and snd.into_max > 0) then
+		if db.sound[npc_id].last_snd[snd.into_id] == snd.into_max - 1 then
+			if snd.into_cycled == true then
+				db.sound[npc_id].last_snd[snd.into_id] = nil
 			else
-				-- ≈сли прошлый раз проигрывалс€ такой же набор тем
-				-- то учитывать последний звук дл€ группы.
---				if db.sound[npc_id].last_snd[snd.rnd_id] ~= nil then
-				if group_table.last_snd[snd.rnd_id] ~= nil then
-					s = math.random(0, snd.rnd_max-2)
-					if s >= group_table.last_snd[snd.rnd_id] then s = s + 1 end
-				else
-					s = math.random(0, snd.rnd_max-1)
-				end
+				return
 			end
-
-			if timeout == nil then
-				timeout = 0
-			end
-			--printf("*SND* play rnd [%s] for [%s]", s, npc:name())
-			process_tutor_on_sound(snd.theme)
-			npc:play_sound(snd.rnd_id, timeout+1, timeout, 1, 0, s)
-			--db.sound[npc_id].last_snd[snd.rnd_id] = s
-			group_table.last_snd[snd.rnd_id] = s
 		end
+
+		-- играем входные
+		if db.sound[npc_id].last_snd[snd.into_id] == nil then db.sound[npc_id].last_snd[snd.into_id] = -1 end
+
+		--printf("*SND* play seq [%s] for [%s]", db.sound[npc_id].last_snd[snd.into_id]+1, npc:name())
+		process_tutor_on_sound(snd.theme)
+		npc:play_sound(snd.into_id, 1, 0, 1, 0, db.sound[npc_id].last_snd[snd.into_id]+1)
+		db.sound[npc_id].last_snd[snd.into_id] = db.sound[npc_id].last_snd[snd.into_id] + 1
+		--printf("*SND* play seq [%s] for [%s]", db.sound[npc_id].last_snd[snd.into_id], npc:name())
+		return
 	end
+	
+	if not (snd.rnd_max and snd.rnd_max > 0) then 
+		return
+	end 
+	
+	local snd_index = 0
+	
+	if (snd.rnd_max > 1) then
+		local skip = group_table.last_snd[snd.rnd_id] or -1
+		local t = {}
+		for i=1,snd.rnd_max do
+			if not (skip == i-1) then
+				t[i] = i-1
+			end
+		end
+		snd_index = t:random()
+		group_table.last_snd[snd.rnd_id] = snd_index
+	end
+	
+	--printf("snd rnd = %s",snd_index)
+
+	timeout = timeout or 0
+
+	process_tutor_on_sound(snd.theme)
+	npc:play_sound(snd.rnd_id, timeout+1, timeout, 1, 0, snd_index)
 end
 
 function get_last_IDS(npc, theme)
@@ -487,7 +481,7 @@ function set_actor_sound(sound)
 	--printf("*ACTOR SND* try to change SND to [%s]", tostring(sound))
 	if actor_sound.theme ~= sound then
 		--' “уточки надобно распарсить имена тем в их id
-		if sound == nil then sound = STR_EMPTY end
+        if sound == nil then sound = STR_EMPTY end
 		actor_sound.theme = sound
 		actor_sound.begin = nil
 
