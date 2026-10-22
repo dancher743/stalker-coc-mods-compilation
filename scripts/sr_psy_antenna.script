@@ -181,9 +181,14 @@ function PsyAntenna:update(dt)
 		return 
 	end 
 	
-	self.eff_time					= self.eff_time + dt
+	self.eff_time = self.eff_time + dt
+
+	local hours = level.get_time_hours()
+	local is_maintenance_period = (hours == 13 or hours == 20)
 
 	local function update_intensity(intensity_base, intensity)
+		intensity_base = is_maintenance_period and 0 or intensity_base
+		
 		local di = self.intensity_inertion * dt * 0.01
 		local ii = intensity_base
 		if math.abs(intensity_base - intensity) >= di then
@@ -194,12 +199,14 @@ function PsyAntenna:update(dt)
 			end
 		end
 
-		if		ii < 0.0 then ii = 0.0
-		elseif	ii > 1.0 then ii = 1.0 end
+		if ii < 0.0 then ii = 0.0
+		elseif ii > 1.0 then ii = 1.0 end
 		return ii
 	end
 
-	self:generate_phantoms()
+	if is_maintenance_period == false then
+		self:generate_phantoms()
+	end
 
 	if not self.no_mumble then
 		self.sound_intensity = update_intensity(self.sound_intensity_base, self.sound_intensity)
@@ -215,7 +222,16 @@ function PsyAntenna:update(dt)
 		end
 	end
 
+	local temp_hit_intensity = self.hit_intensity
+	if is_maintenance_period then
+		self.hit_intensity = 0
+	end
+
 	self:update_psy_hit(dt)
+
+	if is_maintenance_period then
+		self.hit_intensity = temp_hit_intensity
+	end
 end
 
 function PsyAntenna:save_state(m_data)

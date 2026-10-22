@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 * Added night-time NPC reaction to the player and companions flashlights
 * Added Hand radio item. It can be used to command a military helicopter not to attack you. To find this item, check out Quartet's command post at the Chernobyl NPP (South)
 * Added Ghost bodysuit
+* Added the Brain Scorcher maintenance schedule (13:00–14:00 and 20:00–21:00), restoring a cut feature from the original S.T.A.L.K.E.R. design documents
 
 ### Improvements
 * Added Duty Outpost At Garbage to Fast Travel

@@ -2,7 +2,9 @@
 active = sr_idle@check_switch
 
 [sr_idle@check_switch]
-on_info = {+bar_deactivate_radar_done} sr_idle@nil, sr_particle
+on_info = {+bar_deactivate_radar_done} sr_idle@nil
+on_info2 = {=is_hours_ge(13) =is_hours_l(14)} sr_idle@maintenance, {=is_hours_ge(20) =is_hours_l(21)} sr_idle@maintenance
+on_info3 = sr_particle
 
 [sr_particle]
 name = anomaly2\psi_antenna_00
@@ -10,5 +12,11 @@ path = rad_antenna_particle2
 mode = 2
 looped = true
 on_info = {+bar_deactivate_radar_done} sr_idle@nil
+on_info2 = {=is_hours_ge(13) =is_hours_l(14)} sr_idle@maintenance, {=is_hours_ge(20) =is_hours_l(21)} sr_idle@maintenance
+
+[sr_idle@maintenance]
+on_info = {+bar_deactivate_radar_done} sr_idle@nil
+on_info2 = {!is_hours_ge(13)} sr_idle@check_switch, {!is_hours_l(14)} sr_idle@check_switch
+on_info3 = {!is_hours_ge(20)} sr_idle@check_switch, {!is_hours_l(21)} sr_idle@check_switch
 
 [sr_idle@nil]

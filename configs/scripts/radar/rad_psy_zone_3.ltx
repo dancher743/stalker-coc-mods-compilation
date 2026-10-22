@@ -6,6 +6,7 @@ eff_intensity = 100
 hit_intensity = 100
 on_info = {=actor_has_item(good_psy_helmet)} sr_psy_antenna@good_helmet, {=actor_has_item(bad_psy_helmet)} sr_psy_antenna@bad_helmet
 on_info2 = {+bar_deactivate_radar_done} nil
+on_info3 = {=is_hours_ge(13) =is_hours_l(14)} sr_idle@maintenance, {=is_hours_ge(20) =is_hours_l(21)} sr_idle@maintenance
 phantom_prob = 40
 min_phantom_idle = 15000
 max_phantom_idle = 20000
@@ -15,6 +16,7 @@ eff_intensity = 40
 hit_intensity = 0
 on_info = {=actor_has_item(good_psy_helmet)} sr_psy_antenna@good_helmet, {=actor_has_item(bad_psy_helmet)}, sr_psy_antenna@no_helmet
 on_info2 = {+bar_deactivate_radar_done} nil
+on_info3 = {=is_hours_ge(13) =is_hours_l(14)} sr_idle@maintenance, {=is_hours_ge(20) =is_hours_l(21)} sr_idle@maintenance
 phantom_prob = 30
 min_phantom_idle = 15000
 max_phantom_idle = 20000
@@ -24,6 +26,12 @@ eff_intensity = 20
 hit_intensity = 0
 on_info = {=actor_has_item(good_psy_helmet)}, {=actor_has_item(bad_psy_helmet)} sr_psy_antenna@bad_helmet, sr_psy_antenna@no_helmet
 on_info2 = {+bar_deactivate_radar_done} nil
+on_info3 = {=is_hours_ge(13) =is_hours_l(14)} sr_idle@maintenance, {=is_hours_ge(20) =is_hours_l(21)} sr_idle@maintenance
 phantom_prob = 20
 min_phantom_idle = 15000
 max_phantom_idle = 20000
+
+[sr_idle@maintenance]
+on_info = {+bar_deactivate_radar_done} nil
+on_info2 = {!is_hours_ge(13)} sr_psy_antenna@no_helmet, {!is_hours_l(14)} sr_psy_antenna@no_helmet
+on_info3 = {!is_hours_ge(20)} sr_psy_antenna@no_helmet, {!is_hours_l(21)} sr_psy_antenna@no_helmet
