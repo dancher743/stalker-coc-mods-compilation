@@ -78,6 +78,7 @@ All notable changes to this project will be documented in this file.
 * Reduced amount of dead bodies after offline combats
 * Reworked time of next Guide's job appearance
 * Improved distance calculation of Offline Combats
+* Changed the chance check priority in the squad removal code after Offline Combats
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"

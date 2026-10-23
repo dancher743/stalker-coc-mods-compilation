@@ -488,7 +488,7 @@ local function update_queue()
 		if (is_smart_combat) then
 			local smart_id = victim_squad.current_target_id
 			local counter = smart_combat_counters[smart_id] or 0
-			if (counter > max_smart_combats_count or has_chance(smart_combat_remove_chance)) then
+			if (has_chance(smart_combat_remove_chance) or counter > max_smart_combats_count) then
 				victim_squad:remove_squad()
 				has_squad_removed = true
 			else
