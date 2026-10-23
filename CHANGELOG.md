@@ -77,6 +77,7 @@ All notable changes to this project will be documented in this file.
 * Made Fast Travel icon over the other on the map
 * Reduced amount of dead bodies after offline combats
 * Reworked time of next Guide's job appearance
+* Improved distance calculation of Offline Combats
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"

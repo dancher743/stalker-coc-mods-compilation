@@ -7,16 +7,7 @@
 local dbg = DEV_DEBUG
 
 local combats_per_level = 5
-local good_distances = {
-	25*25,
-	20*20,
-	15*15
-}
-local bad_distances = {
-	10*10,
-	8*8,
-	6*6
-}
+local combat_distance = 50*50
 
 local add_rank_points = 20
 local handicap_chance = 25
@@ -100,19 +91,6 @@ local function get_se_obj(id)
 		se_obj = nil
 	end
 	return se_obj
-end
-
-local function get_combat_distance()
-	local distance
-	local conds = xr_conditions
-	
-	if (conds.is_night() or conds.is_rain() or conds.is_foggy()) then
-		distance = bad_distances[math.random(#bad_distances)]
-	else
-		distance = good_distances[math.random(#good_distances)]
-	end
-	
-	return distance
 end
 
 local function is_on_actor_level(obj)
@@ -381,12 +359,15 @@ local function prepare_combats(squads)
 						local can_combat = false
 						local is_smart_combat = false
 						
-						if (squad1.position:distance_to_sqr(squad2.position) <= get_combat_distance()) then
-							if (squad1.current_target_id == nil and squad2.current_target_id == nil) then
-								can_combat = has_chance(map_combat_chance)
-							elseif (squad1.current_target_id == squad2.current_target_id) then
+						if (squad2.position:distance_to_sqr(squad1.position) < combat_distance) then
+							local squad1_target = squad1.current_target_id
+							local squad2_target = squad2.current_target_id
+							
+							if (squad1_target and squad2_target and squad1_target == squad2_target) then
 								can_combat = true
 								is_smart_combat = true
+							elseif (squad1_target == nil or squad2_target == nil) then
+								can_combat = has_chance(map_combat_chance)
 							end
 						end
 						
