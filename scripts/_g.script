@@ -52,6 +52,7 @@ local console
 local device_obj
 local translated_strings_cache = {}
 -- Cached functions during memoization
+local are_functions_memoized = false
 local alife_function
 local system_ini_function
 local game_graph_function
@@ -72,8 +73,9 @@ function start_game_callback()
 		printf = _G.printf_empty
 	end
 	
-	if (USE_FUNCTIONS_MEMOIZE) then
+	if (USE_FUNCTIONS_MEMOIZE and not are_functions_memoized) then
 		memoize_functions()
+		are_functions_memoized = true
 	end
 	
 	sound_theme.load_sound()
@@ -127,13 +129,13 @@ end
 -- 											FUNCTIONS MEMOIZATION
 -------------------------------------------------------------------------------------------------------
 
-function memoize_functions()
+function memoize_functions()	
 	alife_function = alife
 	alife = _G.alife_memoized
 	
 	system_ini_function = system_ini
 	system_ini = _G.system_ini_memoized
-	
+
 	game_graph_function = game_graph
 	game_graph = _G.game_graph_memoized
 	
@@ -150,27 +152,8 @@ function memoize_functions()
 	game.translate_string = _G.translate_string_memoized
 end
 
-function unmemoize_functions()
-	alife = alife_function
-	alife_function = nil
-	
-	system_ini = system_ini_function
-	system_ini_function = nil
-	
-	game_graph = game_graph_function
-	game_graph_function = nil
-	
-	get_hud = get_hud_function
-	get_hud_function = nil
-	
-	get_console = get_console_function
-	get_console_function = nil
-	
-	device = device_function
-	device_function = nil
-	
-	game.translate_string = translate_string_function
-	translate_string_function = nil
+function clear_memoize_caches()
+	translated_strings_cache = {}
 end
 
 function alife_memoized()

@@ -80,6 +80,7 @@ All notable changes to this project will be documented in this file.
 * Improved distance calculation of Offline Combats
 * Changed the chance check priority in the squad removal code after Offline Combats
 * Added hide dialog to `on_item_drag_dropped` callback in `itms_manager.script`
+* Removed `unmemoize_functions()` from the global functions memoization feature
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
