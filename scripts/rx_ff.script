@@ -50,63 +50,24 @@ local function set_flag(npc,val)
 	return val or false
 end 
 
-function evaluator_dont_shoot:check_in_los(friend,be,be_pos)
-	if (friend and friend:alive() and self.object:relation(friend) < 2 and self.object:see(friend)) then
-		local pos = self.object:bone_position("bip01_r_finger02") --self.object:bone_position("bip01_spine")
-		local friend_pos = alun_utils.safe_bone_pos(friend,"bip01_spine")
-		
-		local be_dist = pos:distance_to(be_pos)
-		local friend_dist = pos:distance_to(friend_pos)
-		
-		if (friend_dist <= 2.1) then 
-			return true 
-		end
-			
-		local dir_aim = vector():sub(be_pos,pos):normalize()
-		local dir_friend = vector():sub(friend_pos,pos):normalize()
-		local vec_be,vec_who = vector():set(dir_aim):set_length(friend_dist),dir_friend:set_length(friend_dist)
-		if (vec_who:similar(vec_be,0) == 1) then 
-			return true 
-		end
-		if (vec_who:similar(vec_be,1) == 1) then 
-			return true 
-		end
-	end
-end 
-
 function evaluator_dont_shoot:check_all_in_los()
-	local be = self.object:best_enemy()
-	local be_pos = alun_utils.safe_bone_pos(be,"bip01_spine")
-	
-	-- check if actor in los
-	if (self:check_in_los(db.actor,be,be_pos) == true) then
-		self.st.friend_id = db.actor:id()
-		return true 
+	local wpn = self.object:active_item()
+	if not (wpn and IsWeapon(wpn)) then 
+		return false 
 	end
 	
-	if not (db.OnlineStalkers) then
-		return
+	local pos = alun_utils.safe_bone_pos(wpn,"wpn_body")
+	local be_pos = alun_utils.safe_bone_pos(self.object:best_enemy(),"bip01_spine")
+
+	local result = rq_result()
+	level.ray_pick(pos,vector():sub(be_pos,pos):normalize(),pos:distance_to(be_pos)+0.1,rq_target.rqtObject,result,self.object)
+		
+	if (result.object and result.object:id() ~= self.object:id() and IsStalker(result.object) and self.object:relation(result.object) < game_object.enemy) then 
+		--alun_utils.debug_nearest(self.object,"%s result.object=%s range=%s element=%s",self.object:name(),result.object and result.object:name(),result.range,result.element)
+		self.object:set_item(object.aim1,wpn)
+		return true
 	end
-
-	local size = #db.OnlineStalkers
-	if (size == 0) then
-		return
-	end
-
-	local sid = self.object:id()
-	local id
-	
-	-- check if any neutral or ally in los
-	for i=1,size do
-		id = db.OnlineStalkers[i]
-		local friend = id  and id ~= sid and db.storage[id] and db.storage[id].object
-
-		if (friend and IsStalker(friend) and self:check_in_los(friend,be,be_pos) == true) then 
-			self.st.friend_id = id
-			return true 
-		end
-	end
-
+		
 	return false
 end
 

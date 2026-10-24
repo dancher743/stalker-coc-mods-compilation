@@ -125,6 +125,7 @@ All notable changes to this project will be documented in this file.
 * Added some items to `ignore_sections` in `coc_treasure_manager.ltx`
 * Added fixed code from CoC 1.5 to `xr_sound.script`
 * Fixed an incorrect repair values of the gunsmith toolkit
+* Added `check_all_in_los` function from CoC 1.5 to `evaluator_dont_shoot` to prevent LUA error
 
 ### Optimization
 * Replaced some allocations with global constants
