@@ -51,6 +51,8 @@ local hud
 local console
 local device_obj
 local translated_strings_cache = {}
+local time_global_obj
+local time_global_last_frame_number = -1
 -- Cached functions during memoization
 local are_functions_memoized = false
 local alife_function
@@ -60,6 +62,7 @@ local get_hud_function
 local get_console_function
 local device_function
 local translate_string_function
+local time_global_function
 ----------------------------------------------------------------------
 
 function start_game_callback()
@@ -150,10 +153,14 @@ function memoize_functions()
 	
 	translate_string_function = game.translate_string
 	game.translate_string = _G.translate_string_memoized
+	
+	time_global_function = time_global
+	time_global = _G.time_global_memoized
 end
 
 function clear_memoize_caches()
 	translated_strings_cache = {}
+	time_global_last_frame_number = -1
 end
 
 function alife_memoized()
@@ -211,6 +218,17 @@ function translate_string_memoized(str_id)
     end
 
     return translated_string
+end
+
+function time_global_memoized()
+    local frame_number = device_function().frame
+
+    if (frame_number ~= time_global_last_frame_number) then
+        time_global_obj = time_global_function()
+		time_global_last_frame_number = frame_number
+    end
+
+    return time_global_obj
 end
 
 -------------------------------------------------------------------------------------------------------
