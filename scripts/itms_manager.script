@@ -219,6 +219,11 @@ function on_item_drag_dropped(itm1,itm2,from_slot,to_slot)
 	local msg = strformat(game.translate_string("st_repair_mod_message_box_ask"),inv_name,math.floor(cur_condition*100),c_add*100)
 
 	ui_dyn_msg_box.msg_box_ui("message_box_yes_no",true,msg,on_yes,on_no)
+	
+	local inventory = ActorMenu.get_actor_menu()
+	if (inventory and inventory:IsShown()) then
+		inventory:HideDialog()
+	end
 end 
 
 function play_repaired_sound(repair_type)

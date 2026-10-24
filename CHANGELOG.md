@@ -79,6 +79,7 @@ All notable changes to this project will be documented in this file.
 * Reworked time of next Guide's job appearance
 * Improved distance calculation of Offline Combats
 * Changed the chance check priority in the squad removal code after Offline Combats
+* Added hide dialog to `on_item_drag_dropped` callback in `itms_manager.script`
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
