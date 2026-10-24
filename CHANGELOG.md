@@ -28,7 +28,7 @@ All notable changes to this project will be documented in this file.
 * Rebalanced chances of getting an artifacts from corpses based on original CoC chance
 * Decreased chances of "rare" weather occurrence
 * Configured subperiods weights
-* Added slight rank increase by repairing with toolkits
+* Added slight rank increase by repairing with toolkits and cooking food
 * Added mutant loot relocation to NPC in Offline Combats
 * Restored sleeping sounds for NPC
 * Reworked stashes descriptions

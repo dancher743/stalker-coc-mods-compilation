@@ -135,7 +135,8 @@ rank_rep = {
 			bounty_hunt_peace	=	{rnk=0,		rpt=20,		comps = true},
 			weapons_repaired	=	{rnk=1,		rpt=0,		comps = false},
 			outfits_repaired	=	{rnk=2,		rpt=0,		comps = false},
-			headgears_repaired	=	{rnk=1,		rpt=0,		comps = false}
+			headgears_repaired	=	{rnk=1,		rpt=0,		comps = false},
+			food_cooked			=	{rnk=2,		rpt=0,		comps = false}
 }
 
 weapons_table = {}

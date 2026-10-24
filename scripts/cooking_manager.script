@@ -97,4 +97,6 @@ function cook_raw_item(item)
 	if (se_obj) then 
 		sim:release(se_obj)
 	end
+	
+	xr_statistic.inc_rank("food_cooked")
 end
