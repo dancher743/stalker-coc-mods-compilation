@@ -22,6 +22,7 @@ local device_obj
 local time_global_obj
 local time_global_last_frame_number = -1
 local level_name
+local translated_strings_cache = {}
 
 local function alife_memoized()
 	if not (sim) then
@@ -83,6 +84,21 @@ local function level_name_memoized()
 	return level_name
 end
 
+function translate_string_memoized(str_id)
+    if (str_id == nil or str_id == STR_EMPTY) then
+        return translate_string_function(str_id)
+    end
+
+    local translated_string = translated_strings_cache[str_id]
+
+    if (translated_string == nil) then
+        translated_string = translate_string_function(str_id)
+        translated_strings_cache[str_id] = translated_string
+    end
+
+    return translated_string
+end
+
 function memoize()
     alife_function = _G.alife
     _G.alife = alife_memoized
@@ -107,6 +123,9 @@ function memoize()
 
 	level_name_function = _G.level.name
 	_G.level.name = level_name_memoized
+
+	translate_string_function = _G.game.translate_string
+    game.translate_string = translate_string_memoized
 end
 
 function unmemoize()
@@ -133,4 +152,7 @@ function unmemoize()
 
 	_G.level.name = level_name_function
 	level_name_memoized = nil
+	
+	_G.game.translate_string = translate_string_function
+	translate_string_memoized = nil
 end
