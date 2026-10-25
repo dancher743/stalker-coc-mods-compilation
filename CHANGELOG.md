@@ -132,7 +132,7 @@ All notable changes to this project will be documented in this file.
 * Replaced some allocations with global constants
 * Added `printf_empty` function if game launched in non-debug mode
 * Reduced extra allocations in `FillPartsList` method of `repair_ui` class
-* Memoized `time_global` function
+* Memoized `time_global` and `level.name` functions
 
 ### Framework
 * Added `random_with_weights` function into `utils.script`

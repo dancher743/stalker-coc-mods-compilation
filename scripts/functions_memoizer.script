@@ -11,6 +11,7 @@ local get_console_function
 local device_function
 local translate_string_function
 local time_global_function
+local level_name_function
 
 local ini
 local sim
@@ -20,6 +21,7 @@ local console
 local device_obj
 local time_global_obj
 local time_global_last_frame_number = -1
+local level_name
 
 local function alife_memoized()
 	if not (sim) then
@@ -74,6 +76,13 @@ local function time_global_memoized()
     return time_global_obj
 end
 
+local function level_name_memoized()
+	if not (level_name) then
+		level_name = level_name_function()
+	end
+	return level_name
+end
+
 function memoize()
     alife_function = _G.alife
     _G.alife = alife_memoized
@@ -95,6 +104,9 @@ function memoize()
 
     time_global_function = _G.time_global
     _G.time_global = time_global_memoized
+
+	level_name_function = _G.level.name
+	_G.level.name = level_name_memoized
 end
 
 function unmemoize()
@@ -118,4 +130,7 @@ function unmemoize()
 
     _G.time_global = time_global_function
 	time_global_memoized = nil
+
+	_G.level.name = level_name_function
+	level_name_memoized = nil
 end
