@@ -45,9 +45,10 @@
 		<command id="kb_quick_use_2"					exe="quick_use_2"/>
 		<command id="kb_quick_use_3"					exe="quick_use_3"/>
 		<command id="kb_quick_use_4"					exe="quick_use_4"/>
-		<command id="kb_drop"						  	exe="drop"/>		
-		<command id="kb_custom_spot"					exe="custom14"/> <!-- Put spot on Map -->
+		<command id="kb_drop"						  	exe="drop"/>
 		<command id="kb_unload_all_weapons"				exe="custom12"/> <!-- Unload All Weapons -->
+		<command id="kb_custom_spot"					exe="custom14"/> <!-- Put spot on Map -->
+		<command id="kb_remove_stash"					exe="custom15"/> <!-- Remove stash -->
 	</group>
 	<group name="kb_grp_companions">
 		<command id="kb_companions_wheel"				exe="custom11"/>

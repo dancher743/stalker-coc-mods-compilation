@@ -4,18 +4,9 @@
 --
 
 local function send_tip()
-	local news_caption = game.translate_string("st_tip")
-	local news_text = game.translate_string("ui_st_custom_spot_map_added")
-	local news_icon = "ui_iconsTotal_locations"
-	local actor = db.actor
-	
-	if actor:is_talking() then
-		actor:give_talk_message2(news_caption, news_text, news_icon, "iconed_answer_item")
-	else
-		actor:give_game_news(news_caption, news_text, news_icon, 0, 5000)
-	end
-	
-	xr_sound.set_sound_play(actor:id(), "pda_tips")
+	local text = strtransl("ui_st_custom_spot_map_added")
+	local icon = "ui_iconsTotal_locations"
+	news_helper.give_news(_, text, icon)
 end
 
 local function map_spot_menu_add_property(property_ui,id,level_name)

@@ -1,0 +1,47 @@
+--
+-- Function-helpers for a simulation of Survival mode
+-- Added by Dancher
+--
+
+local excluded_smarts = {
+	-- l05_bar
+	["bar_dolg_general"] = true,
+	["bar_visitors"] = true,
+	["bar_zastava"] = true,
+	["bar_zastava_2"] = true
+}
+
+local simulation_sections = {
+	"simulation_zombie",
+	"simulation_zombie",
+	"zombied_sim_squad_",
+	"simulation_fracture",
+	"simulation_snork"
+}
+
+local squad_name_postfixes = {
+	"novice",
+	"advanced",
+	"veteran"
+}
+
+function try_get_simulation_section(smart_name)
+	if (excluded_smarts[smart_name] or has_chance(90) == false) then
+		return nil
+	end
+
+	local t = simulation_sections
+	local simulation_section = t[math.random(#t)]
+	if (simulation_section == "simulation_zombie" and has_chance(10)) then
+		simulation_section = "simulation_zombie_ghost"
+	elseif (simulation_section == "zombied_sim_squad_") then
+		t = squad_name_postfixes
+		simulation_section = simulation_section..t[math.random(#t)]
+	end
+	
+	return simulation_section
+end
+
+function are_factions_zombied_and_monster(f1, f2)
+	return (f1 == "zombied" and f2 == "monster") or (f1 == "monster" and f2 == "zombied")
+end

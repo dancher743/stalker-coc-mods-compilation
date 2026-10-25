@@ -21,6 +21,7 @@ local cycle_TickSpecial, cycle_TickRandom, cycle_TickCompanion
 local msg_duration
 
 local found_stash_msg_timer_tickback = nil
+local found_stash_response_msg_timer_tickback = nil
 
 function update_options()
 	shw_death_stalker 	= axr_main.config:r_value("mm_dynamic_news_options","enable_death_stalker_news",1,true)
@@ -1452,7 +1453,8 @@ function DynamicNewsManager:FoundStash(has_spot) -- reaction of angry stash owne
 		self:PushToChannel("general",{Mg=tbl[math.random(#tbl)],Ic=Ic,Snd="beep_2",Se=Se,It=It,Ty="found_stash"})
 	end
 	found_stash_msg_timer_tickback = tickback
-	StartTimer(timer_id, 2000*TimeFactor, found_stash_msg_timer_tickback)
+	local delay = math.random(2000,4000)
+	StartTimer(timer_id, delay*TimeFactor, found_stash_msg_timer_tickback)
 
 	return true
 end
@@ -2219,7 +2221,14 @@ function DynamicNewsManager:ResponseOnFoundStash() -- react to people who lost t
 		It= "rnd_char_icon"
 	end
 	
-	self.response["message"] = {Mg=tbl[math.random(#tbl)],Ic=Ic,Snd="no_sound",Se=Se,It=It,To=false,St=msg_duration}
+	local timer_id = "FoundStashResponseMsgTimer" .. math.random(100)
+	local function tickback()
+		StopTimer(timer_id)
+		found_stash_response_msg_timer_tickback = nil
+		self.response["message"] = {Mg=tbl[math.random(#tbl)],Ic=Ic,Snd="no_sound",Se=Se,It=It,To=false,St=msg_duration}
+	end
+	found_stash_response_msg_timer_tickback = tickback
+	StartTimer(timer_id, 3000*TimeFactor, found_stash_response_msg_timer_tickback)
 
 	return true
 end

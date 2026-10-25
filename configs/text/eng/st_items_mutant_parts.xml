@@ -174,4 +174,10 @@
 	<string id="mutant_burer_hand_description">
 		<text>The hands of a burer are directly linked to their psychic abilities, able to move objects, shield themselves and cause shock-waves from a distance. Naturally they are of particular interest to the Ecologists, and are very valuable.</text>
 	</string>
+	<string id="mutant_rat_spleen_description">
+		<text>Mutated by anomalous fields, the rat's spleen exhibits an abnormally high concentration of macrophages and an altered cellular structure, helping the host's body cope with severe background radiation.</text>
+	</string>
+	<string id="mutant_rat_spleen">
+		<text>Rat spleen</text>
+	</string>
 </string_table>

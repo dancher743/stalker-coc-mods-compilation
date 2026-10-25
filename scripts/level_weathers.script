@@ -69,6 +69,8 @@ end
 
 class "WeatherManager"
 function WeatherManager:__init()
+	atmosfear_options.config = atmosfear_options.config or ini_file_ex("atmosfear_options.ltx",true)
+	
 	self.wfx_time = 0
 	self.weather_fx = nil
 	self.weatherType = "[default]"
@@ -81,8 +83,8 @@ function WeatherManager:__init()
 	end
 	self.dof_factor=1
 	self.period_prev=nil
-	self.period=get_random_weather()
-	self.period_next=get_random_weather()
+	self.period=self:get_next_period("clear")
+	self.period_next=self:get_next_period("clear")
 	self.subperiod_prev=nil
 	self.subperiod=nil
 	self.transition_period=false
@@ -148,7 +150,6 @@ function WeatherManager:__init()
 	self.thunder_index=1
 	self.distant_storm_prob = 0.5
 	
-	atmosfear_options.config = atmosfear_options.config or ini_file_ex("atmosfear_options.ltx",true)
 	atmosfear_init()
 	
 	bLevelUnderground = valid_levels[level.name()] == nil
@@ -188,12 +189,7 @@ function WeatherManager:reset()
 	if self.next_hour>23 then
 		self.next_hour=self.next_hour-24
 	end
-	local rnd = (math.random(1,100)/100)
-	if rnd<=self.distant_storm_prob then
-		self.distant_storm_on = true
-	else
-		self.distant_storm_on = false
-	end
+	self.distant_storm_on = nil
     self:select_weather(true,true)
 end
 
@@ -214,7 +210,7 @@ end
 function WeatherManager:get_period_occur_chance(period)
 	local val = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. period .. "_occur",2,4)
 	val = tonumber(val)
-	local chance = (val == 4 and 0.8) or (val == 3 and 0.4) or (val == 2 and 0.2) or (val == 1 and 0)
+	local chance = (val == 4 and 0.8) or (val == 3 and 0.4) or (val == 2 and 0.1) or (val == 1 and 0)
 	return chance
 end
 
@@ -223,13 +219,12 @@ function WeatherManager:get_next_period(period)
 	local next_periods = {}
 	
 	for i=1,#available_periods do
-		local occur_chance = self:get_period_occur_chance(available_periods[i])
-		if (math.random() < occur_chance) then
-			next_periods[#next_periods + 1] = available_periods[i]
-		end
+		local period_name = available_periods[i]
+		local period_occur = self:get_period_occur_chance(period_name)
+		next_periods[period_name] = period_occur
 	end
 	
-	next_period = #next_periods > 0 and next_periods[math.random(#next_periods)] or period
+	local next_period = utils.random_with_weights(next_periods) or period
 	return next_period
 end
 
@@ -376,7 +371,7 @@ function WeatherManager:get_weather_section_name(period,subperiod)
 	if (subperiod) then
 		weather_section_name = strformat("%s\\%s",subperiod,weather_section_name)
 	else
-		weather_section_name = self:try_get_no_panorama_weather(weather_section_name)
+		weather_section_name = self:try_get_no_panorama_weather(period, weather_section_name)
 	end
 	return weather_section_name
 end
@@ -521,20 +516,15 @@ function WeatherManager:is_level_without_panorama()
 	return levels_without_panorama[level.name()]
 end
 
-function WeatherManager:try_get_no_panorama_weather(current_weather_section)
+function WeatherManager:try_get_no_panorama_weather(period, current_weather_section)
 	if (not self:is_level_without_panorama()) then
 		return current_weather_section
 	end
 	
 	local no_panorama_weather_section = nil
 	
-	if (string.find(current_weather_section, "clear")) then
-		local level_hours = level.get_time_hours()
-		local level_minutes = level.get_time_minutes()
-		
-		if (level_hours >= 4 and level_minutes >= 30 or level_hours <= 21 and level_minutes <= 30) then
-			no_panorama_weather_section = "without_panorama\\af3_day_clear"
-		end
+	if (period == "clear") then
+		no_panorama_weather_section = strformat("%s\\%s", "without_panorama", current_weather_section)
 	end
 	
 	return no_panorama_weather_section or current_weather_section
@@ -587,24 +577,6 @@ function get_weather_manager ()
 		weather_manager = WeatherManager()
 	end
 	return weather_manager
-end
-
-function get_random_weather()
-	local random_weather
-	local ini = ini_file_ex("atmosfear_options.ltx",true)
-	if (ini:section_exist("atmosfear_current_parameters")) then
-		local tbl = {}
-		for i=1,#weather_tbl do
-			local val = ini:r_value("atmosfear_current_parameters","opt_weather_" .. weather_tbl[i] .. "_occur",2,4)
-			if (val > 1) then
-				tbl[#tbl+1] = weather_tbl[i]
-			end
-		end
-		if (#tbl > 0) then
-			random_weather = tbl[math.random(#tbl)]
-		end
-	end
-	return random_weather or "clear"
 end
 
 function get_period()
@@ -670,10 +642,22 @@ end
 --##									DISTANT STORMS
 --##################################################################################################
 
+function WeatherManager:can_distant_storm_on()
+	if (self.period_next ~= "storm") then
+		return false
+	end
+
+	local hour = atmosfear_options.config:r_value("atmosfear_current_parameters","opt_weather_" .. self.period .. "_period",2,6)
+	local diff = math.ceil(game.get_game_time():diffSec(self.last_period_change_date))
+	local seconds_left = (hour*3600) - diff
+
+	return seconds_left <= 10800 -- 3h in seconds
+end
+
 function WeatherManager:distant_storm()
 	--atmosfear.debugMessages[1]:SetText("diff_sec ="..tostring(diff_sec))
 
-	if self.distant_storm_on==nil and (self.period_next=="storm" and level.get_time_minutes()>=30) then
+	if self.distant_storm_on==nil and (self:can_distant_storm_on() and level.get_time_minutes()>=30) then
 		local rnd = (math.random(1,100)/100)
 		if rnd<=self.distant_storm_prob then
 			self.distant_storm_on = true

@@ -13,7 +13,6 @@ local ini_ico = ini_file("plugins\\faction_portraits.ltx")
 local ini_itm = ini_file("plugins\\new_game_loadouts.ltx")
 local ini_map = ini_file("plugins\\new_game_start_locations.ltx")
 local ini_opt = ini_file("plugins\\new_game_options.ltx")
-local gs = game.translate_string
 
 
 --=======================================< Callbacks >=======================================--
@@ -301,6 +300,13 @@ local function on_game_load(binder)
 		need_save = true
 	end
 
+	-- Respawn artefacts
+	local sm = surge_manager.get_surge_manager()
+	if (sm) then
+		sm:toggle_level_artefact_respawns()
+		sm:respawn_artefacts_and_replace_anomaly_zone()
+	end
+	
 	if (need_save) then
 		config:save()
 	end
@@ -503,7 +509,7 @@ function faction_ui:Main_Controls()
 	
 	self.character_name = xml:InitEditBox("main_dialog:input_name",self.dialog)
 	self:Register(self.character_name,"input_name")
-	self.character_name:SetText(gs("st_mm_character_default_name")) -- Set Default Name
+	self.character_name:SetText(game.translate_string("st_mm_character_default_name")) -- Set Default Name
 	
 	self.text_relations = xml:InitTextWnd("main_dialog:text_relations",self.dialog)
 	self.text_money = xml:InitTextWnd("main_dialog:text_money",self.dialog)
@@ -745,12 +751,12 @@ function faction_ui:Update()
 		if (self[ck_name] and self[ck_name]:IsCursorOverWindow()) then
 			local str = STR_EMPTY
 			if (ck_name == "box_faction") then
-				str = strformat( gs("st_mm_box_faction_desc") , gs("st_faction_" .. self.selected_faction))
+				str = strformat( game.translate_string("st_mm_box_faction_desc") , game.translate_string("st_faction_" .. self.selected_faction))
 				if (self.selected_faction == "bandit") then
 					str = "cheeki breeki"
 				end
 			else
-				str = gs("st_mm_"..ck_name.."_desc")
+				str = game.translate_string("st_mm_"..ck_name.."_desc")
 			end
 			self:SetHint(str)
 			return
@@ -1157,10 +1163,10 @@ function faction_ui:LoadMap (rand)
 	
 	self.list_map:ClearList()
 	for i=1,#self.table_map do
-		self.list_map:AddItem(gs("ui_st_"..self.table_map[i]), i)
+		self.list_map:AddItem(game.translate_string("ui_st_"..self.table_map[i]), i)
 	end
 	local pick = rand and self.table_map[math.random(2,#self.table_map)] or self.table_map[1]
-	self.list_map:SetText(gs("ui_st_".. pick))
+	self.list_map:SetText(game.translate_string("ui_st_".. pick))
 	
 	self.selected_map = pick
 	self:UpdateMap()
@@ -1251,20 +1257,20 @@ end
 function faction_ui:LoadDifficulty (rand)
 	self.list_difficulty:ClearList()
 	for i=1,#self.table_difficulty do
-		self.list_difficulty:AddItem(gs("gd_" .. self.table_difficulty[i]), i)
+		self.list_difficulty:AddItem(game.translate_string("gd_" .. self.table_difficulty[i]), i)
 	end
 	local pick = rand and self.table_difficulty[math.random(#self.table_difficulty)] or self.table_difficulty[2]
-	self.list_difficulty:SetText(gs("gd_" .. pick))
+	self.list_difficulty:SetText(game.translate_string("gd_" .. pick))
 	self.selected_difficulty = pick
 end
 
 function faction_ui:LoadCompanions (rand)
 	self.list_companions:ClearList()
 	for i=1,#self.table_companions do
-		self.list_companions:AddItem(gs("st_companions_"..self.table_companions[i]), i)
+		self.list_companions:AddItem(game.translate_string("st_companions_"..self.table_companions[i]), i)
 	end
 	local pick = rand and self.table_companions[math.random(#self.table_companions)] or self.table_companions[1]
-	self.list_companions:SetText(gs("st_companions_"..pick))
+	self.list_companions:SetText(game.translate_string("st_companions_"..pick))
 	self.selected_companions = pick
 end
 
@@ -1295,11 +1301,11 @@ function faction_ui:LoadHardcoreLives (rand)
 	self.list_hardcore_lives:ClearList()
 	for i=1, #self.table_hardcore_lives do
 		str = self.table_hardcore_lives[i][1] or STR_EMPTY
-		self.list_hardcore_lives:AddItem(str .. STR_BLANK .. gs(self.table_hardcore_lives[i][2]), i)
+		self.list_hardcore_lives:AddItem(str .. STR_BLANK .. game.translate_string(self.table_hardcore_lives[i][2]), i)
 	end
 	local pick = rand and self.table_hardcore_lives[math.random(#self.table_hardcore_lives)] or self.table_hardcore_lives[1]
 	str = pick[1] or STR_EMPTY
-	self.list_hardcore_lives:SetText(str .. STR_BLANK .. gs(pick[2])) 
+	self.list_hardcore_lives:SetText(str .. STR_BLANK .. game.translate_string(pick[2])) 
 	self.selected_hardcore_lives = pick
 end
 
@@ -1308,11 +1314,11 @@ function faction_ui:LoadHardcoreRegen (rand)
 	self.list_hardcore_regen:ClearList()
 	for i=1, #self.table_hardcore_regen do
 		str = self.table_hardcore_regen[i][1] and tostring(utils.round(self.table_hardcore_regen[i][1]/24)) or STR_EMPTY
-		self.list_hardcore_regen:AddItem(str .. STR_BLANK .. gs(self.table_hardcore_regen[i][2]), i)
+		self.list_hardcore_regen:AddItem(str .. STR_BLANK .. game.translate_string(self.table_hardcore_regen[i][2]), i)
 	end
 	local pick = rand and self.table_hardcore_regen[math.random(#self.table_hardcore_regen)] or self.table_hardcore_regen[1]
 	str = pick[1] and tostring(utils.round(pick[1]/24)) or STR_EMPTY
-	self.list_hardcore_regen:SetText(str .. STR_BLANK .. gs(pick[2])) 
+	self.list_hardcore_regen:SetText(str .. STR_BLANK .. game.translate_string(pick[2])) 
 	self.selected_hardcore_regen = pick
 end
 
@@ -1321,11 +1327,11 @@ function faction_ui:LoadTimer (rand)
 	self.list_timer:ClearList()
 	for i=1, #self.table_timer do
 		str = self.table_timer[i][1] or STR_EMPTY
-		self.list_timer:AddItem(str .. STR_BLANK .. gs(self.table_timer[i][2]), i)
+		self.list_timer:AddItem(str .. STR_BLANK .. game.translate_string(self.table_timer[i][2]), i)
 	end
 	local pick = rand and self.table_timer[math.random(#self.table_timer)] or self.table_timer[1]
 	str = pick[1] or STR_EMPTY
-	self.list_timer:SetText(str .. STR_BLANK .. gs(pick[2]))
+	self.list_timer:SetText(str .. STR_BLANK .. game.translate_string(pick[2]))
 	self.selected_timer = pick
 end
 
@@ -1355,14 +1361,14 @@ end
 function faction_ui:GetFirstNameRandomly()
 	local subset = self:GetNameSubset()
 	local name_cnt = ini:r_float_ex("stalker_names_"..subset,"name_cnt")
-	local first_name = gs( strformat("name_%s_%s",subset,math.random(0,name_cnt-1)) )
+	local first_name = game.translate_string( strformat("name_%s_%s",subset,math.random(0,name_cnt-1)) )
 	return first_name
 end
 
 function faction_ui:GetLastNameRandomly()
 	local subset = self:GetNameSubset()
 	local last_name_cnt = ini:r_float_ex("stalker_names_"..subset,"last_name_cnt")
-	local last_name = gs( strformat("lname_%s_%s",subset,math.random(0,last_name_cnt-1)) )
+	local last_name = game.translate_string( strformat("lname_%s_%s",subset,math.random(0,last_name_cnt-1)) )
 	return last_name
 end
 
@@ -1634,8 +1640,8 @@ function faction_ui:UpdateDescr()
 	local faction = self.selected_faction 
 	
 	-- Description and map
-	local desc = "%c[0,250,250,250]" .. gs("st_mm_new_game_description")
-	desc = desc .. "\\n%c[0,150,150,150]" .. gs("st_faction_" .. faction .. "_desc")
+	local desc = "%c[0,250,250,250]" .. game.translate_string("st_mm_new_game_description")
+	desc = desc .. "\\n%c[0,150,150,150]" .. game.translate_string("st_faction_" .. faction .. "_desc")
 	
 	self.text_descr:SetText(desc)
 	self.text_descr:AdjustHeightToText()
@@ -1645,17 +1651,17 @@ function faction_ui:UpdateDescr()
 	self.text_descr:SetAutoDelete(false)
 	
 	-- Relations
-	local str_stats = "%c[0,250,250,250]" .. gs("st_mm_new_game_relations") .. " \\n"
+	local str_stats = "%c[0,250,250,250]" .. game.translate_string("st_mm_new_game_relations") .. " \\n"
 	local t = self.table_faction
 	for i=1,#t do
 		if not (t[i] == faction) then
 			local v = relation_registry.community_relation("actor_" .. faction, t[i])
 			if (v >= 1000) then
-				str_stats = str_stats .. "%c[0,150,150,150]• %c[0,50,175,50]" .. gs("st_faction_" .. t[i]) .. "\\n"
+				str_stats = str_stats .. "%c[0,150,150,150]• %c[0,50,175,50]" .. game.translate_string("st_faction_" .. t[i]) .. "\\n"
 			elseif (v <= -1000) then
-				str_stats = str_stats .. "%c[0,150,150,150]• %c[0,175,50,50]" .. gs("st_faction_" .. t[i]) .. "\\n"
+				str_stats = str_stats .. "%c[0,150,150,150]• %c[0,175,50,50]" .. game.translate_string("st_faction_" .. t[i]) .. "\\n"
 			else
-				str_stats = str_stats .. "%c[0,150,150,150]• %c[0,175,175,50]" .. gs("st_faction_" .. t[i]) .. "\\n"
+				str_stats = str_stats .. "%c[0,150,150,150]• %c[0,175,175,50]" .. game.translate_string("st_faction_" .. t[i]) .. "\\n"
 			end
 		end
 	end
@@ -1670,7 +1676,7 @@ function faction_ui:UpdateItem (item, is_item_in_inventory)
 	end
 
 	-- description
-	local desc = gs(ini:r_string_ex(item.name,"description"))
+	local desc = game.translate_string(ini:r_string_ex(item.name,"description"))
 	
 	self.text_item_descr:SetText(desc)
 	self.text_item_descr:AdjustHeightToText()
@@ -1680,14 +1686,14 @@ function faction_ui:UpdateItem (item, is_item_in_inventory)
 	self.text_item_descr:SetAutoDelete(false)
 	
 	-- name
-	self.text_item_name:SetText( "%c[0,150,150,50]• %c[0,150,150,150]" .. gs(ini:r_string_ex(item.name,"inv_name") or STR_EMPTY) )
+	self.text_item_name:SetText( "%c[0,150,150,50]• %c[0,150,150,150]" .. game.translate_string(ini:r_string_ex(item.name,"inv_name") or STR_EMPTY) )
 	if (not is_item_in_inventory and item.points > self.points_left) then
-		self.text_item_points:SetText( "%c[200,200,50,50]• %c[0,175,50,50]" .. gs("st_mm_new_game_points") .. ": " .. tostring(item.points) )
+		self.text_item_points:SetText( "%c[200,200,50,50]• %c[0,175,50,50]" .. game.translate_string("st_mm_new_game_points") .. ": " .. tostring(item.points) )
 	else
-		self.text_item_points:SetText( "%c[0,100,50,200]• %c[0,150,150,150]" .. gs("st_mm_new_game_points") .. ": " .. tostring(item.points) )
+		self.text_item_points:SetText( "%c[0,100,50,200]• %c[0,150,150,150]" .. game.translate_string("st_mm_new_game_points") .. ": " .. tostring(item.points) )
 	end
 	if (not item.allow) then
-		self.text_item_points:SetText( "%c[0,100,50,200]• %c[0,150,150,150]" .. gs("st_mm_new_game_essential") )
+		self.text_item_points:SetText( "%c[0,100,50,200]• %c[0,150,150,150]" .. game.translate_string("st_mm_new_game_essential") )
 	end
 	
 	-- Icon
@@ -1945,7 +1951,7 @@ function set_list_text:__init(idx, name, points, allow) super(idx, name, points,
 	self.text:SetFont			(GetFontLetterica16Russian())
 	self.text:SetWndSize		(vector2():set(400,22))
 	self.text:SetEllipsis		(true)
-	self.text:SetText			(gs (ini:r_string_ex (self.string,"inv_name") or STR_EMPTY))
+	self.text:SetText			(game.translate_string(ini:r_string_ex (self.string,"inv_name") or STR_EMPTY))
 	
 end
 

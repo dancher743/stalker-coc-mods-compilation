@@ -1,0 +1,19 @@
+[logic]
+active = sr_idle@on
+
+[sr_idle@on]
+on_info = {=is_hours_ge(13) =is_hours_l(14)} sr_idle@maintenance, {=is_hours_ge(20) =is_hours_l(21)} sr_idle@maintenance
+on_info2 = {-bar_deactivate_radar_done} %=play_sound_looped(radar_thunder)%
+on_info3 = {+bar_deactivate_radar_done} sr_idle@off
+
+[sr_idle@maintenance]
+on_info = {+bar_deactivate_radar_done} sr_idle@nil
+on_info2 = %=stop_sound_looped%
+on_info3 = {!is_hours_ge(13)} sr_idle@on, {!is_hours_l(14)} sr_idle@on
+on_info4 = {!is_hours_ge(20)} sr_idle@on, {!is_hours_l(21)} sr_idle@on
+
+[sr_idle@off]
+on_game_timer = 5 | %=stop_sound_looped%
+on_game_timer2 = 100 | nil
+
+[sr_idle@nil]

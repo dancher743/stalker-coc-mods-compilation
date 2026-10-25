@@ -44,7 +44,7 @@ local function monster_on_update(npc,st)
 	-- end 
 	
 	local phantom_section = system_ini():r_string_ex(npc:section(),"spawn_phantom")
-	if not (phantom_section) then
+	if not (phantom_section) or phantom_section == STR_EMPTY then
 		return 
 	end
 	
@@ -61,11 +61,12 @@ local function monster_on_update(npc,st)
 		return
 	end
 	
-	local sec = system_ini():r_string_ex(npc:section(),"spawn_phantom")
-	if (sec and sec ~= STR_EMPTY and phantom_manager.dynamic_phantom_count(sec) >= 1) then 
+	if (phantom_manager.dynamic_phantom_count(phantom_section) >= 1) then 
 		return
 	end
 	
+	local phantom_sections = alun_utils.str_explode(phantom_section,STR_COMMA)
+	local sec = utils.pick(phantom_sections)
 	phantom_manager.spawn_dynamic_phantom(sec,npc:position())
 end 
 

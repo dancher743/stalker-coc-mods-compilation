@@ -20,3 +20,7 @@ function give_recipes(npc, actor)
 		give_info("how_to_get_more_recipes")
 	end
 end
+
+function can_tell_how_to_get_more_recipes(_, _)
+	return has_info("how_to_get_more_recipes") and cooking_recipes_manager.has_actor_all_recipes() == false
+end

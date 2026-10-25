@@ -28,6 +28,8 @@ local function play_inv_sound(player_char)
 	inv_sound:play(player_char,0,sound_object.s2d)
 end
 
+local stash_dropped_varname = "lootmoney_stash_dropped"
+
 function on_game_start()
 	RegisterScriptCallback("on_game_load", on_game_load)
 end
@@ -67,6 +69,7 @@ function lootmoney(npc) -- player character is looting a npc or creature
 	local npc_money = npc:money()
 	local npc_name = npc:character_name()
 	local npc_rank = ranks.get_obj_rank_name(npc)
+	local npc_id = npc:id()
 	local player_char = db.actor
 
 	set_npc_random_index(npc_name) -- set npc random index for the dropchance system (based on the npc name do differ npcs)
@@ -79,22 +82,23 @@ function lootmoney(npc) -- player character is looting a npc or creature
 			debug_sc(strformat("Chance to collect money failed. Chance: %s. Stalker: %c[66,167,245,0]%s%c[default]", rnd_value, npc_name))
 		end
 		npc:give_money(-npc_money) -- makes npc money equal 0 so it cant trigger lootmoney again		
-		return
+	else
+		local calculated_money = get_random_money_from_corpse(npc)
+		player_char:give_money(calculated_money)
+		--game_stats.money_quest_update(calculated_money) 
+		npc:give_money(-npc_money)
+		--game_stats.money_quest_update(-npc_money)
+	
+		if lootmoney_message then -- send message in PDA
+			local news_caption = game.translate_string("st_lootmoney_found_money")
+			local news_text = game.translate_string(math.floor(calculated_money))
+			player_char:give_game_news(news_caption, news_text, "ui_iconsTotal_found_money", 0, 10000)
+			play_inv_sound(player_char)
+		end
 	end -- if drop chance higher than random value between 1, 99 exit
-
-	local calculated_money = get_random_money_from_corpse(npc)
-	player_char:give_money(calculated_money)
-	--game_stats.money_quest_update(calculated_money) 
-	npc:give_money(-npc_money)
-	--game_stats.money_quest_update(-npc_money)
-
-	if lootmoney_message then -- send message in PDA
-		local news_caption = game.translate_string("st_lootmoney_found_money")
-		local news_text = game.translate_string(math.floor(calculated_money))
-		player_char:give_game_news(news_caption, news_text, "ui_iconsTotal_found_money", 0, 10000)
-		play_inv_sound(player_char)
-	end
-	if (math.random(1, 99) < lootmoney_stashchance and lootmoney_stash) then -- spawn random stash
+	
+	local stash_dropped = utils.se_obj_load_var(npc_id,STR_EMPTY,stash_dropped_varname,false)
+	if (has_chance(lootmoney_stashchance) and lootmoney_stash and stash_dropped == false) then -- spawn random stash
 		local bonus = {}
 		if (has_chance01(0.5)) then
 			coc_treasure_manager.try_add_unique_weapon(bonus)
@@ -102,6 +106,8 @@ function lootmoney(npc) -- player character is looting a npc or creature
 		local hint = strformat(strtransl("st_itm_stash_of_character"), npc_name, strtransl(character_community(npc)))
 		coc_treasure_manager.create_random_stash(nil, hint, bonus)
 	end
+	utils.se_obj_save_var(npc_id,STR_EMPTY,stash_dropped_varname,true)
+	
 	debug_sc(
 		strformat("You collected money from NPC. Chance: %s. Stalker: %c[66,167,245,0]%s%c[default]", rnd_value, npc_name)
 	)
@@ -172,7 +178,7 @@ end
 
 function explode_config_minmax(rank, t)
 	local ini_string = alun_utils.read_from_ini(config_ini, "rank_money", rank, STR_STRING)
-	local v = alun_utils.str_explode(ini_string, ",", false)
+	local v = alun_utils.str_explode(ini_string, STR_COMMA, false)
 	if t == 1 then
 		return tonumber(v[1])
 	elseif t == 2 then

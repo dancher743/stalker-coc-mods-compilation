@@ -2,6 +2,152 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.5] - Unreleased
+
+### Features
+* Added "newbie" character sounds for novices
+* Added mapspots for dead mutants with option ("Dead mutants spots"). The option is enabled by default
+* Restored [Rat wolf](https://stalker.fandom.com/wiki/Rat_wolf) mutant 🐀
+* Restored ability to open the armory at the Freedom base
+* Added P90 weapon
+* Added Fast-shooting AKM-74/2 weapon to Strelok's group's stash (Agroprom Underground)
+* Added sleeping area to Dolg bunker in Bar
+* Added "in combat" state to disguise system
+* Added companion distance check before moving to the next level
+* Added stash removing by pressing `H` button (by default)
+* Replaced the regular controllers in Agroprom Underground and X16 with boss controllers
+* Added Butterfly mine defusal mechanic: press `K` button while standing close to it
+* Added night-time NPC reaction to the player and companions flashlights
+* Added Hand radio item. It can be used to command a military helicopter not to attack you. To find this item, check out Quartet's command post at the Chernobyl NPP (South)
+* Added Ghost bodysuit
+* Added the Brain Scorcher maintenance schedule (13:00–14:00 and 20:00–21:00), restoring a cut feature from the original S.T.A.L.K.E.R. design documents
+
+### Improvements
+* Added Duty Outpost At Garbage to Fast Travel
+* Added cuckoo ambient sound from OLR 3.0
+* Rebalanced chances of getting an artifacts from corpses based on original CoC chance
+* Decreased chances of "rare" weather occurrence
+* Configured subperiods weights
+* Added slight rank increase by repairing with toolkits and cooking food
+* Added mutant loot relocation to NPC in Offline Combats
+* Restored sleeping sounds for NPC
+* Reworked stashes descriptions
+* Removed `sim_actor_combat.script`
+* Added AtmosFear 3 skyboxes to `21:30:00`-`22:30:00` sections of clear weather period
+* Improved start population of Survival mode
+* Returned original format of `send_treasure` tips
+* Corrected strings `ls_tip_7` and `ls_tip_20`
+* Reworked rat mutant visuals
+* Removed `simulation_rats` squad from simulation
+* Added rat spleen item to rat mutant
+* Corrected EOC Mode description in Faction Select Menu
+* Added `grob_skvoz_dyru_v_moyey_golove` and `kino_mama_anarkhiya` tracks to `agr_smart_terrain_4_4_radio`
+* Added `nagovitsyn_gorodskiye_vstrechi` track to `val_smart_terrain_7_3_radio`
+* Added `nasha_sluzhba_i_opasna_i_trudna` track to `agr_smart_terrain_1_6_near_1_radio`
+* Reworked Freedom base arsenal items (RG-6 added!)
+* Added `12` to squad stay point hours option
+* Added nil check to `play_sound_by_path` function in `xr_sound.script`
+* Balanced a repair of outfit toolkit item
+* Removed whisper ambient from `day` section in `l11_pripyat.ltx`
+* Reworked supplies of ecolog explorer squads
+* Added ecolog explorer squads to debug
+* Removed build exoskeleton mesh from neutral stalkers
+* Increased stats of coocked mutant food
+* Rebalanced сooking recipes givers
+* Refactored `has_chance_to_create` function in `outfit_marauder.script`
+* Set `max_uses` to 2 for all cooked food
+* Reworked chance of adding tools into `bonus` table in `xr_effects.reward_stash` function
+* Rebalanced chances of add toolkit to reward stash
+* Added artifact respawning from game start and after fallout
+* Added two new found stash response messages
+* Added inventory sounds to mutant's loot window
+* Added mutant's loot window closing by inventory key
+* Moved mutant's loot window option from `ui_mutant_loot.script` to `ui_mutant_loot.script`
+* Corrected description of Guide job map spots
+* Made weapons repair in gunsmith toolkit by ammo classes
+* Corrected "zat_a2_stalker_mechanic_sell_gauss_ammo_0" string in RUS localization
+* Added hiding of `more_cooking_recipes_dialog` if all recipes have been obtained
+* Extended delta text in the toolkits repair UI
+* Corrected disguise warning and dewarn limits
+* Added all phantoms to `m_controller_psy` mutant
+* Balanced controller immunities
+* Added reinit of squads when Offline Combats restarts
+* Corrected Butterfly mine blow radius
+* Added news message to Guide job map spot
+* Made Fast Travel icon over the other on the map
+* Reduced amount of dead bodies after offline combats
+* Reworked time of next Guide's job appearance
+* Improved distance calculation of Offline Combats
+* Changed the chance check priority in the squad removal code after Offline Combats
+* Added hide dialog to `on_item_drag_dropped` callback in `itms_manager.script`
+* Reworked/refactored the global functions memoization feature code
+* Made distant storms appearance before 3h of the `storm` period
+
+### Fixes
+* Added fixes to Offline Combats to fix potential crash - "[error][      87]"
+* Fixed loot in dead NPC's inventory after Offline Combats
+* Reworked weather occurrence from random selection to weighted random selection
+* Restored original campfire replicas for Mercenaries (from SoC/CS)
+* Fixed influence of player's "Well Dressed" achievement on mutant loot for NPC
+* Separated money looting from stash looting
+* Fixed missing encrypted stashes descriptions
+* Fixed doubling of mutant loot
+* Fixed `sun_color`s of yellow moon
+* Fixed overbrightnes of clear weather between 09:00-16:00
+* Included ecolog explorer squads into start population
+* Corrected descriptions of rodents items
+* Added rat icon to mutant's loot window
+* Fixed incorrect controller brain visual (mesh from Narodnaya Solyanka 2016)
+* Fixed ignore of occurrences for start weather
+* Fixed thistle plant color in `build_details` texture of `l01_escape` and `l07_military` levels
+* Fixed mute of Bar radio music in bar room safe house area
+* Fixed squad to smart assign and corrected location types setup (all credits to [borjan](https://github.com/DissidentEast) for sharing this fix!)
+* Fixed incorrect `snd_config` of `sim_default_freedom_4_default_1` character
+* Removed guillemets from the names of certain weapons in RU localization
+* Fixed logic of `bar_dolg_hangar_bridge_hello` sound for `bar_dolg_general_zoneguard_stalker`
+* Added fixes to `TimeEvent` code
+* Fixed missing invulnerability of companions
+* Removed `default` ambient weather configs
+* Fixed incorrect Clear Sky barman name in recipes dialog
+* Added fixes to `try_spawn_ammo` function in `death_manager.script`
+* Added missing SoC unique weapons into Hermann's trade config
+* Corrected counter equality check in `sim_squad_offline_combat.se_obj_on_before_release` function
+* Fixed incorrect result of `get_se_obj` function in `sim_squad_offline_combat` script
+* Added bump textures to fix fallback in Darkscape location
+* Added missing ".thm" files to stons
+* Fixed shuffling of squads in Offline Combats
+* Fixed mine detonation
+* Fixed scale of slots HUD for 16:9 aspect ratio
+* Fixed an issue where jokes would not play
+* Fixed "stop air guitar" code in `sr_camp.script`
+* Fixed companions tasks giving
+* Fixed the `af_ameba_mica` string in the trade configs
+* Fixed missing supplies in the Beard's trade config
+* Fixed logic of the ecolog squad on Yantar bunker
+* Added some items to `ignore_sections` in `coc_treasure_manager.ltx`
+* Added fixed code from CoC 1.5 to `xr_sound.script`
+* Fixed an incorrect repair values of the gunsmith toolkit
+* Added `check_all_in_los` function from CoC 1.5 to `evaluator_dont_shoot` to prevent LUA error
+
+### Optimization
+* Replaced some allocations with global constants
+* Added `printf_empty` function if game launched in non-debug mode
+* Reduced extra allocations in `FillPartsList` method of `repair_ui` class
+* Memoized `time_global`, `level.name` and `game.translate_string` functions
+
+### Framework
+* Added `random_with_weights` function into `utils.script`
+* Added `stalker_eye_range` function into `utils.script`
+* Added default value to `se_obj_load_var` function in `utils.script`
+* Splited `sim_survival.script` into `sim_survival_mode.script` and `sim_survival_eoc_mode.script`
+* Added `monster_on_net_destroy` callback into `axr_main.script`
+* Added `alife_release` and `release` functions into `_g.script`
+* Added `ignore_cant_trade_sections` into `xr_corpse_detection.ltx`
+* Removed extra `get_chance` and `get_chance01` functions from `_g.script`
+* Extended `phantom_manager.script` to work with many sections in `spawn_phantom` string
+* Extended `give_news` function in `news_helper.script`
+* Added `iterate_actor_squad` function into `axr_companions.script`
+
 ## [1.5.4] - 2026-04-14
 
 ### Features

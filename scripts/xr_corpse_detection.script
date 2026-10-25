@@ -92,7 +92,7 @@ local function monster_on_death_callback(obj,who)
 	
 	HasValuableLoot[obj:id()] = nil
 	
-	if not (utils.load_var(obj,"looted")) then
+	if not (utils.load_var(obj,"looted") or utils.se_obj_load_var(obj:id(),STR_EMPTY,"looted")) then
 		HasValuableLoot[obj:id()] = true
 	end
 end
@@ -112,7 +112,7 @@ local function on_pstor_load_all(obj)
 		return 
 	end
 
-	if not (utils.load_var(obj,"looted")) then
+	if not (utils.load_var(obj,"looted") or utils.se_obj_load_var(obj:id(),STR_EMPTY,"looted")) then
 		HasValuableLoot[obj:id()] = true
 	end
 end
@@ -141,21 +141,20 @@ function get_loot_table(ini)
 	local sysini = system_ini()
 	
 	local ignore_sections_string = "ignore_sections"
+	local ignore_cant_trade_sections = "ignore_cant_trade_sections"
 	local can_trade_string = "can_trade"
-	local cooked_food_prefix = "meat"
 	local quest_item_string = "quest_item"
 	local mp_item_prefix = "mp_"
 	local inv_name_string = "inv_name"
-	local default_string = STR_DEFAULT
 	local cost_string = "cost"
 	
 	sysini:section_for_each(function(section)
 		if not (ini:line_exist(ignore_sections_string,section)) then
-			if (sysini:r_bool_ex(section,can_trade_string,true) == true or string.find(section,cooked_food_prefix)) then
+			if (sysini:r_bool_ex(section,can_trade_string,true) == true or ini:line_exist(ignore_cant_trade_sections,section)) then
 				if (sysini:r_bool_ex(section,quest_item_string,false) == false) then
 					if not (string.find(section,mp_item_prefix)) then
 						local name = sysini:r_string_ex(section,inv_name_string)
-						if (name and name ~= STR_EMPTY and name ~= default_string) then
+						if (name and name ~= STR_EMPTY and name ~= STR_DEFAULT) then
 							local cost = sysini:r_float_ex(section,cost_string) or 0
 							if (cost > 0) then
 								t[section] = true
@@ -220,7 +219,7 @@ function get_all_from_corpse(npc)
 			end
 		end
 	
-		local looted = utils.load_var(corpse_npc,"looted",nil)
+		local looted = utils.load_var(corpse_npc,"looted",nil) or utils.se_obj_load_var(corpse_npc:id(),STR_EMPTY,"looted")
 		if (not looted and itms_manager) then
 			local loot = {}
 			itms_manager.loot_mutant(nil,corpse_npc:clsid(),loot,npc)
@@ -237,6 +236,7 @@ function get_all_from_corpse(npc)
 				xr_sound.set_sound_play(id,"corpse_loot_bad")
 			end
 			utils.save_var(corpse_npc,"looted",true)
+			utils.se_obj_save_var(corpse_npc:id(),STR_EMPTY,"looted",true)
 		end
 		return
 	end

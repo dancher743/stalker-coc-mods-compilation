@@ -29,6 +29,10 @@ function loot_ui:__init(owner,obj,id,section,clsid) super()
 	self:InitCallBacks()
 
 	self:FillList()
+	
+	if (self.has_loot_filled) then
+		xr_sound.play_sound_by_path("interface\\inv_open")
+	end
 end
 
 function loot_ui:__finalize()
@@ -98,7 +102,7 @@ function loot_ui:SetMutantImage()
 	controller			= {file="ui\\ui_actor_monsters_pda",x="393",y="800",special=STR_ONE},
 	chimera				= {file="ui\\ui_actor_monsters_pda",x=STR_ONE,y="600",special=STR_ONE},
 	tushkano			= {file="ui\\ui_actor_monsters_pda",x=STR_ONE,y=STR_ONE,special=STR_ONE},
-	rat					= {file="ui\\ui_actor_monsters_pda",x=STR_ONE,y=STR_ONE,special=STR_ONE},
+	rat					= {file="ui\\ui_actor_monsters_pda_3",x=STR_ONE,y=STR_ONE,special=STR_ONE},
 	flesh				= {file="ui\\ui_actor_monsters_pda",x="393",y="600",special=STR_ONE},
 
 	burer				= {file="ui\\ui_actor_monsters_pda_1",x=STR_ONE,y=STR_ONE,special=STR_ONE},
@@ -142,23 +146,25 @@ function loot_ui:FillList()
 	self.loot = utils.load_var(self.obj,"looting_tbl",nil)
 	if self.loot == nil then
 		self.loot = {}
-		itms_manager.loot_mutant(nil,self.clsid,self.loot)
+		itms_manager.fill_mutant_loot_table(self.clsid,self.loot,0)
 		utils.save_var(self.obj,"looting_tbl",self.loot)
 	end
 
-	for sec,t in pairs(self.loot) do
-		self:AddItemToList(sec,t.count)
-	end
+	self.has_loot_filled = is_empty(self.loot) == false
 
-	if (not is_empty(self.loot)) then
+	if (self.has_loot_filled) then
+		for sec,t in pairs(self.loot) do
+			self:AddItemToList(sec,t.count)
+		end
 		SetHudMsg(STR_EMPTY,0)
 		self:ShowDialog(true)
-	else		
+	else
 		if self:IsShown() then
-			self:HideDialog()
+			self:Close()
 		end
 		SetHudMsg("st_nothing_useful",4)
 		utils.save_var(self.obj,"looted",true)
+		utils.se_obj_save_var(self.obj:id(),STR_EMPTY,"looted",true)
 		xr_corpse_detection.set_valuable_loot(self.id,false)
 	end
 end
@@ -211,44 +217,47 @@ function loot_ui:OnListItemDbClicked()
 	end
 
 	if is_empty(self.loot) then
-	utils.save_var(self.obj,"looted",true)
-	xr_corpse_detection.set_valuable_loot(self.id,false)
-	self:HideDialog()
+		utils.save_var(self.obj,"looted",true)
+		utils.se_obj_save_var(self.obj:id(),STR_EMPTY,"looted",true)
+		xr_corpse_detection.set_valuable_loot(self.id,false)
+		self:Close()
 	else
-	utils.save_var(self.obj,"looting_tbl",self.loot)
-	self:FillList()
+		xr_sound.play_sound_by_path("interface\\inv_ruck")
+		utils.save_var(self.obj,"looting_tbl",self.loot)
+		self:FillList()
 	end
 end
 
 function loot_ui:OnButton_ok()
 	if is_empty(self.loot) then
-	--self:HideDialog()
-	return
+		--self:Close()
+		return
 	end
 
 	for sec,t in pairs(self.loot) do
 		for i=1,t.count do
-		alife():create(sec, db.actor:position(),0,0,0)
-		xr_statistic.inc_counter("field_dressings")
+			alife():create(sec, db.actor:position(),0,0,0)
+			xr_statistic.inc_counter("field_dressings")
 		end
-	news_manager.relocate_item(db.actor, "in", sec, t.count)
-	self.loot[sec] = nil
+		news_manager.relocate_item(db.actor, "in", sec, t.count)
+		self.loot[sec] = nil
 	end
 	utils.save_var(self.obj,"looted",true)
+	utils.se_obj_save_var(self.obj:id(),STR_EMPTY,"looted",true)
 	xr_corpse_detection.set_valuable_loot(self.id,false)
-	self:HideDialog()
+	self:Close()
 end
 
 function loot_ui:OnButton_quit()
-self:HideDialog()
+	self:Close()
 end
 
 function loot_ui:OnKeyboard(dik, keyboard_action)
 	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
 	if (keyboard_action == ui_events.WINDOW_KEY_PRESSED) then
 	local bind = dik_to_bind(dik)
-		if bind == key_bindings.kQUIT or bind == key_bindings.kUSE then
-			self:HideDialog()
+		if bind == key_bindings.kQUIT or bind == key_bindings.kUSE or bind == key_bindings.kINVENTORY then
+			self:Close()
 		elseif dik == DIK_keys.DIK_LSHIFT then
 			self:OnButton_ok()
 		end
@@ -292,17 +301,9 @@ function loot_ui:AddItemToList(sec,count)
 	self.list_box:AddExistingItem(_itm)
 end
 
---		добавляем в опции
-
-local function opt_menu_on_init(menu)
-menu.gameplay_options["ui_mutant_loot"] = {
-		default = true,
-		debug_only = false,
-		typ = "check"
-		}
-end
-
-
-function on_game_start()
-RegisterScriptCallback("opt_menu_on_init",opt_menu_on_init)
+function loot_ui:Close()
+	if (self.has_loot_filled) then
+		xr_sound.play_sound_by_path("interface\\inv_close")
+	end
+	self:HideDialog()
 end

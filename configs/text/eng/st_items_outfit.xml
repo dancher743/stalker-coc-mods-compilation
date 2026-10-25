@@ -196,7 +196,15 @@
 	<string id="scientific_outfit_description">
 		<text>This suit, produced by one of Kiev's Defence Research Institutes, is a great alternative to home-made stalker suits. While its built-in body armour can only stop a pistol round, the anomaly and radiation protection system is second to none. Fully upgradeable and boasting built-in artefact container, this bodysuit is the equipment of choice for many experienced stalkers.</text>
 	</string>
-	
+
+	<string id="stalker_outfit_m1_name">
+		<text>Ghost bodysuit</text>
+	</string>
+
+	<string id="stalker_outfit_m1_description">
+		<text>Rumor has it that the Ghost stalker never carries a first aid kit with him. Everything heals on him like on a dog. They say that he has an unusual suit that he got on an anomaly.</text>
+	</string>
+
 <!--			-- Mercenary --				-->
 
 	<string id="merc_novice_outfit_name">

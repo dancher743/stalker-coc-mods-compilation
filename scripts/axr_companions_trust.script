@@ -32,7 +32,7 @@ function force_trust(se_id)
 end
 
 function is_trust(se_id)
-	return get_db_value(se_id, trust_key, false)
+	return get_db_value(se_id, trust_key, false) == true
 end
 
 local function update_data()

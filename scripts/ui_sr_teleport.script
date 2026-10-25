@@ -62,6 +62,12 @@ function msg_box_ui:InitCallBacks()
 end
 
 function msg_box_ui:OnMsgOk()
+	if (axr_companions.has_companion() and axr_companions.is_distance_to_actor_ge(30)) then
+		SetHudMsg(strtransl("st_level_changer_left_companions_hudmsg"), 8)
+		self:OnMsgCancel()
+		return
+	end
+	
 	local pos = ini:r_string_ex(self.name,"position")
 	local path = pos == nil and ini:r_string_ex(self.name,"path")
 	local point = path and patrol(path)

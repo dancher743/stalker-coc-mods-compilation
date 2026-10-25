@@ -644,4 +644,16 @@
 	<string id="ui_st_no_talk_leader_news_text">
 		<text>Командир отряда - %s.</text>
 	</string>
+	
+	<string id="st_level_changer_left_companions_hudmsg">
+		<text>Переход невозможен: вы оставили напарников позади.</text>
+	</string>
+	
+	<string id="st_mine_actor_too_far_to_remove_hudmsg">
+		<text>Вы находитесь слишком далеко от мины.</text>
+	</string>
+	
+	<string id="st_actor_hand_radio_cancel_heli_enemy">
+		<text>Вы приказали вертолёту не атаковать вас.</text>
+	</string>
 </string_table>

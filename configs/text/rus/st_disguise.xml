@@ -10,6 +10,10 @@
         <text>ћаскировка невозможна: вас видели или запомнили другие сталкеры.</text>
     </string>
 	
+	<string id="st_disguise_actor_in_combat">
+        <text>ћаскировка невозможна: вы находитесь в бою.</text>
+    </string>
+	
 	<string id="st_disguise_actor_in_same_faction">
         <text>ћаскировка невозможна: вы уже состоите в данной группировке.</text>
     </string>

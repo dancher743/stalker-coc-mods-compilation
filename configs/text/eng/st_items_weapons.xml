@@ -270,6 +270,9 @@
   <string id="st_wpn_ak74u">
     <text>AKM-74/2U</text>
   </string>
+  <string id="st_wpn_ak74_m1">
+	<text>Fast-shooting AKM-74/2</text>
+  </string>
   <string id="st_wpn_ak74u_m1">
 	<text>AKM-74/2U Special</text>
   </string>
@@ -302,6 +305,9 @@
   </string>
   <string id="st_wpn_fn2000">
 		<text>FT-200M</text>
+  </string>
+  <string id="st_wpn_p90">
+		<text>FP-91M</text>
   </string>
   <string id="st_wpn_fort">
 		<text>Fora-12</text>
@@ -540,12 +546,17 @@
   <string id="st_wpn_eagle_descr">
 		<text>The ultimate hand cannon - bulky, heavy and highly lethal. Developed as a specialized weapon for hunting medium-sized and large game, as well as for shooting competitions involving firing at steel body targets at distances over 50 meters. Its limited use in the Zone can be attributed to its price, size and weight, which are all double those of other pistols.</text>
   </string>
+  <string id="st_wpn_ak74_m1_descr">
+		<text>The modified closing system increases the speed of shooting.</text>
+  </string>
   <string id="st_wpn_ak74u_m1_descr">
 		<text>Enhanced AKM-74/2U machine gun. Comes with a non-replaceable muffler. Was owned by a stalker known as Bes, hiding in the Zone from the law.</text>
   </string>
   <string id="st_wpn_fn2000_descr">
 		<text>This futuristic-looking weapon with a bullpup layout is actually a mass produced modular system, comprising a rifle & grenade complex with a computerized fire control system and a 40-mm grenade launcher. Despite its bulky appearance, the weapon is highly ergonomic, easy to use and benefits from good technical characteristics.</text>
   </string>
+  <string id="st_wpn_p90_descr">
+		<text>A Belgian submachine gun developed in the 1980s, primarily for tank crews and military vehicle drivers. After finding its way into the Zone, it was chambered for the 9x19 mm round. Features a progressive, highly ergonomic design. Due to its compactness and practicality, it is widely used by scientific expeditions.</text>
   <string id="st_wpn_fort_descr">
 		<text>A Ukrainian-made pistol predominantly used by law enforcement organisations. Provides higher accuracy, better ergonomics and has a larger magazine than the PMm.  These pistols make it into the Zone in large numbers thanks to the sale of defective weapons, which suffer from technical miscalculations in early design models. Despite this, the pistol is in demand among stalkers thanks to its good combat characteristics.</text>
   </string>
@@ -607,6 +618,6 @@
     <text>Butterfly mine</text>
   </string>
   <string id="st_wpn_mine_descr">
-		<text>The PFM-1 is an anti-personnel mine which became infamous for causing large numbers of civilian casualties. Often referred to as a butterfly mine due to its unusual shape.</text>
+		<text>The PFM-1 is an anti-personnel mine which became infamous for causing large numbers of civilian casualties. Often referred to as a butterfly mine due to its unusual shape.\n%c[200,200,200,50]To defuse the mine, press ($$ACTION_CUSTOM12$$) while standing close to it.</text>
   </string>
 </string_table>

@@ -25,4 +25,11 @@
 	<string id="mil_screw_dialog_1202">
 		<text>Удачи.</text>
 	</string>
+	
+	<string id="mil_armory_lock_key_dialog_0">
+		<text>Мне нужен ключ к арсеналу.</text>
+	</string>
+	<string id="mil_armory_lock_key_dialog_1">
+		<text>Ключ к арсеналу выдаётся только тем, кто вступил в «Свободу» и имеет ранг ветеран и выше.</text>
+	</string>
 </string_table>

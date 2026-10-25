@@ -1,6 +1,10 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <xml>
-	<!------------------------- Ecolog-explorers by Dancher ------------------------------>
+	<!-- 														 -->
+    <!-- 						Ecolog-explorers 				 -->
+    <!-- 						Added by Dancher 				 -->
+	<!-- 														 -->
+	
 	<specific_character id="sim_explorer_ecolog_orange" team_default = "1">
     <name>GENERATE_NAME_stalker</name>
     <icon>ui_inGame2_ecolog_orange</icon>
@@ -14,8 +18,10 @@
     <snd_config>characters_voice\human_03\ecolog\</snd_config>
     <supplies>
         [spawn] \n
-        wpn_sig220 \n
-        ammo_11.43x23_hydro \n
+        wpn_sig220 = 1 \n
+        ammo_11.43x23_hydro = 1 \n
+		wpn_p90 = 1 \n
+		ammo_9x19_fmj = 1 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
     </supplies>
@@ -38,6 +44,8 @@
         [spawn] \n
         wpn_walther = 1 \n
         ammo_9x19_fmj = 1 \n
+		wpn_p90 = 1 \n
+		ammo_9x19_fmj = 1 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
     </supplies>
@@ -60,6 +68,8 @@
         [spawn] \n
         wpn_walther = 1 \n
         ammo_9x19_fmj = 1 \n
+		wpn_p90 = 1 \n
+		ammo_9x19_fmj = 1 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
     </supplies>
@@ -82,6 +92,8 @@
         [spawn] \n
         wpn_walther = 1 \n
         ammo_9x19_fmj = 1 \n
+		wpn_p90 = 1 \n
+		ammo_9x19_fmj = 1 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
     </supplies>
@@ -104,6 +116,8 @@
         [spawn] \n
         wpn_walther = 1 \n
         ammo_9x19_fmj = 1 \n
+		wpn_p90 = 1 \n
+		ammo_9x19_fmj = 1 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
     </supplies>
@@ -121,13 +135,13 @@
     <snd_config>characters_voice\human_03\stalker\</snd_config>
     <rank>3526</rank>
     <money min="1000" max="2000" infinitive="0"/>
-    <reputation>-542</reputation>
+    <reputation>542</reputation>
     <visual>actors\stalker_ecologist\stalker_ecolog_guard</visual>
     <supplies>
         [spawn] \n
-        wpn_l85  \n
+        wpn_g36 = 1 \n
         ammo_5.56x45_ss190 = 1 \n
-        wpn_pm \n
+        wpn_pm = 1 \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items.xml"
 #include "gameplay\character_food.xml"
@@ -147,13 +161,13 @@
     <snd_config>characters_voice\human_03\stalker\</snd_config>
     <rank>4369</rank>
     <money min="1000" max="2000" infinitive="0"/>
-    <reputation>-2018</reputation>
+    <reputation>2018</reputation>
     <visual>actors\stalker_ecologist\stalker_ecolog_guard</visual>
     <supplies>
         [spawn] \n
-        wpn_l85  \n
+        wpn_l85 = 1 \n
         ammo_5.56x45_ss190 = 1 \n
-        wpn_pm \n
+        wpn_pm = 1 \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items.xml"
 #include "gameplay\character_food.xml"
@@ -177,9 +191,9 @@
     <visual>actors\stalker_ecologist\stalker_ecolog_guard</visual>
     <supplies>
         [spawn] \n
-        wpn_lr300  \n
+        wpn_lr300 = 1 \n
         ammo_5.56x45_ss190 = 1 \n
-        wpn_pm \n
+        wpn_pm = 1\n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items.xml"
 #include "gameplay\character_food.xml"

@@ -201,6 +201,9 @@
 	<string id="st_search_treasure">
 		<text>Обыскать тайник ($$ACTION_USE$$)</text>
 	</string>
+	<string id="st_search_or_remove_treasure">
+		<text>Обыскать тайник ($$ACTION_USE$$)\nУбрать тайник ($$ACTION_CUSTOM15$$)</text>
+	</string>
 	<string id="st_sleep_hours">
 		<text>ч</text>
 	</string>
@@ -448,6 +451,10 @@
 		<text>Покинуть Зону ($$ACTION_USE$$)</text>
 	</string>
 	
+	<string id="st_lock_opener_object">
+		<text>Открыть замок ($$ACTION_USE$$)</text>
+	</string>
+	
 	<string id="st_change_language">
 		<text>Сменить язык: CTRL+SHIFT</text>
 	</string>
@@ -455,7 +462,12 @@
 	<string id="st_psi_storm_while_asleep">
 		<text>В Зоне недавно произошёл пси-шторм.</text>
 	</string>
+	
 	<string id="st_fallout_while_asleep">
 		<text>В Зоне недавно произошли осадки.</text>
+	</string>
+	
+	<string id="st_no_lock_key_item_hudmsg">
+		<text>У вас нет ключа</text>
 	</string>
 </string_table>

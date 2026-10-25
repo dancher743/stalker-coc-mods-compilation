@@ -285,4 +285,7 @@
 	<string id="kb_custom_spot">
 		<text>Поставить метку на карту</text>
 	</string>
+	<string id="kb_remove_stash">
+		<text>Убрать тайник</text>
+	</string>
 </string_table>

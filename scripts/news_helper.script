@@ -4,9 +4,12 @@
 --
 
 function give_news(caption, text, icon, delay, show_time, sound_theme)
+	caption = caption or strtransl("st_tip")
+	text = text or STR_EMPTY
+	icon = icon or "ui_iconsTotal_grouping"
 	delay = delay or 0
 	show_time = show_time or 5000
-	icon = icon or "ui_iconsTotal_grouping"
+	sound_theme = sound_theme or "pda_tips"
 	
 	local actor = db.actor
 	
@@ -16,9 +19,5 @@ function give_news(caption, text, icon, delay, show_time, sound_theme)
 		actor:give_game_news(caption, text, icon, delay, show_time, 0)
 	end
 	
-	if (sound_theme == nil) then
-		xr_sound.set_sound_play(actor:id(), "pda_tips")
-	elseif (sound_theme ~= STR_EMPTY) then
-		xr_sound.set_sound_play(actor:id(), sound_theme)
-	end
+	xr_sound.set_sound_play(actor:id(), sound_theme)
 end

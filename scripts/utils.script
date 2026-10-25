@@ -576,7 +576,7 @@ function send_to_nearest_accessible_vertex(npc,v_id,caller)
 		return npc:level_vertex_id()
 	end
 	if not (npc:accessible(v_id)) then
-		local new_lvid,vtemp = npc:accessible_nearest(level.vertex_position(v_id),vector():set(0,0,0))
+		local new_lvid,vtemp = npc:accessible_nearest(level.vertex_position(v_id),VEC_ZERO)
 		npc:set_dest_level_vertex_id(new_lvid)
 		return new_lvid
 	end
@@ -891,11 +891,15 @@ function se_obj_save_var(id,name,varname,val)
 	end
 end
 
-function se_obj_load_var(id,name,varname)
+function se_obj_load_var(id,name,varname,def)
 	local m_data = alife_storage_manager.get_state()
 	if (m_data.se_object[id]) then
-		return m_data.se_object[id][varname]
+		local varvalue = m_data.se_object[id][varname]
+		if (varvalue ~= nil) then
+			return varvalue
+		end
 	end
+	return def
 end
 
 function pos_in_rect(p,r)
@@ -984,6 +988,8 @@ function shuffle_table(t)
         local j = math.random(i)
         swap(keys, i, j)
     end
+	
+	return keys
 end
 
 function get_hours_elapsed()
@@ -1096,4 +1102,54 @@ function ini_r_string_explode(ini,section,line)
 	end
 	
 	return alun_utils.str_explode(value,STR_COMMA)
+end
+
+function random_with_weights(t)
+	local sumWeight = 0
+	
+	for _,weight in pairs(t) do
+		sumWeight = sumWeight + weight
+	end
+	
+	local randomWeight = math.random() * sumWeight
+	local currentWeight = 0
+	
+	for k,weight in pairs(t) do
+		currentWeight = currentWeight + weight
+		if randomWeight <= currentWeight then
+			return k
+		end
+	end
+end
+
+function stalker_eye_range(obj)
+	local section_name = "m_stalker"
+	local community = obj:character_community()
+
+	if (community == "monolith") then
+		section_name = "m_stalker_monolith"
+	elseif (community == "zombied") then
+		section_name = "m_stalker_zombied"
+	end
+
+	local eye_range = 150
+	local ini = system_ini()
+
+	if ini:line_exist(section_name, "eye_range") then
+		eye_range = ini:r_float(section_name, "eye_range")
+	end
+
+	local max_view_dist = 0.8
+	
+	local vision_section = "stalker_vision_free"
+
+	if (obj:mental_state() == anim.danger) then
+		vision_section = "stalker_vision_danger"
+	end
+
+	if ini:section_exist(vision_section) and ini:line_exist(vision_section, "max_view_distance") then
+		max_view_dist = ini:r_float(vision_section, "max_view_distance")
+	end
+
+	return eye_range * max_view_dist
 end

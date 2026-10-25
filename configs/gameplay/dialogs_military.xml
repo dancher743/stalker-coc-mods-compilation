@@ -39,4 +39,24 @@
             </phrase>
         </phrase_list>
     </dialog>
+	
+	<dialog id="mil_armory_lock_key_dialog">
+		<dont_has_info>mil_armory_lock_key_dialog_done</dont_has_info>
+		<phrase_list>
+			<phrase id="0">
+				<text>mil_armory_lock_key_dialog_0</text>
+                <next>1</next>
+				<next>2</next>
+            </phrase>
+			<phrase id="1">
+				<precondition>dialogs_military.cant_give_mil_door_lock_key_item</precondition>
+				<text>mil_armory_lock_key_dialog_1</text>
+            </phrase>
+			<phrase id="2">
+				<precondition>dialogs_military.can_give_mil_door_lock_key_item</precondition>
+				<action>dialogs_military.give_mil_door_lock_key_item</action>
+				<give_info>mil_armory_lock_key_dialog_done</give_info>
+            </phrase>
+		</phrase_list>
+	</dialog>
 </game_dialogs>

@@ -317,6 +317,7 @@ function fill_primary_objects()
 		"gar_dolg_sleep_id",
 		"gar_angar_sleep_id",
 		"bar_actor_sleep_zone_id",
+		"bar_dolg_bunker_sleep_area_id",
 		"yan_bunker_sleep_restrictor_id",
 		"ros_vagon_sleep_id",
 		"mil_freedom_sleep_id",

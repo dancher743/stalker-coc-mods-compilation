@@ -13,7 +13,7 @@ if (jit == nil) then
 end
 
 GAME_VERSION = "1.4.22"
-MOD_VERSION = "1.5.4"
+MOD_VERSION = "1.5.5 RC 5"
 
 if string.find(command_line(), "-dbg") then
 	DEV_DEBUG = true
@@ -43,20 +43,6 @@ USE_MARSHAL = marshal ~= nil
 mus_vol = 0
 amb_vol = 0
 b_discard_settings_shown = false
--- Memoization
-local ini
-local sim
-local gg
-local hud
-local console
-local device_obj
--- Cached functions during memoization
-local alife_function
-local system_ini_function
-local game_graph_function
-local get_hud_function
-local get_console_function
-local device_function
 ----------------------------------------------------------------------
 
 function start_game_callback()
@@ -66,8 +52,12 @@ function start_game_callback()
 		printf("using marshal library")
 	end
 	
+	if not (DEV_DEBUG) then
+		printf = _G.printf_empty
+	end
+	
 	if (USE_FUNCTIONS_MEMOIZE) then
-		memoize_functions()
+		functions_memoizer.memoize()
 	end
 	
 	sound_theme.load_sound()
@@ -98,90 +88,23 @@ function alife_object(id)
 	return alife():object(id)
 end
 
--------------------------------------------------------------------------------------------------------
--- 											FUNCTIONS MEMOIZATION
--------------------------------------------------------------------------------------------------------
-
-function memoize_functions()
-	alife_function = alife
-	alife = _G.alife_memoized
-	
-	system_ini_function = system_ini
-	system_ini = _G.system_ini_memoized
-	
-	game_graph_function = game_graph
-	game_graph = _G.game_graph_memoized
-	
-	get_hud_function = get_hud
-	get_hud = _G.get_hud_memoized
-	
-	get_console_function = get_console
-	get_console = _G.get_console_memoized
-	
-	device_function = device
-	device = _G.device_memoized
-end
-
-function unmemoize_functions()
-	alife = alife_function
-	alife_function = nil
-	
-	system_ini = system_ini_function
-	system_ini_function = nil
-	
-	game_graph = game_graph_function
-	game_graph_function = nil
-	
-	get_hud = get_hud_function
-	get_hud_function = nil
-	
-	get_console = get_console_function
-	get_console_function = nil
-	
-	device = device_function
-	device_function = nil
-end
-
-function alife_memoized()
-	if not (sim) then
-		sim = alife_function()
+function alife_release(se_obj)
+	if (se_obj == nil) then
+		callstack()
+		printf("ALIFE OBJECT IS NIL!")
+		return
 	end
-	return sim
+	alife():release(se_obj)
 end
 
-function system_ini_memoized()
-	if not (ini) then
-		ini = system_ini_function()
+function release(obj)
+	if (obj == nil) then
+		callstack()
+		printf("OBJECT IS NIL!")
+		return
 	end
-	return ini
-end
-
-function game_graph_memoized()
-	if not (gg) then
-		gg = game_graph_function()
-	end
-	return gg
-end
-
-function get_hud_memoized()
-	if not (hud) then
-		hud = get_hud_function()
-	end
-	return hud
-end
-
-function get_console_memoized()
-	if not (console) then
-		console = get_console_function()
-	end
-	return console
-end
-
-function device_memoized()
-	if not (device_obj) then
-		device_obj = device_function()
-	end
-	return device_obj
+    local se_obj = alife_object(obj:id())
+	alife_release(se_obj)
 end
 
 -------------------------------------------------------------------------------------------------------
@@ -246,68 +169,81 @@ end
 -- For example, do not try to destroy npcs unless you do not care that it can fail before player saved then loaded.
 ----------------------------------------------------------------------------------------------
 local ev_queue = {}
-function CreateTimeEvent(ev_id,act_id,timer,f,...)
-	if not (ev_queue[ev_id]) then
-		ev_queue[ev_id] = {}
-		ev_queue[ev_id].__size = 0
-	end
 
-	if not (ev_queue[ev_id][act_id]) then
-		ev_queue[ev_id][act_id] = {}
-		ev_queue[ev_id][act_id].timer = time_global() + timer*1000
-		ev_queue[ev_id][act_id].f = f
-		ev_queue[ev_id][act_id].p = {...}
-		ev_queue[ev_id].__size = ev_queue[ev_id].__size + 1
-	end
-end
-function RemoveTimeEvent(ev_id,act_id)
-	if (ev_queue[ev_id] and ev_queue[ev_id][act_id]) then
-		ev_queue[ev_id][act_id] = nil
-		ev_queue[ev_id].__size = ev_queue[ev_id].__size - 1
-	end
+function CreateTimeEvent(ev_id, act_id, timer, f, ...)
+    if not ev_queue[ev_id] then
+        ev_queue[ev_id] = {}
+    end
+
+    if not ev_queue[ev_id][act_id] then
+        ev_queue[ev_id][act_id] = {
+            timer = time_global() + timer * 1000,
+            f = f,
+            p = {...}
+        }
+    end
 end
 
-function ResetTimeEvent(ev_id,act_id,timer)
-	if (ev_queue[ev_id] and ev_queue[ev_id][act_id]) then
-		ev_queue[ev_id][act_id].timer = time_global() + timer*1000
-	end
+function RemoveTimeEvent(ev_id, act_id)
+    local actions = ev_queue[ev_id]
+
+    if actions and actions[act_id] then
+        actions[act_id] = nil
+
+        if next(actions) == nil then
+            ev_queue[ev_id] = nil
+        end
+    end
 end
 
-function HasTimeEvent(ev_id,act_id)
-	return ev_queue[ev_id] and ev_queue[ev_id][act_id]
+function ResetTimeEvent(ev_id, act_id, timer)
+    local actions = ev_queue[ev_id]
+
+    if actions and actions[act_id] then
+        actions[act_id].timer = time_global() + timer * 1000
+    end
+end
+
+function HasTimeEvent(ev_id, act_id)
+    return ev_queue[ev_id] and ev_queue[ev_id][act_id]
 end
 
 function ProcessEventQueue(force)
 	-- if (has_alife_info("sleep_active")) then
 		-- return false
 	-- end
-	
-	for event_id,actions in pairs(ev_queue) do
-		for action_id,act in pairs(actions) do
-			--alun_utils.debug_write(strformat("event_queue: event_id=%s action_id=%s",event_id,action_id))
-			if (action_id ~= "__size") then
-				if (force) or (time_global() >= act.timer) then
-					if (act.f(unpack(act.p)) == true) then
-						ev_queue[event_id][action_id] = nil
-						ev_queue[event_id].__size = ev_queue[event_id].__size - 1
-					end
-				end
-			end
-		end
+    local current_time = time_global()
 
-		if (ev_queue[event_id].__size == 0) then
-			ev_queue[event_id] = nil
-		end
-	end
-	
-	return false
+    for event_id, actions in pairs(ev_queue) do
+		local expired = {}
+
+        for action_id, act in pairs(actions) do
+            --alun_utils.debug_write(strformat("event_queue: event_id=%s action_id=%s",event_id,action_id))
+			if force or current_time >= act.timer then
+                if act.f(unpack(act.p)) == true then
+                    expired[#expired + 1] = action_id
+                end
+            end
+        end
+
+        for i = 1, #expired do
+            actions[expired[i]] = nil
+        end
+
+        if next(actions) == nil then
+            ev_queue[event_id] = nil
+        end
+    end
+
+    return false
 end
-function ProcessEventQueueState(m_data,save)
+
+function ProcessEventQueueState(m_data, save)
 	if (save) then
-		m_data.event_queue = ev_queue
-	else
-		ev_queue = m_data.event_queue or ev_queue
-	end
+        m_data.event_queue = ev_queue
+    else
+        ev_queue = m_data.event_queue or ev_queue
+    end
 end
 
 function SetSwitchDistance(dist)
@@ -532,6 +468,9 @@ function printf(fmt,...)
 	else
 		get_console():execute("load ~#debug msg:"..fmt)
 	end	
+end
+
+function printf_empty()
 end
 
 function spairs(t, order)
@@ -2084,18 +2023,10 @@ function get_check_option(name)
 	return axr_main_options.get_check_option(name)
 end
 
-function get_chance()
-	return math.random(100)
-end
-
 function has_chance(chance)
-	return get_chance() <= chance
-end
-
-function get_chance01()
-	return math.random()
+	return math.random(100) <= chance
 end
 
 function has_chance01(chance)
-	return get_chance01() < chance
+	return math.random() < chance
 end

@@ -644,4 +644,16 @@
 	<string id="ui_st_no_talk_leader_news_text">
 		<text>Squad commander - %s.</text>
 	</string>
+	
+	<string id="st_level_changer_left_companions_hudmsg">
+		<text>Cannot move to the next level: your companions are left behind.</text>
+	</string>
+	
+	<string id="st_mine_actor_too_far_to_remove_hudmsg">
+		<text>You are too far away from the mine.</text>
+	</string>
+	
+	<string id="st_actor_hand_radio_cancel_heli_enemy">
+		<text>You commanded the helicopter not to attack you.</text>
+	</string>
 </string_table>

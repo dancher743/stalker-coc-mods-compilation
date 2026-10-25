@@ -204,6 +204,7 @@
 		<actor_dialog>dm_ordered_task_completed_dialog</actor_dialog>
 		<actor_dialog>drx_sl_mil_smart_terrain_7_7_freedom_leader_stalker_meet_dialog</actor_dialog>
 		<actor_dialog>dm_ordered_task_dialog</actor_dialog>
+		<actor_dialog>mil_armory_lock_key_dialog</actor_dialog>
 		<actor_dialog>drx_sl_change_faction_dialog</actor_dialog>
 		<actor_dialog>actor_break_dialog</actor_dialog>
 

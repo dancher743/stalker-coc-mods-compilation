@@ -812,7 +812,7 @@ can_take                                 = false
 
 cost                                     = 1500
 ;-------------------------------------------------------------------------------
-blast                                    = 3.18
+blast                                    = 2.18
 blast_r                                  = 2.26
 blast_impulse                            = 66
 ;delete
@@ -875,7 +875,7 @@ can_take                                 = false
 
 cost                                     = 1500
 ;-------------------------------------------------------------------------------
-blast                                    = 3.18
+blast                                    = 2.18
 blast_r                                  = 2.26
 blast_impulse                            = 66
 ;delete
@@ -1152,8 +1152,8 @@ cost                                     = 750
 
 [mutant_part_controller_glass]:mutant_part_general
 $spawn                                   = "devices\monster_items\mutant_controller_glas"
-visual                                   = dynamics\equipments\poltergeist_glas.ogf
-inv_weight                               = 0.095
+visual                                   = dynamics\equipments\item_mozg.ogf
+inv_weight                               = 0.95
 inv_name                                 = mutant_controller_brain
 inv_name_short                           = mutant_controller_brain
 description                              = mutant_controller_brain_description
@@ -1215,6 +1215,18 @@ inv_weight                               = 0.184
 inv_grid_x                               = 0
 inv_grid_y                               = 5
 cost                                     = 200
+
+; Added by Dancher
+[mutant_part_rat_spleen]:mutant_part_general
+$spawn                                   = "devices\monster_items\mutant_rat_spleen"
+visual                                   = dynamics\equipments\item_rat_spleen.ogf
+inv_weight                               = 0.05
+inv_name                                 = mutant_rat_spleen
+inv_name_short                           = mutant_rat_spleen
+description                              = mutant_rat_spleen_description
+inv_grid_x                               = 20
+inv_grid_y                               = 4
+cost                                     = 150
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;; EATABLE MONSTER ITEMS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1432,11 +1444,11 @@ inv_grid_x                               = 18
 inv_grid_y                               = 23
 
 repair_add_full_part_condition           = false ;Add full amount of condition from item to be used for parts
-repair_add_condition                     = 0.25 ;Amount of condition added to repaired item
+repair_add_condition                     = 0.15 ;Amount of condition added to repaired item
 repair_type                              = outfit ;weapon or outfit  
 
 use_condition                            = true
-max_uses                                 = 1
+max_uses                                 = 3
 empty_weight                             = 0.8
 can_drag_and_drop                        = true
 can_highlight_slots                      = true
@@ -1626,3 +1638,38 @@ wounds_heal_perc                         = 0
 animation_slot                           = 4
 hud                                      = wpn_vodka_hud
 slot                                     = -1
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LOCK KEYS
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[lock_key]:dev_flash_1
+visual                                   = dynamics\equipments\quest\key.ogf
+cost                                     = 1
+inv_grid_width                           = 1
+inv_grid_height                          = 1
+inv_grid_x                               = 13
+inv_grid_y                               = 3
+
+[mil_door_lock_key]:lock_key
+description                              = st_mil_door_lock_key_descr
+inv_name                                 = st_mil_door_lock_key_name
+inv_name_short                           = st_mil_door_lock_key_name
+
+[actor_hand_radio]:booster_script
+$spawn                                   = "equipment\actor_hand_radio"
+visual                                   = dynamics\devices\dev_fmradio\dev_fmradio.ogf
+cost                                     = 0
+inv_name                                 = st_actor_hand_radio
+inv_name_short                           = st_actor_hand_radio
+description                              = st_actor_hand_radio_descr
+inv_weight                               = 0.5
+inv_grid_width                           = 1
+inv_grid_height                          = 2
+inv_grid_x                               = 20
+inv_grid_y                               = 10
+can_trade                                = false
+quest_item                               = false
+use_condition                            = false
+remove_after_use                         = false
+empty_weight                             = 0.5

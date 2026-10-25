@@ -62,7 +62,7 @@ function generic_object_binder:update(delta)
 	end
 
 	if not (self.object:alive()) then
-		local looted = self.already_dead or utils.load_var(self.object,"looted",nil)
+		local looted = self.already_dead or utils.load_var(self.object,"looted",nil) or utils.se_obj_load_var(self.object:id(),STR_EMPTY,"looted")
 		if not (looted) then
 			self.object:set_callback(callback.use_object, self.use_callback, self)
 			self.object:set_tip_text("st_screen_field_dress")
@@ -176,7 +176,7 @@ function generic_object_binder:death_callback(victim, who)
 	db.delete_enemy(victim)
 
 	-- This is necessary because hit callback is not triggered if it takes a single blow to kill npc
-	self:hit_callback(victim, 1, vector():set(0,0,0), who, "from_death_callback")
+	self:hit_callback(victim, 1, VEC_ZERO, who, "from_death_callback")
 
 	if (who) then
 		if (who:id() == db.actor:id()) then
@@ -328,6 +328,10 @@ function generic_object_binder:net_destroy()
 	self.object:set_callback(callback.sound,nil)
 	self.object:set_callback(callback.use_object,nil)
 	xr_sound.stop_sounds_by_id(self.object:id())
+	
+	-- Dancher
+	SendScriptCallback("monster_on_net_destroy",self.object)
+	-- Dancher
 
 	xr_combat_ignore.fighting_with_actor_npcs[self.object:id()] = nil
 
@@ -349,7 +353,7 @@ function generic_object_binder:net_destroy()
 	if (USE_MARSHAL) then
 		UnregisterScriptCallback("save_state",self)
 	end
-
+	
 	db.del_obj(self.object)
 	db.delete_enemy(self.object)
 	local m_data = alife_storage_manager.get_state()

@@ -3566,6 +3566,12 @@
 	<string id="st_dyn_news_res_found_stash_5">
 		<text>You should have hidden it better.</text>
 	</string>
+	<string id="st_dyn_news_res_found_stash_6">
+		<text>Good luck finding mine, suckers!</text>
+	</string>
+	<string id="st_dyn_news_res_found_stash_7">
+		<text>Damn, I should probably move my stuff too...</text>
+	</string>
 	
 	
 <!----------------------------- Task news ----------------------------->

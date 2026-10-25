@@ -1,0 +1,158 @@
+--
+-- Functions memoization
+-- Author: Dancher
+--
+
+local alife_function
+local system_ini_function
+local game_graph_function
+local get_hud_function
+local get_console_function
+local device_function
+local translate_string_function
+local time_global_function
+local level_name_function
+
+local ini
+local sim
+local gg
+local hud
+local console
+local device_obj
+local time_global_obj
+local time_global_last_frame_number = -1
+local level_name
+local translated_strings_cache = {}
+
+local function alife_memoized()
+	if not (sim) then
+		sim = alife_function()
+	end
+	return sim
+end
+
+local function system_ini_memoized()
+	if not (ini) then
+		ini = system_ini_function()
+	end
+	return ini
+end
+
+local function game_graph_memoized()
+	if not (gg) then
+		gg = game_graph_function()
+	end
+	return gg
+end
+
+local function get_hud_memoized()
+	if not (hud) then
+		hud = get_hud_function()
+	end
+	return hud
+end
+
+local function get_console_memoized()
+	if not (console) then
+		console = get_console_function()
+	end
+	return console
+end
+
+local function device_memoized()
+	if not (device_obj) then
+		device_obj = device_function()
+	end
+	return device_obj
+end
+
+local function time_global_memoized()
+    local frame_number = device_function().frame
+
+    if (frame_number ~= time_global_last_frame_number) then
+        time_global_obj = time_global_function()
+		time_global_last_frame_number = frame_number
+    end
+
+    return time_global_obj
+end
+
+local function level_name_memoized()
+	if not (level_name) then
+		level_name = level_name_function()
+	end
+	return level_name
+end
+
+local function translate_string_memoized(str_id)
+    if (str_id == nil or str_id == STR_EMPTY) then
+        return translate_string_function(str_id)
+    end
+
+    local translated_string = translated_strings_cache[str_id]
+
+    if (translated_string == nil) then
+        translated_string = translate_string_function(str_id)
+        translated_strings_cache[str_id] = translated_string
+    end
+
+    return translated_string
+end
+
+function memoize()
+    alife_function = _G.alife
+    _G.alife = alife_memoized
+
+    system_ini_function = _G.system_ini
+    _G.system_ini = system_ini_memoized
+
+    game_graph_function = _G.game_graph
+    _G.game_graph = game_graph_memoized
+
+    get_hud_function = _G.get_hud
+    _G.get_hud = get_hud_memoized
+
+    get_console_function = _G.get_console
+    _G.get_console = get_console_memoized
+
+    device_function = _G.device
+    _G.device = device_memoized
+
+    time_global_function = _G.time_global
+    _G.time_global = time_global_memoized
+
+	level_name_function = _G.level.name
+	_G.level.name = level_name_memoized
+
+	translate_string_function = _G.game.translate_string
+    _G.game.translate_string = translate_string_memoized
+end
+
+function unmemoize()
+	_G.alife = alife_function
+	alife_function = nil
+
+	_G.system_ini = system_ini_function
+	system_ini_function = nil
+
+	_G.game_graph = game_graph_function
+	game_graph_function = nil
+
+	_G.get_hud = get_hud_function
+	get_hud_function = nil
+
+	_G.get_console = get_console_function
+	get_console_function = nil
+
+	_G.device = device_function
+	device_function = nil
+
+    _G.time_global = time_global_function
+	time_global_memoized = nil
+
+	_G.level.name = level_name_function
+	level_name_memoized = nil
+	
+	_G.game.translate_string = translate_string_function
+	translate_string_memoized = nil
+end

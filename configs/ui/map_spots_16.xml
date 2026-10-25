@@ -122,7 +122,7 @@
                 <level_map spot="fast_travel_spot"/>
 				<mini_map spot="fast_travel_spot_mini"/>
         </fast_travel>
-        <fast_travel_spot x="0" y="0" width="25" height="25" alignment="c" location_level="1" scale_max="1">
+        <fast_travel_spot x="0" y="0" width="25" height="25" alignment="c" location_level="11" scale_max="1">
                 <texture>ui_hud_icon_sleep</texture>
         </fast_travel_spot>
 		<fast_travel_spot_mini x="0" y="0" width="17" height="17" alignment="c" location_level="1" scale_max="1">
@@ -957,6 +957,17 @@
 		<ui_squad_commander_blink_mini_spot x="-8" y="-40" width="19" height="19" stretch="1" light_anim="new_task_highlight_00" light_anim_cyclic="1" la_texture="1" xform_anim="new_task_highlight_xform" xform_anim_cyclic="1" alignment="c" location_level="-1">
 			<texture>ui_pda2_stask_last_01a</texture>
 		</ui_squad_commander_blink_mini_spot>
+		
+		<mine_actor_spot>
+			<level_map spot="mine_actor_spot_level" pointer="quest_pointer"/>
+			<mini_map  spot="mine_actor_spot_mini"/>
+        </mine_actor_spot>
+        <mine_actor_spot_level width="15" height="15" alignment="c" stretch="1" location_level="5" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
+			<texture r="231" g="207" b="24" a="255">ui_inGame2_PDA_icon_flag</texture>
+        </mine_actor_spot_level>
+        <mine_actor_spot_mini width="10" height="10" alignment="c" stretch="1">
+			<texture r="231" g="207" b="24" a="255">ui_inGame2_PDA_icon_flag</texture>
+        </mine_actor_spot_mini>
 </map_spots>
 
 
