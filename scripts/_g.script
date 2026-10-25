@@ -43,26 +43,6 @@ USE_MARSHAL = marshal ~= nil
 mus_vol = 0
 amb_vol = 0
 b_discard_settings_shown = false
--- Memoization
-local ini
-local sim
-local gg
-local hud
-local console
-local device_obj
-local translated_strings_cache = {}
-local time_global_obj
-local time_global_last_frame_number = -1
--- Cached functions during memoization
-local are_functions_memoized = false
-local alife_function
-local system_ini_function
-local game_graph_function
-local get_hud_function
-local get_console_function
-local device_function
-local translate_string_function
-local time_global_function
 ----------------------------------------------------------------------
 
 function start_game_callback()
@@ -76,9 +56,8 @@ function start_game_callback()
 		printf = _G.printf_empty
 	end
 	
-	if (USE_FUNCTIONS_MEMOIZE and not are_functions_memoized) then
-		memoize_functions()
-		are_functions_memoized = true
+	if (USE_FUNCTIONS_MEMOIZE) then
+		functions_memoizer.memoize()
 	end
 	
 	sound_theme.load_sound()
@@ -126,109 +105,6 @@ function release(obj)
 	end
     local se_obj = alife_object(obj:id())
 	alife_release(se_obj)
-end
-
--------------------------------------------------------------------------------------------------------
--- 											FUNCTIONS MEMOIZATION
--------------------------------------------------------------------------------------------------------
-
-function memoize_functions()	
-	alife_function = alife
-	alife = _G.alife_memoized
-	
-	system_ini_function = system_ini
-	system_ini = _G.system_ini_memoized
-
-	game_graph_function = game_graph
-	game_graph = _G.game_graph_memoized
-	
-	get_hud_function = get_hud
-	get_hud = _G.get_hud_memoized
-	
-	get_console_function = get_console
-	get_console = _G.get_console_memoized
-	
-	device_function = device
-	device = _G.device_memoized
-	
-	translate_string_function = game.translate_string
-	game.translate_string = _G.translate_string_memoized
-	
-	time_global_function = time_global
-	time_global = _G.time_global_memoized
-end
-
-function clear_memoize_caches()
-	translated_strings_cache = {}
-	time_global_last_frame_number = -1
-end
-
-function alife_memoized()
-	if not (sim) then
-		sim = alife_function()
-	end
-	return sim
-end
-
-function system_ini_memoized()
-	if not (ini) then
-		ini = system_ini_function()
-	end
-	return ini
-end
-
-function game_graph_memoized()
-	if not (gg) then
-		gg = game_graph_function()
-	end
-	return gg
-end
-
-function get_hud_memoized()
-	if not (hud) then
-		hud = get_hud_function()
-	end
-	return hud
-end
-
-function get_console_memoized()
-	if not (console) then
-		console = get_console_function()
-	end
-	return console
-end
-
-function device_memoized()
-	if not (device_obj) then
-		device_obj = device_function()
-	end
-	return device_obj
-end
-
-function translate_string_memoized(str_id)
-	if (str_id == nil or str_id == STR_EMPTY) then
-		return translate_string_function(str_id)
-	end
-
-	local translated_string = translated_strings_cache[str_id]
-
-	if (translated_string == nil) then
-        translated_string = translate_string_function(str_id)
-        translated_strings_cache[str_id] = translated_string
-    end
-
-    return translated_string
-end
-
-function time_global_memoized()
-    local frame_number = device_function().frame
-
-    if (frame_number ~= time_global_last_frame_number) then
-        time_global_obj = time_global_function()
-		time_global_last_frame_number = frame_number
-    end
-
-    return time_global_obj
 end
 
 -------------------------------------------------------------------------------------------------------

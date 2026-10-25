@@ -80,7 +80,7 @@ All notable changes to this project will be documented in this file.
 * Improved distance calculation of Offline Combats
 * Changed the chance check priority in the squad removal code after Offline Combats
 * Added hide dialog to `on_item_drag_dropped` callback in `itms_manager.script`
-* Removed `unmemoize_functions()` from the global functions memoization feature
+* Reworked/refactored the global functions memoization feature code
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
@@ -132,7 +132,7 @@ All notable changes to this project will be documented in this file.
 * Replaced some allocations with global constants
 * Added `printf_empty` function if game launched in non-debug mode
 * Reduced extra allocations in `FillPartsList` method of `repair_ui` class
-* Memoized `game.translate_string` and `time_global` functions
+* Memoized `time_global` function
 
 ### Framework
 * Added `random_with_weights` function into `utils.script`
