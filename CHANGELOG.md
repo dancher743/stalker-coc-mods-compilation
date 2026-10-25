@@ -81,6 +81,7 @@ All notable changes to this project will be documented in this file.
 * Changed the chance check priority in the squad removal code after Offline Combats
 * Added hide dialog to `on_item_drag_dropped` callback in `itms_manager.script`
 * Reworked/refactored the global functions memoization feature code
+* Made distant storms appearance before 3h of the `storm` period
 
 ### Fixes
 * Added fixes to Offline Combats to fix potential crash - "[error][      87]"
