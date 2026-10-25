@@ -84,7 +84,7 @@ local function level_name_memoized()
 	return level_name
 end
 
-function translate_string_memoized(str_id)
+local function translate_string_memoized(str_id)
     if (str_id == nil or str_id == STR_EMPTY) then
         return translate_string_function(str_id)
     end
@@ -125,7 +125,7 @@ function memoize()
 	_G.level.name = level_name_memoized
 
 	translate_string_function = _G.game.translate_string
-    game.translate_string = translate_string_memoized
+    _G.game.translate_string = translate_string_memoized
 end
 
 function unmemoize()
