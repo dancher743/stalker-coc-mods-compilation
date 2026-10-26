@@ -397,7 +397,7 @@ function faction_ui:__init(owner) super()
 	self.table_inv = {}
 	self.table_difficulty = {"novice","stalker","veteran","master"}
 	self.table_companions = {STR_ZERO,STR_ONE,"2","3"}
-	self.table_populations = {"0.1","0.25","0.5","1.0","1.5"}
+	self.table_populations = {"0.1","0.25","0.5","1.0","1.25","1.5"}
 	
 	self.table_hardcore_lives = {}
 	local n = ini_opt:line_count("new_game_hardcore_lives") or 0
