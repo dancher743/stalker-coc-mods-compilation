@@ -20,8 +20,12 @@ local hud
 local console
 local device_obj
 local time_global_obj
-local time_global_last_frame_number = -1
+local time_days_obj
+local time_hours_obj
+local time_minutes_obj
+local time_factor_obj
 local level_name
+local last_frame_number = -1
 local translated_strings_cache = {}
 
 local function alife_memoized()
@@ -66,15 +70,50 @@ local function device_memoized()
 	return device_obj
 end
 
-local function time_global_memoized()
-    local frame_number = device_function().frame
+local function try_update_frame_date()
+	local frame_number = device_function().frame
 
-    if (frame_number ~= time_global_last_frame_number) then
-        time_global_obj = time_global_function()
-		time_global_last_frame_number = frame_number
-    end
+	if (frame_number == last_frame_number) then
+		return
+	end
+
+	time_global_obj = time_global_function()
+	time_days_obj = get_time_days_function()
+	time_hours_obj = get_time_hours_function()
+	time_minutes_obj = get_time_minutes_function()
+	time_factor_obj = get_time_factor_function()
+
+	last_frame_number = frame_number
+end
+
+local function time_global_memoized()
+	try_update_frame_date()
 
     return time_global_obj
+end
+
+local function get_time_days_memoized()
+	try_update_frame_date()
+
+    return time_days_obj
+end
+
+local function get_time_hours_memoized()
+	try_update_frame_date()
+
+    return time_hours_obj
+end
+
+local function get_time_minutes_memoized()
+	try_update_frame_date()
+
+	return time_minutes_obj
+end
+
+local function get_time_factor_memoized()
+	try_update_frame_date()
+
+    return time_factor_obj
 end
 
 local function level_name_memoized()
@@ -121,6 +160,18 @@ function memoize()
     time_global_function = _G.time_global
     _G.time_global = time_global_memoized
 
+	get_time_days_function = _G.level.get_time_days
+    _G.level.get_time_days = get_time_days_memoized
+	
+	get_time_hours_function = _G.level.get_time_hours
+    _G.level.get_time_hours = get_time_hours_memoized
+	
+	get_time_minutes_function = _G.level.get_time_minutes
+    _G.level.get_time_minutes = get_time_minutes_memoized
+	
+	get_time_factor_function = _G.level.get_time_factor
+    _G.level.get_time_factor = get_time_factor_memoized
+
 	level_name_function = _G.level.name
 	_G.level.name = level_name_memoized
 
@@ -150,9 +201,21 @@ function unmemoize()
     _G.time_global = time_global_function
 	time_global_memoized = nil
 
+    _G.level.get_time_days = get_time_days_function
+	get_time_days_function = nil
+
+	_G.level.get_time_hours = get_time_hours_function
+	get_time_hours_function = nil
+
+	_G.level.get_time_minutes = get_time_minutes_function
+	get_time_minutes_function = nil
+
+	_G.level.get_time_factor = get_time_factor_function
+	get_time_factor_function = nil
+
 	_G.level.name = level_name_function
 	level_name_memoized = nil
-	
+
 	_G.game.translate_string = translate_string_function
 	translate_string_memoized = nil
 end

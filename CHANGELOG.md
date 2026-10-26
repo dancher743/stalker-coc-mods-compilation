@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [1.5.6] - Unreleased
 
+### Optimization
+* Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`
+
 ## [1.5.5] - 2026-10-26
 
 ### Features
