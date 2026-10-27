@@ -44,8 +44,11 @@ function squad_on_npc_death(squad,se_npc)
 	if ((squad.id == curr_guid['squad_id']) and (squad:npc_count() == 0)) then
 		if db.actor:has_info('guider_start') then
 			news_manager.send_tip(db.actor, game.translate_string("ui_st_jg_squad_killed"), nil, nil, 5000)
-			xr_statistic.inc_rank("guider_job_failed")
-			inc_faction_goodwill_to_actor(squad.id,-100)
+			local function postpone_for_next_frame()
+				xr_statistic.inc_rank("guider_job_failed")
+				inc_faction_goodwill_to_actor(squad.id,-100)
+			end
+			SkipFrame(postpone_for_next_frame)
 		end
 		clear()
 	end
@@ -186,9 +189,9 @@ function complete(actor,npc)
 		dialogs.relocate_money(actor,get_nadbavka(),"in")
 	end
 	
+	dialogs_axr_companion.remove_companions_from_squad(actor,npc)
 	xr_statistic.inc_rank("guider_job_completed")
 	inc_faction_goodwill_to_actor(curr_guid['squad_id'],100)
-	dialogs_axr_companion.remove_companions_from_squad(actor,npc)
 	clear()
 end
 
@@ -225,11 +228,11 @@ function fail()
 	else
 		jg_utils.change_money(m, "out")
 	end
-	xr_statistic.inc_rank("guider_job_failed")
 	local squad_id = curr_guid['squad_id']
-	inc_faction_goodwill_to_actor(squad_id,-50)
 	local snpc = alife_object(get_comm_id(squad_id))
 	alun_utils.execute_script_on_squad(snpc,axr_companions.remove_from_actor_squad)
+	xr_statistic.inc_rank("guider_job_failed")
+	inc_faction_goodwill_to_actor(squad_id,-50)
 	clear()
 end
 
