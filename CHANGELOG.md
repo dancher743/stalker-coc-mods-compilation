@@ -8,6 +8,9 @@ All notable changes to this project will be documented in this file.
 * Added `1.25` as factor into population factors
 * Added `army` and `bandit` to `gar_smart_terrain_1_7` smart props
 
+### Fixes
+* Fixed non-working code of `opt_menu_on_accept` function in `fast_travel.script`
+
 ### Optimization
 * Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`
 

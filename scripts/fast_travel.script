@@ -301,8 +301,12 @@ end
 
 local function opt_menu_on_accept()
 	if (level.present() and db.actor) then
-		RemoveTimeEvent("fast_travel_load","fast_travel_load")
-		CreateTimeEvent("fast_travel_load","fast_travel_load",2,on_game_load)
+		local timer_id = "fast_travel_load"
+		local function tickback()
+			StopTimer(timer_id)
+			on_game_load()
+		end
+		StartTimer(timer_id,2000,tickback)
 	end
 end
 
