@@ -136,7 +136,9 @@ rank_rep = {
 			weapons_repaired	=	{rnk=1,		rpt=0,		comps = false},
 			outfits_repaired	=	{rnk=2,		rpt=0,		comps = false},
 			headgears_repaired	=	{rnk=1,		rpt=0,		comps = false},
-			food_cooked			=	{rnk=2,		rpt=0,		comps = false}
+			food_cooked			=	{rnk=2,		rpt=0,		comps = false},
+			guider_job_completed =	{rnk=50,	rpt=200,   	comps = true},
+			guider_job_failed	=	{rnk=0,		rpt=-200,  	comps = true},
 }
 
 weapons_table = {}

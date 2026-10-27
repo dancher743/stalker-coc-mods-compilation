@@ -10,6 +10,23 @@ debug = false
 local beep_1 = sound_object([[device\pda\pda_beep_1]])
 local beep_2 = sound_object([[device\pda\pda_beep_2]])
 
+local function inc_faction_goodwill_to_actor(squad_id, amount)
+	local squad = alife_object(squad_id)
+	if (squad) then
+		local communities = {}
+		for k in squad:squad_members() do
+			local member = db.storage[k.id] and db.storage[k.id].object
+			if (member) then
+				communities[member:character_community()] = true
+			end
+		end
+		local actor = db.actor
+		for community,_ in pairs(communities) do
+			xr_effects.inc_faction_goodwill_to_actor(actor, nil, {community, amount})
+		end
+	end
+end
+
 function load_state()
 	guid = jg_utils.l_v("guid", {})
 	curr_guid = jg_utils.l_v("curr_guid", {})
@@ -27,7 +44,8 @@ function squad_on_npc_death(squad,se_npc)
 	if ((squad.id == curr_guid['squad_id']) and (squad:npc_count() == 0)) then
 		if db.actor:has_info('guider_start') then
 			news_manager.send_tip(db.actor, game.translate_string("ui_st_jg_squad_killed"), nil, nil, 5000)
-			xr_statistic.inc_actor_reputation(-1000)
+			xr_statistic.inc_rank("guider_job_failed")
+			inc_faction_goodwill_to_actor(squad.id,-100)
 		end
 		clear()
 	end
@@ -168,7 +186,8 @@ function complete(actor,npc)
 		dialogs.relocate_money(actor,get_nadbavka(),"in")
 	end
 	
-	xr_statistic.inc_actor_reputation(100)
+	xr_statistic.inc_rank("guider_job_completed")
+	inc_faction_goodwill_to_actor(curr_guid['squad_id'],100)
 	dialogs_axr_companion.remove_companions_from_squad(actor,npc)
 	clear()
 end
@@ -206,8 +225,10 @@ function fail()
 	else
 		jg_utils.change_money(m, "out")
 	end
-	xr_statistic.inc_actor_reputation(-500)
-	local snpc = alife():object(get_comm_id(curr_guid['squad_id']))
+	xr_statistic.inc_rank("guider_job_failed")
+	local squad_id = curr_guid['squad_id']
+	inc_faction_goodwill_to_actor(squad_id,-50)
+	local snpc = alife_object(get_comm_id(squad_id))
 	alun_utils.execute_script_on_squad(snpc,axr_companions.remove_from_actor_squad)
 	clear()
 end
