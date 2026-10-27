@@ -222,17 +222,23 @@ function fail()
 	local squad = alife():object(curr_guid['squad_id'])
 	jg_utils.squad_switcher(squad,func) -- выкидыш при помощи переключателя
 ]]
-	local m = db.actor:money()
-	if (m >= curr_guid['neustoika']) then 
+	local money = db.actor:money()
+	local has_money = money >= curr_guid['neustoika']
+	if (has_money) then 
 		jg_utils.change_money(curr_guid['neustoika'], "out")
 	else
-		jg_utils.change_money(m, "out")
+		jg_utils.change_money(money, "out")
 	end
 	local squad_id = curr_guid['squad_id']
 	local snpc = alife_object(get_comm_id(squad_id))
 	alun_utils.execute_script_on_squad(snpc,axr_companions.remove_from_actor_squad)
-	xr_statistic.inc_rank("guider_job_failed")
-	inc_faction_goodwill_to_actor(squad_id,-50)
+	if (has_money) then
+		xr_statistic.inc_rank("guider_job_failed")
+		inc_faction_goodwill_to_actor(squad_id,-50)
+	else
+		xr_statistic.inc_rank("guider_job_failed_no_money")
+		inc_faction_goodwill_to_actor(squad_id,-100)
+	end
 	clear()
 end
 
