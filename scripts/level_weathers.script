@@ -550,9 +550,15 @@ function WeatherManager:get_period_with_prob(section)
 		return nil
 	end
 	
-	local sum=0
-	for _,prob in pairs(periods) do
-		sum=sum+prob
+	local sum = 0
+	for period,prob in pairs(periods) do
+		local num_prob = tonumber(prob)
+		if (num_prob) then
+			periods[period] = num_prob
+			sum = sum + num_prob
+		else
+			periods[period] = 0
+		end
 	end
 	
 	local rnd=(math.random(1,100)/100)*sum
