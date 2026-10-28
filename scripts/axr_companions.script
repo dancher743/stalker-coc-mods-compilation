@@ -877,20 +877,8 @@ end
 local invulnerability_option_name = "companions_invulnerability"
 local simulation = alife()
 local option_name
-local se_obj_cache
+local se_obj_cache = se_object_cache.create()
 local se_obj_actor_squad_list
-
-local function get_se_obj(obj_id)
-	se_obj_cache = se_obj_cache or {}
-	local se_obj = se_obj_cache[obj_id]
-	
-    if (not se_obj) then
-        se_obj = simulation:object(obj_id)
-        se_obj_cache[obj_id] = se_obj
-    end
-	
-	return se_obj
-end
 
 function has_companion()
 	local result = false
@@ -934,8 +922,8 @@ function is_hostage(se_obj)
 end
 
 function is_hostage_npc(npc_id)
-	local se_obj = get_se_obj(npc_id)
-	return is_hostage(se_obj)
+	local se_obj = se_obj_cache:get(npc_id)
+	return se_obj and is_hostage(se_obj)
 end
 
 function is_hostage_squad(squad_id)
@@ -956,8 +944,8 @@ function is_task_companion(obj)
 end
 
 function is_invulnerable_obj(obj)
-	local se_obj = get_se_obj(obj:id())
-	return is_invulnerable(se_obj)
+	local se_obj = se_obj_cache:get(obj:id())
+	return se_obj and is_invulnerable(se_obj)
 end
 
 function is_invulnerable(se_obj)
@@ -968,8 +956,8 @@ function is_invulnerable(se_obj)
 end
 
 function is_companion_trust(obj)
-	local se_obj = get_se_obj(obj:id())
-	return axr_companions_trust.is_trust(se_obj.id)
+	local se_obj = se_obj_cache:get(obj:id())
+	return se_obj and axr_companions_trust.is_trust(se_obj.id)
 end
 
 function can_open_inventory(obj)

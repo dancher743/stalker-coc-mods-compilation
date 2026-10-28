@@ -17,6 +17,9 @@ All notable changes to this project will be documented in this file.
 ### Optimization
 * Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`
 
+### Framework
+* Added `se_obj_cache` class to work with a cached `se_obj`ects
+
 ## [1.5.5] - 2026-10-26
 
 ### Features

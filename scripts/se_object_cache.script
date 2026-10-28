@@ -1,0 +1,44 @@
+--
+-- Server object cache
+-- Author: Dancher
+--
+
+local group_id_getter = function(se_obj) return se_obj.group_id end
+
+function create()
+	return se_obj_cache()
+end
+
+class "se_obj_cache"
+function se_obj_cache:__init()
+	self.cache = {}
+end
+
+function se_obj_cache:get(id)
+	local se_obj = self.cache[id]
+
+	if (se_obj == nil) then
+		se_obj = alife_object(id)
+		if (se_obj and se_obj.group_id ~= 65535) then
+			self.cache[id] = se_obj
+		else
+			se_obj = nil
+		end
+	else
+		local status, group_id = pcall(group_id_getter, se_obj)
+		if (status == false or group_id == 65535) then
+			self.cache[id] = nil
+			se_obj = nil
+		end
+	end
+
+	return se_obj
+end
+
+function se_obj_cache:remove(id)
+	self.cache[id] = nil
+end
+
+function se_obj_cache:clear()
+	self.cache = {}
+end

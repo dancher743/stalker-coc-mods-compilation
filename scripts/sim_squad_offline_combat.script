@@ -63,7 +63,7 @@ local last_victim_stalker_id
 local last_killer_stalker_id
 local is_survival_mode
 local actor_level_id
-local se_objs_cache
+local se_obj_cache
 
 local msg_format
 local function printf_dbg(msg,...)
@@ -74,25 +74,6 @@ local function printf_dbg(msg,...)
 	printf(msg,...)
 end
 
-local function get_se_obj(id)
-	if (se_objs_cache == nil) then
-		se_objs_cache = {}
-	end
-	local se_obj = se_objs_cache[id]
-	if (se_obj == nil) then
-		se_obj = alife_object(id)
-		if (se_obj and se_obj.group_id ~= 65535) then
-			se_objs_cache[id] = se_obj
-		else
-			se_obj = nil
-		end
-	elseif (se_obj.group_id == 65535) then
-		se_objs_cache[id] = nil
-		se_obj = nil
-	end
-	return se_obj
-end
-
 local function is_on_actor_level(obj)
 	local level_id = simulation_objects.get_level_id(obj)
 	return level_id and level_id == actor_level_id
@@ -100,7 +81,7 @@ end
 
 local function calculate_npc_power(id)
 	local power = 0
-	local se_obj = get_se_obj(id)
+	local se_obj = se_obj_cache:get(id)
 	if (se_obj) then
 		local rank_name = ranks.get_se_obj_rank_name(se_obj)
 		power = power + (rank_power[rank_name] or 0)
@@ -147,7 +128,7 @@ local function relocate_loot(is_killer_stalker, is_victim_stalker, killer_commun
 	local victim_items = loot_items[se_victim.id]
 	
 	for i = #victim_items, 1, -1 do
-		local victim_item = get_se_obj(victim_items[i])
+		local victim_item = se_obj_cache:get(victim_items[i])
 		
 		if (victim_item and victim_item.parent_id == 65535) then
 			table.remove(victim_items, i)
@@ -223,8 +204,8 @@ local function execute_combat_on_smart(squad1, squad2)
 	end
 	
 	for k in victim_squad:squad_members() do
-		se_killer = get_se_obj(utils.random_in_itable(killer_squad_ids))
-		se_victim = get_se_obj(k.id)
+		se_killer = se_obj_cache:get(utils.random_in_itable(killer_squad_ids))
+		se_victim = se_obj_cache:get(k.id)
 		
 		if (se_killer and se_victim) then
 			se_killer_id = se_killer.id
@@ -257,13 +238,13 @@ local function execute_combat_on_map(squad1, squad2)
 	
 	for _,squad1_npc_id in ipairs(killer_squad_ids) do
 		local squad1_npc_power = calculate_npc_power(squad1_npc_id)
-		local squad1_npc = get_se_obj(squad1_npc_id)
+		local squad1_npc = se_obj_cache:get(squad1_npc_id)
 		
 		if (squad1_npc) then
 			for i = #victim_squad_ids, 1, -1 do
 				local squad2_npc_id = victim_squad_ids[i]
 				local squad2_npc_power = calculate_npc_power(squad2_npc_id)
-				local squad2_npc = get_se_obj(squad2_npc_id)
+				local squad2_npc = se_obj_cache:get(squad2_npc_id)
 				
 				if (squad2_npc) then
 					local can_execute_kill = false
@@ -300,7 +281,7 @@ local function execute_combat_on_map(squad1, squad2)
 	
 	victim_squad = squad1
 	for _,k_id in ipairs(killer_squad_ids) do
-		local se_obj = get_se_obj(k_id)
+		local se_obj = se_obj_cache:get(k_id)
 		if (se_obj and se_obj:alive()) then
 			victim_squad = nil
 			break
@@ -310,7 +291,7 @@ local function execute_combat_on_map(squad1, squad2)
 	if (victim_squad == nil) then
 		victim_squad = squad2
 		for _,k_id in ipairs(victim_squad_ids) do
-			local se_obj = get_se_obj(k_id)
+			local se_obj = se_obj_cache:get(k_id)
 			if (se_obj and se_obj:alive()) then
 				victim_squad = nil
 				break
@@ -631,6 +612,9 @@ local function initialize()
 	update_queue_timer = 0
 	is_survival_mode = IsSurvivalMode()
 	actor_level_id = game_graph():vertex(alife():actor().m_game_vertex_id):level_id()
+	if (se_obj_cache == nil) then
+		se_obj_cache = se_object_cache.create()
+	end
 	RegisterScriptCallback("actor_on_update",actor_on_update)
 	
 	is_initialized = true
@@ -655,6 +639,9 @@ local function finalize()
 	update_queue_timer = nil
 	is_survival_mode = nil
 	actor_level_id = nil
+	if (se_obj_cache ~= nil) then
+		se_obj_cache:clear()
+	end
 	
 	is_initialized = false
 	if dbg then printf_dbg("finalized") end
@@ -668,9 +655,7 @@ end
 local function se_obj_on_before_release(se_obj)
 	local se_obj_id = se_obj.id
 	
-	if (se_objs_cache ~= nil) then
-		se_objs_cache[se_obj_id] = nil
-	end
+	se_obj_cache:remove(se_obj_id)
 	
 	if (loot_items and loot_items[se_obj_id]) then
 		loot_items[se_obj_id] = nil
