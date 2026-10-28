@@ -299,33 +299,22 @@ local function on_game_load()
 	return true
 end
 
-local function opt_menu_on_accept()
-	if (level.present() and db.actor) then
-		local timer_id = "fast_travel_load"
-		local function tickback()
-			StopTimer(timer_id)
-			on_game_load()
-		end
-		StartTimer(timer_id,2000,tickback)
-	end
-end
+function opt_on_accept()
+	local timer_id = "fast_travel_load"
 
-local function opt_menu_on_init(menu)
-	menu.gameplay_options["fast_travel"] = {default=game.translate_string("ui_mm_visited_only_travel"), debug_only=false, typ="list", list={game.translate_string("ui_mm_disable_travel"),game.translate_string("ui_mm_visited_only_travel"),game.translate_string("ui_mm_show_all_travel")}}
-	menu.gameplay_options["combat_travel"] = {default=false, debug_only=false, typ="check"}
-	menu.gameplay_options["weight_travel"] = {default=false, debug_only=false, typ="check"}
-	menu.gameplay_options["damage_travel"] = {default=false, debug_only=false, typ="check"}
-	menu.gameplay_options["storm_travel"] = {default=false, debug_only=false, typ="check"}
-	menu.gameplay_options["guider_travel"] = {default=true, debug_only=false, typ="check"}
-	menu.gameplay_options["long_names"]	= {default=false, debug_only=false, typ="check"}
-	menu.gameplay_options["visited_message"] = {default=true, debug_only=false, typ="check"}
-	menu.gameplay_options["no_time_travel"]	= {default=false, debug_only=false, typ="check"}
+	if (HasTimer(timer_id)) then
+		return
+	end
+
+	local function tickback()
+		StopTimer(timer_id)
+		on_game_load()
+	end
+	StartTimer(timer_id,1000,tickback)
 end
 
 function on_game_start()
 	RegisterScriptCallback("map_spot_menu_add_property",map_spot_menu_add_property)
 	RegisterScriptCallback("map_spot_menu_property_clicked",map_spot_menu_property_clicked)
-	RegisterScriptCallback("opt_menu_on_accept",opt_menu_on_accept)
-	RegisterScriptCallback("opt_menu_on_init",opt_menu_on_init)
 	RegisterScriptCallback("on_game_load",on_game_load)
 end

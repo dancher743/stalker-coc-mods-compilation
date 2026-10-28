@@ -194,6 +194,27 @@ function opt_menu_on_init(menu)
 			end
 		}
 		
+		-- Fast Travel
+		menu.gameplay_options["fast_travel"] = 
+		{ 
+			default = strtransl("ui_mm_visited_only_travel"), debug_only = false, typ = "list", 
+			list = 
+			{
+				strtransl("ui_mm_disable_travel"), 
+				strtransl("ui_mm_visited_only_travel"), 
+				strtransl("ui_mm_show_all_travel")
+			},
+			on_accept = fast_travel.opt_on_accept
+		}
+		menu.gameplay_options["combat_travel"] 		= { default = false, debug_only = false, typ = "check", on_accept = fast_travel.opt_on_accept }
+		menu.gameplay_options["weight_travel"] 		= { default = false, debug_only = false, typ = "check", on_accept = fast_travel.opt_on_accept }
+		menu.gameplay_options["damage_travel"] 		= { default = false, debug_only = false, typ = "check", on_accept = fast_travel.opt_on_accept }
+		menu.gameplay_options["storm_travel"] 		= { default = false, debug_only = false, typ = "check", on_accept = fast_travel.opt_on_accept }
+		menu.gameplay_options["guider_travel"] 		= { default = true,  debug_only = false, typ = "check", on_accept = fast_travel.opt_on_accept }
+		menu.gameplay_options["long_names"]			= { default = false, debug_only = false, typ = "check", on_accept = fast_travel.opt_on_accept }
+		menu.gameplay_options["visited_message"] 	= { default = true,  debug_only = false, typ = "check", on_accept = fast_travel.opt_on_accept }
+		menu.gameplay_options["no_time_travel"]		= { default = false, debug_only = false, typ = "check", on_accept = fast_travel.opt_on_accept }
+		
 		-- Added by Dancher
 		menu.gameplay_options["alife_switch_dist"] = {default=150, debug_only=false, typ="list", list={100,150,200,250}, on_accept=function(handler,optMgr,ctrl)
 			SetSwitchDistance(tonumber(ctrl:GetText()))
