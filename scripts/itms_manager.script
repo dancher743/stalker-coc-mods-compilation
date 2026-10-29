@@ -246,29 +246,32 @@ end
 
 -- Called from axr_keybind.script as kCUSTOM15 action - inventory_remove_stash
 function try_remove_stash()
-	local obj = level.get_target_obj()
-	if (obj and obj:section() == "inv_backpack") then
-		local actor = db.actor
-		
-		local amount = 0
-		local function iterator(obj, item)
-			if (obj) then
-				obj:transfer_item(item, actor)
-				amount = amount + 1
-			end
+	local inv_box = level.get_target_obj()
+	if (inv_box and inv_box:section() == "inv_backpack") then
+		local items_to_transfer = {}
+
+		local function iterator(inv_box, item)
+			table.insert(items_to_transfer, item)
 		end
-		obj:iterate_inventory_box(iterator, obj)
-		
+
+		inv_box:iterate_inventory_box(iterator, inv_box)
+
+		local actor = db.actor
+		for _,item in ipairs(items_to_transfer) do
+			inv_box:transfer_item(item, actor)
+		end
+
+		local amount = #items_to_transfer
 		local function postpone_for_next_frame()
-			if (obj:is_inv_box_empty()) then
-				level.map_remove_object_spot(obj:id(), BackPackStashSpot)
+			if (inv_box:is_inv_box_empty()) then
+				level.map_remove_object_spot(inv_box:id(), BackPackStashSpot)
 				create_item("itm_backpack", actor)
-				release(obj)
-				
+				release(inv_box)
+
 				if (BackPackStashEnableTip) then
 					SetHudMsg(game.translate_string("st_stash_removed"),4)
 				end
-				
+
 				if (amount > 0) then
 					local caption = strtransl("general_in_items")
 					local text = "x"..amount

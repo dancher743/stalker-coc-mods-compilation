@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 ### Fixes
 * Refactored the code of Fast Travel options
 * Fixed the probabilities calculation in the `WeatherManager:get_period_with_prob` method
+* Refactored code of the `try_remove_stash` function in `itms_manager.script`
 
 ### Optimization
 * Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`
