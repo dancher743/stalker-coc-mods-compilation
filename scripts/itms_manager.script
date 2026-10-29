@@ -270,7 +270,7 @@ function try_remove_stash()
 				end
 				
 				if (amount > 0) then
-					local caption = strtransl("general_in_item")
+					local caption = strtransl("general_in_items")
 					local text = "x"..amount
 					local icon = "ui_inGame2_Predmet_poluchen"
 					news_helper.give_news(caption, text, icon)

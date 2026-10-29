@@ -470,4 +470,8 @@
 	<string id="st_no_lock_key_item_hudmsg">
 		<text>У вас нет ключа</text>
 	</string>
+	
+	<string id="general_in_items">
+		<text>Получены предметы:</text>
+	</string>
 </string_table>
