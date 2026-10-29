@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 * Added `1.25` as factor into population factors
 * Added `army` and `bandit` to `gar_smart_terrain_1_7` smart props
 * Added "Items received" string
+* Returned a bandit squads in Dead City
 
 ### Fixes
 * Refactored the code of Fast Travel options
