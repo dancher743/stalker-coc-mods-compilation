@@ -18,12 +18,14 @@ All notable changes to this project will be documented in this file.
 * Fixed the probabilities calculation in the `WeatherManager:get_period_with_prob` method
 * Refactored code of the `try_remove_stash` function in `itms_manager.script`
 * Added Clear Sky's exo and scientific outfits to the faction trader
+* Added a code to `se_obj_cache`es of Offline Combats and `axr_companions.script` to exclude a "ghost" objects from them
 
 ### Optimization
 * Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`
 
 ### Framework
 * Added `se_obj_cache` class to work with a cached `se_obj`ects
+* Added `se_stalker_on_unregister` and `se_monster_on_unregister` callbacks into `axr_main.script`
 
 ## [1.5.5] - 2026-10-26
 

@@ -66,6 +66,10 @@ local intercepts = {
 
 	-- se_stalker.script
 	se_stalker_on_spawn			= {},
+	se_stalker_on_unregister	= {},
+
+	-- se_monster.script
+	se_monster_on_unregister	= {},
 
 	-- se_actor.script
 	se_actor_on_register		= {},

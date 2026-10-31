@@ -19,6 +19,7 @@ local _current_combat_mode = 1
 local _current_stealth_mode = true
 local _particle_valid = nil
 local _particle_invalid = nil
+local se_obj_cache = se_object_cache.create()
 ------------------------------------------
 -- Localized Functions
 ------------------------------------------
@@ -128,6 +129,14 @@ local function squad_on_update(squad)
 	end
 end
 
+local function se_stalker_on_unregister(se_obj)
+	se_obj_cache:remove(se_obj.id)
+end
+
+local function se_monster_on_unregister(se_obj)
+	se_obj_cache:remove(se_obj.id)
+end
+
 local function on_level_changing()
 	teleport_companions_to_actor()
 end
@@ -214,6 +223,8 @@ function on_game_start()
 	RegisterScriptCallback("squad_on_npc_death",squad_on_npc_death)
 	RegisterScriptCallback("squad_on_register",squad_on_register)
 	RegisterScriptCallback("squad_on_unregister",squad_on_unregister)
+	RegisterScriptCallback("se_stalker_on_unregister",se_stalker_on_unregister)
+	RegisterScriptCallback("se_monster_on_unregister",se_monster_on_unregister)
 	RegisterScriptCallback("on_level_changing",on_level_changing)
 	RegisterScriptCallback("actor_on_update",actor_on_update)
 	RegisterScriptCallback("actor_on_item_drop",actor_on_item_drop)
@@ -875,10 +886,7 @@ end
 ------------------------------------------
 
 local invulnerability_option_name = "companions_invulnerability"
-local simulation = alife()
-local option_name
-local se_obj_cache = se_object_cache.create()
-local se_obj_actor_squad_list
+local se_obj_actor_squad_list = nil
 
 function has_companion()
 	local result = false
@@ -896,8 +904,8 @@ end
 function is_companion(obj)
     local result = false
 	
-	local se_obj = simulation:object(obj:id())
-	if (is_hostage(se_obj) == false) then
+	local se_obj = se_obj_cache:get(obj:id())
+	if (se_obj and is_hostage(se_obj) == false) then
 		result = obj:has_info("npcx_is_companion")
 		if (result == false) then
 			local clist = list_actor_squad_by_id()

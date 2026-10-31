@@ -56,10 +56,10 @@ function se_stalker:STATE_Read(packet, size)
 			db.offline_objects[self.id] = {}
 		end
 		db.offline_objects[self.id].active_section = packet:r_stringZ()
-		if db.offline_objects[self.id].active_section == "nil" then
+		if db.offline_objects[self.id].active_section == STR_NIL then
 			db.offline_objects[self.id].active_section = nil
 		end
-		if old_lvid ~= "nil" then
+		if old_lvid ~= STR_NIL then
 			db.offline_objects[self.id].level_vertex_id = tonumber(old_lvid)
 		end
 	end
@@ -102,6 +102,7 @@ end
 --------------------
 function se_stalker:on_unregister()
 	--alun_utils.debug_write("se_stalker:on_unregister()")
+	SendScriptCallback("se_stalker_on_unregister",self)
 	local strn_id = self:smart_terrain_id()
 	if strn_id ~= 65535 then
 		local smart = alife_object(strn_id)
@@ -167,6 +168,7 @@ function se_trader:on_register()
 end
 
 function se_trader:on_unregister()
+	SendScriptCallback("se_stalker_on_unregister",self)
 	unregister_story_object_by_id(self.id)
 	cse_alife_trader.on_unregister(self)
 	local m_data = alife_storage_manager.get_state()

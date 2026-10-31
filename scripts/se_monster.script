@@ -46,11 +46,11 @@ function se_monster:STATE_Read(packet, size)
 			db.offline_objects[self.id] = {}
 		end
 		local old_lvid = packet:r_stringZ()
-		if old_lvid ~= "nil" then
+		if old_lvid ~= STR_NIL then
 			db.offline_objects[self.id].level_vertex_id = tonumber(old_lvid)
 		end
 		db.offline_objects[self.id].active_section = packet:r_stringZ()
-		if (db.offline_objects[self.id].active_section == "nil" or db.offline_objects[self.id].active_section == "") then
+		if (db.offline_objects[self.id].active_section == STR_NIL or db.offline_objects[self.id].active_section == STR_EMPTY) then
 			db.offline_objects[self.id].active_section = nil
 		end
 	end
@@ -90,6 +90,7 @@ function se_monster:on_register()
 end
 --------------------
 function se_monster:on_unregister()
+	SendScriptCallback("se_monster_on_unregister",self)
 	local strn_id = self:smart_terrain_id()
 	if strn_id ~= 65535 then
 		local smart = alife_object(strn_id)

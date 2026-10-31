@@ -530,6 +530,14 @@ local function fill_loot_items_table()
 	end
 end
 
+local function remove_from_loot_items_table(id)
+	if not (loot_items and loot_items[id]) then
+		return
+	end
+	
+	loot_items[id] = nil
+end
+
 local function update()
 	if (combat_squads_table == nil) then
 		fill_combat_squads_table()
@@ -631,6 +639,9 @@ local function finalize()
 	pop_last_killed_stalker_data()
 	
 	UnregisterScriptCallback("actor_on_update",actor_on_update)
+	UnregisterScriptCallback("se_obj_on_before_release",se_obj_on_before_release)
+	UnregisterScriptCallback("se_stalker_on_unregister",se_obj_on_before_release)
+	UnregisterScriptCallback("se_monster_on_unregister",se_obj_on_before_release)
 	UnregisterScriptCallback("save_state",save_state)
 	UnregisterScriptCallback("load_state",load_state)
 	processed_squads = nil
@@ -653,15 +664,12 @@ local function actor_on_first_update()
 end
 
 local function se_obj_on_before_release(se_obj)
-	local se_obj_id = se_obj.id
+	local id = se_obj.id
 	
-	se_obj_cache:remove(se_obj_id)
+	remove_from_loot_items_table(id)
+	se_obj_cache:remove(id)
 	
-	if (loot_items and loot_items[se_obj_id]) then
-		loot_items[se_obj_id] = nil
-	end
-	
-	local commander_id = se_obj_id
+	local commander_id = id
 	local smart_id = smart_combat_victims[commander_id]
 	
 	if (smart_id) then
@@ -679,6 +687,8 @@ end
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
 	RegisterScriptCallback("se_obj_on_before_release",se_obj_on_before_release)
+	RegisterScriptCallback("se_stalker_on_unregister",se_obj_on_before_release)
+	RegisterScriptCallback("se_monster_on_unregister",se_obj_on_before_release)
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
 end

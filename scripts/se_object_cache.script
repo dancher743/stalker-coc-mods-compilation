@@ -24,12 +24,6 @@ function se_obj_cache:get(id)
 		else
 			se_obj = nil
 		end
-	else
-		local status, group_id = pcall(group_id_getter, se_obj)
-		if (status == false or group_id == 65535) then
-			self.cache[id] = nil
-			se_obj = nil
-		end
 	end
 
 	return se_obj
