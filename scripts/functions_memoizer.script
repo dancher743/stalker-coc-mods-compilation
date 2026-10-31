@@ -9,9 +9,13 @@ local game_graph_function
 local get_hud_function
 local get_console_function
 local device_function
-local translate_string_function
 local time_global_function
+local get_time_days_function
+local get_time_hours_function
+local get_time_minutes_function
+local get_time_factor_function
 local level_name_function
+local translate_string_function
 
 local ini
 local sim
