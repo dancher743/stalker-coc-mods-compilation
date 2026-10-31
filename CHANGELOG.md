@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 * Added `army` and `bandit` to `gar_smart_terrain_1_7` smart props
 * Added "Items received" string
 * Returned a bandit squads to Dead City
+* Removed `se_obj_on_before_release` callback from `sim_squad_offline_combat.script`
 
 ### Fixes
 * Refactored the code of Fast Travel options

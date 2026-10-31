@@ -639,9 +639,8 @@ local function finalize()
 	pop_last_killed_stalker_data()
 	
 	UnregisterScriptCallback("actor_on_update",actor_on_update)
-	UnregisterScriptCallback("se_obj_on_before_release",se_obj_on_before_release)
-	UnregisterScriptCallback("se_stalker_on_unregister",se_obj_on_before_release)
-	UnregisterScriptCallback("se_monster_on_unregister",se_obj_on_before_release)
+	UnregisterScriptCallback("se_stalker_on_unregister",se_object_on_unregister)
+	UnregisterScriptCallback("se_monster_on_unregister",se_object_on_unregister)
 	UnregisterScriptCallback("save_state",save_state)
 	UnregisterScriptCallback("load_state",load_state)
 	processed_squads = nil
@@ -663,7 +662,7 @@ local function actor_on_first_update()
 	UnregisterScriptCallback("actor_on_first_update",actor_on_first_update)
 end
 
-local function se_obj_on_before_release(se_obj)
+local function se_object_on_unregister(se_obj)
 	local id = se_obj.id
 	
 	remove_from_loot_items_table(id)
@@ -686,9 +685,8 @@ end
 
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
-	RegisterScriptCallback("se_obj_on_before_release",se_obj_on_before_release)
-	RegisterScriptCallback("se_stalker_on_unregister",se_obj_on_before_release)
-	RegisterScriptCallback("se_monster_on_unregister",se_obj_on_before_release)
+	RegisterScriptCallback("se_stalker_on_unregister",se_object_on_unregister)
+	RegisterScriptCallback("se_monster_on_unregister",se_object_on_unregister)
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
 end
