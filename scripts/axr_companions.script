@@ -133,10 +133,6 @@ local function se_stalker_on_unregister(se_obj)
 	se_obj_cache:remove(se_obj.id)
 end
 
-local function se_monster_on_unregister(se_obj)
-	se_obj_cache:remove(se_obj.id)
-end
-
 local function on_level_changing()
 	teleport_companions_to_actor()
 end
@@ -224,7 +220,6 @@ function on_game_start()
 	RegisterScriptCallback("squad_on_register",squad_on_register)
 	RegisterScriptCallback("squad_on_unregister",squad_on_unregister)
 	RegisterScriptCallback("se_stalker_on_unregister",se_stalker_on_unregister)
-	RegisterScriptCallback("se_monster_on_unregister",se_monster_on_unregister)
 	RegisterScriptCallback("on_level_changing",on_level_changing)
 	RegisterScriptCallback("actor_on_update",actor_on_update)
 	RegisterScriptCallback("actor_on_item_drop",actor_on_item_drop)
