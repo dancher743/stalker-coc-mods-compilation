@@ -485,7 +485,7 @@ function CSurgeManager:update()
 			self.time_forwarded = false
 			local diff = math.abs(self._delta - g_time:diffSec(self.last_surge_time))
 			if(diff<3600) then
-				if atmosfear_options.config:r_value(self.sect,"opt_enable_blowout",2,1)==0 then
+				if atmosfear_options.config:r_value("atmosfear_current_parameters","opt_enable_blowout",2,1)==0 then
 					self.skip_message = true
 					self.force_artefacts_and_anomalies = true
 				else

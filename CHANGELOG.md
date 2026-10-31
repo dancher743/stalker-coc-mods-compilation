@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 * Refactored code of the `try_remove_stash` function in `itms_manager.script`
 * Added Clear Sky's exo and scientific outfits to the faction trader
 * Added a code to `se_obj_cache`es of Offline Combats and `axr_companions.script` to exclude a "ghost" objects from them
+* Fixed LUA error: _g.script:1751: attempt to concatenate local 's' (a nil value)
 
 ### Optimization
 * Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`
