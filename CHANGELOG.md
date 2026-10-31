@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 * Added "Items received" string
 * Returned a bandit squads to Dead City
 * Removed `se_obj_on_before_release` callback from `sim_squad_offline_combat.script`
+* Improved the counter calculation code in case of combat between a smart and map squads
 
 ### Fixes
 * Refactored the code of Fast Travel options
