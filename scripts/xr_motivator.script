@@ -9,6 +9,7 @@ function motivator_binder:__init (obj) super(obj)
 	self.opened_doors = {}
 	self.first_update = false
 	self.object = obj
+	self.frame_counter = -1
 end
 
 function motivator_binder:extrapolate_callback(cur_pt)
@@ -502,9 +503,13 @@ function motivator_binder:update(delta)
 	end
 	--alun_utils.debug_write(strformat("motivator_bind:update %s BEFORE AXR_MAIN",self.object and self.object:name()))
 
-	-- Start [Alundaio]
-	SendScriptCallback("npc_on_update",object,db.storage[id])
-	-- End [Alundaio]
+	local frame_counter = self.frame_counter + 1
+	self.frame_counter = frame_counter
+	if (frame_counter % 3 == 0) then
+		-- Start [Alundaio]
+		SendScriptCallback("npc_on_update",object,db.storage[id])
+		-- End [Alundaio]
+	end
 	--alun_utils.debug_write(strformat("motivator_bind:update %s END 3 AFTER AXR_MAIN",self.object and self.object:name()))
 end
 

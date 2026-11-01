@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 
 ### Optimization
 * Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`
+* Made `npc_on_update` callback sliced
 
 ### Framework
 * Added `se_obj_cache` class to work with a cached `se_obj`ects
