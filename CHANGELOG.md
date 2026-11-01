@@ -30,6 +30,7 @@ All notable changes to this project will be documented in this file.
 ### Framework
 * Added `se_obj_cache` class to work with a cached `se_obj`ects
 * Added `se_stalker_on_unregister` and `se_monster_on_unregister` callbacks into `axr_main.script`
+* Removed obsolete `actor_on_slicing_update`, `squad_on_slicing_update` and `monster_on_slicing_update` callbacks
 
 ## [1.5.5] - 2026-10-26
 

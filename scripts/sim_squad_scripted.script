@@ -35,7 +35,6 @@ end
 --***********************************************************************************************
 class "sim_squad_scripted" (cse_alife_online_offline_group)
 function sim_squad_scripted:__init(section) super (section)
-	self.frame_counter 		= -1
 	self.smart_id 			= nil
 	self.current_spot_id 	= nil
 	self.current_action 	= nil
@@ -211,13 +210,7 @@ function sim_squad_scripted:update()
 		self:set_location_types()
 		self.need_to_reset_location_masks = false
 	end
-	
-	local frame_counter = self.frame_counter + 1
-	self.frame_counter = frame_counter
-	if (frame_counter % 3 ~= 0) then
-		return
-	end
-	
+
 	local tg = time_global()
 	if (self.__check_time and tg < self.__check_time) then
 		--alun_utils.debug_write("sim_squad_scripted:update END 1")
@@ -225,9 +218,6 @@ function sim_squad_scripted:update()
 	end
 	
 	SendScriptCallback("squad_on_update",self)
-	
-	-- OBSOLETE: Use "squad_on_update" instead
-	SendScriptCallback("squad_on_slicing_update",self)
 
 	local sim = alife()
 	local se_actor = sim:actor()

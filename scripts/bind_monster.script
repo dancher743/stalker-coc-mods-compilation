@@ -56,9 +56,6 @@ function generic_object_binder:update(delta)
 		-- Start [Alundaio]
 		SendScriptCallback("monster_on_update",self.object,self.st)
 		-- End [Alundaio]
-		
-		-- OBSOLETE: Use "monster_on_update" instead
-		SendScriptCallback("monster_on_slicing_update",self.object,self.st)
 	end
 
 	if not (self.object:alive()) then
