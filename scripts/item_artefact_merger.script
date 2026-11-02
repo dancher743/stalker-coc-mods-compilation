@@ -1,0 +1,38 @@
+--
+-- Artifact Merger item
+-- Implementation: Dancher
+--
+
+local function on_game_load()
+	if has_info("artefact_merger_spawned") or has_info("bar_deactivate_radar_done") == false then
+		return
+	end
+
+	local x,y,z = -126.6884765625, -29.4200000762939, -388.704040527344
+	local lvid, gvid = 130173, 450
+	local se_obj = alife():create("artefact_merger",vector():set(x,y,z),lvid,gvid)
+	se_obj.angle = vector():set(0, 1.57047343254089, 0)
+
+	give_info("artefact_merger_spawned")
+end
+
+local function actor_on_item_use(obj)
+	if obj:section() ~= "artefact_merger" then
+		return
+	end
+	
+	local hud = get_hud()
+	if (hud) then
+		hud:HideActorMenu()
+		local ui = ui_item_artefact_merger.artefact_merger_ui(hud)
+		if (ui) then
+			ui:ShowDialog(true)
+			ui:FillList()
+		end
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("on_game_load",on_game_load)
+	RegisterScriptCallback("actor_on_item_use",actor_on_item_use)
+end
