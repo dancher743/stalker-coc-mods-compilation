@@ -12,4 +12,10 @@
 	<string id="ui_st_not_enough_artefacts_to_merger">
 		<text>Not enough artifacts for transmutation.</text>
 	</string>
+	<string id="ui_st_anomaly_doesnt_fit">
+		<text>The anomaly is not suitable for transmutation.</text>
+	</string>
+	<string id="ui_st_too_far_from_anomaly">
+		<text>Move closer to the anomalous zone.</text>
+	</string>
 </string_table>

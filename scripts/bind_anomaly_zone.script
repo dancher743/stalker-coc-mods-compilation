@@ -490,3 +490,17 @@ function anomaly_zone_binder:load(thread)
         self:cleanup()
     end
 end
+
+-- Added by Dancher
+function anomaly_zone_binder:can_spawn_artefact(section)
+	local layer = self.cur_layer
+
+	for i = 1, #self.artefacts_table[layer] do
+		local artefact = self.artefacts_table[layer][i]
+		if (artefact == section) then
+			return true
+		end
+	end
+
+	return false
+end
