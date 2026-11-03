@@ -408,8 +408,9 @@ function artefact_merger_ui:OnButton_repair()
 	level.add_pp_effector("teleport.ppe", 2006, false)
 	xr_sound.play_sound_by_path("anomaly\\teleport_work_1", false)
 
-	self:OnButton_back_clicked()
+	xr_statistic.inc_rank("artefacts_merged")
 	SetHudMsg(STR_EMPTY,0)
+	self:OnButton_back_clicked()
 end
 
 function artefact_merger_ui:AddItemToList(item,listbox,text)
