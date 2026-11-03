@@ -238,7 +238,7 @@ function artefact_merger_ui:OnPartsListItemClicked()
 	end
 
 	local item_section = se_item:section_name()
-	local result_section = self.combinations[item_section]["result"]	
+	local result_section = self.combinations[item_section]["result"]
 	local result_text = strtransl("ui_st_result_artefact")
 	local item_name = strtransl(news_manager.get_inv_name(item_section))
 	local amount = self.combinations[item_section]["need"]
@@ -346,6 +346,62 @@ function artefact_merger_ui:OnKeyboard(dik, keyboard_action)
 end
 
 function artefact_merger_ui:OnButton_repair()
+	local item = self.list_box_parts:GetSelectedItem()
+	if not (item) then
+		return
+	end
+
+	local se_item = alife_object(item.item_id)
+	if (se_item == nil) then
+		return
+	end
+
+	local item_section = se_item:section_name()
+	local amount = self.combinations[item_section]["need"]
+
+	local items_to_remove = {}
+	local function iterator(_, item)
+		if (#items_to_remove > amount or item:section() ~= item_section) then
+			return
+		end
+		table.insert(items_to_remove, item)
+	end
+	local actor = db.actor
+	actor:iterate_inventory(iterator,actor)
+
+	if (#items_to_remove < amount) then
+		self:OnButton_back_clicked()
+		SetHudMsg(strtransl("ui_st_not_enough_artefacts_to_merger"),5)
+		return
+	end
+
+	for i = #items_to_remove, 1, -1 do
+		local item_to_remove = items_to_remove[i]
+		local se_obj = alife_object(item_to_remove:id())
+		if (se_obj) then 
+			alife_release(se_obj)
+			items_to_remove[i] = nil
+		end
+	end
+	local result_section = self.combinations[item_section]["result"]
+	create_item(result_section, actor)
+
+	local caption = strtransl("general_out_item")
+	local text = strtransl(news_manager.get_inv_name(item_section)).." x"..amount
+	local icon = "ui_inGame2_Predmet_otdan"
+	local delay = 1000
+	news_helper.give_news(caption, text, icon, delay)
+
+	caption = strtransl("general_in_item")
+	text = strtransl(news_manager.get_inv_name(result_section)).." x1"
+	icon = "ui_inGame2_Predmet_poluchen"
+	news_helper.give_news(caption, text, icon, delay)
+
+	level.add_pp_effector("teleport.ppe", 2006, false)
+	xr_sound.play_sound_by_path("anomaly\\teleport_work_1", false)
+
+	self:OnButton_back_clicked()
+	SetHudMsg(STR_EMPTY,0)
 end
 
 function artefact_merger_ui:AddItemToList(item,listbox,text)
