@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>	
+	<string id="ui_st_available_artefacts">
+        <text>Available</text>
+    </string>
+	
+	<string id="ui_st_result_artefact">
+		<text>Result</text>
+	</string>
+	
+	<string id="ui_st_launch_artefact_merger">
+		<text>Launch</text>
+	</string>
+</string_table>

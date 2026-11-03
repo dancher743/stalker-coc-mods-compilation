@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>	
+	<string id="ui_st_available_artefacts">
+        <text>Доступно</text>
+    </string>
+	
+	<string id="ui_st_result_artefact">
+		<text>Итог</text>
+	</string>
+	
+	<string id="ui_st_launch_artefact_merger">
+		<text>Запустить</text>
+	</string>
+</string_table>
