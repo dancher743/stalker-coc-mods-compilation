@@ -122,6 +122,10 @@ function artefact_merger_ui:InitControls()
 	self.caption_repair_text = strtransl("ui_st_available_artefacts")
 	self.caption_parts_text = STR_EMPTY
 
+	-- Caption Color
+	 self.caption_parts_text_color = GetARGB(255,255,255,255)
+	 self.caption_has_parts_text_color = GetARGB(200,200,200,50)
+
 	-- Caption
 	self.caption_repair		= self.xml:InitTextWnd("itm_repair:form:caption_repair",self.form)
 	self.caption_repair:SetText(self.caption_repair_text)
@@ -244,6 +248,17 @@ function artefact_merger_ui:OnPartsListItemClicked()
 	local amount = self.combinations[item_section]["need"]
 	local result_name = strtransl(news_manager.get_inv_name(result_section))
 	local text = strformat("%s: %s x%s = %s x1", result_text, item_name, amount, result_name)
+
+	local items_to_merge_amount = 0
+	local function iterator(_, item)
+		if (item:section() == item_section) then
+			items_to_merge_amount = items_to_merge_amount + 1
+		end
+	end
+	db.actor:iterate_inventory(iterator,db.actor)
+
+	local color = items_to_merge_amount >= amount and self.caption_has_parts_text_color or self.caption_parts_text_color
+	self.caption_parts:SetTextColor(color)
 	self.caption_parts:SetText(text)
 
 	local w,h = item.width,item.height
@@ -361,7 +376,7 @@ function artefact_merger_ui:OnButton_repair()
 
 	local items_to_remove = {}
 	local function iterator(_, item)
-		if (#items_to_remove > amount or item:section() ~= item_section) then
+		if (#items_to_remove >= amount or item:section() ~= item_section) then
 			return
 		end
 		table.insert(items_to_remove, item)
@@ -377,11 +392,11 @@ function artefact_merger_ui:OnButton_repair()
 
 	local result_section = self.combinations[item_section]["result"]
 
-	if (self:CheckAnomaly(item_section, result_section) == false) then
+	if (self:CheckAnomaly(result_section) == false) then
 		self:OnButton_back_clicked()
 		return
 	end
-	
+
 	for i = #items_to_remove, 1, -1 do
 		local item_to_remove = items_to_remove[i]
 		local se_obj = alife_object(item_to_remove:id())
@@ -390,22 +405,11 @@ function artefact_merger_ui:OnButton_repair()
 			items_to_remove[i] = nil
 		end
 	end
-
 	create_item(result_section, actor)
 
-	local caption = strtransl("general_out_item")
-	local text = strtransl(news_manager.get_inv_name(item_section)).." x"..amount
-	local icon = "ui_inGame2_Predmet_otdan"
-	local delay = 1000
-	news_helper.give_news(caption, text, icon, delay)
-
-	caption = strtransl("general_in_item")
-	text = strtransl(news_manager.get_inv_name(result_section)).." x1"
-	icon = "ui_inGame2_Predmet_poluchen"
-	delay = 1010
-	news_helper.give_news(caption, text, icon, delay)
-
+	xr_effects.disable_actor_nightvision()
 	level.add_pp_effector("teleport.ppe", 2006, false)
+
 	xr_sound.play_sound_by_path("anomaly\\teleport_work_1", false)
 
 	xr_statistic.inc_rank("artefacts_merged")
@@ -452,30 +456,31 @@ function artefact_merger_ui:AddItemToList(item,listbox,text)
 	listbox:AddExistingItem(_itm)
 end
 
-function artefact_merger_ui:CheckAnomaly(item_section1, item_section2)
-	local is_too_far = true
-	local can_spawn_artefacts = false
+function artefact_merger_ui:CheckAnomaly(item_section)
 	local actor_pos = db.actor:position()
-	local distance_sqr = 15 * 15
-
-	for k,anomaly in pairs(db.anomaly_by_name) do
-        if (anomaly.object:position():distance_to_sqr(actor_pos) < distance_sqr) then
-			is_too_far = false
-		end
-
-		if (anomaly:can_spawn_artefact(item_section1) and anomaly:can_spawn_artefact(item_section2)) then
-			can_spawn_artefacts = true 
-		end
-
-		if (is_too_far == false and can_spawn_artefacts == true) then
-			return true
+	
+	local closest_anomaly = nil
+	local min_distance_sqr = 20 * 20
+	for _,anomaly in pairs(db.anomaly_by_name) do
+		if (anomaly.object) then
+			local current_dist_sqr = anomaly.object:position():distance_to_sqr(actor_pos)
+			if (current_dist_sqr < min_distance_sqr) then
+				min_distance_sqr = current_dist_sqr
+				closest_anomaly = anomaly
+			end
 		end
 	end
 
-	if (is_too_far) then
+	if (closest_anomaly) then
+		if (closest_anomaly:can_spawn_artefact(item_section)) then
+			return true
+		else
+			SetHudMsg(strtransl("ui_st_anomaly_doesnt_fit"),5)
+			return false
+		end
+	else
 		SetHudMsg(strtransl("ui_st_too_far_from_anomaly"),5)
-	elseif (can_spawn_artefacts == false) then
-		SetHudMsg(strtransl("ui_st_anomaly_doesnt_fit"),5)
+		return false
 	end
 
     return false
