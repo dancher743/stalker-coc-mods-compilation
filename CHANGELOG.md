@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 * Removed `se_obj_on_before_release` callback from `sim_squad_offline_combat.script`
 * Improved the counter calculation code in case of combat between a smart and map squads
 * Returned original Call of Pripyat night visions
+* Added time to `red_space_restrictor_to_radar_1` and `rad_space_restrictor_to_red_forest` teleports
 
 ### Fixes
 * Refactored the code of Fast Travel options
