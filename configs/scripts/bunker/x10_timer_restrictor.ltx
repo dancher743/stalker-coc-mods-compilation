@@ -1,0 +1,25 @@
+[logic]
+active = sr_idle
+ 
+[sr_idle]
+on_info = {+bar_deactivate_radar_done} sr_idle@nil
+on_info2 = {=actor_community(actor_monolith)} sr_idle@nil
+on_info3 = {=is_hours_ge(13) =is_hours_l(14)} sr_idle@maintenance, {=is_hours_ge(20) =is_hours_l(21)} sr_idle@maintenance
+;on_actor_inside = sr_timer@1 %=play_sound(rad_hat_1)%
+on_info4 = {-bar_deactivate_radar_done} sr_timer@1 %=play_sound(rad_hat_1)%
+ 
+[sr_timer@1]
+type = dec
+start_value = 360000
+on_value = 5 | %=play_sound(rad_hat_2)% | 0 | sr_idle@nil %=kill_actor%
+;on_actor_outside = sr_idle
+on_info = {+bar_deactivate_radar_done} sr_idle@nil
+on_info2 = {=is_hours_ge(13) =is_hours_l(14)} sr_idle@maintenance, {=is_hours_ge(20) =is_hours_l(21)} sr_idle@maintenance
+string = st_helmet_countdown
+
+[sr_idle@nil]
+
+[sr_idle@maintenance]
+on_info = {+bar_deactivate_radar_done} sr_idle@nil
+on_info2 = {!is_hours_ge(13)} sr_idle, {!is_hours_l(14)} sr_idle
+on_info3 = {!is_hours_ge(20)} sr_idle, {!is_hours_l(21)} sr_idle

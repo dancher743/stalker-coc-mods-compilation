@@ -3,6 +3,9 @@
 --	Author: Dancher
 --
 
+local timer_id_name = "give_news_delay_"
+local timer_id_number = 0
+
 function give_news(caption, text, icon, delay, show_time, sound_theme)
 	caption = caption or strtransl("st_tip")
 	text = text or STR_EMPTY
@@ -19,5 +22,15 @@ function give_news(caption, text, icon, delay, show_time, sound_theme)
 		actor:give_game_news(caption, text, icon, delay, show_time, 0)
 	end
 	
-	xr_sound.set_sound_play(actor:id(), sound_theme)
+	if (delay > 0) then
+		timer_id_number = timer_id_number + 1
+		local timer_id = timer_id_name..timer_id_number
+		local function tickback()
+			StopTimer(timer_id)
+			xr_sound.set_sound_play(actor:id(), sound_theme)
+		end
+		StartTimer(timer_id, delay, tickback)
+	else
+		xr_sound.set_sound_play(actor:id(), sound_theme)
+	end
 end

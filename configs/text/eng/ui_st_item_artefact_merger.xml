@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>	
+	<string id="st_artefact_merger">
+        <text>Artifact Merger</text>
+    </string>
+	<string id="st_artefact_merger_descr">
+        <text>This container-device is the latest achievement in scientific experiments. It allows the user to merge several simple artifacts into a more complex one. Operation requires being inside an anomalous zone capable of spawning the more complex artifact.</text>
+    </string>
+	
+	<string id="ui_st_available_artefacts">
+        <text>Available</text>
+    </string>
+	<string id="ui_st_result_artefact">
+		<text>Result</text>
+	</string>
+	<string id="ui_st_launch_artefact_merger">
+		<text>Launch</text>
+	</string>
+	
+	<string id="ui_st_not_enough_artefacts_to_merger">
+		<text>Not enough artifacts for merge.</text>
+	</string>
+	<string id="ui_st_anomaly_doesnt_fit">
+		<text>The anomaly is not suitable for merge.</text>
+	</string>
+	<string id="ui_st_too_far_from_anomaly">
+		<text>Move closer to the anomalous zone.</text>
+	</string>
+</string_table>

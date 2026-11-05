@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Features
 * Now Guide's job as a full-fledged job
+* Artifact Merger item. Look for this item at the Military Outpost in Cordon after disabling the Brain Scorcher
 
 ### Improvements
 * Added `1.25` as factor into population factors
@@ -16,6 +17,7 @@ All notable changes to this project will be documented in this file.
 * Improved the counter calculation code in case of combat between a smart and map squads
 * Returned original Call of Pripyat night visions
 * Improved night-time NPC reaction to the player and companions flashlights
+* Added time to `red_space_restrictor_to_radar_1` and `rad_space_restrictor_to_red_forest` teleports
 
 ### Fixes
 * Refactored the code of Fast Travel options
@@ -25,6 +27,8 @@ All notable changes to this project will be documented in this file.
 * Added a code to `se_obj_cache`es of Offline Combats and `axr_companions.script` to exclude a "ghost" objects from them
 * Fixed LUA error: _g.script:1751: attempt to concatenate local 's' (a nil value)
 * Added `actor_hand_radio` and `wpn_ak74_m1` to `ignore_sections` in `xr_corpse_detection.ltx`
+* Fixed missing delay in `news_helper.give_news` function
+* Added the Brain Scorcher maintenance to the X19's psy zone
 
 ### Optimization
 * Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`

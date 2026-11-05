@@ -1,0 +1,52 @@
+<w>
+	<itm_repair>
+		<file_item>
+			<main width="550" height="18"/>
+			<fn width="200" height="18"/>
+			<fd width="50" height="18"/>
+		</file_item>
+		<form x="100" y="150" width="563" height="509" stretch="1">
+			<frame x="0" y="0" width="563" height="509">
+				<texture>ui_inGame2_hint_wnd_main_window</texture>
+			</frame>
+
+			<icon x="128" y="250" width="128" height="128" stretch="1">
+			</icon>
+			<icon_parts x="128" y="112" width="128" height="128" stretch="1">
+			</icon_parts>
+			<icon_result x="128" y="181" width="128" height="128" stretch="1">
+			</icon_result>
+			<icon_tool x="300" y="418" width="128" height="128" stretch="1">
+			</icon_tool>
+
+			<caption_repair x="275" y="185" width="195" height="50" complex_mode="1">
+				<text font="letterica18"/>
+			</caption_repair>
+			<list_frame x="265" y="202" width="284" height="107">
+				<texture>ui_inGame2_servers_list_frame</texture>
+			</list_frame>
+			<list x="272" y="205" width="275" height="102" item_height="18" can_select="1">
+				<font font="letterica16"/>
+			</list>
+
+			<caption_parts x="275" y="31" width="195" height="75">
+				<text font="letterica18"/>
+			</caption_parts>
+			<list_frame_parts x="265" y="48" width="284" height="107">
+				<texture>ui_inGame2_servers_list_frame</texture>
+			</list_frame_parts>
+			<list_parts x="272" y="50" width="275" height="102" item_height="18" can_select="1">
+				<font font="letterica16"/>
+			</list_parts>
+
+			<btn_repair x="25" y="427" width="80" height="40">
+				<texture>ui_button_main01</texture>
+				<text font="letterica18">ui_st_launch_artefact_merger</text>
+			</btn_repair>
+			<btn_cancel x="130" y="427" width="80" height="40">
+				<texture>ui_button_main01</texture>
+				<text font="letterica18">ui_mm_cancel</text>
+			</btn_cancel>
+		</form>
+	</itm_repair>
+</w>

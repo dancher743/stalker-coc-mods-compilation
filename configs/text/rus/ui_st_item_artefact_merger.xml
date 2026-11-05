@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>	
+	<string id="st_artefact_merger">
+        <text>Трансмутатор артефактов</text>
+    </string>
+	<string id="st_artefact_merger_descr">
+        <text>Данный контейнер-прибор - новейшее достижение в научных экспериментах. Позволяет трансмутировать несколько простых артефактов в более сложный. Для работы требуется находясь в аномальной зоне, способной породить более сложный артефакт.</text>
+    </string>
+	
+	<string id="ui_st_available_artefacts">
+        <text>Доступно</text>
+    </string>
+	<string id="ui_st_result_artefact">
+		<text>Итог</text>
+	</string>
+	<string id="ui_st_launch_artefact_merger">
+		<text>Запустить</text>
+	</string>
+	
+	<string id="ui_st_not_enough_artefacts_to_merger">
+		<text>Не хватает артефактов для трансмутации.</text>
+	</string>
+	<string id="ui_st_anomaly_doesnt_fit">
+		<text>Аномалия не подходит для трансмутации.</text>
+	</string>
+	<string id="ui_st_too_far_from_anomaly">
+		<text>Подойдите к аномальной зоне ближе.</text>
+	</string>
+</string_table>
