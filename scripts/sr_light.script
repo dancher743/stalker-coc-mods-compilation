@@ -218,21 +218,25 @@ local function check_victim_light(stalker, victim)
 	local torch = victim:object("device_torch")
 	if not (torch and torch:torch_enabled()) then
 		return
-    end
-	
-	local victim_pos = victim:position()
-	local stalker_pos = stalker:position()
-	local distance_sqr = stalker_pos:distance_to_sqr(victim_pos)
+	end
+
+	local victim_pos = victim:bone_position("bip01_spine")
+	local stalker_pos = stalker:bone_position("bip01_head")
+	local distance = stalker_pos:distance_to(victim_pos)
 	local eye_range = utils.stalker_eye_range(stalker)
 
-	if (distance_sqr < eye_range * eye_range) then
+	if (distance < eye_range) then
 		local dir_to_victim = vector():sub(victim_pos, stalker_pos)
 		dir_to_victim:normalize()
+
 		local cos_alpha = stalker:direction():dotproduct(dir_to_victim)
 
-		-- 0.707 is 90 degrees
-		if (cos_alpha > 0.707) then
-			stalker:make_object_visible_somewhen(victim)
+		if (cos_alpha > 0.707) then -- 0.707 is 90 degrees
+			local result = rq_result()
+			local hit = level.ray_pick(stalker_pos, dir_to_victim, distance + 0.1, rq_target.rqtBoth, result, stalker)
+			if not hit or (result.object and result.object:id() == victim:id()) then
+				stalker:make_object_visible_somewhen(victim)
+			end
 		end
 	end
 end

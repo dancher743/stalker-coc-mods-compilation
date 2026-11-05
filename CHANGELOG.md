@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 * Removed `se_obj_on_before_release` callback from `sim_squad_offline_combat.script`
 * Improved the counter calculation code in case of combat between a smart and map squads
 * Returned original Call of Pripyat night visions
+* Improved night-time NPC reaction to the player and companions flashlights
 * Added time to `red_space_restrictor_to_radar_1` and `rad_space_restrictor_to_red_forest` teleports
 
 ### Fixes
@@ -24,6 +25,7 @@ All notable changes to this project will be documented in this file.
 * Added Clear Sky's exo and scientific outfits to the faction trader
 * Added a code to `se_obj_cache`es of Offline Combats and `axr_companions.script` to exclude a "ghost" objects from them
 * Fixed LUA error: _g.script:1751: attempt to concatenate local 's' (a nil value)
+* Added `actor_hand_radio` and `wpn_ak74_m1` to `ignore_sections` in `xr_corpse_detection.ltx`
 * Fixed missing delay in `news_helper.give_news` function
 * Added the Brain Scorcher maintenance to the X19's psy zone
 
