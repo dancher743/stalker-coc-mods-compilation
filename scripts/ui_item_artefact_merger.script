@@ -25,6 +25,7 @@ function artefact_merger_ui:__init(owner) super()
 	self.owner = owner
 	self.ini = system_ini()
 	self.combinations = {}
+	self.actor_artefacts = {}
 
 	self:InitCombinationsTable()
 	self:InitControls()
@@ -34,7 +35,7 @@ end
 function artefact_merger_ui:__finalize()
 end
 
-function artefact_merger_ui:InitCombinationsTable()	
+function artefact_merger_ui:InitCombinationsTable()
 	local ini = ini_file("plugins\\artefact_merger_combinations.ltx")
 	local combinations_names = utils.parse_ini_section_to_iarray(ini,"combinations") or {}
 	
@@ -174,16 +175,25 @@ end
 
 function artefact_merger_ui:FillList()
 	self.list_box:RemoveAll()
-	
-	local was_previously = {}
+
+	self.actor_artefacts = {}
+
 	local function fill_list(actor,obj)
-		if obj and IsArtefact(obj) then
+		if (obj and IsArtefact(obj)) then
 			local section = obj:section()
-			if (was_previously[section] == true or self.combinations[section] == nil) then
+
+			local artefacts = self.actor_artefacts[section]
+			if (artefacts == nil) then
+				 artefacts = {}
+				 self.actor_artefacts[section] = artefacts
+			end
+			table.insert(artefacts, obj)
+
+			if (#artefacts > 1) then
 				return
 			end
+
 			self:AddItemToList(obj,self.list_box)
-			was_previously[section] = true
 		end
 	end
 
@@ -248,18 +258,10 @@ function artefact_merger_ui:OnPartsListItemClicked()
 	local amount = self.combinations[item_section]["need"]
 	local result_name = strtransl(news_manager.get_inv_name(result_section))
 	local text = strformat("%s: %s x%s = %s x1", result_text, item_name, amount, result_name)
-
-	local items_to_merge_amount = 0
-	local function iterator(_, item)
-		if (item:section() == item_section) then
-			items_to_merge_amount = items_to_merge_amount + 1
-		end
-	end
-	db.actor:iterate_inventory(iterator,db.actor)
-
-	local color = items_to_merge_amount >= amount and self.caption_has_parts_text_color or self.caption_parts_text_color
-	self.caption_parts:SetTextColor(color)
 	self.caption_parts:SetText(text)
+
+	local color = #self.actor_artefacts[item_section] >= amount and self.caption_has_parts_text_color or self.caption_parts_text_color
+	self.caption_parts:SetTextColor(color)
 
 	local w,h = item.width,item.height
 	if (utils.is_widescreen()) then
@@ -341,7 +343,6 @@ function artefact_merger_ui:OnListItemClicked()
 end
 
 function artefact_merger_ui:OnListItemDbClicked()
-	self:OnButton_repair()
 end
 
 function artefact_merger_ui:OnButton_back_clicked()
@@ -373,18 +374,10 @@ function artefact_merger_ui:OnButton_repair()
 
 	local item_section = se_item:section_name()
 	local amount = self.combinations[item_section]["need"]
+	local artefacts = self.actor_artefacts[item_section]
+	local artefacts_amount = #artefacts
 
-	local items_to_remove = {}
-	local function iterator(_, item)
-		if (#items_to_remove >= amount or item:section() ~= item_section) then
-			return
-		end
-		table.insert(items_to_remove, item)
-	end
-	local actor = db.actor
-	actor:iterate_inventory(iterator,actor)
-
-	if (#items_to_remove < amount) then
+	if (artefacts_amount < amount) then
 		self:OnButton_back_clicked()
 		SetHudMsg(strtransl("ui_st_not_enough_artefacts_to_merger"),5)
 		return
@@ -397,15 +390,12 @@ function artefact_merger_ui:OnButton_repair()
 		return
 	end
 
-	for i = #items_to_remove, 1, -1 do
-		local item_to_remove = items_to_remove[i]
-		local se_obj = alife_object(item_to_remove:id())
-		if (se_obj) then 
-			alife_release(se_obj)
-			items_to_remove[i] = nil
-		end
+	for i = artefacts_amount, (artefacts_amount - amount + 1), -1 do
+		local artefact_to_remove = artefacts[i]
+		table.remove(artefacts, i)
+		release(artefact_to_remove)
 	end
-	create_item(result_section, actor)
+	create_item(result_section, db.actor)
 
 	xr_effects.disable_actor_nightvision()
 	level.add_pp_effector("teleport.ppe", 2006, false)
@@ -413,6 +403,7 @@ function artefact_merger_ui:OnButton_repair()
 	xr_sound.play_sound_by_path("anomaly\\teleport_work_1", false)
 
 	xr_statistic.inc_rank("artefacts_merged")
+
 	SetHudMsg(STR_EMPTY,0)
 	self:OnButton_back_clicked()
 end

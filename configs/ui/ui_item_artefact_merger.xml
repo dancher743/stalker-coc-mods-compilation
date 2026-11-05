@@ -19,7 +19,7 @@
 			<icon_tool x="300" y="418" width="128" height="128" stretch="1">
 			</icon_tool>
 
-			<caption_repair x="285" y="186" width="195" height="50" complex_mode="1">
+			<caption_repair x="275" y="186" width="195" height="50" complex_mode="1">
 				<text font="letterica18"/>
 			</caption_repair>
 			<list_frame x="265" y="202" width="284" height="107">
@@ -29,7 +29,7 @@
 				<font font="letterica16"/>
 			</list>
 
-			<caption_parts x="285" y="32" width="195" height="75">
+			<caption_parts x="275" y="32" width="195" height="75">
 				<text font="letterica18"/>
 			</caption_parts>
 			<list_frame_parts x="265" y="48" width="284" height="107">
