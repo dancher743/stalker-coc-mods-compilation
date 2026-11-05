@@ -30,6 +30,8 @@ function artefact_merger_ui:__init(owner) super()
 	self:InitCombinationsTable()
 	self:InitControls()
 	self:InitCallBacks()
+
+	SetHudMsg(STR_EMPTY,0)
 end
 
 function artefact_merger_ui:__finalize()
@@ -125,7 +127,7 @@ function artefact_merger_ui:InitControls()
 
 	-- Caption Color
 	 self.caption_parts_text_color = GetARGB(255,255,255,255)
-	 self.caption_has_parts_text_color = GetARGB(200,200,200,50)
+	 self.caption_has_parts_text_color = GetARGB(255,200,200,50)
 
 	-- Caption
 	self.caption_repair		= self.xml:InitTextWnd("itm_repair:form:caption_repair",self.form)
@@ -181,6 +183,10 @@ function artefact_merger_ui:FillList()
 	local function fill_list(actor,obj)
 		if (obj and IsArtefact(obj)) then
 			local section = obj:section()
+
+			if (self.combinations[section] == nil) then
+				return
+			end
 
 			local artefacts = self.actor_artefacts[section]
 			if (artefacts == nil) then

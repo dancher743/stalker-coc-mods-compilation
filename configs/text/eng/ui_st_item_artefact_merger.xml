@@ -4,7 +4,7 @@
         <text>Artifact Merger</text>
     </string>
 	<string id="st_artefact_merger_descr">
-        <text>This container-device is the latest achievement in scientific experiments. It allows the user to merge several simple artifacts into a different, more complex one. Operation requires being inside an anomalous zone capable of spawning the more complex artifact.</text>
+        <text>This container-device is the latest achievement in scientific experiments. It allows the user to merge several simple artifacts into a more complex one. Operation requires being inside an anomalous zone capable of spawning the more complex artifact.</text>
     </string>
 	
 	<string id="ui_st_available_artefacts">
@@ -18,10 +18,10 @@
 	</string>
 	
 	<string id="ui_st_not_enough_artefacts_to_merger">
-		<text>Not enough artifacts for transmutation.</text>
+		<text>Not enough artifacts for merge.</text>
 	</string>
 	<string id="ui_st_anomaly_doesnt_fit">
-		<text>The anomaly is not suitable for transmutation.</text>
+		<text>The anomaly is not suitable for merge.</text>
 	</string>
 	<string id="ui_st_too_far_from_anomaly">
 		<text>Move closer to the anomalous zone.</text>
