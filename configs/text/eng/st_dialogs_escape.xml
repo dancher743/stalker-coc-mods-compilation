@@ -17,10 +17,10 @@
 		<text>I want to change my name.</text>
 	</string>
 	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_10">
-		<text>You are not the first one who has approached me with this request. So I will change your name for 5,000 RU for the first time, then pay 15,000 RU for each next change.</text>
+		<text>You are not the first one who has approached me with this request. So I will change your name for 5,000 RU for the first time, then pay 10,000 RU for each next change.</text>
 	</string>
 	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_11">
-		<text>Pay 15,000 RU and I will change your name.</text>
+		<text>Pay 10,000 RU and I will change your name.</text>
 	</string>
 	<string id="esc_2_12_stalker_trader_change_actor_name_dialog_20">
 		<text>I agree.</text>

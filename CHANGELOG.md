@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 * Returned original Call of Pripyat night visions
 * Improved night-time NPC reaction to the player and companions flashlights
 * Added time to `red_space_restrictor_to_radar_1` and `rad_space_restrictor_to_red_forest` teleports
+* Reduced the cost of the second player name change (from 15,000 RU to 10,000 RU)
 
 ### Fixes
 * Refactored the code of Fast Travel options
