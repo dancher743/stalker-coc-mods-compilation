@@ -473,10 +473,12 @@ local function update_queue()
 				victim_squad:remove_squad()
 				has_squad_removed = true
 			else
-				counter = counter + 1
-				smart_combat_counters[victim_smart_id] = counter
 				local commander_id = victim_squad:commander_id()
+				if (smart_combat_victims[commander_id] == nil) then
 					smart_combat_victims[commander_id] = victim_smart_id
+					counter = counter + 1
+				end
+				smart_combat_counters[victim_smart_id] = counter
 			end
 		end
 		if (has_squad_removed == false and victim_squad:is_stalker()) then

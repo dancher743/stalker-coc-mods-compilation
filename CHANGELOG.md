@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 * Added duplication check to the first and last name generation logic
 * Restored original ignore chance of angry stash owner message
 * Rebalanced chances of getting artifacts from corpses
+* Added check for counter doublication of a victim squad in `sim_squad_offline_combat.script`
 
 ### Fixes
 * Refactored the code of Fast Travel options
