@@ -1420,7 +1420,7 @@ function DynamicNewsManager:FoundStash(has_spot) -- reaction of angry stash owne
 	if (has_spot) then
 		chance_to_ignore = 100
 	else
-		chance_to_ignore = IsSurvivalMode() and 80 or 60
+		chance_to_ignore = IsSurvivalMode() and 80 or 40
 	end
 	
 	if (has_chance(chance_to_ignore)) then
