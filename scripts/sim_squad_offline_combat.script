@@ -476,7 +476,7 @@ local function update_queue()
 				counter = counter + 1
 				smart_combat_counters[victim_smart_id] = counter
 				local commander_id = victim_squad:commander_id()
-				smart_combat_victims[commander_id] = victim_smart_id
+					smart_combat_victims[commander_id] = victim_smart_id
 			end
 		end
 		if (has_squad_removed == false and victim_squad:is_stalker()) then
@@ -589,6 +589,25 @@ local function actor_on_update(_,delta)
 	end
 end
 
+local function se_obj_on_before_release(se_obj)
+    local id = se_obj.id
+
+    remove_from_loot_items_table(id)
+    se_obj_cache:remove(id)
+
+    local smart_id = smart_combat_victims[id]
+
+    if (smart_id) then
+        local counter = smart_combat_counters[smart_id] or 0
+
+        if (counter > 0) then
+            smart_combat_counters[smart_id] = counter - 1
+        end
+
+        smart_combat_victims[id] = nil
+    end
+end
+
 local function save_state(data)
 	if (not data.offline_combat) then
 		data.offline_combat = {}
@@ -639,8 +658,9 @@ local function finalize()
 	pop_last_killed_stalker_data()
 	
 	UnregisterScriptCallback("actor_on_update",actor_on_update)
-	UnregisterScriptCallback("se_stalker_on_unregister",se_object_on_unregister)
-	UnregisterScriptCallback("se_monster_on_unregister",se_object_on_unregister)
+	UnregisterScriptCallback("se_stalker_on_unregister",se_obj_on_before_release)
+	UnregisterScriptCallback("se_monster_on_unregister",se_obj_on_before_release)
+	UnregisterScriptCallback("se_obj_on_before_release",se_obj_on_before_release)
 	UnregisterScriptCallback("save_state",save_state)
 	UnregisterScriptCallback("load_state",load_state)
 	processed_squads = nil
@@ -662,31 +682,11 @@ local function actor_on_first_update()
 	UnregisterScriptCallback("actor_on_first_update",actor_on_first_update)
 end
 
-local function se_object_on_unregister(se_obj)
-	local id = se_obj.id
-	
-	remove_from_loot_items_table(id)
-	se_obj_cache:remove(id)
-	
-	local commander_id = id
-	local smart_id = smart_combat_victims[commander_id]
-	
-	if (smart_id) then
-		local counter = smart_combat_counters[smart_id]
-		
-		if (counter and counter >= 1) then
-			counter = counter - 1
-			smart_combat_counters[smart_id] = counter
-		end
-		
-		smart_combat_victims[commander_id] = nil
-	end
-end
-
 function on_game_start()
 	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
-	RegisterScriptCallback("se_stalker_on_unregister",se_object_on_unregister)
-	RegisterScriptCallback("se_monster_on_unregister",se_object_on_unregister)
+	RegisterScriptCallback("se_stalker_on_unregister",se_obj_on_before_release)
+	RegisterScriptCallback("se_monster_on_unregister",se_obj_on_before_release)
+	RegisterScriptCallback("se_obj_on_before_release",se_obj_on_before_release)
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
 end
