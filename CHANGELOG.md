@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 * Reduced the cost of the second player name change (from 15,000 RU to 10,000 RU)
 * Added duplication check to the first and last name generation logic
 * Restored original ignore chance of angry stash owner message
+* Rebalanced chances of getting artifacts from corpses
 
 ### Fixes
 * Refactored the code of Fast Travel options
@@ -33,6 +34,7 @@ All notable changes to this project will be documented in this file.
 * Added `actor_hand_radio` and `wpn_ak74_m1` to `ignore_sections` in `xr_corpse_detection.ltx`
 * Fixed missing delay in `news_helper.give_news` function
 * Added the Brain Scorcher maintenance to the X19's psy zone
+* Added missing artifacts to dead NPC loot
 
 ### Optimization
 * Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`
@@ -214,7 +216,6 @@ All notable changes to this project will be documented in this file.
 * Made Wolf's equipment lore friendly (as in SoC)
 * Extended item list of Tissue Sample for Sakharov task
 * Added SoC unique weapons into surrender victim and NPC's loot stashes
-* Rebalanced chances of getting artifacts from corpses
 
 ### Fixes
 * Fixed overbrightnes of `18:00:00` section in `af3_day_clear.ltx`
@@ -226,7 +227,6 @@ All notable changes to this project will be documented in this file.
 * Disabled night vision with black screen effector when removing task squad
 * Fixed case when pre cataclysm weather may not appear after reload
 * Added some code to `xr_help_wounded.script` to fix "[LUA] SCRIPT RUNTIME ERROR : evaluator [wounded_exist] returns value with not a bool type!" (from Anomaly 1.5.1.2)
-* Added missing artifacts to dead NPC loot
 
 ### Optimization
 * Memoized `device()` function
