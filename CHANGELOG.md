@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Features
 * Now Guide's job as a full-fledged job
 * Artifact Merger item. Look for this item at the Military Outpost in Cordon after disabling the Brain Scorcher
+* Added a new type of news to Dynamic News: "Zone State"
 
 ### Improvements
 * Added `1.25` as factor into population factors

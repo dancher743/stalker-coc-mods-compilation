@@ -4517,6 +4517,27 @@
 		<text>This is Rabbit. Shortly, we will be securing some new equipment. The men have promised that they are bringing something from the military in the Agroprom.</text>
 	</string>
 
+	<!-- Zone State -->
+	<string id="st_dyn_news_zone_state_brain_scorcher_maintenance_1">
+		<text>Sometimes they shut the Brain Scorcher down.</text>
+	</string>
+	<string id="st_dyn_news_zone_state_brain_scorcher_maintenance_2">
+		<text>Some guys who tried to push through to the Scorcher said it stops working between 13:00 and 14:00 for some reason. By the way, whatever happened to those guys?</text>
+	</string>
+	<string id="st_dyn_news_zone_state_brain_scorcher_maintenance_3">
+		<text>I was talking to a dude earlier. He said the Scorcher goes dead in the evening, from 20:00 to 21:00. Is that actually true?</text>
+	</string>
+	<string id="st_dyn_news_zone_state_brain_scorcher_maintenance_4">
+		<text>The Brain Scorcher really does go quiet sometimes! It happens twice a day: from 13:00 to 14:00 and from 20:00 to 21:00. Guess those fanatics are doing maintenance, hehe.</text>
+	</string>
+
+	<string id="st_dyn_news_zone_state_artefact_merger_appearance_1">
+		<text>Word is the military guys at the Cordon have some kind of wonder-box that lets you merge... do something or other to artifacts. What the hell is that anyway?</text>
+	</string>
+	<string id="st_dyn_news_zone_state_artefact_merger_appearance_2">
+		<text>You guys heard about the Artifact Merger? It's a device that lets you fuse artifacts together. They say it was spotted at the Military Outpost at the Cordon.</text>
+	</string>
+
 	<!-- Zone Activity -->
 	<string id="st_dyn_news_zone_activity_troop_none_1">
 		<text>Weird... the emergency signal i received was pointing over this location $location in $map.\nI have been searching for ten minutes at least, not a single trace of the missing squad was found...</text>

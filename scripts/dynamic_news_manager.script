@@ -426,7 +426,7 @@ function DynamicNewsManager:TickRandom()
 	elseif (pick == 2) then
 		self:ReportByFaction()
 	elseif (pick == 3) then
-		self:ReportZoneActivity()
+		self:ReportZoneActivityOrState()
 	elseif (pick == 4) then
 		self:ReportFoundDeadOrDeathByOfflineCombat()
 	elseif (pick == 5) then
@@ -1625,6 +1625,55 @@ function DynamicNewsManager:ReportByFaction() -- faction's news
 	
 	dynamic_news_helper.send_tip(tbl[math.random(#tbl)],Se, nil, msg_duration,comm,"beep_1","gr")
 	
+	return true
+end
+
+function DynamicNewsManager:ReportZoneActivityOrState()
+	if not (math.random(2) == 2 and self:ReportZoneState()) then
+		self:ReportZoneActivity()
+	end
+end
+
+function DynamicNewsManager:ReportZoneState() -- report state of the zone
+	--printf(">>> Dyn News: ReportZoneState - call")
+	if (not self.sentences_fnames) or (not self.sentences_fnames) then
+		return false
+	end
+
+	local tbl = nil
+
+	local picks = { 1, 2 }
+	utils.shuffle_itable(picks)
+
+	for _, pick in ipairs(picks) do
+		if (pick == 1 and not has_info("bar_deactivate_radar_done")) then
+			tbl = self:ReadTextList("st_dyn_news_zone_state_brain_scorcher_maintenance_")
+			break
+		elseif (pick == 2 and has_info("artefact_merger_spawned")) then
+			tbl = self:ReadTextList("st_dyn_news_zone_state_artefact_merger_appearance_")
+			break
+		end
+	end
+
+	if (not tbl) then
+		return false
+	end
+
+	local Se
+	local Ic
+	local It
+
+	if (math.random(0,100) < AnonymousMessageChance) then
+		Se = strformat("%s, %s", game.translate_string("st_dyn_news_names_anonymous"), game.translate_string("st_dyn_news_general_channel"))
+		Ic = "common"
+		It = "gr"
+	else
+		Se = strformat("%s %s, %s", self.sentences_fnames[math.random(#self.sentences_fnames)], self.sentences_snames[math.random(#self.sentences_snames)], game.translate_string("st_dyn_news_general_channel"))
+		Ic = nil
+		It= "rnd_char_icon"
+	end
+
+	self.response["message"] = {Mg=tbl[math.random(#tbl)],Ic=Ic,Snd="no_sound",Se=Se,It=It,To=false,St=msg_duration}
 	return true
 end
 

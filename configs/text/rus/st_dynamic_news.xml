@@ -4479,6 +4479,27 @@
 		<text>Это снабженец с КБО беспокоит. Припасы ожидать в ближайшем будущем? Даже 5.45 не хватает.</text>
 	</string>
 
+	<!-- Zone State -->
+	<string id="st_dyn_news_zone_state_brain_scorcher_maintenance_1">
+		<text>Иногда Выжигатель выключают.</text>
+	</string>
+	<string id="st_dyn_news_zone_state_brain_scorcher_maintenance_2">
+		<text>Ребята, которые пытались прорваться к Выжигателю, говорили, что он почему-то не работает с 13:00 до 14:00. Кстати, а куда эти ребята делись?</text>
+	</string>
+	<string id="st_dyn_news_zone_state_brain_scorcher_maintenance_3">
+		<text>Общался я тут с одним чуваком. Он рассказал, что вечером Выжигатель не работает: в период с 20:00 до 21:00. Это правда?</text>
+	</string>
+	<string id="st_dyn_news_zone_state_brain_scorcher_maintenance_4">
+		<text>Выжигатель действительно иногда выключают! Это происходит два раза в день: с 13:00 до 14:00 и с 20:00 до 21:00. Наверное, фанатики обслуживание проводят, хе-хе.</text>
+	</string>
+
+	<string id="st_dyn_news_zone_state_artefact_merger_appearance_1">
+		<text>Поговаривают, что у вояк на Кордоне лежит какая-то чудо-коробочка, позволяющая трансмутир... что-то там с артефактами делать. Это чё вообще такое?</text>
+	</string>
+	<string id="st_dyn_news_zone_state_artefact_merger_appearance_2">
+		<text>Слышали про трансмутатор артефактов? Это такое устройство, позволяющее артефакты скрещивать друг с другом. Говорят, видели его на военном блокпосту на Кордоне.</text>
+	</string>
+
 	<!-- Zone Activity -->
 	<string id="st_dyn_news_zone_activity_troop_none_1">
 		<text>Странно... Экстренный сигнал, который я получил, указывал на это место: $map $location.\nЯ искал по крайней мере десять минут - ни одного следа пропавшей команды не было найдено...</text>
