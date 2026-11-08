@@ -214,6 +214,7 @@ All notable changes to this project will be documented in this file.
 * Made Wolf's equipment lore friendly (as in SoC)
 * Extended item list of Tissue Sample for Sakharov task
 * Added SoC unique weapons into surrender victim and NPC's loot stashes
+* Rebalanced chances of getting artifacts from corpses
 
 ### Fixes
 * Fixed overbrightnes of `18:00:00` section in `af3_day_clear.ltx`
@@ -225,6 +226,7 @@ All notable changes to this project will be documented in this file.
 * Disabled night vision with black screen effector when removing task squad
 * Fixed case when pre cataclysm weather may not appear after reload
 * Added some code to `xr_help_wounded.script` to fix "[LUA] SCRIPT RUNTIME ERROR : evaluator [wounded_exist] returns value with not a bool type!" (from Anomaly 1.5.1.2)
+* Added missing artifacts to dead NPC loot
 
 ### Optimization
 * Memoized `device()` function
