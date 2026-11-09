@@ -41,6 +41,7 @@ All notable changes to this project will be documented in this file.
 * Added the Brain Scorcher maintenance to the X19's psy zone
 * Added missing artifacts to dead NPC loot
 * Added missing `ston_megabrick_iov_bump` bump map
+* Fixed LUA error: sim_squad_offline_combat.script:524: attempt to index upvalue 'se_obj_cache' (a nil value)
 
 ### Optimization
 * Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`

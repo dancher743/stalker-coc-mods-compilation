@@ -559,6 +559,11 @@ local function initialize()
 		se_obj_cache = se_object_cache.create()
 	end
 	RegisterScriptCallback("actor_on_update",actor_on_update)
+	RegisterScriptCallback("se_stalker_on_unregister",se_obj_on_before_release)
+	RegisterScriptCallback("se_monster_on_unregister",se_obj_on_before_release)
+	RegisterScriptCallback("se_obj_on_before_release",se_obj_on_before_release)
+	RegisterScriptCallback("save_state",save_state)
+	RegisterScriptCallback("load_state",load_state)
 	
 	is_initialized = true
 	if dbg then printf_dbg("initialized") end
@@ -585,26 +590,18 @@ local function finalize()
 	update_queue_timer = nil
 	is_survival_mode = nil
 	actor_level_id = nil
-	if (se_obj_cache ~= nil) then
-		se_obj_cache:clear()
-	end
+	se_obj_cache:clear()
 	
 	is_initialized = false
 	if dbg then printf_dbg("finalized") end
 end
 
-local function actor_on_first_update()
+local function on_game_load()
 	initialize()
-	UnregisterScriptCallback("actor_on_first_update",actor_on_first_update)
 end
 
 function on_game_start()
-	RegisterScriptCallback("actor_on_first_update",actor_on_first_update)
-	RegisterScriptCallback("se_stalker_on_unregister",se_obj_on_before_release)
-	RegisterScriptCallback("se_monster_on_unregister",se_obj_on_before_release)
-	RegisterScriptCallback("se_obj_on_before_release",se_obj_on_before_release)
-	RegisterScriptCallback("save_state",save_state)
-	RegisterScriptCallback("load_state",load_state)
+	RegisterScriptCallback("on_game_load",on_game_load)
 end
 
 function option_on_accept(value)
