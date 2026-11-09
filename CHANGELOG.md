@@ -23,7 +23,7 @@ All notable changes to this project will be documented in this file.
 * Restored original ignore chance of angry stash owner message
 * Rebalanced chances of getting artifacts from corpses
 * Added check for counter doublication of a victim squad in `sim_squad_offline_combat.script`
-* Disabled smart combats, added min-max to map combat distance due to a "corpse apocalypse"
+* Removed smart combats, added min-max to distance of map combats due to a "corpse apocalypse"
 * Extended power handicap multipliers of Offline Combats
 * Corrected delay of angry stash owner message in Dynamic News
 * Disabled Pripyat's psy zone and disabled the level changers to/from Jupiter

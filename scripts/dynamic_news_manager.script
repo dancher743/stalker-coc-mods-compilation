@@ -1825,13 +1825,13 @@ function DynamicNewsManager:ReportDeathByOfflineCombat() -- Report offline comba
 	--printf(">>> Dyn News: ReportDeathByOfflineCombat - call")
 	
 	local victim_id, killer_id = sim_squad_offline_combat.pop_last_killed_stalker_data()
-	if (not victim_id or not killer_id) then
+	if (victim_id == nil or killer_id == nil) then
 		return false
 	end
 	
 	local victim = alife_object(victim_id)
 	local killer = alife_object(killer_id)
-	if (not victim or not killer) then
+	if not (victim and victim.group_id ~= 65535 and killer and killer.group_id ~= 65535) then
 		return false
 	end
 	
