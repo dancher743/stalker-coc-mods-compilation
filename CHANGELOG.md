@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file.
 * Rebalanced chances of getting artifacts from corpses
 * Added check for counter doublication of a victim squad in `sim_squad_offline_combat.script`
 * Disabled smart combats, added min-max to map combat distance due to a "corpse apocalypse"
+* Extended power handicap multipliers of Offline Combats
 
 ### Fixes
 * Refactored the code of Fast Travel options
