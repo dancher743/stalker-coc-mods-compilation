@@ -38,6 +38,7 @@ All notable changes to this project will be documented in this file.
 * Fixed missing delay in `news_helper.give_news` function
 * Added the Brain Scorcher maintenance to the X19's psy zone
 * Added missing artifacts to dead NPC loot
+* Added missing `ston_megabrick_iov_bump` bump map
 
 ### Optimization
 * Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`
