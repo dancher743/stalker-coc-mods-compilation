@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 * Disabled smart combats, added min-max to map combat distance due to a "corpse apocalypse"
 * Extended power handicap multipliers of Offline Combats
 * Corrected delay of angry stash owner message in Dynamic News
+* Disabled Pripyat's psy zone and disabled the level changers to/from Jupiter
 
 ### Fixes
 * Refactored the code of Fast Travel options
