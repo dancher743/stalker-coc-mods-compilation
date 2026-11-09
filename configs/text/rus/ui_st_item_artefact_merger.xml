@@ -21,7 +21,7 @@
 		<text>Не хватает артефактов для трансмутации.</text>
 	</string>
 	<string id="ui_st_anomaly_doesnt_fit">
-		<text>Аномалия не подходит для трансмутации.</text>
+		<text>Аномальная зона не подходит для трансмутации.</text>
 	</string>
 	<string id="ui_st_too_far_from_anomaly">
 		<text>Подойдите к аномальной зоне ближе.</text>
