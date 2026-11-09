@@ -3,15 +3,17 @@
 -- Added by Dancher
 -- Special thanks to offline alife of AMK, EOC and Anomaly!
 --
+-- Note: since version 1.5.6 smart combats are disabled.
+--
 
 local dbg = DEV_DEBUG
 
 local combats_per_level = 5
-local combat_distance = 50*50
-
-local add_rank_points = 20
-local handicap_chance = 25
 local map_combat_chance = 20
+local map_combat_min_distance = 10*10
+local map_combat_max_distance = 40*40
+local power_handicap_chance = 25
+local rank_points_for_kill = 20
 
 local rank_power = {
 	["novice"] = 10,
@@ -86,7 +88,7 @@ local function calculate_npc_power(id)
 		local rank_name = ranks.get_se_obj_rank_name(se_obj)
 		power = power + (rank_power[rank_name] or 0)
 	end
-	if (has_chance(handicap_chance)) then
+	if (has_chance(power_handicap_chance)) then
 		power = power * math.random(3)
 	end
 	return power
@@ -167,7 +169,7 @@ local function execute_kill(se_killer, se_victim, killer_squad, victim_squad)
 	end
 	
 	if (is_killer_stalker) then
-		se_killer:set_rank(se_killer:rank() + add_rank_points)
+		se_killer:set_rank(se_killer:rank() + rank_points_for_kill)
 	end
 	
 	relocate_loot(is_killer_stalker, is_victim_stalker, killer_community, se_killer, se_victim)
@@ -338,20 +340,13 @@ local function prepare_combats(squads)
 					
 					if (are_enemies) then
 						local can_combat = false
-						local is_smart_combat = false
-						
-						if (squad2.position:distance_to_sqr(squad1.position) < combat_distance) then
-							local squad1_target = squad1.current_target_id
-							local squad2_target = squad2.current_target_id
-							
-							if (squad1_target and squad2_target and squad1_target == squad2_target) then
-								can_combat = true
-								is_smart_combat = true
-							elseif (squad1_target == nil or squad2_target == nil) then
-								can_combat = has_chance(map_combat_chance)
-							end
+						local is_smart_combat = false -- Dancher: always false because disabled.
+
+						if (squad1.current_target_id == nil and squad2.current_target_id == nil and has_chance(map_combat_chance)) then
+							local squads_distance = squad2.position:distance_to_sqr(squad1.position)
+							can_combat = squads_distance >= map_combat_min_distance and squads_distance <= map_combat_max_distance
 						end
-						
+
 						if (can_combat) then
 							table.insert(combats_queue, {squads, i, j, is_smart_combat})
 							processed_squads[squad1.id] = true
@@ -466,6 +461,7 @@ local function update_queue()
 			squads[squad2_index] = nil
 		end
 		local has_squad_removed = false
+		--[[ Dancher: disabled
 		local victim_smart_id = victim_squad.current_target_id
 		if (is_smart_combat or victim_smart_id ~= nil) then
 			local counter = smart_combat_counters[victim_smart_id] or 0
@@ -481,6 +477,7 @@ local function update_queue()
 				smart_combat_counters[victim_smart_id] = counter
 			end
 		end
+		]]
 		if (has_squad_removed == false and victim_squad:is_stalker()) then
 			last_victim_stalker_id = victim_id
 			last_killer_stalker_id = killer_id
@@ -597,7 +594,8 @@ local function se_obj_on_before_release(se_obj)
     remove_from_loot_items_table(id)
     se_obj_cache:remove(id)
 
-    local smart_id = smart_combat_victims[id]
+    --[[ Dancher: disabled
+	local smart_id = smart_combat_victims[id]
 
     if (smart_id) then
         local counter = smart_combat_counters[smart_id] or 0
@@ -608,6 +606,7 @@ local function se_obj_on_before_release(se_obj)
 
         smart_combat_victims[id] = nil
     end
+	]]
 end
 
 local function save_state(data)
