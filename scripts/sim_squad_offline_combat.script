@@ -65,6 +65,7 @@ local last_victim_stalker_id
 local last_killer_stalker_id
 local is_survival_mode
 local actor_level_id
+local se_obj_cache
 
 local msg_format
 local function printf_dbg(msg,...)
@@ -82,7 +83,7 @@ end
 
 local function calculate_npc_power(id)
 	local power = 0
-	local se_obj = alife_object(id)
+	local se_obj = se_obj_cache:get(id)
 	if (se_obj) then
 		local rank_name = ranks.get_se_obj_rank_name(se_obj)
 		power = power + (rank_power[rank_name] or 0)
@@ -129,7 +130,7 @@ local function relocate_loot(is_killer_stalker, is_victim_stalker, killer_commun
 	local victim_items = loot_items[se_victim.id]
 	
 	for i = #victim_items, 1, -1 do
-		local victim_item = alife_object(victim_items[i])
+		local victim_item = se_obj_cache:get(victim_items[i])
 		
 		if (victim_item and victim_item.parent_id == 65535) then
 			table.remove(victim_items, i)
@@ -146,6 +147,7 @@ local function relocate_loot(is_killer_stalker, is_victim_stalker, killer_commun
 				-- if dbg then printf_dbg("loot relocated!") end
 			end
 
+			se_obj_cache:remove(victim_item.id)
 			alife_release(victim_item)
 		end
 	end
@@ -197,14 +199,14 @@ local function execute_combat_on_map(squad1, squad2)
 	
 	for i = #killer_squad_ids, 1, -1 do
 		local squad1_npc_id = killer_squad_ids[i]
-		local squad1_npc = alife_object(squad1_npc_id)
+		local squad1_npc = se_obj_cache:get(squad1_npc_id)
 		
 		if (squad1_npc) then
 			local squad1_npc_power = calculate_npc_power(squad1_npc_id)
 
 			for j = #victim_squad_ids, 1, -1 do
 				local squad2_npc_id = victim_squad_ids[j]
-				local squad2_npc = alife_object(squad2_npc_id)
+				local squad2_npc = se_obj_cache:get(squad2_npc_id)
 				
 				if (squad2_npc) then
 					local squad2_npc_power = calculate_npc_power(squad2_npc_id)
@@ -458,6 +460,30 @@ local function fill_loot_items_table()
 	end
 end
 
+local function remove_loot_items_parent(parent_id)
+	if not (loot_items and loot_items[parent_id]) then
+		return
+	end
+
+	loot_items[parent_id] = nil
+end
+
+local function remove_loot_item(se_item)
+	local parent_id = se_item.parent_id
+	if not (loot_items and loot_items[parent_id]) then
+		return
+	end
+
+	local items = loot_items[se_item.parent_id]
+
+	for i = #items, 1, -1 do
+		if (items[i] == se_item.id) then
+			table.remove(items, i)
+			break
+		end
+	end
+end
+
 local function update()
 	if (combat_squads_table == nil) then
 		fill_combat_squads_table()
@@ -509,6 +535,17 @@ local function actor_on_update(_,delta)
 	end
 end
 
+local function se_npc_on_unregister(se_obj)
+    local id = se_obj.id
+    remove_loot_items_parent(id)
+    se_obj_cache:remove(id)
+end
+
+local function se_item_on_unregister(se_item)
+	remove_loot_item(se_item)
+    se_obj_cache:remove(se_item.id)
+end
+
 local function save_state(data)
 	if (not data.offline_combat) then
 		data.offline_combat = {}
@@ -540,7 +577,13 @@ local function initialize()
 	update_queue_timer = 0
 	is_survival_mode = IsSurvivalMode()
 	actor_level_id = game_graph():vertex(alife():actor().m_game_vertex_id):level_id()
+	if (se_obj_cache == nil) then
+        se_obj_cache = se_object_cache.create()
+    end
 	RegisterScriptCallback("actor_on_update",actor_on_update)
+	RegisterScriptCallback("se_stalker_on_unregister",se_npc_on_unregister)
+	RegisterScriptCallback("se_monster_on_unregister",se_npc_on_unregister)
+	RegisterScriptCallback("se_item_on_unregister",se_item_on_unregister)
 	RegisterScriptCallback("save_state",save_state)
 	RegisterScriptCallback("load_state",load_state)
 	
@@ -558,6 +601,9 @@ local function finalize()
 	pop_last_killed_stalker_data()
 	
 	UnregisterScriptCallback("actor_on_update",actor_on_update)
+	UnregisterScriptCallback("se_stalker_on_unregister",se_npc_on_unregister)
+	UnregisterScriptCallback("se_monster_on_unregister",se_npc_on_unregister)
+	UnregisterScriptCallback("se_item_on_unregister",se_item_on_unregister)
 	UnregisterScriptCallback("save_state",save_state)
 	UnregisterScriptCallback("load_state",load_state)
 	processed_squads = nil
@@ -566,6 +612,7 @@ local function finalize()
 	update_queue_timer = nil
 	is_survival_mode = nil
 	actor_level_id = nil
+	se_obj_cache:clear()
 	
 	is_initialized = false
 	if dbg then printf_dbg("finalized") end
