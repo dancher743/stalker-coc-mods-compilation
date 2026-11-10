@@ -25,7 +25,8 @@ function artefact_merger_ui:__init(owner) super()
 	self.owner = owner
 	self.ini = system_ini()
 	self.combinations = {}
-	self.actor_artefacts = {}
+	self.actor_artefacts = nil
+	self.closest_anomaly, self.closest_anomaly_meters = self:GetClosestAnomaly()
 
 	self:InitCombinationsTable()
 	self:InitControls()
@@ -134,6 +135,8 @@ function artefact_merger_ui:InitControls()
 	self.caption_repair:SetText(self.caption_repair_text)
 	self.caption_parts 		= self.xml:InitTextWnd("itm_repair:form:caption_parts",self.form)
 	self.caption_parts:SetText(self.caption_parts_text)
+	self.caption_anomaly_zone 		= self.xml:InitTextWnd("itm_repair:form:caption_anomaly_zone",self.form)
+	self.caption_anomaly_zone:SetText(STR_EMPTY)
 
 	-- List Box
 	self.xml:InitFrame			("itm_repair:form:list_frame",self.form)
@@ -237,6 +240,7 @@ function artefact_merger_ui:OnPartsListItemClicked()
 		self.picture_parts:SetTextureRect(Frect():set(0,0,0,0))
 		self.picture_result:SetTextureRect(Frect():set(0,0,0,0))
 		self.caption_parts:SetText(self.caption_parts_text)
+		self.caption_anomaly_zone:SetText(STR_EMPTY)
 		return
 	end
 
@@ -257,6 +261,23 @@ function artefact_merger_ui:OnPartsListItemClicked()
 
 	local color = #self.actor_artefacts[item_section] >= amount and self.caption_has_parts_text_color or self.caption_parts_text_color
 	self.caption_parts:SetTextColor(color)
+	
+	local anomaly_text = STR_EMPTY
+	local anomaly_text_color = self.caption_parts_text_color
+
+	if (self.closest_anomaly) then
+		anomaly_text = strformat("%s: %sm", strtransl("ui_st_closest_anomaly_zone"), math.floor(self.closest_anomaly_meters))
+		anomaly_text_color = self.caption_has_parts_text_color
+	else
+		if (self.closest_anomaly_meters) then
+			anomaly_text = strformat("%s: %sm", strtransl("ui_st_closest_anomaly_zone"), math.floor(self.closest_anomaly_meters))
+		else
+			anomaly_text = strformat("%s: --", strtransl("ui_st_closest_anomaly_zone"))
+		end
+	end
+
+	self.caption_anomaly_zone:SetText(anomaly_text)
+	self.caption_anomaly_zone:SetTextColor(anomaly_text_color)
 
 	local w,h = item.width,item.height
 	if (utils.is_widescreen()) then
@@ -334,6 +355,7 @@ function artefact_merger_ui:OnListItemClicked()
 	self.picture_result:SetTextureRect(Frect():set(0,0,0,0))
 	self.caption_repair:SetText(self.caption_repair_text)
 	self.caption_parts:SetText(self.caption_parts_text)
+	self.caption_anomaly_zone:SetText(STR_EMPTY)
 	self:FillPartsList()
 end
 
@@ -380,7 +402,7 @@ function artefact_merger_ui:OnButton_repair()
 
 	local result_section = self.combinations[item_section]["result"]
 
-	if (self:CheckAnomaly(result_section) == false) then
+	if (self:CheckClosestAnomaly(result_section) == false) then
 		self:OnButton_back_clicked()
 		return
 	end
@@ -442,12 +464,15 @@ function artefact_merger_ui:AddItemToList(item,listbox,text)
 	listbox:AddExistingItem(_itm)
 end
 
-function artefact_merger_ui:CheckAnomaly(item_section)
+function artefact_merger_ui:GetClosestAnomaly()
 	local actor_pos = db.actor:position()
-	
+
+	local scan_distance_sqr = 50 * 50
+	local min_distance_sqr = scan_distance_sqr
+
 	local closest_anomaly = nil
-	local min_distance_sqr = 20 * 20
-	for _,anomaly in pairs(db.anomaly_by_name) do
+
+	for _, anomaly in pairs(db.anomaly_by_name) do
 		if (anomaly.object) then
 			local current_dist_sqr = anomaly.object:position():distance_to_sqr(actor_pos)
 			if (current_dist_sqr < min_distance_sqr) then
@@ -457,8 +482,22 @@ function artefact_merger_ui:CheckAnomaly(item_section)
 		end
 	end
 
-	if (closest_anomaly) then
-		if (closest_anomaly:can_spawn_artefact(item_section)) then
+	if (closest_anomaly == nil) then
+		return nil, nil
+	end
+
+	local meters = math.sqrt(min_distance_sqr)
+
+	if (meters > 20) then
+		return nil, meters
+	end
+
+	return closest_anomaly, meters
+end
+
+function artefact_merger_ui:CheckClosestAnomaly(item_section)
+	if (self.closest_anomaly) then
+		if (self.closest_anomaly:can_spawn_artefact(item_section)) then
 			return true
 		else
 			SetHudMsg(strtransl("ui_st_anomaly_doesnt_fit"),5)

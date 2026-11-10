@@ -32,6 +32,9 @@
 			<caption_parts x="275" y="31" width="195" height="75">
 				<text font="letterica18"/>
 			</caption_parts>
+			<caption_anomaly_zone x="275" y="15" width="195" height="75">
+				<text font="letterica18"/>
+			</caption_anomaly_zone>
 			<list_frame_parts x="265" y="48" width="284" height="107">
 				<texture>ui_inGame2_servers_list_frame</texture>
 			</list_frame_parts>

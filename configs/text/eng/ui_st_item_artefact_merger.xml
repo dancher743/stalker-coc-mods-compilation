@@ -13,6 +13,9 @@
 	<string id="ui_st_result_artefact">
 		<text>Result</text>
 	</string>
+	<string id="ui_st_closest_anomaly_zone">
+		<text>Closest anomaly zone</text>
+	</string>
 	<string id="ui_st_launch_artefact_merger">
 		<text>Launch</text>
 	</string>
