@@ -229,17 +229,6 @@ function artefact_merger_ui:FillPartsList()
 	self:AddItemToList(obj,self.list_box_parts)
 end
 
-function artefact_merger_ui:ResetControls()
-	self.picture:SetTextureRect(Frect():set(0,0,0,0))
-	self.caption_repair:SetText(self.caption_repair_text)
-	self:FillList()
-	
-	self.picture_parts:SetTextureRect(Frect():set(0,0,0,0))
-	self.caption_parts:SetText(self.caption_parts_text)
-	self.picture_result:SetTextureRect(Frect():set(0,0,0,0))
-	self:FillPartsList()
-end
-
 function artefact_merger_ui:OnPartsListItemClicked()
 	if self.list_box_parts:GetSize()==0 then return end
 
