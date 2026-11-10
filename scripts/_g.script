@@ -1274,11 +1274,12 @@ function disable_info (info)
 end
 
 -- Added by Dancher
-function create_item(section, npc, count)
-	count = count or 1
-	for i = 1, count do
-		alife():create(section, npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
-	end
+function create_item(section, npc)
+	return alife():create(section, npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
+end
+
+function create_item_se(section, se_npc)
+	return alife():create(section, se_npc.position, se_npc.m_level_vertex_id, se_npc.m_game_vertex_id, se_npc.id)
 end
 
 function create_ammo(section, position, lvi, gvi, pid, num)

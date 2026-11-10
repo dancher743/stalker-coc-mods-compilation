@@ -68,14 +68,14 @@ local intercepts = {
 	se_stalker_on_spawn			= {},
 	se_stalker_on_unregister	= {},
 
-	-- se_monster.script
-	se_monster_on_unregister	= {},
-
 	-- se_actor.script
 	se_actor_on_register		= {},
 	se_actor_on_unregister		= {},
 	se_actor_on_STATE_Write		= {},
 	se_actor_on_STATE_Read		= {},
+
+	-- se_monster.script
+	se_monster_on_unregister	= {},
 
 	-- xr_corpse_detection.script
 	npc_on_get_all_from_corpse 	= {},

@@ -42,6 +42,7 @@ All notable changes to this project will be documented in this file.
 * Added missing artifacts to dead NPC loot
 * Added missing `ston_megabrick_iov_bump` bump map
 * Fixed LUA error: sim_squad_offline_combat.script:524: attempt to index upvalue 'se_obj_cache' (a nil value)
+* Removed `se_obj_cache` from `sim_squad_offline_combat.script` to prevent `[error][ 87]`
 
 ### Optimization
 * Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`
@@ -51,6 +52,7 @@ All notable changes to this project will be documented in this file.
 * Added `se_obj_cache` class to work with a cached `se_obj`ects
 * Added `se_stalker_on_unregister` and `se_monster_on_unregister` callbacks into `axr_main.script`
 * Removed obsolete `actor_on_slicing_update`, `squad_on_slicing_update` and `monster_on_slicing_update` callbacks
+* Added `create_item_se` function to `_g.script`
 
 ## [1.5.5] - 2026-10-26
 
