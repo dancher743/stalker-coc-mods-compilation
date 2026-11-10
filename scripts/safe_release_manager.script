@@ -14,6 +14,10 @@ function release(se_obj)
 	objects_to_release[se_obj.id] = se_obj:name()
 end
 
+function is_to_release(id)
+	return objects_to_release[id] ~= nil
+end
+
 ---------------------------------------------------------------
 function execute_destroy_callback()
 	if not (is_empty(objects_to_release)) then

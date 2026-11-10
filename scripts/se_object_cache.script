@@ -19,7 +19,7 @@ function se_obj_cache:get(id)
 
 	if (se_obj == nil) then
 		se_obj = alife_object(id)
-		if (se_obj and se_obj.group_id ~= 65535) then
+		if (se_obj and se_obj.group_id ~= 65535 and not safe_release_manager.is_to_release(id)) then
 			self.cache[id] = se_obj
 		else
 			se_obj = nil

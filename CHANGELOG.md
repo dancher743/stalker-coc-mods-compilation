@@ -54,6 +54,7 @@ All notable changes to this project will be documented in this file.
 * Added `se_stalker_on_unregister`, `se_monster_on_unregister` and `se_item_on_unregister` callbacks into `axr_main.script`
 * Removed obsolete `actor_on_slicing_update`, `squad_on_slicing_update` and `monster_on_slicing_update` callbacks
 * Added `create_item_se` function to `_g.script`
+* Added `is_to_release` function to `safe_release_manager.script`
 
 ## [1.5.5] - 2026-10-26
 
