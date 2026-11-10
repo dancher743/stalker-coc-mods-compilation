@@ -1,0 +1,28 @@
+--
+-- Actor's info portion cache
+-- Author: Dancher
+--
+
+local info_portion_cache = nil
+local sim = nil
+
+local function actor_on_info_callback(actor, info_id)
+	info_portion_cache[info_id] = actor:has_info(info_id)
+end
+
+function initialize()
+	info_portion_cache = {}
+	sim = alife()
+	RegisterScriptCallback("actor_on_info_callback",actor_on_info_callback)
+end
+
+function has_info(info_id)
+	local info = actor_info_portion_cache[info_id]
+
+	if (info == nil) then
+		info = sim:has_info(0, info_id)
+		actor_info_portion_cache[info_id] = info
+	end
+
+	return info
+end

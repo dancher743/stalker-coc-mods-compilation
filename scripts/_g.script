@@ -24,6 +24,7 @@ end
 
 USE_INI_MEMOIZE = true
 USE_FUNCTIONS_MEMOIZE = true
+USE_ACTOR_INFO_PORTION_CACHE = true
 
 -- Improves performance if true, by disabling update methods for squads and smart terrains on levels not linked in configs\ai_tweaks\simulation_objects.ltx
 -- But this means simulation will only be active on actor level and linked levels everything else will remain in an idle state
@@ -58,6 +59,10 @@ function start_game_callback()
 	
 	if (USE_FUNCTIONS_MEMOIZE) then
 		functions_memoizer.memoize()
+	end
+	
+	if (USE_ACTOR_INFO_PORTION_CACHE) then
+		actor_info_portion_cache.initialize()
 	end
 	
 	sound_theme.load_sound()
@@ -569,6 +574,9 @@ end
 
 --' іроверка на инфопоршнv, даже если игрока не су	ествует
 function has_alife_info(info_id)
+	if (USE_ACTOR_INFO_PORTION_CACHE) then
+		return actor_info_portion_cache.has_info(info_id)
+	end
 	local sim = alife()
 	return sim:has_info(0, info_id)
 end
@@ -1252,6 +1260,9 @@ function on_actor_psy()
 end
 
 function has_info(info)
+	if (USE_ACTOR_INFO_PORTION_CACHE) then
+		return actor_info_portion_cache.has_info(info)
+	end
 	return db.actor:has_info(info)
 end
 
@@ -1844,7 +1855,7 @@ function main_hud_shown()
 	and (not axr_main.weapon_with_scope_is_zoomed) 
 	and (not actor:is_talking())
 	and (actor:alive())
-	and (not actor:has_info(actor_is_sleeping_info))
+	and (not has_info(actor_is_sleeping_info))
 	then
 		return true
 	end
