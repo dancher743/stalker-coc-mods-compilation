@@ -48,11 +48,6 @@ local loot_ignore_list = {
 		["wpn_knife"] = true
 }
 
-local smart_combat_remove_chance = 50
-local max_smart_combats_count = 3
-local smart_combat_counters = {}
-local smart_combat_victims = {}
-
 local is_initialized
 local loot_items
 local update_timer
@@ -552,8 +547,6 @@ local function save_state(data)
 	end
 	data.offline_combat.last_victim_stalker_id = last_victim_stalker_id
 	data.offline_combat.last_killer_stalker_id = last_killer_stalker_id
-	data.offline_combat.smart_combat_counters = smart_combat_counters
-	data.offline_combat.smart_combat_victims = smart_combat_victims
 end
 
 local function load_state(data)
@@ -562,8 +555,6 @@ local function load_state(data)
 	end
 	last_victim_stalker_id = data.offline_combat.last_victim_stalker_id
 	last_killer_stalker_id = data.offline_combat.last_killer_stalker_id
-	smart_combat_counters = data.offline_combat.smart_combat_counters or smart_combat_counters
-	smart_combat_victims = data.offline_combat.smart_combat_victims or smart_combat_victims
 end
 
 local function initialize()
