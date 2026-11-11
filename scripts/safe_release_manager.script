@@ -11,6 +11,7 @@ local objects_to_release = {}
 ---------------------------------------------------------------
 -- register object to be released safely
 function release(se_obj)
+	SendScriptCallback("se_obj_on_add_to_safe_release",se_obj)
 	objects_to_release[se_obj.id] = se_obj:name()
 end
 
@@ -39,7 +40,7 @@ function execute_destroy_callback()
 					-- binder has not been destroyed yet...or error
 					local obj = db.storage[id] and db.storage[id].object 
 					if not (obj) then
-						SendScriptCallback("se_obj_on_before_release",se_obj)
+						SendScriptCallback("se_obj_on_before_safe_release",se_obj)
 						--printf("release %s",se_obj:name())
 						sim:release(se_obj)
 						objects_to_release[id] = nil

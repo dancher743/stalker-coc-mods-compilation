@@ -146,7 +146,6 @@ local function relocate_loot(is_killer_stalker, is_victim_stalker, killer_commun
 				-- if dbg then printf_dbg("loot relocated!") end
 			end
 
-			se_obj_cache:remove(victim_item.id)
 			safe_release_manager.release(victim_item)
 		end
 	end
@@ -327,7 +326,8 @@ local function prepare_combats(squads)
 end
 
 local function is_item_valid(se_item)
-	if (se_item.parent_id == nil or se_item.parent_id == 65535) then
+	local parent_id = se_item.parent_id
+	if (parent_id == nil or parent_id == 0 or parent_id == 65535) then
 		return false
 	end
 	
@@ -337,6 +337,11 @@ local function is_item_valid(se_item)
 	end
 	
 	if (get_object_story_id(se_item.id) ~= nil) then
+		return false
+	end
+	
+	local se_parent = alife_object(parent_id)
+	if not (se_parent and IsStalker(se_parent)) then
 		return false
 	end
 	
@@ -538,6 +543,10 @@ local function actor_on_update(_,delta)
 	end
 end
 
+local function se_obj_on_add_to_safe_release(se_obj)
+	se_obj_cache:remove(se_obj.id)
+end
+
 local function se_npc_on_unregister(se_obj)
     local id = se_obj.id
     remove_loot_items_parent(id)
@@ -580,6 +589,7 @@ local function initialize()
         se_obj_cache = se_object_cache.create()
     end
 	RegisterScriptCallback("actor_on_update",actor_on_update)
+	RegisterScriptCallback("se_obj_on_add_to_safe_release",se_obj_on_add_to_safe_release)
 	RegisterScriptCallback("se_stalker_on_unregister",se_npc_on_unregister)
 	RegisterScriptCallback("se_monster_on_unregister",se_npc_on_unregister)
 	RegisterScriptCallback("se_item_on_unregister",se_item_on_unregister)
@@ -600,6 +610,7 @@ local function finalize()
 	pop_last_killed_stalker_data()
 	
 	UnregisterScriptCallback("actor_on_update",actor_on_update)
+	UnregisterScriptCallback("se_obj_on_add_to_safe_release",se_obj_on_add_to_safe_release)
 	UnregisterScriptCallback("se_stalker_on_unregister",se_npc_on_unregister)
 	UnregisterScriptCallback("se_monster_on_unregister",se_npc_on_unregister)
 	UnregisterScriptCallback("se_item_on_unregister",se_item_on_unregister)

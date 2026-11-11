@@ -43,6 +43,7 @@ All notable changes to this project will be documented in this file.
 * Added missing `ston_megabrick_iov_bump` bump map
 * Fixed LUA error: sim_squad_offline_combat.script:524: attempt to index upvalue 'se_obj_cache' (a nil value)
 * Improved working with `se_obj_cache` in `sim_squad_offline_combat.script` to prevent `[error][ 87]`
+* Added additional checks to `is_item_valid` function in `sim_squad_offline_combat.script`
 
 ### Optimization
 * Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`
@@ -55,6 +56,8 @@ All notable changes to this project will be documented in this file.
 * Removed obsolete `actor_on_slicing_update`, `squad_on_slicing_update` and `monster_on_slicing_update` callbacks
 * Added `create_item_se` function to `_g.script`
 * Added `is_to_release` function to `safe_release_manager.script`
+* Added `se_obj_on_add_to_safe_release` callback to `axr_main.script`
+* Renamed callback `se_obj_on_before_release` to `se_obj_on_before_safe_release`
 
 ## [1.5.5] - 2026-10-26
 

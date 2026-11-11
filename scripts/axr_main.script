@@ -178,7 +178,8 @@ local intercepts = {
 	
 	level_time_on_changed			= {},
 	
-	se_obj_on_before_release		= {},
+	se_obj_on_add_to_safe_release	= {},
+	se_obj_on_before_safe_release	= {},
 	
 	monster_on_net_destroy 			= {}
 }
