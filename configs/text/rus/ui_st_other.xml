@@ -660,10 +660,16 @@
 	<string id="st_item_returner_position_spot_descr">
 		<text>Позиция Возвращателя</text>
 	</string>
+	<string id="st_item_returner_position_set_news">
+		<text>Позиция установлена</text>
+	</string>
 	<string id="st_item_returner_position_not_set_hudmsg">
 		<text>Позиция не установлена.</text>
 	</string>
 	<string id="st_item_returner_position_too_far_hudmsg">
 		<text>Вы слишком далеко от позиции.</text>
+	</string>
+	<string id="st_item_returner_not_ready_hudmsg">
+		<text>Возвращатель не готов.</text>
 	</string>
 </string_table>

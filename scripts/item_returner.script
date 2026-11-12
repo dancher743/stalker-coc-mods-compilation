@@ -4,11 +4,23 @@
 -- Original idea: Cumulative Pack mod
 --
 
+local item_section = "returner"
 local point_spot_name = "returner_point_spot"
 local point_distance_range_sqr = 30 * 30
+local cooldown = 1800
+local cooldown_timer_id = "returner_teleport_cooldown"
+local pp_delay = 400
+local pp_delay_timer_id = "pp_delay_timer"
 
 local point_id = nil
 local se_point = nil
+
+local function give_set_position_news()
+	local caption = strtransl(news_manager.get_inv_name(item_section))
+	local text = strtransl("st_item_returner_position_set_news")
+	local icon = "ui_iconsTotal_locations"
+	news_helper.give_news(caption, text, icon)
+end
 
 local function get_position()
 	if (point_id == nil) then
@@ -30,6 +42,7 @@ local function set_position()
 			se_point = sim:create("returner_point_object", position, actor:level_vertex_id(), actor:game_vertex_id())
 			point_id = se_point.id
 			level.map_add_object_spot_ser(point_id, point_spot_name, strtransl("st_item_returner_position_spot_descr"))
+			give_set_position_news()
 			return
 		end
 
@@ -37,6 +50,7 @@ local function set_position()
 	end
 
 	sim:teleport_object(point_id, actor:game_vertex_id(), actor:level_vertex_id(), position)
+	give_set_position_news()
 end
 
 local function remove_position()
@@ -59,7 +73,7 @@ local function remove_position()
 end
 
 local function actor_on_item_use(obj)
-	if (obj:section() ~= "returner") then
+	if (obj:section() ~= item_section) then
 		return
 	end
 
@@ -80,8 +94,27 @@ local function actor_on_item_use(obj)
 		return
 	end
 
+	if (HasTimer(cooldown_timer_id)) then
+		SetHudMsg(strtransl("st_item_returner_not_ready_hudmsg"), 5)
+		return
+	end
+	
 	SetHudMsg(STR_EMPTY, 0)
-	actor:set_actor_position(position)
+	
+	xr_effects.disable_actor_nightvision()
+    level.add_pp_effector("teleport.ppe", 2006, false)
+    xr_sound.play_sound_by_path("anomaly\\teleport_work_1", false)
+
+	local function tickback1()
+		StopTimer(pp_delay_timer_id)
+		actor:set_actor_position(position)
+	end
+	StartTimer(pp_delay_timer_id, pp_delay, tickback1)
+
+	local function tickback2()
+		StopTimer(cooldown_timer_id)
+	end
+	StartTimer(cooldown_timer_id, cooldown, tickback2)
 end
 
 local function save_state(data)

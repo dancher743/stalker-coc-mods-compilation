@@ -191,6 +191,6 @@
 		<text>Returner</text>
 	</string>
 	<string id="st_returner_descr">
-		<text>A device allowing instant teleportation to a previously saved point within a 30 meter radius.</text>
+		<text>A device that allows for instant teleportation to a previously set position within a 30 meter radius.</text>
 	</string>
 </string_table>
