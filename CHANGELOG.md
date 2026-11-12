@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Features
 * Now Guide's job as a full-fledged job
 * Artifact Merger item. Look for this item at the Military Outpost in Cordon after disabling the Brain Scorcher
+* Added the Returner item, allowing players to mark a position and teleport back to it instead of save-scumming. Look for this item at the Abandoned Lab in Generators
 * Added a new type of news to Dynamic News: "Zone State"
 
 ### Improvements
