@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Features
 * Now Guide's job as a full-fledged job
 * Artifact Merger item. Look for this item at the Military Outpost in Cordon after disabling the Brain Scorcher
+* Added the Returner item, allowing players to mark a position and teleport back to it instead of save-scumming. Look for this item at the Abandoned Lab in Generators
 * Added a new type of news to Dynamic News: "Zone State"
 
 ### Improvements
@@ -46,6 +47,7 @@ All notable changes to this project will be documented in this file.
 * Improved working with `se_obj_cache` in `sim_squad_offline_combat.script` to prevent `[error][ 87]`
 * Added additional checks to `is_item_valid` function in `sim_squad_offline_combat.script`
 * Fixed excess whisper ambient in `l11_pripyat.ltx` and `pripyat.ltx`
+* Corrected the Fast Travel points names at Generators
 
 ### Optimization
 * Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`
@@ -60,6 +62,7 @@ All notable changes to this project will be documented in this file.
 * Added `is_to_release` function to `safe_release_manager.script`
 * Added `se_obj_on_add_to_safe_release` callback to `axr_main.script`
 * Renamed callback `se_obj_on_before_release` to `se_obj_on_before_safe_release`
+* Added `hide_actor_menu` function to `utils.script`
 
 ## [1.5.5] - 2026-10-26
 

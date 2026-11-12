@@ -656,4 +656,14 @@
 	<string id="st_actor_hand_radio_cancel_heli_enemy">
 		<text>You commanded the helicopter not to attack you.</text>
 	</string>
+	
+	<string id="st_item_returner_position_spot_descr">
+		<text>Returner's position</text>
+	</string>
+	<string id="st_item_returner_position_not_set_hudmsg">
+		<text>Position not set.</text>
+	</string>
+	<string id="st_item_returner_position_too_far_hudmsg">
+		<text>You are too far away from the position.</text>
+	</string>
 </string_table>

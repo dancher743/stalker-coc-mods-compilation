@@ -186,4 +186,11 @@
 	<string id="st_actor_hand_radio_descr">
 		<text>A radio left behind by a commander callsign Quartet after Operation Monolith, launched by the military in the summer of 2012 following the shutdown of the Brain Scorcher on Radar. It can be used to command a military helicopter not to attack you.</text>
 	</string>
+	
+	<string id="st_returner">
+		<text>Returner</text>
+	</string>
+	<string id="st_returner_descr">
+		<text>A device allowing instant teleportation to a previously saved point within a 30 meter radius.</text>
+	</string>
 </string_table>
