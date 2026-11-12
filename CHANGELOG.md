@@ -60,6 +60,7 @@ All notable changes to this project will be documented in this file.
 * Added `is_to_release` function to `safe_release_manager.script`
 * Added `se_obj_on_add_to_safe_release` callback to `axr_main.script`
 * Renamed callback `se_obj_on_before_release` to `se_obj_on_before_safe_release`
+* Added `hide_actor_menu` function to `utils.script`
 
 ## [1.5.5] - 2026-10-26
 

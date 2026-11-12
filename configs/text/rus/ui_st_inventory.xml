@@ -339,4 +339,11 @@
 	<string id="st_move_from_bag_all">
 		<text>убрать из рюкзака всё</text>
 	</string>
+	
+	<string id="st_item_returner_set_position">
+		<text>установить позицию</text>
+	</string>
+	<string id="st_item_returner_remove_position">
+		<text>убрать позицию</text>
+	</string>
 </string_table>

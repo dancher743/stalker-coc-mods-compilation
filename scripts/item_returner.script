@@ -1,0 +1,120 @@
+--
+-- Returner item
+-- Implementation: Dancher
+-- Original idea: Cumulative Pack mod
+--
+
+local point_spot_name = "returner_point_spot"
+local point_distance_range_sqr = 30 * 30
+
+local point_id = nil
+local se_point = nil
+
+local function get_position()
+	if (point_id == nil) then
+		return nil
+	end
+
+	se_point = alife_object(point_id)
+
+	return se_point.position
+end
+
+local function set_position()
+	local sim = alife()
+	local actor = db.actor
+	local position = db.actor:position()
+
+	if (se_point == nil) then
+		if (point_id == nil) then
+			se_point = sim:create("returner_point_object", position, actor:level_vertex_id(), actor:game_vertex_id())
+			point_id = se_point.id
+			level.map_add_object_spot_ser(point_id, point_spot_name, strtransl("st_item_returner_position_spot_descr"))
+			return
+		end
+
+		se_point = alife_object(point_id)
+	end
+
+	sim:teleport_object(point_id, actor:game_vertex_id(), actor:level_vertex_id(), position)
+end
+
+local function remove_position()
+	if (point_id == nil) then
+		return
+	end
+
+	if (se_point == nil) then
+		se_point = alife_object(point_id)
+	end
+
+	if (level.map_has_object_spot(point_id, point_spot_name) == 1) then
+		level.map_remove_object_spot(point_id, point_spot_name)
+	end
+
+	safe_release_manager.release(se_point)
+
+	point_id = nil
+	se_point = nil
+end
+
+local function actor_on_item_use(obj)
+	if (obj:section() ~= "returner") then
+		return
+	end
+
+	local position = get_position()
+
+	if (position == nil) then
+		utils.hide_actor_menu()
+		SetHudMsg(strtransl("st_item_returner_position_not_set_hudmsg"), 5)
+		return
+	end
+
+	local actor = db.actor
+	local dist_to_actor_sqr = position:distance_to_sqr(actor:position())
+
+	if (dist_to_actor_sqr > point_distance_range_sqr) then
+		utils.hide_actor_menu()
+		SetHudMsg(strtransl("st_item_returner_position_too_far_hudmsg"), 5)
+		return
+	end
+
+	SetHudMsg(STR_EMPTY, 0)
+	actor:set_actor_position(position)
+end
+
+local function save_state(data)
+	if (data.item_returner == nil) then
+		data.item_returner = {}
+	end	
+	data.item_returner.point_id = point_id
+end
+
+local function load_state(data)
+	if (data.item_returner) then
+		point_id = data.item_returner.point_id or point_id
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("actor_on_item_use",actor_on_item_use)
+	RegisterScriptCallback("save_state",save_state)
+	RegisterScriptCallback("load_state",load_state)
+end
+
+function set_position_functor()
+	return strtransl("st_item_returner_set_position")
+end
+
+function remove_position_functor()
+	return strtransl("st_item_returner_remove_position")
+end
+
+function set_position_action_functor()
+	set_position()
+end
+
+function remove_position_action_functor()
+	remove_position()
+end

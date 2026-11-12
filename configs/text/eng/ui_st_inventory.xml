@@ -339,4 +339,11 @@
 	<string id="st_move_from_bag_all">
 		<text>move from bag all</text>
 	</string>
+	
+	<string id="st_item_returner_set_position">
+		<text>set position</text>
+	</string>
+	<string id="st_item_returner_remove_position">
+		<text>remove position</text>
+	</string>
 </string_table>

@@ -656,4 +656,14 @@
 	<string id="st_actor_hand_radio_cancel_heli_enemy">
 		<text>Вы приказали вертолёту не атаковать вас.</text>
 	</string>
+	
+	<string id="st_item_returner_position_spot_descr">
+		<text>Позиция Возвращателя</text>
+	</string>
+	<string id="st_item_returner_position_not_set_hudmsg">
+		<text>Позиция не установлена.</text>
+	</string>
+	<string id="st_item_returner_position_too_far_hudmsg">
+		<text>Вы слишком далеко от позиции.</text>
+	</string>
 </string_table>

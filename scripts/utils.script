@@ -1153,3 +1153,13 @@ function stalker_eye_range(obj)
 
 	return eye_range * max_view_dist
 end
+
+function hide_actor_menu()
+	local hud = get_hud()
+
+	if (hud == nil) then
+		return
+	end
+
+	hud:HideActorMenu()
+end
