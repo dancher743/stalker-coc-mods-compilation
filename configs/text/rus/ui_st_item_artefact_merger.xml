@@ -10,7 +10,7 @@
 	<string id="ui_st_available_artefacts">
         <text>Доступно</text>
     </string>
-	<string id="ui_st_result_artefact">
+	<string id="ui_st_total_artefacts">
 		<text>Итог</text>
 	</string>
 	<string id="ui_st_closest_anomaly_zone">
@@ -28,5 +28,9 @@
 	</string>
 	<string id="ui_st_too_far_from_anomaly">
 		<text>Подойдите к аномальной зоне ближе.</text>
+	</string>
+	
+	<string id="st_artefact_merge_result">
+		<text>Результат</text>
 	</string>
 </string_table>

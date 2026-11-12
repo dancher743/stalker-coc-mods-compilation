@@ -252,7 +252,7 @@ function artefact_merger_ui:OnPartsListItemClicked()
 
 	local item_section = se_item:section_name()
 	local result_section = self.combinations[item_section]["result"]
-	local result_text = strtransl("ui_st_result_artefact")
+	local result_text = strtransl("ui_st_total_artefacts")
 	local item_name = strtransl(news_manager.get_inv_name(item_section))
 	local amount = self.combinations[item_section]["need"]
 	local result_name = strtransl(news_manager.get_inv_name(result_section))
@@ -414,12 +414,16 @@ function artefact_merger_ui:OnButton_repair()
 	end
 	create_item(result_section, db.actor)
 
+	xr_statistic.inc_rank("artefacts_merged")
+
 	xr_effects.disable_actor_nightvision()
 	level.add_pp_effector("teleport.ppe", 2006, false)
 
-	xr_sound.play_sound_by_path("anomaly\\teleport_work_1", false)
-
-	xr_statistic.inc_rank("artefacts_merged")
+	local caption = strtransl("st_artefact_merger")
+	local inv_nam = news_manager.get_inv_name(result_section)
+	local text = strformat("%s: %s x1", strtransl("st_artefact_merge_result"), strtransl(inv_nam))
+	local icon = "ui_iconsTotal_esc_blockpost_case_to_trader"
+	news_helper.give_news(caption, text, icon, 600, 6000)
 
 	SetHudMsg(STR_EMPTY,0)
 	self:OnButton_back_clicked()

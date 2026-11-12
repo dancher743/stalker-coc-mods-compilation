@@ -1,10 +1,13 @@
 --
 -- Artifact Merger item
 -- Implementation: Dancher
+-- Original idea: GSC Game World, AMK mod
 --
 
-local function on_game_load()
-	if has_info("artefact_merger_spawned") or has_info("bar_deactivate_radar_done") == false then
+local function actor_on_info_callback(_, info_id)
+	if (info_id ~= "bar_deactivate_radar_done" or 
+		has_info("artefact_merger_spawned")) 
+	then
 		return
 	end
 
@@ -17,7 +20,7 @@ local function on_game_load()
 end
 
 local function actor_on_item_use(obj)
-	if obj:section() ~= "artefact_merger" then
+	if (obj:section() ~= "artefact_merger") then
 		return
 	end
 	
@@ -33,6 +36,6 @@ local function actor_on_item_use(obj)
 end
 
 function on_game_start()
-	RegisterScriptCallback("on_game_load",on_game_load)
+	RegisterScriptCallback("actor_on_info_callback",actor_on_info_callback)
 	RegisterScriptCallback("actor_on_item_use",actor_on_item_use)
 end

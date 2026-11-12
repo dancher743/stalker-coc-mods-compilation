@@ -10,8 +10,8 @@
 	<string id="ui_st_available_artefacts">
         <text>Available</text>
     </string>
-	<string id="ui_st_result_artefact">
-		<text>Result</text>
+	<string id="ui_st_total_artefacts">
+		<text>Total</text>
 	</string>
 	<string id="ui_st_closest_anomaly_zone">
 		<text>Closest anomaly zone</text>
@@ -28,5 +28,9 @@
 	</string>
 	<string id="ui_st_too_far_from_anomaly">
 		<text>Move closer to the anomalous area.</text>
+	</string>
+	
+	<string id="st_artefact_merge_result">
+		<text>Result</text>
 	</string>
 </string_table>
