@@ -140,7 +140,6 @@ end
 local killer_squad_ids = {}
 local victim_squad_ids = {}
 --
-local killer_squad_npc_powers = {}
 local victim_squad_npc_powers = {}
 
 local function execute_kill(se_killer, se_victim, killer_squad, victim_squad)
@@ -164,7 +163,6 @@ end
 local function execute_combat_on_map(squad1, squad2)
 	iempty_table(killer_squad_ids)
 	iempty_table(victim_squad_ids)
-	empty_table(killer_squad_npc_powers)
 	empty_table(victim_squad_npc_powers)
 	
 	for k in squad1:squad_members() do
@@ -187,12 +185,8 @@ local function execute_combat_on_map(squad1, squad2)
 		local squad1_npc = se_obj_cache:get(squad1_npc_id)
 		
 		if (squad1_npc) then
-			local squad1_npc_power = killer_squad_npc_powers[squad1_npc_id]
-			if (squad1_npc_power == nil) then
-				squad1_npc_power = calculate_npc_power(squad1_npc_id)
-				killer_squad_npc_powers[squad1_npc_id] = squad1_npc_power
-			end
-
+			local squad1_npc_power = calculate_npc_power(squad1_npc_id)
+			
 			for j = #victim_squad_ids, 1, -1 do
 				local squad2_npc_id = victim_squad_ids[j]
 				local squad2_npc = se_obj_cache:get(squad2_npc_id)
