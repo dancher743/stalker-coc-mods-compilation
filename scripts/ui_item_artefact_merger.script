@@ -426,7 +426,7 @@ function artefact_merger_ui:OnButton_repair()
 	end
 
 	xr_effects.disable_actor_nightvision()
-	level.add_pp_effector("teleport.ppe", 2006, false)
+	level.add_pp_effector("teleport.ppe", 2007, false)
 	xr_sound.play_sound_by_path("anomaly\\teleport_work_1", false)
 
 	local timer_id = get_merge_timer_id()
@@ -485,7 +485,7 @@ end
 function artefact_merger_ui:GetClosestAnomaly()
 	local actor_pos = db.actor:position()
 
-	local scan_distance_sqr = 50 * 50
+	local scan_distance_sqr = 51 * 51
 	local min_distance_sqr = scan_distance_sqr
 
 	local closest_anomaly = nil
@@ -507,7 +507,7 @@ function artefact_merger_ui:GetClosestAnomaly()
 	local meters = math.sqrt(min_distance_sqr)
 	meters = math.floor(meters)
 
-	if (meters > 20) then
+	if (meters > 15) then
 		return nil, meters
 	end
 
