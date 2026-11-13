@@ -89,14 +89,6 @@ local function calculate_npc_power(id)
 	return power
 end
 
-local function calculate_squad_power(squad)
-	local power = 0
-	for k in squad:squad_members() do
-		power = power + calculate_npc_power(k.id)
-	end
-	return power
-end
-
 local function relocate_loot(is_killer_stalker, is_victim_stalker, killer_community, se_killer, se_victim)
 	if (not is_killer_stalker or killer_community == community.zombied) then
 		return
@@ -147,6 +139,9 @@ end
 -- from Anomaly 1.5.1.2
 local killer_squad_ids = {}
 local victim_squad_ids = {}
+--
+local killer_squad_npc_powers = {}
+local victim_squad_npc_powers = {}
 
 local function execute_kill(se_killer, se_victim, killer_squad, victim_squad)
 	local is_killer_stalker = killer_squad:is_stalker()
@@ -169,6 +164,8 @@ end
 local function execute_combat_on_map(squad1, squad2)
 	iempty_table(killer_squad_ids)
 	iempty_table(victim_squad_ids)
+	empty_table(killer_squad_npc_powers)
+	empty_table(victim_squad_npc_powers)
 	
 	for k in squad1:squad_members() do
 		table.insert(killer_squad_ids, k.id)
@@ -190,14 +187,23 @@ local function execute_combat_on_map(squad1, squad2)
 		local squad1_npc = se_obj_cache:get(squad1_npc_id)
 		
 		if (squad1_npc) then
-			local squad1_npc_power = calculate_npc_power(squad1_npc_id)
+			local squad1_npc_power = killer_squad_npc_powers[squad1_npc_id]
+			if (squad1_npc_power == nil) then
+				squad1_npc_power = calculate_npc_power(squad1_npc_id)
+				killer_squad_npc_powers[squad1_npc_id] = squad1_npc_power
+			end
 
 			for j = #victim_squad_ids, 1, -1 do
 				local squad2_npc_id = victim_squad_ids[j]
 				local squad2_npc = se_obj_cache:get(squad2_npc_id)
 				
 				if (squad2_npc) then
-					local squad2_npc_power = calculate_npc_power(squad2_npc_id)
+					local squad2_npc_power = victim_squad_npc_powers[squad2_npc_id]
+					if (squad2_npc_power == nil) then
+						squad2_npc_power = calculate_npc_power(squad2_npc_id)
+						victim_squad_npc_powers[squad2_npc_id] = squad2_npc_power
+					end
+
 					local se_killer = nil
 					local se_victim = nil
 					local killer_squad = nil
@@ -228,15 +234,14 @@ local function execute_combat_on_map(squad1, squad2)
 							se_victim_id = se_victim.id
 							se_killer_id = se_killer.id
 							execute_kill(se_killer, se_victim, killer_squad, victim_squad)
+							
+							if (se_victim.id == squad1_npc_id) then
+								table.remove(killer_squad_ids, i)
+								break
+							elseif (se_victim.id == squad2_npc_id) then
+								table.remove(victim_squad_ids, j)
+							end
 						end
-
-						if (se_victim.id == squad1_npc_id) then
-							table.remove(killer_squad_ids, i)
-						elseif (se_victim.id == squad2_npc_id) then
-							table.remove(victim_squad_ids, j)
-						end
-
-						break
 					end
 				else
 					table.remove(victim_squad_ids, j)
@@ -268,10 +273,10 @@ local function prepare_combats(squads)
 		local squad1 = squads[i]
 		
 		if (squad1 and not processed_squads[squad1.id]) then
-			for j=1,squads_count do
+			for j=i+1,squads_count do
 				local squad2 = squads[j]
 				
-				if (squad2 and squad1.id ~= squad2.id and not processed_squads[squad2.id] and 
+				if (squad2 and not processed_squads[squad2.id] and 
 					simulation_objects.is_on_the_same_level(squad1, squad2) and 
 					(is_on_actor_level(squad1) == false and is_on_actor_level(squad2) == false)) 
 				then
@@ -493,7 +498,7 @@ local function update()
 	
 	local level_to_update = nil
 	
-	for _,level_id in pairs(combat_squads_level_ids_shuffled) do
+	for _,level_id in ipairs(combat_squads_level_ids_shuffled) do
 		local combat_squads = combat_squads_table[level_id]
 		if (level_id ~= actor_level_id and combat_squads.were_combats == false) then
 			level_to_update = level_id
