@@ -48,6 +48,7 @@ All notable changes to this project will be documented in this file.
 * Added additional checks to `is_item_valid` function in `sim_squad_offline_combat.script`
 * Fixed excess whisper ambient in `l11_pripyat.ltx` and `pripyat.ltx`
 * Corrected the Fast Travel points names at Generators
+* Fixed `relocate_loot` function in `sim_squad_offline_combat.script`
 
 ### Optimization
 * Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`
