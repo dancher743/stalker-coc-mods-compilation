@@ -31,8 +31,6 @@ function artefact_merger_ui:__init(owner) super()
 	self:InitCombinationsTable()
 	self:InitControls()
 	self:InitCallBacks()
-
-	SetHudMsg(STR_EMPTY,0)
 end
 
 function artefact_merger_ui:__finalize()
@@ -261,7 +259,8 @@ function artefact_merger_ui:OnPartsListItemClicked()
 
 	local color = #self.actor_artefacts[item_section] >= amount and self.caption_has_parts_text_color or self.caption_parts_text_color
 	self.caption_parts:SetTextColor(color)
-	
+
+	--[[
 	local anomaly_text = STR_EMPTY
 	local anomaly_text_color = self.caption_parts_text_color
 
@@ -278,6 +277,7 @@ function artefact_merger_ui:OnPartsListItemClicked()
 
 	self.caption_anomaly_zone:SetText(anomaly_text)
 	self.caption_anomaly_zone:SetTextColor(anomaly_text_color)
+	]]
 
 	local w,h = item.width,item.height
 	if (utils.is_widescreen()) then
@@ -396,7 +396,7 @@ function artefact_merger_ui:OnButton_repair()
 
 	if (artefacts_amount < amount) then
 		self:OnButton_back_clicked()
-		SetHudMsg(strtransl("ui_st_not_enough_artefacts_to_merger"),5)
+		self:GiveNews(strtransl("ui_st_not_enough_artefacts_to_merger"))
 		return
 	end
 
@@ -418,14 +418,12 @@ function artefact_merger_ui:OnButton_repair()
 
 	xr_effects.disable_actor_nightvision()
 	level.add_pp_effector("teleport.ppe", 2006, false)
+	xr_sound.play_sound_by_path("detectors\\contact_9", false)
 
-	local caption = strtransl("st_artefact_merger")
-	local inv_nam = news_manager.get_inv_name(result_section)
-	local text = strformat("%s: %s x1", strtransl("st_artefact_merge_result"), strtransl(inv_nam))
-	local icon = "ui_iconsTotal_esc_blockpost_case_to_trader"
-	news_helper.give_news(caption, text, icon, 600, 6000)
+	local caption = strtransl("ui_st_artefact_merge_result")
+	local text = strtransl(news_manager.get_inv_name(result_section)) .. " x1"
+	self:GiveNews2(caption, text, 600, 6000)
 
-	SetHudMsg(STR_EMPTY,0)
 	self:OnButton_back_clicked()
 end
 
@@ -504,13 +502,23 @@ function artefact_merger_ui:CheckClosestAnomaly(item_section)
 		if (self.closest_anomaly:can_spawn_artefact(item_section)) then
 			return true
 		else
-			SetHudMsg(strtransl("ui_st_anomaly_doesnt_fit"),5)
+			self:GiveNews(strtransl("ui_st_anomaly_doesnt_fit"))
 			return false
 		end
 	else
-		SetHudMsg(strtransl("ui_st_too_far_from_anomaly"),5)
+		self:GiveNews(strtransl("ui_st_too_far_from_anomaly"))
 		return false
 	end
 
     return false
+end
+
+function artefact_merger_ui:GiveNews(text, delay, show_time)
+	local caption = strtransl("st_artefact_merger")
+	self:GiveNews2(caption, text, delay, show_time)
+end
+
+function artefact_merger_ui:GiveNews2(caption, text, delay, show_time)
+	local icon = "ui_iconsTotal_esc_blockpost_case_to_trader"
+	news_helper.give_news(caption, text, icon, delay, show_time)
 end

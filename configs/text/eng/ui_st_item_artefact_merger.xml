@@ -29,8 +29,7 @@
 	<string id="ui_st_too_far_from_anomaly">
 		<text>Move closer to the anomalous area.</text>
 	</string>
-	
-	<string id="st_artefact_merge_result">
-		<text>Result</text>
+	<string id="ui_st_artefact_merge_result">
+		<text>Merge result:</text>
 	</string>
 </string_table>

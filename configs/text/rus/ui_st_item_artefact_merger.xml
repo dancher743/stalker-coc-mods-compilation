@@ -29,8 +29,7 @@
 	<string id="ui_st_too_far_from_anomaly">
 		<text>Подойдите к аномальной зоне ближе.</text>
 	</string>
-	
-	<string id="st_artefact_merge_result">
-		<text>Результат</text>
+	<string id="ui_st_artefact_merge_result">
+		<text>Результат трансмутации:</text>
 	</string>
 </string_table>
