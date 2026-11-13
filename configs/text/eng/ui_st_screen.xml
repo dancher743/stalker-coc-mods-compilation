@@ -487,4 +487,8 @@
 	<string id="general_in_items">
 		<text>Items received:</text>
 	</string>
+	
+	<string id="st_meters_short">
+		<text>m</text>
+	</string>
 </string_table>

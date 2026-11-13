@@ -4,6 +4,15 @@
 --
 
 -------------------------------------------------------------------
+local merge_timer_counter = 0
+local merge_timer_id = "artefact_merge_timer_"
+
+local function get_merge_timer_id()
+	merge_timer_counter = merge_timer_counter + 1
+	return merge_timer_id .. merge_timer_counter
+end
+
+-------------------------------------------------------------------
 class "load_item" (CUIListBoxItem)
 function load_item:__init(height) super(height)
 	self.file_name		= "filename"
@@ -260,24 +269,27 @@ function artefact_merger_ui:OnPartsListItemClicked()
 	local color = #self.actor_artefacts[item_section] >= amount and self.caption_has_parts_text_color or self.caption_parts_text_color
 	self.caption_parts:SetTextColor(color)
 
-	--[[
 	local anomaly_text = STR_EMPTY
 	local anomaly_text_color = self.caption_parts_text_color
+	local closest_text = strtransl("ui_st_closest_anomaly_zone")
+	local closest_meters = nil
+	if (self.closest_anomaly_meters) then
+		closest_meters = self.closest_anomaly_meters .. strtransl("st_meters_short")
+	end
 
 	if (self.closest_anomaly) then
-		anomaly_text = strformat("%s: %sm", strtransl("ui_st_closest_anomaly_zone"), math.floor(self.closest_anomaly_meters))
+		anomaly_text = strformat("%s: %s", closest_text, closest_meters)
 		anomaly_text_color = self.caption_has_parts_text_color
 	else
-		if (self.closest_anomaly_meters) then
-			anomaly_text = strformat("%s: %sm", strtransl("ui_st_closest_anomaly_zone"), math.floor(self.closest_anomaly_meters))
+		if (closest_meters) then
+			anomaly_text = strformat("%s: %s", closest_text, closest_meters)
 		else
-			anomaly_text = strformat("%s: --", strtransl("ui_st_closest_anomaly_zone"))
+			anomaly_text = strformat("%s: --", closest_text)
 		end
 	end
 
 	self.caption_anomaly_zone:SetText(anomaly_text)
 	self.caption_anomaly_zone:SetTextColor(anomaly_text_color)
-	]]
 
 	local w,h = item.width,item.height
 	if (utils.is_widescreen()) then
@@ -412,17 +424,21 @@ function artefact_merger_ui:OnButton_repair()
 		table.remove(artefacts, i)
 		release(artefact_to_remove)
 	end
-	create_item(result_section, db.actor)
-
-	xr_statistic.inc_rank("artefacts_merged")
 
 	xr_effects.disable_actor_nightvision()
 	level.add_pp_effector("teleport.ppe", 2006, false)
-	xr_sound.play_sound_by_path("detectors\\contact_9", false)
+	xr_sound.play_sound_by_path("anomaly\\teleport_work_1", false)
 
-	local caption = strtransl("ui_st_artefact_merge_result")
-	local text = strtransl(news_manager.get_inv_name(result_section)) .. " x1"
-	self:GiveNews2(caption, text, 600, 6000)
+	local timer_id = get_merge_timer_id()
+	local function tickback()
+		StopTimer(timer_id)
+		create_item(result_section, db.actor)
+		xr_statistic.inc_rank("artefacts_merged")
+		local caption = strtransl("ui_st_artefact_merge_result")
+		local text = strtransl(news_manager.get_inv_name(result_section)) .. " x1"
+		self:GiveNews2(caption, text)
+	end
+	StartTimer(timer_id, 2000, tickback)
 
 	self:OnButton_back_clicked()
 end
@@ -489,6 +505,7 @@ function artefact_merger_ui:GetClosestAnomaly()
 	end
 
 	local meters = math.sqrt(min_distance_sqr)
+	meters = math.floor(meters)
 
 	if (meters > 20) then
 		return nil, meters
@@ -513,12 +530,12 @@ function artefact_merger_ui:CheckClosestAnomaly(item_section)
     return false
 end
 
-function artefact_merger_ui:GiveNews(text, delay, show_time)
+function artefact_merger_ui:GiveNews(text)
 	local caption = strtransl("st_artefact_merger")
-	self:GiveNews2(caption, text, delay, show_time)
+	self:GiveNews2(caption, text)
 end
 
-function artefact_merger_ui:GiveNews2(caption, text, delay, show_time)
+function artefact_merger_ui:GiveNews2(caption, text)
 	local icon = "ui_iconsTotal_esc_blockpost_case_to_trader"
-	news_helper.give_news(caption, text, icon, delay, show_time)
+	news_helper.give_news(caption, text, icon)
 end

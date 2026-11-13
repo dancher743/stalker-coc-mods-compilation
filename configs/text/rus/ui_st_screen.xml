@@ -474,4 +474,8 @@
 	<string id="general_in_items">
 		<text>Получены предметы:</text>
 	</string>
+	
+	<string id="st_meters_short">
+		<text>м</text>
+	</string>
 </string_table>

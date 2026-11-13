@@ -14,7 +14,7 @@
 		<text>Total</text>
 	</string>
 	<string id="ui_st_closest_anomaly_zone">
-		<text>Closest anomaly zone</text>
+		<text>Closest anomalous area</text>
 	</string>
 	<string id="ui_st_launch_artefact_merger">
 		<text>Launch</text>
