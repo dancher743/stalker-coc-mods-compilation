@@ -169,9 +169,7 @@ function update_actor_disguise_by_patch()
 	end
 	
 	if not patch_in_slot and has_actor_disguised then
-		if has_actor_in_comabat() then
-			disguise_news.send_disguise_tip_once(disguise_tip_type.in_combat)
-		elseif has_actor_in_sight() then
+		if has_actor_in_sight() then
 			disguise_news.send_disguise_tip_once(disguise_tip_type.not_allowed)
 		else
 			change_actor_community(default_faction)

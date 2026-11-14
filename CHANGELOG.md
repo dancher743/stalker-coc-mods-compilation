@@ -31,6 +31,7 @@ All notable changes to this project will be documented in this file.
 * Disabled Pripyat's psy zone and disabled the level changers to/from Jupiter
 * Added `se_obj_on_before_release` callback to `axr_companions.script`
 * Removed randomization from the delay of angry stash owner message in Dynamic News
+* Removed "in combat" state from undisguising
 
 ### Fixes
 * Refactored the code of Fast Travel options
