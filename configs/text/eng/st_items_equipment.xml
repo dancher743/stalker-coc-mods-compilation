@@ -184,7 +184,7 @@
 		<text>Hand radio</text>
 	</string>
 	<string id="st_actor_hand_radio_descr">
-		<text>A radio left behind by a commander callsign Quartet after Operation Monolith, launched by the military in the summer of 2012 following the shutdown of the Brain Scorcher on Radar. It can be used to command a military helicopter not to attack you.</text>
+		<text>A radio left behind by a commander callsign Quartet after Operation Monolith, launched by the military in the summer of 2012 following the shutdown of the Brain Scorcher on Radar. Can be used to issue commands to a military helicopter after attacking a stalker or a mutant. Can also be used to command it to hold fire.</text>
 	</string>
 	
 	<string id="st_returner">

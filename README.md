@@ -14,7 +14,7 @@ Support Russian and English languages.
 * Disguise (with fixes and improvements)
 * Critical hits
 * Stashes renewing
-* Artifact Merger and Returner items
+* Artifact Merger and Returner items. Also added Hand radio to command helicopters.
 * Fixed and restored squads A-Life and added offline combats
 * Restored SoC and CS functionality: opening the armory at the Freedom base, sleeping sounds, jokes and campfire stories for NPC, Screw scope dialog, unique weapons from SoC and CS etc.
 * Fixed original Call of Chernobyl functionality: artefacts and mutants part drop, "sleeping" BTRs, sounds of Army's megaphone on Escape, missing mutants (Rat Wolf and Psysucker), text on the health bar etc.

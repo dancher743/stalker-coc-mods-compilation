@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 * Artifact Merger item. Look for this item at the Military Outpost in Cordon after disabling the Brain Scorcher
 * Added the Returner item, allowing players to mark a position and teleport back to it instead of save-scumming. Look for this item at the Abandoned Lab in Generators
 * Added a new type of news to Dynamic News: "Zone State"
+* Extended Hand radio item! Can be used to issue commands to a military helicopter after attacking a stalker or a mutant.
 
 ### Improvements
 * Added `1.25` as factor into population factors

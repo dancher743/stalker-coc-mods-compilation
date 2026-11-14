@@ -3,6 +3,24 @@
 -- By Dancher
 --
 
+local hit_npc = nil
+
+local function give_news(text, show_time)
+	local icon = "ui_inGame2_Evakuatsiya"
+
+	news_helper.give_news(caption, text, icon, _, show_time)
+end
+
+local function set_heli_flag(obj, flag)
+	local id = obj:id()
+
+	if (db.storage[id] == nil) then
+		return
+	end
+
+	db.storage[id].heli_enemy_flag = flag
+end
+
 local function actor_on_item_use(obj)
 	if (obj:section() ~= "actor_hand_radio") then
 		return
@@ -15,10 +33,57 @@ local function actor_on_item_use(obj)
 
 	utils.save_var(db.actor,"heli_enemy_flag",nil)
 
-	local text = strtransl("st_actor_hand_radio_cancel_heli_enemy")
-	news_helper.give_news(_, text)
+	give_news(strtransl("st_actor_hand_radio_cancel_heli_actor_enemy"))
+end
+
+local function npc_or_monster_on_hit_callback(victim, _, _, who)
+	if (who:id() ~= 0) then
+		return
+	end
+
+	hit_npc = victim
 end
 
 function on_game_start()
 	RegisterScriptCallback("actor_on_item_use",actor_on_item_use)
+	RegisterScriptCallback("npc_on_hit_callback", npc_or_monster_on_hit_callback)
+	RegisterScriptCallback("monster_on_hit_callback", npc_or_monster_on_hit_callback)
+end
+
+function set_heli_enemy_functor()
+	return strtransl("st_actor_hand_radio_set_heli_enemy")
+end
+
+function set_heli_enemy_action_functor()
+	if (hit_npc and hit_npc:alive() == false) then
+		hit_npc = nil
+	end
+
+	if (hit_npc == nil or hit_npc:id() == 0) then
+		give_news(strtransl("st_actor_hand_radio_no_enemy_for_heli"))
+		return
+	end
+
+	alun_utils.execute_script_on_squad(hit_npc, set_heli_flag, true)
+
+	local who = hit_npc
+	local a = strtransl("st_actor_hand_radio_request_heli_enemy")
+	local b = IsStalker(who) and dynamic_news_helper.GetCommunityDescription(who,math.random(1,2)) or dynamic_news_helper.GetMonsterDescription(who,6)
+	local text = strformat(a, b)
+
+	give_news(text, 6000)
+end
+
+function remove_heli_enemy_functor()
+	return strtransl("st_actor_hand_radio_remove_heli_enemy")
+end
+
+function remove_heli_enemy_action_functor()
+	if (hit_npc == nil or hit_npc:id() == 0) then
+		return
+	end
+
+	alun_utils.execute_script_on_squad(hit_npc, set_heli_flag, nil)
+
+	give_news(strtransl("st_actor_hand_radio_cancel_heli_enemy"))
 end
