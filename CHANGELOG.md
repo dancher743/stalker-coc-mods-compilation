@@ -32,6 +32,7 @@ All notable changes to this project will be documented in this file.
 * Added `se_obj_on_before_release` callback to `axr_companions.script`
 * Removed randomization from the delay of angry stash owner message in Dynamic News
 * Removed "in combat" state from undisguising
+* Decreased cost of `p90` in `ecolog_loadout`
 
 ### Fixes
 * Refactored the code of Fast Travel options
