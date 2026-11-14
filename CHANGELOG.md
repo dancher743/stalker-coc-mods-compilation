@@ -51,6 +51,7 @@ All notable changes to this project will be documented in this file.
 * Fixed excess whisper ambient in `l11_pripyat.ltx` and `pripyat.ltx`
 * Corrected the Fast Travel points names at Generators
 * Fixed `relocate_loot` function in `sim_squad_offline_combat.script`
+* Made supplies of ecolog explorer guards more lore-friendly
 
 ### Optimization
 * Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`

@@ -139,8 +139,8 @@
     <visual>actors\stalker_ecologist\stalker_ecolog_guard</visual>
     <supplies>
         [spawn] \n
-        wpn_g36 = 1 \n
-        ammo_5.56x45_ss190 = 1 \n
+        wpn_spas12 = 1 \n
+        ammo_12x70_buck = 1 \n
         wpn_pm = 1 \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items.xml"
@@ -167,8 +167,8 @@
         [spawn] \n
         wpn_l85 = 1 \n
         ammo_5.56x45_ss190 = 1 \n
-        wpn_pm = 1 \n
-        ammo_9x18_fmj = 1 \n
+        wpn_usp = 1 \n
+        ammo_11.43x23_fmj = 1 \n
 #include "gameplay\character_items.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs_2.xml"
@@ -193,8 +193,8 @@
         [spawn] \n
         wpn_lr300 = 1 \n
         ammo_5.56x45_ss190 = 1 \n
-        wpn_pm = 1\n
-        ammo_9x18_fmj = 1 \n
+        wpn_hpsa = 1\n
+        ammo_9x19_fmj = 1 \n
 #include "gameplay\character_items.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs_2.xml"
