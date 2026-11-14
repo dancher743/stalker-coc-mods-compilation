@@ -656,14 +656,23 @@
 	<string id="st_actor_hand_radio_cancel_heli_actor_enemy">
 		<text>Вы приказали вертолёту не атаковать вас.</text>
 	</string>
+	<string id="st_actor_hand_radio_cant_cancel_heli_actor_enemy">
+		<text>Вертолёт не атакует вас.</text>
+	</string>
 	<string id="st_actor_hand_radio_request_heli_enemy">
 		<text>Вы запросили поддержку вертолёта. Цель: %s.</text>
 	</string>
 	<string id="st_actor_hand_radio_cancel_heli_enemy">
 		<text>Вы отменили поддержку вертолёта.</text>
 	</string>
+	<string id="st_actor_hand_radio_cant_request_actor_is_enemy">
+		<text>Вы не можете запросить поддержку вертолёта: он атакует вас.</text>
+	</string>
 	<string id="st_actor_hand_radio_no_enemy_for_heli">
 		<text>У вас нет цели, чтобы запросить поддержку вертолёта.</text>
+	</string>
+	<string id="st_actor_hand_radio_heli_cooldown">
+		<text>Нужно подождать, прежде чем снова приказать вертолёту.</text>
 	</string>
 	<string id="st_actor_hand_radio_set_heli_enemy">
 		<text>запросить поддержку</text>

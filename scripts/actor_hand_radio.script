@@ -28,12 +28,24 @@ local function actor_on_item_use(obj)
 
 	local heli_enemy_flag = utils.load_var(db.actor,"heli_enemy_flag",false)
 	if (heli_enemy_flag == false) then
+		give_news(strtransl("st_actor_hand_radio_cant_cancel_heli_actor_enemy"))
+		return
+	end
+
+	local timer_id = "actor_hand_radio_cooldown"
+	if (HasTimer(timer_id)) then
+		give_news(strtransl("st_actor_hand_radio_heli_cooldown"))
 		return
 	end
 
 	utils.save_var(db.actor,"heli_enemy_flag",nil)
 
 	give_news(strtransl("st_actor_hand_radio_cancel_heli_actor_enemy"))
+	
+	local function tickback()
+		StopTimer(timer_id)
+	end
+	StartTimer(timer_id, 30000, tickback)
 end
 
 local function npc_or_monster_on_hit_callback(victim, _, _, who)
@@ -55,6 +67,12 @@ function set_heli_enemy_functor()
 end
 
 function set_heli_enemy_action_functor()
+	local heli_enemy_flag = utils.load_var(db.actor,"heli_enemy_flag",false)
+	if (heli_enemy_flag) then
+		give_news(strtransl("st_actor_hand_radio_cant_request_actor_is_enemy"))
+		return
+	end
+	
 	if (hit_npc and hit_npc:alive() == false) then
 		hit_npc = nil
 	end

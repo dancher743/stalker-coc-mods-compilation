@@ -656,14 +656,23 @@
 	<string id="st_actor_hand_radio_cancel_heli_actor_enemy">
 		<text>You commanded the helicopter to hold fire.</text>
 	</string>
+	<string id="st_actor_hand_radio_cant_cancel_heli_actor_enemy">
+		<text>The helicopter is not firing at you.</text>
+	</string>
 	<string id="st_actor_hand_radio_request_heli_enemy">
 		<text>Helicopter support requested. Target: %s.</text>
 	</string>
 	<string id="st_actor_hand_radio_cancel_heli_enemy">
 		<text>Helicopter support canceled.</text>
 	</string>
+	<string id="st_actor_hand_radio_cant_request_actor_is_enemy">
+		<text>Cannot request helicopter support: it's firing at you.</text>
+	</string>
 	<string id="st_actor_hand_radio_no_enemy_for_heli">
 		<text>No target to request helicopter support.</text>
+	</string>
+	<string id="st_actor_hand_radio_heli_cooldown">
+		<text>You need to wait before commanding the helicopter again.</text>
 	</string>
 	<string id="st_actor_hand_radio_set_heli_enemy">
 		<text>request support</text>
