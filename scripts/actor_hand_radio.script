@@ -6,9 +6,7 @@
 local hit_npc = nil
 
 local function give_news(text, show_time)
-	local icon = "ui_inGame2_Evakuatsiya"
-
-	news_helper.give_news(caption, text, icon, _, show_time)
+	news_helper.give_news(caption, text, _, _, show_time)
 end
 
 local function set_heli_flag(obj, flag)
