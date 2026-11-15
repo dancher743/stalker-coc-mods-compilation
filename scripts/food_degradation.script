@@ -4,8 +4,10 @@
 --
 
 local factors = nil
+local conditions = nil
 local food = nil
 local is_initialized = false
+local last_check_time = nil
 
 local function try_add_item(item)
 	local section = item:section()
@@ -14,29 +16,76 @@ local function try_add_item(item)
 		return
 	end
 
-	food[item:id()] = item
+	local id = item:id()
+
+	food[id] = { item, section }
+	if (conditions[id] ~= nil) then
+		item:set_condition(conditions[id])
+	else
+		conditions[id] = item:condition()
+	end
 end
 
 local function remove_item(item)
-	food[item:id()] = nil
+	local id = item:id()
+
+	food[id] = nil
+	conditions[id] = nil
 end
 
 local function level_time_on_changed()
+	local current_time = game.get_game_time()
+
+	if (last_check_time == nil) then
+		last_check_time = current_time
+		return
+	end
+
+	local diff_sec = current_time:diffSec(last_check_time)
+	local diff_min = diff_sec / 60
+
 	local radiation_factor = db.actor.radiation / 10
-	
-	for k,item in pairs(food) do
-		local section = item:section()
-		local factor = factors[section] + radiation_factor
+
+	for id, data in pairs(food) do
+		local item = data[1]
+		local section = data[2]
+		local factor = diff_min * (factors[section] + radiation_factor)
 		local condition = math.max(0, item:condition() - factor)
 
 		if (condition > 0) then
 			item:set_condition(condition)
+			conditions[id] = condition
 			-- printf(section .. ": " .. item:condition() .. ", rad_fac: " .. radiation_factor)
 		else
 			db.actor:drop_item(item)
-			local se_item = alife_object(item:id())
+			local se_item = alife_object(id)
 			safe_release_manager.release(se_item)
 		end
+	end
+
+	last_check_time = current_time
+end
+
+local function actor_on_before_sleep()
+	UnregisterScriptCallback("level_time_on_changed", level_time_on_changed)
+end
+
+local function actor_on_awoke_after_sleeping()
+	last_check_time = nil
+	forced_update()
+	RegisterScriptCallback("level_time_on_changed", level_time_on_changed)
+end
+
+local function save_state(data)
+	if (not data.food_degradation) then
+		data.food_degradation = {}
+	end
+	data.food_degradation.conditions = conditions
+end
+
+local function load_state(data)
+	if (data.food_degradation) then
+		conditions = data.food_degradation.conditions or {}
 	end
 end
 
@@ -44,12 +93,12 @@ local function initialize()
 	if (is_initialized) then
 		return
 	end
-	
+
 	factors = {}
 
 	local ini = ini_file("plugins\\food_degradation.ltx")
 	local factors_section_name = "factors"
-	
+
 	local n = ini:line_count(factors_section_name) or 0
 	for i=0, n-1 do
 		local _, id, factor_str = ini:r_line(factors_section_name, i, STR_EMPTY, STR_EMPTY)
@@ -57,6 +106,7 @@ local function initialize()
 	end
 
 	food = {}
+	conditions = conditions or {}
 	local function iterator(_, item)
 		try_add_item(item)
     end
@@ -66,7 +116,9 @@ local function initialize()
 	RegisterScriptCallback("actor_on_item_drop", remove_item)
 	RegisterScriptCallback("actor_on_item_use", remove_item)
 	RegisterScriptCallback("level_time_on_changed", level_time_on_changed)
-	
+	RegisterScriptCallback("actor_on_before_sleep", actor_on_before_sleep)
+	RegisterScriptCallback("actor_on_awoke_after_sleeping", actor_on_awoke_after_sleeping)
+
 	is_initialized = true
 end
 
@@ -74,15 +126,18 @@ local function finalize()
 	if (is_initialized == false) then
 		return
 	end
-	
+
 	UnregisterScriptCallback("actor_on_item_take", try_add_item)
 	UnregisterScriptCallback("actor_on_item_drop", remove_item)
 	UnregisterScriptCallback("actor_on_item_use", remove_item)
 	UnregisterScriptCallback("level_time_on_changed", level_time_on_changed)
+	UnregisterScriptCallback("actor_on_before_sleep", actor_on_before_sleep)
+	UnregisterScriptCallback("actor_on_awoke_after_sleeping", actor_on_awoke_after_sleeping)
 
 	factors = nil
 	food = nil
 	is_initialized = false
+	last_check_time = nil
 end
 
 local function on_game_load()
@@ -93,6 +148,14 @@ end
 
 function on_game_start()
 	RegisterScriptCallback("on_game_load", on_game_load)
+	RegisterScriptCallback("save_state",save_state)
+	RegisterScriptCallback("load_state",load_state)
+end
+
+function forced_update()
+	if (is_initialized) then
+		level_time_on_changed()
+	end
 end
 
 function check_option_on_accept(value)

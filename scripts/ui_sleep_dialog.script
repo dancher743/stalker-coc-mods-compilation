@@ -202,6 +202,7 @@ function dream_callback()
 	end
 	
 	local hours = sleep_control.forced or sleep_control.time_track:GetIValue()
+	SendScriptCallback("actor_on_before_sleep", hours, sleep_control.item_section)
 	--printf("dream_callback hours=%s",hours)
 	level.change_game_time(0,hours,0)
 	ironman_manager.set_sleep_hrs(hours) -->> part added

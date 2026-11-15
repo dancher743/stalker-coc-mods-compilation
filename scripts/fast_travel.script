@@ -178,6 +178,7 @@ local function map_spot_menu_property_clicked(property_ui,id,level_name,prop)
 		psi_storm_manager.get_psi_storm_manager().time_forwarded = true
 		fallout_manager.get_fallout_manager().time_forwarded = true
 		level_weathers.get_weather_manager():forced_weather_change()
+		food_degradation.forced_update()
 	end
 
 	if (se_obj.online) then

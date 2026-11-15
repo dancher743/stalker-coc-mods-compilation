@@ -167,6 +167,7 @@ local intercepts = {
 	TrdWndClosed					= {},
 	
 	-- Callbacks added by Dancher
+	actor_on_before_sleep			= {},
 	actor_on_awoke_after_sleeping	= {},
 	
 	on_game_unload					= {},
