@@ -237,6 +237,11 @@ function opt_menu_on_init(menu)
 				sim_squad_offline_combat.option_on_accept(ctrl:GetCheck())
 			end}
 		end
+
+		menu.gameplay_options["food_degradation"] = {default=false, debug_only=false, typ="check", on_accept=
+			function(handler,optMgr,ctrl)
+				food_degradation.check_option_on_accept(ctrl:GetCheck())
+			end}
 		--
 	end
 	

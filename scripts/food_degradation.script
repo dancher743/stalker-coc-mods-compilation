@@ -1,0 +1,104 @@
+--
+-- Food degradation
+-- Implementation: Dancher
+--
+
+local factors = nil
+local food = nil
+local is_initialized = false
+
+local function try_add_item(item)
+	local section = item:section()
+
+	if (factors[section] == nil) then
+		return
+	end
+
+	food[item:id()] = item
+end
+
+local function remove_item(item)
+	food[item:id()] = nil
+end
+
+local function level_time_on_changed()
+	local radiation_factor = db.actor.radiation / 10
+	
+	for k,item in pairs(food) do
+		local section = item:section()
+		local factor = factors[section] + radiation_factor
+		local condition = math.max(0, item:condition() - factor)
+
+		if (condition > 0) then
+			item:set_condition(condition)
+			-- printf(section .. ": " .. item:condition() .. ", rad_fac: " .. radiation_factor)
+		else
+			db.actor:drop_item(item)
+			local se_item = alife_object(item:id())
+			safe_release_manager.release(se_item)
+		end
+	end
+end
+
+local function initialize()
+	if (is_initialized) then
+		return
+	end
+	
+	factors = {}
+
+	local ini = ini_file("plugins\\food_degradation.ltx")
+	local factors_section_name = "factors"
+	
+	local n = ini:line_count(factors_section_name) or 0
+	for i=0, n-1 do
+		local _, id, factor_str = ini:r_line(factors_section_name, i, STR_EMPTY, STR_EMPTY)
+		factors[id] = tonumber(factor_str)
+	end
+
+	food = {}
+	local function iterator(_, item)
+		try_add_item(item)
+    end
+    db.actor:iterate_inventory(iterator, db.actor)
+
+	RegisterScriptCallback("actor_on_item_take", try_add_item)
+	RegisterScriptCallback("actor_on_item_drop", remove_item)
+	RegisterScriptCallback("actor_on_item_use", remove_item)
+	RegisterScriptCallback("level_time_on_changed", level_time_on_changed)
+	
+	is_initialized = true
+end
+
+local function finalize()
+	if (is_initialized == false) then
+		return
+	end
+	
+	UnregisterScriptCallback("actor_on_item_take", try_add_item)
+	UnregisterScriptCallback("actor_on_item_drop", remove_item)
+	UnregisterScriptCallback("actor_on_item_use", remove_item)
+	UnregisterScriptCallback("level_time_on_changed", level_time_on_changed)
+
+	factors = nil
+	food = nil
+	is_initialized = false
+end
+
+local function on_game_load()
+	if (get_check_option("food_degradation")) then
+		initialize()
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("on_game_load", on_game_load)
+end
+
+function check_option_on_accept(value)
+	if (value) then
+		initialize()
+	else
+		finalize()
+	end
+end

@@ -600,4 +600,7 @@
 	<string id="ui_mm_mutant_dead_spots">
 		<text>Dead mutants spots</text>
 	</string>
+	<string id="ui_mm_food_degradation">
+		<text>Food degradation</text>
+	</string>
 </string_table>
