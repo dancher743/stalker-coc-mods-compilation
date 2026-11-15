@@ -233,7 +233,7 @@ function dream_callback2()
 	disable_info("actor_is_sleeping")
 	disable_info("sleep_active")
 	local hours = sleep_control.forced or sleep_control.time_track:GetIValue()
-	SendScriptCallback("actor_on_awoke_after_sleeping", hours, sleep_control.item_section)
+	SendScriptCallback("actor_on_after_sleep", hours, sleep_control.item_section)
 end
 
 function sleep()

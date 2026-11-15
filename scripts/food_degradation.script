@@ -70,7 +70,7 @@ local function actor_on_before_sleep()
 	UnregisterScriptCallback("level_time_on_changed", level_time_on_changed)
 end
 
-local function actor_on_awoke_after_sleeping()
+local function actor_on_after_sleep()
 	last_check_time = nil
 	forced_update()
 	RegisterScriptCallback("level_time_on_changed", level_time_on_changed)
@@ -117,7 +117,7 @@ local function initialize()
 	RegisterScriptCallback("actor_on_item_use", remove_item)
 	RegisterScriptCallback("level_time_on_changed", level_time_on_changed)
 	RegisterScriptCallback("actor_on_before_sleep", actor_on_before_sleep)
-	RegisterScriptCallback("actor_on_awoke_after_sleeping", actor_on_awoke_after_sleeping)
+	RegisterScriptCallback("actor_on_after_sleep", actor_on_after_sleep)
 
 	is_initialized = true
 end
@@ -132,7 +132,7 @@ local function finalize()
 	UnregisterScriptCallback("actor_on_item_use", remove_item)
 	UnregisterScriptCallback("level_time_on_changed", level_time_on_changed)
 	UnregisterScriptCallback("actor_on_before_sleep", actor_on_before_sleep)
-	UnregisterScriptCallback("actor_on_awoke_after_sleeping", actor_on_awoke_after_sleeping)
+	UnregisterScriptCallback("actor_on_after_sleep", actor_on_after_sleep)
 
 	factors = nil
 	food = nil

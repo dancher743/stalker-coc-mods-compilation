@@ -15,7 +15,7 @@ local function physic_object_on_use_callback(obj,who)
 	alarm_sound:stop()
 end
 
-local function actor_on_awoke_after_sleeping(hours,section)
+local function actor_on_after_sleep(hours,section)
 	if (section ~= "bar_room_sofa") then
 		return
 	end
@@ -27,5 +27,5 @@ end
 
 function on_game_start()
 	RegisterScriptCallback("physic_object_on_use_callback",physic_object_on_use_callback)
-	RegisterScriptCallback("actor_on_awoke_after_sleeping",actor_on_awoke_after_sleeping)
+	RegisterScriptCallback("actor_on_after_sleep",actor_on_after_sleep)
 end
