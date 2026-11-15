@@ -56,6 +56,7 @@ All notable changes to this project will be documented in this file.
 * Corrected the Fast Travel points names at Generators
 * Fixed `relocate_loot` function in `sim_squad_offline_combat.script`
 * Made supplies of ecolog explorer guards more lore-friendly
+* Added missing option check to `sim_squad_offline_combat.script`
 
 ### Optimization
 * Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`

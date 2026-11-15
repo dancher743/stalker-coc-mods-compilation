@@ -618,7 +618,9 @@ local function finalize()
 end
 
 local function on_game_load()
-	initialize()
+	if (get_check_option("offline_combat")) then
+		initialize()
+	end
 end
 
 function on_game_start()
