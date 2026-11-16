@@ -193,4 +193,11 @@
 	<string id="st_returner_descr">
 		<text>A device that allows for instant teleportation to a previously set position within a 30 meter radius.</text>
 	</string>
+	
+	<string id="st_food_analyzer">
+		<text>Food analyzer</text>
+	</string>
+	<string id="st_food_analyzer_descr">
+		<text>A food analyzer is a special device capable of assessing the condition of food products.\n%c[200,200,200,50]To check an item's condition, simply keep the analyzer in your backpack. Then click the item and select "Analyze".</text>
+	</string>
 </string_table>

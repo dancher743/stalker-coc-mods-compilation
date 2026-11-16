@@ -37,6 +37,9 @@ eat_alcohol                              = -0.03
 
 use_sound                                = interface\inv_food
 
+use1_functor							 = item_food_analyzer.check_item_functor
+use1_action_functor						 = item_food_analyzer.check_item_action_functor
+
 [kolbasa]:booster_script
 $spawn                                   = "food and drugs\kolbasa"
 visual                                   = dynamics\devices\dev_kolbasa\dev_kolbasa.ogf
@@ -69,6 +72,9 @@ eat_alcohol                              = -0.04
 
 use_sound                                = interface\inv_food
 
+use1_functor							 = item_food_analyzer.check_item_functor
+use1_action_functor						 = item_food_analyzer.check_item_action_functor
+
 [conserva]:booster_script
 $spawn                                   = "food and drugs\conserva"
 visual                                   = dynamics\devices\dev_conserv\dev_conserv.ogf
@@ -100,6 +106,9 @@ position_offset                          = 0.0,0.0,0.0
 angle_offset                             = 1.570790,1.570790,3.92699
 
 use_sound                                = interface\inv_food
+
+use1_functor							 = item_food_analyzer.check_item_functor
+use1_action_functor						 = item_food_analyzer.check_item_action_functor
 
 [vodka]:booster_script
 $spawn                                   = "food and drugs\vodka"
@@ -1256,10 +1265,14 @@ eat_sleepiness                           = 0.026
 eat_health                               = -0.07
 eat_alcohol                              = -0.01
 
-use1_functor							 = cooking_manager.can_cook
-use1_action_functor						 = cooking_manager.cook
-use2_functor							 = cooking_manager.can_cook_all
-use2_action_functor						 = cooking_manager.cook_all
+use_sound                                = interface\inv_food
+
+use1_functor							 = item_food_analyzer.check_item_functor
+use1_action_functor						 = item_food_analyzer.check_item_action_functor
+use2_functor							 = cooking_manager.can_cook
+use2_action_functor						 = cooking_manager.cook
+use3_functor							 = cooking_manager.can_cook_all
+use3_action_functor						 = cooking_manager.cook_all
 
 [mutant_part_flesh_meat]:mutant_part_general_meat
 $spawn                                   = "devices\monster_items\mutant_flesh_meat"
@@ -1704,7 +1717,7 @@ description                              = st_returner_descr
 inv_weight                               = 0.8
 inv_grid_width                           = 1
 inv_grid_height                          = 1
-inv_grid_x                               = 20
+inv_grid_x                               = 21
 inv_grid_y                               = 6
 can_trade                                = false
 quest_item                               = false
@@ -1714,3 +1727,20 @@ use1_functor							 = item_returner.set_position_functor
 use1_action_functor						 = item_returner.set_position_action_functor
 use2_functor							 = item_returner.remove_position_functor
 use2_action_functor						 = item_returner.remove_position_action_functor
+
+[food_analyzer]:booster_script
+$spawn                                   = "equipment\food_analyzer"
+visual                                   = equipments\item_datchik2.ogf
+cost                                     = 0
+inv_name                                 = st_food_analyzer
+inv_name_short                           = st_food_analyzer
+description                              = st_food_analyzer_descr
+inv_weight                               = 1.25
+inv_grid_width                           = 1
+inv_grid_height                          = 1
+inv_grid_x                               = 20
+inv_grid_y                               = 6
+can_trade                                = false
+quest_item                               = false
+use_condition                            = false
+remove_after_use                         = false

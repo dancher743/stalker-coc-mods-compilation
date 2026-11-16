@@ -696,4 +696,8 @@
 	<string id="st_item_returner_not_ready_hudmsg">
 		<text>Возвращатель не готов.</text>
 	</string>
+	
+	<string id="st_food_analyzer_analyze_result">
+		<text>%s. Состояние: %s%</text>
+	</string>
 </string_table>

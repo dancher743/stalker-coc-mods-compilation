@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file.
 * Added the Returner item, allowing players to mark a position and teleport back to it instead of save-scumming. Look for this item at the Abandoned Lab in Generators
 * Added a new type of news to Dynamic News: "Zone State"
 * Extended Hand radio item! Can be used to issue commands to a military helicopter after attacking a stalker or a mutant.
-* Added food degradation (with option, false by default)
+* Added food degradation (with option, false by default) and Food analyzer item at the Vehicle Station in Cordon
 
 ### Improvements
 * Added `1.25` as factor into population factors

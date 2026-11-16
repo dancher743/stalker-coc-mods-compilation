@@ -346,4 +346,8 @@
 	<string id="st_item_returner_remove_position">
 		<text>remove position</text>
 	</string>
+	
+	<string id="st_item_food_analyzer_analyze">
+		<text>analyze</text>
+	</string>
 </string_table>

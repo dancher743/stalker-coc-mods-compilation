@@ -1,0 +1,49 @@
+--
+-- Food analyzer item
+-- Author: Dancher
+--
+
+local item_section_name = "food_analyzer"
+local has_analyzer = false
+
+local function on_game_load()
+	local function iterator(_, item)
+		if (item:section() == item_section_name) then
+			has_analyzer = true
+		end
+    end
+    db.actor:iterate_inventory(iterator, db.actor)
+end
+
+local function actor_on_item_take(item)
+	if (item:section() == item_section_name) then
+		has_analyzer = true
+	end
+end
+
+local function actor_on_item_drop(item)
+	if (item:section() == item_section_name) then
+		has_analyzer = false
+	end
+end
+
+function on_game_start()
+	RegisterScriptCallback("on_game_load", on_game_load)
+	RegisterScriptCallback("actor_on_item_take", actor_on_item_take)
+	RegisterScriptCallback("actor_on_item_drop", actor_on_item_drop)
+end
+
+function check_item_functor()
+	return has_analyzer and strtransl("st_item_food_analyzer_analyze") or nil
+end
+
+function check_item_action_functor(item)
+	local condition = math.floor(item:condition() * 100)
+
+	local caption = strtransl("st_food_analyzer")
+	local format_str = strtransl("st_food_analyzer_analyze_result")
+	local name = strtransl(news_manager.get_inv_name(item:section()))
+	local text = strformat(format_str, name, condition)
+	local icon = "ui_inGame2_Pripasi"
+	news_helper.give_news(caption, text, icon)
+end
