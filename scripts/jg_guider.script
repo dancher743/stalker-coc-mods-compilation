@@ -7,8 +7,8 @@ local guid = {}
 local curr_guid = {}
 debug = false
 
-local beep_1 = sound_object([[device\pda\pda_beep_1]])
-local beep_2 = sound_object([[device\pda\pda_beep_2]])
+local beep_1 = [[device\pda\pda_beep_1]]
+local beep_2 = [[device\pda\pda_beep_2]]
 
 local function inc_faction_goodwill_to_actor(squad_id, amount)
 	local squad = alife_object(squad_id)
@@ -143,8 +143,10 @@ function prepare_follower()
 		guid.spot_id = spot_id
 	end
 	
-	local news_text = string.format(game.translate_string('st_jg_14'), game.translate_string(level_name), dynamic_news_helper.GetPointDescription(npc))
-	send_tip(npc, news_text, beep_1)
+	if (get_check_option("show_guide_job_news_msg")) then
+		local news_text = string.format(strtransl('st_jg_14'), strtransl(level_name), dynamic_news_helper.GetPointDescription(npc))
+		send_tip(npc, news_text, beep_1)
+	end
 	
 	-- Запускаем таймер следующего вызова этой функции
 	jg_timers.g_start_timer('guid_msg',0,guid.timer-1,59,'jg_guider','prepare_follower')
@@ -286,6 +288,18 @@ function prec_5(actor, npc)
 	end
 end
 
+function get_need_job_phrase()
+	local phase = nil
+
+	if (get_check_option("show_guide_job_news_msg")) then
+		phase = "st_jg_3"
+	else
+		phase = "st_jg_31"
+	end
+
+	return strtransl(phase)
+end
+
 function get_phrase_1()
 	local str = string.format(game.translate_string('st_jg_16'), guid['timer'], guid.description, guid['zarplata'], guid['neustoika'])
 	local bonus_hours = get_bonus_hours()
@@ -338,7 +352,7 @@ function send_tip(npc, news_text, news_sound)
 	local news_caption = strformat("%s, %s", npc:character_name(), game.translate_string(npc:character_community()))
 	local news_icon = npc:character_icon()
 	db.actor:give_game_news(news_caption, news_text, news_icon, 0, 15000)
-	news_sound:play(db.actor,0,sound_object.s2d)
+	xr_sound.play_sound_by_path(news_sound, false)
 end
 
 function has_guiding_started()

@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 * Added a new type of news to Dynamic News: "Zone State"
 * Extended Hand radio item! Can be used to issue commands to a military helicopter after attacking a stalker or a mutant.
 * Added food degradation (with option, false by default) and Food analyzer item at the Vehicle Station in Cordon
+* Added "Show guide job message" option
 
 ### Improvements
 * Added `1.25` as factor into population factors

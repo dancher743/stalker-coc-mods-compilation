@@ -9,7 +9,10 @@
     <string id="st_jg_3">
         <text>Я видел твоё сообщение. Тебе нужен проводник?</text>
     </string>
-    <string id="st_jg_4">
+	<string id="st_jg_31">
+        <text>Тебе нужен проводник?</text>
+    </string>
+	<string id="st_jg_4">
         <text>Я согласен. Выдвигаемся.</text>
     </string>
     <string id="st_jg_5">
