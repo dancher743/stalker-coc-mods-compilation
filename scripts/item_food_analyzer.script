@@ -45,5 +45,6 @@ function check_item_action_functor(item)
 	local name = strtransl(news_manager.get_inv_name(item:section()))
 	local text = strformat(format_str, name, condition)
 	local icon = "ui_inGame2_Pripasi"
-	news_helper.give_news(caption, text, icon)
+	news_helper.give_news(caption, text, icon, _, _, STR_EMPTY)
+	xr_sound.play_sound_by_path("olr3\\pda_objective", false)
 end

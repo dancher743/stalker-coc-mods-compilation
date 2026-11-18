@@ -13,24 +13,26 @@ function give_news(caption, text, icon, delay, show_time, sound_theme)
 	delay = delay or 0
 	show_time = show_time or 5000
 	sound_theme = sound_theme or "pda_tips"
-	
+
 	local actor = db.actor
-	
+
 	if actor:is_talking() then
 		actor:give_talk_message2(caption, text, icon, "iconed_answer_item")
 	else
 		actor:give_game_news(caption, text, icon, delay, show_time, 0)
 	end
-	
-	if (delay > 0) then
-		timer_id_number = timer_id_number + 1
-		local timer_id = timer_id_name..timer_id_number
-		local function tickback()
-			StopTimer(timer_id)
+
+	if (sound_theme ~= STR_EMPTY) then
+		if (delay > 0) then
+			timer_id_number = timer_id_number + 1
+			local timer_id = timer_id_name..timer_id_number
+			local function tickback()
+				StopTimer(timer_id)
+				xr_sound.set_sound_play(actor:id(), sound_theme)
+			end
+			StartTimer(timer_id, delay, tickback)
+		else
 			xr_sound.set_sound_play(actor:id(), sound_theme)
 		end
-		StartTimer(timer_id, delay, tickback)
-	else
-		xr_sound.set_sound_play(actor:id(), sound_theme)
 	end
 end
