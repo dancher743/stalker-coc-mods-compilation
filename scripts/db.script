@@ -48,23 +48,36 @@ function delete_enemy(obj)
 end
 
 function add_obj( obj )
-	--printf("adding object %s",obj:name())
-	storage[obj:id()].object = obj
-	if (obj:clsid() == clsid.script_stalker) then 
-		add_stalker(obj)
+	--printf("adding object %s", obj:name())
+
+	local id = obj:id()
+	local cls = obj:clsid()
+
+	storage[id].object = obj
+
+	if (cls == clsid.script_stalker) then
+		add_to_table(id, db.OnlineStalkers)
 	end
-	if (IsMonster(obj)) then 
-		add_monster(obj)
+
+	if (IsMonster(_, cls)) then
+		add_to_table(id, db.OnlineMonsters)
 	end
 end
 
 function del_obj( obj )
-	storage[obj:id()] = nil
-	if (obj:clsid() == clsid.script_stalker) then 
-		del_stalker(obj)
+	--printf("deleting object %s", obj:name())
+
+	local id = obj:id()
+	local cls = obj:clsid()
+
+	storage[id] = nil
+
+	if (cls == clsid.script_stalker) then 
+		del_from_table(id, db.OnlineStalkers)
 	end
-	if (IsMonster(obj)) then 
-		del_monster(obj)
+
+	if (IsMonster(_, cls)) then 
+		del_from_table(id, db.OnlineMonsters)
 	end
 end
 
@@ -125,50 +138,33 @@ function del_anim_obj(anim_obj)
 	del_obj(anim_obj)
 end
 
-function add_stalker(npc)
-	for i=#db.OnlineStalkers,1,-1 do
-		if (npc:id() == db.OnlineStalkers[i]) then
+function add_to_table(id, OnlineTable)	
+	for i = #OnlineTable, 1, -1 do
+		if (id == OnlineTable[i]) then
 			return
 		end
 	end
-	table.insert(db.OnlineStalkers,npc:id())
+
+	table.insert(OnlineTable, id)
 end
 
-function del_stalker(npc)
-	if not (db.OnlineStalkers) then
+function del_from_table(id, OnlineTable)
+	if not (OnlineTable) then
 		return
 	end
-	local index
-	for i=#db.OnlineStalkers,1,-1 do
-		if (npc:id() == db.OnlineStalkers[i]) then
+
+	local index = nil
+
+	for i = #OnlineTable, 1, -1 do
+		if (id == OnlineTable[i]) then
 			index = i
 			break
 		end
 	end
 
-	table.remove(db.OnlineStalkers,index)
-end
-
-function add_monster(npc)
-	for i=#db.OnlineMonsters,1,-1 do
-		if (npc:id() == db.OnlineMonsters[i]) then
-			return
-		end
-	end
-	table.insert(db.OnlineMonsters,npc:id())
-end
-
-function del_monster(npc)
-	if not (db.OnlineMonsters) then
+	if not (index) then
 		return
 	end
-	local index
-	for i=#db.OnlineMonsters,1,-1 do
-		if (npc:id() == db.OnlineMonsters[i]) then
-			index = i
-			break
-		end
-	end
 
-	table.remove(db.OnlineMonsters,index)
+	table.remove(OnlineTable, index)
 end

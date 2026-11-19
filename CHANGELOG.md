@@ -37,6 +37,7 @@ All notable changes to this project will be documented in this file.
 - Decreased cost of `p90` in `ecolog_loadout`
 - Added animation to the enemy mini map spot (like in SoC)
 - Changed default value of the `squad_stay_point_hours` option to 24
+- Refactored the adding/deleting code to online tables in `db.script`
 
 ### Fixes
 - Refactored the code of Fast Travel options
