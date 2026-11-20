@@ -18,7 +18,7 @@ Support Russian and English languages.
 * Food degradation and Food analyzer item
 * Fixed and restored squads A-Life and added offline combats
 * Restored SoC and CS functionality: opening the armory at the Freedom base, sleeping sounds, jokes and campfire stories for NPC, Screw scope dialog, unique weapons from SoC and CS etc.
-* Fixed original Call of Chernobyl functionality: artefacts and mutants part drop, "sleeping" BTRs, sounds of Army's megaphone on Escape, missing mutants (Rat Wolf and Psysucker), text on the health bar etc.
+* Fixed original Call of Chernobyl functionality: artefacts and mutants part drop, "sleeping" BTRs, sounds of Army's megaphone on Escape, missing mutants (Rat Wolf and Psysucker), artefact degradation, text on the health bar, etc.
 * Added invulnerability to companions (can be disabled using the option) and "Open inventory" dialog to help carry your items during long journeys through the Zone
 * Made Survival mode playable and added Extended Offline (EOC) mode
 * All Weapons Unloading
