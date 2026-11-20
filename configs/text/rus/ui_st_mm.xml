@@ -574,7 +574,7 @@
 		<text>Cохранения у костров</text>
 	</string>
 	<string id="ui_mm_show_health_effectors">
-		<text>Показ. эффекты ранений</text>
+		<text>Эффекторы ранений</text>
 	</string>
 	<string id="ui_mm_show_guide_job_on_map">
 		<text>Ставить метки проводника</text>

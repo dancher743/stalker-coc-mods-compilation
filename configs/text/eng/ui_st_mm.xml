@@ -571,7 +571,7 @@
 		<text>Campfire saving</text>
 	</string>
 	<string id="ui_mm_show_health_effectors">
-		<text>Show wound effects</text>
+		<text>Wound effectors</text>
 	</string>
 	<string id="ui_mm_show_guide_job_on_map">
 		<text>Set guide job spots</text>
