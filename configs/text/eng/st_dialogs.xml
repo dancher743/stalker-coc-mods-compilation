@@ -1287,6 +1287,6 @@
 		<text>How can I restore an artefact's efficiency when it's degraded?</text>
 	</string>
 	<string id="artefact_restoring_dialog_1">
-		<text>Walk up to an anomalous area that can spawn the same kind of artefact, get within about 25 meters, and drop it out of your backpack. If you get blinded, it means the dropped artefact has recharged. Otherwise, either the anomalous area isn't the right type, or you're too far from it.</text>
+		<text>Walk up to an anomalous area that can spawn the same kind of artefact, get within about 15 meters, and drop it out of your backpack. If you get blinded, it means the dropped artefact has recharged. Otherwise, either the anomalous area isn't the right type, or you're too far from it.</text>
 	</string>
 </string_table>

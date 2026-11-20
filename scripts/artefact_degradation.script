@@ -87,7 +87,7 @@ local function main_loop()
 end
 
 local function try_restore_condition(art)
-	local nearest_anomaly = utils.get_nearest_anomaly(art, 25)
+	local nearest_anomaly = utils.get_nearest_anomaly(art, 15)
 
 	if not (nearest_anomaly and nearest_anomaly:can_spawn_artefact(art:section())) then
 		return
