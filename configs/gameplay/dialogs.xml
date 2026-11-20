@@ -2727,4 +2727,17 @@
             </phrase>
 		</phrase_list>
 	</dialog>
+	
+	<dialog id="artefact_restoring_dialog">
+		<precondition>dialogs.is_artefact_degradation_activated</precondition>
+		<phrase_list>
+			<phrase id="0">
+				<text>artefact_restoring_dialog_0</text>
+				<next>1</next>
+			</phrase>
+			<phrase id="1">
+				<text>artefact_restoring_dialog_1</text>
+			</phrase>
+		</phrase_list>
+	</dialog>
 </game_dialogs>

@@ -86,7 +86,7 @@ local function main_loop()
 	return false
 end
 
-local function try_charge(art)
+local function try_restore_condition(art)
 	local nearest_anomaly = utils.get_nearest_anomaly(art, 25)
 
 	if not (nearest_anomaly and nearest_anomaly:can_spawn_artefact(art:section())) then
@@ -163,7 +163,7 @@ function actor_on_item_drop(art)
 			break
 		end
 	end
-	try_charge(art)
+	try_restore_condition(art)
 end
 
 function actor_item_to_belt(item)
