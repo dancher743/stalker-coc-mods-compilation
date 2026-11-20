@@ -9,6 +9,7 @@ local belted_arts = {}
 local sysini = system_ini()
 local imm_mul, mul, _tmr
 feature_is_active = nil
+
 local function main_loop()
 	local tg = time_global()
 	if (_tmr and tg < _tmr) then 
@@ -85,6 +86,17 @@ local function main_loop()
 	return false
 end
 
+local function try_charge(art)
+	local nearest_anomaly = utils.get_nearest_anomaly(art, 25)
+
+	if not (nearest_anomaly and nearest_anomaly:can_spawn_artefact(art:section())) then
+		return
+	end
+
+	art:set_condition(1)
+	level.add_pp_effector("teleport.ppe", 2007, false)
+end
+
 function activate_feature()
 	if (feature_is_active) then
 		return 
@@ -148,9 +160,10 @@ function actor_on_item_drop(art)
 	for k,v in pairs(belted_arts) do
 		if k == art_id then
 			belted_arts[k] = nil
-			return
+			break
 		end
 	end
+	try_charge(art)
 end
 
 function actor_item_to_belt(item)

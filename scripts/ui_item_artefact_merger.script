@@ -143,7 +143,28 @@ function artefact_merger_ui:InitControls()
 	self.caption_parts 		= self.xml:InitTextWnd("itm_repair:form:caption_parts",self.form)
 	self.caption_parts:SetText(self.caption_parts_text)
 	self.caption_anomaly_zone 		= self.xml:InitTextWnd("itm_repair:form:caption_anomaly_zone",self.form)
-	self.caption_anomaly_zone:SetText(STR_EMPTY)
+
+	local anomaly_text = STR_EMPTY
+	local anomaly_text_color = nil
+	local closest_text = strtransl("ui_st_closest_anomaly_zone")
+	local closest_meters = nil
+
+	if (self.closest_anomaly_meters) then
+		closest_meters = self.closest_anomaly_meters .. strtransl("st_meters_short")
+	end
+
+	if (self.closest_anomaly) then
+		anomaly_text = strformat("%s: %s", closest_text, closest_meters)
+		anomaly_text_color = self.caption_has_parts_text_color
+	else
+		anomaly_text = closest_meters and 
+			strformat("%s: %s", closest_text, closest_meters) or 
+			strformat("%s: --", closest_text)
+		anomaly_text_color = self.caption_parts_text_color
+	end
+
+	self.caption_anomaly_zone:SetText(anomaly_text)
+	self.caption_anomaly_zone:SetTextColor(anomaly_text_color)
 
 	-- List Box
 	self.xml:InitFrame			("itm_repair:form:list_frame",self.form)
@@ -247,7 +268,6 @@ function artefact_merger_ui:OnPartsListItemClicked()
 		self.picture_parts:SetTextureRect(Frect():set(0,0,0,0))
 		self.picture_result:SetTextureRect(Frect():set(0,0,0,0))
 		self.caption_parts:SetText(self.caption_parts_text)
-		self.caption_anomaly_zone:SetText(STR_EMPTY)
 		return
 	end
 
@@ -268,28 +288,6 @@ function artefact_merger_ui:OnPartsListItemClicked()
 
 	local color = #self.actor_artefacts[item_section] >= amount and self.caption_has_parts_text_color or self.caption_parts_text_color
 	self.caption_parts:SetTextColor(color)
-
-	local anomaly_text = STR_EMPTY
-	local anomaly_text_color = self.caption_parts_text_color
-	local closest_text = strtransl("ui_st_closest_anomaly_zone")
-	local closest_meters = nil
-	if (self.closest_anomaly_meters) then
-		closest_meters = self.closest_anomaly_meters .. strtransl("st_meters_short")
-	end
-
-	if (self.closest_anomaly) then
-		anomaly_text = strformat("%s: %s", closest_text, closest_meters)
-		anomaly_text_color = self.caption_has_parts_text_color
-	else
-		if (closest_meters) then
-			anomaly_text = strformat("%s: %s", closest_text, closest_meters)
-		else
-			anomaly_text = strformat("%s: --", closest_text)
-		end
-	end
-
-	self.caption_anomaly_zone:SetText(anomaly_text)
-	self.caption_anomaly_zone:SetTextColor(anomaly_text_color)
 
 	local w,h = item.width,item.height
 	if (utils.is_widescreen()) then
@@ -367,7 +365,6 @@ function artefact_merger_ui:OnListItemClicked()
 	self.picture_result:SetTextureRect(Frect():set(0,0,0,0))
 	self.caption_repair:SetText(self.caption_repair_text)
 	self.caption_parts:SetText(self.caption_parts_text)
-	self.caption_anomaly_zone:SetText(STR_EMPTY)
 	self:FillPartsList()
 end
 
