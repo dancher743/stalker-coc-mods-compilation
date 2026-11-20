@@ -109,7 +109,7 @@
 			\nSee "Options" -> "Game" -> "Difficulty"
 			\n
 			\n%c[0,255,255,255]Options to make your game more difficult are also available.
-			\nSee "Options" -> "Game" -> "Hardcore AI aim", "Sleep deprivation", "Food degradation", "Show wound effects" and etc.
+			\nSee "Options" -> "Game" -> "Hardcore AI aim", "Sleep deprivation", "Food degradation", "Artefact degradation", "Wound effectors", etc.
 		</text>
 	</string>
 	<string id="st_mm_ck_story_desc">

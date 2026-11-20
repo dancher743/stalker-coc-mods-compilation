@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Extended Hand radio item! Can be used to issue commands to a military helicopter after attacking a stalker or a mutant.
 - Added food degradation (with option, false by default) and Food analyzer item at the Vehicle Station in Cordon
 - Added "Show guide job message" option
+- The Artifact degradation feature has been fixed and refined
 
 ### Improvements
 - Added `1.25` as factor into population factors
@@ -59,6 +60,8 @@ All notable changes to this project will be documented in this file.
 - Fixed `relocate_loot` function in `sim_squad_offline_combat.script`
 - Made supplies of ecolog explorer guards more lore-friendly
 - Added missing option check to `sim_squad_offline_combat.script`
+- Fixed saving of artefacts condition
+- Refactored the bone fix code in `bind_artefact.script` (mostly from CoC 1.5)
 
 ### Optimization
 - Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`
@@ -74,7 +77,7 @@ All notable changes to this project will be documented in this file.
 - Added `actor_on_before_sleep` callback to `axr_main.script`
 - Renamed `se_obj_on_before_release` callback to `se_obj_on_before_safe_release`
 - Renamed `actor_on_awoke_after_sleeping` callback to `actor_on_after_sleep`
-- Added `hide_actor_menu` function to `utils.script`
+- Added `hide_actor_menu` and `get_nearest_anomaly` functions to `utils.script`
 
 ## [1.5.5] - 2026-10-26
 

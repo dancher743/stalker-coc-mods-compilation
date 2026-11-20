@@ -3264,3 +3264,7 @@ function get_vanish_bounty_hunt_target_phrase_2(first_speaker, second_speaker)
 
 	return strtransl(phrase)
 end
+
+function is_artefact_degradation_activated(_, _)
+	return get_check_option("art_degrade")
+end
