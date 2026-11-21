@@ -653,11 +653,11 @@
 		<text>You are too far away from the mine.</text>
 	</string>
 	
-	<string id="st_actor_hand_radio_cancel_heli_actor_enemy">
+	<string id="st_actor_hand_radio_canceled_heli_actor_enemy">
 		<text>You commanded the helicopter to hold fire.</text>
 	</string>
 	<string id="st_actor_hand_radio_cant_cancel_heli_actor_enemy">
-		<text>The helicopter is not firing at you.</text>
+		<text>At the moment, the helicopter is not firing at you.</text>
 	</string>
 	<string id="st_actor_hand_radio_request_heli_enemy">
 		<text>Helicopter support requested. Target: %s.</text>
@@ -674,11 +674,11 @@
 	<string id="st_actor_hand_radio_heli_cooldown">
 		<text>You need to wait before commanding the helicopter again.</text>
 	</string>
-	<string id="st_actor_hand_radio_set_heli_enemy">
-		<text>request support</text>
-	</string>
 	<string id="st_actor_hand_radio_remove_heli_enemy">
-		<text>cancel support</text>
+        <text>cancel support</text>
+	</string>
+	<string id="st_actor_hand_radio_cancel_heli_actor_enemy">
+		<text>command to hold fire</text>
 	</string>
 	
 	<string id="st_item_returner_position_spot_descr">

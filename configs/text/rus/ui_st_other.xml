@@ -653,11 +653,11 @@
 		<text>Вы находитесь слишком далеко от мины.</text>
 	</string>
 	
-	<string id="st_actor_hand_radio_cancel_heli_actor_enemy">
+	<string id="st_actor_hand_radio_canceled_heli_actor_enemy">
 		<text>Вы приказали вертолёту не атаковать вас.</text>
 	</string>
 	<string id="st_actor_hand_radio_cant_cancel_heli_actor_enemy">
-		<text>Вертолёт не атакует вас.</text>
+		<text>В данный момент вертолёт не атакует вас.</text>
 	</string>
 	<string id="st_actor_hand_radio_request_heli_enemy">
 		<text>Вы запросили поддержку вертолёта. Цель: %s.</text>
@@ -674,11 +674,11 @@
 	<string id="st_actor_hand_radio_heli_cooldown">
 		<text>Нужно подождать, прежде чем снова приказать вертолёту.</text>
 	</string>
-	<string id="st_actor_hand_radio_set_heli_enemy">
-		<text>запросить поддержку</text>
-	</string>
 	<string id="st_actor_hand_radio_remove_heli_enemy">
 		<text>отменить поддержку</text>
+	</string>
+	<string id="st_actor_hand_radio_cancel_heli_actor_enemy">
+		<text>приказать не атаковать</text>
 	</string>
 	
 	<string id="st_item_returner_position_spot_descr">
