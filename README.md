@@ -165,6 +165,7 @@ And much more!
 81. Better Knife (Vanilla) with adaptations from CoP (alalakskylvia)
 82. Optimized rain (Clepoy)
 83. P90 weapon from Legend Returns 0.9.2 (LR Devs) and Shoker Weapon Mod 2.1 (Shoker Team)
+84. Icon for the hand radio from OLR 3.0 + Community Patch (Honey_Vlad)
 
 ## Credits
 
