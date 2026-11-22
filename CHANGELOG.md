@@ -64,6 +64,7 @@ All notable changes to this project will be documented in this file.
 - Fixed saving of artefacts condition
 - Refactored the bone fix code in `bind_artefact.script` (mostly from CoC 1.5)
 - Added `ecolog` to `loot_mutant_communities` section in `xr_corpse_detection.ltx`
+- Added check on `loot_mutant_communities` from `xr_corpse_detection.ltx` to Offline Combats
 
 ### Optimization
 - Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`

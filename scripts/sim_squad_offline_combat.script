@@ -50,6 +50,7 @@ local loot_ignore_list = {
 
 local is_initialized
 local loot_items
+local loot_mutant_communities
 local update_timer
 local update_queue_timer
 local combat_squads_table
@@ -94,7 +95,7 @@ local function relocate_loot(is_killer_stalker, is_victim_stalker, killer_commun
 		return
 	end
 
-	if (not is_victim_stalker and loot_items[se_killer.id]) then
+	if (not is_victim_stalker and loot_mutant_communities[killer_community] and loot_items[se_killer.id]) then
 		local killer_items = loot_items[se_killer.id]
 		local t = {}
 		itms_manager.loot_mutant_se(se_victim:clsid(),t,se_killer)
@@ -574,6 +575,8 @@ local function initialize()
 	update_queue_timer = 0
 	is_survival_mode = IsSurvivalMode()
 	actor_level_id = game_graph():vertex(alife():actor().m_game_vertex_id):level_id()
+	local ini = ini_file("ai_tweaks\\xr_corpse_detection.ltx")
+	loot_mutant_communities = alun_utils.collect_section(ini,"loot_mutant_communities",true)
 	if (se_obj_cache == nil) then
         se_obj_cache = se_object_cache.create()
     end
@@ -611,6 +614,7 @@ local function finalize()
 	update_queue_timer = nil
 	is_survival_mode = nil
 	actor_level_id = nil
+	loot_mutant_communities = nil
 	se_obj_cache:clear()
 	
 	is_initialized = false
