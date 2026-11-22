@@ -2817,39 +2817,56 @@ function drx_sl_setup_fetch_weapon( actor, npc, p )
 
 	-- List of possible fetch items:
 	local item_list = {
+		"wpn_pm",
+		"wpn_pb",
+		"wpn_fort",
+
 		"wpn_bm16",
 		"wpn_toz34",
-		"wpn_wincheaster1300",
-		"wpn_spas12",
-		"wpn_protecta",
-		"wpn_ak74u",
 		"wpn_mp5",
 		"wpn_ak74",
-	}
+		"wpn_ak74u"
+    }
 
 	-- If only fetching 1 item then expand the list:
 	local actor_rank = actor:character_rank()
+
 	local rank_interval = ranks.get_rank_interval("trainee")
 	if ( rank_interval[2] < actor_rank ) then
+		table.insert( item_list, "wpn_hpsa" )
+		table.insert( item_list, "wpn_beretta" )
+		table.insert( item_list, "wpn_walther" )
+		table.insert( item_list, "wpn_colt1911" )
+
+		table.insert( item_list, "wpn_wincheaster1300" )
+		table.insert( item_list, "wpn_spas12" )
 		table.insert( item_list, "wpn_abakan" )
+		table.insert( item_list, "wpn_g36" )
 		table.insert( item_list, "wpn_l85" )
 		table.insert( item_list, "wpn_lr300" )
+		table.insert( item_list, "wpn_p90" )
 		table.insert( item_list, "wpn_sig550" )
-		table.insert( item_list, "wpn_g36" )
 	end
+
 	rank_interval = ranks.get_rank_interval("professional")
 	if ( rank_interval[2] < actor_rank ) then
+		table.insert( item_list, "wpn_sig220" )
+		table.insert( item_list, "wpn_usp" )
+		table.insert( item_list, "wpn_desert_eagle" )
+
+		table.insert( item_list, "wpn_protecta" )
 		table.insert( item_list, "wpn_groza" )
 		table.insert( item_list, "wpn_val" )
 		table.insert( item_list, "wpn_vintorez" )
 		table.insert( item_list, "wpn_svu" )
 		table.insert( item_list, "wpn_svd" )
 	end
+
 	rank_interval = ranks.get_rank_interval("expert")
 	if ( rank_interval[2] < actor_rank ) then
-		table.insert( item_list, "wpn_rpg7" )
 		table.insert( item_list, "wpn_fn2000" )
 		table.insert( item_list, "wpn_pkm" )
+		table.insert( item_list, "wpn_rpg7" )
 		table.insert( item_list, "wpn_gauss" )
 	end
 

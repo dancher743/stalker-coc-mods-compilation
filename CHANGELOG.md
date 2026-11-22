@@ -40,6 +40,7 @@ All notable changes to this project will be documented in this file.
 - Changed default value of the `squad_stay_point_hours` option to 24
 - Refactored the adding/deleting code to online tables in `db.script`
 - Refactored local fields in `level_weathers.script`
+- Extended rank-based weapon list of find weapon tasks
 
 ### Fixes
 - Refactored the code of Fast Travel options
