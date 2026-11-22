@@ -12,17 +12,19 @@ local weather_manager = nil
 local prev_sec = 0
 local diff_sec = 0
 local last_amb = {}
-valid_levels = {}
-bLevelUnderground = false
-weather_tbl = atmosfear_options.weather_tbl
+local weather_tbl = atmosfear_options.weather_tbl
+local default_period = "clear"
 
 local levels_without_panorama = {
-	l10_limansk = true,
-	l11_pripyat = true,
-	l12_stancia = true,
-	l12_stancia_2 = true,
-	l13_generators = true
+	["l10_limansk"] = true,
+	["l11_pripyat"] = true,
+	["l12_stancia"] = true,
+	["l12_stancia_2"] = true,
+	["l13_generators"] = true
 }
+
+valid_levels = {}
+bLevelUnderground = false
 
 function atmosfear_init()
 	if not (is_empty(valid_levels)) then 
@@ -82,11 +84,11 @@ function WeatherManager:__init()
 		printf("error when open weather_dynamic_graphs.ltx")
 	end
 	self.dof_factor=1
-	self.period_prev=nil
-	self.period=self:get_next_period("clear")
-	self.period_next=self:get_next_period("clear")
+	self.period_prev=default_period
+	self.period=self:get_next_period(default_period)
+	self.period_next=self:get_next_period(self.period)
 	self.subperiod_prev=nil
-	self.subperiod=nil
+	self.subperiod=self:get_subperiod(self.period)
 	self.transition_period=false
 	self.pre_blowout_period=false
 	self.pre_fallout_period=false
@@ -421,7 +423,7 @@ function WeatherManager:select_weather(now,loaded)
 			weather = weather.."_pre_fallout"
 		else
 			if not (self.period) then
-				self.period = "clear"
+				self.period = default_period
 			end
 			weather = weather.."_"..self.period
 		end
