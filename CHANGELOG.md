@@ -63,6 +63,7 @@ All notable changes to this project will be documented in this file.
 - Added missing option check to `sim_squad_offline_combat.script`
 - Fixed saving of artefacts condition
 - Refactored the bone fix code in `bind_artefact.script` (mostly from CoC 1.5)
+- Added `ecolog` to `loot_mutant_communities` section in `xr_corpse_detection.ltx`
 
 ### Optimization
 - Memoized time functions: `get_time_days`, `get_time_hours`, `get_time_minutes` and `get_time_factor`
