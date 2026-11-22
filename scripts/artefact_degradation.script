@@ -7,16 +7,10 @@
 
 local belted_arts = {}
 local sysini = system_ini()
-local imm_mul, mul, _tmr
+local imm_mul, mul
 feature_is_active = nil
 
 local function main_loop()
-	local tg = time_global()
-	if (_tmr and tg < _tmr) then 
-		return false 
-	end
-	_tmr = tg + 2000	-- if you change this value timed artefact multipliers will need changes 
-
 	if not (db.actor) then
 		return false
 	end
@@ -117,18 +111,18 @@ function activate_feature()
 	}
 
 	mul = mul or {						-- correction factors for timed checks
-		["health"]		= 0.2,		-- updated often while slotted so don't set too high
-		["radiation"] 	= 0.2,
-		["satiety"] 	= 0.2,
-		["power"] 		= 0.2,		-- updated often while slotted so don't set too high
-		["bleeding"] 	= 0.2,
-		["psy_health"] 	= 0.2,
-		["weight"]		= 0.0001, 	-- updated often while slotted so don't set too high
+		["health"]		= 0.6,		-- updated often while slotted so don't set too high
+		["radiation"] 	= 0.6,
+		["satiety"] 	= 0.6,
+		["power"] 		= 0.6,		-- updated often while slotted so don't set too high
+		["bleeding"] 	= 0.6,
+		["psy_health"] 	= 0.6,
+		["weight"]		= 0.0003, 	-- updated often while slotted so don't set too high
 	}
 	RegisterScriptCallback("actor_on_item_drop",actor_on_item_drop)
 	RegisterScriptCallback("actor_on_before_hit",actor_on_before_hit)
 	RegisterScriptCallback("actor_item_to_belt",actor_item_to_belt)
-	AddUniqueCall(main_loop)
+	RegisterScriptCallback("level_time_on_changed",main_loop)
 end 
 
 function deactivate_feature()
@@ -137,10 +131,10 @@ function deactivate_feature()
 	end
 	feature_is_active = false
 	
-	RemoveUniqueCall(main_loop)
 	UnregisterScriptCallback("actor_on_item_drop",actor_on_item_drop)
 	UnregisterScriptCallback("actor_on_before_hit",actor_on_before_hit)
-	UnregisterScriptCallback("actor_item_to_belt",actor_item_to_belt)	
+	UnregisterScriptCallback("actor_item_to_belt",actor_item_to_belt)
+	UnregisterScriptCallback("level_time_on_changed",main_loop)
 end
 
 function on_game_start()
