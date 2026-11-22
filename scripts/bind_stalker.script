@@ -17,7 +17,8 @@ function actor_binder:__init (obj) super(obj)
 	self.deimos_intensity = nil
 
 	--GoozE rain sound fix part 1 (yes its hacky but it works)
-	level.set_weather("[default]",true)
+	--level.set_weather("[default]",true)
+	-- Dancher: disabled due to x64 Engine (a fix at the engine level)
 	self.last_detective_achievement_spawn_time 	= nil
 	self.last_mutant_hunter_achievement_spawn_time	= nil
 
