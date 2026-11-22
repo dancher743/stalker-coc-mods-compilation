@@ -1,5 +1,5 @@
 <w>
-	<itm_repair>
+	<itm_artefact_merger>
 		<file_item>
 			<main width="550" height="18"/>
 			<fn width="200" height="18"/>
@@ -10,8 +10,8 @@
 				<texture>ui_inGame2_hint_wnd_main_window</texture>
 			</frame>
 
-			<icon x="128" y="250" width="128" height="128" stretch="1">
-			</icon>
+			<icon_available x="128" y="250" width="128" height="128" stretch="1">
+			</icon_available>
 			<icon_parts x="128" y="112" width="128" height="128" stretch="1">
 			</icon_parts>
 			<icon_result x="128" y="181" width="128" height="128" stretch="1">
@@ -19,9 +19,9 @@
 			<icon_tool x="300" y="418" width="128" height="128" stretch="1">
 			</icon_tool>
 
-			<caption_repair x="275" y="185" width="195" height="50" complex_mode="1">
+			<caption_available x="275" y="185" width="195" height="50" complex_mode="1">
 				<text font="letterica18"/>
-			</caption_repair>
+			</caption_available>
 			<list_frame x="265" y="202" width="284" height="107">
 				<texture>ui_inGame2_servers_list_frame</texture>
 			</list_frame>
@@ -42,14 +42,14 @@
 				<font font="letterica16"/>
 			</list_parts>
 
-			<btn_repair x="25" y="427" width="80" height="40">
+			<btn_launch x="25" y="427" width="80" height="40">
 				<texture>ui_button_main01</texture>
 				<text font="letterica18">ui_st_launch_artefact_merger</text>
-			</btn_repair>
+			</btn_launch>
 			<btn_cancel x="130" y="427" width="80" height="40">
 				<texture>ui_button_main01</texture>
 				<text font="letterica18">ui_mm_cancel</text>
 			</btn_cancel>
 		</form>
-	</itm_repair>
+	</itm_artefact_merger>
 </w>

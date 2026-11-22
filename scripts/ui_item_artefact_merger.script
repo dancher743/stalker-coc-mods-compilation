@@ -68,32 +68,32 @@ function artefact_merger_ui:InitControls()
 
 	ctrl					= CUIWindow()
 	ctrl:SetAutoDelete(true)
-	self.xml:InitWindow			("itm_repair:file_item:main",0,ctrl)
+	self.xml:InitWindow			("itm_artefact_merger:file_item:main",0,ctrl)
 	
 	self.file_item_main_sz	= vector2():set(ctrl:GetWidth(),ctrl:GetHeight())
 
-	self.xml:InitWindow			("itm_repair:file_item:fn",0,ctrl)
+	self.xml:InitWindow			("itm_artefact_merger:file_item:fn",0,ctrl)
 	self.file_item_fn_sz	= vector2():set(ctrl:GetWidth(),ctrl:GetHeight())
 
-	self.xml:InitWindow			("itm_repair:file_item:fd",0,ctrl)
+	self.xml:InitWindow			("itm_artefact_merger:file_item:fd",0,ctrl)
 	self.file_item_fd_sz	= vector2():set(ctrl:GetWidth(),ctrl:GetHeight())
 
-	self.form				= self.xml:InitStatic("itm_repair:form",self)
+	self.form				= self.xml:InitStatic("itm_artefact_merger:form",self)
 	--background window
-	self.xml:InitFrame			("itm_repair:form:frame",self.form)
+	self.xml:InitFrame			("itm_artefact_merger:form:frame",self.form)
 	--self.form:SetWndPos(vector2():set(device().width/2-(self.form:GetWidth()+70), device().height/2 - self.form:GetHeight()))
 	self.form:SetWndPos(vector2():set(0, 0))
 
 	-- Background for forms
-	--self.xml:InitStatic("itm_repair:form:list_background",self.form)
+	--self.xml:InitStatic("itm_artefact_merger:form:list_background",self.form)
 
 	-- Item picture
-	self.picture			= self.xml:InitStatic("itm_repair:form:icon",self.form)
-	self.picture_parts		= self.xml:InitStatic("itm_repair:form:icon_parts",self.form)
-	self.picture_result		= self.xml:InitStatic("itm_repair:form:icon_result",self.form)
+	self.picture			= self.xml:InitStatic("itm_artefact_merger:form:icon_available",self.form)
+	self.picture_parts		= self.xml:InitStatic("itm_artefact_merger:form:icon_parts",self.form)
+	self.picture_result		= self.xml:InitStatic("itm_artefact_merger:form:icon_result",self.form)
 
-	-- Repair tool picture
-	self.pic = self.xml:InitStatic("itm_repair:form:icon_tool",self.form)
+	-- Tool picture
+	self.pic = self.xml:InitStatic("itm_artefact_merger:form:icon_tool",self.form)
 
 	local section = "artefact_merger"
 	local inv_grid_width = self.ini:r_float_ex(section,"inv_grid_width") or 0 
@@ -130,7 +130,7 @@ function artefact_merger_ui:InitControls()
 	self.pic:SetWndPos(vector2():set(self.pic.x-w/2, self.pic.y-h/2))
 
 	-- Caption Text
-	self.caption_repair_text = strtransl("ui_st_available_artefacts")
+	self.caption_available_text = strtransl("ui_st_available_artefacts")
 	self.caption_parts_text = STR_EMPTY
 
 	-- Caption Color
@@ -138,11 +138,11 @@ function artefact_merger_ui:InitControls()
 	 self.caption_has_parts_text_color = GetARGB(255,200,200,50)
 
 	-- Caption
-	self.caption_repair		= self.xml:InitTextWnd("itm_repair:form:caption_repair",self.form)
-	self.caption_repair:SetText(self.caption_repair_text)
-	self.caption_parts 		= self.xml:InitTextWnd("itm_repair:form:caption_parts",self.form)
+	self.caption_available		= self.xml:InitTextWnd("itm_artefact_merger:form:caption_available",self.form)
+	self.caption_available:SetText(self.caption_available_text)
+	self.caption_parts 		= self.xml:InitTextWnd("itm_artefact_merger:form:caption_parts",self.form)
 	self.caption_parts:SetText(self.caption_parts_text)
-	self.caption_anomaly_zone 		= self.xml:InitTextWnd("itm_repair:form:caption_anomaly_zone",self.form)
+	self.caption_anomaly_zone 		= self.xml:InitTextWnd("itm_artefact_merger:form:caption_anomaly_zone",self.form)
 
 	local anomaly_text = STR_EMPTY
 	local anomaly_text_color = nil
@@ -167,9 +167,9 @@ function artefact_merger_ui:InitControls()
 	self.caption_anomaly_zone:SetTextColor(anomaly_text_color)
 
 	-- List Box
-	self.xml:InitFrame			("itm_repair:form:list_frame",self.form)
+	self.xml:InitFrame			("itm_artefact_merger:form:list_frame",self.form)
 
-	self.list_box			= self.xml:InitListBox("itm_repair:form:list",self.form)
+	self.list_box			= self.xml:InitListBox("itm_artefact_merger:form:list",self.form)
 
 	self.list_box:ShowSelectedItem	(true)
 	self:Register			(self.list_box, "list_window")
@@ -177,26 +177,26 @@ function artefact_merger_ui:InitControls()
 	-- Parts List Box
 	self.list_pos = self.list_box:GetWndPos()
 	
-	self.list_box_parts			= self.xml:InitListBox("itm_repair:form:list_parts",self.form)
+	self.list_box_parts			= self.xml:InitListBox("itm_artefact_merger:form:list_parts",self.form)
 	--self.list_box_parts:SetWndPos(vector2():set(self.list_pos.x+self.list_box:GetWidth()+5, self.list_pos.y))
 	
-	local frame = self.xml:InitFrame("itm_repair:form:list_frame_parts",self.form)
+	local frame = self.xml:InitFrame("itm_artefact_merger:form:list_frame_parts",self.form)
 	--frame:SetWndPos(vector2():set(self.list_pos.x+self.list_box:GetWidth()+5, self.list_pos.y))
 	
 	self.list_box_parts:ShowSelectedItem(true)
 	self:Register(self.list_box_parts, "list_window_parts")
 
-	-- Button Repair
-	ctrl					= self.xml:Init3tButton("itm_repair:form:btn_repair",	self.form)
-	self:Register			(ctrl, "button_repair")
+	-- Button Launch
+	ctrl					= self.xml:Init3tButton("itm_artefact_merger:form:btn_launch",	self.form)
+	self:Register			(ctrl, "button_launch")
 
 	-- Button Cancel
-	ctrl = self.xml:Init3tButton	("itm_repair:form:btn_cancel",	self.form)
+	ctrl = self.xml:Init3tButton	("itm_artefact_merger:form:btn_cancel",	self.form)
 	self:Register			(ctrl, "button_back")
 end
 
 function artefact_merger_ui:InitCallBacks()
-	self:AddCallback("button_repair",		ui_events.BUTTON_CLICKED,         self.OnButton_repair,			self)
+	self:AddCallback("button_launch",		ui_events.BUTTON_CLICKED,         self.OnButton_launch,			self)
 	self:AddCallback("button_back",		ui_events.BUTTON_CLICKED,             self.OnButton_back_clicked,	self)
 
 	self:AddCallback("list_window", ui_events.LIST_ITEM_CLICKED, 			  self.OnListItemClicked,		self)
@@ -324,7 +324,7 @@ function artefact_merger_ui:OnPartsListItemClicked()
 end
 
 function artefact_merger_ui:OnPartsListItemDbClicked()
-	self:OnButton_repair()
+	self:OnButton_launch()
 end
 
 function artefact_merger_ui:OnListItemClicked()
@@ -363,7 +363,7 @@ function artefact_merger_ui:OnListItemClicked()
 	
 	self.picture_parts:SetTextureRect(Frect():set(0,0,0,0))
 	self.picture_result:SetTextureRect(Frect():set(0,0,0,0))
-	self.caption_repair:SetText(self.caption_repair_text)
+	self.caption_available:SetText(self.caption_available_text)
 	self.caption_parts:SetText(self.caption_parts_text)
 	self:FillPartsList()
 end
@@ -387,7 +387,7 @@ function artefact_merger_ui:OnKeyboard(dik, keyboard_action)
 	return true
 end
 
-function artefact_merger_ui:OnButton_repair()
+function artefact_merger_ui:OnButton_launch()
 	local item = self.list_box_parts:GetSelectedItem()
 	if not (item) then
 		return
