@@ -94,7 +94,7 @@ local function try_restore_condition(art)
 	end
 
 	art:set_condition(1)
-	level.add_pp_effector("teleport.ppe", 2007, false)
+	level.add_pp_effector("teleport.ppe", 2008, false)
 end
 
 function activate_feature()
