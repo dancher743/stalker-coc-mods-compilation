@@ -33,6 +33,14 @@ local function remove_item(item)
 	conditions[id] = nil
 end
 
+local function actor_on_item_use(item)
+	if (item:get_remaining_uses() > 0) then
+		return
+	end
+
+	remove_item(item)
+end
+
 local function level_time_on_changed()
 	local current_time = game.get_game_time()
 
@@ -114,7 +122,7 @@ local function initialize()
 
 	RegisterScriptCallback("actor_on_item_take", try_add_item)
 	RegisterScriptCallback("actor_on_item_drop", remove_item)
-	RegisterScriptCallback("actor_on_item_use", remove_item)
+	RegisterScriptCallback("actor_on_item_use", actor_on_item_use)
 	RegisterScriptCallback("level_time_on_changed", level_time_on_changed)
 	RegisterScriptCallback("actor_on_before_sleep", actor_on_before_sleep)
 	RegisterScriptCallback("actor_on_after_sleep", actor_on_after_sleep)
@@ -129,7 +137,7 @@ local function finalize()
 
 	UnregisterScriptCallback("actor_on_item_take", try_add_item)
 	UnregisterScriptCallback("actor_on_item_drop", remove_item)
-	UnregisterScriptCallback("actor_on_item_use", remove_item)
+	UnregisterScriptCallback("actor_on_item_use", actor_on_item_use)
 	UnregisterScriptCallback("level_time_on_changed", level_time_on_changed)
 	UnregisterScriptCallback("actor_on_before_sleep", actor_on_before_sleep)
 	UnregisterScriptCallback("actor_on_after_sleep", actor_on_after_sleep)
