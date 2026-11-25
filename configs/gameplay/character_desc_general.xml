@@ -14579,8 +14579,8 @@
     <visual>actors\stalker_soldier\stalker_soldier_3_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -14604,8 +14604,8 @@
     <visual>actors\stalker_soldier\stalker_soldier3a_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -14629,8 +14629,8 @@
     <visual>actors\stalker_soldier\stalker_soldier3b_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 		grenade_rgd5 = 1 \n
@@ -14655,8 +14655,8 @@
     <visual>actors\stalker_soldier\stalker_soldier3c_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -14680,8 +14680,8 @@
     <visual>actors\stalker_soldier\stalker_soldier3d_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 		grenade_rgd5 = 1 \n
@@ -14706,8 +14706,8 @@
     <visual>actors\stalker_soldier\stalker_soldier3e_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -14756,8 +14756,8 @@
     <visual>actors\stalker_soldier\stalker_soldier3f_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -14781,8 +14781,8 @@
     <visual>actors\stalker_soldier\stalker_soldier3g_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -14806,8 +14806,8 @@
     <visual>actors\stalker_soldier\stalker_soldier3h_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -14831,8 +14831,8 @@
     <visual>actors\stalker_soldier\stalker_soldier3i_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -14856,8 +14856,8 @@
     <visual>actors\stalker_soldier\stalker_soldier3j_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -14881,8 +14881,8 @@
     <visual>actors\stalker_soldier\stalker_soldier3k_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -14906,8 +14906,8 @@
     <visual>actors\stalker_soldier\stalker_soldier_5_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -14931,8 +14931,8 @@
     <visual>actors\stalker_soldier\stalker_soldier5a_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -14956,8 +14956,8 @@
     <visual>actors\stalker_soldier\stalker_soldier5b_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -14981,8 +14981,8 @@
     <visual>actors\stalker_soldier\stalker_soldier5c_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -15006,8 +15006,8 @@
     <visual>actors\stalker_soldier\stalker_soldier5d_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -15031,8 +15031,8 @@
     <visual>actors\stalker_soldier\stalker_soldier5d_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -15056,8 +15056,8 @@
     <visual>actors\stalker_soldier\stalker_soldier5f_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -15081,8 +15081,8 @@
     <visual>actors\stalker_soldier\stalker_soldier5g_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -15106,8 +15106,8 @@
     <visual>actors\stalker_soldier\stalker_soldier5h_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -15131,8 +15131,8 @@
     <visual>actors\stalker_soldier\stalker_soldier5i_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -15156,8 +15156,8 @@
     <visual>actors\stalker_soldier\stalker_soldier5j_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"
@@ -15181,8 +15181,8 @@
     <visual>actors\stalker_soldier\stalker_soldier5k_beret</visual>
     <supplies>
         [spawn] \n
-        wpn_ak74u \n
-        ammo_5.45x39_ap = 1 \n
+        wpn_tiss \n
+        ammo_9x39_ap = 1 \n
         wpn_fort \n
         ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items_nd.xml"

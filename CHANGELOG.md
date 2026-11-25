@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - Added food degradation (with option, false by default) and Food analyzer item at the Vehicle Station in Cordon
 - Added "Show guide job message" option
 - The Artifact degradation feature has been fixed and refined
+- Added Tiss S12 weapon (special thanks to the OLR 3.0 mod for the idea!)
 
 ### Improvements
 - Added `1.25` as factor into population factors
