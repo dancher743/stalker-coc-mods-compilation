@@ -673,7 +673,9 @@ function drx_sl_quest_stash_bonus( actor, npc, p )
 		"wpn_wincheaster1300",	-- [53]   2400
 		"helm_hardhat",					-- [54]   2500
 		"wpn_ak74u",					-- [55]   3000
+		"wpn_tiss",
 		"wpn_mp5",						-- [56]   3600
+		"wpn_p90",
 		"wpn_ak74",						-- [57]   4000
 		"wpn_l85",						-- [58]   5000
 		"wpn_spas12",					-- [59]   5300
@@ -1278,7 +1280,9 @@ function drx_sl_reward_random_item( actor, npc, p )
 		"helm_hardhat",					-- [54]   2500
 
 		"wpn_ak74u",					-- [55]   3000
+		"wpn_tiss",
 		"wpn_mp5",						-- [56]   3600
+		"wpn_p90",
 
 		"wpn_ak74",						-- [57]   4000
 
@@ -1648,7 +1652,9 @@ function drx_sl_reward_random_rifle( actor, npc, p )
 
 		"wpn_wincheaster1300",	-- [3]   2400
 		"wpn_ak74u",					-- [4]   3000
+		"wpn_tiss",
 		"wpn_mp5",						-- [5]   3600
+		"wpn_p90",
 		"wpn_ak74",						-- [6]   4000
 
 		-- --------------------------------------------
@@ -2061,7 +2067,9 @@ function drx_sl_reward_stash( actor, npc, p )
 		"wpn_wincheaster1300",	--   2400
 		"helm_hardhat",					--   2500
 		"wpn_ak74u",					--   3000
+		"wpn_tiss",
 		"wpn_mp5",						--   3600
+		"wpn_p90",
 		"wpn_ak74",						--   4000
 		"wpn_l85",						--   5000
 		"wpn_spas12",					--   5300
@@ -2844,7 +2852,6 @@ function drx_sl_setup_fetch_weapon( actor, npc, p )
 		table.insert( item_list, "wpn_g36" )
 		table.insert( item_list, "wpn_l85" )
 		table.insert( item_list, "wpn_lr300" )
-		table.insert( item_list, "wpn_p90" )
 		table.insert( item_list, "wpn_sig550" )
 	end
 
@@ -2854,6 +2861,8 @@ function drx_sl_setup_fetch_weapon( actor, npc, p )
 		table.insert( item_list, "wpn_usp" )
 		table.insert( item_list, "wpn_desert_eagle" )
 
+		table.insert( item_list, "wpn_tiss" )
+		table.insert( item_list, "wpn_p90" )
 		table.insert( item_list, "wpn_protecta" )
 		table.insert( item_list, "wpn_groza" )
 		table.insert( item_list, "wpn_val" )
@@ -3571,7 +3580,9 @@ function setup_weapon_fetch_task(actor,npc,p)
 				"wpn_spas12",
 				"wpn_protecta",
 				"wpn_ak74u",
+				"wpn_tiss",
 				"wpn_mp5",
+				"wpn_p90",
 				"wpn_ak74",
 				"wpn_abakan",
 				"wpn_l85",
