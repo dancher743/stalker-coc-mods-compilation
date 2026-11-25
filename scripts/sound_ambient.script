@@ -9,7 +9,7 @@
 	
 --]]
 
-local enable_debug = false
+local is_debug = false
 
 local ambients = {}
 local snd_chanels = {}
@@ -18,6 +18,10 @@ local tot_size
 local opt = {
     ambient_volume = 1
 }
+
+local function print_dbg(fmt, ...)
+	printf("sound_ambient | " .. fmt, ...)
+end
 
 function reset_settings(level_name, ambient)
 
@@ -31,22 +35,22 @@ function reset_settings(level_name, ambient)
 	end
 
 	empty_table(snd_chanels)
-	print_dbg(enable_debug and "level_name: %s - ambient: %s", level_name, ambient)
+	if is_debug then print_dbg("level_name: %s - ambient: %s", level_name, ambient) end
 	
 	if not (level_name and ambient and ambient ~= STR_EMPTY) then
-		print_dbg(enable_debug and "level_name or ambient is missing")
+		if is_debug then print_dbg("level_name or ambient is missing") end
 		return false
 	end
 	
 	local ini_lvl = ini_file("environment\\ambients\\" .. level_name .. ".ltx")
 	if (not ini_lvl) then
-		print_dbg(enable_debug and "environment\\ambients\\%s.ltx couldn't be found!", level_name)
+		if is_debug then print_dbg("environment\\ambients\\%s.ltx couldn't be found!", level_name) end
 		return false
 	end
 
 	local channels = alun_utils.parse_list(ini_lvl,ambient,"sound_channels_dynamic")
 	if #channels == 0 then
-		print_dbg(enable_debug and "no sound channel are found for ambient [%s] - file: %s", ambient, level_name)
+		if is_debug then print_dbg("no sound channel are found for ambient [%s] - file: %s", ambient, level_name) end
 		return false
 	end
 	
@@ -91,19 +95,12 @@ function reset_settings(level_name, ambient)
 			snd_chanels[idx].periods = {period_0, period_1, period_2, period_3}
 			snd_chanels[idx].sounds = alun_utils.parse_list(ini_snd,ch,"sounds")
 			
-			print_dbg(enable_debug and "reading sound channel [%s] (%s) | size = %s", ch, idx, #snd_chanels[idx].sounds)
+			if is_debug then print_dbg("reading sound channel [%s] (%s) | size = %s", ch, idx, #snd_chanels[idx].sounds) end
 		end
 	end
 	tot_size = #snd_chanels
 	return true
 end
-
-function print_dbg(fmt, ...)
-	if enable_debug then
-		printf("sound_ambient | " .. fmt, ...)
-	end
-end
-
 
 -------------------------------
 -- UPDATE
@@ -139,10 +136,10 @@ function update_ambient()
 		local ambient =  level_weathers.get_weather_manager():get_curr_ambient()
 		local is_set = reset_settings(level.name() , ambient)
 		if is_set then
-			print_dbg(enable_debug and "ambient sounds table reset for the next hour: %s", next_hour)
+			if is_debug then print_dbg("ambient sounds table reset for the next hour: %s", next_hour) end
 			return false
 		else
-			print_dbg(enable_debug and "ambient sounds timer went off")
+			if is_debug then print_dbg("ambient sounds timer went off") end
 			return true
 		end
 	end
@@ -156,23 +153,23 @@ function update_ambient()
 	local ch = snd_chanels[next_idx]
 	if (not ch.next) then
 		ch.next = tg + math.random( 1 , (ch.periods[math.random(4)] + 1) )
-		print_dbg(enable_debug and "sound [%s] set to play at %s",ch.name,ch.next)
+		if is_debug then print_dbg("sound [%s] set to play at %s",ch.name,ch.next) end
 		return false
 	end
 	
-	--print_dbg(enable_debug and "tg = %s - idx = %s - next = %s", tg, next_idx, ch.next)
+	--if is_debug then print_dbg("tg = %s - idx = %s - next = %s", tg, next_idx, ch.next) end
 	if ch.next <= tg then
 		
 		if (ch.play_once and ch.has_played_once) then
-			print_dbg(enable_debug and "sound [%s] has already played once", ch.name)
+			if is_debug then print_dbg("sound [%s] has already played once", ch.name) end
 			return false
 		end
 		
 		if (ch.play_prob and ch.play_prob < math.random()) then
-			print_dbg(enable_debug and "sound [%s] does not play due to low probability [%s]", ch.name, ch.play_prob)
+			if is_debug then print_dbg("sound [%s] does not play due to low probability [%s]", ch.name, ch.play_prob) end
 			-- Set next play time
 			ch.next = tg + (ch.periods[math.random(4)])
-			print_dbg(enable_debug and "sound [%s] set to play next at %s | time now: %s", ch.name, ch.next, tg)
+			if is_debug then print_dbg("sound [%s] set to play next at %s | time now: %s", ch.name, ch.next, tg) end
 			return false
 		end
 		
@@ -226,11 +223,11 @@ function update_ambient()
 		-- Set next play time
 		ch.next = tg + (ch.periods[math.random(4)])
 
-		print_dbg(enable_debug and "sound [%s] set to use sound: %s - volume: %s - distance: %s", ch.name, file, ch.snd.volume, dist)
-		print_dbg(enable_debug and "sound [%s] set to play next at %s | time now: %s", ch.name, ch.next, tg)
-		--print_dbg(enable_debug and "angle_dec: %s - angle_rad: %s - math.cos(angle_rad): %s - math.sin(angle_rad): %s", angle_dec, angle_rad, math.cos(angle_rad), math.sin(angle_rad))
-		--print_dbg(enable_debug and "player | x: %s - y: %s - z: %s", (pos.x), (pos.y), (pos.z))
-		--print_dbg(enable_debug and "sound  | x: %s - y: %s - z: %s", (pos.x + pos_x), (pos.y), (pos.z + pos_z))
+		if is_debug then print_dbg("sound [%s] set to use sound: %s - volume: %s - distance: %s", ch.name, file, ch.snd.volume, dist) end
+		if is_debug then print_dbg("sound [%s] set to play next at %s | time now: %s", ch.name, ch.next, tg) end
+		--if is_debug then print_dbg("angle_dec: %s - angle_rad: %s - math.cos(angle_rad): %s - math.sin(angle_rad): %s", angle_dec, angle_rad, math.cos(angle_rad), math.sin(angle_rad)) end
+		--if is_debug then print_dbg("player | x: %s - y: %s - z: %s", (pos.x), (pos.y), (pos.z)) end
+		--if is_debug then print_dbg("sound  | x: %s - y: %s - z: %s", (pos.x + pos_x), (pos.y), (pos.z + pos_z)) end
 	end
 	
 	return false
