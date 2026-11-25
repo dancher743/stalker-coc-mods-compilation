@@ -38,6 +38,10 @@ function actor_binder:net_spawn(data)
 	if object_binder.net_spawn(self,data) == false then
 		return false
 	end
+
+	if (USE_MARSHAL) then 
+		RegisterScriptCallback("save_state",self)
+	end
 	db.add_actor(self.object)
 	db.add_enemy(self.object)
 
@@ -186,11 +190,7 @@ function actor_binder:reinit()
 			self.object:set_callback(callback[cb],func,self)
 		end
 	end
-	
-	if (USE_MARSHAL) then 
-		RegisterScriptCallback("save_state",self)
-	end
-	
+		
 	bind_stalker_ext.actor_on_reinit(self)
 	
 	alife():set_objects_per_update(65534) -- To force all of alife to spawn and update at least once

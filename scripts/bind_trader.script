@@ -24,10 +24,6 @@ function trader_object_binder:reinit()
 	db.storage[self.object:id()] = { }
 
 	self.st = db.storage[self.object:id()]
-	
-	if (USE_MARSHAL) then
-		RegisterScriptCallback("save_state",self)
-	end
 end
 
 function trader_object_binder:update(delta)
@@ -52,17 +48,21 @@ function trader_object_binder:net_spawn(sobject)
 	if not object_binder.net_spawn(self, sobject) then
 		return false
 	end
-
-	if not self.object:alive() then
-		return true
-	end
 	
 	local se_obj = alife_object(self.object:id())
 	if not (se_obj) then 
 		return false 
 	end
 	
+	if (USE_MARSHAL) then
+		RegisterScriptCallback("save_state",self)
+	end
 	db.add_obj(self.object)
+	
+	if not self.object:alive() then
+		return true
+	end
+	
 	if self.object:clsid() == clsid.script_trader then
 	      --self.object:set_trader_global_anim("idle_spinka")
 		smart_terrain.setup_gulag_and_logic_on_spawn( self.object, self.st, se_obj, modules.stype_trader, self.loaded)
@@ -197,7 +197,7 @@ function trader_object_binder:load_state()
 
 	if (state.pstor_ctime) then
 		db.storage[id].pstor_ctime = state.pstor_ctime
-		m_data.pstor_ctime = nil
+		state.pstor_ctime = nil
 	end
 	--alun_utils.debug_write(strformat("trader_object_binder:load_state %s AFTER",id))
 end 

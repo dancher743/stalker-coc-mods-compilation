@@ -28,9 +28,6 @@ function generic_object_binder:reinit()
 		self.object:set_callback(callback.sound, 				self.hear_callback, 	self)
 		self.object:set_tip_text(STR_EMPTY)
 	end
-	if (USE_MARSHAL) then
-		RegisterScriptCallback("save_state",self)
-	end
 	--alun_utils.debug_write(self.object:name().."re_init() End")
 end
 
@@ -273,7 +270,10 @@ function generic_object_binder:net_spawn(sobject)
 	-- Alundaio
 	SendScriptCallback("monster_on_net_spawn",self.object,se_obj)
 	-- Alundaio
-	
+
+	if (USE_MARSHAL) then
+		RegisterScriptCallback("save_state",self)
+	end
 	db.add_obj(self.object)
 	if not self.object:alive() then
 		if (self.object:clsid() == clsid.poltergeist_s) then

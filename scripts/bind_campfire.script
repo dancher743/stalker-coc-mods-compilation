@@ -17,15 +17,13 @@ end
 local function save_state(m_data)
 	--alun_utils.debug_write("bind_campfire:save_state")
 	empty_table(m_data.campfire_states)
-	for smart,t in pairs(db.campfire_table_by_smart_names) do 
-		for id,binder in pairs(t) do 
-			if (binder and binder.campfire) then
-				if (binder.campfire:is_on()) then 
-					if not (m_data.campfire_states) then 
-						m_data.campfire_states = {}
-					end
-					m_data.campfire_states[id] = true
+	for id,binder in pairs(campfires_all) do 
+		if (binder and binder.campfire) then
+			if (binder.campfire:is_on()) then 
+				if not (m_data.campfire_states) then 
+					m_data.campfire_states = {}
 				end
+				m_data.campfire_states[id] = true
 			end
 		end
 	end
@@ -100,6 +98,28 @@ function get_nearest_campfire(npc, range)
 	return nil
 end
 
+function turn_off_campfires_by_smart_name(smart_name,turn_off_chance)
+	local smart_campfires = db.campfire_table_by_smart_names[smart_name]
+	if smart_campfires ~= nil and not is_empty(smart_campfires) then
+		if turn_off_chance == nil then
+			turn_off_chance = 20
+		end
+		for k,v in pairs (smart_campfires) do
+			if (math.random(100) < turn_off_chance) then
+				-- shouldn't be needed with Open Xray because of DX11 lighting fix
+				--if (v.object) then
+				--	if (render_get_dx_level() == 655361) then 
+				--		v.object:disable_anomaly()
+				--	end
+				--end
+				if (v.campfire and v.campfire:is_on()) then
+					v.campfire:turn_off()
+				end
+			end
+		end
+	end
+end
+
 function on_game_start()
 	local tutorial_ran = 0 -- because we don't want to conflict with other tutorials, we need to identify if we are running (ie. > 0)
 	local function main_loop()
@@ -143,6 +163,7 @@ function on_game_start()
 	end
 
 	AddUniqueCall(main_loop)
+	RegisterScriptCallback("save_state",save_state)
 end 
 
 
@@ -158,9 +179,6 @@ end
 class "campfire_binder" (object_binder)
 function campfire_binder:__init(obj) super(obj)
 	self.campfire = obj:get_campfire()
-	if (USE_MARSHAL) then 
-		RegisterScriptCallback("save_state",save_state)
-	end
 end
 
 function campfire_binder:reload(section)
@@ -222,25 +240,3 @@ function campfire_binder:net_destroy(server_object)
 	campfires_all[self.object:id()] = nil
 	object_binder.net_destroy(self)
 end 
-
-function turn_off_campfires_by_smart_name(smart_name,turn_off_chance)
-	local smart_campfires = db.campfire_table_by_smart_names[smart_name]
-	if smart_campfires ~= nil and not is_empty(smart_campfires) then
-		if turn_off_chance == nil then
-			turn_off_chance = 20
-		end
-		for k,v in pairs (smart_campfires) do
-			if (math.random(100) < turn_off_chance) then
-				-- shouldn't be needed with Open Xray because of DX11 lighting fix
-				--if (v.object) then
-				--	if (render_get_dx_level() == 655361) then 
-				--		v.object:disable_anomaly()
-				--	end
-				--end
-				if (v.campfire and v.campfire:is_on()) then
-					v.campfire:turn_off()
-				end
-			end
-		end
-	end
-end
