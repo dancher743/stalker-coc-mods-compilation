@@ -11,13 +11,13 @@ function artefact_binder:__init(obj) super(obj)
 end
 function artefact_binder:reinit()
 	object_binder.reinit(self)
-	if (USE_MARSHAL) then
-		RegisterScriptCallback("save_state",self)
-	end
 end
 function artefact_binder:net_spawn(server_object)
 	if not object_binder.net_spawn(self, server_object) then
 		return false
+	end
+	if (USE_MARSHAL) then
+		RegisterScriptCallback("save_state",self)
 	end
 	db.add_obj(self.object)
 	local artefact = self.object:get_artefact()
@@ -45,7 +45,6 @@ function artefact_binder:update(delta)
 			local m_data = alife_storage_manager.get_state()
 			if (m_data and m_data.artefact_condition and m_data.artefact_condition[self.object:id()]) then 
 				self.object:set_condition(tonumber(m_data.artefact_condition[self.object:id()]) or 1)
-				m_data.artefact_condition[self.object:id()] = nil
 			end
     end	
 	
@@ -67,15 +66,34 @@ function artefact_binder:update(delta)
 	end
 end
 function artefact_binder:net_destroy(server_object)
+	if (USE_MARSHAL) then
+		self:save_state(alife_storage_manager.get_state())
+		UnregisterScriptCallback("save_state",self)
+	end
 	db.del_obj(self.object)
 	object_binder.net_destroy(self)
 end
 
+function artefact_binder:save_condition(m_data, id, condition)
+	if (condition == nil and not m_data.artefact_condition) then
+		return
+	end
+
+	if not (m_data.artefact_condition) then
+		m_data.artefact_condition = {}
+	end
+	m_data.artefact_condition[id] = condition
+end
+
 function artefact_binder:save_state(m_data)
-	if (self.object:condition() < 1) then
-		if not (m_data.artefact_condition) then 
-			m_data.artefact_condition = {}
-		end
-		m_data.artefact_condition[self.object:id()] = self.object:condition()
+	if not (self.object and m_data) then
+		return
+	end
+
+	local condition = self.object:condition()
+	if (condition < 1) then
+		self:save_condition(m_data, self.object:id(), condition)
+	else
+		self:save_condition(m_data, self.object:id(), nil)
 	end
 end
