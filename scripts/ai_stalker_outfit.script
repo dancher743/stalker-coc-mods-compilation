@@ -1,0 +1,53 @@
+--
+-- Changing outfits
+-- Author: Dancher
+--
+
+local cost_string = "cost"
+local time_delta = 10000
+
+function update_best_outfit(npc, cur_outfit)
+	local st = db.storage[npc:id()]
+	if not (st) then
+		return cur_outfit
+	end
+
+	local tg = time_global()
+
+	if (cur_outfit and st._choose_bo_timer and tg < st._choose_bo_timer) then
+		return cur_outfit
+	end 
+
+	st._choose_bo_timer = tg + time_delta
+
+	local ini = system_ini()
+	local borrow_items = alife_storage_manager.get_state().companion_borrow_item
+	local best_outfit = nil
+	local max_cost = -1
+
+	local function iterator(npc, item)
+		if (IsOutfit(nil, item:clsid()) == false) then
+			return false
+		end
+
+		-- usage actor's borrow items by a companion fix
+		if (axr_companions.is_companion(npc)) then
+			if (borrow_items and borrow_items[item:id()] == true) then
+				return false
+			end
+		end
+
+		local cost = ini:r_float_ex(item:section(), cost_string) or 0
+
+		if (cost > max_cost) then
+			max_cost = cost
+			best_outfit = item
+		end
+
+		return false
+	end
+
+	npc:iterate_inventory(iterator, npc)
+
+	return best_outfit
+end

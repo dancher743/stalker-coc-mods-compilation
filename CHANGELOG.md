@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Added "Show guide job message" option
 - The Artifact degradation feature has been fixed and refined
 - Added Tiss S12 weapon (special thanks to the OLR 3.0 mod for the idea!)
+- Added outfit changing for NPCs (x64 Engine only)
 
 ### Improvements
 - Added `1.25` as factor into population factors
