@@ -6,8 +6,10 @@
 local factors = nil
 local conditions = nil
 local food = nil
-local is_initialized = false
 local last_check_time = nil
+
+local is_initialized = false
+local is_update_paused = false
 
 local function try_add_item(item)
 	local section = item:section()
@@ -42,6 +44,10 @@ local function actor_on_item_use(item)
 end
 
 local function level_time_on_changed()
+	if (is_update_paused) then
+		return
+	end
+	
 	local current_time = game.get_game_time()
 
 	if (last_check_time == nil) then
@@ -75,13 +81,12 @@ local function level_time_on_changed()
 end
 
 local function actor_on_before_sleep()
-	UnregisterScriptCallback("level_time_on_changed", level_time_on_changed)
+	is_update_paused = true
 end
 
 local function actor_on_after_sleep()
 	last_check_time = nil
-	forced_update()
-	RegisterScriptCallback("level_time_on_changed", level_time_on_changed)
+	is_update_paused = false
 end
 
 local function save_state(data)
