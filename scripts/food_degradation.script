@@ -28,19 +28,29 @@ local function try_add_item(item)
 	end
 end
 
-local function remove_item(item)
-	local id = item:id()
-
+local function remove_item(id)
 	food[id] = nil
 	conditions[id] = nil
 end
 
+local function actor_on_item_drop(item)
+	remove_item(item:id())
+end
+
 local function actor_on_item_use(item)
-	if (item:get_remaining_uses() > 0) then
+	local id = item:id()
+	local condition = conditions[id]
+
+	if (condition == nil) then
 		return
 	end
 
-	remove_item(item)
+	if (item:get_remaining_uses() > 0) then
+		item:set_condition(condition) -- Dancher: override the engine logic "item condition = remaining uses / max uses" here.
+		return
+	end
+
+	remove_item(id)
 end
 
 local function level_time_on_changed()
@@ -126,7 +136,7 @@ local function initialize()
     db.actor:iterate_inventory(iterator, db.actor)
 
 	RegisterScriptCallback("actor_on_item_take", try_add_item)
-	RegisterScriptCallback("actor_on_item_drop", remove_item)
+	RegisterScriptCallback("actor_on_item_drop", actor_on_item_drop)
 	RegisterScriptCallback("actor_on_item_use", actor_on_item_use)
 	RegisterScriptCallback("level_time_on_changed", level_time_on_changed)
 	RegisterScriptCallback("actor_on_before_sleep", actor_on_before_sleep)
@@ -141,7 +151,7 @@ local function finalize()
 	end
 
 	UnregisterScriptCallback("actor_on_item_take", try_add_item)
-	UnregisterScriptCallback("actor_on_item_drop", remove_item)
+	UnregisterScriptCallback("actor_on_item_drop", actor_on_item_drop)
 	UnregisterScriptCallback("actor_on_item_use", actor_on_item_use)
 	UnregisterScriptCallback("level_time_on_changed", level_time_on_changed)
 	UnregisterScriptCallback("actor_on_before_sleep", actor_on_before_sleep)
