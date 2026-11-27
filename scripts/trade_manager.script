@@ -25,9 +25,9 @@ end
 
 function setup_buy_sell_conditions(npc,id)
 	
-	local condlist = xr_logic.parse_condlist(npc, "trader", "buy_condition", tm[id].config:r_string_ex("trader", "buy_condition") or "")
+	local condlist = xr_logic.parse_condlist(npc, "trader", "buy_condition", tm[id].config:r_string_ex("trader", "buy_condition") or STR_EMPTY)
 	local str = condlist and xr_logic.pick_section_from_condlist(db.actor, npc, condlist)
-	if (str == nil or str == "") then
+	if (str == nil or str == STR_EMPTY) then
 		printf("Wrong section in buy_condition condlist for npc [%s]!", npc:name())
 		return
 	end
@@ -35,9 +35,9 @@ function setup_buy_sell_conditions(npc,id)
 	npc:buy_condition(tm[id].config, str)
 	tm[id].current_buy_condition = str
 
-	condlist = xr_logic.parse_condlist(npc, "trader", "sell_condition", tm[id].config:r_string_ex("trader", "sell_condition") or "")
+	condlist = xr_logic.parse_condlist(npc, "trader", "sell_condition", tm[id].config:r_string_ex("trader", "sell_condition") or STR_EMPTY)
 	str = condlist and xr_logic.pick_section_from_condlist(db.actor, npc, condlist)
-	if(str == nil or str == "") then
+	if(str == nil or str == STR_EMPTY) then
 		printf("Wrong section in sell_condition condlist for npc [%s]!", npc:name())
 		return
 	end
@@ -47,7 +47,7 @@ function setup_buy_sell_conditions(npc,id)
 
 	condlist = xr_logic.parse_condlist(npc, "trader", "buy_item_condition_factor", tm[id].config:r_string_ex("trader", "buy_item_condition_factor") or "0.7")
 	str = condlist and xr_logic.pick_section_from_condlist(db.actor, npc, condlist)
-	if (str == nil or str == "") then
+	if (str == nil or str == STR_EMPTY) then
 		printf("Wrong section in buy_item_condition_factor condlist for npc [%s]!", npc:name())
 		return 
 	end
@@ -83,7 +83,7 @@ function update(npc)
 
 	local condlist = xr_logic.parse_condlist(npc, "trader", "buy_supplies", str)
 	str = condlist and xr_logic.pick_section_from_condlist(db.actor, npc, condlist)
-	if(str=="" or str==nil) then
+	if(str==STR_EMPTY or str==nil) then
 		printf("Wrong section in buy_supplies condlist for npc [%s]!", npc:name())
 		return
 	end
@@ -163,9 +163,9 @@ function save(obj, packet)
 	set_save_marker(packet, "save", false, "trade_manager")
 		
 	packet:w_stringZ(tm[id].cfg_ltx)
-	packet:w_stringZ(tm[id].current_buy_condition or "")
-	packet:w_stringZ(tm[id].current_sell_condition or "")
-	packet:w_stringZ(tm[id].current_buy_supplies or "")
+	packet:w_stringZ(tm[id].current_buy_condition or STR_EMPTY)
+	packet:w_stringZ(tm[id].current_sell_condition or STR_EMPTY)
+	packet:w_stringZ(tm[id].current_buy_supplies or STR_EMPTY)
 
 	local cur_tm = time_global()
 	if tm[id].update_time == nil then
@@ -206,21 +206,21 @@ function load(obj, packet)
 
 	a = packet:r_stringZ()
 	--printf("TRADE LOAD [%s]: current_buy_condition = %s", obj:name(), tostring(a))
-	if a ~= "" then
+	if a ~= STR_EMPTY then
 		tm[id].current_buy_condition = a
 		obj:buy_condition(tm[id].config, a)
 	end
 
 	a = packet:r_stringZ()
 	--printf("TRADE LOAD [%s]: current_sell_condition = %s", obj:name(), tostring(a))
-	if a ~= "" then
+	if a ~= STR_EMPTY then
 		tm[id].current_sell_condition = a
 		obj:sell_condition(tm[id].config, a)
 	end
 
 	a = packet:r_stringZ()
 	--printf("TRADE LOAD [%s]: current_buy_supplies = %s", obj:name(), tostring(a))
-	if a ~= "" then
+	if a ~= STR_EMPTY then
 		tm[id].current_buy_supplies = a
 	end
 
@@ -253,12 +253,12 @@ function get_buy_discount(npc_id)
 	end 
 	
 	local str = tm[npc_id].config:r_string_ex("trader","discounts")
-	if(str == nil or str=="") then
+	if(str == nil or str==STR_EMPTY) then
 		return 1
 	end
 
 	local sect = xr_logic.pick_section_from_condlist(db.actor, nil, xr_logic.parse_condlist(db.actor, "trader", "discounts", str))
-	if (sect == nil or sect == "") then 
+	if (sect == nil or sect == STR_EMPTY) then 
 		return 1 
 	end
 
@@ -276,14 +276,26 @@ function get_sell_discount(npc_id)
 	end 
 	
 	local str = tm[npc_id].config:r_string_ex("trader","discounts")
-	if(str == nil or str=="") then
+	if(str == nil or str==STR_EMPTY) then
 		return 1
 	end
 
 	local sect = xr_logic.pick_section_from_condlist(db.actor, nil, xr_logic.parse_condlist(npc, "trade_manager", "discounts", str))
-	if (sect == nil or sect == "") then 
+	if (sect == nil or sect == STR_EMPTY) then 
 		return 1 
 	end
 	
 	return tm[npc_id].config:r_float_ex(sect,"sell") or 1
+end
+
+-- called from engine!
+function npc_on_item_before_trade(npc, item)
+	if (axr_companions.is_companion(npc)) then
+		local borrow_items = alife_storage_manager.get_state().companion_borrow_item
+		if (borrow_items and borrow_items[item:id()] == true) then
+			return false
+		end
+	end
+
+	return true
 end

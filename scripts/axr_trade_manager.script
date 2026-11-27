@@ -7,6 +7,13 @@ local function npc_on_item_take(npc,item)
 		return
 	end
 
+	if (axr_companions.is_companion(npc)) then
+		local borrow_items = alife_storage_manager.get_state().companion_borrow_item
+		if (borrow_items and borrow_items[item:id()] == true) then
+			return
+		end
+	end
+
 	local id = npc:id()
 	local st = db.storage[id]
 	if not (st) then
@@ -38,7 +45,7 @@ local function npc_on_item_take(npc,item)
 	end
 
 	local buy_sell = ini:r_string_ex("buy_sell",sec)
-	if (buy_sell == nil or buy_sell == "") then
+	if (buy_sell == nil or buy_sell == STR_EMPTY) then
 		return
 	end
 
@@ -47,7 +54,7 @@ local function npc_on_item_take(npc,item)
 	end
 	st.trade_items[sec] = st.trade_items[sec] and st.trade_items[sec] + 1 or 1
 
-	buy_sell = alun_utils.str_explode(buy_sell,",")
+	buy_sell = alun_utils.str_explode(buy_sell,STR_COMMA)
 
 	--printf("buy_sell[2]=%s",buy_sell[2])
 	if (st.trade_items[sec] >= tonumber(buy_sell[2])) then
@@ -98,57 +105,71 @@ function npc_trade_buy_sell(npc)
 	if not (se_obj) then 
 		return 
 	end
-	
+
+	local borrow_items = alife_storage_manager.get_state().companion_borrow_item
+
 	-- SELL ITEMS
-	local itm,itm_base_cost,buy_sell, slot, bw,can_sell
-	for sec,count in pairs(st.trade_items) do
-		for i=count,1 do
-			itm = npc:object(sec)
-			if (itm) then
-				can_sell = true
+	local itm_base_cost, buy_sell, slot, bw, can_sell
+	for sec, count in pairs(st.trade_items) do
+		buy_sell = ini:r_string_ex("buy_sell", sec)
+		if (buy_sell and buy_sell ~= STR_EMPTY) then
+			buy_sell = alun_utils.str_explode(buy_sell, STR_COMMA)
+			local keep_count = tonumber(buy_sell[1]) or 0
+			local items_to_sell = {}
 
-				-- Make sure item is not his best weapon
-				bw = npc:best_weapon()
-				if (bw and bw:id() == itm:id()) then
-					can_sell = false
-				end
+			npc:iterate_inventory(function(temp, itm)
+				if (itm:section() == sec) then
+					can_sell = true
 
-				-- Make sure item is not equipped
-				for i=1,12 do
-					slot = npc:item_in_slot(i)
-					if (slot and slot:id() == itm:id()) then
-						can_sell = false
-						break
-					end
-				end
-
-				buy_sell = ini:r_string_ex("buy_sell",sec)
-				if (buy_sell and buy_sell ~= "" and can_sell) then
-					buy_sell = alun_utils.str_explode(buy_sell,",")
-
-					sim:release(sim:object(itm:id()),true)
-
-					--printf("trading %s",sec)
-					-- npc_statistic
-					if (se_obj) then 
-						local m_data = alife_storage_manager.get_se_obj_state(se_obj)
-						if (m_data) then
-							m_data.items_sold = m_data.items_sold and m_data.items_sold + 1 or 1
+					if (axr_companions.is_companion(npc)) then
+						if (borrow_items and borrow_items[itm:id()] == true) then
+							can_sell = false
 						end
 					end
 
-					itm_base_cost = system_ini():r_float_ex(sec,"cost") or 30
-					npc:money(itm_base_cost * (tonumber(buy_sell[4]) or 1))
+					-- Make sure item is not his best weapon
+					bw = npc:best_weapon()
+					if (bw and bw:id() == itm:id()) then
+						can_sell = false
+					end
 
-					-- Only sell enough till reach keep-in-stock count (param 1)
-					if (i <= tonumber(buy_sell[1])) then
-						break
+					-- Make sure item is not equipped
+					for s = 1, 12 do
+						slot = npc:item_in_slot(s)
+						if (slot and slot:id() == itm:id()) then
+							can_sell = false
+							break
+						end
+					end
+
+					if (can_sell) then
+						table.insert(items_to_sell, itm)
+					end
+				end
+			end, npc)
+
+			local sell_count = #items_to_sell
+			if (sell_count > keep_count) then
+				for i = sell_count, keep_count + 1, -1 do
+					local itm = items_to_sell[i]
+					if (itm) then
+						sim:release(sim:object(itm:id()), true)
+
+						if (se_obj) then
+							local m_data = alife_storage_manager.get_se_obj_state(se_obj)
+							if (m_data) then
+								m_data.items_sold = m_data.items_sold and m_data.items_sold + 1 or 1
+							end
+						end
+
+						itm_base_cost = system_ini():r_float_ex(sec, "cost") or 30
+						npc:money(itm_base_cost * (tonumber(buy_sell[4]) or 1))
 					end
 				end
 			end
 		end
 	end
-	
+
 	empty_table(st.trade_items)
 	st.has_items_to_sell = false
 
@@ -201,8 +222,8 @@ function npc_trade_buy_sell(npc)
 	local buy_sell,total_cost
 	for sec,v in pairs(valid_items) do
 		buy_sell = ini:r_string_ex("buy_sell",sec)
-		if (buy_sell and buy_sell ~= "") then
-			buy_sell = alun_utils.str_explode(buy_sell,",")
+		if (buy_sell and buy_sell ~= STR_EMPTY) then
+			buy_sell = alun_utils.str_explode(buy_sell,STR_COMMA)
 
 			itm_base_cost = system_ini():r_float_ex(sec,"cost") or 30
 			total_cost = (itm_base_cost * (tonumber(buy_sell[5]) or 1))
