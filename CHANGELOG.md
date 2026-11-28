@@ -43,6 +43,7 @@ All notable changes to this project will be documented in this file.
 - Refactored the adding/deleting code to online tables in `db.script`
 - Refactored local fields in `level_weathers.script`
 - Extended rank-based weapon list of find weapon tasks
+- Disabled player movement slowdown caused by acidic and thermal anomalies
 
 ### Fixes
 - Refactored the code of Fast Travel options
