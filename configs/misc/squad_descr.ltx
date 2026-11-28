@@ -2113,6 +2113,27 @@ npc_in_squad_eoc = 2, 5
 [ecolog_sim_explorer_yellow_squad]:ecolog_sim_squad_explorer_yellow
 ; --
 
+[simulation_controller_zombies_weak]:online_offline_group
+faction = monster
+npc_regular = m_controller_normal
+npc_random = zombie_weak, zombie_normal
+npc_in_squad = 2, 4
+npc_in_squad_eoc = 1, 1
+
+[simulation_controller_zombies_normal]:online_offline_group
+faction = monster
+npc_regular = m_controller_normal2
+npc_random = zombie_weak, zombie_normal, zombie_strong
+npc_in_squad = 4, 4
+npc_in_squad_eoc = 1, 1
+
+[simulation_controller_zombies_strong]:online_offline_group
+faction = monster
+npc_regular = m_controller_psy
+npc_random = zombie_normal, zombie_strong, zombie_ghost
+npc_in_squad = 4, 6
+npc_in_squad_eoc = 1, 1
+
 ;--------------------base defense----------------------
 [faction_base_defense_flesh_squad]:online_offline_group
 faction = monster
