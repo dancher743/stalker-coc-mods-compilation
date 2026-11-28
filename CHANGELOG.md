@@ -45,6 +45,7 @@ All notable changes to this project will be documented in this file.
 - Extended rank-based weapon list of find weapon tasks
 - Disabled player movement slowdown caused by acidic and thermal anomalies
 - Improved the map spot of squad leader message
+- Increased reputation for completing a bounty hunt peacefully from 20 to 100
 
 ### Fixes
 - Refactored the code of Fast Travel options
