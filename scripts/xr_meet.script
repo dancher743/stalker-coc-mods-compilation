@@ -482,10 +482,8 @@ function notify_on_use(victim, who)
 			if (level.map_has_object_spot(commander_id, "ui_squad_commander_blink_mini_map") == 0) then
 				level.map_add_object_spot_ser(commander_id, "ui_squad_commander_blink_mini_map", STR_EMPTY)
 			end
-			if (pda_upgrade_manager.has_squads_on_map_upgrade() and get_check_option("show_stalkers_on_map")) then
-				if (level.map_has_object_spot(commander_id, "ui_squad_commander_blink_level_map") == 0) then
-					level.map_add_object_spot_ser(commander_id, "ui_squad_commander_blink_level_map", STR_EMPTY)
-				end
+			if (level.map_has_object_spot(commander_id, "ui_squad_commander_blink_level_map") == 0) then
+				level.map_add_object_spot_ser(commander_id, "ui_squad_commander_blink_level_map", STR_EMPTY)
 			end
 		end
 		
